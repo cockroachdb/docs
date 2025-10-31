@@ -6,11 +6,11 @@ Changes to [cluster settings]({% link v25.4/cluster-settings.md %}) should be re
 
     Changefeeds will now periodically persist their entire span frontiers so that fewer duplicates will need to be emitted during restarts. The default persistence interval is 30s, but this can be configured with the `changefeed.progress.frontier_persistence.interval` cluster setting. [#153491][#153491]
 
-- `log.channel_compatibility_mode.enabled` {% comment %}Verify with PM/Docs{% endcomment %}
+- `log.channel_compatibility_mode.enabled`
 
-  - In v26.1, changefeed events will be logged to the `CHANGEFEED` logging channel instead of `TELEMETRY`. To test the impact of this change before upgrading, set the cluster setting `log.channel_compatibility_mode.enabled` to `false`. This redirects changefeed logs to the `CHANGEFEED` channel and should be tested only in non-production environments. [#151807][#151807]
-  - In v26.1, SQL performance events will be logged to the `SQL_EXEC` channel instead of the `SQL_PERF` and `SQL_INTERNAL_PERF` channels. To test the impact of this change, you can set the new cluster setting `log.channel_compatibility_mode.enabled` to `false`. This redirects SQL performance logs to the `SQL_EXEC` channel. This setting should not be used in production environments, as it may affect downstream logging pipelines. [#151827][#151827]
-  - In v26.1, `sampled_query` and `sampled_transaction` events will move from the `TELEMETRY` channel to the `SQL_EXEC` logging channel. To test for potential logging pipeline impacts of these changes, set `log.channel_compatibility_mode.enabled` to `false`. Avoid testing in production, as this setting changes live log behavior. [#151949][#151949]
+  - In a future major release, changefeed events will be logged to the `CHANGEFEED` logging channel instead of `TELEMETRY`. To test the impact of this change before upgrading, set the cluster setting `log.channel_compatibility_mode.enabled` to `false`. This redirects changefeed logs to the `CHANGEFEED` channel and should be tested only in non-production environments. [#151807][#151807]
+  - In a future major release, SQL performance events will be logged to the `SQL_EXEC` channel instead of the `SQL_PERF` and `SQL_INTERNAL_PERF` channels. To test the impact of this change, you can set the new cluster setting `log.channel_compatibility_mode.enabled` to `false`. This redirects SQL performance logs to the `SQL_EXEC` channel. This setting should not be used in production environments, as it may affect downstream logging pipelines. [#151827][#151827]
+  - In a future major release, `sampled_query` and `sampled_transaction` events will move from the `TELEMETRY` channel to the `SQL_EXEC` logging channel. To test for potential logging pipeline impacts of these changes, set `log.channel_compatibility_mode.enabled` to `false`. Avoid testing in production, as this setting changes live log behavior. [#151949][#151949]
 
 - `sql.catalog.allow_leased_descriptors.enabled`
 
