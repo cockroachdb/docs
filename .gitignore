@@ -13,7 +13,6 @@ _site
 .jekyll-cache
 /bootstrap
 /vendor/
-Gemfile.lock
 tmp/
 node_modules
 /src/*/bootstrap

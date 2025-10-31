@@ -2,6 +2,9 @@ git_source(:github) { |name| "https://github.com/#{name}.git" }
 # frozen_string_literal: true
 source "https://rubygems.org"
 
+# Ruby version requirement (needed for SSL compatibility)
+ruby ">= 3.3.0"
+
 # If you modify this file, you'll need to build a new version of the
 # docs-builder Docker image to keep things speedy in CI. See ci/README.md for
 # instructions.
@@ -13,6 +16,10 @@ gem "redcarpet", "~> 3.6"
 gem "rss"
 gem "webrick"
 gem "jekyll-minifier"
+gem "csv"
+gem "base64"
+gem "bigdecimal"
+gem "logger"
 
 group :jekyll_plugins do
     gem "jekyll-include-cache"
