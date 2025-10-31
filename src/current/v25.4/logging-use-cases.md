@@ -14,7 +14,13 @@ This page describes some common logging use cases, their relevant [logging chann
 
 We provide an example [file sink configuration]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) for each use case. These configurations are entirely optional and are intended to highlight the contents of each logging channel. A sink can include any combination of logging channels. Moreover, a single logging channel can be used in more than one sink in your logging configuration.
 
-Your deployment may use an external service (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack), [Splunk](https://www.splunk.com/)) to collect and programmatically read logging data.
+Your deployment may use an external service (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack) or [Splunk](https://www.splunk.com/)) to collect and programmatically read logging data.
+
+{{site.data.alerts.callout_info}}
+In a future major release, certain events will be directed by default to new [logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels).
+
+To prepare for the change and assess potential downstream impacts on your logging setup and pipelines, review the [`log.channel_compatibility_mode.enabled`]({% link {{ page.version.version }}/logging-overview.md %}#log-channel_compatibility_mode-enabled) cluster setting. After reviewing the documentation, set `log.channel_compatibility_mode.enabled` to `false` in a non-production environment.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 All log examples on this page use the default `crdb-v2` format, except for the [network logging](#network-logging) configuration, which uses the default `json-fluent-compact` format for network output. Most log entries for non-`DEV` channels record *structured* events, which use a standardized format that can be reliably parsed by an external collector. All structured event types and their fields are detailed in the [Notable events reference]({% link {{ page.version.version }}/eventlog.md %}).
