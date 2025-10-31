@@ -269,8 +269,8 @@ These server certificates must correspond to the client certificates specified i
 
 Encode client certificates for changefeed webhook URLs:
 
-- **Webhook URLs**: Use both URL encoding and base64 encoding: `base64 -i ./client.crt | jq -R -r '@uri'`
-- **Non-webhook contexts**: Use base64 encoding only: `base64 -w 0 ca.cert`
+- Webhook URLs: Use both URL encoding and base64 encoding: `base64 -i ./client.crt | jq -R -r '@uri'`
+- Non-webhook contexts: Use base64 encoding only: `base64 -w 0 ca.cert`
 
 #### JWT authentication
 
@@ -430,6 +430,13 @@ Specify the source Oracle schema to replicate from:
 ~~~
 </section>
 
+Specify the target schema on CockroachDB in fully-qualified `database.schema` format:
+
+{% include_cached copy-clipboard.html %}
+~~~
+--targetSchema defaultdb.public
+~~~
+
 To replicate from the correct position, specify the appropriate checkpoint value. 
 
 <section class="filter-content" markdown="1" data-scope="postgres">
@@ -476,6 +483,7 @@ At minimum, the `replicator` command should include the following flags:
 replicator pglogical \
 --sourceConn $SOURCE \
 --targetConn $TARGET \
+--targetSchema defaultdb.public \
 --slotName molt_slot \
 --stagingSchema _replicator \
 --stagingCreateSchema
@@ -490,6 +498,7 @@ For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-repl
 replicator mylogical \
 --sourceConn $SOURCE \
 --targetConn $TARGET \
+--targetSchema defaultdb.public \
 --defaultGTIDSet '4c658ae6-e8ad-11ef-8449-0242ac140006:1-29' \
 --stagingSchema _replicator \
 --stagingCreateSchema
@@ -504,8 +513,9 @@ For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-repl
 replicator oraclelogminer \
 --sourceConn $SOURCE \
 --sourcePDBConn $SOURCE_PDB \
---sourceSchema migration_schema \
 --targetConn $TARGET \
+--sourceSchema migration_schema \
+--targetSchema defaultdb.public \
 --scn 26685786 \
 --backfillFromSCN 26685444 \
 --stagingSchema _replicator \
@@ -626,7 +636,11 @@ replicator start \
 --tlsPrivateKey ./certs/server.key
 ~~~
 
-For detailed steps, refer to [Migration failback]({% link molt/migrate-failback.md %}).
+After starting `replicator`, create a CockroachDB changefeed to send changes to MOLT Replicator. For detailed steps, refer to [Migration failback]({% link molt/migrate-failback.md %}).
+
+{{site.data.alerts.callout_info}}
+When [creating the CockroachDB changefeed]({% link molt/migrate-failback.md %}#create-the-cockroachdb-changefeed) , you specify the target schema in the webhook URL path. For PostgreSQL targets, use the fully-qualified format `/database/schema` (for example, `/migration_schema/public`). For MySQL and Oracle targets, use just the schema name (for example, `/migration_schema`).
+{{site.data.alerts.end}}
 
 ## Monitoring
 
