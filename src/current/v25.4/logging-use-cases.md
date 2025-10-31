@@ -240,7 +240,9 @@ All possible `SESSIONS` event types are detailed in the [reference documentation
 
 ### SENSITIVE_ACCESS
 
-The [`SENSITIVE_ACCESS`]({% link {{ page.version.version }}/logging.md %}#sensitive_access) channel logs SQL audit events. These include all queries being run against [audited tables]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit), when enabled, as well as queries executed by users with the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) role.
+The [`SENSITIVE_ACCESS`]({% link {{ page.version.version }}/logging.md %}#sensitive_access) channel logs SQL audit events. These include all queries run against [audited tables]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit), when enabled, and queries executed by users with the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) role. It also logs when a user overrides or is denied access by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/crdb-internal.md %}#access-control), generating a record of emergency access to system internals.
+
+#### Example: Audit events
 
 {{site.data.alerts.callout_info}}
 Enabling these logs can negatively impact performance. We recommend using `SENSITIVE_ACCESS` for security purposes only.
@@ -251,8 +253,6 @@ Enabling these logs can negatively impact performance. We recommend using `SENSI
 {{site.data.alerts.end}}
 
 To log all queries against a specific table, enable auditing on the table with [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit).
-
-#### Example: Audit events
 
 This command enables auditing on a `customers` table:
 
@@ -273,6 +273,75 @@ I210323 18:50:04.518707 1182 8@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:
 
 {{site.data.alerts.callout_info}}
 All possible `SENSITIVE_ACCESS` event types are detailed in the [reference documentation]({% link {{ page.version.version }}/eventlog.md %}#sql-access-audit-events). For a detailed tutorial on table auditing, see [SQL Audit Logging]({% link {{ page.version.version }}/sql-audit-logging.md %}).
+{{site.data.alerts.end}}
+
+#### Example: Unsafe internals
+
+{{site.data.alerts.callout_danger}}
+In a future major release, the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals) will default to `off`. To [assess potential downstream impacts](#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
+{{site.data.alerts.end}}
+
+CockroachDB emits log events to the `SENSITIVE_ACCESS` channel when a user overrides or is denied access to [unsafe internals]({% link {{ page.version.version }}/crdb-internal.md %}#access-control), creating a log of emergency access to system internals.
+
+The following events may be logged to the `SENSITIVE_ACCESS` channel, depending on whether the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals) is enabled:
+
+- `unsafe_internals_accessed`
+- `unsafe_internals_denied`
+
+These events record both successful and denied attempts to access internal system objects.
+
+##### Unsafe internals enabled
+
+This command enables access to unsafe internals for the user `can_access_unsafe_internals`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER ROLE can_access_unsafe_internals SET allow_unsafe_internals = on;
+~~~
+
+When the user `can_access_unsafe_internals` connects to a session and accesses an unsafe internal object, the event is logged:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT count(*) FROM crdb_internal.active_range_feeds;
+~~~
+
+This `unsafe_internals_accessed` event indicates that the internal table `crdb_internal.active_range_feeds` was accessed by user `can_access_unsafe_internals`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
+
+~~~
+W250930 19:51:01.128927 464484 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:65020,hostssl,user=‹can_access_unsafe_internals›] 23 ={"Timestamp":1759261861128925000,"EventType":"unsafe_internals_accessed","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
+~~~
+
+##### Unsafe internals disabled
+
+To assess potential downstream impacts, disable `allow_unsafe_internals` in a test or staging environment. Monitoring tools or scripts that rely on these internals may be affected. `unsafe_internals_denied` events identify which tools or scripts attempted to access these internals.
+
+This example shows how to identify users denied access to unsafe internal tables.
+
+This command disables access to unsafe internals for the user `can_not_access_unsafe_internals`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER ROLE can_not_access_unsafe_internals SET allow_unsafe_internals = off;
+~~~
+
+When the user `can_not_access_unsafe_internals` connects to a session and attempts to access an unsafe internal object, the event is logged:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT count(*) FROM crdb_internal.active_range_feeds;
+~~~
+
+This `unsafe_internals_denied` event indicates that access to the internal table `crdb_internal.active_range_feeds` was denied for the user `can_not_access_unsafe_internals`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
+
+~~~
+W250930 15:47:06.906181 122782 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:57104,hostssl,user=‹can_not_access_unsafe_internals›] 18 ={"Timestamp":1759247226906172000,"EventType":"unsafe_internals_denied","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
+~~~
+
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) for details on the fields.
+
+{{site.data.alerts.callout_info}}
+All possible `SENSITIVE_ACCESS` event types are detailed in the [reference documentation]({% link {{ page.version.version }}/eventlog.md %}#sql-access-audit-events).
 {{site.data.alerts.end}}
 
 ### PRIVILEGES
