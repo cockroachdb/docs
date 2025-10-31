@@ -34,7 +34,7 @@ Some `SHOW commands`, such as [`SHOW DATABASES`]({% link {{ page.version.version
 CockroachDB emits log events to the [`SENSITIVE_ACCESS` channel]({% link {{ page.version.version }}/logging-use-cases.md %}#example-unsafe-internals) when a user overrides or is denied access to unsafe internals, creating a record of emergency access to system internals. Monitor these logs to ensure that neither workloads nor you and your users are unintentionally accessing unsafe internals.
 
 {{site.data.alerts.callout_danger}}
-In a future release, the `allow_unsafe_internals` session variable will default to `off`. To prepare for this change and [assess potential downstream impacts]({% link {{ page.version.version }}/logging-use-cases.md %}#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
+In a future major release, the `allow_unsafe_internals` session variable will default to `off`. To prepare for this change and [assess potential downstream impacts]({% link {{ page.version.version }}/logging-use-cases.md %}#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
 {{site.data.alerts.end}}
 
 <a id="data-exposed-by-crdb_internal"></a>

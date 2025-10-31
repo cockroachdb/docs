@@ -272,7 +272,7 @@ All possible `SENSITIVE_ACCESS` event types are detailed in the [reference docum
 #### Example: Unsafe internals
 
 {{site.data.alerts.callout_danger}}
-In a future release, the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals) will default to `off`. To [assess potential downstream impacts](#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
+In a future major release, the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals) will default to `off`. To [assess potential downstream impacts](#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
 {{site.data.alerts.end}}
 
 CockroachDB emits log events to the `SENSITIVE_ACCESS` channel when a user overrides or is denied access to [unsafe internals]({% link {{ page.version.version }}/crdb-internal.md %}#access-control), creating a log of emergency access to system internals.
