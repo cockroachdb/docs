@@ -1,14 +1,14 @@
 {% assign version = page.version.version | replace: ".", "" %}
 {% comment %}DEBUG: {{ version }}{% endcomment %}
 
-These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.core }} cluster. Use them to build custom dashboards with the following tools:
-
 {% comment %} STEP 1. Assign variables specific to deployment {% endcomment %}
 {% if include.deployment == 'self-hosted' %}
   {% assign metrics_datadog = site.data[version].metrics.datadog-cockroachdb %}
   {% assign datadog_link = "https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#metrics" %}
   {% assign datadog_prefix = "cockroachdb" %}
-  {% assign category_order = "HARDWARE,STORAGE,OVERLOAD,NETWORKING,DISTRIBUTED,REPLICATION,SQL,CHANGEFEEDS,TTL,UNSET," %}
+  {% assign category_order = "HARDWARE,STORAGE,OVERLOAD,NETWORKING,DISTRIBUTED,REPLICATION,SQL,CHANGEFEEDS,TTL,CROSS_CLUSTER_REPLICATION,LOGICAL_DATA_REPLICATION,UNSET," %}
+
+These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.core }} cluster. Use them to build custom dashboards with the following tools:
 
 - [Grafana]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}#step-5-visualize-metrics-in-grafana)
 - [Datadog Integration]({% link {{ page.version.version }}/datadog.md %}): The [**Datadog Integration Metric Name**]({{ datadog_link }}) column lists the corresponding Datadog metric which requires the `{{ datadog_prefix }}.` prefix.
@@ -18,7 +18,9 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
   {% assign datadog_link = "https://docs.datadoghq.com/integrations/cockroach-cloud/#metrics" %}
   {% assign datadog_prefix = "crdb_dedicated" %}
 {% comment %} Removed NETWORKING category for advanced deployment {% endcomment %}
-  {% assign category_order = "HARDWARE,STORAGE,OVERLOAD,DISTRIBUTED,REPLICATION,SQL,CHANGEFEEDS,TTL,UNSET," %}
+  {% assign category_order = "HARDWARE,STORAGE,OVERLOAD,DISTRIBUTED,REPLICATION,SQL,CHANGEFEEDS,TTL,CROSS_CLUSTER_REPLICATION,LOGICAL_DATA_REPLICATION,UNSET," %}
+
+These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.advanced }} cluster. Use them to build custom dashboards with the following tools:
 
 - [Datadog integration]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) - The [**Datadog Integration Metric Name**]({{ datadog_link }}) column lists the corresponding Datadog metric which requires the `{{ datadog_prefix }}` prefix.
 - [Metrics export]({% link cockroachcloud/export-metrics-advanced.md %})
@@ -56,7 +58,7 @@ The **Usage** column explains why each metric is important to visualize and how 
 
 {% comment %} Order categories, NOTE: new categories may break this order, however all relevant categories will be displayed though not in the desired order{% endcomment %}
 {% comment %}DEBUG: category_names_string = {{ category_names_string }}{% endcomment %}
-{% assign category_names_string_ordered = category_names_string | replace: "CHANGEFEEDS,DISTRIBUTED,NETWORKING,SQL,TTL,UNSET,HARDWARE,OVERLOAD,REPLICATION,STORAGE,", category_order  %}
+{% assign category_names_string_ordered = category_names_string | replace: "CHANGEFEEDS,CROSS_CLUSTER_REPLICATION,DISTRIBUTED,LOGICAL_DATA_REPLICATION,NETWORKING,SQL,TTL,UNSET,HARDWARE,OVERLOAD,STORAGE,", category_order  %}
 {% comment %}DEBUG: category_names_string_ordered = {{ category_names_string_ordered }}{% endcomment %}
 {% assign category_names_array = category_names_string_ordered | split: "," %}
 
@@ -90,6 +92,8 @@ The **Usage** column explains why each metric is important to visualize and how 
       {% elsif category_name == "REPLICATION" %}{% assign category_display_name = "KV Replication" %}
       {% elsif category_name == "CHANGEFEEDS" %}{% assign category_display_name = "Changefeeds" %}
       {% elsif category_name == "TTL" %}{% assign category_display_name = "Row-level TTL" %}
+      {% elsif category_name == "CROSS_CLUSTER_REPLICATION" %}{% assign category_display_name = "Physical Replication" %}
+      {% elsif category_name == "LOGICAL_DATA_REPLICATION" %}{% assign category_display_name = "Logical Replication" %}
       {% else %}{% assign category_display_name = category_name %}{% comment %} For example, SQL {% endcomment %}
       {% endif %}
 
