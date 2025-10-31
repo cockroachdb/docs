@@ -20,6 +20,7 @@ It offers two views:
 
 Choose a view by selecting the **Transaction Fingerprints** or **Active Executions** radio button. The selection is retained when you switch between the **Statements** and **Transactions** tabs on the **SQL Activity** page.
 
+<a id="transaction_fingerprint"></a>
 {{site.data.alerts.callout_success}}
 In contrast to the [**Statements** page]({{ page_prefix }}statements-page.html), which displays [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints), the **Transactions** page displays _transaction fingerprints_, which are SQL statement fingerprints grouped by [transaction]({{ link_prefix }}transactions.html).
 {{site.data.alerts.end}}

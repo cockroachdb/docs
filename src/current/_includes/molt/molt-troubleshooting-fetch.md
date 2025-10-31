@@ -1,11 +1,15 @@
-## Troubleshooting
+### Fetch issues
 
 ##### Fetch exits early due to mismatches
 
-`molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
+When run in `none` or `truncate-if-exists` mode, `molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
 
 - A source table is missing a primary key.
 - A source primary key and target primary key have mismatching types.
+    {{site.data.alerts.callout_success}}
+    These restrictions (missing or mismatching primary keys) can be bypassed with [`--skip-pk-check`]({% link molt/molt-fetch.md %}#skip-primary-key-matching).
+    {{site.data.alerts.end}}
+
 - A [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) primary key has a different [collation]({% link {{site.current_cloud_version}}/collate.md %}) on the source and target.
 - A source and target column have mismatching types that are not [allowable mappings]({% link molt/molt-fetch.md %}#type-mapping).
 - A target table is missing a column that is in the corresponding source table.
@@ -39,23 +43,7 @@ GRANT SELECT, FLASHBACK ON migration_schema.orders TO C##MIGRATION_USER;
 
 ##### Table or view does not exist
 
-If the Oracle migration user lacks privileges on certain tables, you may receive errors stating that the table or view does not exist. Either use `--table-filter` to [limit the tables to be migrated](#schema-and-table-filtering), or grant the migration user `SELECT` privileges on all objects in the schema. Refer to [Create migration user on source database](#create-migration-user-on-source-database).
-
-{% if page.name != "migrate-bulk-load.md" %}
-##### Missing redo logs or unavailable SCN
-
-If the Oracle redo log files are too small or do not retain enough history, you may get errors indicating that required log files are missing for a given SCN range, or that a specific SCN is unavailable.
-
-Increase the number and size of online redo log files, and verify that archived log files are being generated and retained correctly in your Oracle environment.
-
-##### Missing replicator flags
-
-If required `--replicator-flags` are missing, ensure that the necessary flags for your mode are included. For details, refer to [Replication flags](#replication-flags).
-
-##### Replicator lag
-
-If the `replicator` process is lagging significantly behind the current Oracle SCN, you may see log messages like: `replicator is catching up to the current SCN at 5000 from 1000…`. This indicates that replication is progressing but is still behind the most recent changes on the source database.
-{% endif %}
+If the Oracle migration user lacks privileges on certain tables, you may receive errors stating that the table or view does not exist. Either use `--table-filter` to {% if page.name != "migrate-load-replicate.md" %}[limit the tables to be migrated]({% link molt/migrate-load-replicate.md %}#schema-and-table-filtering){% else %}[limit the tables to be migrated](#schema-and-table-filtering){% endif %}, or grant the migration user `SELECT` privileges on all objects in the schema. Refer to {% if page.name != "migrate-load-replicate.md" %}[Create migration user on source database]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database){% else %}[Create migration user on source database](#create-migration-user-on-source-database){% endif %}.
 
 ##### Oracle sessions remain open after forcefully stopping `molt` or `replicator`
 

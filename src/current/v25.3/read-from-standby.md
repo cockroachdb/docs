@@ -11,13 +11,13 @@ Use this page to understand how the _read from standby_ feature works and how to
 
 ## How the read from standby feature works
 
-PCR utilizes [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) to separate a cluster's control plane from its data plane. A cluster always has one control plane, called a _system virtual cluster (SystemVC)_, and at least one data plane, called an _App Virtual Cluster (AppVC)_. The standby cluster's SystemVC manages the PCR job and other cluster metadata, and is not used for application queries. All data tables, system tables, and cluster settings in the standby cluster's AppVC are identical to the primary cluster's AppVC. The standby cluster's AppVC itself remains offline during replication.
+PCR utilizes [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) to separate a cluster's control plane from its data plane. A cluster always has one control plane, called a _system virtual cluster (system VC)_, and at least one data plane, called an _App Virtual Cluster (app VC)_. The standby cluster's system VC manages the PCR job and other cluster metadata, and is not used for application queries. All data tables, system tables, and cluster settings in the standby cluster's app VC are identical to the primary cluster's app VC. The standby cluster's app VC itself remains offline during replication.
 
-When using read from standby, applications can read from the standby cluster, but they do not connect directly to the standby cluster's AppVC. Instead, PCR introduces a _reader virtual cluster (ReaderVC)_. The ReaderVC ensures a clean, isolated environment specifically for serving read queries without interfering with replication or system metadata. It reads continuously from the standby cluster's AppVC using internal pointers, providing access to the replicated data while keeping the AppVC offline. The ReaderVC itself only stores a small amount of metadata and no user data, so it is not expected to take up additional storage space.
+When using read from standby, applications can read from the standby cluster, but they do not connect directly to the standby cluster's app VC. Instead, PCR introduces a _reader virtual cluster (reader VC)_. The reader VC ensures a clean, isolated environment specifically for serving read queries without interfering with replication or system metadata. It reads continuously from the standby cluster's app VC using internal pointers, providing access to the replicated data while keeping the app VC offline. The reader VC itself only stores a small amount of metadata and no user data, so it is not expected to take up additional storage space.
 
-The standby cluster's ReaderVC has its own system tables and [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}). The ReaderVC replicates a subset of system tables, including **Users** and **Roles**, from the AppVC, so that existing primary users can authenticate using the same [users and roles]({% link {{ page.version.version }}/security-reference/authorization.md %}) as on the primary cluster's AppVC. Other system tables and cluster settings are set to defaults in the ReaderVC. For more information, consult [Physical Cluster Replication Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}).
+The standby cluster's reader VC has its own system tables and [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}). The reader VC replicates a subset of system tables, including **Users** and **Roles**, from the app VC, so that existing primary users can authenticate using the same [users and roles]({% link {{ page.version.version }}/security-reference/authorization.md %}) as on the primary cluster's app VC. Other system tables and cluster settings are set to defaults in the reader VC. For more information, consult [Physical Cluster Replication Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}).
 
-In the event of failover, the ReaderVC's response depends on the type of failover. After failover to the latest timestamp, the ReaderVC continues pointing to the AppVC but stops receiving updates. After failover to a point-in-time timestamp, the ReaderVC is destroyed.
+In the event of failover, the reader VC's response depends on the type of failover. After failover to the latest timestamp, the reader VC continues pointing to the app VC but stops receiving updates. After failover to a point-in-time timestamp, the reader VC is destroyed.
 
 ## Use the read from standby feature
 ### Before you begin
@@ -46,7 +46,7 @@ ALTER VIRTUAL CLUSTER main SET REPLICATION READ VIRTUAL CLUSTER;
 ~~~
 
 {{site.data.alerts.callout_info}}
-The standby cluster's AppVC must have a status of `replicating` before you can create your ReaderVC. Use the [`SHOW VIRTUAL CLUSTERS`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) command to check the status of the AppVC.
+The standby cluster's app VC must have a status of `replicating` before you can create your reader VC. Use the [`SHOW VIRTUAL CLUSTERS`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) command to check the status of the app VC.
 {{site.data.alerts.end}}
 
 ### Check the status of your reader virtual cluster
@@ -58,7 +58,7 @@ To confirm that your reader virtual cluster is active:
 SHOW VIRTUAL CLUSTERS;
 ~~~
 
-The output shows a `standby-readonly` virtual cluster in addition to the systemVC and AppVC:
+The output shows a `standby-readonly` virtual cluster in addition to the system VC and app VC:
 
 ~~~
   id |       name       | data_state  | service_mode
@@ -69,7 +69,7 @@ The output shows a `standby-readonly` virtual cluster in addition to the systemV
 ~~~
 
 {{site.data.alerts.callout_info}}
-The ReaderVC cannot serve reads until after the PCR initial scan is complete. After completing the initial scan, wait until the ReaderVC's `service_mode` is `shared`, then wait about one minute before connecting to the ReaderVC.
+The reader VC cannot serve reads until after the PCR initial scan is complete. After completing the initial scan, wait until the reader VC's `service_mode` is `shared`, then wait about one minute before connecting to the reader VC.
 {{site.data.alerts.end}}
 
 ### Run read-only queries on the standby cluster
