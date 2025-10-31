@@ -18,7 +18,7 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 ### User-defined functions
 
-- User-defined functions are not currently supported in partial index predicates. [#155488](https://github.com/cockroachdb/cockroach/issues/155488)
+- User-defined functions are not supported in partial index predicates. [#155488](https://github.com/cockroachdb/cockroach/issues/155488)
 - Views cannot reference a UDF that contains mutation statements (`INSERT`, `UPDATE`, `UPSERT`, `DELETE`). [#151686](https://github.com/cockroachdb/cockroach/issues/151686)
 
 ### Stored procedures
