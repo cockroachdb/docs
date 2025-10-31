@@ -33,7 +33,7 @@ The following are valid `LTREE` values:
 
 ## Size
 
-The size of an `LTREE` value is variable and equals the total number of characters in all labels plus the dot separators. Cockroach Labs recommends keeping values below 64 kilobytes. Above that threshold, [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and other considerations may cause significant performance degradation.
+The size of an `LTREE` value is variable and equals the total number of characters in all labels plus the total number of dot separators. Cockroach Labs recommends keeping values below 64 kilobytes. Above that threshold, [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and other considerations may cause significant performance degradation.
 
 ## Operators
 
