@@ -1,5 +1,5 @@
 ---
-title: Known Limitations in CockroachDB v25.3
+title: Known Limitations in CockroachDB v25.4
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: limitations, known limitations, unsupported features, PostgreSQL compatibility
@@ -12,25 +12,30 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-### Row-level security filtering
+### View support
 
-{% include {{ page.version.version }}/known-limitations/rls-update-set-where-returning.md %}
+{% include {{ page.version.version }}/known-limitations/view-limitations.md %}
 
-### DistSQL
+### User-defined functions
 
-{% include {{ page.version.version }}/known-limitations/distsql-heterogeneous-endianness.md %}
+- User-defined functions are not supported in partial index predicates. [#155488](https://github.com/cockroachdb/cockroach/issues/155488)
+- Views cannot reference a UDF that contains mutation statements (`INSERT`, `UPDATE`, `UPSERT`, `DELETE`). [#151686](https://github.com/cockroachdb/cockroach/issues/151686)
 
-### Multi-region
+### Stored procedures
 
-{% include {{ page.version.version }}/known-limitations/enforce-home-region-limitations.md %}
+- Pausable portals are not supported with `CALL` statements for stored procedures. [#151529](https://github.com/cockroachdb/cockroach/issues/151529)
 
-### Geospatial
+### Mixed-isolation workloads
 
-{% include {{ page.version.version }}/known-limitations/geospatial-heterogeneous-architectures.md %}
+- Mixed-isolation-level workloads must enable foreign-key check locking for `SERIALIZABLE` transactions to avoid race conditions. [#151663](https://github.com/cockroachdb/cockroach/issues/151663#issuecomment-3222083180)
 
-### `CITEXT`
+### Data domiciling
 
-{% include {{ page.version.version }}/known-limitations/citext-limitations.md %}
+- When using the `infer_rbr_region_col_using_constraint` option, inserting rows with `DEFAULT` for the region column uses the database's primary region instead of inferring the region from the parent table via foreign-key constraint. [#150783](https://github.com/cockroachdb/cockroach/issues/150783)
+
+### `LTREE` data type
+
+{% include {{ page.version.version }}/known-limitations/ltree-limitations.md %}
 
 ## Limitations from {{ previous_version }} and earlier
 
@@ -112,6 +117,10 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ~~~
 
 [#10679](https://github.com/cockroachdb/cockroach/issues/10679)
+
+#### `LIKE` with `ESCAPE` performance
+
+{% include {{ page.version.version }}/known-limitations/like-escape-performance.md %}
 
 #### Current sequence value not checked when updating min/max value
 
@@ -318,11 +327,11 @@ CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{
 
 {% include {{ page.version.version }}/known-limitations/expression-index-limitations.md %}
 
-#### Secondary regions and regional by row tables
-
-{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
-
 ### Data types
+
+#### `CITEXT` limitations
+
+{% include {{ page.version.version }}/known-limitations/citext-limitations.md %}
 
 #### Spatial support limitations
 
@@ -343,6 +352,8 @@ CockroachDB supports efficiently storing and querying [spatial data]({% link {{ 
 - CockroachDB does not support using [schema name prefixes]({% link {{ page.version.version }}/sql-name-resolution.md %}#how-name-resolution-works) to refer to [data types]({% link {{ page.version.version }}/data-types.md %}) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`). [#56492](https://github.com/cockroachdb/cockroach/issues/56492)
 
 - {% include {{ page.version.version }}/known-limitations/srid-4326-limitations.md %}
+
+- {% include {{ page.version.version }}/known-limitations/geospatial-heterogeneous-architectures.md %}
 
 #### `OID` limitations
 
@@ -370,9 +381,8 @@ Refer to [`OID` best practices]({% link {{ page.version.version }}/oid.md %}#bes
 
 #### Row-level security
 
-{% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %}
-
-{% include {{ page.version.version }}/known-limitations/rls-visibility-issue.md %}
+- {% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %}
+- {% include {{ page.version.version }}/known-limitations/rls-update-set-where-returning.md %}
 
 #### `GRANT`/`REVOKE` limitations
 
@@ -395,6 +405,10 @@ Every [`DELETE`]({% link {{ page.version.version }}/delete.md %}) or [`UPDATE`](
 #### Data domiciling
 
 {% include {{ page.version.version }}/known-limitations/data-domiciling-limitations.md %}
+
+#### DistSQL
+
+{% include {{ page.version.version }}/known-limitations/distsql-heterogeneous-endianness.md %}
 
 #### CockroachDB does not test for all connection failure scenarios
 
@@ -732,3 +746,7 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 #### Inverted join for `tsvector` and `tsquery` types is not supported
 
 CockroachDB cannot index-accelerate queries with `@@` predicates when both sides of the operator are variables. [#102731](https://github.com/cockroachdb/cockroach/issues/102731)
+
+#### `LIKE` operator with `ESCAPE` clause
+
+{% include {{ page.version.version }}/known-limitations/like-escape-performance.md %}
