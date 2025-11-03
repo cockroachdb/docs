@@ -30,6 +30,9 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 	- A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses).
 	- A [CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
+{{site.data.alerts.callout_info}}
+CockroachDB {{ site.data.products.cloud }} {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters do not have access to the DB Console. For SQL client authentication on these tiers, refer to [Cluster Single Sign-on (SSO) using the Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}).
+{{site.data.alerts.end}}
 
 ## Log in to a cluster's DB Console with SSO
 
