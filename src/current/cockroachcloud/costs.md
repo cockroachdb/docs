@@ -260,7 +260,7 @@ Cloud providers may vary in how they calculate each category and define each reg
 
 #### Same-region
 
-There are no charges for same-region data transfer between CockroachDB cluster nodes. Data egressing the cluster to endpoints in the same region for backups or changefeeds, or using private connectivity, is charged the cloud provider's list price for same-region data transfer. Egress private endpoint usage is posted in separate line items under **Private endpoint - bytes processed**.
+There are no charges for same-region data transfer between CockroachDB cluster nodes. Data egressing the cluster to endpoints in the same region for backups or changefeeds, or using private connectivity, is charged the cloud provider's list price for same-region data transfer. Egress private endpoint usage is posted in separate line items under the **Data transfer** section, as  **Private endpoint - bytes processed - Advanced plan**.
 
 #### Cross-region
 
@@ -270,7 +270,7 @@ Cross-region data transfer includes:
 
 - Data transfer required to support queries that involve lookups on nodes in another region.  
 - CockroachDB replication across nodes that are in different regions.  
-- Data egress, including [changefeed egress]({% link cockroachcloud/egress-private-endpoints.md %}), from the CockroachDB {{ site.data.products.cloud }} cluster via supported [private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) services to a private endpoint in another region.  
+- Data egress, including [changefeed and backup traffic egress]({% link cockroachcloud/egress-private-endpoints.md %}), from the CockroachDB {{ site.data.products.cloud }} cluster via supported [private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) services to a private endpoint in another region.  
 - [Managed backup]({% link cockroachcloud/backup-and-restore-overview.md %}#managed-backups) and [Self-managed backup]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) data transfer to another region.  
 - Change data capture (changefeed) data transfer to another region.
 
