@@ -46,6 +46,10 @@ Cluster Setting | Description
 `server.jwt_authentication.client.timeout` | An optional HTTP client timeout for external calls made during JWT authentication, in seconds. Defaults to `15` seconds.
 `server.jwt_authentication.audience` | This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 `server.jwt_authentication.claim` | The JWT field that will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
+`server.jwt_authentication.authorization.enabled` | <span class="version-tag">New in v25.4:</span> Enables automatic role synchronization based on JWT groups claim. See [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %}). Defaults to `false`.
+`server.jwt_authentication.group_claim` | <span class="version-tag">New in v25.4:</span> JWT field containing groups for authorization. Defaults to `groups`. See [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %}).
+`server.jwt_authentication.userinfo_group_key` | <span class="version-tag">New in v25.4:</span> Userinfo endpoint JSON key for groups fallback. Defaults to `groups`. See [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %}).
+`security.provisioning.jwt.enabled` | <span class="version-tag">New in v25.4:</span> Enables automatic user creation on first JWT login. Defaults to `false`. See [Configure user provisioning](#configure-user-provisioning).
 `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
 `server.oidc_authentication.generate_cluster_sso_token.use_token`| Selects which part of the received OIDC credentials to display.
 `server.identity_map.configuration`| Takes an [Identity Map configuration](#identity-map-configuration).
@@ -211,6 +215,58 @@ Examples:
 
     Maps each GCP-provisioned service account to a SQL user named `gcp_{ GCP user ID }`. For example, `gcp_1234567` for a service account with ID `1234567`.
 
+## Configure user provisioning
+
+<span class="version-tag">New in v25.4:</span>
+
+CockroachDB can automatically create users on their first JWT authentication, eliminating the need to pre-create user accounts.
+
+### Enable user provisioning
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING security.provisioning.jwt.enabled = true;
+~~~
+
+### How it works
+
+1. A user presents a valid JWT token during authentication.
+1. If the user doesn't exist in CockroachDB, the user is created automatically.
+1. The user is tagged with the `PROVISIONSRC` role option: `jwt_token:<issuer>`, where `<issuer>` is the JWT issuer URL.
+1. If [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) is also enabled, roles are synchronized immediately after user creation.
+
+### Auditing provisioned users
+
+You can identify and audit automatically provisioned users by querying their `PROVISIONSRC` role option:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- View all JWT-provisioned users
+SELECT rolname, rolprovisionsrc
+FROM pg_roles
+WHERE rolprovisionsrc LIKE 'jwt_token:%';
+~~~
+
+Example output:
+
+~~~txt
+  rolname  |        rolprovisionsrc
+-----------+--------------------------------
+  alice    | jwt_token:https://auth.example.com
+  bob      | jwt_token:https://auth.example.com
+~~~
+
+### Security considerations
+
+- **Validate JWT issuers carefully**: Ensure `server.jwt_authentication.issuers.configuration` only includes trusted issuers, as any valid JWT from these issuers can create new users.
+- **Monitor provisioned users**: Regularly review automatically created users to ensure only authorized users are being provisioned.
+- **Combine with JWT authorization**: Consider enabling [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) to automatically grant appropriate roles to provisioned users based on their IdP group memberships.
+- **Password management**: Provisioned users cannot change their own passwords, as authentication is managed through the IdP.
+
+{{site.data.alerts.callout_info}}
+If you are going to use JWT user provisioning in conjunction with [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}), be sure to create the necessary roles in CockroachDB before enabling user provisioning. Auto-provisioned users will only receive roles for groups that already exist as CockroachDB roles.
+{{site.data.alerts.end}}
+
 ## Authenticate to your cluster
 
 Once ConsoleDB SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials, and although their expiry depends on the IdP configuration, it is usually 1 hour.
@@ -243,3 +299,6 @@ This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach
 
 - [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %})
+- [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %})
+- [OIDC Authorization]({% link {{ page.version.version }}/oidc-authorization.md %})
+- [LDAP Authorization]({% link {{ page.version.version }}/ldap-authorization.md %})
