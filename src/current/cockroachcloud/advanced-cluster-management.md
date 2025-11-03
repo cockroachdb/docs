@@ -150,7 +150,7 @@ To set a maintenance window:
 
     The window will last for 6 hours from the start time.
 
-1. (Optional) If you want to delay automatic patch upgrades for 60 days, switch **Delay patch upgrades** to **On**.
+1. (Optional) If you want to delay automatic patch upgrades, switch **Delay patch upgrades** to **On** and select 30, 60 or 90 days from the dropdown.
 
     Enable this setting for production clusters to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch versions and not to other kinds of upgrades.
 
