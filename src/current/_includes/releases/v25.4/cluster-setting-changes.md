@@ -36,7 +36,7 @@ Changes to [cluster settings]({% link v25.4/cluster-settings.md %}) should be re
 
     You can now output transaction traces to the logs in Jaeger-compatible JSON format. This is controlled by the `sql.trace.txn.jaeger_json_output.enabled` cluster setting, which is disabled by default. When enabled, traces triggered by probabilistic sampling or statement latency thresholds will be formatted for easier ingestion by tools that support the Jaeger tracing format. [#151414][#151414]
 
-- `storage.unhealthy_write_duration` (default: `20s`) {% comment %}Verify with Eng{% endcomment %}
+- `storage.unhealthy_write_duration` (default: `20s`)
 
     Added the cluster setting `storage.unhealthy_write_duration` (defaults to 20s), which is used to indicate to the allocator that a store's disk is unhealthy. The cluster setting `kv.allocator.disk_unhealthy_io_overload_score` controls the overload score assigned to a store with an unhealthy disk, where a higher score results in preventing lease or replica transfers to the store, or shedding of leases by the store. The default value of that setting is 0, so the allocator behavior is unaffected. [#154459][#154459]
 
@@ -44,13 +44,13 @@ Changes to [cluster settings]({% link v25.4/cluster-settings.md %}) should be re
 
 - `feature.vector_index.enabled` now defaults to `true`. Vector indexing is now enabled by default. [#155561][#155561]
 
-- `storage.value_separation.enabled` now defaults to `true`. {% comment %}TODO: Verify with annrpom - Is this backward-incompatible due to significant storage behavior change?{% endcomment %}This enables [value separation]({% link v25.4/architecture/storage-layer.md %}#value-separation) for SSTables, where values exceeding a certain size threshold are stored in separate blob files rather than inline in the SSTable. This helps improve write performance (write amplification) by avoiding rewriting such values during compactions. [#148857][#148857]
+- `storage.value_separation.enabled` now defaults to `true`. This enables [value separation]({% link v25.4/architecture/storage-layer.md %}#value-separation) for SSTables, where values exceeding a certain size threshold are stored in separate blob files rather than inline in the SSTable. This helps improve write performance (write amplification) by avoiding rewriting such values during compactions. [#148857][#148857]
 
 <h5 id="v25-4-0-settings-removed">Removed settings</h5>
 
-- `bulkio.backup.deprecated_full_backup_with_subdir.enabled` {% comment %}TODO: Verify with msbutler - Is this backward-incompatible since backups fail if set to true?{% endcomment %}
+- `bulkio.backup.deprecated_full_backup_with_subdir.enabled`
 
-    Removed the `bulkio.backup.deprecated_full_backup_with_subdir.enabled` cluster setting, since backups will now fail if this is set to true. [#153628][#153628]
+    Removed the `bulkio.backup.deprecated_full_backup_with_subdir.enabled` cluster setting. This optional ability to specify a target subdirectory with the `BACKUP` command when creating a full backup was deprecated in v22.1. [#153628][#153628]
 
 - `storage.columnar_blocks.enabled` {% comment %}TODO: Verify with jbowens - Is this backward-incompatible since it can't be disabled anymore?{% endcomment %}
 
