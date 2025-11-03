@@ -84,7 +84,7 @@ Automatic user provisioning for OIDC is planned for a future release. Currently,
 
 1. On your identity provider, set up test users with memberships in groups that should be synced to CockroachDB roles.
 
-1. Navigate to the DB Console in your web browser and log in using OIDC. Refer to [Access the DB Console]({% link {{ page.version.version }}/sso-db-console.md %}#step-3-access-the-db-console).
+1. Navigate to the DB Console in your web browser and log in using OIDC. Refer to [Log in to a cluster's DB Console with SSO]({% link {{ page.version.version }}/sso-db-console.md %}#log-in-to-a-clusters-db-console-with-sso).
 
 1. Using your `admin` credentials in a SQL shell, verify the user's role assignments:
 

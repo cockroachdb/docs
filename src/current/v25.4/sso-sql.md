@@ -11,7 +11,7 @@ Cluster single sign-on (SSO) enables users to access the SQL interface of a Cock
 
 Users can obtain JWTs directly from their IdP and use them to authenticate to SQL clients. Optionally, CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} clusters and {{ site.data.products.core }} clusters can also generate JWTs via the DB Console as a convenience feature. When DB Console JWT generation is enabled, users can sign in to their IdP through a link embedded in the DB Console, then copy the generated JWT and use it in a SQL connection string to authenticate to the cluster.
 
-<span class="version-tag">New in v25.4:</span> JWT authentication supports automatic role synchronization and user provisioning. When [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) is enabled, users' role memberships are automatically synchronized based on group claims from the IdP on each login. Additionally, [automatic user provisioning]({% link {{ page.version.version }}/jwt-authorization.md %}#user-provisioning) can automatically create SQL users on first authentication, eliminating the need to pre-create users.
+<span class="version-tag">New in v25.4:</span> JWT authentication supports automatic role synchronization and user provisioning. When [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) is enabled, users' role memberships are automatically synchronized based on group claims from the IdP on each login. Additionally, [automatic user provisioning](#configure-user-provisioning) can automatically create SQL users on first authentication, eliminating the need to pre-create users.
 
 This page describes how to configure a cluster for cluster single sign-on using JWTs and then how users can authenticate using the JWTs. If you're a user ready to sign in to the DB Console with JWTs, you can skip the configuration section:
 
@@ -25,7 +25,7 @@ This page describes how to configure a cluster for cluster single sign-on using 
 - **Cluster Settings Access**: You must have the ability to update your cluster settings. Refer to [`SET CLUSTER SETTING`: Required permissions]({% link {{ page.version.version }}/set-cluster-setting.md %}#required-privileges).
 
 - **SQL User Provisioning**:
-    - If you are using [automatic user provisioning]({% link {{ page.version.version }}/jwt-authorization.md %}#user-provisioning), SQL users will be created automatically on first authentication.
+    - If you are using [automatic user provisioning](#configure-user-provisioning), SQL users will be created automatically on first authentication.
     - If automatic user provisioning is disabled, a SQL user that corresponds with your external identity must be pre-created on the cluster. To create users, you must have access to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
 
 - **(Optional) DB Console JWT Generation**: To use the DB Console to generate JWTs (instead of obtaining them directly from your IdP), you must have your cluster pre-configured for OIDC/SSO authentication for DB Console. Use the [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %}) guide to set this up.

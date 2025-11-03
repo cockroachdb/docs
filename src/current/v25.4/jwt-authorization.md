@@ -162,7 +162,7 @@ If you are going to use [automatic user provisioning]({% link {{ page.version.ve
 
     If automatic user provisioning is enabled, users will be created automatically during their first login.
 
-1. Obtain a JWT token from your identity provider and connect to CockroachDB using the token. Refer to [Connect to a cluster using SSO]({% link {{ page.version.version }}/sso-sql.md %}#connect-to-a-cluster-using-sso).
+1. Obtain a JWT token from your identity provider and connect to CockroachDB using the token. Refer to [Authenticate to your cluster]({% link {{ page.version.version }}/sso-sql.md %}#authenticate-to-your-cluster).
 
 1. Using your `admin` credentials, log in to the CockroachDB SQL shell and verify the user's role assignments:
 
