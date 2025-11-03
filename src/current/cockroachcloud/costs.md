@@ -307,7 +307,7 @@ In CockroachDB {{ site.data.products.standard }}, CDC is billed monthly based on
 
 In CockroachDB {{ site.data.products.advanced }}, CDC is billed monthly based on the total size of a cluster's watched tables and whether the {{ site.data.products.advanced }} security add-on is enabled. The per-GiB unit price is tiered, based on the size of watched data: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
-Changefeeds sent from a CockroachDB {{ site.data.products.advanced }} cluster over an [egress connection to a private endpoint]({% link cockroachcloud/egress-private-endpoints.md %}) are charged according to [data transfer costs](#data-transfer).
+Data sent from a CockroachDB {{ site.data.products.advanced }} cluster over an [egress connection to a private endpoint]({% link cockroachcloud/egress-private-endpoints.md %}), such as changefeeds and logs, are charged according to [data transfer costs](#data-transfer).
 
 </section>
 
