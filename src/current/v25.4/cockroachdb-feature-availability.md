@@ -60,6 +60,10 @@ You can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}#managed-backu
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
+### `LTREE` data type
+
+The [`LTREE` data type]({% link {{ page.version.version }}/ltree.md %}) stores hierarchical tree-like structures. `LTREE` is useful for efficiently querying and managing hierarchical data without using recursive joins.
+
 ### Prometheus-compatible `metrics` endpoint
 
 [`http://<host>:<http-port>/metrics` Prometheus-compatible endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics) is enhanced with additional static labels.
