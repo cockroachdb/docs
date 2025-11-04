@@ -1,6 +1,6 @@
 ---
 title: Ory Overview
-summary: Learn about Ory and its component services
+summary: Learn about Ory and its component services: Hydra, Kratos, and Keto
 toc: true
 docs_area: Integrate
 ---
