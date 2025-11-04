@@ -1103,7 +1103,7 @@ Where:
 {{site.data.alerts.callout_info}}
 The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}).
 {{site.data.alerts.end}}
-- `{deferral_policy} is the length of the deferral window, set to `"DEFERRAL_30_DAYS"`, `"DEFERRAL_60_DAYS"`, or `"DEFERRAL_90_DAYS"`. Set to `"FIXED_DEFERRAL"` to defer upgrades by 60 days, or `"NOT_DEFERRED"` to remove the deferral policy and apply automatic patch upgrades immediately.
+- `{deferral_policy} is the length of the deferral window, set to `"DEFERRAL_30_DAYS"`, `"DEFERRAL_60_DAYS"`, or `"DEFERRAL_90_DAYS"`. Set to `"NOT_DEFERRED"` to remove the deferral policy and apply automatic patch upgrades immediately.
 
 To view the existing patch deferral policy and current patch upgrade deferrals, send a `GET` request to the `/api/v1/clusters/{cluster_id}/version-deferral` endpoint.
 
