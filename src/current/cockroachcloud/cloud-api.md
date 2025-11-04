@@ -1081,7 +1081,7 @@ curl --request DELETE \
 
 ### Set a patch upgrade deferral policy
 
-Automatic patch upgrades can be delayed for a period of 30, 60, or 90 days to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch versions and not to other kinds of upgrades.
+Automatic patch upgrades can be delayed for a period of 30, 60, or 90 days to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch upgrades and not to major version upgrades.
 
 To set a patch upgrade deferral policy, send a `PUT` request to the `/api/v1/clusters/{cluster_id}/version-deferral` endpoint.
 

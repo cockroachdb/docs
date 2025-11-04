@@ -152,7 +152,7 @@ To set a maintenance window in the {{ site.data.products.cloud }} console:
 
 1. (Optional) If you want to delay automatic patch upgrades, switch **Delay patch upgrades** to **On**. You can set a deferral period of 30, 60, or 90 days after the patch is released.
 
-    Enable this setting for production clusters to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch versions and not to other kinds of upgrades. The patch upgrade occurs during a maintenance window after the deferral period.
+    Enable this setting for production clusters to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch upgrades and not to major version upgrades. The patch upgrade occurs during a maintenance window after the deferral period.
 
 You can also configure maintenance windows and patch upgrade deferral periods using the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}#configure-a-cockroachdb-advanced-clusters-maintenance-window).
 
