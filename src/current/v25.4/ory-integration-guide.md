@@ -5,7 +5,7 @@ toc: true
 docs_area: Integrate
 ---
 
-This tutorial demonstrates how to set up a joint environment that uses Ory for Identity and Access Management (IAM) and CockroachDB as the underlying database. This page describes the architecture of the integration, then walks through how to perform it. 
+This tutorial demonstrates how to set up a joint environment that uses Ory for Identity and Access Management (IAM) and CockroachDB as the underlying database. This page describes the architecture of the integration, then walks through how to perform and test it. 
 
 By the end of this tutorial, you should have a working environment in which Ory’s services (Hydra, Kratos, and Keto) are backed by CockroachDB's robust, distributed SQL database.
 
