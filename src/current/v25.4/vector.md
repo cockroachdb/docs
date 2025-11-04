@@ -5,10 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 The `VECTOR` data type stores fixed-length arrays of floating-point numbers, which represent data points in multi-dimensional space. Vector search is often used in AI applications such as Large Language Models (LLMs) that rely on vector representations. 
 
 For details on valid `VECTOR` comparison operators, refer to [Syntax](#syntax). For the list of supported `VECTOR` functions, refer to [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#pgvector-functions).
