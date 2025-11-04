@@ -1047,7 +1047,7 @@ The cluster ID used in the Cloud API is different from the routing ID used when 
 - `{offset_duration}` is the start of the maintenance window, calculated as the amount of time after the start of a week (Monday 00:00 UTC) to begin the window.
 - `{window_duration}` is the length of the maintenance window, which must be greater than 6 hours and less than one week.
 
-A cluster's existing maintenance window can be viewed with a `GET` request to the `/api/v1/clusters/{cluster_id}/maintenance-window` endpoint:
+To view a cluster's existing maintenance window, send a `GET` request to the `/api/v1/clusters/{cluster_id}/maintenance-window` endpoint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1063,7 +1063,7 @@ curl --request GET \
 }
 ~~~
 
-A cluster's maintenance window can be removed with a `DELETE` request to the `/api/v1/clusters/{cluster_id}/maintenance-window` endpoint:
+To remove a cluster's maintenance window, send a `DELETE` request to the `/api/v1/clusters/{cluster_id}/maintenance-window` endpoint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
