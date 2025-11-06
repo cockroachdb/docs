@@ -150,13 +150,13 @@ If the SQL statement fingerprint contains placeholder values ("_"), it's possibl
 
 Inspect your application to see if the literals being used within the query executions are changing.
 
-If you suspect that the query plan change is the cause of the latency increase, and you suspect that the query plan changed due to a changed query literal, it's possible that the table statistics don't accurately reflect how the literal value is represented in the data. You may want to [manually refresh the statistics for the table]({% link {{ page.version.version }}/create-statistics.md %}#examples). It's also possible that the table indexes are not helpful for queries with the newer literal value, in which case you may want to [check the **Insights** page for index recommendations]({% link {{ page.version.version }}/ui-insights-page.md %}#suboptimal-plan). 
+If you suspect that the query plan change is the cause of the latency increase, and you suspect that the query plan changed due to a changed query literal, it's possible that the table statistics don't accurately reflect how the literal values are represented in the data. You may want to [manually refresh the statistics for the table]({% link {{ page.version.version }}/create-statistics.md %}#examples). It's also possible that the table indexes are not helpful for queries with the newer literal value, in which case you may want to [check the **Insights** page for index recommendations]({% link {{ page.version.version }}/ui-insights-page.md %}#suboptimal-plan). 
 
-If none of the above fixes the issue, a more drastic redesign of the schema or application may be needed.
+If this does not fix the issue, a more drastic redesign of the schema or application may be needed.
 
 <br>
 
-If none of the above methods are conclusive, consider [activating diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) for the suspect statement fingerprints, or [contact support]({% link {{ page.version.version }}/support-resources.md %}).
+If none of the above methods are conclusive in diagnosing or fixing a query plan regression, consider [activating diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) for the suspect statement fingerprints, or [contact support]({% link {{ page.version.version }}/support-resources.md %}).
 
 ## See also
 
