@@ -570,6 +570,10 @@ After it's restored into a new database, you can write the restored `users` tabl
 
 #### Restore from incremental backups in a different location
 
+{{site.data.alerts.callout_danger}}
+The `incremental_location` parameter is deprecated in versions 25.4 and later. If needed, you can continue to work with already existing backups that use a custom `incremental_location` , but this ability will be removed in version 26.2.
+{{site.data.alerts.end}}
+
 To restore an incremental backup that was taken using the [`incremental_location` option]({% link {{ page.version.version }}/backup.md %}#incr-location), you must run the `RESTORE` statement with both:
 
 - the collection URI of the full backup

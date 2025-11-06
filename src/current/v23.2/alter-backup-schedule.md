@@ -154,6 +154,10 @@ Full backups are implicitly of `backup_type` `0`, and so does not display in the
 
 ### Apply different options to scheduled backups
 
+{{site.data.alerts.callout_danger}}
+The `incremental_location` parameter is deprecated in versions 25.4 and later. If needed, you can continue to work with already existing backups that use a custom `incremental_location` , but this ability will be removed in version 26.2.
+{{site.data.alerts.end}}
+
 You can modify the behavior of your backup schedule and the backup jobs with `SET SCHEDULE OPTION` and `SET WITH`. See the [Schedule options](#schedule-options) table and the [Backup options](#backup-options) table for a list of the available options.
 
 This statement changes the default `wait` value for the `on_previous_running` schedule option to `start`. If a previous backup started by the schedule is still running, the scheduled job will now start the new backup anyway, rather than waiting. The backup option [`incremental_location`]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations) modifies the storage location for incremental backups:
