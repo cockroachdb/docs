@@ -3,7 +3,7 @@
 - **Major-version upgrades**: A [major-version upgrade]({% link releases/index.md %}#major-releases), such as from v24.2 to v24.3, may include new features, updates to cluster setting defaults, and backward-incompatible changes. Performing a major-version upgrade requires an additional step to finalize the upgrade.
 
 {% if page.path contains "cockroachcloud" %}
-    As of 2024, there are four major versions per year, where every second release is an [innovation release]({% link cockroachcloud/upgrade-policy.md %}#innovation-releases). For CockroachDB CockroachDB {{ site.data.products.advanced }}, innovation releases include all of the latest features but have shorter [support windows]({% link cockroachcloud/upgrade-policy.md %}#cockroachdb-cloud-support-policy) and can be skipped.
+    As of 2024, there are four major versions per year, where every second release is an [Innovation release]({% link cockroachcloud/upgrade-policy.md %}#innovation-releases). For CockroachDB {{ site.data.products.advanced }}, Innovation releases include all of the latest features but have shorter [support windows]({% link cockroachcloud/upgrade-policy.md %}#cockroachdb-cloud-support-policy) and can be skipped.
     
     For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, only Regular releases are supported. Major version upgrades are applied automatically to {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters as they become available, and {{ site.data.products.standard }} clusters have the option to turn off automatic updates.
 {% else %}
@@ -14,7 +14,7 @@
     A major version of CockroachDB has two phases of patch releases: a series of **testing releases** (beta, alpha, and RC releases) followed by a series of **production releases** (vX.Y.0, vX.Y.1, and so on). A major version’s first production release (the .0 release) is also known as its GA release.
 
 {% if page.path contains "cockroachcloud" %}
-    For all CockroachDB {{ site.data.products.cloud }} clusters, production patch releases for a major version are automatically applied until the cluster is upgraded to a new major version.
+    For all CockroachDB {{ site.data.products.cloud }} clusters, production patch releases for a major version are automatically applied until the cluster is upgraded to a new major version. On an {{ site.data.products.advanced }} cluster, you have the option to defer patch updates for 30, 60, or 90 days if you have a [maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) configured.
 {% endif %}
 
 To learn more about CockroachDB major versions and patches, refer to the [Releases Overview]({% link releases/index.md %}#overview).

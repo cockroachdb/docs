@@ -37,6 +37,9 @@ CockroachDB {{ site.data.products.advanced }} clusters optionally support **Inno
 When a CockroachDB {{ site.data.products.advanced }} cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. {% capture who_can_upgrade %}A user with the Cluster Admin or Cluster Operator [role]({% link cockroachcloud/authorization.md %}) can [upgrade a cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) directly from the CockroachDB Cloud Console. An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can assign these roles.{% endcapture %}{{ who_can_upgrade }}
 
 {{site.data.alerts.callout_info}}
+On CockroachDB Cloud {{ site.data.products.advanced }} clusters, the EOS date for Regular releases is shared between CockroachDB Cloud and CockroachDB Self-Hosted, meaning the EOS date for a Regular release on an {{ site.data.products.advanced }} cluster is identical to the [Self-Hosted release and support schedule]({% link releases/release-support-policy %}#supported-versions). This policy is applicable only to {{ site.data.products.advanced }}, whereas Regular releases on {{ site.data.products.standard }} and {{ site.data.products.basic }} are always supported for 
+
+
 You are responsible for upgrading a CockroachDB {{ site.data.products.advanced }} cluster before its current version reaches its EOS date to maintain uninterrupted support and SLA guarantees.
 {{site.data.alerts.end}}
 
@@ -46,7 +49,7 @@ Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:---------:
 v25.3   | Innovation   | 6 months       | 2025-08-04   | 2026-02-04
 v25.2   | Regular      | 12 months      | 2025-05-12   | 2026-05-12
-v24.3   | Regular      | 12 months      | 2024-11-18   | 2025-11-18
+v24.3   | Regular      | 12 months      | 2024-11-18   | 2026-05-05
 
 To review a version's release notes, click its link in the Version column.
 
