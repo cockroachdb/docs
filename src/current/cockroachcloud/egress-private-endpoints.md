@@ -15,7 +15,7 @@ Establish a secure network connection from a CockroachDB {{ site.data.products.a
 CockroachDB {{ site.data.products.cloud }} supports egress private endpoints with the following cloud services:
 
 - [Amazon Virtual Private Cloud (AWS VPC)](https://aws.amazon.com/vpc/)
-- [Amazon Managed Streaming for Apache Kafka (MSK)](https://aws.amazon.com/msk/)
+- [Amazon Managed Streaming for Apache Kafka (MSK)](https://aws.amazon.com/msk/) (MSK Provisioned only. MSK Serverless is not supported.)
 - [Google Cloud VPC Private Service Connect (GCP PSC)](https://cloud.google.com/vpc/docs/private-service-connect)
 - [Confluent Cloud on GCP or AWS](https://www.confluent.io/confluent-cloud/)
 
