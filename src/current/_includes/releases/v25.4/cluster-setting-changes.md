@@ -20,10 +20,6 @@ Changes to [cluster settings]({% link v25.4/cluster-settings.md %}) should be re
 
     Added a cluster setting (`sql.log.scan_row_count_misestimate.enabled`) that enables logging a warning on the gateway node when optimizer estimates for scans are inaccurate. The log message includes the table and index being scanned, the estimated and actual row counts, the time since the last table stats collection, and the table's estimated staleness. [#155123][#155123]
 
-- `sql.schema.approx_max_object_count` (default: `20000`)
-
-    Added cluster setting `sql.schema.approx_max_object_count` (default: 20,000) to prevent creation of new schema objects when the limit is exceeded. The check uses cached table statistics for performance and is approximate - it may not be immediately accurate until table statistics are updated by the background statistics refreshing job. Clusters that have been running stably with a larger object count should raise the limit or disable the limit by setting the value to 0. In future releases, the default value for this setting will be raised as more CockroachDB features support larger object counts. [#154576][#154576]
-
 - `sql.stats.error_on_concurrent_create_stats.enabled` (default: `true`)
 
     Introduced the cluster setting `sql.stats.error_on_concurrent_create_stats.enabled`, which modifies how CockroachDB reacts to concurrent auto stats jobs. The default, `true`, maintains the previous behavior. Setting `sql.stats.error_on_concurrent_create_stats.enabled` to `false` will cause the concurrent auto stats job to be skipped with just a log entry and no increased error counters. [#149538][#149538]
@@ -80,6 +76,5 @@ Changes to [cluster settings]({% link v25.4/cluster-settings.md %}) should be re
 [#153628]: https://github.com/cockroachdb/cockroach/pull/153628
 [#154459]: https://github.com/cockroachdb/cockroach/pull/154459
 [#154491]: https://github.com/cockroachdb/cockroach/pull/154491
-[#154576]: https://github.com/cockroachdb/cockroach/pull/154576
 [#155123]: https://github.com/cockroachdb/cockroach/pull/155123
 [#155561]: https://github.com/cockroachdb/cockroach/pull/155561
