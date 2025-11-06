@@ -13,12 +13,6 @@ CockroachDB {{ site.data.products.cloud }} clusters are intended to always run a
 
 A cluster running an unsupported CockroachDB version is not eligible for Cockroach Labs’ [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/).
 
-{{site.data.alerts.callout_info}}
-This page describes the support of CockroachDB versions on CockroachDB Cloud, which is not affected by LTS or End of Support timelines specified for CockroachDB Self-Hosted.
-
-The CockroachDB Self-Hosted [Release Support Policy]({% link releases/release-support-policy.md %}) does not apply to CockroachDB Cloud.
-{{site.data.alerts.end}}
-
 ### Version and upgrade support by cloud plan
 
 [Major versions]({% link releases/index.md %}) of CockroachDB are labeled either as [Regular releases]({% link releases/index.md %}#major-releases) or [Innovation releases]({% link releases/index.md %}).
@@ -26,30 +20,42 @@ The CockroachDB Self-Hosted [Release Support Policy]({% link releases/release-su
 - **Regular releases** are supported for 12 months from their initial production release date.
 - **Innovation releases** are supported for 6 months from their initial production release date.
 
-CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters only support **Regular releases**. This ensures that these clusters are using versions of CockroachDB that receive a full year of support with patches, offering long-term stability. All CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters are automatically upgraded to the next major regular release upon its GA release.
+CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters only support **Regular releases**. This ensures that these clusters are using versions of CockroachDB that receive a full year of support with routine patch updates. All CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters are automatically upgraded to the next major Regular release upon its GA release.
 
 {{site.data.alerts.callout_info}}
 CockroachDB {{ site.data.products.standard }} clusters have the option to [disable automatic major-version upgrades]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades). In this case, you are responsible for upgrading the cluster before the current version hits the end-of-support (EOS) date in order to maintain uninterrupted support and SLA guarantees. Clusters that have not upgraded for one year may be upgraded automatically.
 {{site.data.alerts.end}}
 
-CockroachDB {{ site.data.products.advanced }} clusters optionally support **Innovation releases** as well as regular releases, allowing users to access the latest CockroachDB features on an accelerated timeline, while still receiving 6 months of patch support before a recommended upgrade to another major version.
+CockroachDB {{ site.data.products.advanced }} clusters optionally support **Innovation releases** as well as Regular releases, allowing users to access the latest CockroachDB features on an accelerated timeline, while still receiving 6 months of patch support before a recommended upgrade to another major version.
 
 When a CockroachDB {{ site.data.products.advanced }} cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. {% capture who_can_upgrade %}A user with the Cluster Admin or Cluster Operator [role]({% link cockroachcloud/authorization.md %}) can [upgrade a cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) directly from the CockroachDB Cloud Console. An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can assign these roles.{% endcapture %}{{ who_can_upgrade }}
 
 {{site.data.alerts.callout_info}}
-On CockroachDB Cloud {{ site.data.products.advanced }} clusters, the EOS date for Regular releases is shared between CockroachDB Cloud and CockroachDB Self-Hosted, meaning the EOS date for a Regular release on an {{ site.data.products.advanced }} cluster is identical to the [Self-Hosted release and support schedule]({% link releases/release-support-policy %}#supported-versions). This policy is applicable only to {{ site.data.products.advanced }}, whereas Regular releases on {{ site.data.products.standard }} and {{ site.data.products.basic }} are always supported for 
+On CockroachDB Cloud {{ site.data.products.advanced }} clusters, the EOS date for Regular releases is shared between CockroachDB Cloud and CockroachDB Self-Hosted, meaning the EOS date for a Regular release on an {{ site.data.products.advanced }} cluster is identical to the [Self-Hosted release and support schedule]({% link releases/release-support-policy.md %}#supported-versions). When a GA release is promoted into an LTS, the long-term maintence support window for that version applies to the Cloud cluster as well.
 
+This policy is effective as of v24.3 onwards, and is applicable only to {{ site.data.products.advanced }}. Regular releases on {{ site.data.products.standard }} and {{ site.data.products.basic }} are always supported for 12 months after release. 
 
 You are responsible for upgrading a CockroachDB {{ site.data.products.advanced }} cluster before its current version reaches its EOS date to maintain uninterrupted support and SLA guarantees.
 {{site.data.alerts.end}}
 
 ### Currently supported versions
 
+The following table describes currently-supported versions on {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters:
+
 Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:---------:
-v25.3   | Innovation   | 6 months       | 2025-08-04   | 2026-02-04
+v25.4   | Regular      | 12 months      | 2025-11-03   | 2026-11-03
 v25.2   | Regular      | 12 months      | 2025-05-12   | 2026-05-12
-v24.3   | Regular      | 12 months      | 2024-11-18   | 2026-05-05
+v24.3   | Regular      | 12 months      | 2024-11-18   | 2025-11-18
+
+The following table describes currently-supported versions on {{ site.data.products.advanced }} clusters:
+
+Version | Release Type | Support period | Release date | EOS date
+:------:|:------------:|:--------------:|:------------:|:---------:
+v25.4   | Regular      | Identical to [Self-Hosted support coverage]({% link releases/release-support-policy.md %}#supported-versions) | 2025-11-03 | 2026-11-03
+v25.3   | Innovation   | 6 months       | 2025-08-04   | 2026-02-04
+v25.2   | Regular      | Identical to [Self-Hosted support coverage]({% link releases/release-support-policy.md %}#supported-versions) | 2025-05-09 | 2026-05-12
+v24.3   | Regular      | Identical to [Self-Hosted support coverage]({% link releases/release-support-policy.md %}#supported-versions) | 2024-11-18 | 2026-05-05
 
 To review a version's release notes, click its link in the Version column.
 
