@@ -7,17 +7,17 @@ docs_area: Integrate
 
 This tutorial demonstrates how to set up a joint environment that uses Ory for Identity and Access Management (IAM) and CockroachDB as the underlying database. This page describes the architecture of the integration, then walks through how to perform and test it. 
 
-By the end of this tutorial, you should have a working environment in which Ory’s services (Hydra, Kratos, and Keto) are backed by CockroachDB's robust, distributed SQL database.
+By the end of this tutorial, you should have a working environment in which Ory’s services (Hydra, Kratos, and Keto) are backed by a CockroachDB cluster.
 
 ## Integration Architecture Overview
 
 This example environment integrates [Ory Hydra]({% link {{ page.version.version }}/ory-overview.md %}#ory-hydra), [Ory Kratos]({% link {{ page.version.version }}/ory-overview.md %}#ory-kratos), and [Ory Keto]({% link {{ page.version.version }}/ory-overview.md %}#ory-keto).
 
-Each of these components relies on CockroachDB to store their state in a consistent and durable way, enabling them to function correctly even in the presence of partial outages or regional network partitions.
+In a CockroachDB/Ory integration, each of these components relies on CockroachDB to store their state in a consistent and durable way, enabling them to function correctly even in the presence of partial outages or regional network partitions. Each Ory component can be deployed as a stateless service, with its only persistence requirement being the backing SQL database. 
 
-Ory’s architecture is well-suited to operate with CockroachDB because of Ory's stateless design and API-first philosophy. Each component can be deployed as a stateless service, with its only persistence requirement being the backing SQL database. This makes it straightforward to horizontally scale services, perform rolling updates, or deploy new regions without having to orchestrate complex data migrations.
+CockroachDB provides the database layer that ensures the accuracy and availability of user identities, access control rules, and session tokens. This makes it easier to horizontally scale Ory services, perform rolling updates, or deploy new regions without having to orchestrate complex data migrations.
 
-CockroachDB, in turn, provides the always-consistent database layer that ensures user identities, access control rules, and session tokens are always accurate no matter which region is serving a request. CockroachDB supports horizontal scaling, global deployments, multi-region replicas—all of which can be useful when building systems with critical identity/auth layers (as Ory provides) that must be resilient, available and performant.
+Here is an example of how a CockroachDB/Ory integration could be designed:
 
 <img src="https://github.com/amineelkouhen/crdb-ory-sandbox/raw/main/main/aws/Single-Region-Multi-AZ/images/Single-Region-MAZ.svg" alt="Single Region MAZ"  style="border:1px solid #eee;max-width:100%" />
 
@@ -30,8 +30,6 @@ At the bottom of the diagram (`CRDB VPC`): The CockroachDB nodes in each zone fo
 A regional load balancer distributes traffic across the healthy nodes in the cluster. This NLB improves performance by directing requests to the closest responsive node and provides failover capabilities by rerouting traffic away from any failed or unreachable zones.
 
 This replication model ensures strong consistency — all nodes maintain a synchronized and always-on service. Even in the event of zone-level failure, the remaining pods/nodes - for both clusters - ensures that the solution remains available and consistent.
-
-This results in a seamless experience for end users, with low latency and high uptime.
 
 In this example environment, both Ory and CockroachDB are within the us-east-1 region:
 
@@ -110,8 +108,8 @@ $ cockroach sql \
 Once connected to the SQL shell, run:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE DATABASE kratos;
 CREATE DATABASE hydra;
+CREATE DATABASE kratos;
 CREATE DATABASE keto;
 ~~~
 
@@ -120,8 +118,8 @@ Create a user and grant them privileges for each Ory database, instead of using 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE USER ory WITH PASSWORD 'securepass';
-GRANT ALL ON DATABASE kratos TO ory;
 GRANT ALL ON DATABASE hydra TO ory;
+GRANT ALL ON DATABASE kratos TO ory;
 GRANT ALL ON DATABASE keto TO ory;
 ~~~
 
@@ -464,7 +462,7 @@ You now have a high-availability deployment for a joint Ory/CRDB environment wit
 
 ### Alternative: Terraform setup
 
-Provisioning a distributed identity stack can be time-consuming when done manually. The [Ory/CockroachDB sandbox](https://github.com/amineelkouhen/crdb-ory-sandbox) project encapsulates all necessary steps — from creating the CockroachDB cluster and its three Ory databases, to deploying Ory (Kratos, Hydra, and Keto) into an EKS cluster.
+Provisioning a distributed identity stack can be time-consuming when done manually. The [CockroachDB/Ory sandbox](https://github.com/amineelkouhen/crdb-ory-sandbox) project encapsulates all necessary steps — from creating the CockroachDB cluster and its three Ory databases, to deploying Ory (Kratos, Hydra, and Keto) into an EKS cluster.
 With just a few variables defined (such as cluster region, Ory image versions, and AWS credentials), Terraform spins up the joint environment in a few clicks (or one command), wiring all components together automatically.
 
 It uses the official AWS Terraform provider to create and configure the required infrastructure for the database layer, and standard Kubernetes or Docker resources for deploying Ory services. This not only accelerates setup but also ensures reproducibility across environments, whether you are experimenting locally, running automated CI/CD tests, or deploying to production.
@@ -519,96 +517,104 @@ Below is a practical guide for testing and debugging each part of this integrati
 
 To test Ory Hydra, create an OAuth2 client, generate an access token, then introspect it. These steps use the `$HYDRA_ADMIN_URL` and `$HYDRA_PUBLIC_URL` that you exported at the end of the [Ory Hydra deployment](?filters=hydra#step-4-deploy-ory-services-on-kubernetes).
 
-1. Create the OAuth2 client:
+#### 1. Create the OAuth2 client
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ hydra create oauth2-client --endpoint $HYDRA_ADMIN_URL --format json --grant-type client_credentials
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ hydra create oauth2-client --endpoint $HYDRA_ADMIN_URL --format json --grant-type client_credentials
+~~~
 
-    Once you have created the OAuth2 client, you can parse the JSON response to get the `client_id` and `client_secret`:
+Once you have created the OAuth2 client, you can parse the JSON response to get the `client_id` and `client_secret`:
 
-    ~~~ json
-    {
-      "client_id": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
-      "client_name": "",
-      "client_secret": "F-~KQ8bKSeTxBKdZSS6woHSs9C",
-      "client_secret_expires_at": 0,
-      "client_uri": "",
-      "created_at": "2025-06-11T16:43:07Z",
-      "grant_types": ["client_credentials"],
-      "jwks": {},
-      "logo_uri": "",
-      "metadata": {},
-      "owner": "",
-      "policy_uri": "",
-      "registration_access_token": "ory_at_8xQlVk7rA_MX1yenToVmA7Wr7MLOLXJZdhh9iYHDEAQ.xGPfP4-AiGuOxAKkX-ZIdSntOJo8fy3a4b75ckE_V-g",
-      "registration_client_uri": "http://public.hydra.localhost:4444/oauth2/register/",
-      "request_object_signing_alg": "RS256",
-      "response_types": ["code"],
-      "scope": "offline_access offline openid",
-      "skip_consent": false,
-      "skip_logout_consent": false,
-      "subject_type": "public",
-      "token_endpoint_auth_method": "client_secret_basic",
-      "tos_uri": "",
-      "updated_at": "2025-06-11T16:43:07.320505Z",
-      "userinfo_signed_response_alg": "none"
-    }
-    ~~~ 
+~~~ json
+{
+  "client_id": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
+  "client_name": "",
+  "client_secret": "F-~KQ8bKSeTxBKdZSS6woHSs9C",
+  "client_secret_expires_at": 0,
+  "client_uri": "",
+  "created_at": "2025-06-11T16:43:07Z",
+  "grant_types": ["client_credentials"],
+  "jwks": {},
+  "logo_uri": "",
+  "metadata": {},
+  "owner": "",
+  "policy_uri": "",
+  "registration_access_token": "ory_at_8xQlVk7rA_MX1yenToVmA7Wr7MLOLXJZdhh9iYHDEAQ.xGPfP4-AiGuOxAKkX-ZIdSntOJo8fy3a4b75ckE_V-g",
+  "registration_client_uri": "http://public.hydra.localhost:4444/oauth2/register/",
+  "request_object_signing_alg": "RS256",
+  "response_types": ["code"],
+  "scope": "offline_access offline openid",
+  "skip_consent": false,
+  "skip_logout_consent": false,
+  "subject_type": "public",
+  "token_endpoint_auth_method": "client_secret_basic",
+  "tos_uri": "",
+  "updated_at": "2025-06-11T16:43:07.320505Z",
+  "userinfo_signed_response_alg": "none"
+}
+~~~ 
 
-2. Generate an access token. Replace `<client_id>` and `<client_secret>` with the values you found in the JSON response:
+#### 2. Generate an access token
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ hydra perform client-credentials --endpoint $HYDRA_PUBLIC_URL --client-id <client_id> --client-secret <client_secret>
-    ~~~
+Replace `{client_id}` and `{client_secret}` with the values you found in the JSON response:
 
-    This will generate an access token for Ory Hydra. Copy the string beside `ACCESS TOKEN`.
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ hydra perform client-credentials --endpoint $HYDRA_PUBLIC_URL --client-id {client_id} --client-secret {client_secret}
+~~~
 
-    ~~~ shell
-    ACCESS TOKEN	ory_at_A2TpIR394rnUOtA0PLhvARKQyODmLIH7Fer5Y8clwe8.J61E8kR3ZH2w529D-5HOkuqoaTZy-CNLlNtvunYpdjg
-    REFRESH TOKEN	<empty>
-    ID TOKEN	<empty>
-    EXPIRY		2025-06-11 19:49:39 +0200 CEST
-    ~~~ 
+This will generate an access token for Ory Hydra. Copy the string beside `ACCESS TOKEN`.
 
-3. Perform a token introspection to confirm the validity of this new token. Replace `<access_token>` with the string that you just copied:
+~~~ shell
+ACCESS TOKEN	ory_at_A2TpIR394rnUOtA0PLhvARKQyODmLIH7Fer5Y8clwe8.J61E8kR3ZH2w529D-5HOkuqoaTZy-CNLlNtvunYpdjg
+REFRESH TOKEN	<empty>
+ID TOKEN	<empty>
+EXPIRY		2025-06-11 19:49:39 +0200 CEST
+~~~ 
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ hydra introspect token --format json-pretty --endpoint $HYDRA_ADMIN_URL <access_token>
-    ~~~
+#### 3. Perform a token introspection to confirm the validity of this new token
 
-    This should generate a JSON response that includes your `client_id`, `"active": true`, an expiration timestamp (`exp`), and [other data](https://www.ory.com/docs/hydra/reference/api#tag/oAuth2/operation/introspectOAuth2Token):
+Replace `{access_token}` with the string that you just copied:
 
-    ~~~ json
-    {
-      "active": true,
-      "client_id": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
-      "exp": 1749664180,
-      "iat": 1749660580,
-      "iss": "http://public.hydra.localhost:4444",
-      "nbf": 1749660580,
-      "sub": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
-      "token_type": "Bearer",
-      "token_use": "access_token"
-    }
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ hydra introspect token --format json-pretty --endpoint $HYDRA_ADMIN_URL {access_token}
+~~~
+
+This should generate a JSON response that includes your `client_id`, `"active": true`, an expiration timestamp (`exp`), and [other data](https://www.ory.com/docs/hydra/reference/api#tag/oAuth2/operation/introspectOAuth2Token):
+
+~~~ json
+{
+  "active": true,
+  "client_id": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
+  "exp": 1749664180,
+  "iat": 1749660580,
+  "iss": "http://public.hydra.localhost:4444",
+  "nbf": 1749660580,
+  "sub": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
+  "token_type": "Bearer",
+  "token_use": "access_token"
+}
+~~~
 
 ### Test Ory Kratos
 
-To initialize the API flow, the client calls the API-flow initialization endpoint which returns a JSON response. All you need is a valid Registration Flow ID:
+To test Ory Kratos, you need to use the Kratos API endpoints to register the API flow, to start the log in flow, and verify the session token. These steps use the `$KRATOS_PUBLIC_URL` that you exported at the end of the [Ory Kratos deployment](?filters=kratos#step-4-deploy-ory-services-on-kubernetes).
+
+#### 1. Initialize the API flow
+
+Use the Kratos registration endpoint to get a valid Registration Flow ID:
 
 {% include_cached copy-clipboard.html %}
- ~~~ shell
+~~~ shell
 $ flowId=$(curl -s -X GET -H "Accept: application/json" $KRATOS_PUBLIC_URL/self-service/registration/api | jq -r '.id')
- ~~~
+~~~
 
-Then you can submit the registration form using the following payload:
+You can then submit the registration form using the following payload:
 
 {% include_cached copy-clipboard.html %}
- ~~~ shell
+~~~ shell
 $ curl -s -X POST -H "Accept: application/json Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/registration?flow=$flowId -d '{
   "method": "password",
   "password": "HelloCockro@ch123",
@@ -620,11 +626,11 @@ $ curl -s -X POST -H "Accept: application/json Content-Type: application/json" $
         }
   }
 }'
- ~~~
+~~~
 
-Ory Identities responds with a JSON payload which includes the signed up identity:
+Ory Identities responds with a JSON payload which includes the signed up `identity`:
 
- ~~~ json
+~~~ json
 {
     "identity": {
         "id": "3ad9fe8b-ef2e-4fa4-8f3e-4b959ace03e6",
@@ -646,141 +652,28 @@ Ory Identities responds with a JSON payload which includes the signed up identit
     },
     "continue_with": null
 }
- ~~~
+~~~
 
-Completing the registration, you can now start the login flow by fetching the Login Flow. All you need is a valid flow ID:
+#### 2. Start the login flow
+
+Having completed the registration, you can now start the Login Flow by fetching a valid Login Flow ID:
 
 {% include_cached copy-clipboard.html %}
- ~~~ shell
+~~~ shell
 $ flowId=$(curl -s -X GET -H  "Accept: application/json Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/login/api | jq -r '.id')
- ~~~
+~~~
 
-Then you can submit the login form using the following payload, first with a wrong password:
-
-{% include_cached copy-clipboard.html %}
- ~~~ shell
-$ curl -s -X POST -H  "Accept: application/json" -H "Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/login?flow=$flowId \
--d '{"identifier": "amine.elkouhen@cockroachlabs.com", "password": "the-wrong-password", "method": "password"}'
- ~~~
-
-The server typically responds with HTTP 400 Bad Request and the Login Flow in the response payload as JSON. You will get the following validation errors `The provided credentials are invalid, check for spelling mistakes in your password or username, email address, or phone number`:
-
-  ~~~ json
-  {
-    "id": "1532c85f-74a5-4c80-82b4-252b9a25eb7f",
-    "organization_id": null,
-    "type": "api",
-    "expires_at": "2025-06-15T23:39:24.138178Z",
-    "issued_at": "2025-06-15T22:39:24.138178Z",
-    "request_url": "http://a6d6a72c1776646379830045ccaa2bdb-1651469880.us-east-1.elb.amazonaws.com:4434/self-service/login/api",
-    "ui": {
-        "action": "http://ory-kratos-5f7474c79c-wgv9p:4434/self-service/login?flow=1532c85f-74a5-4c80-82b4-252b9a25eb7f",
-        "method": "POST",
-        "nodes": [
-            {
-                "type": "input",
-                "group": "default",
-                "attributes": {
-                    "name": "csrf_token",
-                    "type": "hidden",
-                    "value": "",
-                    "required": true,
-                    "disabled": false,
-                    "node_type": "input"
-                },
-                "messages": [],
-                "meta": {}
-            },
-            {
-                "type": "input",
-                "group": "default",
-                "attributes": {
-                    "name": "identifier",
-                    "type": "text",
-                    "value": "amine.elkouhen@cockroachlabs.com",
-                    "required": true,
-                    "disabled": false,
-                    "node_type": "input"
-                },
-                "messages": [],
-                "meta": {
-                    "label": {
-                        "id": 1070002,
-                        "text": "E-Mail",
-                        "type": "info",
-                        "context": {
-                            "title": "E-Mail"
-                        }
-                    }
-                }
-            },
-            {
-                "type": "input",
-                "group": "password",
-                "attributes": {
-                    "name": "password",
-                    "type": "password",
-                    "required": true,
-                    "autocomplete": "current-password",
-                    "disabled": false,
-                    "node_type": "input"
-                },
-                "messages": [],
-                "meta": {
-                    "label": {
-                        "id": 1070001,
-                        "text": "Password",
-                        "type": "info"
-                    }
-                }
-            },
-            {
-                "type": "input",
-                "group": "password",
-                "attributes": {
-                    "name": "method",
-                    "type": "submit",
-                    "value": "password",
-                    "disabled": false,
-                    "node_type": "input"
-                },
-                "messages": [],
-                "meta": {
-                    "label": {
-                        "id": 1010022,
-                        "text": "Sign in with password",
-                        "type": "info"
-                    }
-                }
-            }
-        ],
-        "messages": [
-            {
-                "id": 4000006,
-                "text": "The provided credentials are invalid, check for spelling mistakes in your password or username, email address, or phone number.",
-                "type": "error"
-            }
-        ]
-    },
-    "created_at": "2025-06-15T22:39:24.234661Z",
-    "updated_at": "2025-06-15T22:39:24.234661Z",
-    "refresh": false,
-    "requested_aal": "aal1",
-    "state": "choose_method"
-  }
-  ~~~
-
-Let's try with a valid password and submit the login flow:
+Then you can submit the login form [using a request payload](https://www.ory.com/docs/reference/api#tag/frontend/operation/updateLoginFlow) that includes the password that you submitted when initializing the API flow:
 
 {% include_cached copy-clipboard.html %}
- ~~~ shell
+~~~ shell
 $ curl -s -X POST -H  "Accept: application/json" -H "Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/login?flow=$flowId \
 -d '{"identifier": "amine.elkouhen@cockroachlabs.com", "password": "HelloCockro@ch123", "method": "password"}'
- ~~~
+~~~
 
 Ory Identities responds with a JSON payload which includes the identity which just authenticated, the session, and the Ory Session Token:
 
- ~~~ json
+~~~ json
 {
     "session_token": "ory_st_l209ZOnRSEaQRcIauchAUdFC5iYQDQld",
     "session": {
@@ -826,16 +719,18 @@ Ory Identities responds with a JSON payload which includes the identity which ju
     },
     "continue_with": null
 }
- ~~~ 
+~~~ 
 
-The Ory Session Token can be checked at the `http://$KRATOS_PUBLIC_URL/sessions/whoami` endpoint using the session token returned earlier (`ory_st_l209ZOnRSEaQRcIauchAUdFC5iYQDQld`):
+#### 3. Check the session token
+
+The Ory Session Token can be checked at the [`http://$KRATOS_PUBLIC_URL/sessions/whoami` endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/listMySessions) using the session token that was just returned in the Login Flow JSON Response:
 
 {% include_cached copy-clipboard.html %}
- ~~~ shell
+~~~ shell
 $ curl -s -X GET -H "Accept: application/json" -H "Authorization: Bearer ory_st_l209ZOnRSEaQRcIauchAUdFC5iYQDQld" $KRATOS_PUBLIC_URL/sessions/whoami
- ~~~
+~~~
 
- ~~~ json
+~~~ json
 {
     "id": "fd4bde12-1c3d-4c95-a45f-337c6bdd6905",
     "active": true,
@@ -877,9 +772,11 @@ $ curl -s -X GET -H "Accept: application/json" -H "Authorization: Bearer ory_st_
         }
     ]
 }
- ~~~
+~~~
 
-To logout the session, you can revoke the Ory session token by calling the logout API endpoint:
+#### 4. Log out
+
+To log out the session, you can revoke the Ory session token by calling the [logout API endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/performNativeLogout):
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
@@ -890,14 +787,18 @@ $ curl -s -X DELETE -H "Accept: application/json" -H "Content-Type: application/
 
 ### Test Ory Keto
 
-To test Ory Keto, you can create a relation tuple using the Keto SDK:
+To test Ory Keto, create relationships between users and objects. Then use Ory Keto commands to check who has access to what objects. These steps use the `$KETO_WRITE_REMOTE` that you exported at the end of the [Ory Keto deployment](?filters=keto#step-4-deploy-ory-services-on-kubernetes).
+
+#### 1. Create a relation tuple 
+
+Create a Keto relation tuple [using the Keto SDK](https://www.ory.com/docs/keto/cli/keto-relation-tuple-create):
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
 $ echo '{"namespace":"documents","object":"doc-123","relation":"viewer","subject_id":"user:alice"}'  | keto relation-tuple create /dev/stdin --insecure-disable-transport-security
  ~~~ 
 
-or by using the Keto REST API:
+or by [using the Keto REST API](https://www.ory.com/docs/keto/reference/rest-api#tag/relationship/operation/createRelationship):
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
@@ -906,7 +807,9 @@ $ curl -i -X PUT "$KETO_WRITE_REMOTE"/admin/relation-tuples \
 -d '{"namespace":"documents","object":"doc-123","relation":"viewer","subject_id":"user:alice"}'
  ~~~ 
 
-You can use Ory Keto's expand-API to display who has access to an object, and why:
+#### 2. See who can access objects
+
+You can use the [Ory Keto expand-API](https://www.ory.com/docs/keto/cli/keto-expand) to display who has access to an object, and why:
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
@@ -921,15 +824,15 @@ To assist users with managing permissions for their files, the application has t
 ├─ mountains.jpg     (owner: laura)
  ~~~ 
 
-It's important to test your permission model. To test the permissions manually, you can create relationships and check permissions through the API or SDK.
+#### 3. Check permissions
+
+It's important to test your permission model. To test the permissions manually, you can create relationships and [check permissions with the SDK](https://www.ory.com/docs/keto/cli/keto-check):
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
 $ keto check \"user:alice\" viewer documents /photos/beach.jpg --insecure-disable-transport-security
 # allowed
  ~~~ 
-
-By following this guide, you have successfully set up a global infrastructure identity and access management system with Ory and CockroachDB. This setup ensures scalability, high availability, and resilience while securing your enterprise assets.
 
 ### Simulate realistic workloads
 
