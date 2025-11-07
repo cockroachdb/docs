@@ -370,7 +370,7 @@ Like any database system, if you run out of disk space the system will no longer
 - [What happens when a node runs out of disk space?]({% link {{ page.version.version }}/operational-faqs.md %}#what-happens-when-a-node-runs-out-of-disk-space)
 - [Why is memory usage increasing despite lack of traffic?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-memory-usage-increasing-despite-lack-of-traffic)
 - [Why is disk usage increasing despite lack of writes?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-disk-usage-increasing-despite-lack-of-writes)
-- [Can I reduce or disable the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data)
+- [Can I reduce the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-the-storage-of-time-series-data)
 
 In rare cases, disk usage can increase on nodes with [Raft followers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) due to a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
 

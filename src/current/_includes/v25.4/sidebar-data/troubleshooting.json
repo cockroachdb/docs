@@ -118,6 +118,12 @@
         "urls": [
           "/${VERSION}/automatic-go-execution-tracer.html"
         ]
+      },
+      {
+        "title": "Transaction Diagnostics",
+        "urls": [
+          "/${VERSION}/transaction-diagnostics.html"
+        ]
       }
     ]
   }

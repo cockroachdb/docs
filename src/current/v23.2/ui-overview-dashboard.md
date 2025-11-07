@@ -9,7 +9,7 @@ The **Overview** dashboard lets you monitor important SQL performance, replicati
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
 
-The time-series data displayed in DB Console graphs is stored within the CockroachDB cluster and steadily increases for the first several days of a cluster's life, before an automatic job begins to prune it. By default, time-series data is stored for at 10-second resolution for 10 days, and at 30-minute resolution for 90 days. For details about managing this process, see this [How Can I Reduce or Disable the Storage of Time-series Data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data). In a new cluster, you will observe a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster.
+The time-series data displayed in DB Console graphs is stored within the CockroachDB cluster and steadily increases for the first several days of a cluster's life, before an automatic job begins to prune it. By default, time-series data is stored for at 10-second resolution for 10 days, and at 30-minute resolution for 90 days. For details about managing this process, see [Can I reduce the storage of time-series data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-the-storage-of-time-series-data). In a new cluster, you will observe a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster.
 
 ## Dashboard navigation
 
