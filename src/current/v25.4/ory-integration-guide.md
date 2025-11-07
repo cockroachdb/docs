@@ -167,7 +167,9 @@ This section describes how to deploy Ory on a self-hosted Kubernetes cluster in 
     ~~~ shell
     $ helm repo add ory https://k8s.ory.sh/helm/charts
     ~~~
-
+    
+    You should get the following message, confirming the repository was added:
+    
     ~~~
     "ory" has been added to your repositories
     ~~~
@@ -509,78 +511,90 @@ crdb-cluster-public-ips = [
 
 ## Test the CockroachDB/Ory Integration
 
-Once both CockroachDB and Ory are provisioned, configured, and network-accessible, the next crucial step is to validate that all components work together as intended.
+Once both CockroachDB and Ory are provisioned, configured, and network-accessible, the next step is to validate that all components work together as intended.
 
 Below is a practical guide for testing and debugging each part of this integration.
 
 ### Test Ory Hydra
 
-To test Ory Hydra, you can create an OAuth2 client, generate an access token, then introspect it using the following Hydra commands:
+To test Ory Hydra, create an OAuth2 client, generate an access token, then introspect it. These steps use the `$HYDRA_ADMIN_URL` and `$HYDRA_PUBLIC_URL` that you exported at the end of the [Ory Hydra deployment](?filters=hydra#step-4-deploy-ory-services-on-kubernetes).
 
-{% include_cached copy-clipboard.html %}
- ~~~ shell
-$ hydra create oauth2-client --endpoint $HYDRA_ADMIN_URL --format json --grant-type client_credentials
- ~~~
+1. Create the OAuth2 client:
 
- ~~~ json
-{
-   "client_id": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
-   "client_name": "",
-   "client_secret": "F-~KQ8bKSeTxBKdZSS6woHSs9C",
-   "client_secret_expires_at": 0,
-   "client_uri": "",
-   "created_at": "2025-06-11T16:43:07Z",
-   "grant_types": ["client_credentials"],
-   "jwks": {},
-   "logo_uri": "",
-   "metadata": {},
-   "owner": "",
-   "policy_uri": "",
-   "registration_access_token": "ory_at_8xQlVk7rA_MX1yenToVmA7Wr7MLOLXJZdhh9iYHDEAQ.xGPfP4-AiGuOxAKkX-ZIdSntOJo8fy3a4b75ckE_V-g",
-   "registration_client_uri": "http://public.hydra.localhost:4444/oauth2/register/",
-   "request_object_signing_alg": "RS256",
-   "response_types": ["code"],
-   "scope": "offline_access offline openid",
-   "skip_consent": false,
-   "skip_logout_consent": false,
-   "subject_type": "public",
-   "token_endpoint_auth_method": "client_secret_basic",
-   "tos_uri": "",
-   "updated_at": "2025-06-11T16:43:07.320505Z",
-   "userinfo_signed_response_alg": "none"
-}
- ~~~ 
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ hydra create oauth2-client --endpoint $HYDRA_ADMIN_URL --format json --grant-type client_credentials
+    ~~~
 
-{% include_cached copy-clipboard.html %}
- ~~~ shell
-$ hydra perform client-credentials --endpoint $HYDRA_PUBLIC_URL --client-id 9692d3f9-fcdc-4526-80c4-fc667d959a5f --client-secret F-~KQ8bKSeTxBKdZSS6woHSs9C
- ~~~
+    Once you have created the OAuth2 client, you can parse the JSON response to get the `client_id` and `client_secret`:
 
- ~~~ shell
-ACCESS TOKEN	ory_at_A2TpIR394rnUOtA0PLhvARKQyODmLIH7Fer5Y8clwe8.J61E8kR3ZH2w529D-5HOkuqoaTZy-CNLlNtvunYpdjg
-REFRESH TOKEN	<empty>
-ID TOKEN	<empty>
-EXPIRY		2025-06-11 19:49:39 +0200 CEST
- ~~~ 
+    ~~~ json
+    {
+      "client_id": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
+      "client_name": "",
+      "client_secret": "F-~KQ8bKSeTxBKdZSS6woHSs9C",
+      "client_secret_expires_at": 0,
+      "client_uri": "",
+      "created_at": "2025-06-11T16:43:07Z",
+      "grant_types": ["client_credentials"],
+      "jwks": {},
+      "logo_uri": "",
+      "metadata": {},
+      "owner": "",
+      "policy_uri": "",
+      "registration_access_token": "ory_at_8xQlVk7rA_MX1yenToVmA7Wr7MLOLXJZdhh9iYHDEAQ.xGPfP4-AiGuOxAKkX-ZIdSntOJo8fy3a4b75ckE_V-g",
+      "registration_client_uri": "http://public.hydra.localhost:4444/oauth2/register/",
+      "request_object_signing_alg": "RS256",
+      "response_types": ["code"],
+      "scope": "offline_access offline openid",
+      "skip_consent": false,
+      "skip_logout_consent": false,
+      "subject_type": "public",
+      "token_endpoint_auth_method": "client_secret_basic",
+      "tos_uri": "",
+      "updated_at": "2025-06-11T16:43:07.320505Z",
+      "userinfo_signed_response_alg": "none"
+    }
+    ~~~ 
 
-{% include_cached copy-clipboard.html %}
- ~~~ shell
-$ hydra introspect token --format json-pretty --endpoint $HYDRA_ADMIN_URL ory_at_A2TpIR394rnUOtA0PLhvARKQyODmLIH7Fer5Y8clwe8.J61E8kR3ZH2w529D-5HOkuqoaTZy-CNLlNtvunYpdjg
- ~~~
+2. Generate an access token. Replace `<client_id>` and `<client_secret>` with the values you found in the JSON response:
 
- ~~~ shell
-{
-   "active": true,
-   "client_id": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
-   "exp": 1749664180,
-   "iat": 1749660580,
-   "iss": "http://public.hydra.localhost:4444",
-   "nbf": 1749660580,
-   "sub": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
-   "token_type": "Bearer",
-   "token_use": "access_token"
-}
- ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ hydra perform client-credentials --endpoint $HYDRA_PUBLIC_URL --client-id <client_id> --client-secret <client_secret>
+    ~~~
+
+    This will generate an access token for Ory Hydra. Copy the string beside `ACCESS TOKEN`.
+
+    ~~~ shell
+    ACCESS TOKEN	ory_at_A2TpIR394rnUOtA0PLhvARKQyODmLIH7Fer5Y8clwe8.J61E8kR3ZH2w529D-5HOkuqoaTZy-CNLlNtvunYpdjg
+    REFRESH TOKEN	<empty>
+    ID TOKEN	<empty>
+    EXPIRY		2025-06-11 19:49:39 +0200 CEST
+    ~~~ 
+
+3. Perform a token introspection to confirm the validity of this new token. Replace `<access_token>` with the string that you just copied:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ hydra introspect token --format json-pretty --endpoint $HYDRA_ADMIN_URL <access_token>
+    ~~~
+
+    This should generate a JSON response that includes your `client_id`, `"active": true`, an expiration timestamp (`exp`), and [other data](https://www.ory.com/docs/hydra/reference/api#tag/oAuth2/operation/introspectOAuth2Token):
+
+    ~~~ json
+    {
+      "active": true,
+      "client_id": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
+      "exp": 1749664180,
+      "iat": 1749660580,
+      "iss": "http://public.hydra.localhost:4444",
+      "nbf": 1749660580,
+      "sub": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
+      "token_type": "Bearer",
+      "token_use": "access_token"
+    }
+    ~~~
 
 ### Test Ory Kratos
 
@@ -755,7 +769,7 @@ The server typically responds with HTTP 400 Bad Request and the Login Flow in th
     "state": "choose_method"
   }
   ~~~
-  
+
 Let's try with a valid password and submit the login flow:
 
 {% include_cached copy-clipboard.html %}
