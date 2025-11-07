@@ -13,9 +13,7 @@ The `SHOW BACKUP` syntax **without** the `IN` keyword has been removed from Cock
 For guidance on the syntax for `SHOW BACKUP FROM`, refer to the [Synopsis](#synopsis) and [examples](#examples) on this page.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_danger}}
-The `incremental_location` parameter is deprecated in versions 25.4 and later. If needed, you can continue to work with already existing backups that use a custom `incremental_location` , but this ability will be removed in version 26.2.
-{{site.data.alerts.end}}
+{% include common/sql/incremental-location-warning.md %}
 
 ## Required privileges
 

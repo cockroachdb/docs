@@ -155,9 +155,7 @@ Full backups are implicitly of `backup_type` `0`, and so does not display in the
 
 ### Apply different options to scheduled backups
 
-{{site.data.alerts.callout_danger}}
-The `incremental_location` parameter is deprecated in versions 25.4 and later. If needed, you can continue to work with already existing backups that use a custom `incremental_location` , but this ability will be removed in version 26.2.
-{{site.data.alerts.end}}
+{% include common/sql/incremental-location-warning.md %}
 
 You can modify the behavior of your backup schedule and the backup jobs with `SET SCHEDULE OPTION` and `SET WITH`. See the [Schedule options](#schedule-options) table and the [Backup options](#backup-options) table for a list of the available options.
 

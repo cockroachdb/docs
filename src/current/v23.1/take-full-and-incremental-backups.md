@@ -220,9 +220,7 @@ RESTORE FROM '2023/03/23-213101.37' IN 's3://bucket/path?AUTH=implicit';
 
 ### Incremental backups with explicitly specified destinations
 
-{{site.data.alerts.callout_danger}}
-The `incremental_location` parameter is deprecated in versions 25.4 and later. If needed, you can continue to work with already existing backups that use a custom `incremental_location` , but this ability will be removed in version 26.2.
-{{site.data.alerts.end}}
+{% include common/sql/incremental-location-warning.md %}
 
 To explicitly control where your incremental backups go, use the [`incremental_location`]({% link {{ page.version.version }}/backup.md %}#options) option. By default, incremental backups are stored in the `/incrementals` subdirectory at the root of the collection. However, there are some advanced cases where you may want to store incremental backups in a different storage location.
 
