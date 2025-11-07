@@ -14,16 +14,6 @@ For any given SQL statement, if the [cost-based optimizer]({% link {{page.versio
 
 - [Understand how the cost-based optimizer chooses query plans]({% link {{page.version.version}}/cost-based-optimizer.md %}) based on table statistics, and how those statistics are refreshed.
 
-<!-- ## Query plan regressions vs. suboptimal plans
-
-The DB Console's [**Insights** page]({% link {{page.version.version}}/ui-insights-page.md %}) keeps track of [suboptimal plans]({% link {{page.version.version}}/ui-insights-page.md %}#suboptimal-plan). A suboptimal plan is a query plan whose execution time exceeds a certain threshold (configurable with the `sql.insights.latency_threshold` cluster setting) and whose slow execution has caused CockroachDB to generate an index recommendation for the table. Table statistics that were once valid, but which are now stale, can lead to a suboptimal plan scenario. A suboptimal plan scenario does not imply that the query plan has changed, and in fact a failure to change the query plan is often the root problem. The **Insights** page identifies these scenarios and provides recommendations on how to fix them.
-
-A query plan regression occurs when the cost-based optimizer chooses an optimal query plan, but then later it changes that query plan to a less optimal one. It is not the same thing as a suboptimal plan, though it is possible that the conditions that triggered a suboptimal plan insight were caused by a query plan regression.
-
-A suboptimal plan scenario that is not a regression will not increase query latency, as the query plan has not changed. A suboptimal plan scenario is instead the system's failure to decrease latency when it could have. A query plan regression will likely increase query latency.
-
-Though these two scenarios are conceptually different, both scenarios will likely require an update to the problematic query plan. -->
-
 ## What to look out for
 
 Query plan regressions only increase the execution time of SQL statements that use that plan. This means that the overall service latency of the cluster will only be affected during the execution of statements that are run with the problematic query plan. 
@@ -63,16 +53,6 @@ Knowing what service latency to expect, based on your cluster's usual activity, 
 ### Step 2. Identify high-latency statements
 
 One way of tracking down query plan regressions is to identify SQL statements whose executions are relatively high in latency. These statements might be associated with a latency increase.
-
-<!-- #### Use workload insights
-
-1. Go to the [**Insights** page]({% link {{page.version.version}}/ui-insights-page.md %}) in the DB Console.
-2. Go to the [**Workload Insights** tab]({% link {{page.version.version}}/ui-insights-page.md %}#workload-insights-tab).
-3. If you've already identified specific statements or time intervals in Step 1, you can use the **Search Statements** input to find particular queries and the time interval selector to create a custom time interval. Otherwise, consider all of the statements in the table.
-4. Use the filters to find statements whose **Workload Insight Type** is "Slow Execution" or "Suboptimal Plan."
-5. Click on the **Statement Fingerprint ID** to get more information about the SQL statement and its executions. -->
-
-<!-- #### Sort SQL activity -->
 
 1. Go to the [**SQL Activity** page]({% link {{page.version.version}}/ui-overview.md %}#sql-activity) in the DB Console.
 2. If you've already identified specific time intervals in Step 1, you can use the time interval selector to create a custom time interval. Click **Apply**.
@@ -153,6 +133,20 @@ Inspect your application to see if the literals being used within the query exec
 If you suspect that the query plan change is the cause of the latency increase, and you suspect that the query plan changed due to a changed query literal, it's possible that the table statistics don't accurately reflect how the literal values are represented in the data. You may want to [manually refresh the statistics for the table]({% link {{ page.version.version }}/create-statistics.md %}#examples). It's also possible that the table indexes are not helpful for queries with the newer literal value, in which case you may want to [check the **Insights** page for index recommendations]({% link {{ page.version.version }}/ui-insights-page.md %}#suboptimal-plan). 
 
 If this does not fix the issue, a more drastic redesign of the schema or application may be needed.
+
+#### View all events
+
+1. Go to the [**Metrics** page]({% link {{page.version.version}}/ui-overview.md %}#metrics).
+2. Go the [**Events** panel]({% link {{page.version.version}}/ui-runtime-dashboard.md %}#events-panel) on the right. Scroll to the bottom, and click **View All Events**.
+3. Scroll down to the approximate time when the latency increase began.
+
+    See if any events occured around that time that may have contributed to a query plan regression. These might include schema changes that affect tables involved in the suspect SQL queries, [changed cluster settings]({% link {{ page.version.version }}/set-cluster-setting.md %}), created or dropped indexes, and more. 
+    
+    A consequential event around the time of the latency increase may have affected the way that the optimizer chose query plans. Inspect changed cluster settings, or [determine if the table indexes changed](#determine-if-the-table-indexes-changed).
+
+    {{site.data.alerts.callout_success}}
+    If your cluster recently underwent a CockroachDB version upgrade, note when that went into effect. An upgrade may have affected default cluster settings or planning heuristics in a way that caused a query plan regression. You may want to [manually refresh the statistics for tables]({% link {{ page.version.version }}/create-statistics.md %}#examples) that are affected by a suspect SQL statement.
+    {{site.data.alerts.end}}
 
 <br>
 
