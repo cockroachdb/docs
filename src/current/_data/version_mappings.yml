@@ -1,0 +1,88 @@
+# Precomputed version data to avoid expensive Liquid loops
+# This replaces the expensive where_exp operations in version-switcher.html
+
+versions:
+  v25.4:
+    major_version: "v25.4"
+    name: "v25.4"
+    is_lts: false
+    has_releases: false
+    previous_version: "v25.3"
+  v25.3:
+    major_version: "v25.3"
+    name: "v25.3"
+    is_lts: false
+    has_releases: true
+    previous_version: "v25.2"
+  v25.2:
+    major_version: "v25.2"
+    name: "v25.2"
+    is_lts: false
+    has_releases: true
+    previous_version: "v25.1"
+  v25.1:
+    major_version: "v25.1"
+    name: "v25.1"
+    is_lts: false
+    has_releases: true
+    previous_version: "v24.3"
+  v24.3:
+    major_version: "v24.3"
+    name: "v24.3"
+    is_lts: true
+    has_releases: true
+    previous_version: "v24.2"
+  v24.2:
+    major_version: "v24.2"
+    name: "v24.2"
+    is_lts: false
+    has_releases: true
+    previous_version: "v24.1"
+  v24.1:
+    major_version: "v24.1"
+    name: "v24.1"
+    is_lts: true
+    has_releases: true
+    previous_version: "v23.2"
+  v23.2:
+    major_version: "v23.2"
+    name: "v23.2"
+    is_lts: true
+    has_releases: true
+    previous_version: "v23.1"
+  v23.1:
+    major_version: "v23.1"
+    name: "v23.1"
+    is_lts: true
+    has_releases: true
+    previous_version: "v22.2"
+  v22.2:
+    major_version: "v22.2"
+    name: "v22.2"
+    is_lts: false
+    has_releases: true
+    previous_version: "v22.1"
+  v22.1:
+    major_version: "v22.1"
+    name: "v22.1"
+    is_lts: false
+    has_releases: true
+    previous_version: "v21.2"
+  v21.2:
+    major_version: "v21.2"
+    name: "v21.2"
+    is_lts: false
+    has_releases: true
+    previous_version: "v21.1"
+  v21.1:
+    major_version: "v21.1"
+    name: "v21.1"
+    is_lts: false
+    has_releases: true
+    previous_version: "v20.2"
+  v20.2:
+    major_version: "v20.2"
+    name: "v20.2"
+    is_lts: false
+    has_releases: true
+    previous_version: "v20.1"
