@@ -239,24 +239,23 @@ SET CLUSTER SETTING security.provisioning.jwt.enabled = true;
 
 ### Auditing provisioned users
 
-You can identify and audit automatically provisioned users by querying their `PROVISIONSRC` role option:
+You can identify automatically provisioned users by viewing their role options:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
--- View all JWT-provisioned users
-SELECT rolname, rolprovisionsrc
-FROM pg_roles
-WHERE rolprovisionsrc LIKE 'jwt_token:%';
+SHOW ROLES;
 ~~~
 
 Example output:
 
 ~~~txt
-  rolname  |        rolprovisionsrc
------------+--------------------------------
-  alice    | jwt_token:https://auth.example.com
-  bob      | jwt_token:https://auth.example.com
+  username  |                       options                        | member_of
+------------+------------------------------------------------------+-----------
+  alice     | {PROVISIONSRC=jwt_token:https://auth.example.com}    | {developers}
+  bob       | {PROVISIONSRC=jwt_token:https://auth.example.com}    | {admins}
 ~~~
+
+Users provisioned via JWT will have `PROVISIONSRC=jwt_token:<issuer>` in their options column.
 
 ### Security considerations
 
