@@ -114,13 +114,52 @@ sql_txn_commit_count{tenant="demo"} 0
 
 When connected to a virtual cluster from the DB Console, metrics which measure SQL and related activity show data scoped to the virtual cluster. All other metrics are collected system-wide and display the same data on all virtual clusters including the system virtual cluster.
 
-## Disaster recovery
+## Backup and restore
 
-When cluster virtualization is enabled, [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}) commands are scoped to the virtual cluster by default.
+Cockroach Labs recommends that you regularly [back up]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) your data. When using virtual clusters, perform backups on the _application virtual cluster (app VC)_. Only the app VC's data and settings are included in these backups, and data and settings for other virtual clusters or for the _system virtual cluster (system VC)_ are omitted. 
 
-Cockroach Labs recommends that you regularly [back up]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) your _application virtual cluster (app VC)_. Only the app VC's data and settings are included in these backups, and data and settings for other virtual clusters or for the _system virtual cluster (system VC)_ are omitted. If needed, you can [restore](#restore-a-virtual-cluster) these backups to a new app VC. Use the following process to back up your app VC.
+### Create a backup schedule for your app VC
 
-1. [Connect](#connect-to-a-virtual-cluster) to the app VC as a user with the `admin` role on the app VC:
+Cockroach Labs recommends using [backup schedules]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) to automate full and incremental backups of your data.
+
+Use the following process to create a schedule for a cluster-level backup of your app VC. In this example, the schedule takes revision history for the backup every day at midnight.
+
+1. [Connect](#connect-to-a-virtual-cluster) to the app VC as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the app VC. In this example the user has the `BACKUP` privilege.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url \
+    "postgresql://root@{primary node IP or hostname}:26257?options=-ccluster={app_virtual_cluster_name}&sslmode=verify-full" \
+    --certs-dir "certs"
+    ~~~
+
+1. [Create a backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#create-a-scheduled-backup-for-a-cluster):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE SCHEDULE schedule_label
+    FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+        WITH revision_history
+        RECURRING '@daily';
+    ~~~
+
+    ~~~
+        schedule_id     |     name       |                     status                     |            first_run             | schedule |                                                                               backup_stmt
+    ---------------------+----------------+------------------------------------------------+----------------------------------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------
+      588796190000218113 | schedule_label | PAUSED: Waiting for initial backup to complete | NULL                             | @daily   | BACKUP INTO LATEST IN 's3://test/schedule-test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+      588796190012702721 | schedule_label | ACTIVE                                         | 2020-09-10 16:52:17.280821+00:00 | @weekly  | BACKUP INTO 's3://test/schedule-test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+    (2 rows)
+    ~~~
+
+    {% include {{ page.version.version }}/backups/backup-storage-collision.md %}
+
+For information on scheduling backups at different levels or with other options, consult [CREATE SCHEDULE FOR BACKUP]({% link {{ page.version.version }}/create-schedule-for-backup.md %}).
+
+### Back up your app VC
+
+Use the following process to take a one-off full backup of your app VC.
+
+1. [Connect](#connect-to-a-virtual-cluster) to the app VC as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the app VC. In this example the user has the `BACKUP` privilege.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -133,14 +172,88 @@ Cockroach Labs recommends that you regularly [back up]({% link {{ page.version.v
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+    BACKUP INTO 'external://backup_s3/app' AS OF SYSTEM TIME '-10s';
     ~~~
 
-    {% include {{ page.version.version }}/backups/backup-storage-collision.md %}
+### Back up a database from your app VC
+
+Use the following process to take a one-off database-level backup on your app VC.
+
+1. [Connect](#connect-to-a-virtual-cluster) to the app VC as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the app VC. In this example the user has the `BACKUP` privilege.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url \
+    "postgresql://root@{primary node IP or hostname}:26257?options=-ccluster={app_virtual_cluster_name}&sslmode=verify-full" \
+    --certs-dir "certs"
+    ~~~
+
+1. [Back up]({% link {{ page.version.version }}/backup.md %}#back-up-a-database) a single database:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    BACKUP DATABASE bank INTO 'external://backup_s3/app/db' AS OF SYSTEM TIME '-10s';
+    ~~~
+
+    Or back up multiple databases:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    BACKUP DATABASE bank, employees INTO 'external://backup_s3/app/db' AS OF SYSTEM TIME '-10s';
+    ~~~
+
+### Back up a table or view from your app VC
+
+Use the following procecss to take a one-off table-level or view-level backup on your app VC.
+
+1. [Connect](#connect-to-a-virtual-cluster) to the app VC as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the app VC. In this example the user has the `BACKUP` privilege.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url \
+    "postgresql://root@{primary node IP or hostname}:26257?options=-ccluster={app_virtual_cluster_name}&sslmode=verify-full" \
+    --certs-dir "certs"
+    ~~~
+
+1. [Back up]({% link {{ page.version.version }}/backup.md %}#back-up-a-table-or-view) a single table or view:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    BACKUP bank.customers INTO 'external://backup_s3/app/table' AS OF SYSTEM TIME '-10s';
+    ~~~
+
+    Or back up multiple tables:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    BACKUP bank.customers, bank.accounts INTO 'external://backup_s3/app/table' AS OF SYSTEM TIME '-10s';
+    ~~~
+
+### Back up a schema from your app VC
+
+Use the following procecss to take a one-off schema-level backup on your app VC using a wildcard (`*`).
+
+1. [Connect](#connect-to-a-virtual-cluster) to the app VC as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the app VC. In this example the user has the `BACKUP` privilege.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url \
+    "postgresql://root@{primary node IP or hostname}:26257?options=-ccluster={app_virtual_cluster_name}&sslmode=verify-full" \
+    --certs-dir "certs"
+    ~~~
+
+1. [Back up]({% link {{ page.version.version }}/backup.md %}#back-up-all-tables-in-a-schema) all tables in a schema:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    BACKUP test_schema.* INTO 'external://backup_s3/app/schema' AS OF SYSTEM TIME '-10s';
+    ~~~
+
+### Back up your system VC
 
 You can also back up your system VC to preserve metadata such as users and cluster settings. Use the following process to back up your system VC.
 
-1. [Connect](#connect-to-the-system-virtual-cluster) to the system VC as a user with the `admin` role on the system VC:
+1. [Connect](#connect-to-the-system-virtual-cluster) to the system VC as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the system VC. In this example the user has the `BACKUP` privilege.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -153,23 +266,30 @@ You can also back up your system VC to preserve metadata such as users and clust
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+    BACKUP INTO 'external://backup_s3/system' AS OF SYSTEM TIME '-10s';
     ~~~
 
     {% include {{ page.version.version }}/backups/backup-storage-collision.md %}
 
 ### Restore a virtual cluster
 
-You can restore a backup of a virtual cluster to:
+If needed, you can restore backups to a new app VC with no user-created databases or tables. To restore your app VC from the latest full backup:
 
-- The original virtual cluster on the original CockroachDB cluster.
-- A different virtual cluster on the original CockroachDB cluster.
-- A different virtual cluster on a different CockroachDB cluster with cluster virtualization enabled.
+1. [Connect to the destination app VC](#connect-to-a-virtual-cluster) as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the system VC. In this example the user has the `RESTORE` privilege.
 
-To restore only a virtual cluster:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url \
+    "postgresql://root@{primary node IP or hostname}:26257?options=-ccluster={app_virtual_cluster_name}&sslmode=verify-full" \
+    --certs-dir "certs"
+    ~~~
 
-1. [Connect to the destination virtual cluster](#connect-to-a-virtual-cluster) as a user with the `admin` role on the virtual cluster.
-1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}). Only the virtual cluster's data and settings are restored.
+1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    RESTORE FROM LATEST IN 's3://bucket/path?AUTH=implicit';
+    ~~~
 
 ## Configure cluster settings
 
