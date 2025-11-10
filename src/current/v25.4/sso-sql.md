@@ -280,7 +280,7 @@ This section describes the DB Console method. For obtaining JWTs directly from y
 
 ### Authenticate using DB Console-generated JWTs
 
-Once DB Console SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#configure-your-cluster-for-sso) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials, and although their expiry depends on the IdP configuration, it is usually 1 hour.
+Once DB Console SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#configure-your-cluster-for-sso) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials. The expiry is set based on the OIDC token from your identity provider, which is typically 1 hour.
 
 {{site.data.alerts.callout_success}}
 This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), but you can use any SQL client that supports sufficiently long passwords.
