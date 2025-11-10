@@ -32,7 +32,7 @@ You might not be certain that any particular SQL statement has had a query plan 
 
 If you observe that your application is responding more slowly than usual, and this behavior hasn't been explained by recent changes to table schemas or data, or by changes to cluster workloads, it's worth considering a query plan regression.
 
-If application activity slows at a particular time of day, note the time interval so that you can isolate SQL statements that tend to run in that interval. 
+If application performance slows at a particular time of day, note the time interval so that you can isolate SQL statements that tend to run in that interval.
 
 If instead the latency is associated with a particular action (for example, adding a new user), note the action. Then search through your application's codebase to isolate SQL queries associated with that action.
 
@@ -123,6 +123,8 @@ It's possible that the new index is well-chosen but that the schema change trigg
     The results will include statistics that were collected for each column in that table. The value in the "created" column of these results tells you when the statistics were collected. Compare the statistics of each table column across multiple timestamps. A change in the values of `row_count`, `distinct_count`, `null_count`, or other statistics may have affected planning. If the timestamp of the new statistics creation is associated with the time that the query plan changed, there may be a causal relationship between the two.
 
 If you suspect that the query plan change is the cause of the latency increase, and you suspect that the query plan changed due to stale statistics, you may want to [manually refresh the statistics for the table]({% link {{ page.version.version }}/create-statistics.md %}#examples).
+
+You may also want to consider the rare case in which sampling for [histogram]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-histogram-collection) collection missed important values that would impact planning. You might want to increase the [number of rows sampled for histograms]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-histogram-samples-count) before refreshing the table statistics.
 
 #### Determine if a literal in the SQL statement has changed
 
