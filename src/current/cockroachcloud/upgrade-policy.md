@@ -42,20 +42,20 @@ You are responsible for upgrading a CockroachDB {{ site.data.products.advanced }
 
 The following table describes currently-supported versions on {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters:
 
-Version | Release Type | Support period | Release date | EOS date
-:------:|:------------:|:--------------:|:------------:|:---------:
-v25.4   | Regular      | 12 months      | 2025-11-03   | 2026-11-03
-v25.2   | Regular      | 12 months      | 2025-05-12   | 2026-05-12
-v24.3   | Regular      | 12 months      | 2024-11-18   | 2025-11-18
+Version | Release Type | Release date | EOS date
+:------:|:------------:|:------------:|:---------:
+v25.4   | Regular      | 2025-11-03   | 2026-11-03
+v25.2   | Regular      | 2025-05-12   | 2026-05-12
+v24.3   | Regular      | 2024-11-18   | 2025-11-18
 
 The following table describes currently-supported versions on {{ site.data.products.advanced }} clusters:
 
-Version | Release Type | Support period | Release date | EOS date
-:------:|:------------:|:--------------:|:------------:|:---------:
-v25.4   | Regular      | Identical to [Self-Hosted support coverage]({% link releases/release-support-policy.md %}#supported-versions) | 2025-11-03 | 2026-11-03
-v25.3   | Innovation   | 6 months       | 2025-08-04   | 2026-02-04
-v25.2   | Regular      | Identical to [Self-Hosted support coverage]({% link releases/release-support-policy.md %}#supported-versions) | 2025-05-09 | 2026-05-12
-v24.3   | Regular      | Identical to [Self-Hosted support coverage]({% link releases/release-support-policy.md %}#supported-versions) | 2024-11-18 | 2026-05-05
+Version | Release Type | Release date | EOS date
+:------:|:------------:|:------------:|:---------:
+v25.4   | Regular      | 2025-11-03   | 2026-11-03
+v25.3   | Innovation   | 2025-08-04   | 2026-02-04
+v25.2   | Regular      | 2025-05-09   | 2026-05-12
+v24.3   | Regular      | 2024-11-18   | 2026-05-05
 
 To review a version's release notes, click its link in the Version column.
 
@@ -63,13 +63,13 @@ For expected future versions, refer to [Upcoming releases]({% link releases/inde
 
 ### EOS versions
 
-Version | Release Type | Support period | Release date | EOS date
-:------:|:------------:|:--------------:|:------------:|:--------:
-v25.1   | Innovation   | 6 months       | 2025-02-18   | 2025-08-18
-v24.1   | Regular      | 12 months      | 2024-05-20   | 2025-05-20
-v24.2   | Innovation   | 6 months       | 2024-08-12   | 2025-02-12
-v23.2   | Regular      | 12 months      | 2024-02-05   | 2025-02-05
-v23.1   | Regular      | 12 months      | 2023-05-15   | 2024-05-15
+Version | Release Type | Release date | EOS date
+:------:|:------------:|:------------:|:--------:
+v25.1   | Innovation   | 2025-02-18   | 2025-08-18
+v24.1   | Regular      | 2024-05-20   | 2025-05-20
+v24.2   | Innovation   | 2024-08-12   | 2025-02-12
+v23.2   | Regular      | 2024-02-05   | 2025-02-05
+v23.1   | Regular      | 2023-05-15   | 2024-05-15
 
 ## Patch version upgrades
 
