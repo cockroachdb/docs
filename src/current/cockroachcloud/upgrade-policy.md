@@ -15,7 +15,7 @@ A cluster running an unsupported CockroachDB version is not eligible for Cockroa
 
 ### Version and upgrade support by cloud plan
 
-[Major versions]({% link releases/index.md %}) of CockroachDB are labeled either as [Regular releases]({% link releases/index.md %}#major-releases) or [Innovation releases]({% link releases/index.md %}).
+[Major versions]({% link releases/index.md %}) of CockroachDB are labeled either as [Regular releases]({% link releases/index.md %}#major-releases) or [Innovation releases]({% link releases/index.md %}#major-releases).
 
 - **Regular releases** are supported for 12 months from their initial production release date.
 - **Innovation releases** are supported for 6 months from their initial production release date.
@@ -42,7 +42,7 @@ You are responsible for upgrading a CockroachDB {{ site.data.products.advanced }
 
 The following table describes currently-supported versions on {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters:
 
-Version | Release Type | Release date | EOS date
+Version | Release Type | Release date | End-of-support (EOS) date
 :------:|:------------:|:------------:|:---------:
 v25.4   | Regular      | 2025-11-03   | 2026-11-03
 v25.2   | Regular      | 2025-05-12   | 2026-05-12
@@ -50,7 +50,7 @@ v24.3   | Regular      | 2024-11-18   | 2025-11-18
 
 The following table describes currently-supported versions on {{ site.data.products.advanced }} clusters:
 
-Version | Release Type | Release date | EOS date
+Version | Release Type | Release date | End-of-support (EOS) date
 :------:|:------------:|:------------:|:---------:
 v25.4   | Regular      | 2025-11-03   | 2026-11-03
 v25.3   | Innovation   | 2025-08-04   | 2026-02-04
@@ -63,7 +63,7 @@ For expected future versions, refer to [Upcoming releases]({% link releases/inde
 
 ### EOS versions
 
-Version | Release Type | Release date | EOS date
+Version | Release Type | Release date | End-of-support (EOS) date
 :------:|:------------:|:------------:|:--------:
 v25.1   | Innovation   | 2025-02-18   | 2025-08-18
 v24.1   | Regular      | 2024-05-20   | 2025-05-20
