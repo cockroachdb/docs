@@ -5,6 +5,10 @@ toc: true
 docs_area: manage
 ---
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 If you manage users through an identity provider (IdP) that supports JSON Web Tokens (JWT), you can configure CockroachDB to automatically assign [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}) to users based on group claims in their JWT tokens, simplifying access control.
 
 If JWT authorization is enabled:
