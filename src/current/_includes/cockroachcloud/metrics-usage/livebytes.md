@@ -1,1 +1,0 @@
-The amount of data being stored in the cluster. In the [Storage Used graph]({% link cockroachcloud/cluster-overview-page.md %}#storage-used), this is the logical number of live bytes and does not account for compression or replication.

@@ -1,1 +1,0 @@
-This metric shows the number of orderly transaction [rollbacks]({% link {{ site.current_cloud_version }}/rollback-transaction.md %}). A persistently high number of rollbacks may negatively impact the workload performance and needs to be investigated.

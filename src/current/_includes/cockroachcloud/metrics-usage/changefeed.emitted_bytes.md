@@ -1,1 +1,0 @@
-This metric provides a useful context when assessing the state of [changefeeds]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}). This metric characterizes the throughput bytes being streamed from the CockroachDB cluster.

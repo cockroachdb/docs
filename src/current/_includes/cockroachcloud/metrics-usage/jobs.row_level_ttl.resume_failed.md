@@ -1,1 +1,0 @@
-This metric should remain at zero. Repeated errors means the [Row-Level TTL]({% link {{ site.current_cloud_version }}/row-level-ttl.md %}) job is not deleting data.

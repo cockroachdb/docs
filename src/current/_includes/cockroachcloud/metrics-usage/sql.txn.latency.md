@@ -1,1 +1,0 @@
-Over the last minute, this cluster executed 90% or 99% of [transactions]({% link {{ site.current_cloud_version }}/transactions.md %}) within this time. This time does not include network latency between the cluster and client. These metrics provide an overview of the current SQL workload.
