@@ -1,0 +1,26 @@
+[project]
+name = "python-mcp-crdb-docs"
+version = "0.1.0"
+description = "FastMCP server exposing CockroachDB docs search and fetching"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=0.1.7",
+    "httpx>=0.27.0",
+    "pydantic>=2.7.0",
+    "algoliasearch>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2.0",
+    "pytest-asyncio>=0.23.0",
+    "respx>=0.21.1",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
