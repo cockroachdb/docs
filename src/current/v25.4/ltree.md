@@ -5,6 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 The `LTREE` [data type]({% link {{ page.version.version }}/data-types.md %}) stores hierarchical tree-like structures as a *label path*, which is a sequence of dot-separated *labels*. Labels represent positions in a tree hierarchy. `LTREE` is useful for efficiently querying and managing hierarchical data without using recursive joins.
 
 ## Syntax

@@ -385,7 +385,7 @@ Like any database system, if you run out of disk space the system will no longer
 - [What happens when a node runs out of disk space?]({% link {{ page.version.version }}/operational-faqs.md %}#what-happens-when-a-node-runs-out-of-disk-space)
 - [Why is memory usage increasing despite lack of traffic?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-memory-usage-increasing-despite-lack-of-traffic)
 - [Why is disk usage increasing despite lack of writes?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-disk-usage-increasing-despite-lack-of-writes)
-- [Can I reduce or disable the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data)
+- [Can I reduce the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-the-storage-of-time-series-data)
 
 In rare cases, disk usage can increase on nodes with [Raft followers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) due to a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
 
@@ -431,6 +431,7 @@ Symptoms of disk stalls include:
 - Bad cluster write performance, usually in the form of a substantial drop in QPS for a given workload.
 - [Node liveness issues](#node-liveness-issues).
 - Writes on one node come to a halt. This can happen because in rare cases, a node may be able to perform liveness checks (which involve writing to disk) even though it cannot write other data to disk due to one or more slow/stalled calls to `fsync`. Because the node is passing its liveness checks, it is able to hang onto its leases even though it cannot make progress on the ranges for which it is the leaseholder. This wedged node has a ripple effect on the rest of the cluster such that all processing of the ranges whose leaseholders are on that node basically grinds to a halt. As mentioned above, CockroachDB's disk stall detection will attempt to shut down the node when it detects this state.
+- Messages like the following start appearing in the [`STORAGE` logging channel]({% link {{ page.version.version }}/logging.md %}#storage): `disk slowness detected: write to file {path/to/store/*.sst} has been ongoing for {duration}s`
 
 Causes of disk stalls include:
 
@@ -447,6 +448,12 @@ CockroachDB's built-in disk stall detection works as follows:
     - `file write stall detected: %s`
 
 - During [node liveness heartbeats](#node-liveness-issues), the [storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}) writes to disk as part of the node liveness heartbeat process.
+
+If you see messages like the following in the [`STORAGE` logging channel]({% link {{ page.version.version }}/logging.md %}#storage), it is an early sign of severe I/O slowness, and usually means a fatal stall is imminent:
+
+- `disk slowness detected: write to file {path/to/store/*.sst} has been ongoing for {duration}s`
+
+Repeated occurrences of this message usually mean the node is effectively degraded: it will struggle to hold [range leases]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder) and serve requests, and will degrade the entire cluster generally. Do not raise the stall thresholds to mask hardware issues. Instead, [drain and decommission the node]({% link {{ page.version.version }}/node-shutdown.md %}) and replace the [underlying storage]({% link {{ page.version.version }}/cockroach-start.md %}#storage). If you are considering tuning, refer to [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) (or the corresponding environment variable `COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`), but note that increasing these values generally prolongs unavailability rather than fixing the underlying problem.
 
 #### Disk utilization is different across nodes in the cluster
 

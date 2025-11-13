@@ -260,7 +260,7 @@ Cloud providers may vary in how they calculate each category and define each reg
 
 #### Same-region
 
-There are no charges for same-region data transfer between CockroachDB cluster nodes. Data egressing the cluster to endpoints in the same region for backups or changefeeds, or using private connectivity, is charged the cloud provider's list price for same-region data transfer.
+There are no charges for same-region data transfer between CockroachDB cluster nodes. Data egressing the cluster to endpoints in the same region for backups or changefeeds, or using private connectivity, is charged the cloud provider's list price for same-region data transfer. Egress private endpoint usage is posted in separate line items under the **Data transfer** section, as  **Private endpoint - bytes processed - Advanced plan**.
 
 #### Cross-region
 
@@ -270,7 +270,7 @@ Cross-region data transfer includes:
 
 - Data transfer required to support queries that involve lookups on nodes in another region.  
 - CockroachDB replication across nodes that are in different regions.  
-- Data egress from the CockroachDB Cloud cluster via supported [private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) services to a private endpoint in another region.  
+- Data egress, including [changefeed and backup traffic egress]({% link cockroachcloud/egress-private-endpoints.md %}), from the CockroachDB {{ site.data.products.cloud }} cluster via supported [private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) services to a private endpoint in another region.  
 - [Managed backup]({% link cockroachcloud/backup-and-restore-overview.md %}#managed-backups) and [Self-managed backup]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) data transfer to another region.  
 - Change data capture (changefeed) data transfer to another region.
 
@@ -306,6 +306,8 @@ In CockroachDB {{ site.data.products.standard }}, CDC is billed monthly based on
 {% include common/define-watched-cdc.md %}
 
 In CockroachDB {{ site.data.products.advanced }}, CDC is billed monthly based on the total size of a cluster's watched tables and whether the {{ site.data.products.advanced }} security add-on is enabled. The per-GiB unit price is tiered, based on the size of watched data: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
+
+Data sent from a CockroachDB {{ site.data.products.advanced }} cluster over an [egress connection to a private endpoint]({% link cockroachcloud/egress-private-endpoints.md %}), such as changefeeds and logs, are charged according to [data transfer costs](#data-transfer).
 
 </section>
 
