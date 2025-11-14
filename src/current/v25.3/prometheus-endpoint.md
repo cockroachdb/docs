@@ -15,7 +15,7 @@ The metrics are formatted for integration with [Prometheus](https://prometheus.i
 In addition to using the exported time-series data to monitor a cluster through an external system, you can write alerting rules to ensure prompt notification of critical events or issues requiring intervention or investigation. Refer to [Essential Alerts]({% link {{ page.version.version }}/essential-alerts-self-hosted.md %}) for more details.
 {{site.data.alerts.end}}
 
-Even if you rely on external tools for storing and visualizing your cluster's time-series metrics, CockroachDB continues to store time-series metrics for its [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards), unless you manually [disable this collection]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data). These stored time-series metrics may be used to generate a [tsdump]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}), which may be critical during escalations to Cockroach Labs support.
+Even if you rely on external tools for storing and visualizing your cluster's time-series metrics, CockroachDB continues to store time-series metrics for its [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards). These stored time-series metrics may be used to generate a [tsdump]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}), which may be critical during investigations with Cockroach Labs support.
 
 ## `_status/vars`
 
