@@ -30,6 +30,9 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 	- A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses).
 	- A [CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
+{{site.data.alerts.callout_info}}
+CockroachDB {{ site.data.products.cloud }} {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters do not have access to the DB Console. For SQL client authentication on these tiers, refer to [Cluster Single Sign-on (SSO) using the Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}).
+{{site.data.alerts.end}}
 
 ## Log in to a cluster's DB Console with SSO
 
@@ -152,7 +155,18 @@ Cluster Setting | Description
 You can optionally enable the [`server.oidc_authentication.autologin` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to automatically log in an authenticated user who visits the DB Console.
 {{site.data.alerts.end}}
 
+## Configure role-based access control
+
+<span class="version-tag">New in v25.4:</span>
+
+Once OIDC authentication is configured, you can optionally enable automatic role synchronization based on group memberships from your identity provider. This simplifies access control by automatically granting and revoking CockroachDB roles based on IdP groups.
+
+For detailed instructions on configuring OIDC authorization, refer to [Configure OIDC Authorization for DB Console]({% link {{ page.version.version }}/oidc-authorization.md %}).
+
 ## See also
 
 - [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]({% link {{ page.version.version }}/sso-sql.md %})
+- [Configure OIDC Authorization for DB Console]({% link {{ page.version.version }}/oidc-authorization.md %})
+- [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %})
+- [LDAP Authorization]({% link {{ page.version.version }}/ldap-authorization.md %})
