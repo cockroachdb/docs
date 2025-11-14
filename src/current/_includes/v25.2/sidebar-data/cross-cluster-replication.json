@@ -47,6 +47,12 @@
             ]
           },
           {
+            "title": "Upgrade a Cluster Running PCR",
+            "urls": [
+              "/${VERSION}/upgrade-with-pcr.html"
+            ]
+          },
+          {
             "title": "Fail Over from a Primary to a Standby Cluster",
             "urls": [
               "/${VERSION}/failover-replication.html"
