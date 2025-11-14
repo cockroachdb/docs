@@ -95,6 +95,14 @@ The SQL built-in function [workload_index_recs]({% link {{ page.version.version 
 
 [Triggers]({% link {{ page.version.version }}/triggers.md %}) are in Preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
 
+### JWT authorization
+
+[JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) allows CockroachDB to automatically assign roles to users based on group claims in their JWT tokens. When a client connects using a JWT token, the cluster extracts group information and maps each group to a corresponding cluster role, simplifying access control for organizations using identity providers.
+
+### OIDC authorization for DB Console
+
+[OIDC authorization for DB Console]({% link {{ page.version.version }}/oidc-authorization.md %}) allows CockroachDB to automatically assign roles to users based on group claims when they log into the DB Console via OIDC. The cluster extracts group information from ID tokens or access tokens and maps each group to a corresponding cluster role, streamlining access management for DB Console users.
+
 ### Admission control for ingesting snapshots
 
 The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` is in Preview. When configured, it limits the disk impact of ingesting snapshots on a node.
