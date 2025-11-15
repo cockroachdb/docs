@@ -64,6 +64,7 @@ For privileges required by specific statements, see the documentation for the re
 - The `root` user is automatically created as an `admin` role and assigned the `ALL` privilege for new databases.
 - All privileges of a role are inherited by all its members.
 - Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
+- {% include_cached new-in.html version="v25.4" %} When you grant role membership (for example, `GRANT {role} TO {user}`), CockroachDB waits for full-cluster visibility of the updated role metadata. The operation is not blocked by long-running transactions that may have accessed older metadata, and it does not create a [background job]({% link {{ page.version.version }}/show-jobs.md %}).
 
 ## Known limitations
 
