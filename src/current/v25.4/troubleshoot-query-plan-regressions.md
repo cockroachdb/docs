@@ -16,9 +16,9 @@ For any given SQL statement, if the [cost-based optimizer]({% link {{page.versio
 
 ## What to look out for
 
-Query plan regressions only increase the execution time of SQL statements that use that plan. This means that the overall service latency of the cluster will only be affected during the execution of statements that are run with the problematic query plan. 
+Query plan regressions only increase the execution time of SQL statements that use the affected plan. This means that the overall service latency of the cluster will only be affected during the execution of statements that are run with the problematic query plan.
 
-This might make those latency spikes harder to identify. For example, if the problematic plan only affects a query that's run on an infrequent, ad-hoc basis, it might be difficult to notice a pattern among the graphs on the [**Metrics** page]({% link {{page.version.version}}/ui-overview.md %}#metrics).
+As a result, these latency spikes can be hard to identify. For example, if the problematic plan only affects a query that's run on an infrequent, ad-hoc basis, it might be difficult to notice a pattern among the graphs on the [**Metrics** page]({% link {{page.version.version}}/ui-overview.md %}#metrics).
 
 To identify and fix query plan regressions, you must determine whether certain statement executions are associated with increased service latency. Next, check whether the statement’s query plan has changed. Finally, use CockroachDB's tools to understand why the query plan changed, so you can confirm that the change directly caused the latency increase.
 
@@ -30,9 +30,9 @@ You might not be certain whether any particular SQL statement has experienced a 
 
 #### Notice a recent latency increase in your application
 
-If you observe that your application is responding more slowly than usual, and this behavior hasn't been explained by recent changes to table schemas or data, or by changes to cluster workloads, it's worth considering a query plan regression.
+If you observe that your application is responding more slowly than usual, and this behavior isn’t explained by recent changes to table schemas, data, or cluster workloads, it's worth considering a query plan regression.
 
-If application performance slows at a particular time of day, note the time interval so that you can isolate SQL statements that tend to run in that interval.
+If performance slows at a particular time of day, note the time interval to help isolate SQL statements that typically run during that time.
 
 If instead the latency is associated with a particular action (for example, adding a new user), note the action. Then search through your application's codebase to isolate SQL queries associated with that action.
 
@@ -78,12 +78,12 @@ For each suspect SQL statement, determine whether the high latency is caused by 
 5. Note which query plan was in use just before the latency increase, and record the values in the **Plan Gist**, **Average Execution Time**, and **Average Rows Read** columns.
 6. Compare the query plans.
     
-If the newer plan is the same as the older plan (if it has the same Plan Gist), then there was no query plan regression, because the plan hasn't changed.
+If the newer plan matches the older plan (i.e., it has the same **Plan Gist**), there was no query plan regression.
     
 If the newer plan differs from the older plan, the query plan has changed:
     
 - Compare the **Average Execution Time** of the two plans. If the newer plan’s average execution time is significantly higher than the older plan’s, it may indicate a query plan regression. It's also possible that the increase in latency is coincidental, or that the plan change was not the actual cause. If the average execution time is approximately the same, or less, this plan change is unlikely to be a regression.
-- Compare the **Average Rows Read** of the two plans. If the value for the newer plan is significantly higher than the value for the older plan (as in: an order of magnitude) it's very possible that this is due to a query plan regression. If the value for the newer plan is only moderately higher than the value for the older plan, it's possible that this is due to a query plan regression, but it's also possible that this is due to normal table growth. An increase in this value could be causing an increase in the average execution time.
+- Compare the **Average Rows Read** of the two plans. If the newer plan’s value is significantly higher (such as an order of magnitude greater), it likely indicates a query plan regression. If the value for the newer plan is only moderately higher than the value for the older plan, it's possible that this is due to a query plan regression, but it's also possible that this is due to normal table growth. This increase may contribute to higher average execution time.
 - For all of the query plan statistics in the table, consider whether the newer query plan's values are expected, based on your knowledge of the application and cluster workloads.
 
 #### Multiple valid query plans
