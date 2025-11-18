@@ -12,7 +12,7 @@ For any given SQL statement, if the [cost-based optimizer]({% link {{page.versio
 
 ## Before you begin
 
-- [Understand how the cost-based optimizer chooses query plans]({% link {{page.version.version}}/cost-based-optimizer.md %}) based on table statistics, and how those statistics are refreshed.
+- [Understand how the cost-based optimizer chooses query plans]({% link {{page.version.version}}/cost-based-optimizer.md %}) based on table statistics and how those statistics are refreshed.
 
 ## What to look out for
 
@@ -20,7 +20,7 @@ Query plan regressions only increase the execution time of SQL statements that u
 
 As a result, these latency spikes can be hard to identify. For example, if the problematic plan only affects a query that's run on an infrequent, ad-hoc basis, it might be difficult to notice a pattern among the graphs on the [**Metrics** page]({% link {{page.version.version}}/ui-overview.md %}#metrics).
 
-To identify and fix query plan regressions, you must determine whether certain statement executions are associated with increased service latency. Next, check whether the statement’s query plan has changed. Finally, use CockroachDB's tools to understand why the query plan changed, so you can confirm that the change directly caused the latency increase.
+To identify and fix query plan regressions, you must determine whether certain statement executions are associated with increased service latency. Next, check whether the statement’s query plan has changed. Finally, use CockroachDB tools to understand why the query plan changed, so you can confirm that the change directly caused the latency increase.
 
 ## Troubleshooting
 
@@ -52,7 +52,7 @@ Knowing what service latency to expect, based on your cluster's usual activity, 
 
 ### Step 2. Identify high-latency statements
 
-One way to track down query plan regressions is to identify SQL statements with relatively high execution latency. These statements might be associated with a latency increase.
+One way to track down query plan regressions is to identify SQL statements with relatively high execution latency. These statements may be associated with increased latency.
 
 1. Go to the [**SQL Activity** > **Statements** page]({% link {{page.version.version}}/ui-statements-page.md %}) in the DB Console.
 2. If you identified specific time intervals in Step 1, use the time interval selector to define a custom interval. Click **Apply**.
@@ -78,7 +78,7 @@ For each suspect SQL statement, determine whether the high latency is caused by 
 5. Note which query plan was in use just before the latency increase, and record the values in the **Plan Gist**, **Average Execution Time**, and **Average Rows Read** columns.
 6. Compare the query plans.
     
-If the newer plan matches the older plan (i.e., it has the same **Plan Gist**), there was no query plan regression.
+If the newer plan matches the older plan (that is, it has the same **Plan Gist**), there was no query plan regression.
     
 If the newer plan differs from the older plan, the query plan has changed:
     
@@ -88,7 +88,7 @@ If the newer plan differs from the older plan, the query plan has changed:
 
 #### Multiple valid query plans
 
-If multiple query plans were used before and after the latency increase, the SQL statement may have multiple valid query plans. This can occur when the optimizer chooses a plan based on literal values in the SQL query, those replaced by the "_ " placeholder in the statement fingerprint. The optimizer may decide that different plans are better for different literal values.
+If multiple query plans were used before and after the latency increase, the SQL statement may have multiple valid query plans. This can occur when the optimizer chooses a plan based on literal values in the SQL query, those replaced by the "_" placeholder in the statement fingerprint. The optimizer may decide that different plans are better for different literal values.
 
 With multiple valid query plans, you’re not just looking for a plan change, but for a shift in the _distribution of plans_ used for the statement.
 
@@ -108,7 +108,7 @@ For any query plans whose increased execution time seems suspicious, investigate
 
 #### Determine if the table indexes changed
 
-1. Check the **Used Indexes** column for both the older and newer query plans. If these aren't the same, it's likely that the creation or deletion of an index resulted in a change to the statement's query plan.
+1. Check the **Used Indexes** column for both the older and newer query plans. If these differ, it's likely that the creation or deletion of an index resulted in a change to the statement's query plan.
 2. In the **Explain Plans** tab, click the **Plan Gist** of the more recent plan to view its details. Identify the table(s) used in the initial "scan" step of the plan.
 3. In your SQL client, run `SHOW INDEXES FROM <table_name>;` for each of those tables.
 4. Make sure that the query plan is using a table index that makes sense, given the query and the table's full set of indexes.
