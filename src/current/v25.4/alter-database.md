@@ -349,15 +349,13 @@ For usage, see [Synopsis](#synopsis).
 
 ### `RESET {session variable}`
 
-`ALTER DATABASE ... RESET {session variable}` resets a [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for a database to its default value for the client session.
+`ALTER DATABASE ... RESET {session variable}` clears a database-level override of a [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) so that future sessions use the default value.
 
 {% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
 
 #### Required privileges
 
 To reset default session variable values for a database with `ALTER DATABASE ... RESET {session variable}`, the user must be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or the [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) of the target database.
-
-All other session variables do not require [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) to modify.
 
 #### Parameters
 
