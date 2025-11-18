@@ -310,6 +310,8 @@ See [Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md 
 
 ### Create incremental backups
 
+{% include common/sql/incremental-location-warning.md %}
+
 When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) storage location.
 
 To take an incremental backup using the `LATEST` keyword:

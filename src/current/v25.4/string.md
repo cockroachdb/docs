@@ -143,6 +143,7 @@ Type | Details
 `INT` | Requires supported [`INT`]({% link {{ page.version.version }}/int.md %}) string format, e.g., `'10'`.
 `INTERVAL` | Requires supported [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) string format, e.g., `'1h2m3s4ms5us6ns'`.
 `JSONPATH` | Requires a valid [`JSONPath`]({% link {{ page.version.version }}/jsonpath.md %}) expression string, e.g., `'$'` or `'$.players[*] ? (@.stats.ppg > 30)'`.
+`LTREE` | Requires supported [`LTREE`]({% link {{ page.version.version }}/ltree.md %}) string format, e.g., `'Animals.Mammals.Carnivora'`.
 `TIME` | Requires supported [`TIME`]({% link {{ page.version.version }}/time.md %}) string format, e.g., `'01:22:12'` (microsecond precision).
 `TIMESTAMP` | Requires supported [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) string format, e.g., `'2016-01-25 10:10:10.555555'`.
 `TSQUERY` | Requires supported [`TSQUERY`]({% link {{ page.version.version }}/tsquery.md %}) string format, e.g., `'Requires & supported & TSQUERY & string & format'`.<br>Note that casting a string to a `TSQUERY` will not normalize the tokens into lexemes. To do so, [use `to_tsquery()`, `plainto_tsquery()`, or `phraseto_tsquery()`](#convert-string-to-tsquery).
