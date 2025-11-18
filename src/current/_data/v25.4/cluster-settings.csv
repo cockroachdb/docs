@@ -7,7 +7,6 @@ admission.epoch_lifo.queue_delay_threshold_to_switch_to_lifo,duration,105ms,"the
 admission.kv.enabled,boolean,true,"when true, work performed by the KV layer is subject to admission control",system-only
 admission.sql_kv_response.enabled,boolean,true,"when true, work performed by the SQL layer when receiving a KV response is subject to admission control",application
 admission.sql_sql_response.enabled,boolean,true,"when true, work performed by the SQL layer when receiving a DistSQL response is subject to admission control",application
-bulkio.backup.deprecated_full_backup_with_subdir.enabled,boolean,false,"when true, a backup command with a user specified subdirectory will create a full backup at the subdirectory if no backup already exists at that subdirectory",application
 bulkio.backup.file_size,byte size,128 MiB,target size for individual data files produced during BACKUP,application
 bulkio.backup.read_timeout,duration,5m0s,"amount of time after which a read attempt is considered timed out, which causes the backup to fail",application
 bulkio.backup.read_with_priority_after,duration,1m0s,amount of time since the read-as-of time above which a BACKUP should use priority when retrying reads,application
@@ -25,6 +24,7 @@ changefeed.kafka_v2_error_details.enabled,boolean,true,"if enabled, Kafka v2 sin
 changefeed.memory.per_changefeed_limit,byte size,512 MiB,controls amount of data that can be buffered per changefeed,application
 changefeed.resolved_timestamp.min_update_interval (alias: changefeed.min_highwater_advance),duration,0s,minimum amount of time that must have elapsed since the last time a changefeed's resolved timestamp was updated before it is eligible to be updated again; default of 0 means no minimum interval is enforced but updating will still be limited by the average time it takes to checkpoint progress,application
 changefeed.node_throttle_config,string,,specifies node level throttling configuration for all changefeeeds,application
+changefeed.progress.frontier_persistence.interval,duration,30s,minimum amount of time that must elapse before a changefeed will persist its entire span frontier again,application
 changefeed.protect_timestamp.max_age,duration,96h0m0s,fail the changefeed if the protected timestamp age exceeds this threshold; 0 disables expiration,application
 changefeed.protect_timestamp_interval,duration,10m0s,controls how often the changefeed forwards its protected timestamp to the resolved timestamp,application
 changefeed.schema_feed.read_with_priority_after,duration,1m0s,retry with high priority if we were not able to read descriptors for too long; 0 disables,application
@@ -80,11 +80,11 @@ feature.infer_rbr_region_col_using_constraint.enabled,boolean,false,"set to true
 feature.restore.enabled,boolean,true,"set to true to enable restore, false to disable; default is true",application
 feature.schema_change.enabled,boolean,true,"set to true to enable schema changes, false to disable; default is true",application
 feature.stats.enabled,boolean,true,"set to true to enable CREATE STATISTICS/ANALYZE, false to disable; default is true",application
-feature.vector_index.enabled,boolean,false,"set to true to enable vector indexes, false to disable; default is false",application
+feature.vector_index.enabled,boolean,true,"set to true to enable vector indexes, false to disable; default is true",application
 jobs.retention_time,duration,336h0m0s,the amount of time for which records for completed jobs are retained,application
 kv.allocator.lease_rebalance_threshold,float,0.05,minimum fraction away from the mean a store's lease count can be before it is considered for lease-transfers,system-only
 kv.allocator.load_based_lease_rebalancing.enabled,boolean,true,set to enable rebalancing of range leases based on load and latency,system-only
-kv.allocator.load_based_rebalancing,enumeration,leases and replicas,"whether to rebalance based on the distribution of load across stores [off = 0, leases = 1, leases and replicas = 2]",system-only
+kv.allocator.load_based_rebalancing,enumeration,leases and replicas,"whether to rebalance based on the distribution of load across stores [off = 0, leases = 1, leases and replicas = 2, multi-metric only = 3, multi-metric and count = 4]",system-only
 kv.allocator.load_based_rebalancing.objective,enumeration,cpu,"what objective does the cluster use to rebalance; if set to `qps` the cluster will attempt to balance qps among stores, if set to `cpu` the cluster will attempt to balance cpu usage among stores [qps = 0, cpu = 1]",system-only
 kv.allocator.load_based_rebalancing_interval,duration,1m0s,the rough interval at which each store will check for load-based lease / replica rebalancing opportunities,system-only
 kv.allocator.qps_rebalance_threshold,float,0.1,minimum fraction away from the mean a store's QPS (such as queries per second) can be before it is considered overfull or underfull,system-only
@@ -127,14 +127,13 @@ kv.transaction.max_intents_bytes,integer,4194304,maximum number of bytes used to
 kv.transaction.max_refresh_spans_bytes,integer,4194304,maximum number of bytes used to track refresh spans in serializable transactions,application
 kv.transaction.randomized_anchor_key.enabled,boolean,false,dictates whether a transactions anchor key is randomized or not,application
 kv.transaction.reject_over_max_intents_budget.enabled,boolean,false,"if set, transactions that exceed their lock tracking budget (kv.transaction.max_intents_bytes) are rejected instead of having their lock spans imprecisely compressed",application
-kv.transaction.write_buffering.enabled,boolean,false,"if enabled, transactional writes are buffered on the client",application
-kv.transaction.write_buffering.max_buffer_size,byte size,4.0 MiB,"if non-zero, defines that maximum size of the buffer that will be used to buffer transactional writes per-transaction",application
 kv.transaction.write_pipelining.locking_reads.enabled,boolean,true,"if enabled, transactional locking reads are pipelined through Raft consensus",application
 kv.transaction.write_pipelining.ranged_writes.enabled,boolean,true,"if enabled, transactional ranged writes are pipelined through Raft consensus",application
 kv.transaction.write_pipelining.enabled (alias: kv.transaction.write_pipelining_enabled),boolean,true,"if enabled, transactional writes are pipelined through Raft consensus",application
 kv.transaction.write_pipelining.max_batch_size (alias: kv.transaction.write_pipelining_max_batch_size),integer,128,"if non-zero, defines that maximum size batch that will be pipelined through Raft consensus",application
 kvadmission.store.provisioned_bandwidth,byte size,0 B,"if set to a non-zero value, this is used as the provisioned bandwidth (in bytes/s), for each store. It can be overridden on a per-store basis using the --store flag. Note that setting the provisioned bandwidth to a positive value may enable disk bandwidth based admission control, since admission.disk_bandwidth_tokens.elastic.enabled defaults to true",system-only
 kvadmission.store.snapshot_ingest_bandwidth_control.enabled,boolean,true,"if set to true, snapshot ingests will be subject to disk write control in AC",system-only
+log.channel_compatibility_mode.enabled,boolean,true,"when true, logs will continue to log to the expected logging channels; when false, logs will be moved to new logging channels as part of a logging channel consolidation effort",application
 obs.tablemetadata.automatic_updates.enabled,boolean,false,enables automatic updates of the table metadata cache system.table_metadata,application
 obs.tablemetadata.data_valid_duration,duration,20m0s,the duration for which the data in system.table_metadata is considered valid,application
 schedules.backup.gc_protection.enabled,boolean,true,enable chaining of GC protection across backups run as part of a schedule,application
@@ -211,6 +210,7 @@ sql.auth.change_own_password.enabled,boolean,false,"controls whether a user is a
 sql.auth.grant_option_for_owner.enabled,boolean,true,determines whether the GRANT OPTION for privileges is implicitly given to the owner of an object,application
 sql.auth.grant_option_inheritance.enabled,boolean,true,determines whether the GRANT OPTION for privileges is inherited through role membership,application
 sql.auth.public_schema_create_privilege.enabled,boolean,true,determines whether to grant all users the CREATE privileges on the public schema when it is created,application
+sql.catalog.allow_leased_descriptors.enabled,boolean,false,"if true, catalog views (crdb_internal, information_schema, pg_catalog) can use leased descriptors for improved performance",application
 sql.closed_session_cache.capacity,integer,1000,the maximum number of sessions in the cache,application
 sql.closed_session_cache.time_to_live,integer,3600,"the maximum time to live, in seconds",application
 sql.contention.event_store.capacity,byte size,64 MiB,the in-memory storage capacity per-node of contention event store,application
@@ -356,6 +356,7 @@ sql.insights.execution_insights_capacity,integer,1000,the size of the per-node s
 sql.insights.high_retry_count.threshold,integer,10,the number of retries a slow statement must have undergone for its high retry count to be highlighted as a potential problem,application
 sql.insights.latency_threshold,duration,100ms,amount of time after which an executing statement is considered slow. Use 0 to disable.,application
 sql.log.redact_names.enabled,boolean,false,"if set, schema object identifers are redacted in SQL statements that appear in event logs",application
+sql.log.scan_row_count_misestimate.enabled,boolean,false,"when set to true, log a warning when a scan's actual row count differs significantly from the optimizer's estimate",application
 sql.log.slow_query.experimental_full_table_scans.enabled,boolean,false,"when set to true, statements that perform a full table/index scan will be logged to the slow query log even if they do not meet the latency threshold. Must have the slow query log enabled for this setting to have any effect.",application
 sql.log.slow_query.internal_queries.enabled,boolean,false,"when set to true, internal queries which exceed the slow query log threshold are logged to a separate log. Must have the slow query log enabled for this setting to have any effect.",application
 sql.log.slow_query.latency_threshold,duration,0s,"when set to non-zero, log statements whose service latency exceeds the threshold to a secondary logger on each node",application
@@ -379,6 +380,7 @@ sql.multiple_modifications_of_table.enabled,boolean,false,"if true, allow statem
 sql.multiregion.drop_primary_region.enabled,boolean,true,allows dropping the PRIMARY REGION of a database if it is the last region,application
 sql.notices.enabled,boolean,true,enable notices in the server/client protocol being sent,application
 sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled,boolean,false,"if enabled, uniqueness checks may be planned for mutations of UUID columns updated with gen_random_uuid(); otherwise, uniqueness is assumed due to near-zero collision probability",application
+sql.schema.approx_max_object_count,integer,20000,"approximate maximum number of schema objects allowed in the cluster; the check uses cached statistics, so the actual count may slightly exceed this limit; set to 0 to disable",application
 sql.schema.telemetry.recurrence,string,@weekly,cron-tab recurrence for SQL schema telemetry job,system-visible
 sql.spatial.experimental_box2d_comparison_operators.enabled,boolean,false,enables the use of certain experimental box2d comparison operators,application
 sql.sqlcommenter.enabled,boolean,false,enables support for sqlcommenter. Key value parsed from sqlcommenter comments will be included in sql insights and sql logs. See https://google.github.io/sqlcommenter/ for more details.,application
@@ -425,6 +427,8 @@ sql.temp_object_cleaner.wait_interval,duration,30m0s,how long after creation a t
 sql.log.all_statements.enabled (alias: sql.trace.log_statement_execute),boolean,false,set to true to enable logging of all executed statements,application
 sql.trace.stmt.enable_threshold,duration,0s,enables tracing on all statements; statements executing for longer than this duration will have their trace logged (set to 0 to disable); note that enabling this may have a negative performance impact; this setting applies to individual statements within a transaction and is therefore finer-grained than sql.trace.txn.enable_threshold,application
 sql.trace.txn.enable_threshold,duration,0s,"enables transaction traces for transactions exceeding this duration, used with `sql.trace.txn.sample_rate`",application
+sql.trace.txn.include_internal.enabled,boolean,true,enables tracing internal transactions as well as external workload using sample rate and threshold settings,application
+sql.trace.txn.jaeger_json_output.enabled,boolean,false,enables Jaeger JSON output for transaction traces in logs,application
 sql.trace.txn.sample_rate,float,1,"enables probabilistic transaction tracing. It should be used in conjunction with `sql.trace.txn.enable_threshold`. A percentage of transactions between 0 and 1.0 will have tracing enabled, and only those which exceed the configured threshold will be logged.",application
 sql.ttl.changefeed_replication.disabled,boolean,false,"if true, deletes issued by TTL will not be replicated via changefeeds (this setting will be ignored by changefeeds that have the ignore_disable_changefeed_replication option set; such changefeeds will continue to replicate all TTL deletes)",application
 sql.ttl.default_delete_batch_size,integer,100,default amount of rows to delete in a single query during a TTL job,application
@@ -436,7 +440,6 @@ sql.txn.read_committed_isolation.enabled,boolean,true,set to true to allow trans
 sql.txn.repeatable_read_isolation.enabled (alias: sql.txn.snapshot_isolation.enabled),boolean,false,set to true to allow transactions to use the REPEATABLE READ isolation level if specified by BEGIN/SET commands,application
 sql.txn_fingerprint_id_cache.capacity,integer,100,the maximum number of txn fingerprint IDs stored,application
 sql.vecindex.stalled_op.timeout,duration,100ms,amount of time before other vector index workers will assist with a stalled background fixup,application
-storage.columnar_blocks.enabled,boolean,true,set to true to enable columnar-blocks to store KVs in a columnar format,system-visible
 storage.delete_compaction_excise.enabled,boolean,true,set to false to direct Pebble to not partially excise sstables in delete-only compactions,system-visible
 storage.ingest_split.enabled,boolean,true,set to false to disable ingest-time splitting that lowers write-amplification,system-only
 storage.ingestion.value_blocks.enabled,boolean,true,set to true to enable writing of value blocks in ingestion sstables,application
@@ -445,6 +448,7 @@ storage.max_sync_duration.fatal.enabled,boolean,true,"if true, fatal the process
 storage.sstable.compression_algorithm,enumeration,fastest,"determines the compression algorithm to use when compressing sstable data blocks for use in a Pebble store (balanced,good are experimental); [snappy = 1, zstd = 2, none = 3, minlz = 4, fastest = 5, balanced = 6, good = 7]",system-visible
 storage.sstable.compression_algorithm_backup_storage,enumeration,fastest,"determines the compression algorithm to use when compressing sstable data blocks for backup row data storage (fast,balanced,good are experimental); [snappy = 1, zstd = 2, none = 3, minlz = 4, fastest = 5, fast = 6, balanced = 7, good = 8]",system-visible
 storage.sstable.compression_algorithm_backup_transport,enumeration,fastest,"determines the compression algorithm to use when compressing sstable data blocks for backup transport (fast,balanced,good are experimental); [snappy = 1, zstd = 2, none = 3, minlz = 4, fastest = 5, fast = 6, balanced = 7, good = 8]",system-visible
+storage.unhealthy_write_duration,duration,20s,"duration for disk write operations, beyond which the disk will be reported as unhealthy for higher layer actions",system-only
 storage.wal_failover.unhealthy_op_threshold,duration,100ms,the latency of a WAL write considered unhealthy and triggers a failover to a secondary WAL location,system-only
 timeseries.storage.enabled,boolean,true,"if set, periodic timeseries data is stored within the cluster; disabling is not recommended unless you are storing the data elsewhere",system-only
 timeseries.storage.resolution_10s.ttl,duration,240h0m0s,the maximum age of time series data stored at the 10 second resolution. Data older than this is subject to rollup and deletion.,system-visible
@@ -457,4 +461,4 @@ trace.zipkin.collector,string,,"the address of a Zipkin instance to receive trac
 ui.database_locality_metadata.enabled,boolean,true,if enabled shows extended locality data about databases and tables in DB Console which can be expensive to compute,application
 ui.default_timezone,string,,the default timezone used to format timestamps in the ui,application
 ui.display_timezone,enumeration,etc/utc,"the timezone used to format timestamps in the ui. This setting is deprecatedand will be removed in a future version. Use the 'ui.default_timezone' setting instead. 'ui.default_timezone' takes precedence over this setting. [etc/utc = 0, america/new_york = 1]",application
-version,version,25.3,set the active cluster version in the format '<major>.<minor>',application
+version,version,25.4,set the active cluster version in the format '<major>.<minor>',application

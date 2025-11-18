@@ -568,6 +568,8 @@ After it's restored into a new database, you can write the restored `users` tabl
 
 #### Restore from incremental backups in a different location
 
+{% include common/sql/incremental-location-warning.md %}
+
 To restore an incremental backup that was taken using the [`incremental_location` option]({% link {{ page.version.version }}/backup.md %}#incr-location), you must run the `RESTORE` statement with both:
 
 - the collection URI of the full backup

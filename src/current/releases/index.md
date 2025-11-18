@@ -116,7 +116,6 @@ A cluster that is upgraded to an alpha binary of CockroachDB or a binary that wa
 | [v24.2]({% link releases/unsupported-versions.md %}#v24-2) | Innovation | 2024-08-12 |
 | [v24.1](#v24-1) | Regular | 2024-05-20 |
 | [v23.2](#v23-2) | Regular | 2024-02-05 |
-| [v23.1](#v23-1) | Regular | 2023-05-15 |
 
 ### Upcoming releases
 
