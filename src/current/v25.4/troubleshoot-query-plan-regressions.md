@@ -8,7 +8,7 @@ docs_area: manage
 
 This page provides guidance on identifying the source of [query plan]({% link {{page.version.version}}/cost-based-optimizer.md %}) regressions.
 
-For any given SQL statement, if the [cost-based optimizer]({% link {{page.version.version}}/cost-based-optimizer.md %}) chooses a new query plan that slows performance, you may observe an unexpected increase in query latency. There are several reasons that the optimizer might choose a plan that increases execution time. This guide will help you understand, identify, and diagnose query plan regressions using built-in CockroachDB tools.
+For any given SQL statement, if the [cost-based optimizer]({% link {{page.version.version}}/cost-based-optimizer.md %}) chooses a new query plan that slows performance, you may observe an unexpected increase in query latency. This is considered a query plan regression. There are several reasons that the optimizer might choose a plan that increases execution time. This guide helps you understand, identify, and diagnose query plan regressions using built-in CockroachDB tools.
 
 ## Before you begin
 
@@ -20,13 +20,13 @@ Query plan regressions only increase the execution time of SQL statements that u
 
 This might make those latency spikes harder to identify. For example, if the problematic plan only affects a query that's run on an infrequent, ad-hoc basis, it might be difficult to notice a pattern among the graphs on the [**Metrics** page]({% link {{page.version.version}}/ui-overview.md %}#metrics).
 
-In order to identify and fix query plan regressions, you must be able to identify that certain statement executions are associated with increased service latency. Then you need to notice that that statement's query plan has changed. Finally, you need to use CockroachDB's tools to understand why that query plan has changed, so that you can be confident that the query plan change has directly caused the latency increase.
+To identify and fix query plan regressions, you must determine whether certain statement executions are associated with increased service latency. Next, check whether the statement’s query plan has changed. Finally, use CockroachDB's tools to understand why the query plan changed, so you can confirm that the change directly caused the latency increase.
 
 ## Troubleshooting
 
 ### Step 1. Observe high cluster latency
 
-You might not be certain that any particular SQL statement has had a query plan regression. However, if you've observed cluster activity that is slower than usual, noting specific time intervals or application uses that are associated with that latency can help you identify problematic statements.
+You might not be certain whether any particular SQL statement has experienced a query plan regression. However, if you've observed cluster activity that is slower than usual, noting specific time intervals or application uses associated with the latency can help identify problematic statements.
 
 #### Notice a recent latency increase in your application
 
@@ -52,99 +52,99 @@ Knowing what service latency to expect, based on your cluster's usual activity, 
 
 ### Step 2. Identify high-latency statements
 
-One way of tracking down query plan regressions is to identify SQL statements whose executions are relatively high in latency. These statements might be associated with a latency increase.
+One way to track down query plan regressions is to identify SQL statements with relatively high execution latency. These statements might be associated with a latency increase.
 
-1. Go to the [**SQL Activity** page]({% link {{page.version.version}}/ui-overview.md %}#sql-activity) in the DB Console.
-2. If you've already identified specific time intervals in Step 1, you can use the time interval selector to create a custom time interval. Click **Apply**.
-3. Among the resulting Statement Fingerprints, look for those with high latency. Click on the column headers to sort the results by **Statement Time** or **Max Latency**. 
+1. Go to the [**SQL Activity** > **Statements** page]({% link {{page.version.version}}/ui-statements-page.md %}) in the DB Console.
+2. If you identified specific time intervals in Step 1, use the time interval selector to define a custom interval. Click **Apply**.
+3. Among the resulting Statement Fingerprints, look for those with high latency. Sort the results by clicking the column headers for **Statement Time** or **Max Latency**. 
 4. Click on the Statement Fingerprint to go to the page that details the statement and its executions.
 {{site.data.alerts.callout_success}}
-Look for statements whose **Execution Count** is high. Statements that are run once, such as [`IMPORT INTO`]({% link {{page.version.version}}/import-into.md %}) statements, aren't likely to be the cause of increased latency due to query plan regressions.
+Look for statements whose **Execution Count** is high. Statements that are run once, such as [`IMPORT INTO`]({% link {{page.version.version}}/import-into.md %}) statements, are unlikely to cause increased latency due to query plan regressions.
 {{site.data.alerts.end}}
-5. Scroll down to the **Statement Times** graph to see a visual representation of the statement's execution times, and how the latency of those executions has changed over time. A sudden increase with no clear explanation may be caused by a query plan regression.
+5. Scroll down to the **Statement Times** graph to view a visual representation of the statement's execution times and how their latency has changed over time. A sudden increase with no clear explanation may be caused by a query plan regression.
 
     If you haven't yet identified a specific point in time at which service latency increased, use this graph to do so for this SQL statement.
 
-You should now have identified one or more statements that are associated with high execution time, and for each of those statements you should have identified a time at which the latency for that statement's executions began to increase. Note that high latency is not necessarily caused by a query plan regression, and query plan regressions might not necessarily increase latency enough to be caught by these methods. These methods will, however, help identify a cluster's high-impact query plan regressions.
+By now, you should have identified one or more statements with high execution time and the point when their latency began to increase. High latency isn’t always caused by a query plan regression, and some regressions may not increase latency enough to be detected by these methods. However, these methods can help identify high-impact query plan regressions in your cluster.
 
 ### Step 3. Examine the query plans behind suspect statements
 
-For any of the suspect SQL statements that you've identified, it's important to determine if the high latency is being caused by poorly chosen query plans. Repeat the following steps for any of the statements that you suspect may have had a query plan regression:
+For each suspect SQL statement, determine whether the high latency is caused by a suboptimal query plan. Repeat the following steps for each statement you suspect may have experienced a query plan regression:
 
 1. On the Statement Fingerprint page, click on the [**Explain Plans** tab]({% link {{page.version.version}}/ui-statements-page.md %}#explain-plans). The **Explain Plans** tab lists every unique query plan that was used for this statement fingerprint during the given time interval, along with relevant statistics for that plan's executions. By default, these plans are sorted by **Last Execution Time**.
 2. Use the time interval selector to create a custom time interval for the Explain Plans table. Create a time interval for the hour just <u>after</u> the statement's latency increase. Click **Apply**.
-3. Note which query plan was in use just after the latency increase.
+3. Note which query plan was in use just after the latency increase, and record the values in the **Plan Gist**, **Average Execution Time**, and **Average Rows Read** columns.
 4. Create another custom time interval for the hour just <u>before</u> the statement's latency increase. Click **Apply**.
-5. Note which query plan was in use just before the latency increase.
+5. Note which query plan was in use just before the latency increase, and record the values in the **Plan Gist**, **Average Execution Time**, and **Average Rows Read** columns.
 6. Compare the query plans.
     
 If the newer plan is the same as the older plan (if it has the same Plan Gist), then there was no query plan regression, because the plan hasn't changed.
     
-If the newer plan is different than the older plan, the query plan has changed:
+If the newer plan differs from the older plan, the query plan has changed:
     
-- Compare the **Average Execution Time** of the two plans. If the newer plan has a significantly higher average execution time than the older plan, it's possible that this is a query plan regression. It's also possible that the increase in latency is coincidental, or that the plan change was not the actual cause. If the average execution time is approximately the same, or less, this plan change is unlikely to be a regression.
+- Compare the **Average Execution Time** of the two plans. If the newer plan’s average execution time is significantly higher than the older plan’s, it may indicate a query plan regression. It's also possible that the increase in latency is coincidental, or that the plan change was not the actual cause. If the average execution time is approximately the same, or less, this plan change is unlikely to be a regression.
 - Compare the **Average Rows Read** of the two plans. If the value for the newer plan is significantly higher than the value for the older plan (as in: an order of magnitude) it's very possible that this is due to a query plan regression. If the value for the newer plan is only moderately higher than the value for the older plan, it's possible that this is due to a query plan regression, but it's also possible that this is due to normal table growth. An increase in this value could be causing an increase in the average execution time.
 - For all of the query plan statistics in the table, consider whether the newer query plan's values are expected, based on your knowledge of the application and cluster workloads.
 
 #### Multiple valid query plans
 
-If there are multiple query plans used before and after the latency increase, it's possible that this SQL statement has multiple valid query plans. This might be the case if the query plan is chosen based on the values of literals within the SQL queries (the values that are replaced by the placeholder "_" in the statement fingerprint). The optimizer may decide that different plans are better for different literal values.
+If multiple query plans were used before and after the latency increase, the SQL statement may have multiple valid query plans. This can occur when the optimizer chooses a plan based on literal values in the SQL query, those replaced by the "_ " placeholder in the statement fingerprint. The optimizer may decide that different plans are better for different literal values.
 
-In the case of multiple valid query plans, you are not simply looking for a change in the query plan for a certain SQL statement, but rather a change in the _distribution of multiple query plans_ for a certain SQL statement.
+With multiple valid query plans, you’re not just looking for a plan change, but for a shift in the _distribution of plans_ used for the statement.
 
-- Look at the query plans that were used in the time interval after the latency increase. Note the values in the **Execution Count** column for each plan. Do the same for the query plans in the time interval before the latency increase. This will let you know not only if the same query plans were being used during both intervals, but also if their distributions changed. If the distribution changed such that a plan with a higher average execution time is being used for a higher proportion of executions, this might be due to a query plan regression.
+- Look at the query plans that were used in the time interval after the latency increase. Note the values in the **Execution Count** column for each plan. Repeat the process for the interval before the latency increase. This will let you know not only if the same query plans were being used during both intervals, but also if their distributions changed. If the distribution shifts toward a plan with higher average execution time, it may indicate a query plan regression.
 
 {{site.data.alerts.callout_success}}
-If you were unable to identify a specific moment in time when the latency increased, you won't have a specific "before" and "after" to compare. If this is the case, it would still be useful to have a vague sense of the time of the increase (using the methods in Step 1), even if that range is many hours long. You can then use the above methods (in Step 3) to compare query plans on a rolling basis by changing the custom time interval to consecutive hour-long intervals. This might help you discover the specific time interval in which a sudden latency increase occurred.
+If you couldn’t identify a specific moment when latency increased, you won’t have a clear "before" and "after" to compare. In this case, it’s still helpful to have a general sense of when the increase occurred (using the methods from Step 1) even if the range spans several hours. You can then use the above methods (in Step 3) to compare query plans on a rolling basis by changing the custom time interval to consecutive hour-long intervals. This approach can help identify the specific interval when the latency spike occurred.
 {{site.data.alerts.end}}
 
 ### Step 4. Understand why the query plan changed
 
 For any query plans whose increased execution time seems suspicious, investigate further to understand why the plan changed.
 
-1. In the **Explain Plans** tab, click on the Plan Gist of the more recent plan to see it in more detail.
-2. Click on **All Plans** above to return to the list of plans.
-3. Click on the Plan Gist of the previous plan to inspect it in more detail. Compare the two plans to understand what changed. They might be using different indexes. They also might be scanning different portions of the table, or using different join strategies.
+1. In the **Explain Plans** tab, click the **Plan Gist** of the more recent plan to view its details.
+2. Click on **All Plans** above to return to the full list.
+3. Click on the Plan Gist of the previous plan to inspect it in more detail. Compare the two plans to understand what changed. They may use different indexes. They may also scan different parts of the table or use different join strategies.
 
 #### Determine if the table indexes changed
 
-1. Look at the **Used Indexes** column for the older and the newer query plans. If these aren't the same, it's likely that the creation or deletion of an index resulted in a change to the statement's query plan.
-2. In the **Explain Plans** tab, click on the Plan Gist of the more recent plan to see it in more detail. Identify the table(s) used in the initial "scan" step of the plan.
+1. Check the **Used Indexes** column for both the older and newer query plans. If these aren't the same, it's likely that the creation or deletion of an index resulted in a change to the statement's query plan.
+2. In the **Explain Plans** tab, click the **Plan Gist** of the more recent plan to view its details. Identify the table(s) used in the initial "scan" step of the plan.
 3. In your SQL client, run `SHOW INDEXES FROM <table_name>;` for each of those tables.
 4. Make sure that the query plan is using a table index that makes sense, given the query and the table's full set of indexes.
 
-It's possible that the new index is well-chosen but that the schema change triggered a statistics refresh that is the root problem. It's also possible that the new index is not ideal. Think about how and when this table gets queried, to determine if the index should be reconsidered. [Check the **Insights** page for index recommendations]({% link {{ page.version.version }}/ui-insights-page.md %}#suboptimal-plan), and read more about [secondary index best practices]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices).
+The new index may be well-chosen, but the schema change could have triggered a statistics refresh that caused the issue. It's also possible that the new index is not ideal. Consider how and when the table is queried to determine whether the index should be reconsidered. [Check the **Insights** page for index recommendations]({% link {{ page.version.version }}/ui-insights-page.md %}#suboptimal-plan), and read more about [secondary index best practices]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices).
 
 #### Determine if the table statistics changed
 
-1. In the **Explain Plans** tab, click on the Plan Gist of the more recent plan to see it in more detail. Identify the table used in the initial "scan" step of the plan.
+1. In the **Explain Plans** tab, click the Plan Gist of the more recent plan to view its details. Identify the table used in the initial "scan" step of the plan.
 2. In your SQL client, run `SHOW STATISTICS FOR TABLE <table_name>;` using that table name.
 
     The results will include statistics that were collected for each column in that table. The value in the "created" column of these results tells you when the statistics were collected. Compare the statistics of each table column across multiple timestamps. A change in the values of `row_count`, `distinct_count`, `null_count`, or other statistics may have affected planning. If the timestamp of the new statistics creation is associated with the time that the query plan changed, there may be a causal relationship between the two.
 
-If you suspect that the query plan change is the cause of the latency increase, and you suspect that the query plan changed due to stale statistics, you may want to [manually refresh the statistics for the table]({% link {{ page.version.version }}/create-statistics.md %}#examples).
+If you suspect that stale statistics caused the plan change and resulting latency increase, consider [manually refreshing the table’s statistics]({% link {{ page.version.version }}/create-statistics.md %}#examples).
 
 You may also want to consider the rare case in which sampling for [histogram]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-histogram-collection) collection missed important values that would impact planning. You might want to increase the [number of rows sampled for histograms]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-histogram-samples-count) before refreshing the table statistics.
 
 #### Determine if a literal in the SQL statement has changed
 
-If the SQL statement fingerprint contains placeholder values ("_"), it's possible that a change in that literal is responsible for a query plan regression. This is also worth considering in the case of [multiple valid query plans](#multiple-valid-query-plans), if a change in the distribution of plans has led to a higher average execution time.
+If the SQL statement fingerprint contains placeholder values ("_"), a change in a literal may be responsible for a query plan regression. This is also worth considering in the case of [multiple valid query plans](#multiple-valid-query-plans), if a change in the distribution of plans has led to a higher average execution time.
 
-Inspect your application to see if the literals being used within the query executions are changing.
+Inspect your application to determine whether the query literals are changing between executions.
 
-If you suspect that the query plan change is the cause of the latency increase, and you suspect that the query plan changed due to a changed query literal, it's possible that the table statistics don't accurately reflect how the literal values are represented in the data. You may want to [manually refresh the statistics for the table]({% link {{ page.version.version }}/create-statistics.md %}#examples). It's also possible that the table indexes are not helpful for queries with the newer literal value, in which case you may want to [check the **Insights** page for index recommendations]({% link {{ page.version.version }}/ui-insights-page.md %}#suboptimal-plan). 
+If you suspect the plan change caused the latency increase and was triggered by a changed query literal, table statistics may not accurately reflect how those values appear in the data. You may want to [manually refresh the statistics for the table]({% link {{ page.version.version }}/create-statistics.md %}#examples). It’s also possible that the current indexes aren’t effective for queries with the new literal value. In that case, [check the **Insights** page for index recommendations]({% link {{ page.version.version }}/ui-insights-page.md %}#suboptimal-plan). 
 
-If this does not fix the issue, a more drastic redesign of the schema or application may be needed.
+If the issue persists, a more substantial redesign of the schema or application may be required.
 
 #### View all events
 
 1. Go to the [**Metrics** page]({% link {{page.version.version}}/ui-overview.md %}#metrics).
-2. Go the [**Events** panel]({% link {{page.version.version}}/ui-runtime-dashboard.md %}#events-panel) on the right. Scroll to the bottom, and click **View All Events**.
+2. Go to the [**Events** panel]({% link {{page.version.version}}/ui-runtime-dashboard.md %}#events-panel) on the right. Scroll to the bottom, and click **View All Events**.
 3. Scroll down to the approximate time when the latency increase began.
 
-    See if any events occured around that time that may have contributed to a query plan regression. These might include schema changes that affect tables involved in the suspect SQL queries, [changed cluster settings]({% link {{ page.version.version }}/set-cluster-setting.md %}), created or dropped indexes, and more. 
+    Check for any events around that time that may have contributed to a query plan regression. These may include schema changes affecting tables in suspect SQL queries, [modified cluster settings]({% link {{ page.version.version }}/set-cluster-setting.md %}), created or dropped indexes, and more. 
     
-    A consequential event around the time of the latency increase may have affected the way that the optimizer chose query plans. Inspect changed cluster settings, or [determine if the table indexes changed](#determine-if-the-table-indexes-changed).
+    An event around the time of the latency increase may have influenced how the optimizer selected query plans. Inspect changed cluster settings, or [determine if the table indexes changed](#determine-if-the-table-indexes-changed).
 
     {{site.data.alerts.callout_success}}
     If your cluster recently underwent a CockroachDB version upgrade, note when that went into effect. An upgrade may have affected default cluster settings or planning heuristics in a way that caused a query plan regression. You may want to [manually refresh the statistics for tables]({% link {{ page.version.version }}/create-statistics.md %}#examples) that are affected by a suspect SQL statement.
