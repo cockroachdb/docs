@@ -41,7 +41,7 @@ For more information, see the [licensing FAQ]({% link {{ page.version.version }}
   </thead>
   <tbody>
     <tr>
-      <td rowspan="8"><a href="authentication.html">Authentication</a></td>
+      <td rowspan="10"><a href="authentication.html">Authentication</a></td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
@@ -79,9 +79,23 @@ For more information, see the [licensing FAQ]({% link {{ page.version.version }}
     <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td><span class="version-tag">New in v25.4:</span> SQL client identity authentication with <a href="{% link {{ page.version.version }}/sso-sql.md %}">JSON Web Tokens (JWT)</a></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>✓</td>
       <td>Client identity authentication with <a href="{% link {{ page.version.version }}/gssapi_authentication.md %}">GSSAPI and Kerberos</a></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td><span class="version-tag">New in v25.4:</span> <a href="{% link {{ page.version.version }}/sso-sql.md %}#configure-user-provisioning">Automatic user provisioning</a> for JWT authentication</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -134,7 +148,7 @@ For more information, see the [licensing FAQ]({% link {{ page.version.version }}
       <td>Cockroach Labs's proprietary storage-level <a href="encryption.html#encryption-at-rest-enterprise">{{ site.data.products.enterprise }} Encryption At Rest service</a> implementing the <a href="https://wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AES)</a></td>
     </tr>
     <tr>
-      <td rowspan="2" ><a href="authorization.html">Authorization</a></td>
+      <td rowspan="4" ><a href="authorization.html">Authorization</a></td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
@@ -147,6 +161,20 @@ For more information, see the [licensing FAQ]({% link {{ page.version.version }}
       <td>✓</td>
       <td>✓</td>
       <td>Role-based access control (RBAC)</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td><span class="version-tag">New in v25.4:</span> <a href="{% link {{ page.version.version }}/jwt-authorization.md %}">Automatic role synchronization</a> based on JWT group claims</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td><span class="version-tag">New in v25.4:</span> <a href="{% link {{ page.version.version }}/oidc-authorization.md %}">Automatic role synchronization</a> based on OIDC group claims for DB Console</td>
     </tr>
     <tr>
       <td rowspan="3">Network Security</td>
