@@ -65,6 +65,12 @@
             ]
           },
           {
+            "title": "Read From Standby",
+            "urls": [
+              "/${VERSION}/read-from-standby.html"
+            ]
+          },
+          {
             "title": "Technical Overview",
             "urls": [
               "/${VERSION}/physical-cluster-replication-technical-overview.html"
