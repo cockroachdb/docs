@@ -122,7 +122,7 @@
     
     1 RU = 3 milliseconds SQL CPU.
     
-    Correlate this metric with Request Units (RUs) and determine if your workload is CPU-intensive. To learn more about how RUs are calculated, refer to Resource Usage.'
+    Correlate this metric with Request Units (RUs) and determine if your workload is CPU-intensive. To learn more about how RUs are calculated, refer to Resource Usage.
 
 - metric_id: tenant.consumption.pgwire_egress_bytes
   deploy_selfhosted: false
@@ -140,7 +140,7 @@
     
     1 RU = 1 KiB Network egress.
     
-    Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.'
+    Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
 
 - metric_id: tenant.consumption.external_io_egress_bytes
   deploy_selfhosted: false
