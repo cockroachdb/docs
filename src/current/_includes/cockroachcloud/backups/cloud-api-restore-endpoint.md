@@ -26,7 +26,7 @@ curl --request POST \
 --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
-    "source_cluster_id": "{cluster_id}"
+    "source_cluster_id": "{cluster_id}",
     "type": "CLUSTER"
 }'
 ~~~
@@ -86,7 +86,7 @@ curl --request POST \
 --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
-    "source_cluster_id": "{cluster_id}"
+    "source_cluster_id": "{cluster_id}",
     "type": "DATABASE",
     "objects": [
         {
@@ -107,7 +107,7 @@ curl --request POST \
 --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
-    "source_cluster_id": "{cluster_id}"
+    "source_cluster_id": "{cluster_id}",
     "type": "DATABASE",
     "objects": [
         {
@@ -181,7 +181,7 @@ curl --request POST \
 --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
-    "source_cluster_id": "{cluster_id}"
+    "source_cluster_id": "{cluster_id}",
     "type": "TABLE",
     "objects": [
         {
@@ -206,7 +206,7 @@ curl --request POST \
 --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
-    "source_cluster_id": "{cluster_id}"
+    "source_cluster_id": "{cluster_id}",
     "type": "TABLE",
     "objects": [
         {
@@ -294,7 +294,7 @@ To view the status of a restore job using the cloud API, send a `GET` request to
 ~~~ shell
 curl --request GET \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores/{restore_id} \
---header 'Authorization: Bearer {secret_key}' \
+--header 'Authorization: Bearer {secret_key}'
 ~~~
 
 If the request is successful, the client recieves a response containing JSON describing the status of the specified request operation:
