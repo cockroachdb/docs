@@ -9875,11 +9875,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.4.0-rc.1
-  cloud_only: true
-  cloud_only_message_short: 'Currently available for CockroachDB Advanced only'
-  cloud_only_message: >
-      This version is currently available only for
-      CockroachDB Cloud clusters on the Advanced plan.
 
 - release_name: v25.3.5
   major_version: v25.3
