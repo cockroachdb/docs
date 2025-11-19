@@ -164,6 +164,8 @@ There is different syntax for taking an incremental backup depending on where yo
 
 	For more detail on using the `incremental_location` option, see [Incremental backups with explicitly specified destinations]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations).
 
+	{% include common/sql/incremental-location-warning.md %}
+
 ## Restore from an incremental locality-aware backup
 
 A locality-aware backup URI can also be used in place of any incremental backup URI in [`RESTORE`]({% link {{ page.version.version }}/restore.md %}).
