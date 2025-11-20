@@ -2,7 +2,7 @@
 
 MOLT Fetch, Verify, and Replicator are likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory or compute resources, or both, on your Docker container.
 
-{% if page.name == "molt-fetch.md" %}
+{% if page.name == "molt-fetch.md" or page.name == "molt-fetch-install.md" %}
 #### Authentication
 
 When using MOLT Fetch with [cloud storage](#bucket-path), it is necessary to specify volumes and environment variables, as described in the following sections for [Google Cloud Storage](#google-cloud-storage) and [Amazon S3](#amazon-s3). 

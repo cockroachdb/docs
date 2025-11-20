@@ -147,7 +147,7 @@ To further minimize potential surprises when you conduct the migration, practice
 
 Performing a dry run is highly recommended. In addition to demonstrating how long the migration may take, a dry run also helps to ensure that team members understand what they need to do during the migration, and that changes to the application are coordinated.
 
-## Cutover strategy
+<!-- ## Cutover strategy
 
 *Cutover* is the process of switching application traffic from the source database to CockroachDB. Once the source data is fully migrated to CockroachDB, switch application traffic to the new database to end downtime.
 
@@ -160,7 +160,7 @@ To safely cut over when using replication:
 1. When your [monitoring](#set-up-monitoring-and-alerting) indicates that replication is idle, use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the CockroachDB data.
 1. Start application traffic on CockroachDB.
 
-When you are ready to migrate, refer to [Migration flows]({% link molt/migration-overview.md %}#migration-flows) for a summary of migration types.
+When you are ready to migrate, refer to [Migration flows]({% link molt/migration-overview.md %}#migration-flows) for a summary of migration types. -->
 
 ## See also
 

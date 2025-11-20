@@ -5,7 +5,9 @@ toc: true
 docs_area: migrate
 ---
 
-The MOLT (Migrate Off Legacy Technology) toolkit enables safe, minimal-downtime database migrations to CockroachDB. MOLT combines schema transformation, distributed data load, continuous replication, and row-level validation into a highly configurable workflow that adapts to diverse production environments.
+A migration involves transfering data from a pre-existing **source** database onto a **target** CockroachDB cluster. Migrating data is a complex, multi-step process, and a data migration can take many different forms depending on your specific business and technical constraints.
+
+Cockroach Labs provides a MOLT (Migrate Off Legacy Technology) toolkit to aid in migrations.
 
 This page provides an overview of the following:
 
@@ -15,22 +17,36 @@ This page provides an overview of the following:
 
 ## Migration sequence
 
-{{site.data.alerts.callout_success}}
-Before you begin the migration, review [Migration Strategy]({% link molt/migration-strategy.md %}).
-{{site.data.alerts.end}}
-
 A migration to CockroachDB generally follows this sequence:
 
-<img src="{{ 'images/molt/migration_flow.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
+<!-- 1. **Assess and discover**: Inventory the source database, flag unsupported features, make a migration plan.
+1. **Prepare the environment**: Configure networking, users and permissions, bucket locations, replication settings, and more.
+1. **Convert the source schema**: Generate CockroachDB-compatible [DDL]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements). Apply the converted schema to the target database. Drop constraints and indexes to facilitate data load. Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}).
+1. **Stop application traffic**: Limit user read/write traffic to the source database. _This begins application downtime._
+1. **Load data into CockroachDB**: Bulk load the source data into the CockroachDB cluster. Use [MOLT Fetch]({% link molt/molt-fetch.md %}).
+1. **_(Optional)_ Replicate ongoing changes**: Keep CockroachDB in sync with the source. This may be necessary for migrations that minimize downtime. Use [MOLT Replicator]({% link molt/molt-replicator.md %}).
+1. **Finalize target schema**: Recreate indexes or constraints on CockroachDB that you previously dropped to facilitate data load.
+1. **Verify data consistency**: Confirm that the CockroachDB data is consistent with the source. Use [MOLT Verify]({% link molt/molt-verify.md %}).
+1. **_(Optional)_ Enable failback**: Replicate data from the target back to the source, enabling a reversion to the source database in the event of migration failure. Use [MOLT Replicator]({% link molt/molt-replicator.md %}).
+1. **Cut over application traffic**: Resume normal application use, with the CockroachDB cluster as the target database. _This ends application downtime._ -->
 
-1. Prepare the source database: Configure users, permissions, and replication settings as needed.
-1. Convert the source schema: Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) to generate CockroachDB-compatible [DDL]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements). Apply the converted schema to the target database. Drop constraints and indexes to facilitate data load.
-1. Load data into CockroachDB: Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to bulk-ingest your source data.
-1. (Optional) Verify consistency before replication: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the data loaded into CockroachDB is consistent with the source.
-1. Finalize target schema: Recreate indexes or constraints on CockroachDB that you previously dropped to facilitate data load.
-1. Replicate ongoing changes: Enable continuous replication with [MOLT Replicator]({% link molt/molt-replicator.md %}) to keep CockroachDB in sync with the source.
-1. Verify consistency before cutover: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the CockroachDB data is consistent with the source.
-1. Cut over to CockroachDB: Redirect application traffic to the CockroachDB cluster.
+1. **Assess and discover**: Inventory the source database, flag unsupported features, make a migration plan.
+1. **Prepare the environment**: Configure networking, users and permissions, bucket locations, replication settings, and more.
+1. **Convert the source schema**: Generate CockroachDB-compatible [DDL]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements). Apply the converted schema to the target database. Drop constraints and indexes to facilitate data load.
+1. **Stop application traffic**: Limit user read/write traffic to the source database. _This begins application downtime._
+1. **Load data into CockroachDB**: Bulk load the source data into the CockroachDB cluster.
+1. **_(Optional)_ Replicate ongoing changes**: Keep CockroachDB in sync with the source. This may be necessary for migrations that minimize downtime.
+1. **Finalize target schema**: Recreate indexes or constraints on CockroachDB that you previously dropped to facilitate data load.
+1. **Verify data consistency**: Confirm that the CockroachDB data is consistent with the source.
+1. **_(Optional)_ Enable failback**: Replicate data from the target back to the source, enabling a reversion to the source database in the event of migration failure.
+1. **Cut over application traffic**: Resume normal application use, with the CockroachDB cluster as the target database. _This ends application downtime._
+
+The MOLT (Migrate Off Legacy Technology) toolkit enables safe, minimal-downtime database migrations to CockroachDB. MOLT combines schema transformation, distributed data load, continuous replication, and row-level validation into a highly configurable workflow that adapts to diverse production environments.
+
+<!-- <img src="{{ 'images/molt/migration_flow.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" /> -->
+<div style="text-align: center;">
+<img src="{{ 'images/molt/molt_flows_1.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
+</div>
 
 For more details, refer to [Migration flows](#migration-flows).
 
@@ -110,7 +126,11 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 - Column definition.
 - Row-level data.
 
-## Migration flows
+<!-- ## Migration flows
+
+{{site.data.alerts.callout_success}}
+Before you begin the migration, review [Migration Strategy]({% link molt/migration-strategy.md %}).
+{{site.data.alerts.end}}
 
 MOLT supports various migration flows using [MOLT Fetch]({% link molt/molt-fetch.md %}) for data loading and [MOLT Replicator]({% link molt/molt-replicator.md %}) for ongoing replication.
 
@@ -119,24 +139,47 @@ MOLT supports various migration flows using [MOLT Fetch]({% link molt/molt-fetch
 | [Bulk load]({% link molt/migrate-bulk-load.md %})                      | MOLT Fetch                   | Perform a one-time bulk load of source data into CockroachDB.                                | Testing, migrations with [planned downtime]({% link molt/migration-strategy.md %}#approach-to-downtime) |
 | [Data load and replication]({% link molt/migrate-load-replicate.md %}) | MOLT Fetch + MOLT Replicator | Load source data with Fetch, then replicate subsequent changes continuously with Replicator. | [Minimal downtime]({% link molt/migration-strategy.md %}#approach-to-downtime) migrations               |
 | [Resume replication]({% link molt/migrate-resume-replication.md %})    | MOLT Replicator              | Resume replication from a checkpoint after interruption.                                     | Resuming interrupted migrations, post-load sync                                                         |
-| [Failback]({% link molt/migrate-failback.md %})                        | MOLT Replicator              | Replicate changes from CockroachDB back to the source database.                              | [Rollback]({% link molt/migrate-failback.md %}) scenarios                                               |
+| [Failback]({% link molt/migrate-failback.md %})                        | MOLT Replicator              | Replicate changes from CockroachDB back to the source database.                              | [Rollback]({% link molt/migrate-failback.md %}) scenarios                                               | -->
 
-### Bulk load
+## Migration considerations
 
-For migrations that tolerate downtime, use MOLT Fetch in `data-load` mode to perform a one-time bulk load of source data into CockroachDB. Refer to [Bulk Load]({% link molt/migrate-bulk-load.md %}).
+You must decide how you want your migration to handle each of the following variables. These decisions will depend on your specific business and technical considerations. The MOLT toolkit supports any set of decisions made for the [supported source databases](#molt-tools).
 
-### Migrations with minimal downtime
+### Bulk vs. phased migration
 
-To minimize downtime during migration, use MOLT Fetch for initial data loading followed by MOLT Replicator for continuous replication. Instead of loading all data during a planned downtime window, you can run an initial load followed by continuous replication. Writes are paused only briefly to allow replication to drain before the final cutover. The duration of this pause depends on the volume of write traffic and the replication lag between the source and CockroachDB.
+For smaller data stores, it's possible to migrate all of your data onto the target cluster at once. For larger data stores, it's recommended that you do so in phases. This  
 
-Refer to [Load and Replicate]({% link molt/migrate-load-replicate.md %}) for detailed instructions.
+Learn more about [phased migrations]({% link molt/migration-considerations-phases.md %}).
 
-### Recovery and rollback strategies
+### Continuous replication
+
+To minimize downtime during migration, use MOLT Fetch for initial data loading followed by MOLT Replicator for continuous replication. Instead of loading all data during a planned downtime window, you can run an initial load followed by continuous replication. Writes are paused only briefly to allow replication to drain before the final cutover. The duration of this pause depends on the volume of write traffic and the replication lag between the source and CockroachDB. Learn more about [continuous replication]({% link molt/migration-considerations-replication.md %}).
+
+### Rollback plan
 
 If the migration is interrupted or cutover must be aborted, MOLT Replicator provides safe recovery options:
 
 - Resume a previously interrupted replication stream. Refer to [Resume Replication]({% link molt/migrate-resume-replication.md %}).
 - Use failback mode to reverse the migration, synchronizing changes from CockroachDB back to the original source. This ensures data consistency on the source so that you can retry the migration later. Refer to [Migration Failback]({% link molt/migrate-failback.md %}).
+
+### Validation strategy
+
+[]
+
+### Cutover plan
+
+*Cutover* is the process of switching application traffic from the source database to CockroachDB. Once the source data is fully migrated to CockroachDB, switch application traffic to the new database to end downtime.
+
+MOLT enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using [MOLT Replicator]({% link molt/molt-replicator.md %}) for continuous replication of source changes to CockroachDB.
+
+To safely cut over when using replication:
+
+1. Stop application traffic on the source database.
+1. Wait for the replication stream to drain.
+1. When your [monitoring](#set-up-monitoring-and-alerting) indicates that replication is idle, use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the CockroachDB data.
+1. Start application traffic on CockroachDB.
+
+When you are ready to migrate, refer to [Migration flows]({% link molt/migration-overview.md %}#migration-flows) for a summary of migration types.
 
 ## See also
 
