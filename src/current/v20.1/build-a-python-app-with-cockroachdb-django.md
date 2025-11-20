@@ -374,7 +374,7 @@ For example, in a new terminal, you can use `curl` to send a POST request to the
 ~~~ shell
 $ curl --header "Content-Type: application/json" \
 --request POST \
---data '{"name":"Carl"}' http://0.0.0.0:8000/customer/
+--data "{"name":"Carl"}" http://0.0.0.0:8000/customer/
 ~~~
 
 You can then send a GET request to read from that table:

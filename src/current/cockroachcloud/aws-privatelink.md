@@ -78,9 +78,9 @@ To [add a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api
 ~~~ shell
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
-  --header 'Authorization: Bearer {bearer_token' \
-  --header 'content-type: application/json' \
-  --data '{"external_owner_id":"{aws_account_id}","type":"AWS_ACCOUNT_ID"}'
+  --header "Authorization: Bearer {bearer_token}" \
+  --header "content-type: application/json" \
+  --data "{"external_owner_id":"{aws_account_id}","type":"AWS_ACCOUNT_ID"}"
 ~~~
 
 Replace:
@@ -101,7 +101,7 @@ To [list private endpoint trusted owners](https://www.cockroachlabs.com/docs/api
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
-  --header 'Authorization: Bearer {bearer_token}'
+  --header "Authorization: Bearer {bearer_token}"
 ~~~
 
 Replace:
@@ -117,7 +117,7 @@ To [get details about a private endpoint trusted owner](https://www.cockroachlab
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
-  --header 'Authorization: Bearer {bearer_token}'
+  --header "Authorization: Bearer {bearer_token}"
 ~~~
 
 Replace:
@@ -134,7 +134,7 @@ To [remove a private endpoint trusted owner](https://www.cockroachlabs.com/docs/
 ~~~ shell
 curl --request DELETE \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
-  --header 'Authorization: {bearer_token}'
+  --header "Authorization: {bearer_token}"
 ~~~
 
 Replace:

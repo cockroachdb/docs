@@ -6,7 +6,7 @@ To retrieve information about a specific cluster, make a `GET` request to the `/
 ~~~ shell
 curl --request GET \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups-config \
---header 'Authorization: Bearer {secret_key}'
+--header "Authorization: Bearer {secret_key}"
 ~~~
 
 Set the following:
@@ -42,8 +42,8 @@ To configure the frequency and retention of managed backups, send a `PUT` reques
 ~~~ shell
 curl --request PUT \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups-config \
---header 'Authorization: Bearer {secret_key}' \
---data '{"enabled": true, "frequency_minutes": 30, "retention_days": 2}'
+--header "Authorization: Bearer {secret_key}" \
+--data "{"enabled": true, "frequency_minutes": 30, "retention_days": 2}"
 ~~~
 
 Set the following:

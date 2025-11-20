@@ -286,7 +286,7 @@ Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.1/topics/ht
     ~~~ shell
     $ curl --header "Content-Type: application/json" \
     --request POST \
-    --data '{"name":"Carl"}' http://0.0.0.0:8000/customer/
+    --data "{"name":"Carl"}" http://0.0.0.0:8000/customer/
     ~~~
 
     This request inserts a new row into the `cockroach_example_customers` table.

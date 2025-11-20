@@ -65,8 +65,8 @@ To use PCR, it is necessary to set the `supports_cluster_virtualization` field t
     ~~~ shell
     curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' \
     --header "Authorization: Bearer {api_secret_key}" \
-    --header 'Content-Type: application/json' \
-    --data '{
+    --header "content-type: application/json" \
+    --data "{
       "name": "{primary_cluster_name}", 
       "provider": "AWS", 
       "spec": {
@@ -84,7 +84,7 @@ To use PCR, it is necessary to set the `supports_cluster_virtualization` field t
           "supports_cluster_virtualization": true
         }
       }
-    }'
+    }"
     ~~~
 
 Replace:
@@ -100,8 +100,8 @@ Ensure that you replace each of the values for the cluster specification as per 
     ~~~ shell
     curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' \
     --header "Authorization: Bearer {api_secret_key}" \
-    --header 'Content-Type: application/json' \
-    --data '{
+    --header "content-type: application/json" \
+    --data "{
       "name": "{standby_cluster_name}", 
       "provider": "AWS", 
       "spec": {
@@ -118,7 +118,7 @@ Ensure that you replace each of the values for the cluster specification as per 
           "supports_cluster_virtualization": true
         }
       }
-    }'
+    }"
     ~~~
 
 Replace:
@@ -144,12 +144,12 @@ With the primary and standby clusters set up, you can now start a PCR stream.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request POST --url 'https://cockroachlabs.cloud/api/v1/physical-replication-streams' \
+curl --request POST --url https://cockroachlabs.cloud/api/v1/physical-replication-streams \
 --header "Authorization: Bearer {api_secret_key}" \
---json '{
+--json "{
   "primary_cluster_id": "{primary_cluster_id}",
   "standby_cluster_id": "{standby_cluster_id}"
-}'
+}"
 ~~~
 
 Replace:
@@ -254,11 +254,11 @@ To fail over to the latest consistent time, you only need to include `"status": 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request PATCH --url "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
+curl --request PATCH --url https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id} \
 --header "Authorization: Bearer {api_secret_key}" \
---json '{
+--json "{
   "status": "FAILING_OVER"
-}'
+}"
 ~~~
 ~~~json
 {
@@ -278,9 +278,9 @@ To specify a timestamp, send a `PATCH` [request](https://www.cockroachlabs.com/d
 ~~~ shell
 curl --request PATCH "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
 --header "Authorization: Bearer {api_secret_key}" \
---json '{
+--json "{
   "status": "STARTING", "failover_at": "2025-05-01T19:39:39.731939Z"
-}'
+}"
 ~~~
 ~~~json
 {
