@@ -150,7 +150,7 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
 
 - Use [zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
-    This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster]({% link {{ page.version.version }}/configure-replication-zones.md %}#edit-the-default-replication-zone) or for specific [databases]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-database), [tables]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-table), or [rows]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-partition).
+    This is especially recommended if you are using local disks rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster]({% link {{ page.version.version }}/configure-replication-zones.md %}#edit-the-default-replication-zone) or for specific [databases]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-database), [tables]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-table), or [rows]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-partition).
 
 {{site.data.alerts.callout_info}}
 Under-provisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a [ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [storage issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#storage-issues).
@@ -169,8 +169,6 @@ Disks must be able to achieve {% include {{ page.version.version }}/prod-deploym
 - Use [sysbench](https://github.com/akopytov/sysbench) to benchmark IOPS on your cluster. If IOPS decrease, add more nodes to your cluster to increase IOPS.
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-lvm.md %}
-
-- The optimal configuration for striping more than one device is [RAID 10](https://wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
 
 {{site.data.alerts.callout_info}}
 Disk I/O especially affects [performance on write-heavy workloads]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#network-and-i-o-bottlenecks). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).

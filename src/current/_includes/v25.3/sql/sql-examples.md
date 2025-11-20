@@ -403,7 +403,7 @@ In this example, we create a table and then use `\|` to programmatically insert 
 
 ### Allow potentially unsafe SQL statements
 
-The `--safe-updates` flag defaults to `true`. This prevents SQL statements that may have broad, undesired side effects. For example, by default, we cannot use `DELETE` without a `WHERE` clause to delete all rows from a table:
+The [`--safe-updates` flag](#flag-safe-updates) defaults to `true`. This prevents SQL statements that may have broad, undesired side effects. For example, by default, we cannot use `DELETE` without a `WHERE` clause to delete all rows from a table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -449,7 +449,7 @@ DELETE 10
 ~~~
 
 {{site.data.alerts.callout_info}}
-Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable]({% link {{ page.version.version }}/set-vars.md %}).
+Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the [`sql_safe_updates` session variable]({% link {{ page.version.version }}/set-vars.md %}#sql-safe-updates). For a complete list of these statements, refer to the session variable documentation.
 {{site.data.alerts.end}}
 
 ### Reveal the SQL statements sent implicitly by the command-line utility
