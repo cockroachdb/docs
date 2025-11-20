@@ -6,7 +6,7 @@
 
 		~~~ shell
 		export SOURCE="postgres://migration_user:a%2452%26@localhost:5432/molt?sslmode=verify-full"
-		export TARGET="postgres://root@localhost:26257/molt?sslmode=verify-full"
+		export TARGET="postgres://root@localhost:26257/defaultdb?sslmode=verify-full"
 		~~~
 
 		Afterward, reference the environment variables in MOLT commands:
@@ -46,7 +46,7 @@
 		Use the encoded password in your connection string. For example:
 
 		~~~
-		postgres://migration_user:a%2452%26@localhost:5432/replicationload
+		postgres://migration_user:a%2452%26@localhost:5432/molt
 		~~~
 
 - Remove `sslmode=disable` from production connection strings.

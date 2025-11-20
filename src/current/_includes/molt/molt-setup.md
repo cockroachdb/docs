@@ -29,7 +29,7 @@
 
 ## Prepare the target database
 
-### Create the target schema
+### Define the target tables
 
 {% include molt/migration-prepare-schema.md %}
 

@@ -68,12 +68,12 @@ When testing locally, specify the host as follows:
     {% if page.name == "molt-replicator.md" %}
     ~~~
     --sourceConn 'postgres://postgres:postgres@host.docker.internal:5432/molt?sslmode=disable'
-    --targetConn "postgres://root@host.docker.internal:26257/molt?sslmode=disable"
+    --targetConn "postgres://root@host.docker.internal:26257/defaultdb?sslmode=disable"
     ~~~
     {% else %}
     ~~~
     --source 'postgres://postgres:postgres@host.docker.internal:5432/molt?sslmode=disable'
-    --target "postgres://root@host.docker.internal:26257/molt?sslmode=disable"
+    --target "postgres://root@host.docker.internal:26257/defaultdb?sslmode=disable"
     ~~~
     {% endif %}
 
@@ -82,11 +82,11 @@ When testing locally, specify the host as follows:
     {% if page.name == "molt-replicator.md" %}
     ~~~
     --sourceConn 'postgres://postgres:postgres@172.17.0.1:5432/molt?sslmode=disable'
-    --targetConn "postgres://root@172.17.0.1:26257/molt?sslmode=disable"
+    --targetConn "postgres://root@172.17.0.1:26257/defaultdb?sslmode=disable"
     ~~~
     {% else %}
     ~~~
     --source 'postgres://postgres:postgres@172.17.0.1:5432/molt?sslmode=disable'
-    --target "postgres://root@172.17.0.1:26257/molt?sslmode=disable"
+    --target "postgres://root@172.17.0.1:26257/defaultdb?sslmode=disable"
     ~~~
     {% endif %}

@@ -40,10 +40,9 @@ Perform the initial load of the source data.
 	molt fetch \
 	--source $SOURCE \
 	--target $TARGET \
-	--schema-filter 'migration_schema' \
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
-	--table-handling truncate-if-exists \
+	--table-handling truncate-if-exists
 	~~~
 	</section>
 
@@ -59,7 +58,7 @@ Perform the initial load of the source data.
 	--schema-filter 'migration_schema' \
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
-	--table-handling truncate-if-exists \
+	--table-handling truncate-if-exists
 	~~~
 	</section>
 
@@ -156,9 +155,9 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	replicator pglogical \
 	--sourceConn $SOURCE \
 	--targetConn $TARGET \
-	--targetSchema defaultdb.public \
+	--targetSchema defaultdb.migration_schema \
 	--slotName molt_slot \
-	--stagingSchema _replicator \
+	--stagingSchema defaultdb._replicator \
 	--stagingCreateSchema \
 	--metricsAddr :30005 \
 	-v
@@ -175,7 +174,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	--targetConn $TARGET \
 	--targetSchema defaultdb.public \
 	--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29 \
-	--stagingSchema _replicator \
+	--stagingSchema defaultdb._replicator \
 	--stagingCreateSchema \
 	--metricsAddr :30005 \
 	--userscript table_filter.ts \
@@ -183,7 +182,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	~~~
 
 	{{site.data.alerts.callout_success}}
-	For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON source_database.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
+	For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON public.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
 	{{site.data.alerts.end}}
 </section>
 
@@ -196,11 +195,11 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	--sourceConn $SOURCE \
 	--sourcePDBConn $SOURCE_PDB \
 	--targetConn $TARGET \
-	--sourceSchema migration_schema \
-	--targetSchema defaultdb.public \
+	--sourceSchema MIGRATION_USER \
+	--targetSchema defaultdb.migration_schema \
 	--backfillFromSCN 26685444 \
 	--scn 26685786 \
-	--stagingSchema _replicator \
+	--stagingSchema defaultdb._replicator \
 	--stagingCreateSchema \
 	--metricsAddr :30005 \
 	--userscript table_filter.ts \
@@ -273,7 +272,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 
 1. Repeat [Verify the data load](#verify-the-data-load) to verify the updated data.
 
-## Modify the CockroachDB schema
+## Add constraints and indexes
 
 {% include molt/migration-modify-target-schema.md %}
 

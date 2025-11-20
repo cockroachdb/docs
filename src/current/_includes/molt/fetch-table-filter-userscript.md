@@ -4,6 +4,7 @@ When loading a subset of tables using `--table-filter`, you **must** provide a T
 
 For example, the following `table_filter.ts` userscript filters change events to the specified source tables:
 
+<section class="filter-content" markdown="1" data-scope="postgres oracle">
 ~~~ ts
 import * as api from "replicator@v1";
 
@@ -11,7 +12,7 @@ import * as api from "replicator@v1";
 const allowedTables = ["EMPLOYEES", "PAYMENTS", "ORDERS"];
 
 // Update this to your target CockroachDB database and schema name
-api.configureSource("defaultdb.migration_schema", {
+api.configureSource("molt.migration_schema", {
   dispatch: (doc: Document, meta: Document): Record<Table, Document[]> | null => {
     // Replicate only if the table matches one of the allowed tables
     if (allowedTables.includes(meta.table)) {
@@ -33,6 +34,39 @@ api.configureSource("defaultdb.migration_schema", {
   },
 });
 ~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+~~~ ts
+import * as api from "replicator@v1";
+
+// List the source tables (matching source names and casing) to include in replication
+const allowedTables = ["EMPLOYEES", "PAYMENTS", "ORDERS"];
+
+// Update this to your target CockroachDB database and schema name
+api.configureSource("molt.public", {
+  dispatch: (doc: Document, meta: Document): Record<Table, Document[]> | null => {
+    // Replicate only if the table matches one of the allowed tables
+    if (allowedTables.includes(meta.table)) {
+      let ret: Record<Table, Document[]> = {};
+      ret[meta.table] = [doc];
+      return ret;
+    }
+    // Ignore all other tables
+    return null;
+  },
+  deletesTo: (doc: Document, meta: Document): Record<Table, Document[]> | null => {
+    // Optionally filter deletes the same way
+    if (allowedTables.includes(meta.table)) {
+      let ret: Record<Table, Document[]> = {};
+      ret[meta.table] = [doc];
+      return ret;
+    }
+    return null;
+  },
+});
+~~~
+</section>
 
 Pass the userscript to MOLT Replicator with the `--userscript` [flag](#replication-flags):
 

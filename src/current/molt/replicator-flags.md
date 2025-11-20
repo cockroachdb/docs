@@ -1,3 +1,12 @@
+---
+title: Replicator Flags
+summary: Flag reference for MOLT Replicator
+toc: true
+docs_area: migrate
+---
+
+This page lists all available flags for the [MOLT Replicator commands]({% link molt/molt-replicator.md %}#commands): `start`, `pglogical`, `mylogical`, `oraclelogminer`, and `make-jwt`.
+
 |                                             Flag                                            |                       Commands                      |    Type    |                                                                                                                                                           Description                                                                                                                                                           |
 |---------------------------------------------------------------------------------------------|-----------------------------------------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | <a id="allow"></a> `-a`, `--allow`                                                          | `make-jwt`                                          | `STRING`   | One or more `database.schema` identifiers. Can be repeated for multiple schemas.                                                                                                                                                                                                                                                |
