@@ -70,7 +70,9 @@ Unless you specify which virtual cluster to connect to, when you connect using t
 
 To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the DB Console URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster.
 
-If the same SQL user has the `admin` role on the system virtual cluster and also has roles on other virtual clusters, that user can switch among them from the top of the DB Console.
+If the same SQL user has the `admin` role on the system virtual cluster and also has roles on other virtual clusters, that user can switch among them using the **Virtual Cluster** dropdown at the top of the DB Console.
+
+On an [insecure cluster]({% link {{ page.version.version }}/cockroach-start.md %}#security) with cluster virtualization enabled, any user can switch among all virtual clusters, including the system virtual cluster, using the **Virtual Cluster** dropdown without authenticating. Initially, the dropdown label shows **Virtual Cluster: default**.
 
 #### Connect to the system virtual cluster
 
