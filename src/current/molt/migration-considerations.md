@@ -24,71 +24,45 @@ Learn more about each migration variable by clicking the links in the left-hand 
 
 The combination of these variables largely defines your migration approach. While you'll typically choose one primary option for each variable, some migrations may involve a hybrid approach depending on your specific requirements.
 
-## Things to consider
+## Factors to consider
 
 When deciding on the options for each migration variable, consider the following business and technical requirements:
 
-### Allowable downtime
+### Permissible downtime
 
-How much downtime can your application tolerate during the migration? This is one of the most critical factors in determining your migration approach:
+How much downtime can your application tolerate during the migration? This is one of the most critical factors in determining your migration approach, and it may influence your choices for [migration granularity](), [continuous replication](), and [cutover strategy]().
 
-- **Planned downtime**: If you can take the application offline for several hours or more, a simpler bulk load approach may be sufficient. You can load all data during the downtime window, verify it, and then bring the application back online on CockroachDB.
+- **Planned downtime** is made known to your users in advance. It involves taking the application offline, conducting the migration, and bginging the application back online on CockroachDB.
 
-- **Minimal downtime**: If you need to minimize user impact (ideally to seconds or minutes), you'll need to use continuous replication to keep CockroachDB synchronized with the source database. Application writes are paused only briefly to allow the replication stream to drain before cutover.
+    To succeed, you should estimate the amount of downtime required to migrate your data, and ideally schedule the downtime outside of peak hours. Scheduling downtime is easiest if your application traffic is "periodic", meaning that it varies by the time of day, day of week, or day of month.
 
-- **Zero downtime**: For mission-critical applications that cannot tolerate any downtime, consider a phased migration where you progressively move slices of data (e.g., per-tenant or per-service) while maintaining dual-write capabilities or bidirectional replication.
+    If you can support planned downtime, you may want to migrate your data [all at once]({% link molt/migration-considerations-phases.md %}), and _without_ [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
-Your downtime tolerance will influence your choices for data transfer approach, validation strategy, and cutover strategy.
+- **Minimal downtime** impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), you can queue requests while the system is offline and process them after completing the migration to CockroachDB.
 
-### Migration timeframe
+- **Near-zero downtime** is necessary for mission-critical applications. For these migrations, consider cutover strategies that keep applications online for as long as possible, and which utilize [continuous replication]().
 
-When do you need to complete the migration, and how does this timeline affect your approach?
+In addition to downtime duration, consider whether your application could support windows of **reduced functionality** in which some, but not all, application functionality is brought offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
 
-- **Shorter calendar time**: If you need to complete the migration quickly and can tolerate planned downtime, a bulk migration may be the fastest path. However, this concentrates risk into a single event.
+### Migration timeframe and allowable complexity
 
-- **Longer calendar time**: If you have more time available, a phased migration allows you to reduce risk by migrating in smaller increments. This takes longer overall but provides faster feedback loops and the ability to adjust your approach based on early results.
+When do you need to complete the migration? How many team members can be allocated for this effort? How much complex orchestration can your team manage? These factors may influence your choices for [migration granularity](), [continuous replication](), and [cutover strategy]().
 
-- **Team availability**: Consider when your migration team and stakeholders are available. Can you schedule a migration during off-peak hours or weekends? Do you need to coordinate with multiple teams?
+- Migrations with a short timeline, or which cannot accommodate high complexity, may want to migrate data [all at once](), without utilizing [continuous replication](), and requiring [manual reconciliation]() in the event of migration failure.
 
-Your migration timeframe will influence whether you choose a bulk or phased approach, and how aggressively you can schedule cutover windows.
+- Migrations with a long timeline, or which can accomodate complexity, may want to migrate data [in phases](). If the migration requires minimal downtime, these migrations may also want to utilize [continuous replication](). If the migration is low in risk-tolerance, these migrations may also want to enable [failback]().
 
 ### Risk tolerance
 
-How much risk is your organization willing to accept during the migration?
+How much risk is your organization willing to accept during the migration? This may influence your choices for [migration granularity](), [validation strategy](), and [rollback plan]().
 
-- **Risk-averse**: Organizations with low risk tolerance should prefer phased migrations that limit the blast radius of any issues. Start with low-risk slices (e.g., a small cohort of tenants or a non-critical service), validate thoroughly, and progressively expand to higher-value workloads.
+- Risk-averse migrations should prefer [phased migrations]() that limit the blast radius of any issues. Start with low-risk slices (e.g., a small cohort of tenants or a non-critical service), [validate thoroughly](), and progressively expand to higher-value workloads. These migrations may also prefer [rollback plans]() that enable quick recovery in the event of migration issues.
 
-- **Risk-tolerant**: If you're comfortable with higher risk and can recover quickly from issues, a bulk migration may be acceptable. This is especially true for development or staging environments, or for applications with strong rollback capabilities.
+- For risk-tolerant migrations, it may be acceptable to migrate [all of your data at once](). Less stringent [validation strategies]() and [manual reconciliation]() in the event of a migration failure may also be acceptable.
 
-- **Rollback requirements**: Does your organization require the ability to roll back the migration after cutover? This will influence your choice of rollback plan (e.g., failback replication vs. manual reconciliation).
+___
 
-Your risk tolerance will influence your choices for migration granularity, rollback plan, and validation strategy.
-
-### Allowable migration complexity
-
-How complex of a migration can your team execute and maintain?
-
-- **Simple migrations**: Bulk migrations with planned downtime are generally simpler to orchestrate. They involve fewer moving parts and a single cutover event. This is best for teams with limited migration experience or smaller datasets.
-
-- **Complex migrations**: Phased migrations with continuous replication, per-slice validation, and progressive cutover require more sophisticated orchestration. You'll need to manage replication streams, coordinate multiple cutover windows, and maintain clear rollback runbooks for each slice. This is best for experienced teams managing large-scale or mission-critical migrations.
-
-- **Team expertise**: Consider your team's familiarity with the MOLT tools, CockroachDB, and migration best practices. Can you dedicate time for dry runs and rehearsals? Do you have monitoring and alerting in place?
-
-Your team's capacity and expertise will influence the complexity of the migration approach you can successfully execute.
-
-### Additional factors
-
-Other factors that may influence your migration decisions:
-
-- **Data volume**: Larger datasets may require phased migrations to fit within maintenance windows and to manage resource consumption during load.
-
-- **Application architecture**: Multi-tenant applications, microservices, and sharded databases are natural candidates for phased migrations. Monolithic applications may be better suited to bulk migrations.
-
-- **Integration surface area**: Applications with many downstream consumers (ETL pipelines, analytics tools, third-party integrations) may benefit from phased migrations to reduce the risk of integration issues.
-
-- **Compliance and regulatory requirements**: Some industries require specific validation, auditing, or rollback capabilities that will influence your migration approach.
-
-These factors, along with your specific business requirements and constraints, will help determine which options you choose for each migration variable. It's recommended to document your decisions and the reasoning behind them as part of your migration plan.
+These above factors are only a subset of all of what you'll want to consider in the decision-making about your CockroachDB migration, along with your specific business requirements and technical constraints. It's recommended that you document these decisions and the reasoning behind them as part of your [migration plan]().
 
 ## See also
 
