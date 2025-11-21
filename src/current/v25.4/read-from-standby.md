@@ -5,6 +5,10 @@ toc: true
 docs_area: manage
 ---
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 In addition to providing [failover]({% link {{ page.version.version }}/failover-replication.md %}) capabilities for [disaster recovery]({% link {{ page.version.version }}/disaster-recovery-overview.md %}), [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to direct read-only queries to your standby cluster. This process offloads traffic such as application reads, analytics queries, and ad-hoc reporting from the primary cluster.
 
 Use this page to understand how the _read from standby_ feature works and how to utilize it.

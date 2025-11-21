@@ -15,13 +15,27 @@ Following is a list of the metrics that have multi-dimensional metrics:
     </thead>
     <tbody>    
     {% for m in metrics %} {% comment %} Iterate through the metrics. {% endcomment %}
-        {% assign metrics-list = site.data[version].metrics.metrics-list | where: "metric", m.multi_dimensional_metric_id %}
-        {% comment %} Get the row from the metrics-list with the given child_metric_id. {% endcomment %}
+        {% comment %} Get the row from the metrics.yaml with the given multi_dimensional_metric_id. {% endcomment %}
+
+        {% assign metrics-yaml = site.data[version].metrics.metrics %}
+        {%- comment -%} Looks for a metric anywhere in the nested structure: layers -> categories -> metrics{%- endcomment -%}
+
+        {%- assign found = "" -%}
+
+        {%- for layer in metrics-yaml.layers -%}
+            {%- for category in layer.categories -%}
+                {%- assign metric = category.metrics | where: "name", m.multi_dimensional_metric_id | first -%}
+                {%- if metric -%}
+                    {%- assign found = metric -%}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endfor -%}
+
             <tr>
-            <td><div id="{{ m.child_metric_id }}" class="anchored"><code>{{ m.multi_dimensional_metric_id }}</code></div></td>
-            <td>{% if metrics-list[0].description == null %}{{ m.description }}{% else %}{{ metrics-list[0].description }}{% endif %}</td>
-            <td>{% if metrics-list[0].type == null %}{{ m.type }}{% else %}{{ metrics-list[0].type }}{% endif %}</td>
-            <td>{% if metrics-list[0].unit == null %}{{ m.unit }}{% else %}{{ metrics-list[0].unit }}{% endif %}</td>
+            <td><div id="{{ m.multi_dimensional_metric_id }}" class="anchored"><code>{{ m.multi_dimensional_metric_id }}</code></div></td>
+            <td>{% if found.description == null %}{{ m.description }}{% else %}{{ found.description }}{% endif %}</td>
+            <td>{% if found.type == null %}{{ m.type }}{% else %}{{ found.type }}{% endif %}</td>
+            <td>{% if found.unit == null %}{{ m.unit }}{% else %}{{ found.unit }}{% endif %}</td>
         </tr>
     {% endfor %} {% comment %} metrics {% endcomment %}
     </tbody>
