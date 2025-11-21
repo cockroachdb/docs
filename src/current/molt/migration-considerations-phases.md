@@ -48,11 +48,11 @@ Tips for picking slices:
 
 Phased and unphased migrations are both supported natively by MOLT.
 
-By default, [MOLT Fetch]() moves all data from the source database to CockroachDB. However, you can use the `--schema-filter`, `--table-filter`, and `--filter-path` flags to selective migrate data from the source to the target. Learn more about [schema and table selection]({% link molt/molt-fetch-usage.md %}#schema-and-table-selection) and [selective data movement]({% link molt/molt-fetch-usage.md %}#selective-data-movement), both of which can enable a phased migration.
+By default, [MOLT Fetch]({% link molt/molt-fetch.md %}) moves all data from the source database to CockroachDB. However, you can use the `--schema-filter`, `--table-filter`, and `--filter-path` flags to selective migrate data from the source to the target. Learn more about [schema and table selection]({% link molt/molt-fetch.md %}#schema-and-table-selection) and [selective data movement]({% link molt/molt-fetch.md %}#selective-data-movement), both of which can enable a phased migration.
 
-Similarly, you can use [MOLT Verify]()'s `--schema-filter` and `--table-filter` flags to run validation checks on subsets of the data in your source and target databases. In a phased migration, you will likely want to verify data at the end of each migration phase, rather than at the end of the entire migration.
+Similarly, you can use [MOLT Verify]({% link molt/molt-verify.md %})'s `--schema-filter` and `--table-filter` flags to run validation checks on subsets of the data in your source and target databases. In a phased migration, you will likely want to verify data at the end of each migration phase, rather than at the end of the entire migration.
 
-[MOLT Replicator]() replicates full tables by default. If you choose to combine phased migration with [continuous replication]({% link molt/migration-considerations-replication.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/molt-replicator.md %}#flags) to select rows to replicate.
+[MOLT Replicator]({% link molt/molt-replicator.md %}) replicates full tables by default. If you choose to combine phased migration with [continuous replication]({% link molt/migration-considerations-replication.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/molt-replicator.md %}#flags) to select rows to replicate.
 
 ## Example sequences
 
@@ -73,4 +73,4 @@ Similarly, you can use [MOLT Verify]()'s `--schema-filter` and `--table-filter` 
 - [Migration Overview]({% link molt/migration-overview.md %})
 - [Migration Considerations]({% link molt/migration-considerations.md %})
 - [Continuous Replication]({% link molt/migration-considerations-replication.md %})
-- [MOLT Fetch]({% link molt/molt-fetch-overview.md %})
+- [MOLT Fetch]({% link molt/molt-fetch.md %})

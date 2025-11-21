@@ -10,10 +10,9 @@ A successful migration to CockroachDB requires planning for downtime, applicatio
 This page outlines key decisions, infrastructure considerations, and best practices for a resilient and repeatable high-level migration strategy:
 
 - [Develop a migration plan](#develop-a-migration-plan).
-- Evaluate your [downtime approach](#approach-to-downtime).
 - [Size the target CockroachDB cluster](#capacity-planning).
 - Implement [application changes](#application-changes) to address necessary [schema changes](#schema-design-best-practices), [transaction contention](#handling-transaction-contention), and [unimplemented features](#unimplemented-features-and-syntax-incompatibilities).
-- [Prepare for migration](#prepare-for-migration) by running a [pre-mortem](#run-a-migration-pre-mortem), setting up [metrics](#set-up-monitoring-and-alerting), [loading test data](#load-test-data), [validating application queries](#validate-queries) for correctness and performance, performing a [migration dry run](#perform-a-dry-run), and reviewing your [cutover strategy](#cutover-strategy).
+- [Prepare for migration](#prepare-for-migration) by running a [pre-mortem](#run-a-migration-pre-mortem), setting up [metrics](#set-up-monitoring-and-alerting), [loading test data](#load-test-data), [validating application queries](#validate-queries) for correctness and performance, performing a [migration dry run](#perform-a-dry-run), and reviewing your cutover strategy.
 {% assign variable = value %}
 {{site.data.alerts.callout_success}}
 For help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
@@ -96,7 +95,7 @@ Based on the error budget you [defined in your migration plan](#develop-a-migrat
 
 ### Load test data
 
-It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries). Refer to [Migration flows]({% link molt/migration-overview.md %}#migration-flows).
+It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries).
 
 MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch.md %}#data-load-mode) for loading data into CockroachDB:
 

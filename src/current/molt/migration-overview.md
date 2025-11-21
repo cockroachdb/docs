@@ -13,7 +13,6 @@ This page provides an overview of the following:
 
 - Overall [migration sequence](#migration-sequence)
 - [MOLT tools](#molt-tools)
-- Supported [migration flows](#migration-flows)
 
 ## Migration sequence
 
@@ -47,8 +46,6 @@ The MOLT (Migrate Off Legacy Technology) toolkit enables safe, minimal-downtime 
 <div style="text-align: center;">
 <img src="{{ 'images/molt/molt_flows_1.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
 </div>
-
-For more details, refer to [Migration flows](#migration-flows).
 
 ## MOLT tools
 
@@ -103,7 +100,7 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 
 [MOLT Fetch]({% link molt/molt-fetch.md %}) performs the initial data load to CockroachDB. It supports:
 
-- [Multiple migration flows](#migration-flows) via `IMPORT INTO` or `COPY FROM`.
+- Multiple migration flows via `IMPORT INTO` or `COPY FROM`.
 - Data movement via [cloud storage, local file servers, or direct copy]({% link molt/molt-fetch.md %}#data-path).
 - [Concurrent data export]({% link molt/molt-fetch.md %}#best-practices) from multiple source tables and shards.
 - [Schema transformation rules]({% link molt/molt-fetch.md %}#transformations).

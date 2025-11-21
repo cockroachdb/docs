@@ -30,7 +30,7 @@ When deciding on the options for each migration variable, consider the following
 
 ### Permissible downtime
 
-How much downtime can your application tolerate during the migration? This is one of the most critical factors in determining your migration approach, and it may influence your choices for [migration granularity](), [continuous replication](), and [cutover strategy]().
+How much downtime can your application tolerate during the migration? This is one of the most critical factors in determining your migration approach, and it may influence your choices for [migration granularity]({% link molt/migration-considerations-phases.md %}), [continuous replication]({% link molt/migration-considerations-replication.md %}), and [cutover strategy]({% link molt/migration-considerations-cutover.md %}).
 
 - **Planned downtime** is made known to your users in advance. It involves taking the application offline, conducting the migration, and bginging the application back online on CockroachDB.
 
@@ -40,29 +40,29 @@ How much downtime can your application tolerate during the migration? This is on
 
 - **Minimal downtime** impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), you can queue requests while the system is offline and process them after completing the migration to CockroachDB.
 
-- **Near-zero downtime** is necessary for mission-critical applications. For these migrations, consider cutover strategies that keep applications online for as long as possible, and which utilize [continuous replication]().
+- **Near-zero downtime** is necessary for mission-critical applications. For these migrations, consider cutover strategies that keep applications online for as long as possible, and which utilize [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
 In addition to downtime duration, consider whether your application could support windows of **reduced functionality** in which some, but not all, application functionality is brought offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
 
 ### Migration timeframe and allowable complexity
 
-When do you need to complete the migration? How many team members can be allocated for this effort? How much complex orchestration can your team manage? These factors may influence your choices for [migration granularity](), [continuous replication](), and [cutover strategy]().
+When do you need to complete the migration? How many team members can be allocated for this effort? How much complex orchestration can your team manage? These factors may influence your choices for [migration granularity]({% link molt/migration-considerations-phases.md %}), [continuous replication]({% link molt/migration-considerations-replication.md %}), and [cutover strategy]({% link molt/migration-considerations-cutover.md %}).
 
-- Migrations with a short timeline, or which cannot accommodate high complexity, may want to migrate data [all at once](), without utilizing [continuous replication](), and requiring [manual reconciliation]() in the event of migration failure.
+- Migrations with a short timeline, or which cannot accommodate high complexity, may want to migrate data [all at once]({% link molt/migration-considerations-phases.md %}), without utilizing [continuous replication]({% link molt/migration-considerations-replication.md %}), and requiring [manual reconciliation]({% link molt/migration-considerations-rollback.md %}) in the event of migration failure.
 
-- Migrations with a long timeline, or which can accomodate complexity, may want to migrate data [in phases](). If the migration requires minimal downtime, these migrations may also want to utilize [continuous replication](). If the migration is low in risk-tolerance, these migrations may also want to enable [failback]().
+- Migrations with a long timeline, or which can accomodate complexity, may want to migrate data [in phases]({% link molt/migration-considerations-phases.md %}). If the migration requires minimal downtime, these migrations may also want to utilize [continuous replication]({% link molt/migration-considerations-replication.md %}). If the migration is low in risk-tolerance, these migrations may also want to enable [failback]({% link molt/migration-considerations-rollback.md %}).
 
 ### Risk tolerance
 
-How much risk is your organization willing to accept during the migration? This may influence your choices for [migration granularity](), [validation strategy](), and [rollback plan]().
+How much risk is your organization willing to accept during the migration? This may influence your choices for [migration granularity]({% link molt/migration-considerations-phases.md %}), [validation strategy]({% link molt/migration-considerations-validation.md %}), and [rollback plan]({% link molt/migration-considerations-rollback.md %}).
 
-- Risk-averse migrations should prefer [phased migrations]() that limit the blast radius of any issues. Start with low-risk slices (e.g., a small cohort of tenants or a non-critical service), [validate thoroughly](), and progressively expand to higher-value workloads. These migrations may also prefer [rollback plans]() that enable quick recovery in the event of migration issues.
+- Risk-averse migrations should prefer [phased migrations]({% link molt/migration-considerations-phases.md %}) that limit the blast radius of any issues. Start with low-risk slices (e.g., a small cohort of tenants or a non-critical service), [validate thoroughly]({% link molt/migration-considerations-validation.md %}), and progressively expand to higher-value workloads. These migrations may also prefer [rollback plans]({% link molt/migration-considerations-rollback.md %}) that enable quick recovery in the event of migration issues.
 
-- For risk-tolerant migrations, it may be acceptable to migrate [all of your data at once](). Less stringent [validation strategies]() and [manual reconciliation]() in the event of a migration failure may also be acceptable.
+- For risk-tolerant migrations, it may be acceptable to migrate [all of your data at once]({% link molt/migration-considerations-phases.md %}). Less stringent [validation strategies]({% link molt/migration-considerations-validation.md %}) and [manual reconciliation]({% link molt/migration-considerations-rollback.md %}) in the event of a migration failure may also be acceptable.
 
 ___
 
-These above factors are only a subset of all of what you'll want to consider in the decision-making about your CockroachDB migration, along with your specific business requirements and technical constraints. It's recommended that you document these decisions and the reasoning behind them as part of your [migration plan]().
+These above factors are only a subset of all of what you'll want to consider in the decision-making about your CockroachDB migration, along with your specific business requirements and technical constraints. It's recommended that you document these decisions and the reasoning behind them as part of your [migration plan]({% link molt/migration-strategy.md %}#develop-a-migration-plan).
 
 ## See also
 
