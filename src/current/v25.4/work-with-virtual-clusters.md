@@ -116,15 +116,15 @@ When connected to a virtual cluster from the DB Console, metrics which measure S
 
 ## Backup and restore
 
-Cockroach Labs recommends that you regularly [back up]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) your data. When using virtual clusters, perform backups on the _application virtual cluster (app VC)_. Only the app VC's data is included in these backups, and data for other virtual clusters or for the _system virtual cluster (system VC)_ is omitted. You can also back up your system VC to preserve metadata related to your system VC, but this data is usually not critical.
+Cockroach Labs recommends regularly [backing up]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) your data. When using virtual clusters, perform backups on the _application virtual cluster (app VC)_. Only the app VC's data is included in these backups. Data from other virtual clusters or the _system virtual cluster (system VC)_ is omitted. You can also back up your system VC to preserve its metadata, although this data is usually not critical.
 
 ### Create a backup schedule for your app VC
 
 Cockroach Labs recommends using [backup schedules]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) to automate full and incremental backups of your data.
 
-Use the following process to create a schedule for a backup of your app VC. In this example, the schedule takes an incremental backup every day at midnight, and a full backup weekly. Consult [CREATE SCHEDULE FOR BACKUP]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#parameters) for a full list of backup schedule options.
+Follow these steps to create a backup schedule for your app VC. In this example, the schedule takes an incremental backup every day at midnight, and a full backup weekly. Consult [CREATE SCHEDULE FOR BACKUP]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#parameters) for a full list of backup schedule options.
 
-1. [Connect](#connect-to-a-virtual-cluster) to the app VC as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the app VC. In this example the user has the `BACKUP` privilege.
+1. [Connect](#connect-to-a-virtual-cluster) to the app VC as a user with the [required privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges). In this example, the user has the `BACKUP` privilege.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -138,7 +138,7 @@ Use the following process to create a schedule for a backup of your app VC. In t
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE SCHEDULE schedule_label
-    FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID={aws_access_key_id}&AWS_SECRET_ACCESS_KEY={aws_secret_access_key}'
         RECURRING '@daily';
     ~~~
 
@@ -156,9 +156,9 @@ For information on scheduling backups at different levels or with other options,
 
 ### Take a one-off backup of your app VC
 
-Use the following process to take a one-off full backup of your app VC. Even if you are using backup schedules, this can be useful if you want to create a separate copy.
+Follow these steps to take a one-off full backup of your app VC. Even if you use backup schedules, taking a one-off backup can be useful for creating a separate copy.
 
-1. [Connect](#connect-to-a-virtual-cluster) to the app VC as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the app VC. In this example the user has the `BACKUP` privilege.
+1. [Connect](#connect-to-a-virtual-cluster) to the app VC as a user with the [required privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges). In this example, the user has the `BACKUP` privilege.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -178,9 +178,9 @@ You can also take one-off backups of [databases]({% link {{ page.version.version
 
 ### Back up your system VC
 
-You can also back up your system VC to preserve metadata stored in the system VC. Use the following process to back up your system VC.
+You can also back up your system VC to preserve its stored metadata. Follow these steps to back up your system VC.
 
-1. [Connect](#connect-to-the-system-virtual-cluster) to the system VC as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the system VC. In this example the user has the `BACKUP` privilege.
+1. [Connect](#connect-to-the-system-virtual-cluster) to the system VC as a user with the  [required privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges). In this example the user has the `BACKUP` privilege.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -200,9 +200,9 @@ You can also back up your system VC to preserve metadata stored in the system VC
 
 ### Restore a virtual cluster
 
-If needed, you can restore a backup to a new app VC. For cluster-level restores, the new app VC must have no user-created databases or tables. To restore your app VC from the latest backup:
+If needed, you can restore a backup to a new app VC. For cluster-level restores, the new app VC must not contain any user-created databases or tables. To restore your app VC from the latest backup:
 
-1. [Connect to the destination app VC](#connect-to-a-virtual-cluster) as a user with [supported privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the app VC. In this example the user has the `RESTORE` privilege.
+1. [Connect to the destination app VC](#connect-to-a-virtual-cluster) as a user with the [required privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges). In this example the user has the `RESTORE` privilege.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -218,7 +218,7 @@ If needed, you can restore a backup to a new app VC. For cluster-level restores,
     RESTORE FROM LATEST IN 's3://bucket/path?AUTH=implicit';
     ~~~
 
-You can also restore a [database-level]({% link {{ page.version.version }}/restore.md %}#restore-a-database) or [table-level]({% link {{ page.version.version }}/restore.md %}#restore-a-table) backup to the same app VC on which you created it. For more information on restore options, consult [RESTORE]({% link {{ page.version.version }}/restore.md %}).
+You can also restore a [database-level]({% link {{ page.version.version }}/restore.md %}#restore-a-database) or [table-level]({% link {{ page.version.version }}/restore.md %}#restore-a-table) backup to the same app VC where it was created. For more information on restore options, consult [RESTORE]({% link {{ page.version.version }}/restore.md %}).
 
 ## Configure cluster settings
 

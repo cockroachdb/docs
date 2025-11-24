@@ -60,7 +60,7 @@ For details, refer to [Work with virtual clusters]({% link {{ page.version.versi
 
 ### Backup and restore
 
-Having a [disaster recovery]({% link {{ page.version.version }}/disaster-recovery-overview.md %}) plan is important to recover from unforseen incidents and minimize downtime and data loss. 
+Having a [disaster recovery]({% link {{ page.version.version }}/disaster-recovery-overview.md %}) plan is important to recover from unforeseen incidents and to minimize downtime and data loss. 
 
 When cluster virtualization is enabled, [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}) commands are scoped to a virtual cluster. This means that:
 
