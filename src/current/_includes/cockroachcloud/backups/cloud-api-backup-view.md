@@ -10,7 +10,7 @@ To view a list of managed backups on a cluster with timestamps and their respect
 ~~~ shell
 curl --request GET \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups \
---header 'Authorization: Bearer {secret_key}' \
+--header "Authorization: Bearer {secret_key}" \
 ~~~
 
 If the request is successful, the client recieves a JSON response listing backups with their unique `{id}`. The `{as_of_time}` timestamp describes the system time of the cluster when the backup was created:
