@@ -108,7 +108,7 @@ The service account associated with the secret key must have the Cluster Admin o
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"BASIC","spec":{"serverless":{"regions":["{region_name}"]}}}"
+  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"BASIC","spec":{"serverless":{"regions":["{region_name}"]}}}'
 ~~~
 
 </section>
@@ -154,7 +154,7 @@ For example, to create a new Basic cluster named `basic-test` using GCP as the c
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{"name":"basic-test","provider":"GCP","plan":"BASIC","spec":{"serverless":{"regions":["us-central1"]}}}"
+  --json '{"name":"basic-test","provider":"GCP","plan":"BASIC","spec":{"serverless":{"regions":["us-central1"]}}}'
 ~~~
 
 </section>
@@ -203,7 +203,7 @@ The service account associated with the secret key must have the Cluster Admin o
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"STANDARD","spec":{"serverless":{"regions":["{region_name}"],"usage_limits":{"provisioned_virtual_cpus":"2"}}}}"
+  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"STANDARD","spec":{"serverless":{"regions":["{region_name}"],"usage_limits":{"provisioned_virtual_cpus":"2"}}}}'
 ~~~
 
 </section>
@@ -253,7 +253,7 @@ For example, to create a new Standard cluster named `notorious-moose` using the 
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{"name":"notorious-moose","provider":"GCP","plan":"STANDARD","spec":{"serverless":{"regions":["us-central1"],"usage_limits":{"provisioned_virtual_cpus":"2"}}}}"
+  --json '{"name":"notorious-moose","provider":"GCP","plan":"STANDARD","spec":{"serverless":{"regions":["us-central1"],"usage_limits":{"provisioned_virtual_cpus":"2"}}}}'
 ~~~
 
 </section>
@@ -305,7 +305,7 @@ The service account associated with the secret key must have the Cluster Admin o
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"{region_name}":3},"hardware":{"machine_spec":{"num_virtual_cpus":{num_vcpus}}},"cockroach_version":"{version}"}}}"
+  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"{region_name}":3},"hardware":{"machine_spec":{"num_virtual_cpus":{num_vcpus}}},"cockroach_version":"{version}"}}}'
 ~~~
 
 </section>
@@ -360,7 +360,7 @@ For example, to create a new Advanced cluster named `advanced-test` using AWS as
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{"name":"advanced-test","provider":"AWS","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"us-east-1":3},"hardware":{"machine_spec":{"num_virtual_cpus":4}},"cockroach_version":"v23.1.2"}}}"
+  --json '{"name":"advanced-test","provider":"AWS","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"us-east-1":3},"hardware":{"machine_spec":{"num_virtual_cpus":4}},"cockroach_version":"v23.1.2"}}}'
 ~~~
 
 </section>
@@ -497,7 +497,7 @@ The service account associated with the secret key must have the Cluster Admin o
 curl --request PATCH \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{"serverless":{"usage_limits":{"storage_mib_limit":"5242880","request_unit_limit":"50000000"}}}"
+  --json '{"serverless":{"usage_limits":{"storage_mib_limit":"5242880","request_unit_limit":"50000000"}}}'
 ~~~
 
 </section>
@@ -556,7 +556,7 @@ The service account associated with the secret key must have the Cluster Admin o
 curl --request PATCH \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{"serverless":{"usage_limits":{"provisioned_virtual_cpus":"{provisioned_virtual_cpus}"}}}"
+  --json '{"serverless":{"usage_limits":{"provisioned_virtual_cpus":"{provisioned_virtual_cpus}"}}}'
 ~~~
 
 </section>
@@ -600,7 +600,7 @@ For example, to change the number of vCPUs per node to 8:
 curl --request PATCH \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{
+  --json '{
     "spec": {
       "dedicated": {
         "hardware": {
@@ -610,7 +610,7 @@ curl --request PATCH \
         }
       }
     }
-  }"
+  }'
 ~~~
 
 To change the number of nodes in a region:
@@ -620,7 +620,7 @@ To change the number of nodes in a region:
 curl --request PATCH \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{
+  --json '{
     "spec": {
       "dedicated": {
         "region_nodes": {
@@ -628,7 +628,7 @@ curl --request PATCH \
         }
       }
     }
-  }"
+  }'
 ~~~
 
 Where `{cluster_id}` is the ID of your cluster and `{secret_key}` is your API key.
@@ -924,7 +924,7 @@ When possible, it is best practice to [limit each user's privileges]({% link coc
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{"name":"{sql_username}","password":"{password}"}"
+  --json '{"name":"{sql_username}","password":"{password}"}'
 ~~~
 
 Where:
@@ -1000,7 +1000,7 @@ The service account associated with the secret key must have the Cluster Admin o
 curl --request PUT \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users/{sql_username}/password \
   --header "Authorization: Bearer {secret_key}" \
-  --json "{"password":"{new_password}"}"
+  --json '{"password":"{new_password}"}'
 ~~~
 
 Where:
@@ -1035,7 +1035,7 @@ The service account associated with the secret key must have the Cluster Admin o
 curl --request PUT \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/maintenance-window \
   --header "Authorization: Bearer REPLACE_BEARER_TOKEN" \
-  --json "{"offset_duration":"{offset_duration}","window_duration":"{window_duration}"}"
+  --json '{"offset_duration":"{offset_duration}","window_duration":"{window_duration}"}'
 ~~~
 
 Where:
@@ -1094,7 +1094,7 @@ The service account associated with the secret key must have the Cluster Admin o
 curl --request PUT \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/version-deferral \
   --header "Authorization: Bearer REPLACE_BEARER_TOKEN" \
-  --json "{"deferral_policy":"{deferral_policy}"}"
+  --json '{"deferral_policy":"{deferral_policy}"}'
 ~~~
 
 Where:

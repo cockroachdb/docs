@@ -80,7 +80,7 @@ curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
   --header "Authorization: Bearer {bearer_token}" \
   --header "content-type: application/json" \
-  --data "{"external_owner_id":"{aws_account_id}","type":"AWS_ACCOUNT_ID"}"
+  --data '{"external_owner_id":"{aws_account_id}","type":"AWS_ACCOUNT_ID"}'
 ~~~
 
 Replace:

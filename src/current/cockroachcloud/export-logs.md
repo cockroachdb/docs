@@ -151,7 +151,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
         curl --request POST \
           --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
           --header "Authorization: Bearer {secret_key}" \
-          --data "{"type": "AWS_CLOUDWATCH", "log_name": "{log_group_name}", "auth_principal": "{role_arn}"}"
+          --data '{"type": "AWS_CLOUDWATCH", "log_name": "{log_group_name}", "auth_principal": "{role_arn}"}'
         ~~~
 
         Where:
@@ -211,7 +211,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             curl --request POST \
               --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
               --header "Authorization: Bearer {secret_key}" \
-              --data "{"type":"AWS_CLOUDWATCH","log_name":"default","auth_principal":"{role_arn}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}"
+              --data '{"type":"AWS_CLOUDWATCH","log_name":"default","auth_principal":"{role_arn}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}'
             ~~~
 
             Where:
@@ -302,7 +302,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
         curl --request POST \
           --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
           --header "Authorization: Bearer {secret_key}" \
-          --data "{"type": "GCP_CLOUD_LOGGING", "log_name": "{log_name}", "auth_principal": "{service_account_email}"}"
+          --data '{"type": "GCP_CLOUD_LOGGING", "log_name": "{log_name}", "auth_principal": "{service_account_email}"}'
         ~~~
 
         Where:
@@ -362,7 +362,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
             curl --request POST \
               --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
               --header "Authorization: Bearer {secret_key}" \
-              --data "{"type":"GCP_CLOUD_LOGGING","log_name":"default","auth_principal":"{service_account_email}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}"
+              --data '{"type":"GCP_CLOUD_LOGGING","log_name":"default","auth_principal":"{service_account_email}","redact":true,"region":"","omitted_channels":["SESSIONS","SQL_PERF"],"groups":[{"log_name":"sql","channels":["SQL_SCHEMA","SQL_EXEC"],"redact":false},{"log_name":"devops","channels":["OPS","HEALTH","STORAGE"],"min_level":"WARNING"}]}'
             ~~~
 
             Where:

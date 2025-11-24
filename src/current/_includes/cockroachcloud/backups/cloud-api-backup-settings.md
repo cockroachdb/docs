@@ -43,7 +43,7 @@ To configure the frequency and retention of managed backups, send a `PUT` reques
 curl --request PUT \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups-config \
 --header "Authorization: Bearer {secret_key}" \
---data "{"enabled": true, "frequency_minutes": 30, "retention_days": 2}"
+--data '{"enabled": true, "frequency_minutes": 30, "retention_days": 2}'
 ~~~
 
 Set the following:

@@ -115,7 +115,7 @@ Essential external traffic destined to resources managed by Cockroach Labs is al
     --header "Authorization: Bearer $CC_API_KEY" \
     --header "Cc-Version: latest" \
     --url https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/egress-traffic-policy \
-    --data "{"allow_all":false}"
+    --data '{"allow_all":false}'
     ~~~
 
     ~~~txt

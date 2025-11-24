@@ -144,7 +144,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
       --header "Authorization: Bearer {secret_key}" \
-      --data "{"target_region": "{aws_region}", "role_arn": "arn:aws:iam::{role_arn}:role/CockroachCloudMetricsExportRole", "log_group_name": "{log_group_name}", "external_id": "{external_id}"}"
+      --data '{"target_region": "{aws_region}", "role_arn": "arn:aws:iam::{role_arn}:role/CockroachCloudMetricsExportRole", "log_group_name": "{log_group_name}", "external_id": "{external_id}"}'
     ~~~
 
     Where:
@@ -197,7 +197,7 @@ OR
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
       --header "Authorization: Bearer {secret_key}" \
-      --data "{"site": "{datadog_site}", "api_key": "{datadog_api_key}"}"
+      --data '{"site": "{datadog_site}", "api_key": "{datadog_api_key}"}'
     ~~~
 
     Where:
@@ -382,7 +382,7 @@ To enable metrics export to Azure Monitor:
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/azuremonitor \
       --header "Authorization: Bearer {secret_key}" \
-      --data "{ "application_id": "{application_id}", "tenant_id": "{tenant_id}", "ingestion_endpoint": "{ingestion_endpoint}", "instrumentation_key": "{instrumentation_key}", "certificate": "{combined_certificate_and_key}" }"
+      --data '{ "application_id": "{application_id}", "tenant_id": "{tenant_id}", "ingestion_endpoint": "{ingestion_endpoint}", "instrumentation_key": "{instrumentation_key}", "certificate": "{combined_certificate_and_key}" }'
     ~~~
 
     Where:

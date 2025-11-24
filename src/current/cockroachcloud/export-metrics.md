@@ -142,7 +142,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
       --header "Authorization: Bearer {secret_key}" \
-      --data "{"target_region": "{aws_region}", "role_arn": "arn:aws:iam::{role_arn}:role/CockroachCloudMetricsExportRole", "log_group_name": "{log_group_name}"}"
+      --data '{"target_region": "{aws_region}", "role_arn": "arn:aws:iam::{role_arn}:role/CockroachCloudMetricsExportRole", "log_group_name": "{log_group_name}"}'
     ~~~
 
     Where:
@@ -198,7 +198,7 @@ OR
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
       --header "Authorization: Bearer {secret_key}" \
-      --data "{"site": "{datadog_site}", "api_key": "{datadog_api_key}"}"
+      --data '{"site": "{datadog_site}", "api_key": "{datadog_api_key}"}'
     ~~~
 
     Where:

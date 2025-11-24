@@ -203,7 +203,7 @@ This initializes the tables defined in `models.py`, in addition to some other ta
     ~~~ shell
     $ curl --header "Content-Type: application/json" \
     --request POST \
-    --data "{"name":"Carl"}" http://0.0.0.0:8000/customer/
+    --data '{"name":"Carl"}' http://0.0.0.0:8000/customer/
     ~~~
 
     This request inserts a new row into the `cockroach_example_customers` table.

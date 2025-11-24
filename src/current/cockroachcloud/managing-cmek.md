@@ -607,7 +607,7 @@ Within your KMS, **do not revoke** access to a CMEK that is in use by one or mor
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
       --header "Authorization: Bearer ${API_KEY}" \
       --header "content-type: application/json" \
-      --data "{"action":"REVOKE"}"
+      --data '{"action":"REVOKE"}'
     ~~~
 
 1. [Check your CMEK status](#check-cmek-status) to confirm the revocation has taken effect.

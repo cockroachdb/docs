@@ -277,7 +277,7 @@ To use the CockroachDB {{ site.data.products.cloud }} API to switch a cluster's 
 ~~~ shell
 curl --request PATCH \ --url  https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
 --header "Authorization: Bearer <your_api_key>" \
---json "{"plan":"STANDARD","serverless":{"usage_limits":{"provisioned_virtual_cpus": 2}}}"
+--json '{"plan":"STANDARD","serverless":{"usage_limits":{"provisioned_virtual_cpus": 2}}}'
 ~~~
 
 ## Delete a cluster
