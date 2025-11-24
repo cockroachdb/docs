@@ -1071,6 +1071,12 @@
               ]
             },
             {
+              "title": "<code>LTREE</code>",
+              "urls": [
+                "/${VERSION}/ltree.html"
+              ]
+            },
+            {
               "title": "<code>OID</code>",
               "urls": [
                 "/${VERSION}/oid.html"

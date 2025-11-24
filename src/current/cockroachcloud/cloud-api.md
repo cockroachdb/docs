@@ -1021,3 +1021,102 @@ If the request is successful, the client receives a response with the name of th
 ~~~
 
 Where `<sql_username>` is the name of the SQL user whose password was changed.
+
+## Configure a CockroachDB Advanced cluster's maintenance window
+
+To configure a [maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) on a CockroachDB {{ site.data.products.advanced }} cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/maintenance-window` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Admin or Cluster Operator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request PUT \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/maintenance-window \
+  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
+  --json '{"offset_duration":"{offset_duration}","window_duration":"{window_duration}"}'
+~~~
+
+Where:
+
+- `{cluster_id}` is the unique ID of this cluster.
+{{site.data.alerts.callout_info}}
+The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}).
+{{site.data.alerts.end}}
+- `{offset_duration}` is the start of the maintenance window, calculated as the amount of time after the start of a week (Monday 00:00 UTC) to begin the window.
+- `{window_duration}` is the length of the maintenance window, which must be greater than 6 hours and less than one week.
+
+To view a cluster's existing maintenance window, send a `GET` request to the `/api/v1/clusters/{cluster_id}/maintenance-window` endpoint:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/maintenance-window \
+  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'
+~~~
+
+~~~ json
+{
+  "offset_duration": "172800s",
+  "window_duration": "21600s"
+}
+~~~
+
+To remove a cluster's maintenance window, send a `DELETE` request to the `/api/v1/clusters/{cluster_id}/maintenance-window` endpoint:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request DELETE \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/maintenance-window \
+  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'
+~~~
+
+~~~ json
+{
+  "offset_duration": "172800s",
+  "window_duration": "21600s"
+}
+~~~
+
+### Set a patch upgrade deferral policy
+
+Automatic patch upgrades can be delayed for a period of 30, 60, or 90 days to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch upgrades and not to major version upgrades.
+
+To set a patch upgrade deferral policy, send a `PUT` request to the `/api/v1/clusters/{cluster_id}/version-deferral` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Admin or Cluster Operator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request PUT \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/version-deferral \
+  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
+  --json '{"deferral_policy":"{deferral_policy}"}'
+~~~
+
+Where:
+
+- `{cluster_id}` is the unique ID of this cluster.
+{{site.data.alerts.callout_info}}
+The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}).
+{{site.data.alerts.end}}
+- `{deferral_policy} is the length of the deferral window, set to `"DEFERRAL_30_DAYS"`, `"DEFERRAL_60_DAYS"`, or `"DEFERRAL_90_DAYS"`. Set to `"NOT_DEFERRED"` to remove the deferral policy and apply automatic patch upgrades immediately.
+
+To view the existing patch deferral policy and current patch upgrade deferrals, send a `GET` request to the `/api/v1/clusters/{cluster_id}/version-deferral` endpoint.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/version-deferral \
+  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'
+~~~
+
+~~~ json
+{
+  "deferral_policy": "DEFERRAL_60_DAYS",
+  "deferred_until": "2025-12-15T00:00:00Z"
+}
+~~~
