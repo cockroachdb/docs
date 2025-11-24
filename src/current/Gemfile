@@ -13,6 +13,11 @@ gem "redcarpet", "~> 3.6"
 gem "rss"
 gem "webrick"
 gem "jekyll-minifier"
+# Ruby 3.4+ compatibility - these were removed from default gems
+gem "csv"
+gem "logger"
+gem "base64"
+gem "bigdecimal"
 
 group :jekyll_plugins do
     gem "jekyll-include-cache"
