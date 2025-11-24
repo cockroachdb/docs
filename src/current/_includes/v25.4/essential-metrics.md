@@ -1,4 +1,5 @@
 {% assign version = page.version.version | replace: ".", "" %}
+{% assign advanced_excluded_metrics = "sys.cpu.host.combined.percent-normalized|sys.host.disk.iopsinprogress|sql.mem.root.current|storage.write-stalls" | split: "|" %}
 {% comment %}DEBUG: {{ version }}{% endcomment %}
 
 {% comment %} STEP 1. Assign variables specific to deployment {% endcomment %}
@@ -122,7 +123,9 @@ The **Usage** column explains why each metric is important to visualize and how 
         {% for metric in essential_metrics %}
         {% comment %} STEP 4d. Exclude SQL metrics that will be placed in special categories {% endcomment %}
         {% unless category_name == SQL %}
-          {% unless metric.name contains "backup" or metric.name contains "BACKUP" or metric.name contains "create_stats" %}
+          {% comment %} Hide metrics that should not appear for advanced deployment {% endcomment %}
+          {% unless include.deployment == 'advanced' and advanced_excluded_metrics contains metric.name %}
+            {% unless metric.name contains "backup" or metric.name contains "BACKUP" or metric.name contains "create_stats" %}
 
           {% comment %} Transforms to match datadog_id {% endcomment %}
           {% assign input_metric = metric.name %}
@@ -162,7 +165,8 @@ The **Usage** column explains why each metric is important to visualize and how 
             <td>{{ metric.how_to_use }}</td>
         </tr>
 
-          {% endunless %}{% comment %}unless metric.name contains "backup" or metric.name contains "BACKUP" or metric.name contains "create_stats"{% endcomment %}
+            {% endunless %}{% comment %}unless metric.name contains "backup" or metric.name contains "BACKUP" or metric.name contains "create_stats"{% endcomment %}
+          {% endunless %}{% comment %}unless metric is excluded for advanced deployment{% endcomment %}
         {% endunless %}{% comment %}unless category_name == SQL{% endcomment %}
         {% endfor %}{% comment %}for metric in essential_metrics{% endcomment %}
       {% endfor %}{% comment %}for layer in layer_names_array{% endcomment %}
