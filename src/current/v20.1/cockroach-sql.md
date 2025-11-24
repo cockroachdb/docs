@@ -79,9 +79,7 @@ Flag | Description
 
 ### Client connection
 
-{% include {{ page.version.version }}/sql/connection-parameters.md %}
-
-See [Client Connection Parameters](connection-parameters.html) for more details.
+See [Client Connection Parameters](connection-parameters.html) for connection details.
 
 ### Logging
 
