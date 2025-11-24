@@ -184,13 +184,13 @@ Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on
     ~~~ yaml
     apiVersion: v1
     kind: Secret
-      metadata:
-        name: azure-cluster-identity-credentials-secret
-        type: Opaque
-        stringData:
-          azure-credentials: |
-          azure_client_id: 11111111-1111-1111-1111-111111111111
-          azure_client_secret: s3cr3t
+    metadata:
+      name: azure-cluster-identity-credentials-secret
+    type: Opaque
+    stringData:
+      azure-credentials: |
+      azure_client_id: 11111111-1111-1111-1111-111111111111
+      azure_client_secret: s3cr3t
     ~~~
 
     For more information on how to use these variables, refer to the [`Azure.Identity` documentation](https://learn.microsoft.com/dotnet/api/azure.identity.environmentcredential?view=azure-dotnet).
