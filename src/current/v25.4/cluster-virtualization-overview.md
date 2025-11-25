@@ -58,7 +58,9 @@ To upgrade to a new major version when cluster virtualization is enabled, you mu
 
 For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster).
 
-### Disaster recovery
+### Backup and restore
+
+Having a [disaster recovery]({% link {{ page.version.version }}/disaster-recovery-overview.md %}) plan is important to recover from unforeseen incidents and to minimize downtime and data loss. 
 
 When cluster virtualization is enabled, [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}) commands are scoped to a virtual cluster. This means that:
 
@@ -66,7 +68,7 @@ When cluster virtualization is enabled, [backup]({% link {{ page.version.version
 - If your deployment contains system-level customizations, you can take a separate backup of the system virtual cluster to capture them.
 - A backup of a virtual cluster can be restored as a virtual cluster in any CockroachDB cluster with cluster virtualization enabled.
 
-For more details about backing up and restoring a cluster with cluster virtualization enabled, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#disaster-recovery).
+For more details about backing up and restoring a cluster with cluster virtualization enabled, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#backup-and-restore).
 
 {{site.data.alerts.callout_success}}
 For details about configuring and using PCR for disaster recovery, refer to [Physical Cluster Replication Overview]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}).
