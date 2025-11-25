@@ -1,4 +1,4 @@
-Configure the following [MOLT Replicator]({% link molt/replicator-flags.md %}) flags for continuous replication. For details on all available flags, refer to the [MOLT Replicator documentation]({% link molt/replicator-flags.md %}#flags).
+Configure the following [MOLT Replicator]({% link molt/replicator-flags.md %}) flags for continuous replication. For details on all available flags, refer to [Replicator Flags]({% link molt/replicator-flags.md %}).
 
 {% if page.name == "migrate-load-replicate.md" %}
 <section class="filter-content" markdown="1" data-scope="postgres">
