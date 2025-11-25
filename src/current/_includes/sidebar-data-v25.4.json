@@ -11,6 +11,7 @@
   {% include_cached v25.4/sidebar-data/feature-overview.json %},
   {% include_cached v25.4/sidebar-data/resilience.json %},
   {% include_cached v25.4/sidebar-data/connect-to-cockroachdb.json %},
+  {% include_cached v25.4/sidebar-data/migrate-new.json %},
   {% include_cached v25.4/sidebar-data/migrate.json %},
   {% include_cached v25.4/sidebar-data/cloud-deployments.json %},
   {% include_cached v25.4/sidebar-data/self-hosted-deployments.json %},
