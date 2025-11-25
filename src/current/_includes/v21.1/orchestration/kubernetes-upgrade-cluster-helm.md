@@ -4,7 +4,7 @@
 
     Therefore, in order to upgrade to v21.1, you must be on a production release of v20.2.
 
-    1. If you are upgrading to v21.1 from a production release earlier than v20.2, or from a testing release (alpha/beta), first [upgrade to a production release of v20.2](../v20.2/orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to v21.1 from a production release earlier than v20.2, or from a testing release (alpha/beta), first upgrade to a production release of v20.2. Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to v21.1.
 
