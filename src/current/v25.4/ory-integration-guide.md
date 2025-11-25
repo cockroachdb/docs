@@ -5,7 +5,7 @@ toc: true
 docs_area: Integrate
 ---
 
-This tutorial demonstrates how to set up a joint environment that uses Ory for Identity and Access Management (IAM) and CockroachDB as the underlying database. This page describes the architecture of the integration, then walks through how to perform and test it. 
+This tutorial demonstrates how to set up a joint environment that uses [Ory]({% link {{ page.version.version }}/ory-overview.md %}) for Identity and Access Management (IAM) and CockroachDB as the underlying database. This page describes the architecture of the integration, then walks through how to perform and test it. 
 
 By the end of this tutorial, you should have a working environment in which Ory’s services (Hydra, Kratos, and Keto) are backed by a CockroachDB cluster.
 
@@ -58,70 +58,63 @@ Estimated setup time: 45–60 minutes.
 
 ### Step 1. Provision a CockroachDB cluster
 
-First you need to provision the CockroachDB cluster that Ory will use for its services. CockroachDB clusters can be either self-hosted or CockroachDB Cloud deployments.
+First you need to provision the CockroachDB cluster that Ory will use for its services. Choose one of the following methods to create a new CockroachDB cluster, or use an existing cluster and skip to [Step 2](#step-2-create-databases-for-ory-services).
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="self-hosted">Create a CockroachDB Self-Hosted Cluster on AWS</button>
-  <button class="filter-button page-level" data-scope="cloud">Create a CockroachDB Cloud Cluster</button>
-</div>
-<p></p>
+#### Create a secure cluster locally
 
-<section class="filter-content" markdown="1" data-scope="self-hosted">
-This section shows you how to manually deploy a multi-node, self-hosted CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load-balancing service to distribute client traffic.
+If you have the CockroachDB binary installed locally, you can manually deploy a multi-node, self-hosted CockroachDB cluster on your local machine.
 
-To get started right away, follow the guide to [deploy a CockroachDB cluster on AWS]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %}).
+Learn how to [deploy a CockroachDB cluster locally]({% link {{ page.version.version }}/secure-a-cluster.md %}). Be sure to follow the instructions for creating a **secure** cluster, as this tutorial will require certificates.
 
-</section>
+#### Create a CockroachDB Self-Hosted cluster on AWS
 
-<section class="filter-content" markdown="1" data-scope="cloud">
-CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simplifies the deployment and management of CockroachDB. This section provides an introduction to CockroachDB Cloud and provides an overview of each type of cluster: CockroachDB Standard, CockroachDB Basic, and CockroachDB Advanced.
+You can manually deploy a multi-node, self-hosted CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load-balancing service to distribute client traffic.
 
-To get started right away, you can [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud) and [create a cluster]({% link cockroachcloud/create-your-cluster.md %}) using [trial credits]({% link cockroachcloud/free-trial.md %}).
-</section>
+Learn how to [deploy a CockroachDB cluster on AWS]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %}).
+
+#### Create a CockroachDB Cloud cluster
+
+CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simplifies the deployment and management of CockroachDB.
+
+[Sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud) and [create a cluster]({% link cockroachcloud/create-your-cluster.md %}) using [trial credits]({% link cockroachcloud/free-trial.md %}).
 
 ### Step 2. Create Databases for Ory Services
 
-Before integrating Ory components with CockroachDB, you will need to set up separate databases for each service. This ensures isolation between identity, OAuth2, and authorization data. This pattern simplifies maintenance, backups, and access control.
-
-Each Ory service manages its own schema and migrations:
+Before integrating Ory components with CockroachDB, you will need to set up separate databases for each service. Each Ory service manages its own schema and migrations:
 
 - [Ory Hydra]({% link {{ page.version.version }}/ory-overview.md %}#ory-hydra) manages OAuth2 clients, consent sessions, access/refresh tokens
 - [Ory Kratos]({% link {{ page.version.version }}/ory-overview.md %}#ory-kratos) handles identity, credentials, sessions, verification tokens
 - [Ory Keto]({% link {{ page.version.version }}/ory-overview.md %}#ory-keto) stores relation tuples (RBAC/ABAC data) for permissions
 
-Keeping these in separate databases avoids:
+Keeping these in separate databases simplifies maintenance, and ensures isolation between identity, OAuth2, and authorization data.
 
-- Migration conflicts between unrelated schemas
-- Accidental cross-component data access
-- Complexity when scaling or performing rollbacks
+1. Go to your CockroachDB SQL client.
 
-Go to your CockroachDB SQL client.
+1. Replace the `CRDB_FQDN` placeholder with your CockroachDB load balancer domain name and run the following command:
 
-Replace the `CRDB_FQDN` placeholder with your CockroachDB load balancer domain name and run the following command:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --certs-dir=certs --host=CRDB_FQDN:26257
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach sql \
---url "cockroach://root@CRDB_FQDN:26257/defaultdb?sslmode=disable"
-~~~
+1. Once connected to the SQL shell, run:
 
-Once connected to the SQL shell, run:
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE DATABASE hydra;
-CREATE DATABASE kratos;
-CREATE DATABASE keto;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE DATABASE hydra;
+    CREATE DATABASE kratos;
+    CREATE DATABASE keto;
+    ~~~
 
-Create a user and grant them privileges for each Ory database, instead of using root.
+1. Create a user and grant them privileges for each Ory database, instead of using root.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE USER ory WITH PASSWORD 'securepass';
-GRANT ALL ON DATABASE hydra TO ory;
-GRANT ALL ON DATABASE kratos TO ory;
-GRANT ALL ON DATABASE keto TO ory;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE USER ory WITH PASSWORD 'securepass';
+    GRANT ALL ON DATABASE hydra TO ory;
+    GRANT ALL ON DATABASE kratos TO ory;
+    GRANT ALL ON DATABASE keto TO ory;
+    ~~~
 
 ### Step 3. Provision a Kubernetes cluster for Ory
 
