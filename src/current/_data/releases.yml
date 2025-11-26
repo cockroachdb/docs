@@ -9960,7 +9960,7 @@
 
 - release_name: v25.4.1
   major_version: v25.4
-  release_date: '2025-11-28'
+  release_date: '2025-12-02'
   release_type: Production
   go_version: go1.25.3
   sha: 60d802bd0bcb2c1aa81a4b5fd73fb4aa13bb5114
