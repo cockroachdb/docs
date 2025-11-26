@@ -148,7 +148,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-1. Run the `replicator` command, using the same slot name that you specified with `--pglogical-replication-slot-name` in the [Fetch command](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
+1. Run the `replicator` command, using the same slot name that you specified with `--pglogical-replication-slot-name` and the publication name created by `--pglogical-publication-and-slot-drop-and-recreate` in the [Fetch command](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -157,6 +157,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	--targetConn $TARGET \
 	--targetSchema defaultdb.migration_schema \
 	--slotName molt_slot \
+	--publicationName molt_fetch \
 	--stagingSchema defaultdb._replicator \
 	--stagingCreateSchema \
 	--metricsAddr :30005 \

@@ -5,7 +5,7 @@
 	- Provide your connection strings as environment variables. For example:
 
 		~~~ shell
-		export SOURCE="postgres://migration_user:a%2452%26@localhost:5432/molt?sslmode=verify-full"
+		export SOURCE="postgres://migration_user:a%2452%26@localhost:5432/source_database?sslmode=verify-full"
 		export TARGET="postgres://root@localhost:26257/defaultdb?sslmode=verify-full"
 		~~~
 
@@ -31,7 +31,7 @@
 
 	{% include_cached copy-clipboard.html %}
 	~~~
-	postgresql://migration_user@db.example.com:5432/appdb?sslmode=verify-full&sslrootcert=/etc/molt/certs/ca.pem&sslcert=/etc/molt/certs/client.crt&sslkey=/etc/molt/certs/client.key
+	postgresql://migration_user@db.example.com:5432/appdb?sslmode=verify-full&sslrootcert=/etc/source_database/certs/ca.pem&sslcert=/etc/source_database/certs/client.crt&sslkey=/etc/source_database/certs/client.key
 	~~~
 
 - URL-encode connection strings for the source database and [CockroachDB]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}) so special characters in passwords are handled correctly.
@@ -46,7 +46,7 @@
 		Use the encoded password in your connection string. For example:
 
 		~~~
-		postgres://migration_user:a%2452%26@localhost:5432/molt
+		postgres://migration_user:a%2452%26@localhost:5432/source_database
 		~~~
 
 - Remove `sslmode=disable` from production connection strings.

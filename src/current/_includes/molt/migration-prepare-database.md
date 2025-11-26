@@ -165,7 +165,20 @@ Connect to the primary instance (PostgreSQL primary, MySQL primary/master, or Or
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-Verify that you are connected to the primary server by running `SELECT pg_is_in_recovery();` and getting a `false` result.
+Verify that you are connected to the primary server:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT pg_is_in_recovery();
+~~~
+
+You should get a false result:
+
+~~~
+ pg_is_in_recovery
+-------------------
+ f
+~~~
 
 Enable logical replication by setting `wal_level` to `logical` in `postgresql.conf` or in the SQL shell. For example:
 

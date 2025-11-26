@@ -1,6 +1,14 @@
 1. Check the output to observe `fetch` progress. 
 
 	{% if page.name == "migrate-load-replicate.md" %}
+	<section class="filter-content" markdown="1" data-scope="postgres">
+	If you included the `--pglogical-publication-and-slot-drop-and-recreate` flag, a publication named `molt_fetch` is automatically created:
+
+	~~~ json
+	{"level":"info","time":"2025-02-10T14:28:11-05:00","message":"dropping and recreating publication molt_fetch"}
+	~~~
+	</section>
+
 	<section class="filter-content" markdown="1" data-scope="oracle">
 	The following message shows the appropriate values for the `--backfillFromSCN` and `--scn` replication flags to use when [starting Replicator](#start-replicator):
 
