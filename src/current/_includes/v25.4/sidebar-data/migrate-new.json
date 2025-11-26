@@ -1,5 +1,5 @@
 {
-  "title": "Migrate OLD",
+  "title": "Migrate NEW",
   "is_top_level": true,
   "items": [
     {
@@ -9,36 +9,48 @@
       ]
     },
     {
-      "title": "Migration Strategy",
-      "urls": [
-        "/molt/migration-strategy.html"
-      ]
-    },
-    {
-      "title": "Migration Flows",
+      "title": "Migration Considerations",
       "items": [
         {
-          "title": "Bulk Load",
+          "title": "Overview",
           "urls": [
-            "/molt/migrate-bulk-load.html"
+            "/molt/migration-considerations.html"
           ]
         },
         {
-          "title": "Load and Replicate",
+          "title": "Migration Granularity",
           "urls": [
-            "/molt/migrate-load-replicate.html"
+            "/molt/migration-considerations-phases.html"
           ]
         },
         {
-          "title": "Resume Replication",
+          "title": "Continuous Replication",
           "urls": [
-            "/molt/migrate-resume-replication.html"
+            "/molt/migration-considerations-replication.html"
           ]
         },
         {
-          "title": "Failback",
+          "title": "Data Transformation Strategy",
           "urls": [
-            "/molt/migrate-failback.html"
+            "/molt/migration-considerations-transformation.html"
+          ]
+        },
+        {
+          "title": "Validation Strategy",
+          "urls": [
+            "/molt/migration-considerations-validation.html"
+          ]
+        },
+        {
+          "title": "Rollback Plan",
+          "urls": [
+            "/molt/migration-considerations-rollback.html"
+          ]
+        },
+        {
+          "title": "Cutover Plan",
+          "urls": [
+            "/molt/migration-considerations-cutover.html"
           ]
         }
       ]
@@ -54,8 +66,49 @@
         },
         {
           "title": "Fetch",
-          "urls": [
-            "/molt/molt-fetch.html"
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/molt-fetch-overview.html"
+              ]
+            },
+            {
+              "title": "Install MOLT Fetch",
+              "urls": [
+                "/molt/molt-fetch-install.html"
+              ]
+            },
+            {
+              "title": "Global Flags",
+              "urls": [
+                "/molt/molt-fetch-flags.html"
+              ]
+            },
+            {
+              "title": "Use MOLT Fetch",
+              "urls": [
+                "/molt/molt-fetch-usage.html"
+              ]
+            },
+            {
+              "title": "Monitoring",
+              "urls": [
+                "/molt/molt-fetch-monitoring.html"
+              ]
+            },
+            {
+              "title": "Best Practices",
+              "urls": [
+                "/molt/molt-fetch-best-practices.html"
+              ]
+            },
+            {
+              "title": "Troubleshooting",
+              "urls": [
+                "/molt/molt-fetch-troubleshooting.html"
+              ]
+            }
           ]
         },
         {
@@ -68,6 +121,29 @@
           "title": "Verify",
           "urls": [
             "/molt/molt-verify.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Migration Walkthroughs",
+      "items": [
+        {
+          "title": "Migration with Downtime",
+          "urls": [
+            "/molt/migrate-bulk-load.html"
+          ]
+        },
+        {
+          "title": "Near-zero Downtime Migration",
+          "urls": [
+            "/molt/migrate-load-replicate.html"
+          ]
+        },
+        {
+          "title": "Near-zero Downtime Migration with Failback",
+          "urls": [
+            "/molt/migrate-failback.html"
           ]
         }
       ]
