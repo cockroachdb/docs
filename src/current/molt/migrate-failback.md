@@ -74,7 +74,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT INSERT, UPDATE ON TABL
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 -- Grant INSERT and UPDATE on tables to fail back to
-GRANT SELECT, INSERT, UPDATE ON source_database.* TO 'migration_user'@'%';
+GRANT SELECT, INSERT, UPDATE ON public.* TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
 </section>
@@ -100,6 +100,12 @@ When you run `replicator`, you can configure the following options for replicati
 - [Tuning parameters](#tuning-parameters): Optimize failback performance and resource usage.
 </section>
 - [Replicator metrics](#replicator-metrics): Monitor failback replication performance.
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
 
 ### Connection strings
 
@@ -191,14 +197,14 @@ For additional details on the webhook sink URI, refer to [Webhook sink]({% link 
 
 1. Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `start` command to begin failback replication from CockroachDB to your source database. In this example, `--metricsAddr :30005` enables a Prometheus endpoint for monitoring replication metrics, and `--bindAddr :30004` sets up the webhook endpoint for the changefeed.
 
-    `--stagingSchema` specifies the staging database name (`_replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
+    `--stagingSchema` specifies the staging database name (`defaultdb._replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     replicator start \
     --targetConn $TARGET \
     --stagingConn $STAGING \
-    --stagingSchema _replicator \
+    --stagingSchema defaultdb._replicator \
     --metricsAddr :30005 \
     --bindAddr :30004 \
     --tlsCertificate ./certs/server.crt \
@@ -226,32 +232,34 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
 1. Create the CockroachDB changefeed pointing to the MOLT Replicator webhook endpoint. Use `cursor` to specify the logical timestamp from the preceding step.
 
     {{site.data.alerts.callout_info}}
-    Ensure that only **one** changefeed points to MOLT Replicator at a time to avoid mixing streams of incoming data.
-    {{site.data.alerts.end}}
-
-    {{site.data.alerts.callout_success}}
     For details on the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="postgres">
+    The target schema is specified in the webhook URL path in the fully-qualified format `/database/schema`. The path specifies the database and schema on the target PostgreSQL database. For example, `/molt/migration_schema` routes changes to the `migration_schema` schema in the `molt` database.
+
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
-    INTO 'webhook-https://replicator-host:30004/migration_schema/public?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    INTO 'webhook-https://replicator-host:30004/molt/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
     WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="mysql">
+    MySQL tables belong directly to the database, not to a separate schema. The webhook URL path specifies the database name on the target MySQL database. For example, `/public` routes changes to the `public` database.
+
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
-    INTO 'webhook-https://replicator-host:30004/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    INTO 'webhook-https://replicator-host:30004/public?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
     WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="oracle">
+    The webhook URL path specifies the schema name on the target Oracle database. Oracle uppercases identifiers by default. For example, `/MIGRATION_SCHEMA` routes changes to the `MIGRATION_SCHEMA` schema.
+
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
@@ -267,6 +275,10 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     -----------------------
       1101234051444375553
     ~~~
+
+    {{site.data.alerts.callout_success}}
+    Ensure that only **one** changefeed points to MOLT Replicator at a time to avoid mixing streams of incoming data.
+    {{site.data.alerts.end}}
 
 1. Monitor the changefeed status, specifying the job ID:
 

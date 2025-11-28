@@ -24,8 +24,8 @@ The webhook URL path is specified in the `INTO` clause when you [create the chan
 
 **Resolution:** Verify the webhook path format matches your target database type:
 
-- PostgreSQL or CockroachDB targets: Use `/database/schema` format. For example, `webhook-https://replicator-host:30004/migration_schema/public`.
-- MySQL targets: Use `/database` format (schema is implicit). For example, `webhook-https://replicator-host:30004/migration_schema`.
+- PostgreSQL or CockroachDB targets: Use `/database/schema` format. For example, `webhook-https://replicator-host:30004/molt/migration_schema`.
+- MySQL targets: Use `/database` format. For example, `webhook-https://replicator-host:30004/public`.
 - Oracle targets: Use `/DATABASE` format in uppercase. For example, `webhook-https://replicator-host:30004/MIGRATION_SCHEMA`.
 
 For details on configuring the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).

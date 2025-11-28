@@ -56,7 +56,7 @@ Complete the following items before using MOLT Verify:
   - Use the encoded password in your connection string. For example:
 
         ~~~
-        postgres://postgres:a%2452%26@localhost:5432/replicationload
+        postgres://postgres:a%2452%26@localhost:5432/molt
         ~~~
 
 ## Flags

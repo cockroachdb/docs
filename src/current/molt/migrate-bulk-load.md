@@ -37,7 +37,6 @@ Perform the bulk load of the source data.
 	molt fetch \
 	--source $SOURCE \
 	--target $TARGET \
-	--schema-filter 'migration_schema' \
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
 	--table-handling truncate-if-exists \
@@ -68,7 +67,7 @@ Perform the bulk load of the source data.
 
 {% include molt/verify-output.md %}
 
-## Modify the CockroachDB schema
+## Add constraints and indexes
 
 {% include molt/migration-modify-target-schema.md %}
 

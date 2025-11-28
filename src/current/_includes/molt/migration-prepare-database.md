@@ -45,11 +45,12 @@ Run the `ALTER TABLE` command for each table to replicate.
 CREATE USER 'migration_user'@'%' IDENTIFIED BY 'password';
 ~~~
 
-Grant the user privileges to select only the tables you migrate:
+Grant the user privileges to select the tables you migrate and access GTID information for snapshot consistency:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT SELECT ON source_database.* TO 'migration_user'@'%';
+GRANT SELECT ON mysql.gtid_executed TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
 
@@ -74,7 +75,7 @@ CREATE USER MIGRATION_USER IDENTIFIED BY 'password';
 When migrating from Oracle Multitenant (PDB/CDB), this should be a [common user](https://docs.oracle.com/database/121/ADMQS/GUID-DA54EBE5-43EF-4B09-B8CC-FAABA335FBB8.htm). Prefix the username with `C##` (e.g., `C##MIGRATION_USER`).
 {{site.data.alerts.end}}
 
-Grant the user privileges to connect, read metadata, and `SELECT` and `FLASHBACK` the tables you plan to migrate. The tables should all reside in a single schema (e.g., `migration_schema`). For details, refer to [Schema and table filtering](#schema-and-table-filtering).
+Grant the user privileges to connect, read metadata, and `SELECT` and `FLASHBACK` the tables you plan to migrate. The tables should all reside in a single schema (for example, `migration_schema`). For details, refer to [Schema and table filtering](#schema-and-table-filtering).
 
 ##### Oracle Multitenant (PDB/CDB) user privileges
 
@@ -164,7 +165,20 @@ Connect to the primary instance (PostgreSQL primary, MySQL primary/master, or Or
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-Verify that you are connected to the primary server by running `SELECT pg_is_in_recovery();` and getting a `false` result.
+Verify that you are connected to the primary server:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT pg_is_in_recovery();
+~~~
+
+You should get a false result:
+
+~~~
+ pg_is_in_recovery
+-------------------
+ f
+~~~
 
 Enable logical replication by setting `wal_level` to `logical` in `postgresql.conf` or in the SQL shell. For example:
 
