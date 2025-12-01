@@ -99,7 +99,7 @@ To limit the control access to your Amazon S3 buckets, you can create IAM roles 
 You can use the `external_id` option with `ASSUME_ROLE` to specify an [external ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) for third-party access to your Amazon S3 bucket. The external ID is a unique ID that the third party provides you along with their ARN. For guidance on `external_id` usage in CockroachDB, refer to the [following example](#set-up-amazon-s3-assume-role).
 
 {{site.data.alerts.callout_info}}
-You must [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) values passed to `ASSUME_ROLE`.
+You must [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) the entire value passed to `ASSUME_ROLE`.
 {{site.data.alerts.end}} 
 
 {{site.data.alerts.callout_success}}
