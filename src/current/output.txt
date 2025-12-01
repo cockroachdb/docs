@@ -1,7 +1,0 @@
-[33mSkipping the checking of external links.
-[0mhtmltest started at 06:46:11 on _site
-========================================================================
-[33mrunning in concurrent mode, this is experimental
-[0m[92m✔✔✔ passed in 8.784543917s
-tested 9197 documents
-[0m
