@@ -229,10 +229,10 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
       1759246920563173000.0000000000
     ~~~
 
-1. Create the CockroachDB changefeed pointing to the MOLT Replicator webhook endpoint. Use `cursor` to specify the logical timestamp from the preceding step.
+1. Create the CockroachDB changefeed pointing to the MOLT Replicator webhook endpoint. Use `cursor` to specify the logical timestamp from the preceding step. For details on the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
 
     {{site.data.alerts.callout_info}}
-    For details on the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
+    Explicitly set a default `3s` timeout value in the `CREATE CHANGEFEED` statement. The [`webhook_client_timeout`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options) default is not currently being respected. This value ensures the webhook can report failures earlier in inconsistent networking situations, and make crash loops more visible.
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="postgres">
@@ -242,7 +242,7 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
     INTO 'webhook-https://replicator-host:30004/molt/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
-    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '3s';
     ~~~
     </section>
 
@@ -253,7 +253,7 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
     INTO 'webhook-https://replicator-host:30004/public?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
-    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '3s';
     ~~~
     </section>
 
@@ -264,7 +264,7 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
     INTO 'webhook-https://replicator-host:30004/MIGRATION_SCHEMA?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
-    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '3s';
     ~~~
     </section>
 

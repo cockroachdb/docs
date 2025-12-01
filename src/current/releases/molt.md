@@ -10,7 +10,7 @@ This page has details about each release of the following [MOLT (Migrate Off Leg
 - `molt`: [MOLT Fetch]({% link molt/molt-fetch.md %}) and [MOLT Verify]({% link molt/molt-verify.md %})
 - `replicator`: [MOLT Replicator]({% link molt/molt-replicator.md %})
 
-Cockroach Labs recommends using the latest available version of each tool. See [Installation](#installation).
+Cockroach Labs recommends using the latest available version of each tool. Refer to [Installation](#installation).
 
 ## Installation
 
