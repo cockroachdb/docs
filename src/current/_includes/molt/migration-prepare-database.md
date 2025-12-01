@@ -257,11 +257,11 @@ SELECT force_logging FROM v$database; -- Expected: YES
 
 ##### Create source sentinel table
 
-Create a checkpoint table called `_replicator_sentinel` in the Oracle schema you will migrate:
+Create a checkpoint table called `REPLICATOR_SENTINEL` in the Oracle schema you will migrate:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE TABLE migration_schema."_replicator_sentinel" (
+CREATE TABLE migration_schema."REPLICATOR_SENTINEL" (
   keycol NUMBER PRIMARY KEY,
   lastSCN NUMBER
 );
@@ -271,7 +271,7 @@ Grant privileges to modify the checkpoint table. In Oracle Multitenant, grant th
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT SELECT, INSERT, UPDATE ON migration_schema."_replicator_sentinel" TO C##MIGRATION_USER;
+GRANT SELECT, INSERT, UPDATE ON migration_schema."REPLICATOR_SENTINEL" TO C##MIGRATION_USER;
 ~~~
 
 ##### Grant LogMiner privileges
@@ -302,7 +302,7 @@ The user must:
 
 - Query [redo logs from LogMiner](#verify-logminer-privileges).
 - Retrieve active transaction information to determine the starting point for ongoing replication.
-- Update the internal [`_replicator_sentinel` table](#create-source-sentinel-table) created on the Oracle source schema by the DBA.
+- Update the internal [`REPLICATOR_SENTINEL` table](#create-source-sentinel-table) created on the Oracle source schema by the DBA.
 
 ##### Verify LogMiner privileges
 
