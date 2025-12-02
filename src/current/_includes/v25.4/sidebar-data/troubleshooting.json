@@ -63,6 +63,12 @@
         ]
       },
       {
+        "title": "Troubleshoot Query Plan Regressions",
+        "urls": [
+          "/${VERSION}/troubleshoot-query-plan-regressions.html"
+        ]
+      },
+      {
         "title": "Troubleshoot Replication Zones",
         "urls": [
           "/${VERSION}/troubleshoot-replication-zones.html"
@@ -111,6 +117,12 @@
         "title": "Automatic Go Execution Tracer",
         "urls": [
           "/${VERSION}/automatic-go-execution-tracer.html"
+        ]
+      },
+      {
+        "title": "Transaction Diagnostics",
+        "urls": [
+          "/${VERSION}/transaction-diagnostics.html"
         ]
       }
     ]

@@ -15,9 +15,13 @@ Establish a secure network connection from a CockroachDB {{ site.data.products.a
 CockroachDB {{ site.data.products.cloud }} supports egress private endpoints with the following cloud services:
 
 - [Amazon Virtual Private Cloud (AWS VPC)](https://aws.amazon.com/vpc/)
-- [Amazon Managed Streaming for Apache Kafka (MSK)](https://aws.amazon.com/msk/)
+- [Amazon Managed Streaming for Apache Kafka (MSK)](https://aws.amazon.com/msk/) (MSK Provisioned only. MSK Serverless is not supported.)
 - [Google Cloud VPC Private Service Connect (GCP PSC)](https://cloud.google.com/vpc/docs/private-service-connect)
 - [Confluent Cloud on GCP or AWS](https://www.confluent.io/confluent-cloud/)
+
+{{site.data.alerts.callout_info}}
+Billing for egress private endpoint usage is based on bytes processed over the endpoint, which includes the cloud provider's per-GB data processing fees and any applicable data transfer charges. There is no additional markup from Cockroach Labs. These charges appear as separate line items on your invoice under **Private endpoint - bytes processed**.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
 Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} cluster if there are egress private endpoints in that region. When a {{ site.data.products.cloud }} cluster is deleted, all private endpoints associated with the cluster are deleted as well.
@@ -37,7 +41,7 @@ You can use the following API call to retrieve your CockroachDB {{ site.data.pro
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
-  --header 'Authorization: Bearer {secret_key}' | jq .account_id
+  --header "Authorization: Bearer {secret_key}" | jq .account_id
 ~~~
 
 ### AWS MSK
@@ -78,7 +82,7 @@ The following prerequisites apply to the Google Cloud VPC service:
     ~~~ shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq .account_id
+      --header "Authorization: Bearer {secret_key}" | jq .account_id
     ~~~
 
 - Enable [consumer global access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#compatibility) on the service load balancer or forwarding rule.
@@ -117,7 +121,7 @@ The following example `POST` requests assume that an API key has been created fo
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
--H 'Authorization: Bearer {secret_key}' \
+-H "Authorization: Bearer {secret_key}" \
 -H 'Content-Type: application/json' \
 -d '{
   "cluster_id": "{cluster_id}",
@@ -133,7 +137,7 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
--H 'Authorization: Bearer {secret_key}' \
+-H "Authorization: Bearer {secret_key}" \
 -H 'Content-Type: application/json' \
 -d '{
   "cluster_id": "{cluster_id}",
@@ -149,7 +153,7 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
--H 'Authorization: Bearer {secret_key}' \
+-H "Authorization: Bearer {secret_key}" \
 -H 'Content-Type: application/json' \
 -d '{
   "cluster_id": "{cluster_id}",
@@ -194,7 +198,7 @@ For example:
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id}/domain-names \
 -X PATCH \
--H 'Authorization: Bearer {secret_key}' \
+-H "Authorization: Bearer {secret_key}" \
 -H 'Content-Type: application/json' \
 -d '{
   "cluster_id": "{cluster_id}",

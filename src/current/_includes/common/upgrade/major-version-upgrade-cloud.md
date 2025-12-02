@@ -5,7 +5,7 @@ This section shows how to perform a major-version upgrade for a cluster in Cockr
     1. From the **Clusters** page, find the cluster by name. If the cluster is in a folder, click the name of the folder to find the cluster. The cluster's major version and patch are shown in the **Version** column.
 1. Check which upgrades are available to the cluster, if any.
 
-    Beginning with v24.1, major versions alternate in type between Regular releases, which are required, and Innovation releases, which can be skipped.
+    Major versions alternate between Regular releases, which are required, and Innovation releases, which can be skipped in {{ site.data.products.advanced }} clusters and are unavailabile in {{ site.data.products.standard }} or {{ site.data.products.basic }}.
 
     From a Regular release, you can upgrade to the next major release (an Innovation release) or the subsequent major release (another Regular release). From an Innovation release, you must upgrade to the next Regular release.
 
