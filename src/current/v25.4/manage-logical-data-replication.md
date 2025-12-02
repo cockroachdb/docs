@@ -33,7 +33,7 @@ When a conflict cannot apply due to violating [constraints]({% link {{ page.vers
 
 ### Dead letter queue (DLQ)
 
-When the LDR job starts, it creates a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ contains the writes that LDR cannot apply after the retry period of a minute, which could occur if there is a unique index on the destination table (for more details, refer to [Unique seconday indexes]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#unique-secondary-indexes)).
+When the LDR job starts, it creates a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ contains the writes that LDR cannot apply after the retry period of a minute, which could occur if there is a unique index on the destination table (for more details, refer to [Unique secondary indexes]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#unique-secondary-indexes)).
 
 As an example, for an LDR stream created on the `movr.public.promo_codes` table:
 
