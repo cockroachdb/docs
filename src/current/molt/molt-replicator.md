@@ -209,14 +209,14 @@ For PostgreSQL, use [`--slotName`]({% link molt/replicator-flags.md %}#slot-name
 --slotName molt_slot
 ~~~
 
-For MySQL, use [`--defaultGTIDSet`]({% link molt/replicator-flags.md %}#default-gtid-set) with the GTID set from the [MOLT Fetch output]({% link molt/migrate-load-replicate.md %}?filters=mysql#start-fetch):
+For MySQL, set [`--defaultGTIDSet`]({% link molt/replicator-flags.md %}#default-gtid-set) to the [`cdc_cursor`]({% link molt/molt-fetch.md %}#cdc-cursor value) from the MOLT Fetch output:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --defaultGTIDSet '4c658ae6-e8ad-11ef-8449-0242ac140006:1-29'
 ~~~
 
-For Oracle, use [`--scn`]({% link molt/replicator-flags.md %}#scn) and [`--backfillFromSCN`]({% link molt/replicator-flags.md %}#backfill-from-scn) with the SCN values from the [MOLT Fetch output]({% link molt/migrate-load-replicate.md %}?filters=oracle#start-fetch):
+For Oracle, set [`--scn`]({% link molt/replicator-flags.md %}#scn) and [`--backfillFromSCN`]({% link molt/replicator-flags.md %}#backfill-from-scn) to the [`cdc_cursor`]({% link molt/molt-fetch.md %}#cdc-cursor values) from the MOLT Fetch output:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -454,7 +454,7 @@ Use [`--defaultGTIDSet`]({% link molt/replicator-flags.md %}#default-gtid-set) f
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-Use the [`--scn`]({% link molt/replicator-flags.md %}#scn) and [`--backfillFromSCN`]({% link molt/replicator-flags.md %}#backfill-from-scn) values from the MOLT Fetch output:
+Use the [`--scn`]({% link molt/replicator-flags.md %}#scn) and [`--backfillFromSCN`]({% link molt/replicator-flags.md %}#backfill-from-scn) values from the `cdc_cursor` field in the MOLT Fetch output:
 
 {% include_cached copy-clipboard.html %}
 ~~~
