@@ -643,11 +643,12 @@ The following JSON example defines two type mappings:
 
 ### Transformations
 
-You can define transformation rules to be performed on the target schema during the fetch task. These can be used to:
+You can define transformation rules to be performed on the target database during the fetch task. These can be used to:
 
-- Map [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) to a target schema.
+- Map [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) from source to target.
 - Map [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) to a single target table.
-- Rename tables on the target schema.
+- Rename tables on the target database.
+- Rename database schemas.
 
 Transformation rules are defined in the JSON file indicated by the `--transformations-file` flag. For example:
 
@@ -656,7 +657,9 @@ Transformation rules are defined in the JSON file indicated by the `--transforma
 --transformations-file 'transformation-rules.json'
 ~~~
 
-The following JSON example defines two transformation rules:
+#### Transformation rules example
+
+The following JSON example defines three transformation rules: rule `1` [maps computed columns](#column-exclusions-and-computed-columns), rule `2` [renames tables](#table-renaming), and rule `3` [renames schemas](#schema-renaming).
 
 ~~~ json
 {
@@ -681,32 +684,99 @@ The following JSON example defines two transformation rules:
       "table_rename_opts": {
         "value": "charges"
       }
+    },
+    {
+      "id": 3,
+      "resource_specifier": {
+        "schema": "previous_schema"
+      },
+      "schema_rename_opts": {
+        "value": "new_schema"
+      }
     }
   ]
 }
 ~~~
 
-- `resource_specifier` configures the following options for transformation rules:
-	- `schema` specifies the schemas to be affected by the transformation rule, formatted as a POSIX regex string.
-	- `table` specifies the tables to be affected by the transformation rule, formatted as a POSIX regex string.
-- `column_exclusion_opts` configures the following options for column exclusions and computed columns:
-	- `column` specifies source columns to exclude from being mapped to regular columns on the target schema. It is formatted as a POSIX regex string.
-	- `add_computed_def`, when set to `true`, specifies that each matching `column` should be mapped to a [computed column]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on the target schema. Instead of being moved from the source, the column data is generated on the target using [`ALTER TABLE ... ADD COLUMN`]({% link {{ site.current_cloud_version }}/alter-table.md %}#add-column) and the computed column definition from the source schema. This assumes that all matching columns are computed columns on the source.
+#### Column exclusions and computed columns
+
+- `resource_specifier`: Identifies which schemas and tables to transform.
+	- `schema`: POSIX regex matching source schemas.
+	- `table`: POSIX regex matching source tables.
+- `column_exclusion_opts`: Exclude columns or map them as computed columns.
+	- `column`: POSIX regex matching source columns to exclude.
+	- `add_computed_def`: When `true`, map matching columns as [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on target tables using [`ALTER TABLE ... ADD COLUMN`]({% link {{ site.current_cloud_version }}/alter-table.md %}#add-column) and the source column definition. All matching columns must be computed columns on the source.
 		{{site.data.alerts.callout_danger}}
-		Columns that match the `column` regex will **not** be moved to CockroachDB if `add_computed_def` is omitted or set to `false` (default), or if a matching column is a non-computed column.
+		Columns matching `column` are **not** moved to CockroachDB if `add_computed_def` is `false` (default) or if matching columns are not computed columns.
 		{{site.data.alerts.end}}
-- `table_rename_opts` configures the following option for table renaming:
-	- `value` specifies the table name to which the matching `resource_specifier` is mapped. If only one source table matches `resource_specifier`, it is renamed to `table_rename_opts.value` on the target. If more than one table matches `resource_specifier` (i.e., an n-to-1 mapping), the fetch task assumes that all matching tables are [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same schema, and moves their data to a table named `table_rename_opts.value` on the target. Otherwise, the task will error. 
-		
-		Additionally, in an n-to-1 mapping situation: 
 
-		- Specify [`--use-copy`](#data-load-mode) or [`--direct-copy`](#direct-copy) for data movement. This is because the data from the source tables is loaded concurrently into the target table.
-		- Create the target table schema manually, and do **not** use [`--table-handling drop-on-target-and-recreate`](#target-table-handling) for target table handling.
+[Example rule `1`](#transformation-rules-example) maps all source `age` columns to [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on CockroachDB. This assumes that all matching `age` columns are defined as computed columns on the source:
 
-The preceding JSON example therefore defines two rules:
+~~~ json
+{
+  "id": 1,
+  "resource_specifier": {
+    "schema": ".*",
+    "table": ".*"
+  },
+  "column_exclusion_opts": {
+    "add_computed_def": true,
+    "column": "^age$"
+  }
+},
+~~~
 
-- Rule `1` maps all source `age` columns on the source database to [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on CockroachDB. This assumes that all matching `age` columns are defined as computed columns on the source.
-- Rule `2` maps all table names with prefix `charges_part` from the source database to a single `charges` table on CockroachDB (i.e., an n-to-1 mapping). This assumes that all matching `charges_part.*` tables have the same schema.
+#### Table renaming
+
+- `resource_specifier`: Identifies which schemas and tables to transform.
+	- `schema`: POSIX regex matching source schemas.
+	- `table`: POSIX regex matching source tables.
+- `table_rename_opts`: Rename tables on the target.
+	- `value`: Target table name. For a single matching source table, renames it to this value. For multiple matches (n-to-1), consolidates matching [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same table definition into a single table with this name.
+
+		For n-to-1 mappings:
+
+		- Use [`--use-copy`](#data-load-mode) or [`--direct-copy`](#direct-copy) for data movement.
+		- Manually create the target table. Do not use [`--table-handling drop-on-target-and-recreate`](#target-table-handling).
+
+[Example rule `2`](#transformation-rules-example) maps all table names with prefix `charges_part` to a single `charges` table on CockroachDB (an n-to-1 mapping). This assumes that all matching `charges_part.*` tables have the same table definition:
+
+~~~ json
+{
+  "id": 2,
+  "resource_specifier": {
+    "schema": "public",
+    "table": "charges_part.*"
+  },
+  "table_rename_opts": {
+    "value": "charges"
+  }
+},
+~~~
+
+#### Schema renaming
+
+- `resource_specifier`: Identifies which schemas and tables to transform.
+	- `schema`: POSIX regex matching source schemas.
+	- `table`: POSIX regex matching source tables.
+- `schema_rename_opts`: Rename database schemas on the target.
+	- `value`: Target schema name. For example, `previous_schema.table1` becomes `new_schema.table1`.
+
+[Example rule `3`](#transformation-rules-example) renames the database schema `previous_schema` to `new_schema` on CockroachDB:
+
+~~~ json
+{
+  "id": 3,
+  "resource_specifier": {
+    "schema": "previous_schema"
+  },
+  "schema_rename_opts": {
+    "value": "new_schema"
+  }
+}
+~~~
+
+#### General notes
 
 Each rule is applied in the order it is defined. If two rules overlap, the later rule will override the earlier rule.
 
