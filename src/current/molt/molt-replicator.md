@@ -209,14 +209,14 @@ For PostgreSQL, use [`--slotName`]({% link molt/replicator-flags.md %}#slot-name
 --slotName molt_slot
 ~~~
 
-For MySQL, set [`--defaultGTIDSet`]({% link molt/replicator-flags.md %}#default-gtid-set) to the [`cdc_cursor`]({% link molt/molt-fetch.md %}#cdc-cursor value) from the MOLT Fetch output:
+For MySQL, set [`--defaultGTIDSet`]({% link molt/replicator-flags.md %}#default-gtid-set) to the [`cdc_cursor` value]({% link molt/molt-fetch.md %}#cdc-cursor) from the MOLT Fetch output:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --defaultGTIDSet '4c658ae6-e8ad-11ef-8449-0242ac140006:1-29'
 ~~~
 
-For Oracle, set [`--scn`]({% link molt/replicator-flags.md %}#scn) and [`--backfillFromSCN`]({% link molt/replicator-flags.md %}#backfill-from-scn) to the [`cdc_cursor`]({% link molt/molt-fetch.md %}#cdc-cursor values) from the MOLT Fetch output:
+For Oracle, set [`--scn`]({% link molt/replicator-flags.md %}#scn) and [`--backfillFromSCN`]({% link molt/replicator-flags.md %}#backfill-from-scn) to the [`cdc_cursor` values]({% link molt/molt-fetch.md %}#cdc-cursor) from the MOLT Fetch output:
 
 {% include_cached copy-clipboard.html %}
 ~~~
