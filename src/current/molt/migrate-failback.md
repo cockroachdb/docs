@@ -57,7 +57,7 @@ SET CLUSTER SETTING kv.rangefeed.concurrent_catchup_iterators = 64;
 
 ## Grant target database user permissions
 
-You should have already created a migration user on the target database (your original source database) with the necessary privileges. Refer to [Create migration user on source database]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database).
+You should have already created a migration user on the target database (your **original source database**) with the necessary privileges. Refer to [Create migration user on source database]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database).
 
 For failback replication, grant the user additional privileges to write data back to the target database:
 
@@ -74,7 +74,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT INSERT, UPDATE ON TABL
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 -- Grant INSERT and UPDATE on tables to fail back to
-GRANT SELECT, INSERT, UPDATE ON public.* TO 'migration_user'@'%';
+GRANT SELECT, INSERT, UPDATE ON migration_db.* TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
 </section>
@@ -236,23 +236,23 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="postgres">
-    The target schema is specified in the webhook URL path in the fully-qualified format `/database/schema`. The path specifies the database and schema on the target PostgreSQL database. For example, `/molt/migration_schema` routes changes to the `migration_schema` schema in the `molt` database.
+    The target schema is specified in the webhook URL path in the fully-qualified format `/database/schema`. The path specifies the database and schema on the target PostgreSQL database. For example, `/migration_db/migration_schema` routes changes to the `migration_schema` schema in the `migration_db` database.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
-    INTO 'webhook-https://replicator-host:30004/molt/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    INTO 'webhook-https://replicator-host:30004/migration_db/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
     WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="mysql">
-    MySQL tables belong directly to the database, not to a separate schema. The webhook URL path specifies the database name on the target MySQL database. For example, `/public` routes changes to the `public` database.
+    MySQL tables belong directly to the database, not to a separate schema. The webhook URL path specifies the database name on the target MySQL database. For example, `/migration_db` routes changes to the `migration_db` database.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
-    INTO 'webhook-https://replicator-host:30004/public?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    INTO 'webhook-https://replicator-host:30004/migration_db?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
     WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
     ~~~
     </section>

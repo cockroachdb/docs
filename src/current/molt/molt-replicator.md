@@ -635,7 +635,7 @@ replicator start \
 After starting `replicator`, create a CockroachDB changefeed to send changes to MOLT Replicator. For detailed steps, refer to [Migration failback]({% link molt/migrate-failback.md %}).
 
 {{site.data.alerts.callout_info}}
-When [creating the CockroachDB changefeed]({% link molt/migrate-failback.md %}#create-the-cockroachdb-changefeed), you specify the target database and schema in the webhook URL path. For PostgreSQL targets, use the fully-qualified format `/database/schema` (for example, `/molt/migration_schema`). For MySQL targets, use just the database name (for example, `/public`). For Oracle targets, use just the schema name in uppercase (for example, `/MIGRATION_SCHEMA`).
+When [creating the CockroachDB changefeed]({% link molt/migrate-failback.md %}#create-the-cockroachdb-changefeed), you specify the target database and schema in the webhook URL path. For PostgreSQL targets, use the fully-qualified format `/database/schema` (`/migration_db/migration_schema`). For MySQL targets, use the database name (`/migration_db`). For Oracle targets, use the uppercase schema name (`/MIGRATION_SCHEMA`).
 
 Explicitly set a default `10s` [`webhook_client_timeout`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options) value in the `CREATE CHANGEFEED` statement. This value ensures the webhook can report failures in inconsistent networking situations, and make crash loops more visible.
 {{site.data.alerts.end}}

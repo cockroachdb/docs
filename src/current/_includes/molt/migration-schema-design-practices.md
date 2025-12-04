@@ -13,7 +13,7 @@ Convert the source table definitions into CockroachDB-compatible equivalents. Co
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="mysql">
-	For MySQL sources, tables belong directly to the database specified in the connection string. A MySQL source table defined as `CREATE TABLE tbl (id INT PRIMARY KEY);` should map to CockroachDB's default `public` schema:
+	MySQL tables belong directly to the database specified in the connection string. A MySQL source table defined as `CREATE TABLE tbl (id INT PRIMARY KEY);` should map to CockroachDB's default `public` schema:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql

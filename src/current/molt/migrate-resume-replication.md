@@ -43,7 +43,7 @@ Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `mylogical` comman
 Replicator will automatically use the saved GTID (Global Transaction Identifier) from the `memo` table in the staging schema (in this example, `defaultdb._replicator.memo`) and track advancing GTID checkpoints there. To have Replicator start from a different GTID instead of resuming from the checkpoint, clear the `memo` table with `DELETE FROM defaultdb._replicator.memo;` and run the `replicator` command with a new `--defaultGTIDSet` value.
 
 {{site.data.alerts.callout_success}}
-For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON public.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
+For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON migration_db.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}

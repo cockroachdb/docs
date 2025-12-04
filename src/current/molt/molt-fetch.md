@@ -385,11 +385,11 @@ For example, if you are migrating to CockroachDB {{ site.data.products.cloud }},
 
 By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-databases) database to CockroachDB. Use the following flags to move a subset of data.
 
-`--schema-filter` specifies a range of schema objects to move to CockroachDB, formatted as a POSIX regex string. For example, to move every table in the source database's `public` schema:
+`--schema-filter` specifies a range of schema objects to move to CockroachDB, formatted as a POSIX regex string. For example, to move every table in the source database's `migration_schema` schema:
 
 {% include_cached copy-clipboard.html %}
 ~~~
---schema-filter 'public'
+--schema-filter 'migration_schema'
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -412,14 +412,14 @@ Use `--filter-path` to specify the path to a JSON file that defines row-level fi
 --filter-path 'data-filter.json'
 ~~~
 
-The JSON file should contain one or more entries in `filters`, each with a `resource_specifier` (`schema` and `table`) and a SQL expression `expr`. For example, the following example exports only rows from `public.t1` where `v > 100`:
+The JSON file should contain one or more entries in `filters`, each with a `resource_specifier` (`schema` and `table`) and a SQL expression `expr`. For example, the following example exports only rows from `migration_schema.t1` where `v > 100`:
 
 ~~~ json
 {
   "filters": [
     {
       "resource_specifier": {
-        "schema": "public",
+        "schema": "migration_schema",
         "table": "t1"
       },
       "expr": "v > 100"

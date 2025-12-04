@@ -12,7 +12,7 @@ Grant the user privileges to connect, view schema objects, and select the tables
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT CONNECT ON DATABASE source_database TO migration_user;
+GRANT CONNECT ON DATABASE migration_db TO migration_user;
 GRANT USAGE ON SCHEMA migration_schema TO migration_user;
 GRANT SELECT ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO migration_user;
@@ -31,7 +31,7 @@ Alternatively, grant the following permissions to create replication slots, acce
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER USER migration_user WITH LOGIN REPLICATION;
-GRANT CREATE ON DATABASE source_database TO migration_user;
+GRANT CREATE ON DATABASE migration_db TO migration_user;
 ALTER TABLE migration_schema.table_name OWNER TO migration_user;
 ~~~
 
@@ -49,7 +49,7 @@ Grant the user privileges to select the tables you migrate and access GTID infor
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT SELECT ON source_database.* TO 'migration_user'@'%';
+GRANT SELECT ON migration_db.* TO 'migration_user'@'%';
 GRANT SELECT ON mysql.gtid_executed TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
