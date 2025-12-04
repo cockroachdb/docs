@@ -149,15 +149,18 @@ function build_with_retries {
     fi
 }
 
-echo " Installing dependencies..."
+echo "Installing dependencies..."
 
 # Install a Bundler 2.x release compatible with our setup
+echo "  Installing Bundler 2.4..."
 gem install bundler -v '~> 2.4' --silent
 
 # Configure bundle path in the modern way (instead of using --path)
+echo "  Setting Bundler config path..."
 bundle config set path '/opt/build/cache/bundle'
 
 # Install gems
+echo "  Installing gems..."
 bundle install --quiet
 
 echo ""
