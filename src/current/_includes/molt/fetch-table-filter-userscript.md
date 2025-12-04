@@ -12,7 +12,7 @@ import * as api from "replicator@v1";
 const allowedTables = ["EMPLOYEES", "PAYMENTS", "ORDERS"];
 
 // Update this to your target CockroachDB database and schema name
-api.configureSource("molt.migration_schema", {
+api.configureSource("defaultdb.migration_schema", {
   dispatch: (doc: Document, meta: Document): Record<Table, Document[]> | null => {
     // Replicate only if the table matches one of the allowed tables
     if (allowedTables.includes(meta.table)) {
@@ -44,7 +44,7 @@ import * as api from "replicator@v1";
 const allowedTables = ["EMPLOYEES", "PAYMENTS", "ORDERS"];
 
 // Update this to your target CockroachDB database and schema name
-api.configureSource("molt.public", {
+api.configureSource("defaultdb.public", {
   dispatch: (doc: Document, meta: Document): Record<Table, Document[]> | null => {
     // Replicate only if the table matches one of the allowed tables
     if (allowedTables.includes(meta.table)) {

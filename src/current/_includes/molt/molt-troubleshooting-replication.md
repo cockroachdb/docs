@@ -73,7 +73,7 @@ SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
 ##### Could not connect to PostgreSQL
 
 ~~~
-could not connect to source database: failed to connect to `user=migration_user database=migration_schema`
+could not connect to source database: failed to connect to `user=migration_user database=migration_db`
 ~~~
 
 **Resolution:** Verify the connection details including user, host, port, and database name. Ensure the database name in your `--sourceConn` connection string matches exactly where you created the publication and slot. Verify you're connecting to the same host and port where you ran the `CREATE PUBLICATION` and `SELECT pg_create_logical_replication_slot()` commands. Check if TLS certificates need to be included in the connection URI.
