@@ -1,5 +1,0 @@
-`GRANT` and `REVOKE` operations are [schema changes](online-schema-changes.html).  As such they inherit the [limitations of schema changes](online-schema-changes.html#limitations).
-
-For example, schema changes wait for concurrent transactions using the same resources as the schema changes to complete. In the case of [role memberships](security-reference/authorization.html#roles) being modified by `GRANT` and `REVOKE` inside a transaction, most transactions need access to the set of role memberships.
-
-This means that [long-running transactions](query-behavior-troubleshooting.html#hanging-or-stuck-queries) elsewhere in the system can cause `GRANT` and `REVOKE` operations inside transactions to take several minutes to complete. This can have a cascading effect. When a `GRANT` or `REVOKE` operation inside a transaction takes a long time to complete, it can in turn block all user-initiated transactions being run by your application, since the `GRANT` operation in the transaction has to commit before any other transactions that access role memberships (i.e., most transactions) can make progress.

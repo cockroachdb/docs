@@ -1,1 +1,0 @@
-- Schema changes through [`ALTER TABLE`](alter-table.html), [`DROP DATABASE`](drop-database.html), [`DROP TABLE`](drop-table.html), and [`TRUNCATE`](truncate.html)

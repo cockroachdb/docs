@@ -1,5 +1,0 @@
-{{site.data.alerts.callout_danger}}
-[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) are **not** compatible with the [S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide//storage-class-intro.html#sc-glacier). Incremental backups require the reading of previous backups on an ad-hoc basis, which is not possible with backup files already in Glacier Flexible Retrieval or Glacier Deep Archive. This is because these storage classes do not allow immediate access to an S3 object without first [restoring the archived objects](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) to its S3 bucket.
-
-Refer to [Incremental backups and storage classes]({% link {{ page.version.version }}/use-cloud-storage.md %}#incremental-backups-and-archive-storage-classes) for more detail.
-{{site.data.alerts.end}}
