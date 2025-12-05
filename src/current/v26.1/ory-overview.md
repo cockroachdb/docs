@@ -11,7 +11,7 @@ Ory is an open-source identity and access management (IAM) platform that provide
 - [Ory Kratos](https://www.ory.sh/kratos) for identity management (including users, groups, and organizations).
 - [Ory Keto](https://www.ory.sh/keto) for fine-grained authorization and relationship-based access control (ReBAC,  inspired by Google Zanzibar).
 
-<img src="{{ 'images/v25.4/integrate-ory-architecture-overview.png' | relative_url }}" alt="Ory Architecture Overview"  style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/integrate-ory-architecture-overview.png' | relative_url }}" alt="Ory Architecture Overview"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 ## Ory components
 
@@ -21,11 +21,11 @@ Ory Hydra is a server implementation of the OAuth 2.0 authorization framework an
 
 The OAuth 2.0 authorization framework enables a third-party application to obtain limited access to an HTTP service, either on behalf of a resource owner by orchestrating an approval interaction between the resource owner and the HTTP service, or by allowing the third-party application to obtain access on its own behalf.
 
-<img src="{{ 'images/v25.4/integrate-ory-oauth2-flow.png' | relative_url }}" alt="OAuth2 Flow"  style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/integrate-ory-oauth2-flow.png' | relative_url }}" alt="OAuth2 Flow"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 The OAuth 2.0 authorization flow involving a client application, the resource owner, Ory Hydra (as the authorization server), and the resource server is structured as follows:
 
-<img src="{{ 'images/v25.4/integrate-ory-hydra-flow.png' | relative_url }}" alt="Interaction flow using Ory Hydra"  style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/integrate-ory-hydra-flow.png' | relative_url }}" alt="Interaction flow using Ory Hydra"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 The sequence diagram depicts the interactions between four key components:
 
@@ -61,7 +61,7 @@ Ory Identities enables users to sign up and manage their profiles without admini
 
 Kratos' registration flow for API clients doesn't use HTTP redirects and can be summarized as follows:
 
-<img src="{{ 'images/v25.4/integrate-ory-kratos-registration.png' | relative_url }}" alt="Kratos Registration"  style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/integrate-ory-kratos-registration.png' | relative_url }}" alt="Kratos Registration"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 ### Ory Keto
 
@@ -79,7 +79,7 @@ Permission checks are answered based on:
 
 When you ask Ory Keto, "Is user Bob allowed to view document X?" the system checks whether Bob has view permission, and then checks whether Bob is the owner of document X. The permission model tells Ory Permissions what to check in the database.
 
-<img src="{{ 'images/v25.4/integrate-ory-permission-graph.png' | relative_url }}" alt="Permission Graph"  style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/integrate-ory-permission-graph.png' | relative_url }}" alt="Permission Graph"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 ## Integrate with Ory
 
