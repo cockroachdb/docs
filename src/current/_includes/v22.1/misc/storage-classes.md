@@ -1,1 +1,0 @@
-Use the parameter to set one of these [storage classes](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html#AmazonS3-PutObject-request-header-StorageClass) listed in Amazon's documentation. For more general usage information, see Amazon's [Using Amazon S3 storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) documentation.
