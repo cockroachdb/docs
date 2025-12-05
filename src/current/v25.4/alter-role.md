@@ -23,6 +23,7 @@ Password creation and alteration is supported only in secure clusters.
 
 - To alter an [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role), the user must be a member of the `admin` role.
 - To alter other roles, the user must be a member of the `admin` role or have the [`CREATEROLE`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) [role option](#role-options).
+- {% include_cached new-in.html version="v25.4" %} For [per-database defaults](#set-default-session-variable-values-for-a-specific-database), the [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) of a database can execute `ALTER ROLE ALL IN DATABASE ... {SET|RESET}` for that database (in addition to users who meet the general requirements above).
 
 ## Synopsis
 
@@ -227,6 +228,8 @@ SHOW statement_timeout;
 ### Set default session variable values for a specific database
 
 In the following example, the `root` user creates a database named `movr`, and sets the default value of the `timezone` [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for all roles in that database.
+
+{% include_cached new-in.html version="v25.4" %} The [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) of a database can also execute `ALTER ROLE ALL IN DATABASE ... {SET|RESET}` for that database.
 
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS movr;

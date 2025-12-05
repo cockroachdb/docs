@@ -1,0 +1,1 @@
+When migrating from PostgreSQL, you can use [`COPY FROM`]({% link {{ page.version.version }}/copy.md %}) to copy CSV or tab-delimited data to your CockroachDB tables. This option enables your tables to remain online and accessible. However, it is slower than using [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).

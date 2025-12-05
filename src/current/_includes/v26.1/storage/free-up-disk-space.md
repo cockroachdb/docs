@@ -1,0 +1,1 @@
+For instructions on how to free up disk space as quickly as possible after dropping a table, see [How can I free up disk space that was used by a dropped table?]({% link {{ page.version.version }}/operational-faqs.md %}#how-can-i-free-up-disk-space-when-dropping-a-table)
