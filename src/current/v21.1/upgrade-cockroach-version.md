@@ -109,7 +109,7 @@ Two changes that are particularly important to note:
     - If your cluster currently uses RocksDB as the storage engine, before you upgrade to v21.1, restart each of your nodes, removing `--storage-engine=rocksdb` from the `cockroach start` command. You can follow the same rolling process described in [step 4](#step-4-perform-the-rolling-upgrade) below, but do not change the binary; just remove the `--storage-engine=rocksdb` flag and restart.
 
 - [Interleaving data](interleave-in-parent.html) was deprecated in v20.2, disabled by default in v21.1, and removed from CockroachDB in v21.2. For migration steps, see the [interleave deprecation](interleave-in-parent.html#deprecation) notice.
-    - If your cluster includes interleaved data and you perform backups, first make sure you are running [v20.2.10+](../v20.2/upgrade-cockroach-version.html); then update your `BACKUP` commands to use the [`INCLUDE_DEPRECATED_INTERLEAVES` option](backup.html#include-deprecated-interleaves); and only then return to this page and upgrade to v21.1. Note that the `INCLUDE_DEPRECATED_INTERLEAVES` option is a no-op in v20.2.10, but this sequence is the only way to prevent backups including interleaved data from failing on v21.1.
+    - If your cluster includes interleaved data and you perform backups, first make sure you are running v20.2.10+; then update your `BACKUP` commands to use the [`INCLUDE_DEPRECATED_INTERLEAVES` option](backup.html#include-deprecated-interleaves); and only then return to this page and upgrade to v21.1. Note that the `INCLUDE_DEPRECATED_INTERLEAVES` option is a no-op in v20.2.10, but this sequence is the only way to prevent backups including interleaved data from failing on v21.1.
 
 ## Step 3. Decide how the upgrade will be finalized
 
@@ -119,7 +119,7 @@ This step is relevant only when upgrading from v20.2.x to v21.1. For upgrades wi
 
 By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v21.1](#features-that-require-upgrade-finalization). However, it will no longer be possible to perform a downgrade to v20.2. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-5-finish-the-upgrade):
 
-1. [Upgrade to v20.2](../v20.2/upgrade-cockroach-version.html), if you haven't already.
+1. Upgrade to v20.2, if you haven't already.
 
 1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 

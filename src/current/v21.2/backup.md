@@ -25,7 +25,7 @@ You can also backup:
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
 {{site.data.alerts.callout_info}}
-The [`BACKUP ... TO`](../v20.2/backup.html) and [`RESTORE ... FROM`](../v20.2/restore.html) syntax is **deprecated** as of v22.1 and will be removed in a future release.
+The `BACKUP ... TO` and `RESTORE ... FROM` syntax is **deprecated** as of v22.1 and will be removed in a future release.
 
 We recommend using the `BACKUP ... INTO {collectionURI}` syntax, which creates or adds to a [backup collection](take-full-and-incremental-backups.html#backup-collections) in your storage location. For restoring backups, we recommend using `RESTORE FROM {backup} IN {collectionURI}` with `{backup}` being [`LATEST`](restore.html#restore-the-most-recent-backup) or a specific [subdirectory](restore.html#subdir-param).
 
@@ -156,7 +156,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 {{site.data.alerts.callout_info}}
-The [`BACKUP ... TO`](../v20.2/backup.html) and [`RESTORE ... FROM`](../v20.2/restore.html) syntax is **deprecated** as of v22.1 and will be removed in a future release.
+The `BACKUP ... TO` and `RESTORE ... FROM` syntax is **deprecated** as of v22.1 and will be removed in a future release.
 
 We recommend using the `BACKUP ... INTO {collectionURI}` syntax, which creates or adds to a [backup collection](take-full-and-incremental-backups.html#backup-collections) in your storage location. For restoring backups, we recommend using `RESTORE FROM {backup} IN {collectionURI}` with `{backup}` being [`LATEST`](restore.html#restore-the-most-recent-backup) or a specific [subdirectory](restore.html#subdir-param).
 
