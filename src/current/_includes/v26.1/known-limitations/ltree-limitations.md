@@ -1,2 +1,0 @@
-- The `ltree2text` function produces incorrect results by wrapping the output in single quotes. For example, `ltree2text('foo.bar.baz'::LTREE)` returns `'foo.bar.baz'` instead of `foo.bar.baz`. [#156479](https://github.com/cockroachdb/cockroach/issues/156479)
-- The `LTREE` `<@` operator produces incorrect results when using an index. The optimizer creates an incorrect index constraint span for `LTREE` `<@` queries. [#156478](https://github.com/cockroachdb/cockroach/issues/156478)
