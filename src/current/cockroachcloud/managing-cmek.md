@@ -42,7 +42,7 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{YOUR_CLUSTER_ID} \
-      --header 'Authorization: Bearer {YOUR_API_KEY}' | jq .account_id
+      --header "Authorization: Bearer {YOUR_API_KEY}" | jq .account_id
     ~~~
 
     In the response, verify that the `id` field matches the cluster ID you specified, then make a note of the `account_id`, which is the ID for the cross-account IAM role.
@@ -129,7 +129,7 @@ Follow these steps to create a cross-account IAM role and give it permission to 
     ~~~shell
     curl --request GET \
          --url https://cockroachlabs.cloud/api/v1/clusters/{YOUR_CLUSTER_ID} \
-         --header 'Authorization: Bearer {YOUR_API_KEY}'
+         --header "Authorization: Bearer {YOUR_API_KEY}"
     ~~~
 
     In the response, the ID is stored in the `account_id` field.
@@ -526,7 +526,7 @@ API_KEY= #{ your API key }
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID}/cmek \
   --header "Authorization: Bearer ${API_KEY}" \
-  --header 'content-type: application/json' \
+  --header "content-type: application/json" \
   --data "@cmek_config.json"
 ~~~
 
@@ -562,7 +562,7 @@ To rotate a CMEK key:
     curl --request PUT \
       --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID}/cmek \
       --header "Authorization: Bearer ${API_KEY}" \
-      --header 'content-type: application/json' \
+      --header "content-type: application/json" \
       --data "@cmek_config.json"
     ~~~
 
@@ -579,9 +579,9 @@ To add a region to a cluster that already has CMEK enabled:
     CLUSTER_ID= #{ your cluster ID }
     API_KEY= #{ your API key }
     curl --request PATCH \
-      --url "https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID}" \
+      --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID} \
       --header "Authorization: Bearer ${API_KEY}" \
-      --header 'content-type: application/json' \
+      --header "content-type: application/json" \
       --data "@cmek_config.json"
     ~~~
 
@@ -606,7 +606,7 @@ Within your KMS, **do not revoke** access to a CMEK that is in use by one or mor
     curl --request PATCH \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
       --header "Authorization: Bearer ${API_KEY}" \
-      --header 'content-type: application/json' \
+      --header "content-type: application/json" \
       --data '{"action":"REVOKE"}'
     ~~~
 

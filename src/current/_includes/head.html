@@ -151,6 +151,8 @@ var pageConfig = {
   data-kapa-branding-hide="true"
   data-modal-title="CockroachDB AI"
   data-modal-disclaimer="This AI bot is experimental. Don't rely on it for production workloads. Always consult the official CockroachDB documentation. Interactions with this AI bot may be monitored or recorded, and your use of the AI bot is subject to the Cockroach Labs' [Terms of Use](https://www.cockroachlabs.com/website-terms-of-use/) and [Privacy policy](https://www.cockroachlabs.com/privacy/)."
+  data-modal-y-offset="12vh"
+  data-modal-z-index="1000"
 ></script>
 
 <style>
@@ -159,5 +161,20 @@ var pageConfig = {
   }
   .mantine-Modal-content {
     max-height: calc(75vh); /* Limits the modal's height to 75% of the viewport height */
+  }
+  
+  /* Responsive modal positioning for Kapa widget */
+  @media (max-width: 768px) {
+    .mantine-Modal-content {
+      margin-top: 60px !important; /* Reduced margin for mobile */
+      max-height: calc(85vh); /* More height available on mobile */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .mantine-Modal-content {
+      margin-top: 40px !important; /* Even smaller margin for small mobile screens */
+      max-height: calc(90vh); /* Maximum height utilization on small screens */
+    }
   }
 </style>
