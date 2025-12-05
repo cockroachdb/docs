@@ -53,9 +53,9 @@ If you are running any other version, take the following steps **before** contin
 
 |                    Version                     |                                                                           Action(s) before upgrading to any {{ page.version.version }} release                                                                          |
 |------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release; then upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html). |
-| Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html).                                                     |
-| {{ previous_version}} testing release          | [Upgrade to a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html).                                                                                                     |
+| Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release; then upgrade through each subsequent major release, ending with a v21.1 production release. |
+| Pre-v21.1 production release  | Upgrade through each subsequent major release, ending with a v21.1 production release.                                                     |
+| v21.1 testing release          | Upgrade to a v21.1 production release.                                                                                                     |
 
 When you are ready to upgrade to {{ latest.release_name }}, continue to [step 2](#step-2-prepare-to-upgrade).
 
@@ -103,7 +103,7 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
 
 Review the [changes in v21.2](../releases/v21.2.html#v21-2-0). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
 
-- Interleaved tables and interleaved indexes have been removed. Before upgrading to v21.2, [convert interleaved tables](../v21.1/interleave-in-parent.html#convert-interleaved-tables) and [replace interleaved indexes](../v21.1/interleave-in-parent.html#replace-interleaved-indexes). Clusters with interleaved tables and indexes cannot finalize the v21.2 upgrade.
+- Interleaved tables and interleaved indexes have been removed. Before upgrading to v21.2, convert interleaved tables and replace interleaved indexes. Clusters with interleaved tables and indexes cannot finalize the v21.2 upgrade.
 - Previously, CockroachDB only supported the YMD format for parsing timestamps from strings. It now also supports the MDY format to better align with PostgreSQL. A timestamp such as `1-1-18`, which was previously interpreted as `2001-01-18`, will now be interpreted as `2018-01-01`. To continue interpreting the timestamp in the YMD format, the first number can be represented with 4 digits, `2001-1-18`.
 - The deprecated [cluster setting](cluster-settings.html) `cloudstorage.gs.default.key` has been removed, and the behavior of the `AUTH` parameter in Google Cloud Storage [`BACKUP`](backup.html) and `IMPORT` URIs has been changed. The default behavior is now that of `AUTH=specified`, which uses the credentials passed in the `CREDENTIALS` parameter, and the previous default behavior of using the node's implicit access (via its machine account or role) now requires explicitly passing `AUTH=implicit`.
 - We have switched types from `TEXT` to `"char"` for compatibility with PostgreSQL in the following columns: `pg_constraint` (`confdeltype`, `confmatchtype`, `confudptype`, `contype`) `pg_operator` (`oprkind`), `pg_prog` (`proargmodes`), `pg_rewrite` (`ev_enabled`, `ev_type`), and `pg_trigger` (`tgenabled`).
@@ -116,7 +116,7 @@ This step is relevant only when upgrading from v21.1.x to v21.2. For upgrades wi
 
 By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v21.2](#features-that-require-upgrade-finalization). However, it will no longer be possible to perform a downgrade to v21.1. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-5-finish-the-upgrade):
 
-1. [Upgrade to v21.1](../v21.1/upgrade-cockroach-version.html), if you haven't already.
+1. Upgrade to v21.1, if you haven't already.
 
 1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 
