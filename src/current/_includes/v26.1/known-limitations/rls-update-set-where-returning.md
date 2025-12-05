@@ -1,0 +1,1 @@
+`UPDATE` statements whose `SET`, `WHERE`, or `RETURNING` clauses do not read existing column values can be mistakenly filtered by row-level security `SELECT` policies, causing the statement to affect no rows. [#145894](https://github.com/cockroachdb/cockroach/issues/145894)
