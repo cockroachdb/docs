@@ -33,10 +33,6 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 - When using the `infer_rbr_region_col_using_constraint` option, inserting rows with `DEFAULT` for the region column uses the database's primary region instead of inferring the region from the parent table via foreign-key constraint. [#150783](https://github.com/cockroachdb/cockroach/issues/150783)
 
-### `LTREE` data type
-
-{% include {{ page.version.version }}/known-limitations/ltree-limitations.md %}
-
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
