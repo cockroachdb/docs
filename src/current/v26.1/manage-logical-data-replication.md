@@ -33,13 +33,7 @@ When a conflict cannot apply due to violating [constraints]({% link {{ page.vers
 
 ### Dead letter queue (DLQ)
 
-When the LDR job starts, it will create a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ will contain the writes that LDR cannot apply after the retry period of a minute, which could occur if there is a unique index on the destination table (for more details, refer to [Unique seconday indexes]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#unique-secondary-indexes)).
-
-{{site.data.alerts.callout_info}}
-LDR will not pause when the writes are sent to the DLQ, you must manage the DLQ manually.
-{{site.data.alerts.end}}
-
-To manage the DLQ, you can evaluate entries in the `incoming_row` column and apply the row manually to another table with SQL statements.
+When the LDR job starts, it creates a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ contains the writes that LDR cannot apply after the retry period of a minute, which could occur if there is a unique index on the destination table (for more details, refer to [Unique secondary indexes]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#unique-secondary-indexes)).
 
 As an example, for an LDR stream created on the `movr.public.promo_codes` table:
 
@@ -79,6 +73,73 @@ CREATE TABLE crdb_replication.dlq_113_public_promo_codes (
 CONSTRAINT dlq_113_public_promo_codes_pkey PRIMARY KEY (ingestion_job_id ASC, dlq_timestamp ASC, id ASC) USING HASH WITH (bucket_count=16)
 )
 ~~~
+
+#### Resolve rows in the DLQ
+
+LDR does not pause when writes are sent to the DLQ. You must manage the DLQ manually by examining each entry in the DLQ and either manually reinserting the row or deleting the entry from the DLQ. If you have multiple DLQ entries, resolve them in order from most recent to least recent. 
+
+To resolve a row in the DLQ:
+
+1. On the destination, find the primary key value in the `incoming_row` column.
+    
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT id, dlq_timestamp, incoming_row FROM crdb_replication.dlq_271_foo;
+    ~~~
+
+    In this example result, `incoming_row` contains a primary key value of `207` identified by the column `my_id`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    id | dlq_timestamp | incoming_row
+    ----------------------+---------------------+----------+-------------------------------+-----------------------------------------------------------------
+    106677386757203 | 2025-04-25 25:32:28.435439+00 | {"created_at": "2025-04-25:35:00.499499", "payload": "blahblahblah=", "my_id": 207}
+    ~~~
+
+1. Determine whether the value of the row matches on the source and the destination:
+
+    1. Check the value of the row and the replicated time:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        SELECT * FROM foo WHERE my_id = 207;
+        SELECT replicated_time FROM show logical replication jobs;
+        ~~~
+
+    1. On the source, check the value of the row as of the replicated time:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        SELECT * FROM foo WHERE my_id = 207 AS OF SYSTEM TIME {replicated time};
+        ~~~
+
+1. Determine a course of action based on the results of the previous steps:
+
+    1. If the value of the row is the same on both the source and the destination, delete the row from the DLQ on the destination:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        DELETE FROM crdb_replication.dlq_271_foo WHERE id = 106677386757203;
+        ~~~
+
+    1. If the row's value on the destination is different from its value on the source, but the row's value on the source equals its value in the DLQ, update the row on the destination to have the same value as on the source:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        UPSERT into foo VALUES (207, '2025-04-25:35:00.499499', 'blahblahblah=')
+        ~~~
+
+    1. If the row's value on the destination is different from its value on the source, and the row's value on the source equals its value in the DLQ, refresh the replicated time and retry the equality queries above. If the same results hold after a few retries with refreshed replicated times, there is likely a more recent entry for the row in the DLQ. 
+    
+        1. To find the more recent entry, find all rows in the DLQ with the matching primary key:
+
+            {% include_cached copy-clipboard.html %}
+            ~~~ sql
+            # On the destination:
+            SELECT id, dlq_timestamp, incoming_row FROM crdb_replication.dlq_271_foo WHERE incoming_row->>'my_id' = 207;
+            ~~~
+
+        1. If there are more recent entries for the row, delete the less recent entries and resolve the row using the most recent entry.
 
 ## Schema changes
 

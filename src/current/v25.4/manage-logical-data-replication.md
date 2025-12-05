@@ -96,44 +96,50 @@ To resolve a row in the DLQ:
     106677386757203 | 2025-04-25 25:32:28.435439+00 | {"created_at": "2025-04-25:35:00.499499", "payload": "blahblahblah=", "my_id": 207}
     ~~~
 
-1. Check the value of the row and the replicated time:
+1. Determine whether the value of the row matches on the source and the destination:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SELECT * FROM foo WHERE my_id = 207;
-    SELECT replicated_time FROM show logical replication jobs;
-    ~~~
+    1. Check the value of the row and the replicated time:
 
-1. On the source, check the value of the row as of the replicated time:
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        SELECT * FROM foo WHERE my_id = 207;
+        SELECT replicated_time FROM show logical replication jobs;
+        ~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SELECT * FROM foo WHERE my_id = 207 AS OF SYSTEM TIME {replicated time};
-    ~~~
+    1. On the source, check the value of the row as of the replicated time:
 
-1. If the value of the row is the same on both the source and the destination, delete the row from the DLQ on the destination:
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        SELECT * FROM foo WHERE my_id = 207 AS OF SYSTEM TIME {replicated time};
+        ~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    DELETE FROM crdb_replication.dlq_271_foo WHERE id = 106677386757203;
-    ~~~
+1. Determine a course of action based on the results of the previous steps:
 
-1. If the row's value on the destination is different from its value on the source, but the row's value on the source equals its value in the DLQ, update the row on the destination to have the same value as on the source:
+    1. If the value of the row is the same on both the source and the destination, delete the row from the DLQ on the destination:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    UPSERT into foo VALUES (207, '2025-04-25:35:00.499499', 'blahblahblah=')
-    ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        DELETE FROM crdb_replication.dlq_271_foo WHERE id = 106677386757203;
+        ~~~
 
-1. If the row's value on the destination is different from its value on the source, and the row's value on the source equals its value in the DLQ, refresh the replicated time and retry the equality queries above. If the same results hold after a few retries with refreshed replicated times, there is likely a more recent entry for the row in the DLQ. To find the the more recent entry, find all rows in the DLQ with the matching primary key:
+    1. If the row's value on the destination is different from its value on the source, but the row's value on the source equals its value in the DLQ, update the row on the destination to have the same value as on the source:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    # On the destination:
-    SELECT id, dlq_timestamp, incoming_row FROM crdb_replication.dlq_271_foo WHERE incoming_row->>'my_id' = 207;
-    ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        UPSERT into foo VALUES (207, '2025-04-25:35:00.499499', 'blahblahblah=')
+        ~~~
 
-1. If there are more recent entries for the row, delete the less recent entries and resolve the row using the most recent entry.
+    1. If the row's value on the destination is different from its value on the source, and the row's value on the source equals its value in the DLQ, refresh the replicated time and retry the equality queries above. If the same results hold after a few retries with refreshed replicated times, there is likely a more recent entry for the row in the DLQ. 
+    
+        1. To find the more recent entry, find all rows in the DLQ with the matching primary key:
+
+            {% include_cached copy-clipboard.html %}
+            ~~~ sql
+            # On the destination:
+            SELECT id, dlq_timestamp, incoming_row FROM crdb_replication.dlq_271_foo WHERE incoming_row->>'my_id' = 207;
+            ~~~
+
+        1. If there are more recent entries for the row, delete the less recent entries and resolve the row using the most recent entry.
 
 ## Schema changes
 
