@@ -13,6 +13,9 @@ gem "redcarpet", "~> 3.6"
 gem "rss"
 gem "webrick"
 gem "jekyll-minifier"
+gem "csv"
+gem "logger"
+gem "base64"
 
 group :jekyll_plugins do
     gem "jekyll-include-cache"
