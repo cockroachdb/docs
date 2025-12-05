@@ -124,7 +124,9 @@ To run it:
     account 2: 350
     ~~~
 
-{% include v2.1/client-transaction-retry.md %}
+{{site.data.alerts.callout_info}}
+With the default `SERIALIZABLE` isolation level, CockroachDB may require the client to retry a transaction in case of read/write contention. The code sample below shows how to implement retry logic.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -220,7 +222,9 @@ To run it:
     $ java -classpath .:/path/to/postgresql.jar TxnSample
     ~~~
 
-{% include v2.1/client-transaction-retry.md %}
+{{site.data.alerts.callout_info}}
+With the default `SERIALIZABLE` isolation level, CockroachDB may require the client to retry a transaction in case of read/write contention. The code sample below shows how to implement retry logic.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ java
