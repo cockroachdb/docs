@@ -5,21 +5,21 @@ toc: true
 docs_area: Integrate
 ---
 
-This tutorial demonstrates how to set up a joint environment that uses [Ory]({% link {{ page.version.version }}/ory-overview.md %}) for Identity and Access Management (IAM) and CockroachDB as the underlying database. This page describes the architecture of the integration, then walks through how to perform and test it. 
+This tutorial demonstrates how to set up a CockroachDB environment that uses [Ory]({% link {{ page.version.version }}/ory-overview.md %}) for Identity and Access Management (IAM). This page describes the architecture of the integration, then walks through how to perform and test it. 
 
-By the end of this tutorial, you should have a working environment in which Ory’s services (Hydra, Kratos, and Keto) are backed by a CockroachDB cluster.
+By the end of this tutorial, you'll have a working environment where Ory’s services (Hydra, Kratos, and Keto) use a CockroachDB cluster for storage.
 
 ## Integration Architecture Overview
 
 This example environment integrates [Ory Hydra]({% link {{ page.version.version }}/ory-overview.md %}#ory-hydra), [Ory Kratos]({% link {{ page.version.version }}/ory-overview.md %}#ory-kratos), and [Ory Keto]({% link {{ page.version.version }}/ory-overview.md %}#ory-keto).
 
-In a CockroachDB/Ory integration, each of these components relies on CockroachDB to store their state in a consistent and durable way, enabling them to function correctly even in the presence of partial outages or regional network partitions. Each Ory component can be deployed as a stateless service, with its only persistence requirement being the backing SQL database. 
+In a CockroachDB/Ory integration, each of these components relies on CockroachDB to store their state in a consistent and durable way, enabling them to function correctly even in the presence of partial outages or regional network partitions. Each Ory component is deployed as a stateless service, with its only persistence requirement being a backing SQL database.
 
 CockroachDB provides the database layer that ensures the accuracy and availability of user identities, access control rules, and session tokens. This makes it easier to horizontally scale Ory services, perform rolling updates, or deploy new regions without having to orchestrate complex data migrations.
 
 Here is an example of how a CockroachDB/Ory integration could be designed:
 
-<img src="https://github.com/amineelkouhen/crdb-ory-sandbox/raw/main/main/aws/Single-Region-Multi-AZ/images/Single-Region-MAZ.svg" alt="Single Region MAZ"  style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/integrate-ory-single-region.svg' | relative_url }}" alt="Single Region MAZ"  style="border:1px solid #eee;max-width:100%" />
 
 As illustrated in the diagram above, a single cloud region is shown containing three distinct availability zones: `us-east-1a`, `us-east-1b`, and `us-east-1c`. Each availability zone is an isolated failure domain with its own independent power, cooling, and networking. By deploying nodes of the Ory/CRDB clusters across all three zones, the system ensures resilience against localized outages. If one AZ becomes unavailable due to a hardware or network issue, the remaining two zones continue to serve client requests without data loss or downtime.
 
@@ -27,13 +27,13 @@ In the middle of the diagram (`Ory VPC`): Ory is deployed as a Kubernetes cluste
 
 At the bottom of the diagram (`CRDB VPC`): The CockroachDB nodes in each zone form a single logical cluster that replicates data across zones using the consensus protocol (typically Raft).
 
-A regional load balancer distributes traffic across the healthy nodes in the cluster. This NLB improves performance by directing requests to the closest responsive node and provides failover capabilities by rerouting traffic away from any failed or unreachable zones.
+A regional load balancer distributes traffic across the healthy nodes in the cluster. This Network Load Balancer (NLB) improves performance by directing requests to the closest responsive node and provides failover capabilities by rerouting traffic away from any failed or unreachable zones.
 
-This replication model ensures strong consistency — all nodes maintain a synchronized and always-on service. Even in the event of zone-level failure, the remaining pods/nodes - for both clusters - ensures that the solution remains available and consistent.
+This replication model ensures strong consistency — all nodes maintain a synchronized and always-on service. Even in the event of zone-level failure, the remaining pods and nodes — for both clusters — ensure that the solution remains available and consistent.
 
 In this example environment, both Ory and CockroachDB are within the us-east-1 region:
 
-- **CockroachDB**: One Virtual Private Cloud (VPC) in region (`us-east-1`) with three subnets, distributed across distinct availability zones. The CockroachDB cluster itself consists of three nodes, each deployed in a separate AZ to enable fault tolerance and quorum-based consistency. A Network Load Balancer (NLB) sits in front of the cluster to evenly route incoming requests to the appropriate database node.
+- **CockroachDB**: One Virtual Private Cloud (VPC) in region (`us-east-1`) with three subnets, distributed across distinct availability zones. The CockroachDB cluster itself consists of three nodes, each deployed in a separate AZ to enable fault tolerance and quorum-based consistency. A NLB sits in front of the cluster to evenly route incoming requests to the appropriate database node.
 
 - **Ory**: A separate VPC in the same region (`us-east-1`), also using three subnets, each placed in a different availability zone to ensure high availability. An Amazon EKS (Elastic Kubernetes Service) cluster was deployed with three worker nodes — one in each AZ—to distribute the workload evenly.
 For the purposes of this example, the EKS cluster is publicly accessible, and the service ports are exposed via a load balancer. All Ory components — Hydra, Kratos, and Keto — are configured to connect to the CockroachDB cluster through the NLB, ensuring consistent and resilient backend access.
@@ -86,15 +86,15 @@ Before integrating Ory components with CockroachDB, you will need to set up sepa
 - [Ory Kratos]({% link {{ page.version.version }}/ory-overview.md %}#ory-kratos) handles identity, credentials, sessions, verification tokens
 - [Ory Keto]({% link {{ page.version.version }}/ory-overview.md %}#ory-keto) stores relation tuples (RBAC/ABAC data) for permissions
 
-Keeping these in separate databases simplifies maintenance, and ensures isolation between identity, OAuth2, and authorization data.
+Keeping these in separate databases simplifies maintenance and ensures isolation between identity, OAuth2, and authorization data.
 
 1. Go to your CockroachDB SQL client.
 
-1. Replace the `CRDB_FQDN` placeholder with your CockroachDB load balancer domain name and run the following command:
+1. Replace `{certs-dir}` with the certificates directory that you established in Step 1, and `{crdb-fqdn}` with your CockroachDB load balancer domain name. Then run the following command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --certs-dir=certs --host=CRDB_FQDN:26257
+    cockroach sql --certs-dir={certs-dir} --host={crdb-fqdn}:26257
     ~~~
 
 1. Once connected to the SQL shell, run:
@@ -134,29 +134,32 @@ This section describes how to deploy Ory on a self-hosted Kubernetes cluster in 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ eksctl create cluster \
+    eksctl create cluster \
+    --region us-east-1 \
     --name ory \
     --nodegroup-name standard-workers \
+    --managed=false \
     --node-type m5.xlarge \
     --nodes 3 \
     --nodes-min 1 \
     --nodes-max 4 \
-    --node-ami auto
+    --node-ami auto \
+    --node-ami-family AmazonLinux2023
     ~~~
 
     This creates EKS instances and joins them into a single Kubernetes cluster named `ory`. The `--node-type` flag tells the node pool to use the [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/) instance type (4 vCPUs, 16 GB memory), which meets Ory's [recommended CPU and memory configuration](https://www.ory.com/blog/kratos-knative-demo).
 
-    Cluster provisioning usually takes between 10 and 15 minutes. Do not move on to the next step until you see a message like `[✔]  EKS cluster "ory" in "us-east-1" region is ready` and details about your cluster.
+    Provisioning usually takes between 10-15 minutes. Do not move on to the next step until you see a message like `[✔]  EKS cluster "ory" in "us-east-1" region is ready` and details about your cluster.
 
 3. Open the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) to verify that the stacks `eksctl-ory-cluster` and `eksctl-ory-nodegroup-standard-workers` were successfully created. Be sure that your region is selected in the console.
 
-    Once the kubernetes cluster initialization is done, you can follow the following steps to deploy Ory services:
+    Once the Kubernetes cluster is initialized, follow these steps to deploy Ory services:
 
 4. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `ory` chart repository:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ helm repo add ory https://k8s.ory.sh/helm/charts
+    helm repo add ory https://k8s.ory.sh/helm/charts
     ~~~
     
     You should get the following message, confirming the repository was added:
@@ -169,7 +172,7 @@ This section describes how to deploy Ory on a self-hosted Kubernetes cluster in 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ helm repo update
+    helm repo update
     ~~~
 
 ### Step 4. Deploy Ory services on Kubernetes
@@ -177,14 +180,14 @@ This section describes how to deploy Ory on a self-hosted Kubernetes cluster in 
 Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="hydra">Deploy Hydra on Kubernetes</button>
-  <button class="filter-button page-level" data-scope="kratos">Deploy Kratos on Kubernetes</button>
-  <button class="filter-button page-level" data-scope="keto">Deploy Keto on Kubernetes</button>
+  <button class="filter-button page-level" data-scope="hydra">Deploy Hydra</button>
+  <button class="filter-button page-level" data-scope="kratos">Deploy Kratos</button>
+  <button class="filter-button page-level" data-scope="keto">Deploy Keto</button>
 </div>
 <p></p>
 
 <section class="filter-content" markdown="1" data-scope="hydra">
-1. Copy/Paste the following code block in a `hydra_values.yaml` file and replace the `CRDB_FQDN` placeholder with your CockroachDB load balancer domain name. Refer to the [Hydra Helm chart template](https://www.ory.com/docs/hydra/reference/configuration).
+1. Copy/Paste the following code block in a `hydra_values.yaml` file and replace `{crdb-fqdn}` with your CockroachDB load balancer domain name. Refer to the [Hydra Helm chart template](https://www.ory.com/docs/hydra/reference/configuration).
 
     {% include_cached copy-clipboard.html %}
     ~~~ yaml
@@ -215,25 +218,25 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
             port: 4444
           admin:
             port: 4445
-        dsn: "cockroach://ory:securepass@CRDB_FQDN:26257/hydra?sslmode=disable"
+        dsn: "cockroach://ory:securepass@{crdb-fqdn}:26257/hydra?sslmode=disable"
     ~~~
 
-2. Install the Ory Hydra Helm chart, specifying your custom values file:
+2. Install the Ory Hydra Helm chart using your custom values file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ helm --install ory-hydra ory/hydra --namespace ory -f hydra_values.yaml
+    helm upgrade --install ory-hydra ory/hydra --namespace ory -f hydra_values.yaml
     ~~~
 
     {{site.data.alerts.callout_danger}}
     To allow the Ory Hydra pods to successfully deploy, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm commands.
     {{site.data.alerts.end}}
 
-3. Confirm that cluster initialization has completed successfully, with the pods for hydra showing `1/1` under `Running` and the pod for auto-migrate showing `Completed` under `STATUS`:
+3. Confirm that cluster initialization has completed successfully, with the pods for Hydra showing `1/1` under `READY` and the pod for auto-migrate showing `Completed` under `STATUS`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods
+    kubectl get pods
     ~~~
 
     ~~~
@@ -242,11 +245,11 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
     hydra-automigrate-hxzsc             1/1       Completed   0          20m
     ~~~
 
-4. Confirm that the hydra services were created successfully:
+4. Verify that the Hydra services were created successfully:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get svc
+    kubectl get svc
     ~~~
 
     ~~~
@@ -255,20 +258,20 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
     ory-hydra-public       LoadBalancer   172.20.128.144   a78f38833d17a4b6394cf687abebd8c9-546060028.us-east-1.elb.amazonaws.com    4444:32404/TCP   22m
     ~~~
 
-5. In the next section, you will need to execute a few API calls over the [Hydra REST API](https://www.ory.com/docs/hydra/reference/api). For this, you need to export the URLs for both admin and public endpoints:
+5. To test this deployment, you will need to execute a few API calls over the [Hydra REST API](https://www.ory.com/docs/hydra/reference/api). For this, you need to export the URLs for both admin and public endpoints:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-      $ hydra_admin_hostname=$(kubectl get svc --namespace ory ory-hydra-admin --template "")
-      $ hydra_public_hostname=$(kubectl get svc --namespace ory ory-hydra-public --template "")
-      $ export HYDRA_ADMIN_URL=http://$hydra_admin_hostname:4445
-      $ export HYDRA_PUBLIC_URL=http://$hydra_public_hostname:4444
+      hydra_admin_hostname=$(kubectl get svc --namespace ory ory-hydra-admin --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
+      hydra_public_hostname=$(kubectl get svc --namespace ory ory-hydra-public --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
+      export HYDRA_ADMIN_URL=http://$hydra_admin_hostname:4445
+      export HYDRA_PUBLIC_URL=http://$hydra_public_hostname:4444
     ~~~
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="kratos">
-1. Copy/Paste the following code block in a `kratos_values.yaml` file and replace the `CRDB_FQDN` placeholder with your CockroachDB load balancer domain name. Refer to the [Kratos Helm chart template](https://www.ory.com/docs/kratos/reference/configuration).
+1. Copy/Paste the following code block in a `kratos_values.yaml` file and replace `{crdb-fqdn}` with your CockroachDB load balancer domain name. Refer to the [Kratos Helm chart template](https://www.ory.com/docs/kratos/reference/configuration).
 
     {% include_cached copy-clipboard.html %}
     ~~~ yaml
@@ -297,7 +300,7 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
             port: 4433
           public:
             port: 4434
-        dsn: "cockroach://ory:securepass@CRDB_FQDN:26257/kratos?sslmode=disable"
+        dsn: "cockroach://ory:securepass@{crdb-fqdn}:26257/kratos?sslmode=disable"
         selfservice:
           default_browser_return_url: "http://127.0.0.1/home"
         identity:
@@ -309,22 +312,22 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
       enabled: false
     ~~~
 
-2. Install the Ory Kratos Helm chart, specifying your custom values file:
+2. Install the Ory Kratos Helm chart using your custom values file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ helm --install ory-kratos ory/kratos --namespace ory -f kratos_values.yaml
+    helm upgrade --install ory-kratos ory/kratos --namespace ory -f kratos_values.yaml
     ~~~
 
     {{site.data.alerts.callout_danger}}
     To allow the Ory Kratos pods to successfully deploy, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm commands.
     {{site.data.alerts.end}}
 
-3. Confirm that cluster initialization has completed successfully, with the pods for kratos showing `1/1` under `Running` and the pod for auto-migrate showing `Completed` under `STATUS`:
+3. Confirm that cluster initialization has completed successfully, with the pods for Kratos showing `1/1` under `READY` and the pod for auto-migrate showing `Completed` under `STATUS`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods
+    kubectl get pods
     ~~~
 
     ~~~
@@ -333,11 +336,11 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
     kratos-automigrate-jfsms            1/1       Completed   0          20m
     ~~~
 
-4. Confirm that the kratos services were created successfully:
+4. Verify that the Kratos services were created successfully:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get svc
+    kubectl get svc
     ~~~
 
     ~~~
@@ -346,20 +349,20 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
     ory-kratos-public      LoadBalancer   172.20.185.210   a6d6a72c1776646379830045ccaa2bdb-1651469880.us-east-1.elb.amazonaws.com   4434:31616/TCP   21m
     ~~~
    
-5. In the next section, you will need to execute a few API calls over the [Kratos REST API](https://www.ory.com/docs/kratos/reference/api). For this, you need to export the URLs for both admin and public endpoints:
+5. To test this deployment, you will need to execute a few API calls over the [Kratos REST API](https://www.ory.com/docs/kratos/reference/api). For this, you need to export the URLs for both admin and public endpoints:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-      $ kratos_admin_hostname=$(kubectl get svc --namespace ory ory-kratos-admin --template "")
-      $ kratos_public_hostname=$(kubectl get svc --namespace ory ory-kratos-public --template "")
-      $ export KRATOS_ADMIN_URL=http://$kratos_admin_hostname:4433
-      $ export KRATOS_PUBLIC_URL=http://$kratos_public_hostname:4434
+      kratos_admin_hostname=$(kubectl get svc --namespace ory ory-kratos-admin --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
+      kratos_public_hostname=$(kubectl get svc --namespace ory ory-kratos-public --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
+      export KRATOS_ADMIN_URL=http://$kratos_admin_hostname:4433
+      export KRATOS_PUBLIC_URL=http://$kratos_public_hostname:4434
     ~~~
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="keto">
-1. Copy/Paste the following code block in a `keto_values.yaml` file and replace the `CRDB_FQDN` placeholder by the CockroachDB load balancer domain name. Refer to the [Keto Helm chart template](https://www.ory.com/docs/keto/reference/configuration).
+1. Copy/Paste the following code block in a `keto_values.yaml` file and replace `{crdb-fqdn}` with the CockroachDB load balancer domain name. Refer to the [Keto Helm chart template](https://www.ory.com/docs/keto/reference/configuration).
 
     {% include_cached copy-clipboard.html %}
     ~~~ yaml
@@ -400,25 +403,25 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
             name: documents
           - id: 2
             name: users
-        dsn: "cockroach://ory:securepass@CRDB_FQDN:26257/keto?sslmode=disable"
+        dsn: "cockroach://ory:securepass@{crdb-fqdn}:26257/keto?sslmode=disable"
     ~~~
 
-2. Install the Ory Keto Helm chart, specifying your custom values file:
+2. Install the Ory Keto Helm chart using your custom values file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ helm --install ory-keto ory/keto --namespace ory -f keto_values.yaml
+    helm upgrade --install ory-keto ory/keto --namespace ory -f keto_values.yaml
     ~~~
 
     {{site.data.alerts.callout_danger}}
     To allow the Ory Keto pods to successfully deploy, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm commands.
     {{site.data.alerts.end}}
 
-3. Confirm that cluster initialization has completed successfully, with the pods for keto showing `1/1` under `Running` and the pod for auto-migrate showing `Completed` under `STATUS`:
+3. Confirm that cluster initialization has completed successfully, with the pods for keto showing `1/1` under `READY` and the pod for auto-migrate showing `Completed` under `STATUS`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get pods
+    kubectl get pods
     ~~~
 
     ~~~
@@ -426,11 +429,11 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
     keto-3ce98ab371-zkaknh              1/1       Running     0          20m
     ~~~
 
-4. Confirm that the kratos services were created successfully:
+4. Verify that the Keto services were created successfully:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl get svc
+    kubectl get svc
     ~~~
 
     ~~~
@@ -439,14 +442,14 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
     ory-keto-write         LoadBalancer   172.20.114.76    a17754810e49d4314b7797a2f65f5031-451201736.us-east-1.elb.amazonaws.com    4467:30092/TCP   20m
     ~~~
 
-5. In the next section, you will need to execute a few API calls over the [Keto REST API](https://www.ory.com/docs/keto/reference/rest-api). For this, you need to export the URLs for both read and write endpoints:
+5. To test this deployment, you will need to execute a few API calls over the [Keto REST API](https://www.ory.com/docs/keto/reference/rest-api). For this, you need to export the URLs for both read and write endpoints:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-      $ keto_read_hostname=$(kubectl get svc --namespace ory ory-keto-read --template "")
-      $ keto_write_hostname=$(kubectl get svc --namespace ory ory-keto-write --template "")
-      $ export KETO_WRITE_REMOTE=http://$keto_write_hostname:4467
-      $ export KETO_READ_REMOTE=http://$keto_read_hostname:4466
+      keto_read_hostname=$(kubectl get svc --namespace ory ory-keto-read --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
+      keto_write_hostname=$(kubectl get svc --namespace ory ory-keto-write --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
+      export KETO_WRITE_REMOTE=http://$keto_write_hostname:4467
+      export KETO_READ_REMOTE=http://$keto_read_hostname:4466
     ~~~
 
 </section>
@@ -458,7 +461,7 @@ You now have a high-availability deployment for a joint Ory/CRDB environment wit
 Provisioning a distributed identity stack can be time-consuming when done manually. The [CockroachDB/Ory sandbox](https://github.com/amineelkouhen/crdb-ory-sandbox) project encapsulates all necessary steps — from creating the CockroachDB cluster and its three Ory databases, to deploying Ory (Kratos, Hydra, and Keto) into an EKS cluster.
 With just a few variables defined (such as cluster region, Ory image versions, and AWS credentials), Terraform spins up the joint environment in a few clicks (or one command), wiring all components together automatically.
 
-It uses the official AWS Terraform provider to create and configure the required infrastructure for the database layer, and standard Kubernetes or Docker resources for deploying Ory services. This not only accelerates setup but also ensures reproducibility across environments, whether you are experimenting locally, running automated CI/CD tests, or deploying to production.
+It uses the official AWS Terraform provider to create and configure the required infrastructure for the database layer, and standard Kubernetes or Docker resources for deploying Ory services. This accelerates setup and ensures reproducibility across environments, whether you're experimenting locally, running CI/CD tests, or deploying to production.
 
 Terraform will provision two logical clusters with:
 
@@ -482,9 +485,9 @@ client-public-IP = "52.40.254.77"
 
 ####################################### CRDB Cluster #################################
 
-console-url = "http://amine.cluster.sko-iam-demo.com:8080/"
-connexion-string = "postgresql://root@amine.cluster.sko-iam-demo.com:26257/defaultdb"
-console-url = "http://amine.cluster.sko-iam-demo.com:8080/"
+console-url = "http://user.cluster.sko-iam-demo.com:8080/"
+connexion-string = "postgresql://root@user.cluster.sko-iam-demo.com:26257/defaultdb"
+console-url = "http://user.cluster.sko-iam-demo.com:8080/"
 
 crdb-cluster-private-ips = [
 "10.1.1.75",
@@ -612,10 +615,10 @@ $ curl -s -X POST -H "Accept: application/json Content-Type: application/json" $
   "method": "password",
   "password": "HelloCockro@ch123",
   "traits": {
-        "email": "amine.elkouhen@cockroachlabs.com",
+        "email": "max@roach.com",
         "name": {
-            "first": "Amine M.",
-            "last": "Kouhen"
+            "first": "Max",
+            "last": "Roach"
         }
   }
 }'
@@ -632,10 +635,10 @@ Ory Identities responds with a JSON payload which includes the signed up `identi
         "state": "active",
         "state_changed_at": "2025-06-15T22:28:38.743591684Z",
         "traits": {
-            "email": "amine.elkouhen@cockroachlabs.com",
+            "email": "max@roach.com",
             "name": {
-                "first": "Amine M.",
-                "last": "Kouhen"
+                "first": "Max",
+                "last": "Roach"
             }
         },
         "metadata_public": null,
@@ -661,7 +664,7 @@ Then you can submit the login form [using a request payload](https://www.ory.com
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl -s -X POST -H  "Accept: application/json" -H "Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/login?flow=$flowId \
--d '{"identifier": "amine.elkouhen@cockroachlabs.com", "password": "HelloCockro@ch123", "method": "password"}'
+-d '{"identifier": "max@roach.com", "password": "HelloCockro@ch123", "method": "password"}'
 ~~~
 
 Ory Identities responds with a JSON payload which includes the identity which just authenticated, the session, and the Ory Session Token:
@@ -690,10 +693,10 @@ Ory Identities responds with a JSON payload which includes the identity which ju
             "state": "active",
             "state_changed_at": "2025-06-15T22:28:38.743591Z",
             "traits": {
-                "email": "amine.elkouhen@cockroachlabs.com",
+                "email": "max@roach.com",
                 "name": {
-                    "first": "Amine M.",
-                    "last": "Kouhen"
+                    "first": "Max",
+                    "last": "Roach"
                 }
             },
             "metadata_public": null,
@@ -745,10 +748,10 @@ $ curl -s -X GET -H "Accept: application/json" -H "Authorization: Bearer ory_st_
         "state": "active",
         "state_changed_at": "2025-06-15T22:28:38.743591Z",
         "traits": {
-            "email": "amine.elkouhen@cockroachlabs.com",
+            "email": "max@roach.com",
             "name": {
-                "first": "Amine M.",
-                "last": "Kouhen"
+                "first": "Max",
+                "last": "Roach"
             }
         },
         "metadata_public": null,
@@ -833,9 +836,9 @@ You can validate the behavior of this integration under realistic conditions.
 The [workload simulator](https://github.com/amineelkouhen/crdb-ory-load-test) project is a lightweight Golang-coded utility that generates concurrent API requests against the Ory endpoints (mainly Hydra, Kratos, and Keto) to emulate real-world authentication, token issuance, and permission checks.
 
 It can spawn hundreds of simulated users performing signup, login, OAuth2 token exchange, and access-control queries, thereby stressing both Ory’s application logic and the underlying CockroachDB cluster.
-This allows you to measure performance, latency, and resilience, observe how CockroachDB handles concurrent transactions, and tune replication or connection pooling parameters.
+This lets you measure performance, latency, and resilience, observe how CockroachDB handles concurrent transactions, and tune replication or connection pooling parameters.
 
-Results include detailed breakdowns:
+Results include detailed simulation metrics:
 
  ~~~ shell
 🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
