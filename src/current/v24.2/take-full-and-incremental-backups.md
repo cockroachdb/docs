@@ -235,7 +235,7 @@ A full backup must be present in the `{collectionURI}` in order to take an incre
 
 For details on the backup directory structure when taking incremental backups with `incremental_location`, see this [incremental location directory structure](#incremental-location-structure) example.
 
-<a name="backup-earlier-behavior"></a>To take incremental backups that are [stored in the same way as v21.2]({% link v21.2/take-full-and-incremental-backups.md %}#backup-collections) and earlier, you can use the `incremental_location` option. You can specify the same `collectionURI` with `incremental_location` and the backup will place the incremental backups in a date-based path under the full backup, rather than in the default `/incrementals` directory:
+<a name="backup-earlier-behavior"></a>To take incremental backups that are stored in the same way as v21.2 and earlier, you can use the `incremental_location` option. You can specify the same `collectionURI` with `incremental_location` and the backup will place the incremental backups in a date-based path under the full backup, rather than in the default `/incrementals` directory:
 
 ~~~ sql
 BACKUP INTO LATEST IN '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH incremental_location = '{collectionURI}';

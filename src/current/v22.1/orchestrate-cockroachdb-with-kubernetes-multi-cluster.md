@@ -1054,7 +1054,7 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
     Therefore, in order to upgrade to {{ page.version.version }}, you must be on a production release of {{ previous_version }}.
 
-    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ previous_version }}](../{{ previous_version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first upgrade to a production release of {{ previous_version }}. Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to {{ page.version.version }}.
 

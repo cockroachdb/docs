@@ -1,1 +1,0 @@
-To prevent OOM crashes, [provision sufficient memory](recommended-production-settings.html#memory). If all CockroachDB machines are provisioned and configured correctly, either run the CockroachDB process on another node with sufficient memory, or [reduce the memory allocated to CockroachDB](recommended-production-settings.html#cache-and-sql-memory-size).
