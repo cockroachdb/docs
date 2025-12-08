@@ -80,36 +80,72 @@ capture-stray-errors: ... # parameters for the stray error capture system
 Providing a logging configuration is optional. Any fields included in the YAML payload will override the same fields in the [default logging configuration](#default-logging-configuration).
 
 {{site.data.alerts.callout_danger}}
-When you provide a minimal logging configuration for `file-groups`, CockroachDB replaces the entire default `file-groups` structure rather than merging only the specified fields. As a result, all logging channels flow into the `default` file sink, which can lead to noisy logs and rapid log rotation. Although users may expect partial YAML overrides to merge with the default logging configuration, this behavior is not supported. To avoid misconfiguration, validate logging settings using the [`cockroach debug check-log-config`](#cockroach-debug-check-log-config) command.
+When you provide a minimal logging configuration for `file-groups`, CockroachDB replaces the entire default `file-groups` structure instead of merging only the specified fields. As a result, all logging channels flow into the `default` file sink, which can lead to noisy logs and rapid log rotation. Although you may expect partial YAML overrides to merge with the default logging configuration, this behavior is not supported. To avoid misconfiguration, validate your logging settings using the [`cockroach debug check-log-config`](#cockroach-debug-check-log-config) command.
 {{site.data.alerts.end}}
 
-For example, the following minimal logging configuration attempts to set `max-group-size` for `default` file sink to `1000MiB`:
+To demonstrate the warning scenario, consider the following excerpt from the [default logging configuration](#default-logging-configuration) that has several file sinks followed by a `stderr` section. To view the full default logging configuration, refer to [this section](#default-logging-configuration). Note that each file sink has a `max-group-size: 100MiB`.
 
 ~~~ yaml
+...
 sinks:
   file-groups:
+    changefeed:
+      channels: {INFO: [CHANGEFEED]}
+      max-group-size: 100MiB      
+...
     default:
-      max-group-size: 1000MiB
-      channels:
-        INFO: [DEV, OPS, HEALTH, STORAGE, SESSIONS, SQL_SCHEMA, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS, SQL_EXEC, SQL_INTERNAL_PERF, TELEMETRY, KV_DISTRIBUTION]
+      channels: {INFO: [DEV, OPS], WARNING: [HEALTH, STORAGE, SESSIONS, SQL_SCHEMA, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS, SQL_EXEC, SQL_PERF, SQL_INTERNAL_PERF, TELEMETRY, KV_DISTRIBUTION, CHANGEFEED, KV_EXEC]}
+      max-group-size: 100MiB
+...
+    health:
+      channels: {INFO: [HEALTH]}
+      max-group-size: 100MiB
+...
+    kv-distribution:
+      channels: {INFO: [KV_DISTRIBUTION]}    
+      max-group-size: 100MiB
+...
+    kv-exec:
+      channels: {INFO: [KV_EXEC]}     
+      max-group-size: 100MiB
+...
+    pebble:
+      channels: {INFO: [STORAGE]}
+      max-group-size: 100MiB      
+...
+  stderr:
+...
 ~~~
 
-Compared to the [default logging configuration](#default-logging-configuration), the actual effective configuration updates `max-group-size` for `default` file sink, adds `all` channels to the `default` file sink, and removes all other `file-groups`:
+Next, consider the following minimal logging configuration, which moves the `DEV` and `OPS` channels from the `default` file sink to a new file sink called `debug` and increases the `max-group-size` for the `default` file sink to `1000MiB`:
 
 ~~~ yaml
-file-defaults: ...
-fluent-defaults: ...
-http-defaults: ...
-otlp-defaults: ...
 sinks:
   file-groups:
+    debug:
+      channels: {INFO: [DEV, OPS]}
+      max-group-size: 100MiB
     default:
-      channels: {INFO: all}
-      ...
+      channels: {WARNING: [HEALTH, STORAGE, SESSIONS, SQL_SCHEMA, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS, SQL_EXEC, SQL_PERF, SQL_INTERNAL_PERF, TELEMETRY, KV_DISTRIBUTION, CHANGEFEED, KV_EXEC]}
       max-group-size: 1000MiB
-      ...
-  stderr: ...
-capture-stray-errors: ...
+~~~
+
+When the minimal configuration is applied, the effective configuration updates the `max-group-size` for `default` file sink and adds a new `debug` file sink with the `DEV` and `OPS` channels. However, it also removes all other file sinks, such as `changefeed`, `health`, and `kv_distribution`:
+
+~~~ yaml
+...
+sinks:
+  file-groups:
+    debug:
+      channels: {INFO: [DEV, OPS]}
+      max-group-size: 100MiB
+...      
+    default:
+      channels: {WARNING: [HEALTH, STORAGE, SESSIONS, SQL_SCHEMA, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS, SQL_EXEC, SQL_PERF, SQL_INTERNAL_PERF, TELEMETRY, KV_DISTRIBUTION, CHANGEFEED, KV_EXEC]}
+      max-group-size: 1000MiB
+...
+  stderr:
+...
 ~~~
 
 {% include {{ page.version.version }}/log-channel-note.md %}
