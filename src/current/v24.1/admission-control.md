@@ -45,6 +45,7 @@ Almost all database operations that use CPU or perform storage IO are controlled
 - [General SQL queries]({% link {{ page.version.version }}/selection-queries.md %}) have their CPU usage subject to admission control, as well as storage IO for writes to [leaseholder replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases).
 - [Bulk data imports]({% link {{ page.version.version }}/import-into.md %}).
 - [Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
+- [Restore]({% link {{ page.version.version }}/restore.md %}) operations, including [full cluster]({% link {{ page.version.version }}/restore.md %}#full-cluster), [database]({% link {{ page.version.version }}/restore.md %}#databases), and [table]({% link {{ page.version.version }}/restore.md %}#tables) restores.
 - [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), including index and column backfills (on both the [leaseholder replica]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
 - [`COPY`]({% link {{ page.version.version }}/copy.md %}) statements.
 - [Deletes]({% link {{ page.version.version }}/delete-data.md %}) (including deletes initiated by [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}); the [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) performed by TTL jobs are also subject to CPU admission control).
