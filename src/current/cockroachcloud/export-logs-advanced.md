@@ -78,7 +78,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 	~~~shell
 	curl --request GET \
 	  --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-	  --header 'Authorization: Bearer {secret_key}' | jq .account_id
+	  --header "Authorization: Bearer {secret_key}" | jq .account_id
 	~~~
 
     Refer to [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating the `{secret_key}`.
@@ -252,7 +252,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq '("crl-logging-user-" + (.id | split("-"))[4] + "@" + .account_id + ".iam.gserviceaccount.com")'
+      --header "Authorization: Bearer {secret_key}" | jq '("crl-logging-user-" + (.id | split("-"))[4] + "@" + .account_id + ".iam.gserviceaccount.com")'
     ~~~
 
     Where:

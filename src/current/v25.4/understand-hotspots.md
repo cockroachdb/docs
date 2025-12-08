@@ -252,7 +252,7 @@ The following image visualizes writes in the `products` keyspace using hash-shar
 
 Because sequences avoid user expressions, optimizations can be made to improve their performance, but unfortunately the write volume on the sequence is still that of the sum total of all its accesses.
 
-[Sequence caching]({% link {{ page.version.version }}/create-sequence.md %}#cache-sequence-values-in-memory), which allows clients to cache sequence values to reduce the burden on the target range, serves as a good mitigation for hot sequences. Alternatively, the `unique_rowid()` function generates sequential values which have strong guarantees against collision, with the drawback that its values are not a series.
+[Sequence caching]({% link {{ page.version.version }}/create-sequence.md %}#cache-sequence-values-in-memory-per-node), which allows clients to cache sequence values to reduce the burden on the target range, serves as a good mitigation for hot sequences. Alternatively, the `unique_rowid()` function generates sequential values which have strong guarantees against collision, with the drawback that its values are not a series.
 
 ### Table hotspot
 

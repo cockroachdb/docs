@@ -65,7 +65,7 @@ To use PCR, it is necessary to set the `supports_cluster_virtualization` field t
     ~~~ shell
     curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' \
     --header "Authorization: Bearer {api_secret_key}" \
-    --header 'Content-Type: application/json' \
+    --header "content-type: application/json" \
     --data '{
       "name": "{primary_cluster_name}", 
       "provider": "AWS", 
@@ -100,7 +100,7 @@ Ensure that you replace each of the values for the cluster specification as per 
     ~~~ shell
     curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' \
     --header "Authorization: Bearer {api_secret_key}" \
-    --header 'Content-Type: application/json' \
+    --header "content-type: application/json" \
     --data '{
       "name": "{standby_cluster_name}", 
       "provider": "AWS", 
@@ -144,7 +144,7 @@ With the primary and standby clusters set up, you can now start a PCR stream.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request POST --url 'https://cockroachlabs.cloud/api/v1/physical-replication-streams' \
+curl --request POST --url https://cockroachlabs.cloud/api/v1/physical-replication-streams \
 --header "Authorization: Bearer {api_secret_key}" \
 --json '{
   "primary_cluster_id": "{primary_cluster_id}",
@@ -254,7 +254,7 @@ To fail over to the latest consistent time, you only need to include `"status": 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request PATCH --url "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
+curl --request PATCH --url https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id} \
 --header "Authorization: Bearer {api_secret_key}" \
 --json '{
   "status": "FAILING_OVER"

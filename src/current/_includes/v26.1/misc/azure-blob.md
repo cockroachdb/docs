@@ -1,0 +1,1 @@
+For [changefeeds]({% link {{ page.version.version }}/changefeed-sinks.md %}), you must use the `azure://` scheme. For all other jobs,  the `azure://` and `azure-storage://` schemes are also supported for backward compatibility, though `azure-blob://` is recommended.

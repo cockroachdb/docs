@@ -138,19 +138,11 @@ This role can be assigned at the scope of the organization, on an individual clu
 
 ### Cluster Monitor
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 The **Cluster Monitor** role provides read‑only visibility into SQL activity and workload health without broader administrative privileges. Users with this role can view the SQL Activity pages ([Sessions]({% link cockroachcloud/sessions-page.md %}), [Statements]({% link cockroachcloud/statements-page.md %}), and [Transactions]({% link cockroachcloud/transactions-page.md %})), the [Jobs page]({% link cockroachcloud/jobs-page.md %}), and the [Insights page]({% link cockroachcloud/insights-page.md %}).
 
 This role can be assigned at the scope of the organization, on an individual cluster, or on a folder. If assigned to a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
 ### Metrics Viewer
-
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
 
 The **Metrics Viewer** role grants read‑only access to observability metrics for a cluster without any administrative or data‑manipulation privileges.
 
