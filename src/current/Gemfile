@@ -14,6 +14,9 @@ gem "rss"
 gem "webrick"
 gem "jekyll-minifier"
 gem "bundler", "~> 2.4"
+gem "csv"
+gem "logger"
+gem "base64"
 
 group :jekyll_plugins do
     gem "jekyll-include-cache"
