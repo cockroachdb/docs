@@ -21,7 +21,7 @@ Here is an example of how a CockroachDB/Ory integration could be designed:
 
 <img src="{{ 'images/v26.1/integrate-ory-single-region.svg' | relative_url }}" alt="Single Region MAZ"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
-As illustrated in the diagram above, a single cloud region is shown containing three distinct availability zones: `us-east-1a`, `us-east-1b`, and `us-east-1c`. Each availability zone is an isolated failure domain with its own independent power, cooling, and networking. By deploying nodes of the Ory/CRDB clusters across all three zones, the system ensures resilience against localized outages. If one AZ becomes unavailable due to a hardware or network issue, the remaining two zones continue to serve client requests without data loss or downtime.
+As illustrated in the diagram above, a single cloud region is shown containing three distinct availability zones: `us-east-1a`, `us-east-1b`, and `us-east-1c`. Each availability zone is an isolated failure domain with its own independent power, cooling, and networking. By deploying nodes of the CockroachDB/Ory clusters across all three zones, the system ensures resilience against localized outages. If one AZ becomes unavailable due to a hardware or network issue, the remaining two zones continue to serve client requests without data loss or downtime.
 
 In the middle of the diagram (`Ory VPC`): Ory is deployed as a Kubernetes cluster (in EKS). The workers are created in each zone and form a single logical cluster. Each Ory component (**_Hydra_**, **_Kratos_** or **_Keto_**) is replicated as pods and distributed across the EKS cluster to provide failover capabilities and remain highly available.
 
@@ -40,7 +40,9 @@ For the purposes of this example, the EKS cluster is publicly accessible, and th
 
 ## Set up a joint CockroachDB/Ory environment
 
-This tutorial walks you through the manual setup of a joint CockroachDB/Ory environment. Alternatively, you can follow [the instructions at the end of this tutorial](#alternative-terraform-setup) to automate this process using the existing Ory integration github project.
+This tutorial walks you through the manual setup of a joint CockroachDB/Ory environment. 
+
+<!-- Alternatively, you can follow [the instructions at the end of this tutorial](#alternative-terraform-setup) to automate this process using the existing Ory integration github project. -->
 
 ### Before you begin
 
@@ -307,7 +309,7 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
           default_schema_id: default
           schemas:
             - id: default
-              url: https://raw.githubusercontent.com/amineelkouhen/crdb-ory-sandbox/refs/heads/main/main/aws/Single-Region-Multi-AZ/resources/identity.default.schema.json
+              url: https://cockroachdb-integration-guides.s3.us-east-1.amazonaws.com/ory/kratos-schema.json
     courier:
       enabled: false
     ~~~
@@ -454,9 +456,9 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
 
 </section>
 
-You now have a high-availability deployment for a joint Ory/CRDB environment within a single cloud region. This architecture is designed to protect against failures at the availability zone (AZ) level by distributing nodes of the database cluster across multiple AZs within the same region.
+You now have a high-availability deployment for a joint CockroachDB/Ory environment within a single cloud region. This architecture is designed to protect against failures at the availability zone (AZ) level by distributing nodes of the database cluster across multiple AZs within the same region.
 
-### Alternative: Terraform setup
+<!-- ### Alternative: Terraform setup
 
 Provisioning a distributed identity stack can be time-consuming when done manually. The [CockroachDB/Ory sandbox](https://github.com/amineelkouhen/crdb-ory-sandbox) project encapsulates all necessary steps — from creating the CockroachDB cluster and its three Ory databases, to deploying Ory (Kratos, Hydra, and Keto) into an EKS cluster.
 With just a few variables defined (such as cluster region, Ory image versions, and AWS credentials), Terraform spins up the joint environment in a few clicks (or one command), wiring all components together automatically.
@@ -501,7 +503,7 @@ crdb-cluster-public-ips = [
 ]
 
 ####################################### EKS Ory Cluster #################################
- ~~~ 
+ ~~~  -->
 
 ## Test the CockroachDB/Ory Integration
 
