@@ -80,10 +80,10 @@ capture-stray-errors: ... # parameters for the stray error capture system
 Providing a logging configuration is optional. Any fields included in the YAML payload will override the same fields in the [default logging configuration](#default-logging-configuration).
 
 {{site.data.alerts.callout_danger}}
-When you provide a minimal logging configuration for `file-groups`, CockroachDB replaces the entire default `file-groups` structure instead of merging only the specified fields. As a result, all logging channels flow into the `default` file sink, which can lead to noisy logs and rapid log rotation. Although you may expect partial YAML overrides to merge with the default logging configuration, this behavior is not supported. To avoid misconfiguration, validate your logging settings using the [`cockroach debug check-log-config`](#cockroach-debug-check-log-config) command.
+When you provide a minimal logging configuration for `file-groups`, CockroachDB replaces the entire default `file-groups` structure instead of merging only the specified fields. As a result, all logging channels flow into the `default` file sink, which can produce noisy logs and rapid log rotation. Partial YAML overrides that merge with the default logging configuration are not supported. To avoid misconfiguration, validate your logging settings using the [`cockroach debug check-log-config`](#cockroach-debug-check-log-config) command.
 {{site.data.alerts.end}}
 
-To demonstrate the warning scenario, consider the following excerpt from the [default logging configuration](#default-logging-configuration) that has several file sinks followed by a `stderr` section. To view the full default logging configuration, refer to [this section](#default-logging-configuration). Note that each file sink has a `max-group-size: 100MiB`.
+To demonstrate this warning scenario, consider the following excerpt from the [default logging configuration](#default-logging-configuration) which has several file sinks followed by `stderr`. To view the full default logging configuration, refer to [this section](#default-logging-configuration). Note that each file sink has a `max-group-size: 100MiB`.
 
 ~~~ yaml
 ...
@@ -91,7 +91,7 @@ sinks:
   file-groups:
     changefeed:
       channels: {INFO: [CHANGEFEED]}
-      max-group-size: 100MiB      
+      max-group-size: 100MiB
 ...
     default:
       channels: {INFO: [DEV, OPS], WARNING: [HEALTH, STORAGE, SESSIONS, SQL_SCHEMA, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS, SQL_EXEC, SQL_PERF, SQL_INTERNAL_PERF, TELEMETRY, KV_DISTRIBUTION, CHANGEFEED, KV_EXEC]}
@@ -111,13 +111,13 @@ sinks:
 ...
     pebble:
       channels: {INFO: [STORAGE]}
-      max-group-size: 100MiB      
+      max-group-size: 100MiB 
 ...
   stderr:
 ...
 ~~~
 
-Next, consider the following minimal logging configuration, which moves the `DEV` and `OPS` channels from the `default` file sink to a new file sink called `debug` and increases the `max-group-size` for the `default` file sink to `1000MiB`:
+Next, consider the following minimal logging configuration. It moves the `DEV` and `OPS` channels from the `default` file sink to a new file sink called `debug` and increases the `max-group-size` for the `default` file sink to `1000MiB`:
 
 ~~~ yaml
 sinks:
@@ -130,7 +130,7 @@ sinks:
       max-group-size: 1000MiB
 ~~~
 
-When the minimal configuration is applied, the effective configuration updates the `max-group-size` for `default` file sink and adds a new `debug` file sink with the `DEV` and `OPS` channels. However, it also removes all other file sinks, such as `changefeed`, `health`, and `kv_distribution`:
+When the minimal configuration is applied, the effective configuration updates the `max-group-size` for the `default` file sink and adds a new `debug` file sink with the `DEV` and `OPS` channels. However, it also removes all other file sinks, such as `changefeed`, `health`, and `kv-distribution`. The entire `file-groups` structure is replaced rather than merging only the specified fields.
 
 ~~~ yaml
 ...
