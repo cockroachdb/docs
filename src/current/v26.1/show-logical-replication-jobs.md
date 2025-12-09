@@ -59,10 +59,11 @@ In the destination cluster's SQL shell, you can query `SHOW LOGICAL REPLICATION 
 SHOW LOGICAL REPLICATION JOBS;
 ~~~
 ~~~
-        job_id        | status  |          tables           | replicated_time
-----------------------+---------+---------------------------+------------------
-1012877040439033857   | running | {database.public.table}   | NULL
-(1 row)
+        job_id        | status  |          tables          |    replicated_time
+----------------------+---------+--------------------------+-------------------------
+  1131000153784844289 | running | {db_b.public.test_table} | 2025-12-09 19:33:20+00
+  1131000167682211841 | running | {db_a.public.test_table} | 2025-12-09 19:33:20+00
+(2 rows)
 ~~~
 
 For additional detail on each LDR job, use the `WITH details` option:
@@ -72,10 +73,10 @@ For additional detail on each LDR job, use the `WITH details` option:
 SHOW LOGICAL REPLICATION JOBS WITH details;
 ~~~
 ~~~
-        job_id        |  status  |            tables              |        replicated_time        |    replication_start_time     | conflict_resolution_type |                                      command
-----------------------+----------+--------------------------------+-------------------------------+-------------------------------+--------------------------+-----------------------------------------------------------------------------------------
-  1010959260799270913 | running  | {movr.public.promo_codes}      | 2024-10-24 17:50:05+00        | 2024-10-10 20:04:42.196982+00 | LWW                      | LOGICAL REPLICATION STREAM into movr.public.promo_codes from external://cluster_a
-  1014047902397333505 | canceled | {defaultdb.public.office_dogs} | 2024-10-24 17:30:25+00        | 2024-10-21 17:54:20.797643+00 | LWW                      | LOGICAL REPLICATION STREAM into defaultdb.public.office_dogs from external://cluster_a
+        job_id        | status  |          tables          |    replicated_time     |    replication_start_time     | conflict_resolution_type |                                                                             command
+----------------------+---------+--------------------------+------------------------+-------------------------------+--------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  1131000153784844289 | running | {db_b.public.test_table} | 2025-12-09 19:35:50+00 | 2025-12-08 20:04:15.512126+00 | LWW                      | CREATE LOGICALLY REPLICATED TABLE test_table FROM TABLE test_table ON 'external://conn_a' WITH OPTIONS (BIDIRECTIONAL ON 'external://conn_b')
+  1131000167682211841 | running | {db_a.public.test_table} | 2025-12-09 19:35:50+00 | 2025-12-08 20:04:19.758587+00 | LWW                      | CREATE LOGICAL REPLICATION STREAM FROM TABLE test_table ON 'external://conn_b' INTO TABLE test_table WITH OPTIONS (CURSOR = $1, PARENT = '1131000153784844289')
 ~~~
 
 ## See also
