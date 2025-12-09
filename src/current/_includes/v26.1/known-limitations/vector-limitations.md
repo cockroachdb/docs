@@ -1,0 +1,5 @@
+- {% include {{ page.version.version }}/sql/vector-batch-inserts.md %}
+- `IMPORT INTO` is not supported on tables with vector indexes. You can import the vectors first and create the index after import is complete. [#145227](https://github.com/cockroachdb/cockroach/issues/145227)
+- The distance functions `vector_l1_ops`, `bit_hamming_ops`, and `bit_jaccard_ops` are not implemented. [#147839](https://github.com/cockroachdb/cockroach/issues/147839)
+- Index acceleration with filters is only supported if the filters match prefix columns. [#146145](https://github.com/cockroachdb/cockroach/issues/146145)
+- Index recommendations are not provided for vector indexes. [#146146](https://github.com/cockroachdb/cockroach/issues/146146)
