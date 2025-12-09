@@ -832,7 +832,11 @@ $ keto check \"user:alice\" viewer documents /photos/beach.jpg --insecure-disabl
 # allowed
  ~~~ 
 
-### Simulate realistic workloads
+<br>
+
+The tests above confirm that each Ory component in this deployment is properly connected using CockroachDB as the shared data layer. If you get the expected results from these tests, then your integration is ready for use in your application. You can begin building authentication, authorization, and access control features with CockroachDB and Ory.
+
+<!-- ### Simulate realistic workloads
 
 You can validate the behavior of this integration under realistic conditions.
 The [workload simulator](https://github.com/amineelkouhen/crdb-ory-load-test) project is a lightweight Golang-coded utility that generates concurrent API requests against the Ory endpoints (mainly Hydra, Kratos, and Keto) to emulate real-world authentication, token issuance, and permission checks.
@@ -857,7 +861,7 @@ Results include detailed simulation metrics:
 🚨  Failed writes to Kratos: 0
 🚨  Failed reads to Kratos:  0
 🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
- ~~~ 
+ ~~~  -->
 
 ## See also
 
