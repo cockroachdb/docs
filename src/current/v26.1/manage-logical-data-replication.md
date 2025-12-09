@@ -74,72 +74,79 @@ CONSTRAINT dlq_113_public_promo_codes_pkey PRIMARY KEY (ingestion_job_id ASC, dl
 )
 ~~~
 
-#### Resolve rows in the DLQ
+#### Manage entries in the DLQ
 
-LDR does not pause when writes are sent to the DLQ. You must manage the DLQ manually by examining each entry in the DLQ and either manually reinserting the row or deleting the entry from the DLQ. If you have multiple DLQ entries, resolve them in order from most recent to least recent. 
+LDR does not pause when writes are sent to the DLQ. You must manage the DLQ manually by examining each entry in the DLQ and either reinserting the entry or deleting it from the DLQ. If you have multiple DLQ entries, manage them in order from most recent to least recent. 
 
-To resolve a row in the DLQ:
+To manage an entry in the DLQ:
 
-1. On the destination, find the primary key value in the `incoming_row` column.
+1. In the destination database's DLQ table, examine the `incoming_row` column to find the primary key and values for the entry.
     
     {% include_cached copy-clipboard.html %}
     ~~~ sql
+    #On the destination database:
     SELECT id, dlq_timestamp, incoming_row FROM crdb_replication.dlq_271_foo;
     ~~~
 
-    In this example result, `incoming_row` contains a primary key value of `207` identified by the column `my_id`:
+    In this example result, `incoming_row` contains a primary key of `207` identified by the column `my_id`, as well as the values of the entry's columns `created_at` and `payload`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     id | dlq_timestamp | incoming_row
     ----------------------+---------------------+----------+-------------------------------+-----------------------------------------------------------------
-    106677386757203 | 2025-04-25 25:32:28.435439+00 | {"created_at": "2025-04-25:35:00.499499", "payload": "blahblahblah=", "my_id": 207}
+    106677386757203 | 2025-04-25 25:32:28.435439+00 | {"created_at": "2025-04-25:35:00.499499", "payload": "updated_value", "my_id": 207}
     ~~~
 
-1. Determine whether the value of the row matches on the source and the destination:
+1. Determine whether the values for the entry in the DLQ match the values for the entry in the destination table and the source table respectively:
 
-    1. Check the value of the row and the replicated time:
+    1. On the destination database, check the values for the entry and the replicated time:
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
-        SELECT * FROM foo WHERE my_id = 207;
-        SELECT replicated_time FROM show logical replication jobs;
+        #On the destination database:
+        SELECT * FROM destDB.foo WHERE my_id = 207;
+
+        WITH t as (SHOW LOGICAL REPLICATION JOBS)                                                                        
+        SELECT replicated_time FROM t;
         ~~~
 
-    1. On the source, check the value of the row as of the replicated time:
+    1. On the source database, check the values for the entry as of the replicated time:
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
-        SELECT * FROM foo WHERE my_id = 207 AS OF SYSTEM TIME {replicated time};
+        #On the source database:
+        SELECT * FROM sourceDB.foo WHERE my_id = 207 AS OF SYSTEM TIME '{replicated time}';
         ~~~
 
 1. Determine a course of action based on the results of the previous steps:
 
-    1. If the value of the row is the same on both the source and the destination, delete the row from the DLQ on the destination:
+    1. If the values for the entry are the same in both the destination table and the source table, delete the entry from the DLQ on the destination database:
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
+        #On the destination database:
         DELETE FROM crdb_replication.dlq_271_foo WHERE id = 106677386757203;
         ~~~
 
-    1. If the row's value on the destination is different from its value on the source, but the row's value on the source equals its value in the DLQ, update the row on the destination to have the same value as on the source:
+    1. If the entry's values in the destination table are different from its values in the source table, but the entry's values in the source table equal its value in the DLQ, update the entry in the destination table to have the same values as in the source table:
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
-        UPSERT into foo VALUES (207, '2025-04-25:35:00.499499', 'blahblahblah=')
+        #On the destination database:
+        UPSERT into destDB.foo VALUES (207, '2025-04-25:35:00.499499', 'updated_value');
         ~~~
 
-    1. If the row's value on the destination is different from its value on the source, and the row's value on the source equals its value in the DLQ, refresh the replicated time and retry the equality queries above. If the same results hold after a few retries with refreshed replicated times, there is likely a more recent entry for the row in the DLQ. 
+    1. If the entry's values in the destination table are different from its values in the source table, and the entry's values in the source table do not equal its values in the DLQ, refresh the replicated time and retry the equality queries above. If the same results hold after a few retries with refreshed replicated times, there is likely a more recent entry for the same row in the DLQ. 
     
         1. To find the more recent entry, find all rows in the DLQ with the matching primary key:
 
             {% include_cached copy-clipboard.html %}
             ~~~ sql
-            # On the destination:
+            # On the destination database:
             SELECT id, dlq_timestamp, incoming_row FROM crdb_replication.dlq_271_foo WHERE incoming_row->>'my_id' = 207;
             ~~~
 
-        1. If there are more recent entries for the row, delete the less recent entries and resolve the row using the most recent entry.
+        1. If there are more recent entries for the row, delete the less recent entries and repeat these steps to manage the most recent entry.
 
 ## Schema changes
 
