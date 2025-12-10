@@ -1,0 +1,35 @@
+# Git
+.git
+.gitignore
+
+# Jekyll build outputs
+_site
+.jekyll-cache
+.jekyll-metadata
+.sass-cache
+
+# Ruby vendor dependencies (will be installed in image)
+vendor
+
+# Node modules
+node_modules
+
+# Logs
+*.log
+build_*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Algolia state (generated during indexing)
+algolia_state
+
+# Temporary files
+tmp

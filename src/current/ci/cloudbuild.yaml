@@ -1,0 +1,75 @@
+# Cloud Build configuration for multi-arch docs-builder image
+#
+# This builds the documentation Docker image for both AMD64 and ARM64
+# architectures and pushes to GCP Artifact Registry.
+#
+# Usage:
+#   gcloud builds submit --config ci/cloudbuild.yaml .
+#
+# Or trigger manually:
+#   gcloud builds submit --config ci/cloudbuild.yaml --substitutions=_IMAGE_TAG=2025-01-15 .
+
+substitutions:
+  _REGISTRY: us-docker.pkg.dev/release-notes-automation-stag/docs-builder
+  _IMAGE_NAME: docs-builder
+  # Default tag is date-based
+  _IMAGE_TAG: ${_DATE}
+
+options:
+  # Use a larger machine for faster builds
+  machineType: 'E2_HIGHCPU_8'
+  # Enable Kaniko caching for faster builds
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  # Step 1: Set up Docker buildx for multi-architecture builds
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'setup-buildx'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        docker buildx create --name multiarch --driver docker-container --use
+        docker buildx inspect --bootstrap
+
+  # Step 2: Build and push multi-arch image with date tag
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-push-dated'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        DATE_TAG=$(date +%Y-%m-%d)
+        docker buildx build \
+          --platform linux/amd64,linux/arm64 \
+          --tag ${_REGISTRY}/${_IMAGE_NAME}:$${DATE_TAG} \
+          --tag ${_REGISTRY}/${_IMAGE_NAME}:latest \
+          --tag ${_REGISTRY}/${_IMAGE_NAME}:ruby3.4-bundler4.0 \
+          --push \
+          --cache-from type=registry,ref=${_REGISTRY}/${_IMAGE_NAME}:cache \
+          --cache-to type=registry,ref=${_REGISTRY}/${_IMAGE_NAME}:cache,mode=max \
+          .
+    waitFor: ['setup-buildx']
+
+  # Step 3: Verify the image was pushed successfully
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'verify'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Verifying image availability..."
+        docker manifest inspect ${_REGISTRY}/${_IMAGE_NAME}:latest
+        echo "Image published successfully!"
+        echo ""
+        echo "Available tags:"
+        echo "  - ${_REGISTRY}/${_IMAGE_NAME}:latest"
+        echo "  - ${_REGISTRY}/${_IMAGE_NAME}:$(date +%Y-%m-%d)"
+        echo "  - ${_REGISTRY}/${_IMAGE_NAME}:ruby3.4-bundler4.0"
+    waitFor: ['build-push-dated']
+
+# Images to be available after build
+images:
+  - '${_REGISTRY}/${_IMAGE_NAME}:latest'
+
+timeout: '1800s'  # 30 minutes max
