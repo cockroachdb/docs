@@ -41,7 +41,7 @@ You can use the following API call to retrieve your CockroachDB {{ site.data.pro
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
-  --header 'Authorization: Bearer {secret_key}' | jq .account_id
+  --header "Authorization: Bearer {secret_key}" | jq .account_id
 ~~~
 
 ### AWS MSK
@@ -82,7 +82,7 @@ The following prerequisites apply to the Google Cloud VPC service:
     ~~~ shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq .account_id
+      --header "Authorization: Bearer {secret_key}" | jq .account_id
     ~~~
 
 - Enable [consumer global access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#compatibility) on the service load balancer or forwarding rule.
@@ -121,7 +121,7 @@ The following example `POST` requests assume that an API key has been created fo
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
--H 'Authorization: Bearer {secret_key}' \
+-H "Authorization: Bearer {secret_key}" \
 -H 'Content-Type: application/json' \
 -d '{
   "cluster_id": "{cluster_id}",
@@ -137,7 +137,7 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
--H 'Authorization: Bearer {secret_key}' \
+-H "Authorization: Bearer {secret_key}" \
 -H 'Content-Type: application/json' \
 -d '{
   "cluster_id": "{cluster_id}",
@@ -153,7 +153,7 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
--H 'Authorization: Bearer {secret_key}' \
+-H "Authorization: Bearer {secret_key}" \
 -H 'Content-Type: application/json' \
 -d '{
   "cluster_id": "{cluster_id}",
@@ -198,7 +198,7 @@ For example:
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id}/domain-names \
 -X PATCH \
--H 'Authorization: Bearer {secret_key}' \
+-H "Authorization: Bearer {secret_key}" \
 -H 'Content-Type: application/json' \
 -d '{
   "cluster_id": "{cluster_id}",
