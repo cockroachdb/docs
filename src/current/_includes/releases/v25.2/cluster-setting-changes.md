@@ -16,4 +16,4 @@ The following settings are now marked `public` after previously being `reserved`
 
 <h5 id="v25-2-0-settings-requiring-operational-changes">Settings requiring operational changes</h5>
 
-- To prevent unnecessary queuing in admission control CPU queues, the `goschedstats.always_use_short_sample_period.enabled` setting should be set to `true` for any production cluster.
+- To prevent unnecessary queuing in admission control CPU queues, set the `goschedstats.always_use_short_sample_period.enabled` cluster setting to `true` for any production cluster.
