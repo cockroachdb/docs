@@ -42,18 +42,18 @@
             <td>
                 {%- assign key = m.metric_id | replace: '.', '_'  | replace: '-', '_'-%}{%- comment -%} Replace periods and hyphens with underscores to normalize. {%- endcomment -%}
                 {%- comment -%}
-                - If in crdb_metrics.yaml      -> "Advanced/self-hosted"
-                - Else if in shared_metrics.yaml -> "Standard/Advanced/self-hosted"
+                - If in shared_metrics.yaml      -> "Standard/Advanced/self-hosted"
+                - Else if in crdb_metrics.yaml   -> "Advanced/self-hosted"
                 - Else if in tenant_metrics.yaml -> "Standard/self-hosted"
                 - Else                           -> "self-hosted"
                 {%- endcomment -%}
     
-                {%- assign crdb_match    = site.data[version].metrics.export.crdb_metrics.metrics[key] -%}
                 {%- assign shared_match  = site.data[version].metrics.export.shared_metrics.metrics[key] -%}
+                {%- assign crdb_match    = site.data[version].metrics.export.crdb_metrics.metrics[key] -%}
                 {%- assign tenant_match  = site.data[version].metrics.export.tenant_metrics.metrics[key] -%}
 
-                {%- if crdb_match -%}{{ site.data.products.advanced }}/{{ site.data.products.core }}
-                {%- elsif shared_match -%}{{ site.data.products.standard }}/{{ site.data.products.advanced }}/{{ site.data.products.core }}
+                {%- if shared_match -%}{{ site.data.products.standard }}/{{ site.data.products.advanced }}/{{ site.data.products.core }}
+                {%- elsif crdb_match -%}{{ site.data.products.advanced }}/{{ site.data.products.core }}
                 {%- elsif tenant_match -%}{{ site.data.products.standard }}/{{ site.data.products.core }}
                 {%- else -%}{{ site.data.products.core }}
                 {%- endif -%}
