@@ -1,1 +1,0 @@
-It is not currently possible to use [`cockroach dump`](cockroach-dump.html) to dump the schema and data of a table with no user-defined columns. See [#35462](https://github.com/cockroachdb/cockroach/issues/35462) for more details.
