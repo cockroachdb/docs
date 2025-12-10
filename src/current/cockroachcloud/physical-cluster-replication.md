@@ -59,6 +59,10 @@ For the schema of each API response, refer to the [CockroachDB Cloud API referen
 
 To use PCR, it is necessary to set the `supports_cluster_virtualization` field to `true`. This setting enables cluster virtualization, which is the architecture that supports PCR. For details on supported cluster cloud provider and region setup, refer to the [prerequisites section](#before-you-begin).
 
+{{site.data.alerts.callout_info}}
+If you are creating clusters in AWS or Azure, you must start the primary and standby clusters in different regions.
+{{site.data.alerts.end}}
+
 1. Send a `POST` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams) to create the primary cluster:
 
     {% include_cached copy-clipboard.html %}
@@ -73,7 +77,8 @@ To use PCR, it is necessary to set the `supports_cluster_virtualization` field t
         "dedicated": {
           "cockroachVersion": "v25.2", 
           "hardware": {
-            "disk_iops": 0 "machine_spec": {
+            "disk_iops": 0,
+            "machine_spec": {
               "num_virtual_cpus": 4
             }, 
             "storage_gib": 16
@@ -125,8 +130,6 @@ Replace:
 
 - `{api_secret_key}` with your API secret key.
 - `{standby_cluster_id}` with the cluster ID returned after creating the standby cluster.
-
-If you're creating clusters in AWS or Azure, you must start the primary and standby clusters in different regions.
 
 {{site.data.alerts.callout_success}}
 We recommend [enabling Prometheus metrics export]({% link cockroachcloud/export-metrics.md %}) on your cluster before starting a PCR stream. For details on metrics to track, refer to [Monitor the PCR stream](#step-3-monitor-the-pcr-stream).
