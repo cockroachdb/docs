@@ -119,6 +119,7 @@ The following prerequisites are necessary for the {{ site.data.products.cockroac
 
 - The `--enable-k8s-node-/controller=true` flag must be enabled in the operator's `.yaml` values file, for example:
     {% include_cached copy-clipboard.html %}
+    {% raw %}
     ~~~ yaml
     containers:
         - name: cockroach-operator
@@ -126,6 +127,7 @@ The following prerequisites are necessary for the {{ site.data.products.cockroac
           args:
             - "-enable-k8s-node-controller=true"
     ~~~
+    {% endraw %}
 - At least one replica of the operator must not be on the target node.
 - There must be no under-replicated ranges on the CockroachDB cluster.
 
