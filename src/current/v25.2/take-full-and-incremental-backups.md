@@ -133,7 +133,7 @@ To restore a backup, use the [`RESTORE`]({% link {{ page.version.version }}/rest
     ~~~
 
     {{site.data.alerts.callout_info}}
-    A full cluster restore can only be run on a target cluster that has **never** had user-created databases or tables.
+    A full cluster restore can only be run on a destination cluster that has **never** had user-created databases or tables.
     {{site.data.alerts.end}}
 
 - To restore a backup from a specific subdirectory:
