@@ -47,3 +47,7 @@ The following settings are now marked `public` after previously being `reserved`
 - Removed cluster setting `kv.rangefeed.scheduler.enabled`. The rangefeed scheduler is now unconditionally enabled. [#132825][#132825]
 
 - Removed cluster setting `sql.auth.resolve_membership_single_scan.enabled`. This was added in case it was necessary to revert back to the previous behavior for looking up role memberships, but this cluster setting has not been needed in practice since this was added in v23.1. [#135852][#135852]
+
+<h5 id="v25-1-0-settings-requiring-operational-changes">Settings requiring operational changes</h5>
+
+- To prevent unnecessary queuing in admission control CPU queues, set the `goschedstats.always_use_short_sample_period.enabled` cluster setting to `true` for any production cluster.
