@@ -153,7 +153,7 @@ If you are taking backups on a regular cadence, we recommend [creating a schedul
 
 ### Recommendations for incremental backup frequency
 
-Incremental backups form chains between full backups. Each incremental backup contains only the data that has changed since a base set of backups. This base set of backups must include one full backup and can include multiple incremental backups, which are typically smaller and faster to run than full backups. You can take incremental backups either as of a given timestamp or with full [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}). Cockroach Labs supports up to 48 incremental backups between full backups.
+Incremental backups form chains between full backups. Each incremental backup contains only the data that has changed since a base set of backups. This base set of backups must include one full backup and can include multiple incremental backups, which are typically smaller and faster to run than full backups. You can take incremental backups either as of a given timestamp or with full [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}). Cockroach Labs supports up to 48 incremental backups between full backups. The maximum supported frequency for incremental backups is every five minutes.
 
 ### Garbage collection and backups
 
