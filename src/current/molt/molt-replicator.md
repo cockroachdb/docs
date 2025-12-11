@@ -646,16 +646,13 @@ Explicitly set a default `10s` [`webhook_client_timeout`]({% link {{ site.curren
 
 ### Metrics
 
-MOLT Replicator can export [Prometheus](https://prometheus.io/) metrics by setting the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag to a port (for example, `--metricsAddr :30005`). Metrics are not enabled by default. When enabled, metrics are available at the path `/_/varz`. For example: `http://localhost:30005/_/varz`.
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
 
-For a list of recommended metrics to monitor during replication, refer to:
+~~~ 
+--metricsAddr :30005
+~~~
 
-- [Forward replication metrics]({% link molt/migrate-load-replicate.md %}#replicator-metrics) (PostgreSQL, MySQL, and Oracle sources)
-- [Failback replication metrics]({% link molt/migrate-failback.md %}#replicator-metrics) (CockroachDB source)
-
-You can use the [Replicator Grafana dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) to visualize the metrics. For Oracle-specific metrics, import the [Oracle Grafana dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
-
-To check MOLT Replicator health when metrics are enabled, run `curl http://localhost:30005/_/healthz` (replacing the port with your [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) value). This returns a status code of `200` if Replicator is running.
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}).
 
 ### Logging
 
