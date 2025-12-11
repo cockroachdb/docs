@@ -75,7 +75,7 @@ Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and
 When you run `replicator`, you can configure the following options for replication:
 
 - [Replication connection strings](#replication-connection-strings): Specify URL-encoded source and target database connections.
-- [Replication flags](#replication-flags): Specify required and optional flags to configure replicator behavior.
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
 <section class="filter-content" markdown="1" data-scope="postgres oracle">
 - [Tuning parameters](#tuning-parameters): Optimize replication performance and resource usage.
 </section>
@@ -127,7 +127,7 @@ For Oracle Multitenant databases, also specify `--sourcePDBConn` with the PDB co
 Follow best practices for securing connection strings. Refer to [Secure connections](#secure-connections).
 {{site.data.alerts.end}}
 
-### Replication flags
+### Replicator flags
 
 {% include molt/replicator-flags-usage.md %}
 
@@ -137,7 +137,25 @@ Follow best practices for securing connection strings. Refer to [Secure connecti
 {% include molt/optimize-replicator-performance.md %}
 </section>
 
-{% include molt/replicator-metrics.md %}
+### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+~~~ 
+--metricsAddr :30005
+~~~
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=postgres).
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=mysql).
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=oracle).
+</section>
 
 ## Start Replicator
 

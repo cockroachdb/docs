@@ -95,7 +95,7 @@ When you run `replicator`, you can configure the following options for replicati
 
 - [Connection strings](#connection-strings): Specify URL‑encoded source and target connections.
 - [TLS certificate and key](#tls-certificate-and-key): Configure secure TLS connections.
-- [Replication flags](#replication-flags): Specify required and optional flags to configure replicator behavior.
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
 <section class="filter-content" markdown="1" data-scope="postgres oracle">
 - [Tuning parameters](#tuning-parameters): Optimize failback performance and resource usage.
 </section>
@@ -177,7 +177,7 @@ WITH ...;
 
 For additional details on the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
 
-### Replication flags
+### Replicator flags
 
 {% include molt/replicator-flags-usage.md %}
 
@@ -187,7 +187,15 @@ For additional details on the webhook sink URI, refer to [Webhook sink]({% link 
 {% include molt/optimize-replicator-performance.md %}
 </section>
 
-{% include molt/replicator-metrics.md %}
+### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+~~~ 
+--metricsAddr :30005
+~~~
+
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=cockroachdb).
 
 ## Stop forward replication
 
