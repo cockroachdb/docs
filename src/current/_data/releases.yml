@@ -10015,7 +10015,7 @@
 
 - release_name: v26.1.0-alpha.2
   major_version: v26.1
-  release_date: '2025-12-10'
+  release_date: '2025-12-11'
   release_type: Testing
   go_version: go1.25.3
   sha: 7991c17b6f2957e381666bf13d6405c8037f46c1
