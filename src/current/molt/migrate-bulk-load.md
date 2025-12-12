@@ -9,6 +9,12 @@ Perform a one-time bulk load of source data into CockroachDB.
 
 {% include molt/crdb-to-crdb-migration.md %}
 
+## Migration sequence
+
+<div style="text-align: center;">
+<img src="{{ 'images/molt/molt_flows_2.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
+</div>
+
 {% include molt/molt-setup.md %}
 
 ## Start Fetch
