@@ -177,10 +177,12 @@ Once you've picked out an amount of CPU and memory to reserve for Cockroach, con
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    resources:
-      requests:
-        cpu: 3500m
-        memory: 12300Mi
+    podTemplate:
+      spec:
+        resources:
+          requests:
+            cpu: 3500m
+            memory: 12300Mi
 ~~~
 
 When you initialize the cluster, check that all the CockroachDB pods are scheduled successfully. If you see any get stuck in the pending state, run `kubectl describe pod {podname}` and check the `Events` for information about why they're still pending. You may need to manually preempt pods on one or more nodes by running `kubectl delete pod` on them to make room for the CockroachDB pods. As long as the pods you delete were created by a higher-level Kubernetes object such as a `Deployment`, they'll be safely recreated on another node.
@@ -194,12 +196,14 @@ To set resource limits, in addition to the [resource requests](#resource-request
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    resources:
-      requests:
-        cpu: 3500m
-        memory: 12300Mi
-      limits:
-        memory: 12300Mi
+    podTemplate:
+      spec:
+        resources:
+          requests:
+            cpu: 3500m
+            memory: 12300Mi
+          limits:
+            memory: 12300Mi
 ~~~
 
 Pods will be limited to their reserved resources and are unlikely to be preempted, except in rare cases. This will not improve performance on an underutilized Kubernetes cluster, but provides more predictable performance as other workloads run.
@@ -266,27 +270,29 @@ Client applications such as benchmarking applications running on the same machin
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    affinity:
-     podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - loadgen
-            topologyKey: kubernetes.io/hostname
-        - weight: 99
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - cockroachdb
-            topologyKey: kubernetes.io/hostname
+    podTemplate:
+      spec:
+        affinity:
+          podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:
+                    matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                      - loadgen
+                  topologyKey: kubernetes.io/hostname
+              - weight: 99
+                podAffinityTerm:
+                  labelSelector:
+                    matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                      - cockroachdb
+                  topologyKey: kubernetes.io/hostname
 ~~~
 
 The preceding configuration will first prefer to put the `loadgen` pods on different nodes from each other, which is important for the fault tolerance of the `loadgen` pods themselves. As a secondary priority, it will attempt to put the pods on nodes that do not already have a running `CockroachDB` pod. This will ensure the best possible balance of fault tolerance and performance for the load generator and CockroachDB cluster.
