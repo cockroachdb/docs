@@ -8,3 +8,4 @@
 - DDL statements (e.g., `CREATE TABLE`, `CREATE INDEX`) are not allowed within UDFs or stored procedures. [#110080](https://github.com/cockroachdb/cockroach/issues/110080)
 - Polymorphic types cannot be cast to other types (e.g., `TEXT`) within routine parameters. [#123536](https://github.com/cockroachdb/cockroach/issues/123536)
 - Routine parameters and return types cannot be declared using the `ANYENUM` polymorphic type, which is able to match any [`ENUM`]({% link {{ page.version.version }}/enum.md %}) type. [123048](https://github.com/cockroachdb/cockroach/issues/123048)
+- Statement diagnostics cannot be collected for statements executed within UDFs or stored procedures. Statement diagnostics continue to work only for top-level statement executions. [#156905](https://github.com/cockroachdb/cockroach/pull/156905)
