@@ -31,6 +31,16 @@ The basic components of a user-defined function are a name, list of arguments, r
   - Can reference tables.
   - Can reference only the `SELECT` statement.
 
+## Statement statistics
+
+SQL statements executed within user-defined functions are tracked in the SQL statistics subsystem and will appear in the [**SQL Activity** > **Statements**]({% link {{ page.version.version }}/ui-statements-page.md %}) page and the [**Insights**]({% link {{ page.version.version }}/ui-insights-page.md %}) page in the DB Console. This allows you to monitor the performance and execution statistics of individual statements within your functions.
+
+These statements will also appear in the [**Transaction details**]({% link {{ page.version.version }}/ui-transactions-page.md %} #transaction-details-page) in the **Statement Fingerprints** table when the UDF is invoked as part of a transaction.
+
+{{site.data.alerts.callout_info}}
+Statement diagnostics cannot be collected for statements executed within UDFs. Statement diagnostics continue to work only for top-level statement executions. For details, see [Known limitations](#known-limitations).
+{{site.data.alerts.end}}
+
 ## Examples
 
 ### Create a UDF

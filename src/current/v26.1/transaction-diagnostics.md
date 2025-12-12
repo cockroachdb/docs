@@ -10,6 +10,10 @@ Transaction diagnostics allow operators and support engineers to investigate iss
 Requesting a transaction diagnostics bundle introduces performance overhead. This feature is primarily intended for use under the guidance of [Cockroach Labs Support](https://support.cockroachlabs.com/).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+Transaction diagnostics cannot be collected for statements executed within [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) or [stored procedures]({% link {{ page.version.version }}/stored-procedures.md %}). Transaction diagnostics continue to work only for top-level statement executions.
+{{site.data.alerts.end}}
+
 ## Required privileges 
 
 To use this function on a [secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}), you must be an [`admin` user]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or a SQL user with the [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges). If the user has only `VIEWACTIVITYREDACTED`, they can request only redacted bundles.
