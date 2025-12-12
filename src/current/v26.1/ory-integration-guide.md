@@ -66,7 +66,7 @@ First you need to provision the CockroachDB cluster that Ory will use for its se
 
 If you have the CockroachDB binary installed locally, you can manually deploy a multi-node, self-hosted CockroachDB cluster on your local machine.
 
-Learn how to [deploy a CockroachDB cluster locally]({% link {{ page.version.version }}/secure-a-cluster.md %}). Be sure to follow the instructions for creating a **secure** cluster, as this tutorial will require certificates.
+Learn how to [deploy a CockroachDB cluster locally]({% link {{ page.version.version }}/secure-a-cluster.md %}). Be sure to follow the instructions for creating a **secure** cluster, needed to complete Step 2.
 
 #### Create a CockroachDB Self-Hosted cluster on AWS
 
