@@ -503,6 +503,9 @@ crdb-cluster-public-ips = [
 ]
 
 ####################################### EKS Ory Cluster #################################
+
+ory-cluster-endpoint = "https://3881F818BE6569440FCCCCD46539BE91.gr7.us-east-1.eks.amazonaws.com"
+ory-cluster-name = "amine-us-ory-cluster"
  ~~~  -->
 
 ## Test the CockroachDB/Ory Integration
@@ -594,6 +597,37 @@ This should generate a JSON response that includes your `client_id`, `"active": 
   "token_type": "Bearer",
   "token_use": "access_token"
 }
+~~~
+
+#### 4. Access Hydra data with CockroachDB SQL
+
+In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Hydra's OAuth2 data using CockroachDB:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT id, client_secret, scope, client_secret_expires_at, jwks, token_endpoint_auth_method, request_object_signing_alg, userinfo_signed_response_alg, subject_type, created_at, updated_at, metadata, registration_access_token_signature, redirect_uris, grant_types, response_types FROM public.hydra_client;
+~~~
+
+~~~
+-[ RECORD 1 ]
+id                                  | 9692d3f9-fcdc-4526-80c4-fc667d959a5f
+client_secret                       | $pbkdf2-sha256$i=25000,l=32$yt3tVhLriCpIFiLmTl94Bw$zatRVZKz4v7bv+rCZviMidN7Iws92OANloDKwGjLzq8
+scope                               | offline_access offline openid
+client_secret_expires_at            | 0
+jwks                                | {}
+token_endpoint_auth_method          | client_secret_basic
+request_object_signing_alg          | RS256
+userinfo_signed_response_alg        | none
+subject_type                        | public
+created_at                          | 2025-06-11 16:43:55
+updated_at                          | 2025-06-11 16:43:54.848259
+metadata                            | {}
+registration_access_token_signature | QXGo_1vPI2UWzEWoChhZ0fUEtuuKVO6EARVF0BBx55c
+redirect_uris                       | []
+grant_types                         | ["client_credentials"]
+response_types                      | ["code"]
+
+Time: 4ms total (execution 3ms / network 0ms)
 ~~~
 
 ### Test Ory Kratos
@@ -783,6 +817,34 @@ $ curl -s -X DELETE -H "Accept: application/json" -H "Content-Type: application/
 }'
  ~~~
 
+#### 5. Access Kratos data with CockroachDB SQL
+
+In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Kratos's identity data using CockroachDB:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT i.id, i.schema_id, i.traits, i.created_at, i.updated_at, i.nid, state, i.state_changed_at, ic.config as credentials, ict.name as identity_type
+FROM public.identities i 
+join public.identity_credentials ic  on i.id = ic.identity_id
+join public.identity_credential_types ict on ic.identity_credential_type_id = ict.id;
+~~~
+
+~~~
+-[ RECORD 1 ]
+id               | 3ad9fe8b-ef2e-4fa4-8f3e-4b959ace03e6
+schema_id        | default
+traits           | {"email": "max@roach.com", "name": {"first": "Max", "last": "Roach"}}
+created_at       | 2025-06-15T22:28:38.747278Z
+updated_at       | 2025-06-15T22:28:38.747278Z
+nid              | e3e5cec5-da67-4754-8e85-ad1bb832a79e
+state            | active
+state_changed_at | 2025-06-15T22:28:38.743591684Z
+credentials      | {"hashed_password": "$2a$12$.ySX6DzFP/Kuf.PFJfz0.OVN6bH.V7JOFrWH5LI0Twzbe25GiDl9W"}
+identity_type    | password
+
+Time: 6ms total (execution 5ms / network 0ms)
+~~~
+
 ### Test Ory Keto
 
 To test Ory Keto, create relationships between users and objects. Then use Ory Keto commands to check who has access to what objects. These steps use the `$KETO_WRITE_REMOTE` that you exported at the end of the [Ory Keto deployment](?filters=keto#step-4-deploy-ory-services-on-kubernetes).
@@ -831,6 +893,27 @@ It's important to test your permission model. To test the permissions manually, 
 $ keto check \"user:alice\" viewer documents /photos/beach.jpg --insecure-disable-transport-security
 # allowed
  ~~~ 
+
+#### 4. Access Keto data with CockroachDB SQL
+
+In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Keto's access control data using CockroachDB:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT t.namespace, (select m.string_representation from public.keto_uuid_mappings m where m.id = t.object) as object_string, t.relation, 
+(select m.string_representation from public.keto_uuid_mappings m where m.id = t.subject_id) as subject_string, t.commit_time FROM public.keto_relation_tuples t;
+~~~
+
+~~~
+-[ RECORD 1 ]
+namespace      | documents
+object_string  | doc-123
+relation       | viewer
+subject_string | user:alice
+commit_time    | 2025-12-09 21:37:02.207403
+
+Time: 3ms total (execution 3ms / network 0ms)
+~~~
 
 <br>
 
