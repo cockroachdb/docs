@@ -56,7 +56,7 @@ Complete the following items before using MOLT Verify:
   - Use the encoded password in your connection string. For example:
 
         ~~~
-        postgres://postgres:a%2452%26@localhost:5432/replicationload
+        postgres://postgres:a%2452%26@localhost:5432/molt
         ~~~
 
 ## Flags
@@ -66,8 +66,6 @@ Flag | Description
 `--source` | (Required) Connection string for the source database.
 `--target` | (Required) Connection string for the target database.
 `--concurrency` | Number of threads to process at a time when reading the tables. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. {% comment %}<br>Note: Table splitting by shard only works for [`INT`]({% link {{site.current_cloud_version}}/int.md %}), [`UUID`]({% link {{site.current_cloud_version}}/uuid.md %}), and [`FLOAT`]({% link {{site.current_cloud_version}}/float.md %}) data types.{% endcomment %}
-`--continuous` | Verify tables in a continuous loop. <br />**Default:** `false`
-`--live` | Retry verification on rows before emitting warnings or errors. This is useful during live data import, when temporary mismatches can occur. <br />**Default:** `false`
 `--log-file` | Write messages to the specified log filename. If no filename is provided, messages write to `verify-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.
 `--metrics-listen-addr` | Address of the metrics endpoint, which has the path `{address}/metrics`.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                                 |
 `--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
@@ -117,7 +115,7 @@ When verification completes, the output displays a summary message like the foll
 
 ## Known limitations
 
-- MOLT Verify compares 20,000 rows at a time by default, and row values can change between batches, potentially resulting in temporary inconsistencies in data. If `--live` mode is enabled, MOLT Verify retries verification on these rows. To configure the row batch size, use the `--row_batch_size` [flag](#flags).
+- MOLT Verify compares 20,000 rows at a time by default, and row values can change between batches, potentially resulting in temporary inconsistencies in data. To configure the row batch size, use the `--row_batch_size` [flag](#flags).
 - MOLT Verify checks for collation mismatches on [primary key]({% link {{site.current_cloud_version}}/primary-key.md %}) columns. This may cause validation to fail when a [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) is used as a primary key and the source and target databases are using different [collations]({% link {{site.current_cloud_version}}/collate.md %}).
 - MOLT Verify might give an error in case of schema changes on either the source or target database.
 - [Geospatial types]({% link {{site.current_cloud_version}}/spatial-data-overview.md %}#spatial-objects) cannot yet be compared.

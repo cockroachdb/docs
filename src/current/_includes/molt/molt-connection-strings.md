@@ -18,7 +18,7 @@ The source connection **must** point to the primary instance (PostgreSQL primary
 For example:
 
 ~~~
---source 'postgres://migration_user:password@localhost:5432/molt?sslmode=verify-full'
+--source 'postgres://migration_user:password@localhost:5432/migration_db?sslmode=verify-full'
 ~~~
 </section>
 
@@ -30,7 +30,7 @@ For example:
 For example:
 
 ~~~
---source 'mysql://migration_user:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt'
+--source 'mysql://migration_user:password@localhost/migration_db?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt'
 ~~~
 </section>
 

@@ -29,7 +29,7 @@
 
 ## Prepare the target database
 
-### Create the target schema
+### Define the target tables
 
 {% include molt/migration-prepare-schema.md %}
 
@@ -73,6 +73,12 @@ When you run `molt fetch`, you can configure the following options for data load
 - [Schema and table filtering](#schema-and-table-filtering): Specify schema and table names to migrate.
 - [Data load mode](#data-load-mode): Choose between `IMPORT INTO` and `COPY FROM`.
 - [Fetch metrics](#fetch-metrics): Configure metrics collection during initial data load.
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
 
 ### Connection strings
 
