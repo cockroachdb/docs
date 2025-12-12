@@ -13,7 +13,7 @@ To upgrade to a new version, you must first be on a [production release](../rele
 
 Therefore, if you are upgrading from v2.0 to v19.1, or from a testing release (alpha/beta) of v2.1 to v19.1:
 
-1. First [upgrade to a production release of v2.1](../v2.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
+1. First [upgrade to a production release of v2.1](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version.html). Be sure to complete all the steps.
 
 2. Then return to this page and perform a second rolling upgrade to v19.1.
 
@@ -47,7 +47,7 @@ This step is relevant only when upgrading from v2.1.x to v19.1. For upgrades wit
 
 By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v19.1](#features-that-require-upgrade-finalization). However, it will no longer be possible to perform a downgrade to v2.1. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-5-finish-the-upgrade):
 
-1. [Upgrade to v2.1](../v2.1/upgrade-cockroach-version.html), if you haven't already.
+1. [Upgrade to v2.1](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version.html), if you haven't already.
 
 2. Start the [`cockroach sql`](use-the-built-in-sql-client.html) shell against any node in the cluster.
 

@@ -109,7 +109,7 @@ For example, in the following diagram there is a three-node cluster split across
 
 During a [restore](restore.html) job, the job creation statement will need access to each of the storage locations to read the metadata files in order to complete a successful restore.
 
-<img src="{{ 'images/v23.1/locality-aware-backups.png' | relative_url }}" alt="How a locality-aware backup writes to storage buckets in each region" style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.2/locality-aware-backups.png' | relative_url }}" alt="How a locality-aware backup writes to storage buckets in each region" style="border:0px solid #eee;max-width:100%" />
 
 #### Job coordination on Serverless clusters
 

@@ -195,7 +195,7 @@ See also:
   INSERT
   UPSERT
   DELETE
-  https://www.cockroachlabs.com/docs/v2.1/update.html
+  https://www.cockroachlabs.com/docs/stable/update.html
 ~~~
 
 ~~~ sql
@@ -211,7 +211,7 @@ Signature          Category
 uuid_v4() -> bytes [ID Generation]
 
 See also:
-  https://www.cockroachlabs.com/docs/v2.1/functions-and-operators.html
+  https://www.cockroachlabs.com/docs/stable/functions-and-operators.html
 ~~~
 
 ### Shortcuts
