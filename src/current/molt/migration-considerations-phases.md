@@ -44,6 +44,31 @@ Tips for picking slices:
 | Timeline | Shorter migration time | Longer calendar time but safer path |
 | Best for | Small/medium datasets, simple integrations | Larger datasets, data with natural partitions or multiple tenants, risk-averse migrations |
 
+## Decision framework
+
+Use these questions to guide your approach:
+
+**How large is your dataset and how long will a full migration take?**
+If you can migrate the entire dataset within an acceptable downtime window, all-at-once is simpler. If the migration would take hours or days, phased migrations reduce the risk and downtime per phase.
+
+**Does your data have natural partitions?**
+If you can clearly partition by tenant, service, region, or table with minimal cross-dependencies, phased migration is well-suited. If your data is highly interconnected with complex foreign-key relationships, all-at-once may be easier.
+
+**What is your risk tolerance?**
+If a migration failure affecting the entire system is unacceptable, phased migration limits the blast radius. If you can afford to roll back the entire migration in case of issues, all-at-once is faster.
+
+**How much downtime can you afford per cutover?**
+Phased migrations spread downtime across multiple smaller windows, each affecting only a subset of users or services. All-at-once requires a single larger window affecting everyone.
+
+**What is your team's capacity for orchestration?**
+Phased migrations require repeated cycles of migration, validation, and cutover, with careful coordination of routing and monitoring. All-at-once is a single coordinated event.
+
+**Do you need to validate incrementally?**
+If you want fast feedback loops and the ability to adjust your migration strategy based on early phases, phased migration provides incremental validation. All-at-once validates everything once at the end.
+
+**Can you route traffic selectively?**
+Phased migrations require the ability to route specific tenants, services, or regions to CockroachDB while others remain on the source. If your application can't easily support this, all-at-once may be necessary.
+
 ## MOLT toolkit support
 
 Phased and unphased migrations are both supported natively by MOLT.
