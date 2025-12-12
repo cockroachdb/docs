@@ -601,7 +601,7 @@ This should generate a JSON response that includes your `client_id`, `"active": 
 
 #### 4. Access Hydra data with CockroachDB SQL
 
-In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Hydra's OAuth2 data using CockroachDB:
+In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Hydra's OAuth2 client data using CockroachDB:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -628,6 +628,29 @@ grant_types                         | ["client_credentials"]
 response_types                      | ["code"]
 
 Time: 4ms total (execution 3ms / network 0ms)
+~~~
+
+Then run the following query to verify the accessibilty of Ory Hydra's token creation data using CockroachDB:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT signature, request_id, requested_at, client_id, form_data, session_data, subject, active, challenge_id, expires_at FROM public.hydra_oauth2_access;
+~~~
+
+~~~
+-[ RECORD 1 ]
+signature          | 5d666e7d5e54afceeaed54bca47a69eb787acc9be89d3086ca1cf4d55f27f981ae79cbc7e1890c2e5632f86a2dce9074
+request_id         | 8f5b8564-4b3f-47c2-ab4c-c440c31dd733
+requested_at       | 2025-06-11 20:03:48.092544
+client_id          | 9692d3f9-fcdc-4526-80c4-fc667d959a5f
+form_data          | grant_type=client_credentials
+session_data       | FRYn1xS63MhiLoBOeVHp3MO5DTKRM1-usLDjSYyai-f9lHO2MmI_8YJQsAaC9EIo2iYxAqSS3pnv__cmP4SOYm5Hg_fefz78VHfWTb7KGny-6PRyd4eXLpdn_TDT-8yb5vRoZ2pW1aFAwlczeuqw5yN56C_0J24GWYvOFF3AoS3GejcPhyvPe_HkHuuK1Pkm4Xfxfc6KvQfQv6UZfX2unbiDCvk-eJ0KRGdvQkGQiztmdc5Ba6BGAuYfKkNqBmN_-4e27YPT2Ud8sQJKZ3o5xzevDg5gMOTgF1XejxQhlP-ThZM6nABjwjL3wL7hLfTE_eVXcCjj-v2VdLlDPL_iynGlsiBZiflN-bNaFIsXfBom8Ks6tjgR4PfhrVYAdsRABW6VbNIOuKvxhwi5GYaiK8jCmKGqwqX63RXKFlF9SSDIFAynvjeEgt_NyM3RNv2kqkgDtVUVmbdVGWbfw6a7oP9zsNINlQ5HyL6MTsE9dtEMNGz1NgDy727krULU1KkYw9tY7gFXb1UD7pkAc1rp-rTO7xG_z1E0QzaPwYtk7JGit6_gec5fkrLiSSaAAbKWHs6MbQdRQC5JTyB5eA6X6DZozXeO2e5SGB-_K1mQ8FaLxnnMlE1ofmooNolQ_qj6SHdB5_SEJpD4KDa8gib8MuUm9666XFxkOzGOoFlXFJFtyB11mB0ztYnIetKw-aEESehuFV6l0BpExVKjLpfR07w48Jsav4_NPKzlPoEIseh_P33Sk8FF19th_Z9D0EkELVaCGIH6Nu-N9dSiJIqMAquzSzlvUBBChvT5rEw_eas3b8-4M3m6EEA-yPPARoVJ_W6qVfibdmjz_36ex04cPD3Wiak=
+subject            | 8196400e-3849-4c72-b304-f097b8eef1cc
+active             | t
+challenge_id       | NULL
+expires_at         | 2025-06-11 20:03:48.115208
+
+Time: 3ms total (execution 3ms / network 0ms)
 ~~~
 
 ### Test Ory Kratos
