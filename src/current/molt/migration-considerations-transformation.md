@@ -113,7 +113,7 @@ The MOLT toolkit provides specialized features for implementing transformations 
 
 ### MOLT Schema Conversion Tool
 
-Use the [Schema Conversion Tool]() first to convert your schema and apply CockroachDB best practices. This reduces downstream transformation pressure by addressing DDL incompatibilities upfront.
+Use the Schema Conversion Tool first to convert your schema and apply CockroachDB best practices. This reduces downstream transformation pressure by addressing DDL incompatibilities upfront.
 
 ### MOLT Fetch
 
@@ -145,7 +145,6 @@ Use [MOLT Verify]({% link molt/molt-verify.md %}) to compare schemas and data be
 - [Migration Considerations]({% link molt/migration-considerations.md %})
 - [Migration Granularity]({% link molt/migration-considerations-phases.md %})
 - [Continuous Replication]({% link molt/migration-considerations-replication.md %})
-- [MOLT Schema Conversion Tool]()
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
