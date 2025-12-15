@@ -509,6 +509,12 @@ To enable log export for your CockroachDB {{ site.data.products.advanced }} clus
 Once log export has been enabled, logs generated going forward are sent to the specified cloud sink. Logs are not back-filled to the specified cloud sink.
 {{site.data.alerts.end}}
 
+## Send logs over a private cloud connection
+
+You can send logs to Amazon CloudWatch from private egress endpoints on your CockroachDB {{ site.data.products.cloud }} clusters to ensure they are sent over private connections within the cloud service.
+
+To learn more, read the [egress private endpoints documentation]({% link cockroachcloud/egress-private-endpoints.md %}).
+
 ## Monitor the status of a log export configuration
 
 To check the status of an existing CockroachDB {{ site.data.products.advanced }} log export configuration, use the following Cloud API command:
