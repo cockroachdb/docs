@@ -128,7 +128,7 @@ To manage an entry in the DLQ:
         DELETE FROM crdb_replication.dlq_271_foo WHERE id = 106677386757203;
         ~~~
 
-    1. If the entry's values in the destination table are different from its values in the source table, but the entry's values in the source table equal its value in the DLQ, update the entry in the destination table to have the same values as in the source table:
+    1. If the entry's values in the destination table are different from its values in the source table, but the entry's values in the source table equal its values in the DLQ, update the entry in the destination table to have the same values as in the source table:
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
@@ -140,7 +140,7 @@ To manage an entry in the DLQ:
 
     1. If the entry's values in the destination table are different from its values in the source table, and the entry's values in the source table do not equal its values in the DLQ, refresh the replicated time and retry the equality queries above. If the same results hold after a few retries with refreshed replicated times, there is likely a more recent entry for the same row in the DLQ. 
     
-        1. To find the more recent entry, find all rows in the DLQ with the matching primary key:
+        1. To find the more recent entry, find all entries in the DLQ with the matching primary key:
 
             {% include_cached copy-clipboard.html %}
             ~~~ sql
