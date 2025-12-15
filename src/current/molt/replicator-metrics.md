@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-[MOLT Replicator]({% link molt/molt-replicator.md %}) exposes Prometheus metrics at each stage of the [replication pipeline](#replication-pipeline). When using Replicator to perform [forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) or [failback]({% link molt/migrate-failback.md %}), you should monitor the health of each pipeline stage to quickly detect issues. 
+[MOLT Replicator]({% link molt/molt-replicator.md %}) exposes Prometheus metrics at each stage of the [replication pipeline](#replication-pipeline). When using Replicator to perform [forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) or [failback]({% link molt/migrate-failback.md %}), you should monitor the health of each relevant pipeline stage to quickly detect issues. 
 
 This page describes and provides usage guidelines for Replicator metrics, according to the replication source:
 
@@ -27,7 +27,13 @@ This page describes and provides usage guidelines for Replicator metrics, accord
 
 - [**Source read**](#source-read): Connects Replicator to the source database and captures changes via logical replication (PostgreSQL, MySQL), LogMiner (Oracle), or [changefeed messages]({% link {{ site.current_cloud_version }}/changefeed-messages.md %}) (CockroachDB).
 
+<section class="filter-content" markdown="1" data-scope="postgres mysql oracle">
+- **Staging**: Buffers mutations for ordered processing and crash recovery.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachdb">
 - [**Staging**](#staging): Buffers mutations for ordered processing and crash recovery.
+</section>
 
 <section class="filter-content" markdown="1" data-scope="postgres oracle cockroachdb">
 - [**Core sequencer**](#core-sequencer): Processes staged mutations, maintains ordering guarantees, and coordinates transaction application.
@@ -215,6 +221,7 @@ To visualize the following metrics, import the [Oracle Grafana dashboard](https:
     - Interpretation: Use to monitor replication throughput and identify traffic patterns.
 </section>
 
+<section class="filter-content" markdown="1" data-scope="cockroachdb">
 ### Staging
 
 [Staging](#replication-pipeline) metrics track the health of the staging layer where mutations are buffered for ordered processing.
@@ -232,6 +239,7 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 - `stage_duration_seconds`
 	- Description: Amount of time taken to successfully stage mutations.
 	- Interpretation: High values indicate write performance issues on the staging database.
+</section>
 
 <section class="filter-content" markdown="1" data-scope="postgres oracle cockroachdb">
 ### Core sequencer
