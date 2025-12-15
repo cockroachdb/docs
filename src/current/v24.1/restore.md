@@ -121,11 +121,11 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) statement.
 <a name="execution_locality"></a>`EXECUTION LOCALITY` | Key-value pairs                             | Restricts the execution of the restore to nodes that match the defined [locality filter]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}) requirements. <br><br>Example: `WITH EXECUTION LOCALITY = 'region=us-west-1a,cloud=aws'`
 <a name="incr-location"></a>`incremental_location` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Restore an incremental backup from the alternate collection URI the backup was originally taken with. <br><br>See [Restore incremental backups](#restore-a-specific-full-or-incremental-backup) for more detail.
-<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](#restore-tables-into-a-different-database) for table restores. The target database must exist before a restore with `into_db`. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
+<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the destination database](#restore-tables-into-a-different-database) for table restores. The destination database must exist before a restore with `into_db`. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
 <a name="kms"></a>`kms` | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to [take and restore encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#examples). Refer to [URI Formats]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#uri-formats) on the Encrypted Backups page. The key or keys are used to encrypt the manifest and data files that the `BACKUP` statement generates, decrypt them during a [restore]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#examples) operation, and list the contents of the backup when using [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}). <br/><br/>AWS KMS, Google Cloud KMS, and Azure Key Vault are supported.
 <a name="new-db-name"></a>`new_db_name`                             | Database name                                 | [Rename a database during a restore](#rename-a-database-on-restore). The existing backed-up database can remain active while the same database is restored with a different name. <br><br>Example: `RESTORE DATABASE movr ... WITH new_db_name = 'new_movr'`
 `schema_only` | N/A | Verify that a backup is valid by running `RESTORE ... schema_only`, which will restore the backed-up schema without any user data. Refer to [Backup Validation]({% link {{ page.version.version }}/backup-validation.md %}#validate-a-backup-is-restorable) for detail and an example.
-<a name="skip-localities-check"></a>`skip_localities_check`         | N/A                                         |  Use to skip checking localities of a cluster before a restore when there are mismatched [cluster regions]({% link {{ page.version.version }}/multiregion-overview.md %}#cluster-regions) between the backup's cluster and the target cluster. For further details, refer to [Restoring to multi-region databases](#restoring-to-multi-region-databases).<br><br>Example: `WITH skip_localities_check`
+<a name="skip-localities-check"></a>`skip_localities_check`         | N/A                                         |  Use to skip checking localities of a cluster before a restore when there are mismatched [cluster regions]({% link {{ page.version.version }}/multiregion-overview.md %}#cluster-regions) between the backup's cluster and the destination cluster. For further details, refer to [Restoring to multi-region databases](#restoring-to-multi-region-databases).<br><br>Example: `WITH skip_localities_check`
 <a name="skip_missing_foreign_keys"></a>`skip_missing_foreign_keys` | N/A                                         | Use to remove the missing [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints before restoring.<br><br>Example: `WITH skip_missing_foreign_keys`
 <a name="skip-missing-sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence]({% link {{ page.version.version }}/show-sequences.md %}) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_sequence_owners`                                      | N/A                                         | Must be used when restoring either a table that was previously a [sequence owner]({% link {{ page.version.version }}/create-sequence.md %}#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
@@ -165,7 +165,7 @@ You can exclude a table's row data from a backup using the [`exclude_data_from_b
 
 ### Full cluster
 
- A full cluster restore can only be run on a target cluster with no user-created databases or tables. Restoring a full cluster includes:
+ A full cluster restore can only be run on a destination cluster with no user-created databases or tables. Restoring a full cluster includes:
 
 - All user tables
 - Relevant system tables
@@ -200,11 +200,11 @@ If [dropping]({% link {{ page.version.version }}/drop-database.md %}) or [renami
 
 ### Tables
 
-You can also restore individual tables (which automatically includes their indexes), [views]({% link {{ page.version.version }}/views.md %}), or [sequences]({% link {{ page.version.version }}/create-sequence.md %}) from a backup. This process uses the data stored in the backup to create entirely new tables, views, and sequences in the target database.
+You can also restore individual tables (which automatically includes their indexes), [views]({% link {{ page.version.version }}/views.md %}), or [sequences]({% link {{ page.version.version }}/create-sequence.md %}) from a backup. This process uses the data stored in the backup to create entirely new tables, views, and sequences in the destination database.
 
-By default, tables, views, and sequences are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it]({% link {{ page.version.version }}/create-database.md %}). You can choose to change the target database with the [`into_db` option](#into_db).
+By default, tables, views, and sequences are restored into a destination database matching the name of the database from which they were backed up. If the destination database does not exist, you must [create it]({% link {{ page.version.version }}/create-database.md %}). You can choose to change the destination database with the [`into_db` option](#into_db).
 
-The target database must not have tables, views, or sequences with the same name as the the object you're restoring. If any of the restore target's names are being used, you can:
+The destination database must not have tables, views, or sequences with the same name as the the object you're restoring. If any of the restore destination's names are being used, you can:
 
 - [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}), [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %}), or [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %}) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table, view, or sequence into a different database](#into_db).
@@ -269,13 +269,13 @@ CockroachDB does **not** support incremental-only restores.
     Restoring a multi-region cluster into a single-region CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }} cluster is not supported. {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} clusters do **not** support the `skip_localities_check` option with `RESTORE`. To restore a multi-region cluster, you must [create a new multi-region {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/basic-cluster-management.md %}#move-cluster-to-a-new-region) with regions that match the backed-up multi-region cluster.
     {{site.data.alerts.end}}
 
-- A database that is restored with the `sql.defaults.primary_region` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) will have the [`PRIMARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region) from this cluster setting assigned to the target database.
+- A database that is restored with the `sql.defaults.primary_region` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) will have the [`PRIMARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region) from this cluster setting assigned to the destination database.
 
-- `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`]({% link {{ page.version.version }}/table-localities.md %}#regional-tables) to the primary region of the target database.
+- `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`]({% link {{ page.version.version }}/table-localities.md %}#regional-tables) to the primary region of the destination database.
 
 - Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-table), and [`GLOBAL`]({% link {{ page.version.version }}/alter-table.md %}#global) to another multi-region database is supported.
 
-- When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the target database this will be implicitly changed on restore.
+- When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the destination database this will be implicitly changed on restore.
 
 - Restoring a [partition]({% link {{ page.version.version }}/partitioning.md %}) of a `REGIONAL BY ROW` table is not supported.
 
@@ -484,7 +484,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 #### Restore tables into a different database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore.
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the destination database. Note that the destination database must exist prior to the restore.
 
 1. Create the new database that you'll restore the table or view into:
 
