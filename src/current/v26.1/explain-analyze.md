@@ -72,6 +72,7 @@ Property        | Description
 `rows decoded from KV` | The number of rows read from the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 `cumulative time spent in KV` | The total amount of time spent in the storage layer.
 `cumulative time spent due to contention` | The total amount of time this statement spent waiting in [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#understanding-and-avoiding-transaction-contention).
+`cumulative time spent waiting in admission control` | The total amount of time this statement spent waiting in [admission control]({% link {{ page.version.version }}/admission-control.md %}). This property is displayed only when the wait time is greater than zero.
 `maximum memory usage` | The maximum amount of memory used by this statement anytime during its execution.
 `network usage` | The amount of data transferred over the network while the statement was executed. If the value is 0 B, the statement was executed on a single node and didn't use the network.
 `regions` | The [regions]({% link {{ page.version.version }}/show-regions.md %}) where the affected nodes were located.
