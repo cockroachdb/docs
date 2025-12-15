@@ -5,126 +5,69 @@ toc: true
 docs_area: migrate
 ---
 
-Most migrations require some level of data transformation—whether schema conversion, type mapping, row filtering, or value normalization. The key decision is **where** these transformations occur: on the source database, in flight during the migration pipeline, or on the target CockroachDB cluster. Each approach has distinct trade-offs in terms of performance, operational complexity, and downtime tolerance.
+Data transformations are applied to data as it moves from the source system to the target system. Transformations ensure that the data is compatible, consistent, and valuable in the destination. They are a key part of a migration to CockroachDB. When planning a migration, it's important to determine **what** transformations are necessary and **where** they need to occur.
 
 This page explains the types of transformations to expect, where they can be applied, and how these choices shape your use of MOLT tooling.
 
-In general:
-
-- Choose **source-side transformations** when you want to minimize data volume across the network, or when transformations are straightforward to express in SQL.
-
-- Choose **in-flight transformations** for minimal-downtime migrations where the same transformation logic must apply consistently to both the initial bulk load and continuous replication streams.
-
-- Choose **target-side transformations** when you want to minimize changes to the source system, or when you can leverage CockroachDB features like computed columns for convenience.
-
 ## Common transformation types
 
-Most migrations require a mix of schema-level and data-level changes:
+If the source and target schemas are not identical, some sort of transformation is likely to be necessary during a migration. The set of necessary transformations will depend on the differences between your source database schema and your target CockroachDB schema, as well as any data quality or formatting requirements for your application.
 
-- **Schema conversion**: Rewrite unsupported DDL and apply CockroachDB best practices using MOLT Schema Conversion Tool.
-- **Type mapping**: Align source types with CockroachDB types, especially for dialect-specific types (e.g., MySQL `ENUM`).
+- **Type mapping**: Align source types with CockroachDB types, especially for dialect-specific types.
+- **Format conversion**: Change the format or encoding of certain value to align with the target schema (for example, `2024-03-01T00:00:00Z` to `03/01/2024`).
+- **Field renaming**: Rename fields to fit target schemas or conventions.
 - **Primary key strategy**: Replace source sequences or auto-increment patterns with CockroachDB-friendly IDs (UUIDs, sequences).
 - **Table reshaping**: Consolidate partitioned tables, rename tables, or retarget to different schemas.
 - **Column changes**: Exclude deprecated columns, or map computed columns.
 - **Row filtering**: Move only a subset of rows by tenant, region, or timeframe.
+- **Null/default handling**: Replace, remove, or infer missing values.
 - **Constraints and indexes**: Drop non-primary-key constraints and secondary indexes before bulk load for performance, then recreate after.
-- **Value normalization**: Apply value transforms during replication to ensure consistent processing of bulk and streaming data.
 
 ## Where to transform
 
-### Transform on the source (before export)
+Transformations can occur in the source database, in the target database, or in flight (between the source and the target). Deciding where to perform the transformations is largely determined by technical constraints, including the mutability of the source database and the choice of tooling.
 
-Apply transformations directly on the source database before exporting data.
+#### Transform in the source database
 
-**Best for:** Minimizing data volume across the network; leveraging existing source database features for filtering or aggregation.
+Apply transformations directly on the source database before migrating data. This is only possible if the source database can be modified to accommodate the transformations suited for the target database.
 
-**Advantages:** Smallest extract sets reduce network transfer and storage; simple bulk-load path where downstream receives transformed data.
+This provides the advantage of allowing ample time, before the downtime window, to perform the transformations, but it often is not possible due to technical constraints.
 
-**Disadvantages:** Adds load to source database; complex logic may be harder to express in SQL; may need to replicate transformation logic for continuous replication.
+#### Transform in the target database
 
-### Transform in flight (inside the MOLT pipeline)
+Apply transformations in the CockroachDB cluster after data has been loaded. For any transformations that occur in the target cluster, it's recommended that these occur before cutover, to ensure that live data complies with CockroachDB best practices. Transformations that occur before cutover may extend downtime.
 
-Apply transformations within the migration pipeline, between source and target.
+#### Transform in flight
 
-**Best for:** Minimal-downtime migrations where the same logic must apply to both initial load and continuous replication deltas; complex transformations that benefit from code rather than SQL.
+Apply transformations within the migration pipeline, between the source and target databases. This allows the source database to remain as it is, and it allows the target database to be designed using CockroachDB best practices. It also enables testability by separating transformations from either database.
 
-**Advantages:** One code layer (TypeScript userscripts) for transform/filter/route logic; version-controlled and testable; separates transformation from databases.
-
-**Disadvantages:** Requires operating a custom code path with observability and error handling; adds CPU to migration's critical path.
-
-{{site.data.alerts.callout_info}}
-MOLT Fetch's JSON transformations are for schema shaping (rename/merge/exclude/computed) rather than arbitrary per-value masking. Use MOLT Replicator userscripts for value-level transformations.
-{{site.data.alerts.end}}
-
-### Transform on the target (after load or during target DDL)
-
-Apply transformations in CockroachDB after data has been loaded.
-
-**Best for:** Minimizing changes to the source system; leveraging CockroachDB-specific features.
-
-**Advantages:** Minimizes source changes; works well for schema reshaping with CockroachDB DDL; can leverage distributed processing.
-
-**Disadvantages:** Full data volume crosses the network; may require post-load processing.
-
-## Pairing with migration patterns
-
-Different migration patterns favor different transformation approaches:
-
-- **Planned downtime / bulk-load**: Prefer source-side filtering and target-side reshaping (computed columns, renames) to keep the pipeline straightforward. Use MOLT Fetch transformations for schema-level changes.
-
-- **Load-then-replicate (minimal downtime)**: Use in-flight userscripts for continuous replication to ensure consistent transformation logic across bulk and streaming loads. Source-side filtering can reduce initial volume.
-
-- **Continuous replication-first**: Emphasize in-flight transforms (userscripts) to ensure ongoing changes are normalized and reshaped consistently until cutover and beyond.
-
-## Combining approaches
-
-You can and often should combine approaches to meet operational requirements:
-
-- **Source + in flight**: Coarse-grained filtering at source to reduce volume, then complex transformations in-flight for CDC consistency.
-- **Source + target**: Source-side views or staging tables for data preparation, plus target computed columns or table renames.
-- **In flight + target**: Userscripts for row-level logic, plus target DDL for schema conveniences (computed columns, index recreation).
-
-## Tradeoffs
-
-| | Source | In flight | Target |
-|---|---|---|---|
-| **Network transfer** | Reduced (transformed data only) | Full volume crosses network | Full volume crosses network |
-| **Source impact** | Adds load to source database | No source changes required | No source changes required |
-| **Complexity** | SQL-based, tied to source dialect | Requires custom code and monitoring | DDL-based, CockroachDB native |
-| **Downtime impact** | May require source schema changes | Independent of source/target schemas | May require post-load processing |
-| **Reusability** | Logic tied to source database | Version-controlled, portable code | Tied to target database |
-| **Testing** | Test with source database tools | Test userscripts independently | Test with CockroachDB tools |
-| **Best for** | Volume reduction, SQL-friendly transforms | Minimal-downtime migrations, complex logic | Simple migrations, CockroachDB-native features |
+However, in-flight transformations may require more complex tooling. Tranformation in-flight is largely supported by the [MOLT toolkit](#molt-toolkit-support).
 
 ## Decision framework
 
 Use these questions to guide your transformation strategy:
 
 - **What is your downtime tolerance?** Near-zero downtime pushes you toward in-flight transforms that apply consistently to bulk and streaming loads.
-- **Can your team test and maintain transformations more easily in SQL or code?** This influences whether to use source-side SQL, in-flight TypeScript userscripts, or target-side CockroachDB DDL.
 - **Will transformation logic be reused post-cutover?** If you need ongoing sync or failback, prefer deterministic, version-controlled in-flight transformations.
 - **How complex are the transformations?** Simple schema reshaping favors MOLT Fetch transformations or target DDL. Complex value normalization or routing favors in-flight userscripts.
-- **What is your network and performance budget?** Source-side pushdown reduces volume across the wire. In-flight logic adds CPU to the pipeline. Balance throughput needs with transformation requirements.
 - **Can you modify the source database?** Source-side transformations require permission and capacity to create views, staging tables, or run transformation queries.
 
 ## MOLT toolkit support
 
-The MOLT toolkit provides specialized features for implementing transformations at each stage of the migration pipeline.
+The MOLT toolkit provides functionality for implementing transformations at each stage of the migration pipeline.
 
 ### MOLT Schema Conversion Tool
 
-Use the Schema Conversion Tool first to convert your schema and apply CockroachDB best practices. This reduces downstream transformation pressure by addressing DDL incompatibilities upfront.
+While not a part of the transformation process itself, the [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) automates the creation of the target database schema based on the schema of the source database. This reduces downstream transformation pressure by addressing DDL incompatibilities upfront.
 
 ### MOLT Fetch
 
-[MOLT Fetch]({% link molt/molt-fetch.md %}) supports transformations during initial data load:
+[MOLT Fetch]({% link molt/molt-fetch.md %}) supports transformations during a bulk data load:
 
 - **Row filtering**: `--filter-path` specifies a JSON file with table-to-SQL-predicate mappings evaluated in the source dialect before export. Ensure filtered columns are indexed for performance.
 - **Schema shaping**: `--transformations-file` defines table renames, n→1 merges (consolidate partitioned tables), and column exclusions. For n→1 merges, use `--use-copy` or `--direct-copy` and pre-create the target table.
 - **Type alignment**: `--type-map-file` specifies explicit type mappings when auto-creating target tables.
 - **Table lifecycle**: `--table-handling` controls whether to truncate, drop-and-recreate, or assume tables exist.
-
-For bulk-only flows, use `--ignore-replication-check` to skip replication checkpoint capture.
 
 ### MOLT Replicator
 
@@ -132,12 +75,7 @@ For bulk-only flows, use `--ignore-replication-check` to skip replication checkp
 
 - **Capabilities**: Transform or normalize values, route rows to different tables, enrich data, filter rows, merge partitioned sources.
 - **Structure**: Userscripts export functions (`configureTargetTables`, `onRowUpsert`, `onRowDelete`) that process change data before commit to CockroachDB.
-- **Coordination**: For hybrid migrations, run MOLT Fetch for the initial load (which emits a `cdc_cursor` checkpoint), then start MOLT Replicator with the same transformation logic to process ongoing changes from that checkpoint.
 - **Staging schema**: Replicator uses a CockroachDB staging schema to store replication state and buffered mutations (`--stagingSchema` and `--stagingCreateSchema`).
-
-### MOLT Verify
-
-Use [MOLT Verify]({% link molt/molt-verify.md %}) to compare schemas and data between source and target. For deliberate differences (e.g., masked columns or changed types), focus on intended equivalence: row counts, unchanged columns, and referential integrity. Run before replication starts (optional baseline) and before final cutover.
 
 ## See also
 
