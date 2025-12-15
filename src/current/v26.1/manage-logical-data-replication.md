@@ -107,7 +107,7 @@ To manage an entry in the DLQ:
         SELECT * FROM destDB.foo WHERE my_id = 207;
 
         WITH t as (SHOW LOGICAL REPLICATION JOBS)                                                                        
-        SELECT replicated_time FROM t;
+        SELECT job_id, replicated_time FROM t;
         ~~~
 
     1. On the source database, check the values for the entry as of the replicated time:
@@ -135,6 +135,8 @@ To manage an entry in the DLQ:
         #On the destination database:
         UPSERT into destDB.foo VALUES (207, '2025-04-25:35:00.499499', 'updated_value');
         ~~~
+
+        If this upsert fails due to a constraint violation, you must either delete the row that the upsert conflicts with or delete the DLQ entry. If the destination table has unique or foreign key constraints, the DLQ will likely continue to accumulate entries.
 
     1. If the entry's values in the destination table are different from its values in the source table, and the entry's values in the source table do not equal its values in the DLQ, refresh the replicated time and retry the equality queries above. If the same results hold after a few retries with refreshed replicated times, there is likely a more recent entry for the same row in the DLQ. 
     
