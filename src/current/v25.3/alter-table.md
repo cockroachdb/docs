@@ -1203,32 +1203,27 @@ By default, referenced columns must be in the same database as the referencing f
 
 #### Drop and add a primary key constraint
 
-Suppose that you want to add `creation_time` to the composite primary key of the `promo_codes` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key).
+Suppose that you want to add `creation_time` to the composite primary key of the `promo_codes` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key). To do so, use [`DROP CONSTRAINT`](#drop-constraint) and [`ADD CONSTRAINT`](#add-constraint) in a single `ALTER TABLE` statement.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW CREATE TABLE promo_codes;
-~~~
-
-~~~
-  table_name  |                      create_statement
---------------+------------------------------------------------------------
-  promo_codes | CREATE TABLE public.promo_codes (
-              |     code VARCHAR NOT NULL,
-              |     description VARCHAR NULL,
-              |     creation_time TIMESTAMP NULL,
-              |     expiration_time TIMESTAMP NULL,
-              |     rules JSONB NULL,
-              |     CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC)
-              | ) WITH (schema_locked = true);
-(1 row)
-~~~
-
-1. The table is [schema-locked]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters), which means schema changes are disallowed on the table. To make [DDL]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) changes, unlock the table:
+1. View the details of the `promo_codes` table:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
-	ALTER TABLE promo_codes SET (schema_locked = false);
+	SHOW CREATE TABLE promo_codes;
+	~~~
+
+	~~~
+	  table_name  |                      create_statement
+	--------------+------------------------------------------------------------
+	  promo_codes | CREATE TABLE public.promo_codes (
+	              |     code VARCHAR NOT NULL,
+	              |     description VARCHAR NULL,
+	              |     creation_time TIMESTAMP NULL,
+	              |     expiration_time TIMESTAMP NULL,
+	              |     rules JSONB NULL,
+	              |     CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC)
+	              | ) WITH (schema_locked = true);
+	(1 row)
 	~~~
 
 1. Add a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint to the `creation_time` column with [`ALTER COLUMN`](#alter-column):
@@ -1238,22 +1233,27 @@ SHOW CREATE TABLE promo_codes;
     ALTER TABLE promo_codes ALTER COLUMN creation_time SET NOT NULL;
     ~~~
 
-1. Turn off autocommit for DDL for the current session, so that multiple DDL statements can execute within one explicit transaction:
+1. The `promo_codes` table is schema-locked with the [`schema_locked` table parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters), and the `DROP CONSTRAINT` and `ADD CONSTRAINT` schema changes cannot automatically unset `schema_locked`. In this case, you must manually unlock the table with `schema_locked = false`, complete the schema change, and then lock the table again with `schema_locked = true`.
+
+	Unlock the table:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
-	SET autocommit_before_ddl = false;
+	ALTER TABLE promo_codes SET (schema_locked = false);
 	~~~
 
-1. In the same transaction, `DROP` the old `"primary"` constraint and [`ADD`](#add-constraint) the new one:
+1. To issue the schema change atomically, use single statements as an implicit transaction. `DROP CONSTRAINT` and `ADD CONSTRAINT` can be combined in a single `ALTER TABLE` statement:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    BEGIN;
-    ALTER TABLE promo_codes DROP CONSTRAINT promo_codes_pkey;
-    ALTER TABLE promo_codes ADD CONSTRAINT promo_codes_pkey PRIMARY KEY (code, creation_time);
-    COMMIT;
-    ~~~
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	ALTER TABLE promo_codes
+	  DROP CONSTRAINT promo_codes_pkey,
+	  ADD CONSTRAINT promo_codes_pkey PRIMARY KEY (code, creation_time);
+	~~~
+
+	{{site.data.alerts.callout_info}}
+	You should **not** execute the schema change with multiple statements within an explicit transaction. Refer to [Schema changes within transactions]({% link {{ page.version.version }}/online-schema-changes.md %}#schema-changes-within-transactions).
+	{{site.data.alerts.end}}
 
 1. Re-enable `schema_locked` on the table:
 
