@@ -46,12 +46,6 @@
           "urls": [
             "/molt/migration-considerations-rollback.html"
           ]
-        },
-        {
-          "title": "Cutover Plan",
-          "urls": [
-            "/molt/migration-considerations-cutover.html"
-          ]
         }
       ]
     },

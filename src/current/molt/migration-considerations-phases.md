@@ -81,13 +81,13 @@ Similarly, you can use [MOLT Verify]({% link molt/molt-verify.md %})'s `--schema
 
 ## Example sequences
 
-### Migrating all data at once
+#### Migrating all data at once
 
 <div style="text-align: center;">
 <img src="{{ 'images/molt/molt_flows_2.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
 </div>
 
-### Phased migration
+#### Phased migration
 
 <div style="text-align: center;">
 <img src="{{ 'images/molt/molt_flows_3.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />

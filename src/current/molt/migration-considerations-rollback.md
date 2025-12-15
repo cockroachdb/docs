@@ -55,57 +55,35 @@ This enables faster rollback, but increases application complexity as you need t
 
 Use these questions to guide your rollback strategy:
 
-**What is your rollback RTO/RPO requirement?**
-If rollback must be immediate with near-zero data loss, prefer dual-write or bidirectional replication. For moderate RTO, reverse unidirectional suffices. For generous RTO and low risk, manual may be acceptable.
+**How quickly do you need to roll back if problems occur?**
+If you need immediate rollback, choose dual-write or bidirectional replication. If you can tolerate some delay to activate failback replication, one-way failback replication is sufficient. For low-risk migrations with generous time windows, manual reconciliation may be acceptable.
 
-**What is your write topology and conflict risk?**
-If multiple writers can touch the same keys, avoid bidirectional replication unless you have conflict avoidance (partitioning by tenant/service) or deterministic conflict resolution.
+**How much data can you afford to lose during rollback?**
+If you cannot lose any data written after cutover, choose bidirectional replication or on-demand failback (both preserve all writes). Dual-write can also preserve data if implemented carefully. Manual reconciliation typically accepts some data loss.
 
-**What is your operational maturity?**
-Bidirectional replication requires monitoring, alerting, and practiced runbooks. Reverse unidirectional requires a tested activation runbook. Dual-write requires app-layer resiliency and observability across write paths.
+**Will writes occur to both databases during the trial period?**
+If traffic might split between source and target (e.g., during gradual cutover or in multi-region scenarios), bidirectional replication keeps both databases synchronized. If traffic cleanly shifts from source to target, on-demand failback or dual-write is sufficient.
 
-**Can you modify the application?**
-If app changes are expensive or risky, prefer database-level options (reverse unidirectional or bidirectional) over dual-write.
+**Can you modify the application code?**
+If application changes are expensive or risky, use database-level replication (bidirectional or on-demand failback) instead of dual-write.
 
-**What are your source and target capabilities?**
-Ensure your source supports required CDC/replication characteristics and retention for the migration window. Verify that CockroachDB changefeeds can deliver necessary backfill for failback in your environment.
+**What is your team's operational capacity?**
+Bidirectional replication requires monitoring and managing two active replication streams. On-demand failback requires a tested runbook for activating failback quickly. Dual-write requires application-layer resilience and observability. Manual reconciliation has the lowest operational complexity.
+
+**What are your database capabilities?**
+Ensure your source database supports the change data capture requirements for the migration window. Verify that CockroachDB changefeeds can provide the necessary failback support for your environment.
 
 ## MOLT toolkit support
 
-The MOLT toolkit provides tools that enable different rollback strategies.
+[MOLT Replicator]({% link molt/molt-replicator.md %}) uses change data to stream changes from one database to another. It's used for both [forward replication]({% link molt/migration-considerations-replication.md %}) and [failback replication](#failback-replication).
 
-### MOLT Replicator (forward and failback)
+To use MOLT Replicator in failback mode, run the [`replicator start`]({% link molt/molt-replicator.md %}#commands) command with its various [flags]({% link molt/molt-replicator.md %}#start-failback-flags).
 
-[MOLT Replicator]({% link molt/molt-replicator.md %}) streams ongoing changes between databases:
+When enabling failback replication, the original source database becomes the replication target, and the original target CockroachDB cluster becomes the replication source. Use the `--sourceConn` flag to indicate the CockroachDB cluster, and use the `--targetConn` flag to indicate the PostgreSQL, MySQL, or Oracle database from which data is being migrated.
 
-- **Forward replication**: Streams changes from PostgreSQL, MySQL, or Oracle to CockroachDB for minimal-downtime migrations.
-- **Failback**: Streams changes from CockroachDB back to the source using a CockroachDB changefeed to preserve rollback options.
+MOLT Replicator can be stopped after cutover, or it can remain online to continue streaming changes indefinitely. This could be useful for as long as you want as you want the migration source database to serve as a backup to the new CockroachDB cluster.
 
-**Key capabilities for rollback:**
-
-- **Staging database**: Persists checkpoints and metadata in a CockroachDB staging schema (`--stagingSchema`, created with `--stagingCreateSchema`).
-- **Connections**: `--targetConn` points to the destination for applied changes; `--stagingConn` points to the CockroachDB staging database.
-- **Metrics**: `--metricsAddr` exposes a Prometheus endpoint for replication lag, throughput, and applied mutations.
-- **Webhook endpoint**: `--bindAddr` receives changefeed events during failback.
-- **Prerequisites**: For self-hosted clusters, enable rangefeeds to support changefeeds in failback workflows.
-
-**Usage by rollback option:**
-
-- **Dual-write**: Use Replicator for forward replication into CockroachDB; keep failback tooling pre-validated on standby.
-- **Bidirectional**: Run forward replication and failback concurrently during trial; monitor both metrics endpoints.
-- **Reverse unidirectional**: Before cutover, confirm you can start failback quickly with known flags; at rollback time, follow the failback runbook to start Replicator and create the changefeed.
-- **Manual**: Not applicable; no automated replication during rollback.
-
-### MOLT Fetch
-
-[MOLT Fetch]({% link molt/molt-fetch.md %}) performs initial one-time data load and pairs with Replicator for minimal-downtime migrations. Rollback choice primarily affects Replicator usage after initial load rather than Fetch.
-
-### MOLT Verify
-
-[MOLT Verify]({% link molt/molt-verify.md %}) compares schema and row-level data between source and CockroachDB to surface discrepancies:
-
-- **Dual-write or bidirectional**: Run Verify to catch drift during the coexistence window.
-- **Reverse unidirectional or manual**: Run before activating rollback to estimate catch-up effort; run again after failback or manual repair to confirm consistency.
+Rollback plans that do not utilize failback replication will require external tooling, or in the case of a dual-write strategy, changes to application code. You can still use [MOLT Verify]({% link molt/molt-verify.md %}) to ensure parity between the two databases.
 
 ## See also
 

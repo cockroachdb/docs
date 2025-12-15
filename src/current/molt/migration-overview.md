@@ -162,14 +162,6 @@ There are several different ways of verifying that the data in the source and th
 
 Until the migration is complete, migration failures may make you decide to roll back application traffic entirely to the source database. You may therefore need a way of keeping the source database up to date with new writes to the target. This is especially important for risk-averse migrations that aim to minimize downtime.
 
-### Cutover plan
-
-*Cutover* is the process of switching application traffic from the source database to CockroachDB.
-
-There are many different approaches to cutover. It can happen all at once, it can occur in multiple steps (in tandem with different [migration phases](#migration-granularity)). It's possible to cut over read and write traffic at different times. The possibilities are varied.
-
-The decision of how to cut over application traffic is closely linked with many of the other choices above.
-
 ---
 
 [Learn more about the different migration variables]({% link molt/migration-considerations.md %}), how you should consider the different options for each variable, and how to use the MOLT toolkit for each variable.
