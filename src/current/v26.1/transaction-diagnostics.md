@@ -11,7 +11,7 @@ Requesting a transaction diagnostics bundle introduces performance overhead. Thi
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Transaction diagnostics cannot be collected for statements executed within [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) or [stored procedures]({% link {{ page.version.version }}/stored-procedures.md %}). Transaction diagnostics continue to work only for top-level statement executions.
+Transaction diagnostics do not contain a [statement diagnostic bundle]({% link {{ page.version.version }}/explain-analyze.md %}#debug-option) for statements executed inside [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) or [stored procedures]({% link {{ page.version.version }}/stored-procedures.md %}). However, they do contain a statement diagnostic bundle for the top-level invocation, or call, of the user-defined function or stored procedure.
 {{site.data.alerts.end}}
 
 ## Required privileges 

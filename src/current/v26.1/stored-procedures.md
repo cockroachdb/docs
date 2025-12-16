@@ -35,7 +35,7 @@ SQL statements executed within stored procedures are tracked in the SQL statisti
 These statements will also appear in the [**Transaction details**]({% link {{ page.version.version }}/ui-transactions-page.md %}#transaction-details-page) in the **Statement Fingerprints** table when the stored procedure is invoked as part of a transaction.
 
 {{site.data.alerts.callout_info}}
-Statement diagnostics cannot be collected for statements executed within stored procedures. Statement diagnostics continue to work only for top-level statement executions. For details, see [Known limitations](#known-limitations).
+[Statement diagnostics]({% link {{ page.version.version }}/explain-analyze.md %}#debug-option) cannot be collected for statements executed inside stored procedures. You can request statement diagnostics for the top-level invocation of the procedure, and the resulting trace includes spans for each statement executed. However, there is no way to target statements executed inside the procedure with a statement diagnostics request. For details, see [Known limitations](#known-limitations).
 {{site.data.alerts.end}}
 
 ## Examples
