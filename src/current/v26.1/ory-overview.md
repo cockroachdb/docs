@@ -83,7 +83,7 @@ Permission checks are answered based on:
 
 When you ask Keto, "Is user Bob allowed to view document X?" the system checks whether Bob has view permission, and then checks whether Bob is the owner of document X. The permission model tells Ory Keto what to check in the database.
 
-The following diagram illustrates the relationships between objects that Ory Keto enables:
+The following diagram illustrates the object relationships that Ory Keto enables:
 
 <img src="{{ 'images/v26.1/integrate-ory-permission-graph.png' | relative_url }}" alt="Permission Graph"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 

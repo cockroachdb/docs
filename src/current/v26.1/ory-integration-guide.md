@@ -7,7 +7,7 @@ docs_area: Integrate
 
 This tutorial demonstrates how to set up a CockroachDB environment that uses [Ory]({% link {{ page.version.version }}/ory-overview.md %}) for Identity and Access Management (IAM). This page describes the architecture of the integration, then walks through how to perform and test it. 
 
-By the end of this tutorial, you'll have a working environment where Ory’s services (Hydra, Kratos, and Keto) use a CockroachDB cluster for storage.
+By the end of this tutorial, you will have a working environment where Ory’s services (Hydra, Kratos, and Keto) use a CockroachDB cluster for storage.
 
 ## Integration Architecture Overview
 
@@ -679,7 +679,7 @@ curl -s -X POST -H  "Accept: application/json" -H "Content-Type: application/jso
 -d '{"identifier": "max@roach.com", "password": "HelloCockro@ch123", "method": "password"}'
 ~~~
 
-Kratos responds with a JSON payload which includes the identity which just authenticated, the session, and the Ory Session Token:
+Kratos responds with a JSON payload which includes the identity which just authenticated, the session, and the session token:
 
 ~~~ json
 {
@@ -731,7 +731,7 @@ Kratos responds with a JSON payload which includes the identity which just authe
 
 #### 3. Check the session token
 
-The Ory Session Token can be checked at the Kratos [`/sessions/whoami` endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/listMySessions) Replace `{session_token}` with the session token ID that was returned in the Login Flow JSON Response:
+The Ory Session Token can be checked at the Kratos [`/sessions/whoami` endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/listMySessions) Replace `{session_token}` with the session token ID that was returned in the Login Flow JSON response:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -786,9 +786,9 @@ Kratos responds with a JSON payload which includes data about the current sessio
 
 #### 4. Log out
 
-To log out of the session, you can revoke the Ory session token by calling the [logout API endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/performNativeLogout).
+To log out of the session, you can revoke the session token by calling the [logout API endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/performNativeLogout).
 
-Replace `{session_token}` with the session token ID that was returned in the Login Flow JSON Response:
+Replace `{session_token}` with the session token ID that was returned in the Login Flow JSON response:
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
@@ -809,7 +809,7 @@ join public.identity_credentials ic  on i.id = ic.identity_id
 join public.identity_credential_types ict on ic.identity_credential_type_id = ict.id;
 ~~~
 
-The result set contains data about the `identity` established when you initialized the API flow. Much of this data, including `id` and `traits`, should be recognizable from the Login Flow JSON Response:
+The result set contains data about the `identity` established when you initialized the API flow. Much of this data, including `id` and `traits`, should match the data found in the Login Flow JSON response:
 
 ~~~
 -[ RECORD 1 ]
@@ -886,7 +886,7 @@ SELECT t.namespace, (select m.string_representation from public.keto_uuid_mappin
 (select m.string_representation from public.keto_uuid_mappings m where m.id = t.subject_id) as subject_string, t.commit_time FROM public.keto_relation_tuples t;
 ~~~
 
-The result set contains permissions data. Much of this data, including `object_string`, `relation`, and `subject_string`, should be recognizable from the relation tuple data provided above:
+The result set contains permissions data. Much of this data, including `object_string`, `relation`, and `subject_string`, should match that provided in the relation tuple data above:
 
 ~~~
 -[ RECORD 1 ]
@@ -906,3 +906,7 @@ The tests above confirm that each Ory component in this deployment is properly c
 ## See also
 
 - [Ory Overview]({% link {{ page.version.version }}/ory-overview.md %})
+- [Deploy a Local Cluster from Binary (Secure)]({% link {{ page.version.version }}/secure-a-cluster.md %})
+- [Deploy CockroachDB on AWS EC2]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %})
+- [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [CREATE DATABASE]({% link {{page.version.version}}/create-database.md %})
