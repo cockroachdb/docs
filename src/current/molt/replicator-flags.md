@@ -1,7 +1,7 @@
 ---
 title: Replicator Flags
 summary: Flag reference for MOLT Replicator
-toc: true
+toc: false
 docs_area: migrate
 ---
 

@@ -86,7 +86,13 @@ OK
 
 ### Visualize metrics
 
+<section class="filter-content" markdown="1" data-scope="postgres mysql cockroachdb">
+Use the [Replicator Grafana dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) to visualize metrics.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
 Use the [Replicator Grafana dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) to visualize metrics. For Oracle sources, also import the [Oracle Grafana dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json) to visualize [Oracle source metrics](#oracle-source).
+</section>
 
 ## Overall replication metrics
 
@@ -254,7 +260,7 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 	- Interpretation: Use to monitor processing throughput. A flat line indicates no mutations are being applied.
 - `core_sweep_success_timestamp_seconds`
 	- Description: Wall time (Unix timestamp) at which a sweep attempt last succeeded.
-	- Interpretation: Stale values indicate the sweep has stopped.
+	- Interpretation: If this value stops updating and becomes stale, it indicates that the sweep has stopped.
 - `core_parallelism_utilization_percent`
 	- Description: Percentage of the configured parallelism that is actively being used for concurrent transaction processing.
     - Interpretation: High utilization indicates bottlenecks in mutation processing.
