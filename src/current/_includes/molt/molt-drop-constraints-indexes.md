@@ -1,5 +1,5 @@
 To optimize data load performance, drop all non-`PRIMARY KEY` [constraints]({% link {{ site.current_cloud_version }}/alter-table.md %}#drop-constraint) and [indexes]({% link {{site.current_cloud_version}}/drop-index.md %}) on the target CockroachDB database before migrating:
-{% if page.name == "molt-fetch.md" %}
+{% if page.name == "molt-fetch.md" or page.name == "molt-fetch-best-practices.md" %}
 	- [`FOREIGN KEY`]({% link {{ site.current_cloud_version }}/foreign-key.md %})
 	- [`UNIQUE`]({% link {{ site.current_cloud_version }}/unique.md %})
 	- [Secondary indexes]({% link {{ site.current_cloud_version }}/schema-design-indexes.md %})

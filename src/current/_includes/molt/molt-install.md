@@ -22,7 +22,7 @@ To display the current version of each binary, run `molt --version` and `replica
 
 For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). {% if page.name != "molt.md" %}For release details, refer to the [MOLT changelog]({% link releases/molt.md %}).{% endif %}
 
-{% if page.name == "molt-fetch.md" or page.name == "molt.md" %}
+{% if page.name == "molt-fetch.md" or page.name == "molt.md"  or page.name == "molt-fetch-install" %}
 {{site.data.alerts.callout_info}}
 MOLT Fetch is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
 {{site.data.alerts.end}}
@@ -55,7 +55,7 @@ docker pull cockroachdb/molt:oracle-latest
 ~~~
 {% endif %}
 
-{% if page.name != "molt-fetch.md" %}
+{% if page.name != "molt-fetch.md" and page.name != "molt-fetch-install.md" %}
 #### MOLT Replicator
 
 [Docker images for MOLT Replicator](https://hub.docker.com/r/cockroachdb/replicator/tags) are also available as a standalone binary:
