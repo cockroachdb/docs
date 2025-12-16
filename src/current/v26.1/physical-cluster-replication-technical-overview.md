@@ -68,3 +68,9 @@ When a PCR stream is started with a `readonly` virtual cluster, the job will del
 After reverting any necessary data, the standby virtual cluster is promoted as available to serve traffic and the replication job ends.
 
 For details on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#failback).
+
+## Multi-region behavior
+
+You can use PCR to replicate between clusters with different cluster regions, database regions, and table localities. Mismatched regions and localities do not impact failover or ability to access clusters after failover, but they do impact leaseholders and locality-dedpendent settings. Clusters replicating across different regions may also experience a slight decrease in performance due to longer replication times. 
+
+After a failover event involving clusters in different regions, do not change any configurations on your standby cluster if you plan to fail back to the original primary cluster. If you plan to start using the standby cluster for long-running production traffic rather than performing a failback, adjust the configurations on the standby cluster to optimize for your traffic. When adjusting configurations, ensure that the new settings can be satisfied on the standby cluster. In particular, ensure that the cluster does not have pinned leaseholders for a region that does not exist on the cluster.
