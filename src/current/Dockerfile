@@ -43,7 +43,9 @@ COPY Gemfile Gemfile.lock ./
 COPY jekyll-algolia-dev ./jekyll-algolia-dev/
 
 # Configure bundler and install gems to /usr/local/bundle (default location)
-RUN bundle config set --local jobs 4 \
+# Ensure the lockfile in the image supports common Linux platforms
+RUN bundle lock --add-platform aarch64-linux --add-platform x86_64-linux \
+    && bundle config set --local jobs 4 \
     && bundle config set --local without development:test \
     && bundle install
 
