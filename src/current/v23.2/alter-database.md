@@ -349,7 +349,7 @@ For usage, see [Synopsis](#synopsis).
 
 ### `RESET {session variable}`
 
-`ALTER DATABASE ... RESET {session variable}` resets a [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for a database to its default value for the client session.
+`ALTER DATABASE ... RESET {session variable}` clears a database-level override of a [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) so that future sessions use the default value.
 
 #### Required privileges
 
