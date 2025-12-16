@@ -17,32 +17,29 @@ In a CockroachDB/Ory integration, each of these components relies on CockroachDB
 
 CockroachDB provides the database layer that ensures the accuracy and availability of user identities, access control rules, and session tokens. This makes it easier to horizontally scale Ory services, perform rolling updates, or deploy new regions without having to orchestrate complex data migrations.
 
-Here is an example of how a CockroachDB/Ory integration could be designed:
+The following diagram illustrates how a CockroachDB/Ory integration could be designed:
 
 <img src="{{ 'images/v26.1/integrate-ory-single-region.svg' | relative_url }}" alt="Single Region MAZ"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
-As illustrated in the diagram above, a single cloud region is shown containing three distinct availability zones: `us-east-1a`, `us-east-1b`, and `us-east-1c`. Each availability zone is an isolated failure domain with its own independent power, cooling, and networking. By deploying nodes of the CockroachDB/Ory clusters across all three zones, the system ensures resilience against localized outages. If one AZ becomes unavailable due to a hardware or network issue, the remaining two zones continue to serve client requests without data loss or downtime.
+As illustrated in the diagram above, a single cloud region is shown containing three Availability Zones (AZs): `us-east-1a`, `us-east-1b`, and `us-east-1c`. Each AZ is an isolated failure domain with its own independent power, cooling, and networking. By deploying nodes of the CockroachDB/Ory clusters across all three zones, the system ensures resilience against localized outages. If one AZ becomes unavailable due to a hardware or network issue, the remaining two zones continue to serve client requests without data loss or downtime.
 
-In the middle of the diagram (`Ory VPC`): Ory is deployed as a Kubernetes cluster (in EKS). The workers are created in each zone and form a single logical cluster. Each Ory component (**_Hydra_**, **_Kratos_** or **_Keto_**) is replicated as pods and distributed across the EKS cluster to provide failover capabilities and remain highly available.
+In the middle of the diagram (`Ory VPC`): Ory is deployed as a Kubernetes cluster using [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/). A worker [`node`](https://kubernetes.io/docs/concepts/architecture/nodes/) is created in each zone, and these nodes are grouped together in a [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) (`ns`). Together they form a single logical cluster. Traffic is routed to each node via an [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) (`ing`) and a [service](https://kubernetes.io/docs/concepts/services-networking/service/) (`svc`). Each Ory component (**_Hydra_**, **_Kratos_**, and **_Keto_**) is replicated as a [`pod`](https://kubernetes.io/docs/concepts/workloads/pods/) and distributed across the EKS nodes to provide failover capabilities and remain highly available.
 
-At the bottom of the diagram (`CRDB VPC`): The CockroachDB nodes in each zone form a single logical cluster that replicates data across zones using the consensus protocol (typically Raft).
+At the bottom of the diagram (`CRDB VPC`): The CockroachDB nodes in each zone form a single logical cluster that replicates data across zones using the consensus protocol (typically [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
+
+This replication model ensures strong [consistency]({% link {{ page.version.version }}/architecture/overview.md %}#consistency) — all nodes maintain a synchronized and always-on service. Even in the event of zone-level failure, the remaining pods and nodes — for both clusters — ensure that the solution remains available and consistent.
 
 A regional load balancer distributes traffic across the healthy nodes in the cluster. This Network Load Balancer (NLB) improves performance by directing requests to the closest responsive node and provides failover capabilities by rerouting traffic away from any failed or unreachable zones.
 
-This replication model ensures strong consistency — all nodes maintain a synchronized and always-on service. Even in the event of zone-level failure, the remaining pods and nodes — for both clusters — ensure that the solution remains available and consistent.
+In this example environment, both Ory and CockroachDB are deployed within the `us-east-1` region as follows:
 
-In this example environment, both Ory and CockroachDB are within the us-east-1 region:
+- **CockroachDB** is deployed on one Virtual Private Cloud (VPC) in region (`us-east-1`) with three subnets, distributed across distinct AZs. The CockroachDB cluster itself consists of three nodes, each deployed in a separate AZ to enable fault tolerance and quorum-based consistency. A NLB sits in front of the cluster to evenly route incoming requests to the appropriate database node.
 
-- **CockroachDB**: One Virtual Private Cloud (VPC) in region (`us-east-1`) with three subnets, distributed across distinct availability zones. The CockroachDB cluster itself consists of three nodes, each deployed in a separate AZ to enable fault tolerance and quorum-based consistency. A NLB sits in front of the cluster to evenly route incoming requests to the appropriate database node.
-
-- **Ory**: A separate VPC in the same region (`us-east-1`), also using three subnets, each placed in a different availability zone to ensure high availability. An Amazon EKS (Elastic Kubernetes Service) cluster was deployed with three worker nodes — one in each AZ—to distribute the workload evenly.
-For the purposes of this example, the EKS cluster is publicly accessible, and the service ports are exposed via a load balancer. All Ory components — Hydra, Kratos, and Keto — are configured to connect to the CockroachDB cluster through the NLB, ensuring consistent and resilient backend access.
+- **Ory** is deployed on a separate VPC in the same region (`us-east-1`), also using three subnets, each placed in a different AZ to ensure high availability. An Amazon EKS cluster was deployed with three worker nodes — one in each AZ — to distribute the workload evenly. For the purposes of this example, the EKS cluster is publicly accessible, and the service ports are exposed via a load balancer. All Ory components — Hydra, Kratos, and Keto — are configured to connect to the CockroachDB cluster through the NLB, ensuring consistent and resilient backend access.
 
 ## Set up a joint CockroachDB/Ory environment
 
 This tutorial walks you through the manual setup of a joint CockroachDB/Ory environment. 
-
-<!-- Alternatively, you can follow [the instructions at the end of this tutorial](#alternative-terraform-setup) to automate this process using the existing Ory integration github project. -->
 
 ### Before you begin
 
@@ -62,11 +59,15 @@ Estimated setup time: 45–60 minutes.
 
 First you need to provision the CockroachDB cluster that Ory will use for its services. Choose one of the following methods to create a new CockroachDB cluster, or use an existing cluster and skip to [Step 2](#step-2-create-databases-for-ory-services).
 
+{{site.data.alerts.callout_info}}
+Be sure to create a **secure** cluster. This is necessary for the user creation step of this tutorial.
+{{site.data.alerts.end}}
+
 #### Create a secure cluster locally
 
 If you have the CockroachDB binary installed locally, you can manually deploy a multi-node, self-hosted CockroachDB cluster on your local machine.
 
-Learn how to [deploy a CockroachDB cluster locally]({% link {{ page.version.version }}/secure-a-cluster.md %}). Be sure to follow the instructions for creating a **secure** cluster, needed to complete Step 2.
+Learn how to [deploy a CockroachDB cluster locally]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 
 #### Create a CockroachDB Self-Hosted cluster on AWS
 
@@ -90,16 +91,16 @@ Before integrating Ory components with CockroachDB, you will need to set up sepa
 
 Keeping these in separate databases simplifies maintenance and ensures isolation between identity, OAuth2, and authorization data.
 
-1. Go to your CockroachDB SQL client.
+1. Go to your [CockroachDB SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}).
 
-1. Replace `{certs-dir}` with the certificates directory that you established in Step 1, and `{crdb-fqdn}` with your CockroachDB load balancer domain name. Then run the following command:
+1. Replace `{certs-dir}` with the certificates directory that you established during the cluster setup, and `{crdb-fqdn}` with your CockroachDB load balancer domain name. Then run the following command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --certs-dir={certs-dir} --host={crdb-fqdn}:26257
     ~~~
 
-1. Once connected to the SQL shell, run:
+1. Once connected to the SQL shell, [create the following databases]({% link {{page.version.version}}/create-database.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -108,7 +109,7 @@ Keeping these in separate databases simplifies maintenance and ensures isolation
     CREATE DATABASE keto;
     ~~~
 
-1. Create a user and grant them privileges for each Ory database, instead of using root.
+1. [Create a user]({% link {{page.version.version}}/create-user.md %}) and [grant them privileges]({% link {{page.version.version}}/grant.md %}) for each Ory database:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -120,8 +121,6 @@ Keeping these in separate databases simplifies maintenance and ensures isolation
 
 ### Step 3. Provision a Kubernetes cluster for Ory
 
-Kubernetes is a portable, extensible platform for managing containerized workloads and services. For a given workload, you provide Kubernetes with a configuration, and Kubernetes applies that configuration to all Kubernetes nodes that are running the application.
-
 This section describes how to deploy Ory on a self-hosted Kubernetes cluster in EKS.
 
 1. Complete the steps described in the [EKS Getting Started](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html) documentation.
@@ -131,7 +130,7 @@ This section describes how to deploy Ory on a self-hosted Kubernetes cluster in 
 2. From your local workstation, start the Kubernetes cluster:
 
     {{site.data.alerts.callout_success}}
-    To ensure that all 3 nodes can be placed into a different availability zone, you may want to first [confirm that at least 3 zones are available in the region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#availability-zones-describe) for your account.
+    To ensure that all 3 nodes can be placed into a different AZ, you may want to first [confirm that at least 3 zones are available in the region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#availability-zones-describe) for your account.
     {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}
@@ -456,57 +455,7 @@ Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
 
 </section>
 
-You now have a high-availability deployment for a joint CockroachDB/Ory environment within a single cloud region. This architecture is designed to protect against failures at the availability zone (AZ) level by distributing nodes of the database cluster across multiple AZs within the same region.
-
-<!-- ### Alternative: Terraform setup
-
-Provisioning a distributed identity stack can be time-consuming when done manually. The [CockroachDB/Ory sandbox](https://github.com/amineelkouhen/crdb-ory-sandbox) project encapsulates all necessary steps — from creating the CockroachDB cluster and its three Ory databases, to deploying Ory (Kratos, Hydra, and Keto) into an EKS cluster.
-With just a few variables defined (such as cluster region, Ory image versions, and AWS credentials), Terraform spins up the joint environment in a few clicks (or one command), wiring all components together automatically.
-
-It uses the official AWS Terraform provider to create and configure the required infrastructure for the database layer, and standard Kubernetes or Docker resources for deploying Ory services. This accelerates setup and ensures reproducibility across environments, whether you're experimenting locally, running CI/CD tests, or deploying to production.
-
-Terraform will provision two logical clusters with:
-
-- For CockroachDB:
-   * VPC and subnets (each in a distinct availability zone)
-   * Network Load Balancers
-   * 3-node CockroachDB cluster (each worker in a distinct subnet)
-
-- For Ory:
-   * VPC and subnets (each in a distinct availability zone)
-   * 3-worker EKS cluster (each worker in a distinct subnet)
-   * Ory pods are exposed as services behind Load Balancers
-
-Sample output includes URLs and IPs for the deployed environment:
-
- ~~~ shell
-Outputs:
-####################################### Client #######################################
-
-client-public-IP = "52.40.254.77"
-
-####################################### CRDB Cluster #################################
-
-console-url = "http://user.cluster.sko-iam-demo.com:8080/"
-connexion-string = "postgresql://root@user.cluster.sko-iam-demo.com:26257/defaultdb"
-console-url = "http://user.cluster.sko-iam-demo.com:8080/"
-
-crdb-cluster-private-ips = [
-"10.1.1.75",
-"10.1.2.176",
-"10.1.3.188",
-]
-crdb-cluster-public-ips = [
-"174.129.63.86",
-"54.226.135.115",
-"54.242.175.190",
-]
-
-####################################### EKS Ory Cluster #################################
-
-ory-cluster-endpoint = "https://3881F818BE6569440FCCCCD46539BE91.gr7.us-east-1.eks.amazonaws.com"
-ory-cluster-name = "amine-us-ory-cluster"
- ~~~  -->
+You now have a high-availability deployment for a joint CockroachDB/Ory environment within a single cloud region. This architecture is designed to protect against failures at the AZ level by distributing nodes of the database cluster across multiple AZs within the same region.
 
 ## Test the CockroachDB/Ory Integration
 
@@ -522,7 +471,7 @@ To test Ory Hydra, create an OAuth2 client, generate an access token, then intro
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ hydra create oauth2-client --endpoint $HYDRA_ADMIN_URL --format json --grant-type client_credentials
+hydra create oauth2-client --endpoint $HYDRA_ADMIN_URL --format json --grant-type client_credentials
 ~~~
 
 Once you have created the OAuth2 client, you can parse the JSON response to get the `client_id` and `client_secret`:
@@ -562,12 +511,12 @@ Replace `{client_id}` and `{client_secret}` with the values you found in the JSO
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ hydra perform client-credentials --endpoint $HYDRA_PUBLIC_URL --client-id {client_id} --client-secret {client_secret}
+hydra perform client-credentials --endpoint $HYDRA_PUBLIC_URL --client-id {client_id} --client-secret {client_secret}
 ~~~
 
 This will generate an access token for Ory Hydra. Copy the string beside `ACCESS TOKEN`.
 
-~~~ shell
+~~~
 ACCESS TOKEN	ory_at_A2TpIR394rnUOtA0PLhvARKQyODmLIH7Fer5Y8clwe8.J61E8kR3ZH2w529D-5HOkuqoaTZy-CNLlNtvunYpdjg
 REFRESH TOKEN	<empty>
 ID TOKEN	<empty>
@@ -580,7 +529,7 @@ Replace `{access_token}` with the string that you just copied:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ hydra introspect token --format json-pretty --endpoint $HYDRA_ADMIN_URL {access_token}
+hydra introspect token --format json-pretty --endpoint $HYDRA_ADMIN_URL {access_token}
 ~~~
 
 This should generate a JSON response that includes your `client_id`, `"active": true`, an expiration timestamp (`exp`), and [other data](https://www.ory.com/docs/hydra/reference/api#tag/oAuth2/operation/introspectOAuth2Token):
@@ -607,6 +556,8 @@ In your CockroachDB SQL client, run the following query to verify the accessibil
 ~~~ sql
 SELECT id, client_secret, scope, client_secret_expires_at, jwks, token_endpoint_auth_method, request_object_signing_alg, userinfo_signed_response_alg, subject_type, created_at, updated_at, metadata, registration_access_token_signature, redirect_uris, grant_types, response_types FROM public.hydra_client;
 ~~~
+
+The result set contains data about the OAuth2 client. The `id` should match the `client_id` found in the JSON response above:
 
 ~~~
 -[ RECORD 1 ]
@@ -637,6 +588,8 @@ Then run the following query to verify the accessibilty of Ory Hydra's token cre
 SELECT signature, request_id, requested_at, client_id, form_data, session_data, subject, active, challenge_id, expires_at FROM public.hydra_oauth2_access;
 ~~~
 
+The result set contains data about the access token you generated. The `client_id` should match the `client_id` found in the JSON response above:
+
 ~~~
 -[ RECORD 1 ]
 signature          | 5d666e7d5e54afceeaed54bca47a69eb787acc9be89d3086ca1cf4d55f27f981ae79cbc7e1890c2e5632f86a2dce9074
@@ -663,14 +616,14 @@ Use the Kratos registration endpoint to get a valid Registration Flow ID:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ flowId=$(curl -s -X GET -H "Accept: application/json" $KRATOS_PUBLIC_URL/self-service/registration/api | jq -r '.id')
+flowId=$(curl -s -X GET -H "Accept: application/json" $KRATOS_PUBLIC_URL/self-service/registration/api | jq -r '.id')
 ~~~
 
 You can then submit the registration form using the following payload:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -s -X POST -H "Accept: application/json Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/registration?flow=$flowId -d '{
+curl -s -X POST -H "Accept: application/json Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/registration?flow=$flowId -d '{
   "method": "password",
   "password": "HelloCockro@ch123",
   "traits": {
@@ -683,7 +636,7 @@ $ curl -s -X POST -H "Accept: application/json Content-Type: application/json" $
 }'
 ~~~
 
-Ory Identities responds with a JSON payload which includes the signed up `identity`:
+Kratos responds with a JSON payload which includes the signed up `identity`:
 
 ~~~ json
 {
@@ -715,18 +668,18 @@ Having completed the registration, you can now start the Login Flow by fetching 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ flowId=$(curl -s -X GET -H  "Accept: application/json Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/login/api | jq -r '.id')
+flowId=$(curl -s -X GET -H  "Accept: application/json Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/login/api | jq -r '.id')
 ~~~
 
 Then you can submit the login form [using a request payload](https://www.ory.com/docs/reference/api#tag/frontend/operation/updateLoginFlow) that includes the password that you submitted when initializing the API flow:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -s -X POST -H  "Accept: application/json" -H "Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/login?flow=$flowId \
+curl -s -X POST -H  "Accept: application/json" -H "Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/login?flow=$flowId \
 -d '{"identifier": "max@roach.com", "password": "HelloCockro@ch123", "method": "password"}'
 ~~~
 
-Ory Identities responds with a JSON payload which includes the identity which just authenticated, the session, and the Ory Session Token:
+Kratos responds with a JSON payload which includes the identity which just authenticated, the session, and the Ory Session Token:
 
 ~~~ json
 {
@@ -778,12 +731,14 @@ Ory Identities responds with a JSON payload which includes the identity which ju
 
 #### 3. Check the session token
 
-The Ory Session Token can be checked at the [`http://$KRATOS_PUBLIC_URL/sessions/whoami` endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/listMySessions) using the session token that was just returned in the Login Flow JSON Response:
+The Ory Session Token can be checked at the Kratos [`/sessions/whoami` endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/listMySessions) Replace `{session_token}` with the session token ID that was returned in the Login Flow JSON Response:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -s -X GET -H "Accept: application/json" -H "Authorization: Bearer ory_st_l209ZOnRSEaQRcIauchAUdFC5iYQDQld" $KRATOS_PUBLIC_URL/sessions/whoami
+curl -s -X GET -H "Accept: application/json" -H "Authorization: Bearer {session_token}" $KRATOS_PUBLIC_URL/sessions/whoami
 ~~~
+
+Kratos responds with a JSON payload which includes data about the current session:
 
 ~~~ json
 {
@@ -831,12 +786,14 @@ $ curl -s -X GET -H "Accept: application/json" -H "Authorization: Bearer ory_st_
 
 #### 4. Log out
 
-To log out the session, you can revoke the Ory session token by calling the [logout API endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/performNativeLogout):
+To log out of the session, you can revoke the Ory session token by calling the [logout API endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/performNativeLogout).
+
+Replace `{session_token}` with the session token ID that was returned in the Login Flow JSON Response:
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
-$ curl -s -X DELETE -H "Accept: application/json" -H "Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/logout/api -d '{
-"session_token": "ory_st_l209ZOnRSEaQRcIauchAUdFC5iYQDQld"
+curl -s -X DELETE -H "Accept: application/json" -H "Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/logout/api -d '{
+"session_token": "{session_token}"
 }'
  ~~~
 
@@ -851,6 +808,8 @@ FROM public.identities i
 join public.identity_credentials ic  on i.id = ic.identity_id
 join public.identity_credential_types ict on ic.identity_credential_type_id = ict.id;
 ~~~
+
+The result set contains data about the `identity` established when you initialized the API flow. Much of this data, including `id` and `traits`, should be recognizable from the Login Flow JSON Response:
 
 ~~~
 -[ RECORD 1 ]
@@ -878,14 +837,14 @@ Create a Keto relation tuple [using the Keto SDK](https://www.ory.com/docs/keto/
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
-$ echo '{"namespace":"documents","object":"doc-123","relation":"viewer","subject_id":"user:alice"}'  | keto relation-tuple create /dev/stdin --insecure-disable-transport-security
+echo '{"namespace":"documents","object":"doc-123","relation":"viewer","subject_id":"user:alice"}'  | keto relation-tuple create /dev/stdin --insecure-disable-transport-security
  ~~~ 
 
 or by [using the Keto REST API](https://www.ory.com/docs/keto/reference/rest-api#tag/relationship/operation/createRelationship):
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
-$ curl -i -X PUT "$KETO_WRITE_REMOTE"/admin/relation-tuples \
+curl -i -X PUT "$KETO_WRITE_REMOTE"/admin/relation-tuples \
 -H "Content-Type: application/json" \
 -d '{"namespace":"documents","object":"doc-123","relation":"viewer","subject_id":"user:alice"}'
  ~~~ 
@@ -896,12 +855,12 @@ You can use the [Ory Keto expand-API](https://www.ory.com/docs/keto/cli/keto-exp
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
-$ keto expand viewer documents photos --insecure-disable-transport-security
+keto expand viewer documents photos --insecure-disable-transport-security
  ~~~ 
 
 To assist users with managing permissions for their files, the application has to display who has access to a file and why. In this example, we assume that the application knows the following files and directories:
 
- ~~~ shell
+ ~~~
 ├─ photos            (owner: maureen; shared with laura)
 ├─ beach.jpg         (owner: maureen)
 ├─ mountains.jpg     (owner: laura)
@@ -913,7 +872,7 @@ It's important to test your permission model. To test the permissions manually, 
 
 {% include_cached copy-clipboard.html %}
  ~~~ shell
-$ keto check \"user:alice\" viewer documents /photos/beach.jpg --insecure-disable-transport-security
+keto check \"user:alice\" viewer documents /photos/beach.jpg --insecure-disable-transport-security
 # allowed
  ~~~ 
 
@@ -927,6 +886,8 @@ SELECT t.namespace, (select m.string_representation from public.keto_uuid_mappin
 (select m.string_representation from public.keto_uuid_mappings m where m.id = t.subject_id) as subject_string, t.commit_time FROM public.keto_relation_tuples t;
 ~~~
 
+The result set contains permissions data. Much of this data, including `object_string`, `relation`, and `subject_string`, should be recognizable from the relation tuple data provided above:
+
 ~~~
 -[ RECORD 1 ]
 namespace      | documents
@@ -938,36 +899,9 @@ commit_time    | 2025-12-09 21:37:02.207403
 Time: 3ms total (execution 3ms / network 0ms)
 ~~~
 
-<br>
+### Next steps
 
 The tests above confirm that each Ory component in this deployment is properly connected using CockroachDB as the shared data layer. If you get the expected results from these tests, then your integration is ready for use in your application. You can begin building authentication, authorization, and access control features with CockroachDB and Ory.
-
-<!-- ### Simulate realistic workloads
-
-You can validate the behavior of this integration under realistic conditions.
-The [workload simulator](https://github.com/amineelkouhen/crdb-ory-load-test) project is a lightweight Golang-coded utility that generates concurrent API requests against the Ory endpoints (mainly Hydra, Kratos, and Keto) to emulate real-world authentication, token issuance, and permission checks.
-
-It can spawn hundreds of simulated users performing signup, login, OAuth2 token exchange, and access-control queries, thereby stressing both Ory’s application logic and the underlying CockroachDB cluster.
-This lets you measure performance, latency, and resilience, observe how CockroachDB handles concurrent transactions, and tune replication or connection pooling parameters.
-
-Results include detailed simulation metrics:
-
- ~~~ shell
-🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
-✅  Kratos Load generation and identity checks complete
-⏱️  Duration:                10s
-⚙️  Concurrency:             101
-🚦  Checks/sec:              89.8
-🧪  Mode:                    LIVE
-🟢  Active:                  898
-🔴  Inactive:                0
-✏️  Writes:                  10
-👁️  Reads:                   898
-📊  Read/Write ratio:        89.8:1
-🚨  Failed writes to Kratos: 0
-🚨  Failed reads to Kratos:  0
-🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
- ~~~  -->
 
 ## See also
 
