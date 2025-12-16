@@ -37,37 +37,7 @@ cockroachdb:
         # initContainers captures the list of init containers for CockroachDB pods.
         initContainers:
           - name : cockroachdb-init
-            image: us-docker.pkg.dev/cockroach-cloud-images/data-plane/init-container@sha256:c3e4ba851802a429c7f76c639a64b9152d206cebb31162c1760f05e98f7c4254
-        # containers captures the list of containers for CockroachDB pods.
-        containers:
-          - name: cockroachdb
-            image: cockroachdb/cockroach:v25.3.2
-        # imagePullSecrets captures the secrets for fetching images from private registries.
-        imagePullSecrets: []
-~~~
-
-At least one value for `containers` must be specified if any part of `podTemplate` is being modified. For example, the following `podTemplate` configuration overrides pod anti-affinity behavior and specifies a default `cockroachdb/cockroach:v25.3.2` container image:
-
-~~~ yaml
-cockroachdb:
-  crdbCluster:
-    podTemplate:
-       spec:
-         affinity:
-           podAntiAffinity: 
-               preferredDuringSchedulingIgnoredDuringExecution:
-               - weight: 100
-                 podAffinityTerm:
-                   labelSelector:
-                     matchExpressions:
-                       - key: app.kubernetes.io/component
-                         operator: In
-                         values:
-                           - cockroachdb
-                   topologyKey: kubernetes.io/hostname
-         containers:
-           - name: cockroachdb
-             image: cockroachdb/cockroach:v25.3.2
+            image: us-docker.pkg.dev/releases-prod/self-hosted/init-container@sha256:example1234567890abcdefghijklmnopqrstuvwxyz
 ~~~
 
 ## Override the default `cockroach start` flags
