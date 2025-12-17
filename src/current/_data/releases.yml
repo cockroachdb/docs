@@ -9875,11 +9875,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.4.0-rc.1
-  cloud_only: true
-  cloud_only_message_short: 'Currently available for CockroachDB Advanced only'
-  cloud_only_message: >
-      This version is currently available only for
-      CockroachDB Cloud clusters on the Advanced plan.
 
 - release_name: v25.3.5
   major_version: v25.3
@@ -9907,13 +9902,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.3.4
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 - release_name: v25.2.9
   major_version: v25.2
@@ -9941,13 +9929,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.8
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 - release_name: v24.3.23
   major_version: v24.3
@@ -9975,6 +9956,222 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.22
+
+
+- release_name: v26.1.0-alpha.1
+  major_version: v26.1
+  release_date: '2025-12-04'
+  release_type: Testing
+  go_version: go1.25.3
+  sha: d90b48fdc3077318799afd2939837c79289156f4
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+
+
+- release_name: v25.4.1
+  major_version: v25.4
+  release_date: '2025-12-03'
+  release_type: Production
+  go_version: go1.25.3
+  sha: 60d802bd0bcb2c1aa81a4b5fd73fb4aa13bb5114
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.4.0
+
+
+- release_name: v26.1.0-alpha.2
+  major_version: v26.1
+  release_date: '2025-12-11'
+  release_type: Testing
+  go_version: go1.25.3
+  sha: 7991c17b6f2957e381666bf13d6405c8037f46c1
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.1.0-alpha.1
+
+
+- release_name: v25.4.2
+  major_version: v25.4
+  release_date: '2025-12-12'
+  release_type: Production
+  go_version: go1.25.3
+  sha: fed2b8351ac420fec6a1eecce0c78e3848d11896
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.4.1
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters. To request to upgrade
+      a CockroachDB self-hosted cluster to this version,
+      [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
+
+- release_name: v25.3.6
+  major_version: v25.3
+  release_date: '2025-12-12'
+  release_type: Production
+  go_version: go1.25.3
+  sha: 86392cec66fd0b9851358fa76a6f0aac1d691a84
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.3.5
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters. To request to upgrade
+      a CockroachDB self-hosted cluster to this version,
+      [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
+
+- release_name: v25.2.10
+  major_version: v25.2
+  release_date: '2025-12-12'
+  release_type: Production
+  go_version: go1.25.3
+  sha: a2cf0e12d277179df853e7e494c0155a6839edf3
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.2.9
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters. To request to upgrade
+      a CockroachDB self-hosted cluster to this version,
+      [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
+
+- release_name: v24.3.24
+  major_version: v24.3
+  release_date: '2025-12-12'
+  release_type: Production
+  go_version: go1.25.3
+  sha: dab6bfcdbefef7b4ecc62cb75198e475cbf6778d
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.23
   cloud_only: true
   cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
   cloud_only_message: >
