@@ -1,0 +1,1 @@
+We recommend limiting the number of changefeeds per cluster to 80.

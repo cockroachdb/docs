@@ -31,10 +31,6 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in limited access** and are subject to change. To begin validating a limited access feature and share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
-### Metrics Viewer and Cluster Monitor CockroachDB Cloud user roles
-
-The [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer) role grants read‑only access to observability metrics for a cluster without any administrative or data‑manipulation privileges. The [Cluster Monitor]({% link cockroachcloud/authorization.md %}#cluster-monitor) role provides read‑only visibility into SQL activity and workload health without broader administrative privileges. 
-
 ### Export logs to Azure Monitor
 
 [Exporting logs to Azure Monitor]({% link cockroachcloud/export-logs-advanced.md %}?filters=azure-monitor-log-export) from your CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
@@ -42,9 +38,6 @@ The [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer) 
 ### Export metrics to Azure Monitor
 
 [Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
-
-### Backup and restore with the Cloud API
-You can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}#managed-backups-and-restores) to handle [managed backups and restore operations]({% link cockroachcloud/backup-and-restore-overview.md %}). To express interest and try out these API endpoints, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### Egress private endpoints
 
@@ -115,9 +108,9 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 
 [Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
 
-### Read on standby cluster in physical cluster replication (PCR) for CockroachDB {{ site.data.products.core }}
+### Read from standby in physical cluster replication (PCR) for CockroachDB {{ site.data.products.core }}
  
-The [`READ VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}#options) option allows you to set up a PCR stream that also creates a read-only virtual cluster on the standby cluster. You can create a PCR job as per the [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) guide and then add the option to the [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) statement.
+The [`READ VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}#options) option allows you to set up a PCR stream that also creates a [read-only virtual cluster]({% link {{ page.version.version }}/read-from-standby.md %}) on the standby cluster. You can create a PCR job as per the [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) guide and then add the option to the [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) statement.
 
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 

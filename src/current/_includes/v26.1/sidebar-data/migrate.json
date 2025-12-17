@@ -1,0 +1,158 @@
+{
+  "title": "Migrate",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Overview",
+      "urls": [
+        "/molt/migration-overview.html"
+      ]
+    },
+    {
+      "title": "Migration Strategy",
+      "urls": [
+        "/molt/migration-strategy.html"
+      ]
+    },
+    {
+      "title": "Migration Flows",
+      "items": [
+        {
+          "title": "Bulk Load",
+          "urls": [
+            "/molt/migrate-bulk-load.html"
+          ]
+        },
+        {
+          "title": "Load and Replicate",
+          "urls": [
+            "/molt/migrate-load-replicate.html"
+          ]
+        },
+        {
+          "title": "Resume Replication",
+          "urls": [
+            "/molt/migrate-resume-replication.html"
+          ]
+        },
+        {
+          "title": "Failback",
+          "urls": [
+            "/molt/migrate-failback.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "MOLT Tools",
+      "items": [
+        {
+          "title": "Schema Conversion Tool",
+          "urls": [
+            "/cockroachcloud/migrations-page.html"
+          ]
+        },
+        {
+          "title": "Fetch",
+          "urls": [
+            "/molt/molt-fetch.html"
+          ]
+        },
+        {
+          "title": "Replicator",
+          "urls": [
+            "/molt/molt-replicator.html"
+          ]
+        },
+        {
+          "title": "Verify",
+          "urls": [
+            "/molt/molt-verify.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Third-Party Migration Tools",
+      "items": [
+        {
+          "title": "AWS DMS",
+          "urls": [
+            "/${VERSION}/aws-dms.html"
+          ]
+        },
+        {
+          "title": "Qlik Replicate",
+          "urls": [
+            "/${VERSION}/qlik.html"
+          ]
+        },
+        {
+          "title": "Striim",
+          "urls": [
+            "/${VERSION}/striim.html"
+          ]
+        },
+        {
+          "title": "Oracle GoldenGate",
+          "urls": [
+            "/${VERSION}/goldengate.html"
+          ]
+        },
+        {
+          "title": "Debezium",
+          "urls": [
+            "/${VERSION}/debezium.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Migrate Data Types",
+      "items": [
+        {
+          "title": "Migrate from CSV",
+          "urls": [
+            "/${VERSION}/migrate-from-csv.html"
+          ]
+        },
+        {
+          "title": "Migrate from Avro",
+          "urls": [
+            "/${VERSION}/migrate-from-avro.html"
+          ]
+        },
+        {
+          "title": "Migrate from Shapefiles",
+          "urls": [
+            "/${VERSION}/migrate-from-shapefiles.html"
+          ]
+        },
+        {
+          "title": "Migrate from OpenStreetMap",
+          "urls": [
+            "/${VERSION}/migrate-from-openstreetmap.html"
+          ]
+        },
+        {
+          "title": "Migrate from GeoJSON",
+          "urls": [
+            "/${VERSION}/migrate-from-geojson.html"
+          ]
+        },
+        {
+          "title": "Migrate from GeoPackage",
+          "urls": [
+            "/${VERSION}/migrate-from-geopackage.html"
+          ]
+        },
+        {
+          "title": "Import Performance Best Practices",
+          "urls": [
+            "/${VERSION}/import-performance-best-practices.html"
+          ]
+        }
+      ]
+    }
+  ]
+}
