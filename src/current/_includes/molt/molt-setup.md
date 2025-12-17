@@ -4,11 +4,6 @@
     <button class="filter-button" data-scope="oracle">Oracle</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="oracle">
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-</section>
 
 ## Before you begin
 
