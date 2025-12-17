@@ -148,10 +148,6 @@ Monitor the following metrics to track checkpoint progress:
 
 [Source read](#replication-pipeline) metrics track the health of connections to source databases and the volume of incoming changes.
 
-{{site.data.alerts.callout_info}}
-For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link molt/molt-replicator.md %}#terminology).
-{{site.data.alerts.end}}
-
 <section class="filter-content" markdown="1" data-scope="cockroachdb">
 #### CockroachDB source
 
@@ -197,6 +193,9 @@ To visualize the following metrics, import the [Oracle Grafana dashboard](https:
 - `oraclelogminer_delete_checkpoints_duration`
 	- Description: Amount of time taken to delete old checkpoints from the staging database.
 	- Interpretation: High values indicate staging database load or long-running transactions preventing checkpoint deletion.
+- `mutation_total`
+	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete). 
+    - Interpretation: Use to monitor replication throughput and identify traffic patterns.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
@@ -208,7 +207,7 @@ To visualize the following metrics, import the [Oracle Grafana dashboard](https:
 - `mylogical_dial_failure_total`
 	- Description: Number of times Replicator failed to start logical replication.
 	- Interpretation: Nonzero values indicate connection issues. Check network connectivity and source database health.
-- `mutations_total`
+- `mutation_total`
 	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete). 
     - Interpretation: Use to monitor replication throughput and identify traffic patterns.
 </section>
@@ -222,7 +221,7 @@ To visualize the following metrics, import the [Oracle Grafana dashboard](https:
 - `pglogical_dial_failure_total`
 	- Description: Number of times Replicator failed to start logical replication (failure to execute `START_REPLICATION` command).
 	- Interpretation: Nonzero values indicate connection issues. Check network connectivity and source database health.
-- `mutations_total`
+- `mutation_total`
 	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete).
     - Interpretation: Use to monitor replication throughput and identify traffic patterns.
 </section>
