@@ -11,8 +11,15 @@ module Jekyll
       parent_dir = File.expand_path('..', site.source)
 
       # Step 2: Construct the paths to versions.csv and releases.yml
+      # Try parent/current/_data first (standard layout), fall back to site.source/_data (Docker)
       versions_path = File.join(parent_dir, "current/_data/versions.csv")
       releases_path = File.join(parent_dir, "current/_data/releases.yml")
+
+      # Fall back to site.source if parent path doesn't exist (e.g., in Docker container)
+      unless File.exist?(versions_path)
+        versions_path = File.join(site.source, "_data/versions.csv")
+        releases_path = File.join(site.source, "_data/releases.yml")
+      end
 
       # Load versions and releases data
       versions_data = CSV.read(versions_path, headers: true)
