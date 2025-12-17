@@ -1,0 +1,1 @@
+[`DROP TRIGGER`]({% link {{ page.version.version }}/drop-trigger.md %}) with `CASCADE` is not supported. [#128151](https://github.com/cockroachdb/cockroach/issues/128151)

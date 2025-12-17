@@ -59,13 +59,17 @@ For the schema of each API response, refer to the [CockroachDB Cloud API referen
 
 To use PCR, it is necessary to set the `supports_cluster_virtualization` field to `true`. This setting enables cluster virtualization, which is the architecture that supports PCR. For details on supported cluster cloud provider and region setup, refer to the [prerequisites section](#before-you-begin).
 
+{{site.data.alerts.callout_info}}
+If you are creating clusters in AWS or Azure, you must start the primary and standby clusters in different regions.
+{{site.data.alerts.end}}
+
 1. Send a `POST` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams) to create the primary cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' \
     --header "Authorization: Bearer {api_secret_key}" \
-    --header 'Content-Type: application/json' \
+    --header "content-type: application/json" \
     --data '{
       "name": "{primary_cluster_name}", 
       "provider": "AWS", 
@@ -73,7 +77,8 @@ To use PCR, it is necessary to set the `supports_cluster_virtualization` field t
         "dedicated": {
           "cockroachVersion": "v25.2", 
           "hardware": {
-            "disk_iops": 0 "machine_spec": {
+            "disk_iops": 0,
+            "machine_spec": {
               "num_virtual_cpus": 4
             }, 
             "storage_gib": 16
@@ -100,7 +105,7 @@ Ensure that you replace each of the values for the cluster specification as per 
     ~~~ shell
     curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' \
     --header "Authorization: Bearer {api_secret_key}" \
-    --header 'Content-Type: application/json' \
+    --header "content-type: application/json" \
     --data '{
       "name": "{standby_cluster_name}", 
       "provider": "AWS", 
@@ -126,8 +131,6 @@ Replace:
 - `{api_secret_key}` with your API secret key.
 - `{standby_cluster_id}` with the cluster ID returned after creating the standby cluster.
 
-If you're creating clusters in AWS or Azure, you must start the primary and standby clusters in different regions.
-
 {{site.data.alerts.callout_success}}
 We recommend [enabling Prometheus metrics export]({% link cockroachcloud/export-metrics.md %}) on your cluster before starting a PCR stream. For details on metrics to track, refer to [Monitor the PCR stream](#step-3-monitor-the-pcr-stream).
 {{site.data.alerts.end}}
@@ -144,7 +147,7 @@ With the primary and standby clusters set up, you can now start a PCR stream.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request POST --url 'https://cockroachlabs.cloud/api/v1/physical-replication-streams' \
+curl --request POST --url https://cockroachlabs.cloud/api/v1/physical-replication-streams \
 --header "Authorization: Bearer {api_secret_key}" \
 --json '{
   "primary_cluster_id": "{primary_cluster_id}",
@@ -254,7 +257,7 @@ To fail over to the latest consistent time, you only need to include `"status": 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request PATCH --url "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
+curl --request PATCH --url https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id} \
 --header "Authorization: Bearer {api_secret_key}" \
 --json '{
   "status": "FAILING_OVER"

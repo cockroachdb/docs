@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Docs Home",
+    "is_top_level": true,
+    "urls": [
+      "/"
+    ]
+  },
+  {% include_cached v26.1/sidebar-data/get-started.json %},
+  {% include_cached v26.1/sidebar-data/releases.json %},
+  {% include_cached v26.1/sidebar-data/feature-overview.json %},
+  {% include_cached v26.1/sidebar-data/resilience.json %},
+  {% include_cached v26.1/sidebar-data/connect-to-cockroachdb.json %},
+  {% include_cached v26.1/sidebar-data/migrate.json %},
+  {% include_cached v26.1/sidebar-data/cloud-deployments.json %},
+  {% include_cached v26.1/sidebar-data/self-hosted-deployments.json %},
+  {% include_cached v26.1/sidebar-data/schema-design.json %},
+  {% include_cached v26.1/sidebar-data/reads-and-writes.json %},
+  {% include_cached v26.1/sidebar-data/stream-data.json %},
+  {% include_cached v26.1/sidebar-data/cross-cluster-replication.json %},
+  {% include_cached v26.1/sidebar-data/multi-region-capabilities.json %},
+  {% include_cached v26.1/sidebar-data/optimize-performance.json %},
+  {% include_cached v26.1/sidebar-data/troubleshooting.json %},
+  {% include_cached v26.1/sidebar-data/integrate.json %},
+  {% include_cached v26.1/sidebar-data/sql.json %},
+  {% include_cached v26.1/sidebar-data/reference.json %},
+  {% include_cached v26.1/sidebar-data/faqs.json %},
+  {% include_cached sidebar-data-cockroach-university.json %}
+]

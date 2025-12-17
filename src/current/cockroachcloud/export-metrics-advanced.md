@@ -80,7 +80,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq .account_id
+      --header "Authorization: Bearer {secret_key}" | jq .account_id
     ~~~
 
     Where:
