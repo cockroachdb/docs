@@ -1,0 +1,1 @@
+For details on the storage costs of managed backups, refer to the [Understand CockroachDB Cloud Costs]({% link "cockroachcloud/costs.md" %}#backups) page.

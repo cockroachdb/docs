@@ -1,0 +1,28 @@
+[
+  {
+    "title": "Docs Home",
+    "is_top_level": true,
+    "urls": [
+      "/"
+    ]
+  },
+  {% include "v26.1/sidebar-data/get-started.json" %},
+  {% include "v26.1/sidebar-data/releases.json" %},
+  {% include "v26.1/sidebar-data/feature-overview.json" %},
+  {% include "v26.1/sidebar-data/resilience.json" %},
+  {% include "v26.1/sidebar-data/connect-to-cockroachdb.json" %},
+  {% include "v26.1/sidebar-data/migrate.json" %},
+  {% include "v26.1/sidebar-data/cloud-deployments.json" %},
+  {% include "v26.1/sidebar-data/self-hosted-deployments.json" %},
+  {% include "v26.1/sidebar-data/schema-design.json" %},
+  {% include "v26.1/sidebar-data/reads-and-writes.json" %},
+  {% include "v26.1/sidebar-data/stream-data.json" %},
+  {% include "v26.1/sidebar-data/cross-cluster-replication.json" %},
+  {% include "v26.1/sidebar-data/multi-region-capabilities.json" %},
+  {% include "v26.1/sidebar-data/optimize-performance.json" %},
+  {% include "v26.1/sidebar-data/troubleshooting.json" %},
+  {% include "v26.1/sidebar-data/sql.json" %},
+  {% include "v26.1/sidebar-data/reference.json" %},
+  {% include "v26.1/sidebar-data/faqs.json" %},
+  {% include "sidebar-data-cockroach-university.json" %}
+]

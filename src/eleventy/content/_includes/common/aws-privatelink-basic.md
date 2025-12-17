@@ -1,0 +1,1 @@
+AWS PrivateLink is not available on CockroachDB {{ site.data.products.basic }}. For {{ site.data.products.basic }} clusters that were migrated from CockroachDB Serverless, existing [PrivateLink connections]({% link "cockroachcloud/aws-privatelink.md" %}) continue to work, but new PrivateLink connections cannot be added.

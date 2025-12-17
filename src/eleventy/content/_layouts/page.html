@@ -1,0 +1,74 @@
+---
+layout: default
+---
+<div class="cf-5329-area-16739"></div>
+
+{% unless page.homepage %}
+  {% if page.version %}
+    {% include "version-switcher.html" %}
+  {% endif %}
+{% endunless %}
+
+{% comment %} Show the version switcher only if 1) the current page has a version and 2) the current page isn't the home page of the docs. {% endcomment %}
+
+{% if page.homepage != true %}
+  {% assign post_header_class = "post-header mb-3" %}
+  {% unless page.homepage %}
+    {% unless page.version %}
+     {% assign post_header_class = post_header_class | append:  " mt-5" %}
+    {% endunless %}
+  {% endunless %}
+<div class="{{ post_header_class }}">
+<h1 class="post-title-main w-100">{{ page.title }}</h1>
+  {% unless page.contribute == false %}
+    {% assign toc_classes = 'd-block ' %}
+    {% unless page.toc == false %}
+      {% assign toc_classes = toc_classes | append: 'd-lg-none' %}
+    {% endunless %}
+    <div class="{{toc_classes}}">
+      {% include "contribute-options.html" %}
+    </div>
+  {% endunless %}
+</div>
+{% endif %}
+
+{% comment %} If the page supports it, show the contribution options. {% endcomment %}
+
+<div class="post-content">
+{% comment %}
+TOC LEVEL: By default, a page TOC includes h2 and h3 headers. To limit a
+page TOC to h2 headers only, set `toc_not_nested: true` in the page's
+front-matter.
+{% endcomment %}
+{% if page.toc %}
+  <div id="mobile-toc-toggler" class="d-inline-block d-lg-none mb-4">
+    On this page <span class="carat-arrow-down d-inline-flex"><img src="{{ '/images/carat-down-fill.svg' | relative_url }}" alt="Carat arrow pointing down"></span>
+  </div>
+  <div id="toc" class="d-none"></div>
+{% endif %}
+
+{{content}}
+
+ <!-- {% comment %} Hide feedback widget for all pages {% endcomment %} -->
+<!-- {% if page.feedback != false %}
+  {% include "feedback-widget-bottom.html" %}
+{% endif %} -->
+
+{% if page.docs_area %}
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+    'docsArea' : '{{ page.docs_area }}'
+  });
+  </script>
+{% endif %} {% comment %} Add JS to track docs area for reporting. {% endcomment %}
+{% if page.product_area %}
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+    'productArea': '{{ page.product_area }}'
+  });
+  </script>
+{% endif %} {% comment %} Add JS to track product area for reporting. {% endcomment %}
+
+</div>

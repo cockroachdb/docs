@@ -1,0 +1,5 @@
+---
+layout: none
+---
+
+{% include_file page.sidebar_data %}

@@ -1,0 +1,7 @@
+- {% dynamic_include page.version.version, "/sql/vector-batch-inserts.md" %}
+- Creating a vector index through a backfill disables mutations ([`INSERT`]({% link "{{ page.version.version }}/insert.md" %}), [`UPSERT`]({% link "{{ page.version.version }}/upsert.md" %}), [`UPDATE`]({% link "{{ page.version.version }}/update.md" %}), [`DELETE`]({% link "{{ page.version.version }}/delete.md" %})) on the table. [#144443](https://github.com/cockroachdb/cockroach/issues/144443)
+- `IMPORT INTO` is not supported on tables with vector indexes. You can import the vectors first and create the index after import is complete. [#145227](https://github.com/cockroachdb/cockroach/issues/145227)
+- Only L2 distance (`<->`) searches are accelerated. [#144016](https://github.com/cockroachdb/cockroach/issues/144016)
+- Index acceleration with filters is only supported if the filters match prefix columns. [#146145](https://github.com/cockroachdb/cockroach/issues/146145)
+- Index recommendations are not provided for vector indexes. [#146146](https://github.com/cockroachdb/cockroach/issues/146146)
+- Vector index queries may return incorrect results when the underlying table uses multiple column families. [#146046](https://github.com/cockroachdb/cockroach/issues/146046)

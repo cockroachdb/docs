@@ -1,0 +1,1 @@
+[`UNIQUE` indexes](create-index.html) created as part of a [`CREATE TABLE`](create-table.html) statement cannot be removed without using [`CASCADE`]({% unless page.name == "drop-index.md" %}drop-index.html{% endunless %}#remove-an-index-and-dependent-objects-with-cascade). Unique indexes created with [`CREATE INDEX`](create-index.html) do not have this limitation.

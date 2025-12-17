@@ -1,0 +1,6 @@
+{% capture critical %}
+  {% include "corestyle.scss" %}
+{% endcapture %}
+<style>
+  {{ critical | scssify }}
+</style>

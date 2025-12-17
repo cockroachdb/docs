@@ -1,0 +1,17 @@
+---
+layout: none
+---
+
+{% assign advisories = site.pages | where_exp: "advisories", "advisories.path contains 'advisories'" | where_exp: "advisories", "advisories.index != true" | where_exp: "advisories", "advisories.name != 'advisories.json'" %}
+{
+{%- for x in advisories %}
+    "{{ x.advisory }}":
+    {
+        "title": {{ x.title | jsonify }},
+        "summary": {{ x.summary | jsonify }},
+        "affected_versions": {{ x.affected_versions | jsonify }},
+        "advisory_date": {{ x.advisory_date | jsonify }},
+        "canonical": {{ x.canonical | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+{% endfor -%}
+}

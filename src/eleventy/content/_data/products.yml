@@ -1,0 +1,21 @@
+serverless: Serverless
+
+dedicated: Dedicated
+
+dedicated-advanced: Dedicated advanced
+
+core: self-hosted
+
+enterprise: Enterprise
+
+cloud: Cloud
+
+basic: Basic
+
+standard: Standard
+
+advanced: Advanced
+
+public-operator: Public operator
+
+cockroachdb-operator: CockroachDB operator

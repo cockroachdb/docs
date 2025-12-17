@@ -1,0 +1,37 @@
+{
+  "name": "cockroachdb-docs-eleventy",
+  "version": "1.0.0",
+  "description": "CockroachDB Documentation - Eleventy Build",
+  "main": ".eleventy.js",
+  "scripts": {
+    "dev": "DOCS_BASE_PATH='' eleventy --serve --port=4000",
+    "build": "NODE_ENV=production eleventy",
+    "build:quiet": "NODE_ENV=production eleventy --quiet",
+    "debug": "DEBUG=Eleventy* eleventy",
+    "clean": "rm -rf _site",
+    "migrate:links": "node lib/scripts/migrate-links.js",
+    "migrate:includes": "node lib/scripts/migrate-includes.js",
+    "migrate:remote-includes": "node lib/scripts/migrate-remote-includes.js",
+    "migrate:content": "bash lib/scripts/migrate-content.sh",
+    "migrate:all": "npm run migrate:links && npm run migrate:includes && npm run migrate:remote-includes"
+  },
+  "keywords": [
+    "cockroachdb",
+    "docs",
+    "eleventy",
+    "11ty"
+  ],
+  "author": "Cockroach Labs",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "@11ty/eleventy-fetch": "^5.1.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
+    "glob": "^13.0.0",
+    "js-yaml": "^4.1.1",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
+    "sass": "^1.97.0"
+  }
+}

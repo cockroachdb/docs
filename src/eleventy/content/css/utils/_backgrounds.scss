@@ -1,0 +1,14 @@
+.bg-cover {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    &__bg-3-1 {
+        background-image: url("https://cockroach-labs-docs.imgix.net/bg-3-1.png?auto=format,compress&w=1200&q=40");
+    }
+    &__bg-early-3-1 {
+        background-image: url("https://cockroach-labs-docs.imgix.net/bg-early-3-1.png?auto=format,compress&w=1200&q=40");
+    }
+    &__bg-gradient-purple-blue {
+        background: linear-gradient(90deg, #0037A5 0%, #6933FF 50.38%, #00FCED 100%);
+    }
+}

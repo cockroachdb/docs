@@ -1,0 +1,3 @@
+- [Cloud Upgrade Policy]({% link "cockroachcloud/upgrade-policy.md" %})
+- [{{ site.current_cloud_version }} Release Notes]({% link "releases/{{ site.current_cloud_version }}.md" %})
+- Release notes for [additional supported versions]({% link "cockroachcloud/upgrade-policy.md" %}#currently-supported-versions)

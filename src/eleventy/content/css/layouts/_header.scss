@@ -1,0 +1,430 @@
+body.menu_open {
+	overflow:hidden;
+
+	nav.mobile_expanded {
+		overflow-y:auto;
+		display: block;
+	}
+
+	header {
+		margin-left: -100vw;
+
+		nav.mobile {
+			.hamburger {
+
+				span {
+					&:nth-child(1), &:nth-child(4) {
+					  top: 8px;
+					  width: 0%;
+					  left: 50%;
+					}
+
+					&:nth-child(2) {
+					  @include rotate(45deg);
+					}
+
+					&:nth-child(3) {
+					  @include rotate(-45deg);
+					}
+				}
+			}
+		}
+	}
+
+	#content,
+	.col-sidebar,
+	#version-switcher {
+		margin-left: -100vw;
+		box-shadow: none;
+	}
+}
+
+nav.mobile_expanded {
+	position:fixed;
+	right:0;
+	top:0;
+	bottom: 0;
+	z-index:900;
+	width: 100vw;
+	overflow:auto;
+	display: none;
+
+	a:hover, a.current-menu-item {
+		color: $cl_green;
+	}
+	a.current-menu-item {
+		background:#efefef;
+	}
+
+	.mobile-nav {
+		&__link,
+		&__dropdown-label {
+			display: block;
+			color: $cl_blue;
+			@include type-button--uppercase;
+			@include groovy(color);
+			cursor: pointer;
+		}
+
+		&__link {
+			padding: 30px 0 30px 20px;
+			border-bottom: 1px solid #DADADA;
+		}
+	}
+
+	.mobile-subnav {
+		display: none;
+
+		&__section {
+			&:not(:last-child) {
+				margin-bottom: 30px;
+			}
+		}
+
+		&__label {
+			display: block;
+			margin: 20px 0 10px;
+			@include type-button--uppercase;
+			color: $cl_green;
+		}
+
+		&__link {
+			display: block;
+			margin-bottom: 10px;
+			color: $cl_blue;
+			@include type-caption;
+		}
+	}
+
+	.mobile-menu-dropdown {
+		width: 100%;
+		padding: 30px 0 30px 20px;
+		border-bottom: 1px solid $cl_gray_medium;
+
+		.blue-arrow {
+			display: block;
+			margin-top: 3px;
+			margin-right: 25px;
+			cursor: pointer;
+		}
+	}
+
+	.close-wrap {
+		height: 60px;
+		border-bottom: 1px solid #dadada;
+		padding: 15px 0 0 15px;
+	}
+
+	.hamburger {
+		position: absolute;
+		top: 0;
+		right: 4px;
+		width: 45px;
+		height: 45px;
+		margin-right:5px;
+		margin-top:5px;
+		@include rotate(0deg);
+		@include groovy(all);
+		cursor: pointer;
+
+		span {
+			display: block;
+			position: absolute;
+			background-color: $cl_blue;
+			@include rounded(4px);
+			height: 4px;
+			width: 20px;
+			opacity: 1;
+			left: 0; right: 0;
+			margin: 0 auto;
+			top: 50%;
+			transform: translateY(-50%);
+			@include rotate(0deg);
+			@include groovy(all);
+
+			&:nth-child(1), &:nth-child(4) {
+				top: 8px;
+				width: 0%;
+				left: 50%;
+			}
+
+			&:nth-child(2) {
+				@include rotate(45deg);
+			}
+
+			&:nth-child(3) {
+				@include rotate(-45deg);
+			}
+		}
+
+		&:hover {
+			border-color: $cl_blue;
+
+			.hamburger_inner {
+				border-color: $cl_blue;
+			}
+		}
+	}
+}
+
+.logo {
+	width: 180px;
+	margin-top: 3px;
+	float:left;
+	line-height: 20px;
+	font-size: 0;
+
+	@include at-query($screen-sm, $screen-md) {
+		line-height: 23px;
+	}
+
+	@include at-query($min, $screen-md) {
+		width: 209px;
+		margin-top: 3px;
+	}
+}
+
+// TODO: Cleanup may not be used, not un source or built site files
+header {
+	width:100%;
+	float:left;
+  padding: 15px;
+	background: #FFFFFF;
+	height: 60px;
+
+	@include at-query($min, $screen-md) {
+		// prevent 1px jump when we add border on scroll
+		border-bottom: 1px solid transparent;
+
+		.single-post & {
+			nav.desktop {
+				a.blog-nav {
+					color: $cl_green;
+					text-decoration: none;
+				}
+			}
+		}
+	}
+
+	// @include at-query($min, $screen-md) {
+	// 	height: 70px;
+	// }
+
+	&.navbar-fixed-top {
+		display: flex;
+		position: fixed;
+		justify-content: center;
+		border-bottom: 1px solid $cl_gray_medium;
+
+		@include at-query($min, $screen-md) {
+			border-bottom: unset;
+		}
+	}
+
+	&.scrolled {
+		background: #FFFFFF;
+		border-bottom: 1px solid $cl_gray_medium;
+	}
+
+	.navbar-fixed-top--inner {
+		width: 100%;
+		max-width: $max-width;
+	}
+
+	nav.mobile {
+		float:right;
+
+		@include at-query($min, $screen-md) {
+  		display: none;
+  	}
+
+  	.hamburger {
+  		width:21px;
+  		height: 20px;
+  		float:right;
+  		margin-top: 5px;
+  		position: relative;
+  		@include rotate(0deg);
+  	 	@include groovy(all);
+
+  	 	span {
+  	 		display: block;
+  	 		position: absolute;
+  	 		background-color: $cl_green;
+  	 		@include rounded(4px);
+  	 		height: 4px;
+  	 		width: 100%;
+  	 		opacity: 1;
+  	 		left: 0;
+  	 		@include rotate(0deg);
+  	 		@include groovy(all);
+
+  	 		&:nth-child(1) {
+		  		top: 0px;
+				}
+
+		 		&:nth-child(2), &:nth-child(3) {
+		  		top: 8px;
+				}
+
+		 		&:nth-child(4) {
+		  		top: 16px;
+				}
+			}
+		}
+	}
+
+	nav.desktop {
+		display: none;
+
+		@include at-query($min, $screen-md) {
+			display: inline-block;
+			float: right;
+		}
+
+		.desktop-menu {
+			&__item,
+			&__item-link {
+				float: left;
+				padding: 0;
+				@include type-button;
+				line-height: 45px;
+				text-transform: uppercase;
+				color: $cl_blue;
+				@include groovy(color);
+
+				&.current-menu-item,
+				&:hover {
+					color: $cl_green;
+					text-decoration: none;
+				}
+			}
+
+			&__item {
+				position: relative;
+
+				&:hover {
+					cursor: pointer;
+					color: $cl_green;
+
+					.desktop-menu__dropdown-container {
+						opacity: 1;
+						pointer-events: all;
+					}
+				}
+			}
+
+			&__item-link {
+				margin: 0 5px;
+				text-decoration: none;
+
+				@media (min-width: 1024px) {
+					margin: 0 10px;
+				}
+			}
+
+			&__dropdown-container {
+				display: flex;
+				position: absolute;
+				width: fit-content;
+				top: 40px;
+				left: 0px;
+				padding: 15px;
+				background-color: #ffffff;
+				border-radius: 5px;
+				@include cl-box-shadow--blue;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 0.4s ease;
+				z-index: 1;
+			}
+
+			&__subnav {
+				&-section {
+					width: fit-content;
+					margin: 0 15px;
+
+					&:not(:last-child) {
+						border-right: 1px solid $cl_gray_medium;
+					}
+
+					&--product {
+						min-width: 180px;
+					}
+
+					&--resources {
+						min-width: 150px;
+					}
+				}
+
+				&-label {
+					display: block;
+				}
+
+				&-link {
+					display: block;
+					@include type-button;
+					letter-spacing: 0;
+					line-height: 35px;
+					text-transform: none;
+					color: $cl_blue;
+
+					&:hover {
+						color: $cl_green;
+					}
+				}
+			}
+		}
+
+		.button--header {
+			@include at-query($min, $screen-sm) {
+				margin-right: 0;
+			}
+		}
+	}
+}
+
+.home-header {
+	height: auto;
+	@media (min-width: $screen-md){
+			
+	}
+	@include media-breakpoint-up(xl) {
+		height:405px;
+		.card-header-overlap {
+			min-height: 268px;
+		}
+		.card-header-overlap-text {
+			min-height: 250px;
+		}
+	}
+
+	@media (min-width: $screen-md){
+		margin-left: -3rem;
+		margin-right: -3rem;
+	}
+	background: linear-gradient(102.66deg, #37A806 33.41%, #0788FF 106.55%);
+}
+
+.card-link {
+	box-shadow: $box-shadow;
+	&:hover {
+		box-shadow: $box-shadow-lg;
+		transition: $transition-base;
+	}
+	a {
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+
+.bg-blackk-texture-logo {
+	background: url(https://cockroach-labs-docs.imgix.net/bg-black-texture-logo.png?auto=format,compress&q=40);
+    background-size: cover;
+}
+
+.bg-dark-wing {
+	background: url(https://cockroach-labs-docs.imgix.net/bg-dark-wing.png?auto=format,compress&q=40);
+    background-size: cover;
+}

@@ -1,0 +1,30 @@
+.scroll-to-top {
+  z-index: 1000;
+  position: absolute;
+  right: 15px;
+  bottom: auto;
+  display:none;
+  cursor: pointer;
+  opacity: 0;
+  @include groovy(opacity);
+
+  img {
+    width: 45px;
+    height: 45px;
+
+    @include at-query($min, $screen-md){
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  &.fixed {
+    position: fixed;
+    bottom: 225px;
+    top: auto;
+  }
+
+  &.loaded {
+    opacity: 1;
+  }
+}

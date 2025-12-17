@@ -1,0 +1,3 @@
+{{site.data.alerts.callout_info}}
+To determine how wide the columns need to be, the default `table` display format in `cockroach sql` buffers the results it receives from the server before printing them to the console. When consuming basic changefeed data using `cockroach sql`, it's important to use a display format like `csv` that does not buffer its results. To set the display format, use the [`--format=csv` flag]({% link "{{ page.version.version }}/cockroach-sql.md" %}#sql-flag-format) when starting the [built-in SQL client]({% link "{{ page.version.version }}/cockroach-sql.md" %}), or set the [`\set display_format=csv` option]({% link "{{ page.version.version }}/cockroach-sql.md" %}#client-side-options) once the SQL client is open.
+{{site.data.alerts.end}}

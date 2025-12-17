@@ -1,0 +1,68 @@
+<table>
+ <thead>
+  <tr>
+   <th class="center-align" colspan="1" rowspan="2">Feature</th>
+   <th class="center-align" colspan="5" rowspan="1">Availability</th>
+  </tr>
+  <tr>
+    <th colspan="1" rowspan="1">Ver.</th>
+    <th colspan="1" rowspan="1" style="white-space: nowrap;">Self-hosted</th>
+    <th colspan="1" rowspan="1">Advanced</th>
+    <th colspan="1" rowspan="1">Standard</th>
+    <th colspan="1" rowspan="1">Basic</th>
+   </tr>
+ </thead>
+ <tbody>
+  <tr>
+    <td>
+     <p class="feature-summary"><code>ALTER COLUMN TYPE</code> Now Generally Available</p>
+     <p class="feature-description">
+      <a href="https://www.cockroachlabs.com/docs/stable/alter-table#alter-column-data-types"><code>ALTER COLUMN TYPE</code></a> is now generally available (GA). This provides enhanced schema flexibility for your CockroachDB deployments. This release significantly expands the capabilities of <code>ALTER COLUMN TYPE</code> and simplifies its usage.
+
+      Key improvements include:
+      <ul>
+        <li>Seamless integration with virtual columns, allowing for more flexible schema modifications</li>
+        <li>Complete compatibility with default values, preserving your data consistency requirements</li>
+        <li>Simplified usage with no session variable requirements</li>
+      </ul>
+     </p>
+    </td>
+    <td>25.1</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+  </tr>
+  <tr>
+    <td>
+     <p class="feature-summary">Transactions Automatically Commit Before DDL Statements</p>
+     <p class="feature-description">
+      CockroachDB now automatically commits the current transaction before executing DDL statements. With this change, data definition language (DDL) statements now trigger an automatic commit of any preceding data manipulation language (DML) statements. This change eliminates common errors from mixing DDL and DML. The cluster setting <code>autocommit_before_ddl</code> enables this behavior and is set to <code>on</code> by default. To disable this behavior run <code>ALTER ROLE ALL SET autocommit_before_ddl = off;</code>. See the <a href="https://www.cockroachlabs.com/docs/releases/v25.1#v25-1-0-backward-incompatible-changes">backward incompatible changes</a> section for additional information.
+     </p>
+    </td>
+    <td>25.1</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+  </tr>
+  <tr>
+    <td>
+     <p class="feature-summary">Improvements to Stored Procedures and User Defined Functions (UDFs)</p>
+     <p class="feature-description">
+      Expanded support for <a href="https://www.cockroachlabs.com/docs/v25.1/stored-procedures.html">stored procedures</a>, <a href="https://www.cockroachlabs.com/docs/v25.1/user-defined-functions.html">user-defined functions</a>, and <a href="https://www.cockroachlabs.com/docs/v25.1/plpgsql.html">PL/pgSQL</a> blocks. This release introduces several features that enhance your ability to write complex database logic. The changes include:
+      <ul>
+        <li>Support for <a href="https://www.cockroachlabs.com/docs/v25.1/common-table-expressions.html">Common Table Expressions (<code>WITH</code> queries)</a> within stored procedures and user-defined functions (UDFs)</li>        
+        <li>Support for <a href="https://www.cockroachlabs.com/docs/dev/create-function#create-a-function-that-returns-a-table"><code>RETURNS TABLE</code></a> in SQL-language UDFs</li>
+        <li>Support for <a href="https://www.cockroachlabs.com/docs/v25.1/do"><code>DO</code></a>statements (anonymous code blocks) written in PL/pgSQL</li>
+      </ul>
+     </p>
+    </td>
+    <td>25.1</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+  </tr>
+ </tbody>
+</table>

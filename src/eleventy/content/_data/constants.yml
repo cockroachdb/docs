@@ -1,0 +1,13 @@
+cockroach_range_lease_duration: 6s
+cockroach_range_lease_acquisition_timeout: 4s
+
+cockroach_network_timeout: 2s
+cockroach_network_connection_timeout: 4s
+
+cockroach_network_client_ping_interval: 1s
+cockroach_network_client_ping_timeout: 6s
+
+cockroach_raft_election_timeout_ticks: 4
+cockroach_raft_reproposal_timeout_ticks: 6
+
+cockroach_raft_tick_interval: 500ms

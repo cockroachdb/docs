@@ -1,0 +1,56 @@
+@namespace"http://www.w3.org/2000/svg";
+.line {
+    fill: none;
+    stroke: #262626;
+}
+.bold-line {
+    stroke: #0A0A0A;
+    shape-rendering: crispEdges;
+    stroke-width: 2;
+}
+.thin-line {
+    stroke: #0F0F0F;
+    shape-rendering: crispEdges
+}
+.filled {
+    fill: #262626;
+    stroke: none;
+}
+text.terminal {
+    font-family: Verdana, Sans-serif;
+    font-size: 12px;
+    fill: #0A0A0A;
+    font-weight: bold;
+}
+text.nonterminal {
+    font-family: Verdana, Sans-serif;
+    font-size: 12px;
+    fill: $dark-blue;
+}
+text.regexp {
+    font-family: Verdana, Sans-serif;
+    font-size: 12px;
+    fill: #0F0F0F;
+}
+rect,
+circle,
+polygon {
+    fill: #262626;
+    stroke: #262626;
+}
+rect.terminal {
+    fill: #ffffff;
+    stroke: #262626;
+}
+rect.nonterminal {
+    fill: #FFFFFF;
+    stroke: #262626;
+}
+rect.text {
+    fill: none;
+    stroke: none;
+}
+polygon.regexp {
+    fill: #FFFFFF;
+    stroke: #262626;
+}

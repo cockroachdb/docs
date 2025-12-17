@@ -1,0 +1,136 @@
+---
+title: Public Kubernetes Operator Releases
+summary: Changelog for the Kubernetes Operator for CockroachDB
+toc: true
+docs_area: releases
+---
+
+{% capture latest_operator_version %}{% include "latest_operator_version.md" %}{% endcapture %}
+
+The [Public Kubernetes operator](https://www.cockroachlabs.com/docs/stable/kubernetes-overview) allows you to configure, deploy, and manage CockroachDB {{ site.data.products.core }} clusters on Kubernetes. The {{ site.data.products.public-operator }} is released on a separate schedule and is versioned independently from CockroachDB. To learn more about different approaches to deploy CockroachDB using Kubernetes, refer to [Kubernetes Overview](https://www.cockroachlabs.com/docs/stable/kubernetes-overview).
+
+{% dynamic_include site.versions.stable, "/cockroachdb-operator-recommendation.md" %}
+
+This page announces releases of the {{ site.data.products.public-operator }} and provides links to more information on GitHub. **Version {{ latest_operator_version }} is the latest release**.
+
+In addition to monitoring this page, you can subscribe to be notified about releases to the public. Visit the [{{ site.data.products.public-operator }} source code repository](https://github.com/cockroachdb/cockroach-operator) and click **Watch**.
+
+{{site.data.alerts.callout_success}}
+If you already use the [Helm](https://helm.sh/) package manager to manage your Kubernetes infrastructure, you can manage CockroachDB {{ site.data.products.core }} clusters by using the [public Helm chart](https://github.com/cockroachdb/helm-charts/tree/master/cockroachdb) instead of using the {{ site.data.products.public-operator }}. The Helm chart does not use the {{ site.data.products.public-operator }}, and there is no automated way to migrate from one method to the other.
+
+To be notified about updates to the Helm chart, visit the [public Helm chart source code repository](https://github.com/cockroachdb/helm-charts/tree/master/cockroachdb) and click **Watch**.
+{{site.data.alerts.end}}
+
+{% comment %} Copy the top section below and bump the variable {% endcomment %}
+
+## April 16, 2024
+
+{% assign operator_version = "2.14.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## March 12, 2024
+
+{% assign operator_version = "2.13.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## October 12, 2023
+
+{% assign operator_version = "2.12.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## July 25, 2023
+
+{% assign operator_version = "2.11.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## January 19, 2023
+
+{% assign operator_version = "2.10.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## December 16, 2022
+
+{% assign operator_version = "2.9.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## July 13, 2022
+
+{% assign operator_version = "2.8.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## May 26, 2022
+
+{% assign operator_version = "2.7.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## April 14, 2022
+
+{% assign operator_version = "2.6.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## January 7, 2022
+
+{% assign operator_version = "2.5.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## November 8, 2021
+
+{% assign operator_version = "2.4.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## October 19, 2021
+
+{% assign operator_version = "2.3.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## October 5, 2021
+
+{% assign operator_version = "2.2.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
+## August 27, 2021
+
+{% assign operator_version = "2.1.0" %}
+{{ site.data.products.public-operator }} {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})

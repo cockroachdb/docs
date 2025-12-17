@@ -1,0 +1,5 @@
+- Physical cluster replication is supported only on CockroachDB {{ site.data.products.core }} in new v23.2 clusters and later. Physical Cluster Replication cannot be enabled on clusters that have been upgraded from a version of CockroachDB earlier than v23.2.
+- Read queries are not supported on the standby cluster before [cutover]({% link "{{ page.version.version }}/cutover-replication.md" %}).
+- The primary and standby clusters must have the same [zone configurations]({% link "{{ page.version.version }}/configure-replication-zones.md" %}).
+- Before cutover to the standby, the standby cluster does not support running [backups]({% link "{{ page.version.version }}/backup-and-restore-overview.md" %}) or [changefeeds]({% link "{{ page.version.version }}/change-data-capture-overview.md" %}).
+- After a cutover, there is no mechanism to stop applications from connecting to the original primary cluster. It is necessary to redirect application traffic manually, such as by using a network load balancer or adjusting DNS records.

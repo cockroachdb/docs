@@ -1,0 +1,7 @@
+---
+layout: none
+---
+
+{
+    "current_cloud_version": {{ site.current_cloud_version | jsonify }}
+}

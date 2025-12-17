@@ -1,0 +1,4 @@
+{
+  "layout": "page.html",
+  "permalink": "{{ page.filePathStem }}.html"
+}

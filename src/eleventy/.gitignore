@@ -1,0 +1,17 @@
+# Build output
+_site/
+
+# Dependencies
+node_modules/
+
+# Eleventy Fetch cache (remote content)
+.cache/
+
+# OS files
+.DS_Store
+
+# Editor files
+*.swp
+*.swo
+.idea/
+.vscode/

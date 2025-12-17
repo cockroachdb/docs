@@ -1,0 +1,159 @@
+// responsive breakpoints
+$screen-xsm: 544px;
+$screen-sm:  767px;
+$screen-md:  992px;
+$screen-lg:  1200px;
+
+// layout
+$max-width: 1600px;
+$max-plus-gutters: 1590px;
+
+// Marketing
+$electric-purple: #6933FF;
+$dark-blue: #0055FF;
+$shallow-end: #c5faed4d;
+$aquamarine: #3DEFC4;
+$spanish-roast: #190F33;
+$border-radius: 5px;
+
+$winters-day: rgba(222, 247, 255, .60);
+$cherenkov-radiation: #24CAFF;
+
+$neutral-100: #F5F7FA;
+$neutral-200: #E7ECF3;
+$neutral-300: #D6DBE7;
+$neutral-400: #C0C6D9;
+$neutral-500: #7E89A9;
+$neutral-600: #475872;
+$neutral-700: #394455;
+$neutral-800: #242A35;
+$neutral-900: #060C12;
+$black:  #000;
+
+$ice-temple: #1BF8EC;
+
+// base colors
+$cl_green: #54B30E;
+$cl_green_dark: #338C03;
+$cl_green_bright: #69CC00;
+$cl_green_light: #F0FFE8;
+$cl_blue: #152849;
+$cl_blue_dark: #111D39;
+$cl_blue_pale: $winters-day;
+$cl_blue_note: $cherenkov-radiation;
+$cl_gray: #A2A2A2;
+$cl_gray_dark: #333333;
+$cl_gray_medium: #DADADA;
+$cl_gray_light: #F3F3F3;
+$cl_gray_body: #142848;
+$cl_gray_footer: $neutral-100;
+$cl_warning: #FF7595;
+$cl_warning_light: rgba(255, 227, 234, .60);;
+
+$blue-100: #E0EEFB;
+$blue-200: #74BDFD;
+$blue-300: #0788FF;
+$blue-400: #0788FF;
+$blue-500: #00294D;
+ 
+// syntax highlighting colors
+$cl_syntax_aqua: #1bf8ec;
+$cl_syntax_blue: $blue-200;
+$cl_syntax_gray: #A2A2A2;
+$cl_syntax_gray_light: #F7F7F7;
+$cl_syntax_green: $cl_green_bright;
+$cl_syntax_green_link: #54B30E;
+$cl_syntax_pink: #fc95ad;
+$cl_syntax_purple: #CEC0F2;
+$cl_syntax_purple_dark: #190f33;
+$cl_syntax_red: #ff4136;
+
+// 2020 styles
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+) !default;
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1600px
+);
+
+$grid-gutter-width: 24px;
+
+
+$white:  #fff;
+
+
+
+$grays: (
+  "100": $neutral-100,
+  "200": $neutral-200,
+  "300": $neutral-300,
+  "400": $neutral-400,
+  "500": $neutral-500,
+  "600": $neutral-600,
+  "700": $neutral-700,
+  "800": $neutral-800,
+  "900": $neutral-900
+);
+
+$purple-200: #6933FF;
+$purple-300: #542ABD;
+
+$theme-colors: (
+  "primary": $electric-purple,
+  "danger": #ff4136,
+  "electric-purple": $purple-200,
+  "black": $black,
+  "ice-temple": $ice-temple
+);
+
+$secondary: $neutral-400;
+$body-color: #242A35;
+$green-new: #B4F1AA;
+$green-3: #37A806;
+$green-4: #237300;
+$red-1: #FFE5E8;
+$red-3: #C32534;
+
+$border-color: $neutral-300;
+$border-radius: 5px;
+$border-radius-lg: 6px;
+
+$input-btn-padding-y:         0.50rem;
+$input-btn-padding-x:         1rem;
+
+$input-btn-padding-y-sm:      3px;
+$input-btn-padding-x-sm:      14px;
+
+$btn-padding-y-sm: $input-btn-padding-y-sm;
+$btn-padding-x-sm: $input-btn-padding-x-sm;
+$input-btn-focus-width: 3px;
+
+$input-btn-focus-color:       rgba($electric-purple, .25) !default;
+$input-btn-focus-box-shadow:  0 0 0 $input-btn-focus-width $input-btn-focus-color !default;
+
+$line-height-base: 1.725;
+$link-color: $dark-blue;
+$link-hover-color: $dark-blue;
+
+$box-shadow:  0px 7px 13px rgba($neutral-600, 0.301);
+$box-shadow-lg: 0px 12px 24px rgba($neutral-600, 0.54);
+
+$font-weight-bold: 600;
+$font-family-sans-serif: 'Source Sans Pro';
+
+$navbar-light-color: #000;
+$navbar-light-brand-color: #000;
+
+$spacer: 1rem;
+$spacers: (
+  45: $spacer * 1.875 // 30px
+);

@@ -1,0 +1,94 @@
+<table>
+ <thead>
+  <tr>
+   <th class="center-align" colspan="1" rowspan="2">Feature</th>
+   <th class="center-align" colspan="5" rowspan="1">Availability</th>
+  </tr>
+  <tr>
+    <th colspan="1" rowspan="1">Ver.</th>
+    <th colspan="1" rowspan="1" style="white-space: nowrap;">Self-hosted</th>
+    <th colspan="1" rowspan="1">Advanced</th>
+    <th colspan="1" rowspan="1">Standard</th>
+    <th colspan="1" rowspan="1">Basic</th>
+   </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    <p class="feature-summary">Improved usability for the DB Console Metrics page</p>
+    <p class="feature-description">
+      Introduced several enhancements to the DB Console Metrics page to support large scale clusters, including the following:
+      <ul>
+        <li>
+          <p class="feature-description">
+          Added on-hover cursor support that will display the closest time-series value and highlight the node in the legend to allow users to quickly pinpoint outliers.
+          </p>
+        </li>
+        <li>
+          <p class="feature-description">
+          Improved legend visibillity and made legends scrollable to improve usability and reduce vertical scrolling.
+          </p>
+        </li>
+      </ul>
+    </p>
+   </td>
+   <td>24.3</td>
+   <td class="icon-center">{% include "icon-yes.html" %}</td>
+   <td class="icon-center">{% include "icon-yes.html" %}</td>
+   <td class="icon-center">{% include "icon-no.html" %}</td>
+   <td class="icon-center">{% include "icon-no.html" %}</td>
+  </tr>
+  <tr>
+    <td>
+     <p class="feature-summary">Improved peformance and scalability for the DB Console Databases pages</p>
+     <p class="feature-description">
+      CockroachDB now caches the data that is surfaced in the Databases page. This enhances the performance and scalability of the Databases page for large-scale clusters. 
+     </p>
+    </td>
+    <td>24.3</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-no.html" %}</td>
+    <td class="icon-center">{% include "icon-no.html" %}</td>
+   </tr>
+   <tr>
+    <td>
+      <p class="feature-summary">Improved admission control observability</p> 
+    <p class="feature-description">
+      The DB Console Overload page now provides additional metrics to help identify overload in the system. Graphs and metrics on this page provide quick signals on which resource is exhausted and whether it is due to background activity or foreground. 
+      </p>
+      <p class="feature-description">
+      There are now 4 graphs for admission queue delay:
+      </p>
+      <ol>
+        <li>
+          <p class="feature-description">
+            Foreground (regular) CPU work
+          </p>
+        </li>
+        <li>
+          <p class="feature-description">
+            Store (IO) work
+          </p>
+        </li>
+        <li>
+          <p class="feature-description">
+            Background (elastic) CPU work
+          </p>
+        </li>
+        <li>
+          <p class="feature-description">
+            Replication admission control (store overload on replicas)
+          </p>
+        </li>
+      </ol>
+    </p>
+    </td>
+    <td>24.3</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-yes.html" %}</td>
+    <td class="icon-center">{% include "icon-no.html" %}</td>
+    <td class="icon-center">{% include "icon-no.html" %}</td>
+   </tr>
+ </tbody>
+</table>

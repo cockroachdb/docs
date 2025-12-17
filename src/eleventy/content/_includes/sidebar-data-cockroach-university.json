@@ -1,0 +1,7 @@
+{
+  "title": "Online Courses",
+  "is_top_level": true,
+  "urls": [
+    "https://www.cockroachlabs.com/cockroach-university/"
+  ]
+}

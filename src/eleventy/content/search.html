@@ -1,0 +1,203 @@
+---
+title: Search results
+summary: Search results for CockroachDB documentation.
+toc: false
+contribute: false
+docs_area: search
+---
+
+<div id="search-refinements"></div>
+<div id="search-stats"></div>
+<div id="search-hits"></div>
+<div id="search-pages"></div>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.14.3/dist/algoliasearch-lite.umd.js" integrity="sha256-dyJcbGuYfdzNfifkHxYVd/rzeR6SLLcDFYEidcybldM=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.50.1/dist/instantsearch.production.min.js" integrity="sha256-xtz5Q60cdtw/7BDkzWiTgCXLvwLrUqlKqegFqvNHiNM=" crossorigin="anonymous"></script>
+<script>
+  const htmlEncode = (text) => {
+    let div = document.createElement("div");
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+  };
+
+  const queryString = (function() {
+    // This function is anonymous, is executed immediately and
+    // the return value is assigned to QueryString!
+    const query_string = {};
+    const query = window.location.search.substring(1);
+    const vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+      const pair = vars[i].split("=");
+      // If first entry with this name
+      if (typeof query_string[pair[0]] === "undefined") {
+        query_string[pair[0]] = decodeURIComponent(pair[1]);
+        // If second entry with this name
+      } else if (typeof query_string[pair[0]] === "string") {
+        const arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
+        query_string[pair[0]] = arr;
+        // If third or later entry with this name
+      } else {
+        query_string[pair[0]].push(decodeURIComponent(pair[1]));
+      }
+    }
+    return htmlEncode((query_string.query || "").replace(/\+/g, " "));
+  })();
+
+  const router = instantsearch.routers.history({
+    windowTitle({ category, query }) {
+      const queryTitle = query ? `Results for "${query}"` : "Search";
+      return queryTitle;
+    },
+
+    createURL({ qsModule, routeState, location }) {
+      const urlParts = location.href.match(/^(.*?)\/search/);
+      const baseUrl = `${urlParts ? urlParts[1] : ""}/`;
+
+      const queryParameters = {};
+      const { query = "", page } = qsModule.parse(location.search.slice(1));
+      queryParameters.query = query;
+
+      if (page !== 1) {
+        queryParameters.page = routeState.page;
+      }
+
+      const queryString = qsModule.stringify(queryParameters, {
+        addQueryPrefix: true,
+        arrayFormat: "repeat"
+      });
+
+      return `${baseUrl}search${queryString}`;
+    },
+
+    parseURL({ qsModule, location }) {
+      const pathnameMatches = location.pathname.match(/search\/(.*?)\/?$/);
+      const { query = "", page } = qsModule.parse(location.search.slice(1));
+
+      return {
+        query,
+        page
+      };
+    }
+  });
+
+  const stateMapping = {
+    stateToRoute(uiState) {
+      return {
+        query: uiState["{{site.algolia.index_name}}"].query,
+        page: uiState["{{site.algolia.index_name}}"].page
+      };
+    },
+
+    routeToState(routeState) {
+      return {
+        // eslint-disable-next-line camelcase
+        "{{site.algolia.index_name}}": {
+          query: routeState.query,
+          page: routeState.page
+        }
+      };
+    }
+  };
+
+  $("#search-input").val(queryString);
+  const searchClient = algoliasearch(
+    "{{site.algolia.application_id}}",
+    "{{site.algolia.search_api_key}}"
+  );
+
+  const search = instantsearch({
+    indexName: "{{site.algolia.index_name}}",
+    routing: {
+      router,
+      stateMapping
+    },
+    searchClient
+  });
+
+  const addToResultsIfPresent = (match) => {
+    if(match && match.matchLevel && match.matchLevel !== 'none' && match.value) {
+      return (match.value || '') + '<br>';
+    }
+    return '';
+  }
+
+  const showResult = ({content, tags, title, html}) => {
+    if(content && content.value) {
+      return content.value
+    }
+    return addToResultsIfPresent(title) + addToResultsIfPresent(tags);
+  }
+
+  // Create the render function
+  const renderHits = (renderOptions, isFirstRender) => {
+    const { hits, widgetParams } = renderOptions;
+    var div = $("<div/>");
+    let results = "";
+    if (hits.length) {
+      results = hits
+        .map(
+          hit =>
+            `<div class="search-item">
+          <div class="search-title">
+            <a href="${hit.url}">${hit.title}</a>
+          </div>
+          <div class="search-snippet">${showResult(hit._highlightResult)}</div>
+          <div class="search-link">${hit.doc_type}</div>
+        </div>`
+        )
+        .join("");
+    } else {
+      results = "<p>No results.</p>";
+    }
+    widgetParams.container.innerHTML = results;
+  };
+
+  // Create the custom widget
+  const customHits = instantsearch.connectors.connectHits(renderHits);
+
+  search.addWidgets([
+  instantsearch.widgets.refinementList({
+      container: document.querySelector("#search-refinements"),
+      attribute: 'version',
+      operator: 'or',
+      showMore: true,
+      searchable: true,
+      searchablePlaceholder: 'Search docs area'
+    }),
+    customHits({
+      container: document.querySelector("#search-hits")
+    }),
+    instantsearch.widgets.stats({
+      container: "#search-stats",
+      templates: {
+        text(data) {
+          let count = "";
+          if (data.hasManyResults) {
+            count += `${data.nbHits} results`;
+          } else if (data.hasOneResult) {
+            count += `1 result`;
+          } else {
+            count += `no result`;
+          }
+          return `${count} found for ‘${queryString}’`;
+        }
+      }
+    }),
+    instantsearch.widgets.pagination({
+      container: "#search-pages",
+      padding: 2,
+      showFirst: false,
+      showLast: false,
+      templates: {
+        previous: '<span class="fas fa-chevron-left" />',
+        next: '<span class="fas fa-chevron-right" />'
+      }
+    }),
+    instantsearch.widgets.configure({
+      hitsPerPage: 10,
+      query: queryString
+    })
+  ]);
+
+  // Starting the search
+  search.start();
+</script>

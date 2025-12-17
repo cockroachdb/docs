@@ -1,0 +1,39 @@
+.release-table {
+    thead {
+        td {
+            font-weight: bold;
+        }
+    }
+    .fa {
+        margin-right: 2px;
+    }
+
+    .latest {
+        background-color: $neutral-100;
+    }
+
+    // .badge {
+    //     background-color: #4eb21d;
+    //     font-size: 10px;
+    //     text-transform: uppercase;
+    //     vertical-align: middle;
+    // }
+
+    .badge-gray {
+        background-color: #959797;
+    }
+
+    .os-release-link {
+        margin-right: 20px;
+    }
+
+    .os-release-link:last-child {
+        margin-right: 0;
+    }
+
+    .os-release-cell {
+        padding-left: 30px;
+        padding-right: 30px;
+        white-space: nowrap;
+    }
+}

@@ -1,0 +1,1 @@
+For an overview of the messages emitted from changefeeds, see the [Changefeed Messages](changefeed-messages.html) page.

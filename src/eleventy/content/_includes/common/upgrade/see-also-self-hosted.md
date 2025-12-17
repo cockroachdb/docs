@@ -1,0 +1,4 @@
+- [Release Support Policy]({% link "releases/release-support-policy.md" %})
+- [Collect Debug Information]({% link "{{ page.version.version }}/cockroach-debug-zip.md" %})
+- [View Version Details]({% link "{{ page.version.version }}/cockroach-version.md" %})
+- [{{ page.version.version }} Release Notes]({% link "releases/{{page.version.version}}.md" %})

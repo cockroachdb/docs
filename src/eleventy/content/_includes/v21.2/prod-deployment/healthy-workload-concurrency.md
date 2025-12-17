@@ -1,0 +1,1 @@
+**Expected values for a healthy cluster**: At any time, the total number of actively executing SQL statements should not exceed 4 times the number of vCPUs in the cluster. For more details, see [Sizing connection pools](connection-pooling.html#sizing-connection-pools).

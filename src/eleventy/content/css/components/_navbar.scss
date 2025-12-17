@@ -1,0 +1,9 @@
+.navbar {
+    // height: 50px;
+    &-footer {
+        height: auto;
+        .nav-item {
+            padding: 0;
+        }
+    }
+}
