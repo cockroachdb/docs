@@ -391,7 +391,7 @@ layers:
       unit: COUNT
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
-      how_to_use: This metric is a high-level indicator of workload and application degradation with query failures. Use the Insights page to find failed executions with their error code to troubleshoot or use application-level logs, if instrumented, to determine the cause of error. CockroachDB Cloud uses a `managed-sql-prober` service account that automatically runs example queries to test SQL statement execution, so there may be errors created if this service account is not authorized.
+      how_to_use: This metric is a high-level indicator of workload and application degradation with query failures. Use the Insights page to find failed executions with their error code to troubleshoot or use application-level logs, if instrumented, to determine the cause of error.
       essential: true
     - name: sql.failure.count.internal
       exported_name: sql_failure_count_internal
