@@ -153,7 +153,15 @@ module.exports = function(eleventyConfig) {
     const varPattern = /\{\{\s*([^}]+)\s*\}\}/g;
     return str.replace(varPattern, (match, varPath) => {
       const parts = varPath.trim().split('.');
-      const resolved = ctx.get(parts);
+      let resolved = ctx.get(parts);
+
+      // Jekyll compatibility: page.version.version -> version.version
+      // In Jekyll, version data was at page.version, but in Eleventy it's at version directly
+      if (resolved === undefined && parts[0] === 'page' && parts[1] === 'version') {
+        // Try without the 'page' prefix
+        resolved = ctx.get(parts.slice(1));
+      }
+
       return resolved !== undefined ? resolved : '';
     });
   }
@@ -211,12 +219,24 @@ module.exports = function(eleventyConfig) {
       }
 
       const params = {};
-      const paramPattern = /(\w+)\s*[=:]\s*(?:"([^"]*)"|'([^']*)'|(\S+))/g;
+      // Parse key: value or key=value pairs, stopping at comma or end
+      // Match: word, colon/equals, then quoted string or unquoted value (stopping at comma/space)
+      const paramPattern = /(\w+)\s*[=:]\s*(?:"([^"]*)"|'([^']*)'|([^\s,]+))/g;
       let match;
-      while ((match = paramPattern.exec(pathMatch[2] || '')) !== null) {
+      const paramStr = (pathMatch[2] || '').replace(/^,\s*/, ''); // Remove leading comma if present
+      while ((match = paramPattern.exec(paramStr)) !== null) {
         const key = match[1], value = match[2] || match[3] || match[4];
-        params[key] = (value && !value.startsWith('"') && !value.startsWith("'"))
-          ? (ctx.get(value.split('.')) ?? value) : value;
+        if (value && !value.startsWith('"') && !value.startsWith("'")) {
+          const parts = value.split('.');
+          let resolved = ctx.get(parts);
+          // Jekyll compatibility: page.version.version -> version.version
+          if (resolved === undefined && parts[0] === 'page' && parts[1] === 'version') {
+            resolved = ctx.get(parts.slice(1));
+          }
+          params[key] = resolved !== undefined ? resolved : value;
+        } else {
+          params[key] = value;
+        }
       }
       const fullPath = pathModule.join(__dirname, 'content', '_includes', filePath);
       if (fs.existsSync(fullPath)) {
@@ -251,12 +271,24 @@ module.exports = function(eleventyConfig) {
       }
 
       const params = {};
-      const paramPattern = /(\w+)\s*[=:]\s*(?:"([^"]*)"|'([^']*)'|(\S+))/g;
+      // Parse key: value or key=value pairs, stopping at comma or end
+      // Match: word, colon/equals, then quoted string or unquoted value (stopping at comma/space)
+      const paramPattern = /(\w+)\s*[=:]\s*(?:"([^"]*)"|'([^']*)'|([^\s,]+))/g;
       let match;
-      while ((match = paramPattern.exec(pathMatch[2] || '')) !== null) {
+      const paramStr = (pathMatch[2] || '').replace(/^,\s*/, ''); // Remove leading comma if present
+      while ((match = paramPattern.exec(paramStr)) !== null) {
         const key = match[1], value = match[2] || match[3] || match[4];
-        params[key] = (value && !value.startsWith('"') && !value.startsWith("'"))
-          ? (ctx.get(value.split('.')) ?? value) : value;
+        if (value && !value.startsWith('"') && !value.startsWith("'")) {
+          const parts = value.split('.');
+          let resolved = ctx.get(parts);
+          // Jekyll compatibility: page.version.version -> version.version
+          if (resolved === undefined && parts[0] === 'page' && parts[1] === 'version') {
+            resolved = ctx.get(parts.slice(1));
+          }
+          params[key] = resolved !== undefined ? resolved : value;
+        } else {
+          params[key] = value;
+        }
       }
       const fullPath = pathModule.join(__dirname, 'content', '_includes', filePath);
       if (fs.existsSync(fullPath)) {

@@ -42,7 +42,7 @@ Example 2:
 {%- assign baseurl = page_filenames[x] -%}
 {%- else -%}
 {%- assign url = "/" | append: include.page_folder | append: "/" | append: page_filenames[x] -%}
-{%- assign baseurl = "/docs" | append: url -%}
+{%- assign baseurl = site.baseurl | append: url -%}
 {%- endif -%}
 <a{% if external == "true" %} class="external" target="_blank" rel="noopener"{% endif %} href="{{ baseurl }}"><button class="filter-button{% if url == page.url %} current{% endif %}">{{ tab_names[x] }}</button></a>
 {%- endfor -%}
