@@ -24,6 +24,14 @@ CockroachDB [does not support schema changes within explicit transactions](#sche
 Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+When the [`schema_locked` table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#storage-parameter-schema-locked) is set to `true`, CockroachDB rejects any schema change statements that target the table.  
+<br><br>
+The [`create_table_with_schema_locked` session variable]({% link {{ page.version.version }}/set-vars.md %}#create_table_with_schema_locked) (enabled by default in v26.1) automatically sets this storage parameter on every table created in the session.  
+<br><br>
+Use these features to guarantee that no concurrent schema change is running, which can significantly improve [changefeed]({% link {{ page.version.version }}/change-data-capture-overview.md %}) commit-to-emit latency.  
+{{site.data.alerts.end}}
+
 ## How online schema changes work
 
 At a high level, online schema changes are accomplished by using a bridging strategy involving concurrent uses of multiple versions of the schema. The process is as follows:
