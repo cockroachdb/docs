@@ -72,14 +72,13 @@ By default, major-version upgrades are automatically applied to CockroachDB {{ s
 When automatic upgrades are enabled and a new major version is available for CockroachDB {{ site.data.products.standard }}:
 
 - The cluster is automatically upgraded by Cockroach Labs to an early production patch release of the new major version, for example `vXX.Y.1`.
-- Each major version, whether a Regular release or Innovation release, is included.
+- Standard clusters are upgraded only to Regular releases.
 - Each upgrade is finalized immediately, so it is not possible to roll back to the previous major version.
 
 When manual upgrades are enabled and a new major version is available for CockroachDB {{ site.data.products.standard }}:
 
 - You will need to [manually upgrade the cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) during its support window, to maintain support.
 - Once the initial production patch release for the new major version is made available to CockroachDB {{ site.data.products.standard }}, you can upgrade at any time to the latest available patch release for that major version.
-- You can choose to skip Innovation releases and upgrade directly to the subsequent major verison.
 - The upgrade is finalized after a 72-hour window, within which you can choose to roll back to the previous major version.
 
 {{site.data.alerts.callout_info}}
