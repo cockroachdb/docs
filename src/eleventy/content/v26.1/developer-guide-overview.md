@@ -5,6 +5,7 @@ toc: false
 contribute: false
 docs_area: develop
 cards_section: develop
+templateEngineOverride: liquid
 ---
 
-{% include "landing-page.md" %}
+{% include "landing-page.html" %}
