@@ -66,6 +66,12 @@ For advice about how to avoid running out of space during an online schema chang
 
 ## Best practices for online schema changes
 
+### Prevent concurrent schema changes on a table
+
+Set the [`schema_locked` table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#storage-parameter-schema-locked) to `true` to prevent concurrent schema changes on a table. CockroachDB rejects new schema change statements that target the table, and the setting applies only to that table.
+
+Use the [`create_table_with_schema_locked` session variable]({% link {{ page.version.version }}/set-vars.md %}#create_table_with_schema_locked) to set this storage parameter on every table created in the session. In v26.1 and later, it is enabled by default. If you run [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), preventing concurrent schema changes on watched tables can significantly improve commit-to-emit latency.
+
 ### Estimate your storage capacity before performing online schema changes
 
 Some schema change operations, like adding or dropping columns or altering primary keys, will temporarily increase a cluster's storage consumption. Specifically, these operations may temporarily require up to three times more storage space  for the range size while the schema change is being applied, and this may cause the cluster to run out of storage space or fail to apply the schema change.
