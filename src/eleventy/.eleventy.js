@@ -126,6 +126,76 @@ liquidEngine.registerTag('link', {
   }
 });
 
+// dynamic_include tag - includes versioned files
+// Usage: {% dynamic_include page.version.version, "/path/to/file.md" %}
+// This is registered on the module-level liquidEngine for nested includes
+liquidEngine.registerTag('dynamic_include', {
+  parse: function(tagToken) { this.args = tagToken.args; },
+  render: async function(ctx, emitter) {
+    try {
+      const fs = require('fs');
+      const pathModule = require('path');
+
+      // Resolve variables in the args string
+      const varPattern = /\{\{\s*([^}]+)\s*\}\}/g;
+      let argsStr = this.args.trim().replace(varPattern, (match, varPath) => {
+        const parts = varPath.trim().split('.');
+        let resolved = ctx.get(parts);
+        if (resolved === undefined && parts[0] === 'page' && parts[1] === 'version') {
+          resolved = ctx.get(parts.slice(1));
+        }
+        return resolved !== undefined ? resolved : '';
+      });
+
+      // Parse: version, "/path.md" - the comma-separated format
+      const parts = argsStr.split(',').map(s => s.trim());
+      let version = parts[0] || '';
+      let pathSuffix = parts[1] || '';
+
+      // Strip quotes from both
+      version = version.replace(/^["']|["']$/g, '');
+      pathSuffix = pathSuffix.replace(/^["']|["']$/g, '');
+
+      // If version is empty or looks like a variable, try to get from context
+      if (!version || version.includes('{{') || version === 'page.version.version') {
+        let v = ctx.get(['version', 'version']);
+        if (!v) v = ctx.get(['page', 'version', 'version']);
+        version = v || 'v26.1';
+      }
+
+      // Ensure pathSuffix starts with / for proper path joining
+      if (pathSuffix && !pathSuffix.startsWith('/')) {
+        pathSuffix = '/' + pathSuffix;
+      }
+
+      // Build the full include path
+      const includePath = `${version}${pathSuffix}`;
+      const includesDir = path.join(__dirname, 'content', '_includes');
+      const fullPath = path.join(includesDir, includePath);
+
+      if (fs.existsSync(fullPath)) {
+        let content = fs.readFileSync(fullPath, 'utf8');
+
+        // Render the content through Liquid with current context
+        try {
+          const engine = this.liquid || liquidEngine;
+          const rendered = await engine.parseAndRender(content, ctx.getAll());
+          emitter.write(rendered);
+        } catch (liquidError) {
+          console.error(`dynamic_include (module) LIQUID ERROR in ${includePath}: ${liquidError.message}`);
+          emitter.write(`<!-- Liquid error in ${includePath}: ${liquidError.message} -->`);
+        }
+      } else {
+        console.warn(`dynamic_include (module): File not found: ${fullPath}`);
+        emitter.write(`<!-- Include not found: ${includePath} -->`);
+      }
+    } catch (error) {
+      console.error(`dynamic_include (module) error: ${error.message}`);
+      emitter.write(`<!-- dynamic_include error: ${error.message} -->`);
+    }
+  }
+});
+
 module.exports = function(eleventyConfig) {
   // ---------------------------------------------------------------------------
   // Liquid Engine Configuration - Use custom Liquid instance with raw tags
@@ -172,6 +242,8 @@ module.exports = function(eleventyConfig) {
     render: async function(ctx, emitter) {
       try {
         let resolvedUrl = resolveVarsInCtx(this.args.trim(), ctx);
+        // Strip surrounding quotes from the URL
+        resolvedUrl = resolvedUrl.replace(/^["']|["']$/g, '');
         if (resolvedUrl.includes('{{')) {
           emitter.write(`<!-- remote_include: unresolved vars -->`);
           return;
@@ -185,6 +257,65 @@ module.exports = function(eleventyConfig) {
       } catch (error) {
         console.error(`remote_include error: ${error.message}`);
         emitter.write(`<!-- Remote include error: ${error.message} -->`);
+      }
+    }
+  });
+
+  // dynamic_include tag - includes versioned files
+  // Usage: {% dynamic_include page.version.version, "/path/to/file.md" %}
+  customLiquid.registerTag('dynamic_include', {
+    parse: function(tagToken) { this.args = tagToken.args; },
+    render: async function(ctx, emitter) {
+      try {
+        let argsStr = resolveVarsInCtx(this.args.trim(), ctx);
+
+        // Parse: version, "/path.md" - the comma-separated format
+        const parts = argsStr.split(',').map(s => s.trim());
+        let version = parts[0] || '';
+        let pathSuffix = parts[1] || '';
+
+        // Strip quotes from both
+        version = version.replace(/^["']|["']$/g, '');
+        pathSuffix = pathSuffix.replace(/^["']|["']$/g, '');
+
+        // If version is empty or looks like a variable, try to get from context
+        if (!version || version.includes('{{') || version === 'page.version.version') {
+          // Try to get version from context
+          let v = ctx.get(['version', 'version']);
+          if (!v) v = ctx.get(['page', 'version', 'version']);
+          version = v || 'v26.1'; // Default to stable
+        }
+
+        // Ensure pathSuffix starts with / for proper path joining
+        if (pathSuffix && !pathSuffix.startsWith('/')) {
+          pathSuffix = '/' + pathSuffix;
+        }
+
+        // Build the full include path
+        const includePath = `${version}${pathSuffix}`;
+        const includesDir = pathModule.join(__dirname, 'content', '_includes');
+        const fullPath = pathModule.join(includesDir, includePath);
+
+        if (fs.existsSync(fullPath)) {
+          let content = fs.readFileSync(fullPath, 'utf8');
+
+          // Render the content through Liquid with current context
+          // Use this.liquid to reference the engine that owns this tag
+          try {
+            const engine = this.liquid || customLiquid;
+            const rendered = await engine.parseAndRender(content, ctx.getAll());
+            emitter.write(rendered);
+          } catch (liquidError) {
+            console.error(`dynamic_include LIQUID ERROR in ${includePath}: ${liquidError.message}`);
+            emitter.write(`<!-- Liquid error in ${includePath}: ${liquidError.message} -->`);
+          }
+        } else {
+          console.warn(`dynamic_include: File not found: ${fullPath}`);
+          emitter.write(`<!-- Include not found: ${includePath} -->`);
+        }
+      } catch (error) {
+        console.error(`dynamic_include error: ${error.message}`);
+        emitter.write(`<!-- dynamic_include error: ${error.message} -->`);
       }
     }
   });
