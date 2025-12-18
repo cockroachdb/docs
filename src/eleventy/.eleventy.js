@@ -37,6 +37,10 @@ module.exports = function(eleventyConfig) {
     // Only compile main SCSS files, not partials (files starting with _)
     compileOptions: {
       permalink: function(contents, inputPath) {
+        // Guard against undefined inputPath
+        if (!inputPath) {
+          return false;
+        }
         // Skip partials and files in subdirectories (they're imported, not standalone)
         const fileName = path.basename(inputPath);
         if (fileName.startsWith('_')) {
@@ -53,6 +57,11 @@ module.exports = function(eleventyConfig) {
     },
 
     compile: async function(inputContent, inputPath) {
+      // Guard against undefined inputs
+      if (!inputContent || !inputPath) {
+        return;
+      }
+
       // Skip partials
       const fileName = path.basename(inputPath);
       if (fileName.startsWith('_')) {
@@ -98,6 +107,12 @@ module.exports = function(eleventyConfig) {
   // Plugins
   // ---------------------------------------------------------------------------
 
+  // ---------------------------------------------------------------------------
+  // Default Layout (replicate Jekyll's defaults configuration)
+  // ---------------------------------------------------------------------------
+  // Jekyll had: defaults: - scope: { path: '', type: pages } values: { layout: page }
+  eleventyConfig.addGlobalData("layout", "page");
+
   // Versioning plugin (CockroachDB-specific)
   eleventyConfig.addPlugin(versionsPlugin);
 
@@ -122,11 +137,8 @@ module.exports = function(eleventyConfig) {
     linkify: true,        // Auto-link URLs
     typographer: false    // Don't do smart quotes (match Redcarpet)
   }).use(markdownItAnchor, {
-    permalink: markdownItAnchor.permalink.ariaHidden({
-      placement: 'after',
-      class: 'anchor-link',
-      symbol: '#'
-    }),
+    // Don't add permalink - let AnchorJS handle that (matches production behavior)
+    permalink: false,
     level: [2, 3, 4, 5],
     slugify: (s) => s.toLowerCase().replace(/[^\w]+/g, '-')
   });
@@ -147,10 +159,16 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addFilter("relative_url", function(url) {
     if (!url) return '';
+    // Don't modify external URLs
+    if (url.startsWith('http') || url.startsWith('//')) {
+      return url;
+    }
+    // Prepend basePath for all paths
     if (url.startsWith('/')) {
       return `${basePath}${url}`;
     }
-    return url;
+    // For relative paths, also prepend basePath with /
+    return `${basePath}/${url}`;
   });
 
   // absolute_url filter - prepends full site URL
@@ -546,12 +564,8 @@ module.exports = function(eleventyConfig) {
   // Global Data
   // ---------------------------------------------------------------------------
 
-  // Add site-level data similar to Jekyll's site.* variables
-  eleventyConfig.addGlobalData("site", {
-    title: "CockroachDB Docs",
-    main_url: "https://www.cockroachlabs.com",
-    // Add other site-level config as needed
-  });
+  // Note: site.* variables are now provided by content/_data/site.js
+  // which includes site.data.* namespace for Jekyll compatibility
 
   // ---------------------------------------------------------------------------
   // Collections
@@ -572,6 +586,70 @@ module.exports = function(eleventyConfig) {
 
   // Quiet mode for cleaner output
   eleventyConfig.setQuietMode(true);
+
+  // ---------------------------------------------------------------------------
+  // Transform: Jekyll Compatibility (markdown in HTML, fenced code blocks, callouts)
+  // ---------------------------------------------------------------------------
+  eleventyConfig.addTransform("jekyll-compat", function(content) {
+    if (!this.page.outputPath || !this.page.outputPath.endsWith('.html')) {
+      return content;
+    }
+
+    let result = content;
+
+    // Step 1: Process unprocessed ~~~ fenced code blocks
+    // These appear as literal text when markdown-it skips them (inside HTML blocks)
+    // Match ~~~ with optional language, content, and closing ~~~
+    const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*<|\s*$|\n)/g;
+    result = result.replace(fencedCodePattern, function(match, lang, code) {
+      const language = lang || 'text';
+      // First, convert any <a> tags back to plain URLs (markdown linkify may have processed them)
+      let plainCode = code.replace(/<a[^>]*href="([^"]*)"[^>]*>[^<]*<\/a>/gi, '$1');
+      // Then escape HTML entities in the code
+      const escapedCode = plainCode
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      return `<pre class="highlight language-${language}"><code class="language-${language}" data-lang="${language}">${escapedCode.trim()}</code></pre>\n`;
+    });
+
+    // Step 2: Process markdown inside callouts (bs-callout divs)
+    // The callout HTML contains raw markdown that needs processing
+    const calloutPattern = /(<div class="bs-callout[^"]*">)(<div class="bs-callout__label">[^<]*<\/div>)\s*([\s\S]*?)(<\/div>)(?=\s*(?:<\/li>|<\/ol>|<\/ul>|<h|<p|<div|$))/gi;
+    result = result.replace(calloutPattern, function(match, openTag, label, innerContent, closeTag) {
+      // Process markdown in the callout content
+      let processed = innerContent.trim();
+      // Convert markdown links [text](url) to HTML
+      processed = processed.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+      // Convert *text* to <em>text</em>
+      processed = processed.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      // Convert **text** to <strong>text</strong>
+      processed = processed.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      // Convert `code` to <code>code</code>
+      processed = processed.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      return `${openTag}\n${label}\n<p>${processed}</p>\n${closeTag}`;
+    });
+
+    // Step 3: Remove markdown="1" attribute from elements
+    // The content inside should already be processed by Eleventy's markdown processor
+    // for blocks that it could handle, or by Step 1 above for fenced code
+    result = result.replace(/\s*markdown=["']1["']/gi, '');
+
+    // Step 4: Fix broken copy-clipboard structure
+    // When copy-clipboard.html is inside a list item, the structure can get mangled
+    // Pattern: SVGs in <p> tags followed by </div> and <pre> in <p> tag
+    // Fix by reconstructing the proper structure
+    const brokenCopyClipboard = /<p>(<svg id="copy-icon"[\s\S]*?<\/svg>\s*<svg id="copy-check"[\s\S]*?<\/svg>)<\/p>\s*<\/div>\s*<p>(<pre class="highlight[^"]*"[\s\S]*?<\/pre>)/g;
+    result = result.replace(brokenCopyClipboard, function(match, svgs, preBlock) {
+      return `<div class="copy-clipboard">\n  ${svgs}\n</div>\n${preBlock}`;
+    });
+
+    // Step 5: Fix <p><pre> nesting (invalid HTML - block in inline)
+    result = result.replace(/<p>(<pre[\s\S]*?<\/pre>)/g, '$1');
+
+    return result;
+  });
 
   // ---------------------------------------------------------------------------
   // Directory Configuration

@@ -170,7 +170,7 @@
         // like "v1.0" or "v1.10".
         return {{ site.versions | jsonify }}[d] || /^v\d+\.\d+$/.test(d);
       },
-      items: {%- include_file sidebar_data -%}
+      items: {% include sidebar_data %}
     };
 
     // implemented in initSidebar.js

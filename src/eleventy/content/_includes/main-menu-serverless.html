@@ -143,19 +143,20 @@
 
 <!-- Updated JavaScript -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Navbar toggler functionality
-  function toggleDropdown(element, isOpen) {
-    const dropdownMenu = element.querySelector('.dropdown-menu');
-    if (isOpen) {
-      element.classList.add('dropdown-open');
-      dropdownMenu.classList.add('dropdown-open');
-    } else {
-      element.classList.remove('dropdown-open');
-      dropdownMenu.classList.remove('dropdown-open');
-    }
+// Global function for inline event handlers
+function toggleDropdown(element, isOpen) {
+  const dropdownMenu = element.querySelector('.dropdown-menu');
+  if (!dropdownMenu) return;
+  if (isOpen) {
+    element.classList.add('dropdown-open');
+    dropdownMenu.classList.add('dropdown-open');
+  } else {
+    element.classList.remove('dropdown-open');
+    dropdownMenu.classList.remove('dropdown-open');
   }
+}
 
+document.addEventListener('DOMContentLoaded', function() {
   // Desktop dropdown functionality
   const dropdowns = document.querySelectorAll('.dropdown');
   

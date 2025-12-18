@@ -167,13 +167,22 @@ const eleventyComputed = {
     // If already set in frontmatter, use that
     if (data.sidebar_data) return data.sidebar_data;
 
-    const version = getVersionFromPath(data.page?.inputPath);
-    if (version) {
-      return `sidebars-${version}`;
+    const inputPath = data.page?.inputPath || '';
+
+    // Cockroachcloud pages use the stable version's sidebar
+    // (the main sidebar includes cockroachcloud links under "Get Started")
+    if (inputPath.includes('/cockroachcloud/')) {
+      return `sidebar-data-${VERSION_CONFIG.stable}.json`;
     }
 
-    // Default to stable version's sidebar
-    return `sidebars-${VERSION_CONFIG.stable}`;
+    // Check for versioned pages (e.g., /v26.1/page.md)
+    const version = getVersionFromPath(inputPath);
+    if (version) {
+      return `sidebar-data-${version}.json`;
+    }
+
+    // Default to stable version's sidebar for non-versioned pages
+    return `sidebar-data-${VERSION_CONFIG.stable}.json`;
   },
 
   // Canonical URL (points to stable version of the page)

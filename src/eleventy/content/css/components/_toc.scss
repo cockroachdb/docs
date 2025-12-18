@@ -4,11 +4,11 @@
   display: none;
 
   @include at-query($min, $screen-md) {
-    
+
     padding: 34px 0;
     // min-width: 260px;
     // max-width: 260px;
-    display: inline-block;
+    display: block;
     background: #ffffff;
   }
 }
