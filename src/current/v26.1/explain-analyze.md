@@ -76,7 +76,7 @@ Property        | Description
 `maximum memory usage` | The maximum amount of memory used by this statement anytime during its execution.
 `network usage` | The amount of data transferred over the network while the statement was executed. If the value is 0 B, the statement was executed on a single node and didn't use the network.
 `regions` | The [regions]({% link {{ page.version.version }}/show-regions.md %}) where the affected nodes were located.
-`kv cpu time` | The total amount of time spent in the [KV layer]({% link {{ page.version.version }}/architecture/overview.md %}#layers) (which includes everything below the SQL layer).
+`kv cpu time` | The total time spent in the [KV layer]({% link {{ page.version.version }}/architecture/overview.md %}#layers) on the critical path of serving the query. Excludes time spent in asynchronous replication work in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 `sql cpu time` | The total amount of time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}).
 `max sql temp disk usage` | ([`DISTSQL`](#distsql-option) option only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
 `estimated RUs consumed` | The estimated number of [Request Units (RUs)]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) consumed by the statement. This property is visible only on CockroachDB {{ site.data.products.basic }} clusters.
