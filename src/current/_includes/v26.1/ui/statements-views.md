@@ -33,7 +33,7 @@ The **Statements Fingerprints** view helps you:
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
 {{site.data.alerts.callout_info}}
-The **Statements** page displays all SQL statements, including those executed within [user-defined functions]({{ link_prefix}}user-defined-functions.html#statement-statistics) and [stored procedures]({{ link_prefix}}stored-procedures.html#statement-statistics). This allows you to monitor the performance of individual statements within your functions and procedures.
+The **Statements** page displays all SQL statements, including those executed within [user-defined functions]({{ link_prefix}}user-defined-functions.html#statement-statistics) and [stored procedures]({{ link_prefix}}stored-procedures.html#statement-statistics). This allows you to monitor the performance of individual statements within your routines.
 {{site.data.alerts.end}}
 
 {% if page.cloud != true %}
