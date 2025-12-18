@@ -57,6 +57,8 @@ You can also use the [`schema_change_events`]({% link {{ page.version.version }}
 
 ## Lock the schema on changefeed watched tables
 
+To apply `schema_locked` automatically to new tables, set the [`create_table_with_schema_locked` session variable]({% link {{ page.version.version }}/set-vars.md %}#create_table_with_schema_locked). In CockroachDB v26.1 and later, it defaults to `on`.
+
 {% include {{ page.version.version }}/cdc/cdc-schema-locked-example.md %}
 
 ## See also
