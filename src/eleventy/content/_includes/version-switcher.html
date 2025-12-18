@@ -17,9 +17,15 @@
   <!-- Warning: Could not find version data for {{ version.version }} -->
 {% endunless %}
 
+{% comment %}Calculate the current page's path segment (after the version){% endcomment %}
+{% comment %}page.url is like /v26.1/start-a-local-cluster - extract the part after version{% endcomment %}
+{% assign current_page_path = page.url | replace: version.version, "VERSION_PLACEHOLDER" | split: "VERSION_PLACEHOLDER/" | last %}
+
 {% if DEBUG %}
 <!-- DEBUG: version = {{ version | json }} -->
 <!-- DEBUG: current_version_data = {{ current_version_data | json }} -->
+<!-- DEBUG: page.url = {{ page.url }} -->
+<!-- DEBUG: current_page_path = {{ current_page_path }} -->
 {% endif %}
 
 <div class="mt-3 mb-4">
@@ -45,32 +51,18 @@
           {% comment %}Only show versions that have releases{% endcomment %}
           {% if v.hasReleases %}
 
+        {% comment %}Calculate the URL for this version by combining version + page path{% endcomment %}
+        {% assign version_page_url = "/" | append: v.version.version | append: "/" | append: current_page_path %}
         <li class="tier-2 {% if v.version.version == version.version %}active{% endif %}">
           <a data-proofer-ignore
-          {% if v.url %}
-            href="{{ v.url | relative_url | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
-            class="version--mobile"
-          {% else %}
-            class="version--mobile version--page-dne"
-          {% endif %}>
+            href="{{ version_page_url | relative_url | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
+            class="version--mobile">
             {{ v.version.name }}{% if v.isLts %}&nbsp;LTS&nbsp;{% endif %}
-            {% if v.version.version == site.versions["stable"] %}(Stable){% elsif v.version.version == site.versions["dev"] %}(Dev){% endif %}
-            {% unless v.url %}
-              <span class="version-text--page-dne">
-                This page does not exist in {{ v.version.version }}
-              </span>
-            {% endunless %}
           </a>
           <a data-proofer-ignore
-          {% if v.url %}
-            href="{{ v.url | relative_url | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
-            class="version--desktop"
-          {% else %}
-            class="version--desktop version--page-dne"
-            data-tooltip data-placement="left" data-container="body" title="This page does not exist in {{ v.version.version }}."
-          {% endif %}>
+            href="{{ version_page_url | relative_url | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
+            class="version--desktop">
             {{ v.version.name }}{% if v.isLts %}&nbsp;LTS&nbsp;{% endif %}
-            {% if v.version.version == site.versions["stable"] %}(Stable){% elsif v.version.version == site.versions["dev"] %}(Dev){% endif %}
           </a>
         </li>
           {% endif %}

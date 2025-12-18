@@ -3,6 +3,7 @@
  *
  * Provides the list of all CockroachDB versions for the version switcher.
  * Pre-computes release info and LTS status to avoid expensive template loops.
+ * Only includes versions that have content directories in Eleventy.
  */
 
 const fs = require('fs');
@@ -46,6 +47,15 @@ const VERSION_CONFIG = {
     'v1.0'
   ]
 };
+
+// Check which versions have content directories in Eleventy
+function getAvailableVersions() {
+  const contentDir = path.join(__dirname, '..');
+  return VERSION_CONFIG.all.filter(ver => {
+    const versionDir = path.join(contentDir, ver);
+    return fs.existsSync(versionDir) && fs.statSync(versionDir).isDirectory();
+  });
+}
 
 function formatVersionName(ver) {
   if (ver === VERSION_CONFIG.stable) {
@@ -111,8 +121,11 @@ module.exports = function() {
     versionDetails[v.major_version] = v;
   }
 
+  // Only include versions that have content directories in Eleventy
+  const availableVersions = getAvailableVersions();
+
   // Build the versions array for the version switcher
-  return VERSION_CONFIG.all.map(ver => {
+  return availableVersions.map(ver => {
     const details = versionDetails[ver] || {};
     const hasReleases = (releaseCounts[ver] || 0) > 0;
     const isLts = details.initial_lts_patch && details.initial_lts_patch !== 'N/A';

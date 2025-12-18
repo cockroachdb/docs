@@ -32,19 +32,19 @@ Example 2:
 {% assign ns = tab_names.size %}
 {% assign ps = page_filenames.size %}
 
-{% if ns == ps %}
-{% assign ul = ns | minus: 1 %}
+{%- if ns == ps -%}
+{%- assign ul = ns | minus: 1 -%}
 <div class="filters clearfix">
-    {% for x in (0..ul) %}
-      {% if page_filenames[x] contains "http://" or page_filenames[x] contains "https://" %} {% comment %} Add support for external URLs {% endcomment %}
-        {% assign external = "true" %}
-        {% assign url = page_filenames[x] %}
-        {% assign baseurl = page_filenames[x] %}
-      {% else %}
-        {% assign url = "/" | append: include.page_folder | append: "/" | append: page_filenames[x] %}
-        {% assign baseurl = "/docs" | append: url %}
-      {% endif %}
-    <a{% if external == "true" %} class="external" target="_blank" rel="noopener"{% endif %} href="{{ baseurl }}"><button class="filter-button{% if url == page.url %} current{% endif %}">{{ tab_names[x] }}</button></a>
-    {% endfor %}
+{%- for x in (0..ul) -%}
+{%- if page_filenames[x] contains "http://" or page_filenames[x] contains "https://" -%}
+{%- assign external = "true" -%}
+{%- assign url = page_filenames[x] -%}
+{%- assign baseurl = page_filenames[x] -%}
+{%- else -%}
+{%- assign url = "/" | append: include.page_folder | append: "/" | append: page_filenames[x] -%}
+{%- assign baseurl = "/docs" | append: url -%}
+{%- endif -%}
+<a{% if external == "true" %} class="external" target="_blank" rel="noopener"{% endif %} href="{{ baseurl }}"><button class="filter-button{% if url == page.url %} current{% endif %}">{{ tab_names[x] }}</button></a>
+{%- endfor -%}
 </div>
-{% endif %}
+{%- endif -%}

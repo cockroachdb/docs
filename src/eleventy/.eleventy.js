@@ -7,9 +7,123 @@ const { Liquid } = require('liquidjs');
 const { versionsPlugin, VERSION_CONFIG } = require('./lib/plugins/versions');
 
 // Create a Liquid engine instance for processing dynamic includes
+// Configure to handle both .md and .html files in includes
 const liquidEngine = new Liquid({
   root: [path.join(__dirname, 'content', '_includes')],
-  extname: '.html'
+  extname: '',  // Don't add extension automatically - files specify their own
+  dynamicPartials: true,  // Allow variable includes
+  strictFilters: false,   // Don't error on unknown filters
+  strictVariables: false  // Don't error on undefined variables
+});
+
+// Register custom tags for the LiquidJS engine
+// These mirror the shortcodes defined for Eleventy
+
+// Override the include tag to support Jekyll-style include.* parameter access
+// Jekyll makes include parameters available as include.paramName, but LiquidJS
+// only makes them available as paramName directly.
+liquidEngine.registerTag('include', {
+  parse: function(tagToken, remainTokens) {
+    const args = tagToken.args.trim();
+    // Parse the file path (can be quoted or unquoted)
+    const match = args.match(/^["']?([^"',\s]+)["']?\s*(?:,\s*(.*))?$/);
+    if (match) {
+      this.filePath = match[1];
+      this.argsStr = match[2] || '';
+    } else {
+      this.filePath = args;
+      this.argsStr = '';
+    }
+  },
+  render: async function(ctx, emitter) {
+    try {
+      // Parse the parameters
+      const params = {};
+      if (this.argsStr) {
+        // Parse key: value pairs
+        // Handle both quoted strings and variable references (including nested like page.version.version)
+        const paramPattern = /(\w+)\s*:\s*(?:["']([^"']+)["']|([\w.]+))/g;
+        let paramMatch;
+        while ((paramMatch = paramPattern.exec(this.argsStr)) !== null) {
+          const key = paramMatch[1];
+          // Value is either quoted string or variable name
+          if (paramMatch[2] !== undefined) {
+            params[key] = paramMatch[2];
+          } else {
+            // It's a variable reference - look it up in context
+            // Handle nested paths like page.version.version
+            const varPath = paramMatch[3];
+            const pathParts = varPath.split('.');
+            const value = ctx.get(pathParts);
+            params[key] = value;
+          }
+        }
+      }
+
+      // Read the include file
+      const includesDir = path.join(__dirname, 'content', '_includes');
+      const fullPath = path.join(includesDir, this.filePath);
+
+      if (require('fs').existsSync(fullPath)) {
+        const content = require('fs').readFileSync(fullPath, 'utf8');
+
+        // Create the context with Jekyll-style include object
+        // Parameters are available both directly AND via include.paramName
+        const includeContext = {
+          ...params,           // Direct access: {{ tab_names }}
+          include: params      // Jekyll style: {{ include.tab_names }}
+        };
+
+        // Merge with parent context (for page, site, etc.)
+        const parentScope = ctx.getAll();
+        const fullContext = { ...parentScope, ...includeContext };
+
+        // Render the include content with merged context
+        const rendered = await liquidEngine.parseAndRender(content, fullContext);
+        emitter.write(rendered);
+      } else {
+        emitter.write(`<!-- Include not found: ${this.filePath} -->`);
+      }
+    } catch (error) {
+      console.error(`LiquidJS include error for ${this.filePath}: ${error.message}`);
+      emitter.write(`<!-- Include error: ${error.message} -->`);
+    }
+  }
+});
+
+// link tag - replaces {% link path/to/file.md %}
+liquidEngine.registerTag('link', {
+  parse: function(tagToken) {
+    this.filePath = tagToken.args.trim().replace(/^["']|["']$/g, '');
+  },
+  render: async function(ctx) {
+    let url = this.filePath;
+
+    // Resolve Liquid variables in the path
+    // Get version from context
+    const version = ctx.get(['version', 'version']) ||
+                   ctx.get(['page', 'version', 'version']) ||
+                   'v26.1';
+
+    // Replace version placeholders
+    url = url.replace(/\{\{\s*page\.version\.version\s*\}\}/g, version);
+    url = url.replace(/\{\{page\.version\.version\}\}/g, version);
+    url = url.replace(/\{\{\s*version\.version\s*\}\}/g, version);
+
+    // Remove .md and .html extensions
+    url = url.replace(/\.md$/, '');
+    url = url.replace(/\.html$/, '');
+
+    // Ensure leading slash
+    if (!url.startsWith('/')) {
+      url = '/' + url;
+    }
+
+    // Remove trailing /index
+    url = url.replace(/\/index$/, '/');
+
+    return url;
+  }
 });
 
 module.exports = function(eleventyConfig) {
@@ -410,7 +524,14 @@ module.exports = function(eleventyConfig) {
         }
 
         // Render the content through Liquid
-        const rendered = await liquidEngine.parseAndRender(content, context);
+        let rendered;
+        try {
+          rendered = await liquidEngine.parseAndRender(content, context);
+        } catch (liquidError) {
+          console.error(`dynamic_include LIQUID ERROR in ${includePath}: ${liquidError.message}`);
+          return `<!-- Liquid error in ${includePath}: ${liquidError.message} -->`;
+        }
+
         return rendered;
       } else {
         console.warn(`dynamic_include: File not found: ${fullPath}`);
