@@ -128,6 +128,154 @@ liquidEngine.registerTag('link', {
 
 module.exports = function(eleventyConfig) {
   // ---------------------------------------------------------------------------
+  // Liquid Engine Configuration - Use custom Liquid instance with raw tags
+  // This bypasses Eleventy's argument parser which fails on URLs with colons
+  // ---------------------------------------------------------------------------
+  const { Liquid } = require('liquidjs');
+
+  // Create custom Liquid engine
+  const customLiquid = new Liquid({
+    root: [path.join(__dirname, 'content', '_includes')],
+    extname: '',
+    dynamicPartials: true,
+    strictFilters: false,
+    strictVariables: false,
+    jsTruthy: true
+  });
+
+  // Register custom tags directly on the Liquid engine (before Eleventy wraps it)
+  const fs = require('fs');
+  const pathModule = require('path');
+  const EleventyFetch = require("@11ty/eleventy-fetch");
+
+  // Helper to resolve {{ variable }} expressions in a string
+  function resolveVarsInCtx(str, ctx) {
+    const varPattern = /\{\{\s*([^}]+)\s*\}\}/g;
+    return str.replace(varPattern, (match, varPath) => {
+      const parts = varPath.trim().split('.');
+      const resolved = ctx.get(parts);
+      return resolved !== undefined ? resolved : '';
+    });
+  }
+
+  // remote_include tag
+  customLiquid.registerTag('remote_include', {
+    parse: function(tagToken) { this.args = tagToken.args; },
+    render: async function(ctx, emitter) {
+      try {
+        let resolvedUrl = resolveVarsInCtx(this.args.trim(), ctx);
+        if (resolvedUrl.includes('{{')) {
+          emitter.write(`<!-- remote_include: unresolved vars -->`);
+          return;
+        }
+        let content = await EleventyFetch(resolvedUrl, {
+          duration: "1d", type: "text",
+          fetchOptions: { headers: { "User-Agent": "CockroachDB-Docs-Builder/1.0" } }
+        });
+        if (Buffer.isBuffer(content)) content = content.toString('utf8');
+        emitter.write(content);
+      } catch (error) {
+        console.error(`remote_include error: ${error.message}`);
+        emitter.write(`<!-- Remote include error: ${error.message} -->`);
+      }
+    }
+  });
+
+  // link tag
+  customLiquid.registerTag('link', {
+    parse: function(tagToken) { this.args = tagToken.args; },
+    render: async function(ctx) {
+      let url = resolveVarsInCtx(this.args.trim(), ctx);
+      url = url.replace(/^["']|["']$/g, '').replace(/\.md$/, '').replace(/\.html$/, '');
+      if (!url.startsWith('/')) url = '/' + url;
+      return url.replace(/\/index$/, '/');
+    }
+  });
+
+  // include tag
+  customLiquid.registerTag('include', {
+    parse: function(tagToken) { this.args = tagToken.args; },
+    render: async function(ctx, emitter) {
+      let argsStr = resolveVarsInCtx(this.args.trim(), ctx);
+      const pathMatch = argsStr.match(/^["']?([^"'\s]+)["']?\s*(.*)$/);
+      if (!pathMatch) { emitter.write(`<!-- include: parse error -->`); return; }
+      let filePath = pathMatch[1];
+
+      // If filePath looks like a variable name (no quotes, no slashes, no dots in filename part),
+      // try to resolve it from context. E.g., {% include sidebar_data %}
+      if (!filePath.includes('/') && !filePath.includes('.') && !argsStr.startsWith('"') && !argsStr.startsWith("'")) {
+        const resolved = ctx.get([filePath]);
+        if (resolved && typeof resolved === 'string') {
+          filePath = resolved;
+        }
+      }
+
+      const params = {};
+      const paramPattern = /(\w+)\s*[=:]\s*(?:"([^"]*)"|'([^']*)'|(\S+))/g;
+      let match;
+      while ((match = paramPattern.exec(pathMatch[2] || '')) !== null) {
+        const key = match[1], value = match[2] || match[3] || match[4];
+        params[key] = (value && !value.startsWith('"') && !value.startsWith("'"))
+          ? (ctx.get(value.split('.')) ?? value) : value;
+      }
+      const fullPath = pathModule.join(__dirname, 'content', '_includes', filePath);
+      if (fs.existsSync(fullPath)) {
+        const content = fs.readFileSync(fullPath, 'utf8');
+        const fullContext = { ...ctx.getAll(), include: params, ...params };
+        try {
+          emitter.write(await customLiquid.parseAndRender(content, fullContext));
+        } catch (err) { emitter.write(`<!-- include error: ${err.message} -->`); }
+      } else {
+        if (!filePath.includes('copy-clipboard')) console.warn(`include: Not found: ${fullPath}`);
+        emitter.write(`<!-- include: not found: ${filePath} -->`);
+      }
+    }
+  });
+
+  // include_cached tag - same as include
+  customLiquid.registerTag('include_cached', {
+    parse: function(tagToken) { this.args = tagToken.args; },
+    render: async function(ctx, emitter) {
+      let argsStr = resolveVarsInCtx(this.args.trim(), ctx);
+      const pathMatch = argsStr.match(/^["']?([^"'\s]+)["']?\s*(.*)$/);
+      if (!pathMatch) { emitter.write(`<!-- include_cached: parse error -->`); return; }
+      let filePath = pathMatch[1];
+
+      // If filePath looks like a variable name (no quotes, no slashes, no dots in filename part),
+      // try to resolve it from context. E.g., {% include_cached sidebar_data %}
+      if (!filePath.includes('/') && !filePath.includes('.') && !argsStr.startsWith('"') && !argsStr.startsWith("'")) {
+        const resolved = ctx.get([filePath]);
+        if (resolved && typeof resolved === 'string') {
+          filePath = resolved;
+        }
+      }
+
+      const params = {};
+      const paramPattern = /(\w+)\s*[=:]\s*(?:"([^"]*)"|'([^']*)'|(\S+))/g;
+      let match;
+      while ((match = paramPattern.exec(pathMatch[2] || '')) !== null) {
+        const key = match[1], value = match[2] || match[3] || match[4];
+        params[key] = (value && !value.startsWith('"') && !value.startsWith("'"))
+          ? (ctx.get(value.split('.')) ?? value) : value;
+      }
+      const fullPath = pathModule.join(__dirname, 'content', '_includes', filePath);
+      if (fs.existsSync(fullPath)) {
+        const content = fs.readFileSync(fullPath, 'utf8');
+        const fullContext = { ...ctx.getAll(), include: params, ...params };
+        try {
+          emitter.write(await customLiquid.parseAndRender(content, fullContext));
+        } catch (err) { emitter.write(`<!-- include_cached error: ${err.message} -->`); }
+      } else {
+        if (!filePath.includes('copy-clipboard')) console.warn(`include_cached: Not found: ${fullPath}`);
+        emitter.write(`<!-- include_cached: not found: ${filePath} -->`);
+      }
+    }
+  });
+
+  // Set this as the Liquid library
+  eleventyConfig.setLibrary("liquid", customLiquid);
+
+  // ---------------------------------------------------------------------------
   // Dev Server Configuration - /stable/ URL rewrite (not redirect)
   // ---------------------------------------------------------------------------
   eleventyConfig.setServerOptions({
@@ -397,57 +545,13 @@ module.exports = function(eleventyConfig) {
   // ---------------------------------------------------------------------------
   // Jekyll Compatibility Shortcodes
   // ---------------------------------------------------------------------------
-
-  // link shortcode - replaces {% link path/to/file.md %}
-  // Also resolves Liquid variables like {{ page.version.version }} in the path
-  eleventyConfig.addShortcode("link", function(filePath) {
-    if (!filePath) return '#';
-
-    let url = filePath;
-
-    // Resolve Liquid variables that weren't processed (nested in shortcode arguments)
-    // Common patterns: {{ page.version.version }}, {{ version.version }}
-    url = url.replace(/\{\{\s*page\.version\.version\s*\}\}/g, () => {
-      // Get version from context
-      const version = this.ctx?.version?.version || this.version?.version || 'v26.1';
-      return version;
-    });
-    url = url.replace(/\{\{\s*version\.version\s*\}\}/g, () => {
-      const version = this.ctx?.version?.version || this.version?.version || 'v26.1';
-      return version;
-    });
-    // Also handle {{page.version.version}} without spaces
-    url = url.replace(/\{\{page\.version\.version\}\}/g, () => {
-      const version = this.ctx?.version?.version || this.version?.version || 'v26.1';
-      return version;
-    });
-
-    // Remove .md extension
-    url = url.replace(/\.md$/, '');
-
-    // Remove .html extension
-    url = url.replace(/\.html$/, '');
-
-    // Ensure leading slash
-    if (!url.startsWith('/')) {
-      url = '/' + url;
-    }
-
-    // Remove trailing /index
-    url = url.replace(/\/index$/, '/');
-
-    return url;
-  });
-
-  // include_cached - just delegates to standard include (11ty handles caching)
-  // This is handled automatically by 11ty's include system
+  // NOTE: The link, include, and include_cached tags are registered directly
+  // on customLiquid above (around line 185-265) to handle URLs with colons
+  // and variable resolution. Do NOT add duplicate addLiquidTag registrations here.
 
   // ---------------------------------------------------------------------------
   // Dynamic Include Shortcodes
   // ---------------------------------------------------------------------------
-
-  const fs = require('fs');
-  const pathModule = require('path');
 
   // include_file - includes a file by its path (passed as a resolved variable)
   // Usage: {% include_file sidebar_data %} where sidebar_data = "sidebar-data-v26.1.json"
@@ -540,176 +644,6 @@ module.exports = function(eleventyConfig) {
     } catch (error) {
       console.error(`dynamic_include error: ${error.message}`);
       return `<!-- Include error: ${error.message} -->`;
-    }
-  });
-
-  // ---------------------------------------------------------------------------
-  // Remote Include Shortcode
-  // ---------------------------------------------------------------------------
-
-  // remote_include - fetches content from a remote URL with disk caching
-  // Usage: {% remote_include URL %}
-  // Or with markers: {% remote_include URL ||START_MARKER ||END_MARKER %}
-  const EleventyFetch = require("@11ty/eleventy-fetch");
-
-  // Debug flag - set to true to see context structure
-  const DEBUG_REMOTE_INCLUDE = false;
-
-  eleventyConfig.addAsyncShortcode("remote_include", async function(url, startMarker, endMarker) {
-    try {
-      // Resolve Liquid variables in the URL
-      // Pattern: {{ page.release_info.crdb_branch_name }} or {{ variable.path }}
-      let resolvedUrl = url;
-      const varPattern = /\{\{\s*([^}]+)\s*\}\}/g;
-      let match;
-
-      // In Eleventy shortcodes, 'this' contains the template context
-      // this.ctx contains the data available to the template
-      const ctx = this.ctx || {};
-
-      // Try multiple ways to access template data in LiquidJS
-      let releaseInfo = null;
-      let pageObj = null;
-
-      // Method 1: Try ctx.get() if available
-      if (typeof ctx.get === 'function') {
-        releaseInfo = ctx.get(['release_info']);
-        pageObj = ctx.get(['page']);
-      }
-
-      // Method 2: Try ctx.getAll() if available
-      if (!releaseInfo && typeof ctx.getAll === 'function') {
-        const allVars = ctx.getAll();
-        releaseInfo = allVars?.release_info;
-        pageObj = allVars?.page;
-      }
-
-      // Method 3: Check if data is passed directly to shortcode via this
-      if (!releaseInfo || Object.keys(releaseInfo).length === 0) {
-        releaseInfo = this.release_info;
-        pageObj = this.page;
-      }
-
-      // Method 5: If release_info is still empty, look up from global data
-      // For pages not in versioned directories, use stable version's release_info
-      if (!releaseInfo || Object.keys(releaseInfo).length === 0) {
-        // Try to get the release_info data from the full data object
-        const allReleaseInfo = this.release_info; // This might be the full keyed object
-
-        // Determine version from page path or use stable
-        let version = null;
-        if (pageObj?.inputPath) {
-          const versionMatch = pageObj.inputPath.match(/[/\\](v\d+\.\d+)[/\\]/);
-          version = versionMatch ? versionMatch[1] : null;
-        }
-
-        // Default to stable version
-        const stableVersion = 'v26.1';
-        const lookupVersion = version || stableVersion;
-
-        // If release_info is keyed by version, look it up
-        if (allReleaseInfo && allReleaseInfo[lookupVersion]) {
-          releaseInfo = allReleaseInfo[lookupVersion];
-        } else if (!releaseInfo || Object.keys(releaseInfo).length === 0) {
-          // Hard-coded fallback for v26.1
-          releaseInfo = {
-            crdb_branch_name: 'release-25.4', // From versions.csv
-            major_version: 'v26.1'
-          };
-        }
-      }
-
-      // Method 4: Try looking in scopes array
-      if (!releaseInfo && ctx.scopes) {
-        for (const scope of ctx.scopes) {
-          if (scope?.release_info) {
-            releaseInfo = scope.release_info;
-            pageObj = scope.page;
-            break;
-          }
-        }
-      }
-
-      // Debug: log what we found
-      if (DEBUG_REMOTE_INCLUDE && !this._debugLogged) {
-        console.log('this keys:', Object.keys(this).slice(0, 20));
-        console.log('release_info type:', typeof releaseInfo);
-        console.log('release_info keys:', releaseInfo ? Object.keys(releaseInfo).slice(0, 10) : 'none');
-        console.log('release_info sample:', JSON.stringify(releaseInfo).slice(0, 200));
-        console.log('page.inputPath:', pageObj?.inputPath);
-        this._debugLogged = true;
-      }
-
-      // Build the context for variable resolution
-      const pageData = {
-        page: {
-          ...(pageObj || {}),
-          release_info: releaseInfo || {}
-        },
-        release_info: releaseInfo || {},
-        version: pageObj?.version || null
-      };
-
-      while ((match = varPattern.exec(url)) !== null) {
-        const varPath = match[1].trim();
-        const parts = varPath.split('.');
-
-        // Navigate the context to find the value
-        let value = pageData;
-        for (const part of parts) {
-          if (value && typeof value === 'object') {
-            value = value[part];
-          } else {
-            value = undefined;
-            break;
-          }
-        }
-
-        if (value && typeof value === 'string') {
-          resolvedUrl = resolvedUrl.replace(match[0], value);
-        }
-      }
-
-      // Still has unresolved variables? Log with more context for debugging
-      if (resolvedUrl.includes('{{') || resolvedUrl.includes('{%')) {
-        // Only warn once per unique unresolved pattern
-        const unresolvedMatch = resolvedUrl.match(/\{\{[^}]+\}\}/);
-        console.warn(`remote_include: Could not resolve '${unresolvedMatch?.[0]}' in URL (page: ${pageData.page?.inputPath || 'unknown'})`);
-        return `<!-- remote_include: unresolved variables in URL -->`;
-      }
-
-      // Fetch the content using eleventy-fetch with disk caching
-      // Cache duration: "1d" = 1 day, reduces rebuild time significantly
-      let content = await EleventyFetch(resolvedUrl, {
-        duration: "1d",  // Cache for 1 day
-        type: "text",    // Return as text/HTML string
-        fetchOptions: {
-          headers: {
-            "User-Agent": "CockroachDB-Docs-Builder/1.0"
-          }
-        }
-      });
-
-      // Ensure content is a string (eleventy-fetch may return Buffer in some cases)
-      if (Buffer.isBuffer(content)) {
-        content = content.toString('utf8');
-      } else if (typeof content !== 'string') {
-        content = String(content);
-      }
-
-      // If markers are provided, extract the content between them
-      if (startMarker && endMarker) {
-        const startIdx = content.indexOf(startMarker);
-        const endIdx = content.indexOf(endMarker);
-        if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
-          content = content.substring(startIdx + startMarker.length, endIdx).trim();
-        }
-      }
-
-      return content;
-    } catch (error) {
-      console.error(`remote_include error for ${url}: ${error.message}`);
-      return `<!-- Remote include error: ${error.message} -->`;
     }
   });
 
