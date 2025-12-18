@@ -1153,71 +1153,71 @@ By default, referenced columns must be in the same database as the referencing f
 
 #### Drop and add a primary key constraint
 
-Suppose that you want to add `name` to the composite primary key of the `users` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key).
+Suppose that you want to add `creation_time` to the composite primary key of the `promo_codes` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key). To do so, use [`DROP CONSTRAINT`](#drop-constraint) and [`ADD CONSTRAINT`](#add-constraint) in a single `ALTER TABLE` statement.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE TABLE users;
-~~~
+1. View the details of the `promo_codes` table:
 
-~~~
-  table_name |                      create_statement
--------------+--------------------------------------------------------------
-  users      | CREATE TABLE users (
-             |     id UUID NOT NULL,
-             |     city VARCHAR NOT NULL,
-             |     name VARCHAR NULL,
-             |     address VARCHAR NULL,
-             |     credit_card VARCHAR NULL,
-             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
-             | )
-(1 row)
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SHOW CREATE TABLE promo_codes;
+	~~~
 
-1. Add a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint to the `name` column with [`ALTER COLUMN`](#alter-column).
+	~~~
+	  table_name  |                      create_statement
+	--------------+------------------------------------------------------------
+	  promo_codes | CREATE TABLE public.promo_codes (
+	              |     code VARCHAR NOT NULL,
+	              |     description VARCHAR NULL,
+	              |     creation_time TIMESTAMP NULL,
+	              |     expiration_time TIMESTAMP NULL,
+	              |     rules JSONB NULL,
+	              |     CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC)
+	              | )
+	(1 row)
+	~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > ALTER TABLE users ALTER COLUMN name SET NOT NULL;
-    ~~~
-
-1. In the same transaction, `DROP` the old `"primary"` constraint and [`ADD`](#add-constraint) the new one:
+1. Add a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint to the `creation_time` column with [`ALTER COLUMN`](#alter-column):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > BEGIN;
-    > ALTER TABLE users DROP CONSTRAINT "primary";
-    > ALTER TABLE users ADD CONSTRAINT "primary" PRIMARY KEY (city, name, id);
-    > COMMIT;
+    ALTER TABLE promo_codes ALTER COLUMN creation_time SET NOT NULL;
     ~~~
 
-    ~~~
-    NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
-    ~~~
+1. To issue the schema change atomically, use single statements as an implicit transaction. `DROP CONSTRAINT` and `ADD CONSTRAINT` can be combined in a single `ALTER TABLE` statement:
 
-1. View the table structure: 
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	ALTER TABLE promo_codes
+	  DROP CONSTRAINT promo_codes_pkey,
+	  ADD CONSTRAINT promo_codes_pkey PRIMARY KEY (code, creation_time);
+	~~~
+
+	{{site.data.alerts.callout_info}}
+	You should **not** execute the schema change with multiple statements within an explicit transaction. Refer to [Schema changes within transactions]({% link {{ page.version.version }}/online-schema-changes.md %}#schema-changes-within-transactions).
+	{{site.data.alerts.end}}
+
+1. View the updated table structure:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > SHOW CREATE TABLE users;
+    SHOW CREATE TABLE promo_codes;
     ~~~
 
     ~~~
-      table_name |                          create_statement
-    -------------+---------------------------------------------------------------------
-      users      | CREATE TABLE users (
-                |     id UUID NOT NULL,
-                |     city VARCHAR NOT NULL,
-                |     name VARCHAR NOT NULL,
-                |     address VARCHAR NULL,
-                |     credit_card VARCHAR NULL,
-                |     CONSTRAINT "primary" PRIMARY KEY (city ASC, name ASC, id ASC),
-                |     FAMILY "primary" (id, city, name, address, credit_card)
-                | )
-    (1 row)
+	  table_name  |                             create_statement
+	--------------+----------------------------------------------------------------------------
+	  promo_codes | CREATE TABLE public.promo_codes (
+	              |     code VARCHAR NOT NULL,
+	              |     description VARCHAR NULL,
+	              |     creation_time TIMESTAMP NOT NULL,
+	              |     expiration_time TIMESTAMP NULL,
+	              |     rules JSONB NULL,
+	              |     CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC, creation_time ASC)
+	              | )
+	(1 row)
     ~~~
 
-Using [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
+Using [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) would have created a `UNIQUE` secondary index called `promo_codes_code_key`. Instead, there is just one index for the primary key constraint.
 
 #### Add a unique index to a `REGIONAL BY ROW` table
 
@@ -1827,10 +1827,6 @@ To unhide the column, run:
 ~~~
 
 ### Alter a primary key
-
-#### Demo
-
-{% include_cached youtube.html video_id="MPx-LXY2D-c" %}
 
 #### Alter a single-column primary key
 
