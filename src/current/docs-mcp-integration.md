@@ -5,11 +5,7 @@ toc: true
 docs_area: reference
 ---
 
-The CockroachDB Docs MCP (Model Context Protocol) server enables AI assistants like Claude Desktop, Cursor, and VS Code to access CockroachDB documentation directly. This allows you to get instant, context-aware answers about CockroachDB without leaving your development environment.
-
-## Create your own MCP
-
-Want to build your own MCP server? Check out the [MCP documentation](https://modelcontextprotocol.io/introduction) to get started.
+The CockroachDB Docs MCP ([Model Context Protocol](https://modelcontextprotocol.io/introduction)) server enables AI assistants like Claude Desktop, Cursor, and VS Code to access CockroachDB documentation directly. This allows you to get instant, context-aware answers about CockroachDB without leaving your development environment.
 
 ## Setup
 
@@ -20,18 +16,16 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
 1. Open Cursor Settings (⌘+,)
 2. Navigate to **Models** → **Model Context Protocol**
 3. Add the following configuration:
-
-```json
-{
-  "mcpServers": {
-    "cockroachdb-docs": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+    ```json
+    {
+      "mcpServers": {
+        "cockroachdb-docs": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+        }
+      }
     }
-  }
-}
-```
-
+    ```
 4. Restart Cursor to apply the configuration
 5. You can now ask questions about CockroachDB documentation directly in Cursor
 
@@ -41,18 +35,16 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
 2. Open VS Code Settings (⌘+,)
 3. Search for "Claude MCP"
 4. Add the following to your MCP configuration:
-
-```json
-{
-  "claude.mcpServers": {
-    "cockroachdb-docs": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+    ```json
+    {
+      "claude.mcpServers": {
+        "cockroachdb-docs": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+        }
+      }
     }
-  }
-}
-```
-
+    ```
 5. Reload VS Code window (⌘+R)
 6. The CockroachDB documentation is now available through Claude in VS Code
 
@@ -61,18 +53,16 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
 1. Open Claude Code settings
 2. Navigate to MCP Servers configuration
 3. Add the CockroachDB Docs server:
-
-```json
-{
-  "mcpServers": {
-    "cockroachdb-docs": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+    ```json
+    {
+      "mcpServers": {
+        "cockroachdb-docs": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+        }
+      }
     }
-  }
-}
-```
-
+    ```
 4. Restart Claude Code
 5. CockroachDB documentation is now accessible in your Claude Code environment
 
@@ -90,18 +80,16 @@ MCP support for ChatGPT Desktop is coming soon. Check back for updates.
    - **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
 2. Add the CockroachDB Docs MCP server to your configuration:
-
-```json
-{
-  "mcpServers": {
-    "cockroachdb-docs": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+    ```json
+    {
+      "mcpServers": {
+        "cockroachdb-docs": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+        }
+      }
     }
-  }
-}
-```
-
+    ```
 3. Save the file and restart Claude Desktop
 4. You can now query CockroachDB documentation directly in Claude Desktop
 
@@ -177,7 +165,7 @@ If the configuration doesn't seem to take effect:
 1. Ensure the configuration file is saved in the correct location
 2. Check for JSON syntax errors in your configuration
 3. Fully quit and restart your application (not just reload)
-4. Verify that `npx` is available in your system PATH
+4. Verify that `npx` is available in your system `PATH`
 
 ## Feedback and Support
 
