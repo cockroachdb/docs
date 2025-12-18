@@ -37,7 +37,7 @@ cockroachdb:
         # initContainers captures the list of init containers for CockroachDB pods.
         initContainers:
           - name : cockroachdb-init
-            image: us-docker.pkg.dev/cockroach-cloud-images/data-plane/init-container@sha256:example1234567890abcdefghijklmnopqrstuvwxyz
+            image: us-docker.pkg.dev/releases-prod/self-hosted/init-container@sha256:example1234567890abcdefghijklmnopqrstuvwxyz
 ~~~
 
 ## Override the default `cockroach start` flags

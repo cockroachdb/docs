@@ -46,7 +46,6 @@ Version | Release Type | Release date | End-of-support (EOS) date
 :------:|:------------:|:------------:|:---------:
 v25.4   | Regular      | 2025-11-03   | 2026-11-03
 v25.2   | Regular      | 2025-05-12   | 2026-05-12
-v24.3   | Regular      | 2024-11-18   | 2025-11-18
 
 The following table describes currently-supported versions on {{ site.data.products.advanced }} clusters:
 

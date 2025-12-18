@@ -1,6 +1,6 @@
 To install MOLT, download the binary that matches your architecture and source database:
 
-| Operating System | Architecture |                                 PostgreSQL/MySQL                                |                                   Oracle (Preview)                                   |
+| Operating System | Architecture |                                 PostgreSQL/MySQL                                |                                        Oracle                                        |
 |------------------|--------------|---------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
 | Windows          | AMD 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.windows-amd64.tgz) | N/A                                                                                  |
 |                  | ARM 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.windows-arm64.tgz) | N/A                                                                                  |
