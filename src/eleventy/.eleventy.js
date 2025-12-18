@@ -3,9 +3,31 @@ const markdownItAnchor = require('markdown-it-anchor');
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 const path = require('path');
 const sass = require('sass');
-const { versionsPlugin } = require('./lib/plugins/versions');
+const { Liquid } = require('liquidjs');
+const { versionsPlugin, VERSION_CONFIG } = require('./lib/plugins/versions');
+
+// Create a Liquid engine instance for processing dynamic includes
+const liquidEngine = new Liquid({
+  root: [path.join(__dirname, 'content', '_includes')],
+  extname: '.html'
+});
 
 module.exports = function(eleventyConfig) {
+  // ---------------------------------------------------------------------------
+  // Dev Server Configuration - /stable/ URL rewrite (not redirect)
+  // ---------------------------------------------------------------------------
+  eleventyConfig.setServerOptions({
+    middleware: [
+      // Rewrite /stable/* to serve content from current stable version
+      // URL stays as /stable/ but internally serves from /v26.1/
+      (req, res, next) => {
+        if (req.url.startsWith('/stable/')) {
+          req.url = req.url.replace('/stable/', `/${VERSION_CONFIG.stable}/`);
+        }
+        next();
+      }
+    ]
+  });
   // ---------------------------------------------------------------------------
   // Ignore non-content files
   // ---------------------------------------------------------------------------
@@ -263,11 +285,31 @@ module.exports = function(eleventyConfig) {
   // ---------------------------------------------------------------------------
 
   // link shortcode - replaces {% link path/to/file.md %}
+  // Also resolves Liquid variables like {{ page.version.version }} in the path
   eleventyConfig.addShortcode("link", function(filePath) {
     if (!filePath) return '#';
 
+    let url = filePath;
+
+    // Resolve Liquid variables that weren't processed (nested in shortcode arguments)
+    // Common patterns: {{ page.version.version }}, {{ version.version }}
+    url = url.replace(/\{\{\s*page\.version\.version\s*\}\}/g, () => {
+      // Get version from context
+      const version = this.ctx?.version?.version || this.version?.version || 'v26.1';
+      return version;
+    });
+    url = url.replace(/\{\{\s*version\.version\s*\}\}/g, () => {
+      const version = this.ctx?.version?.version || this.version?.version || 'v26.1';
+      return version;
+    });
+    // Also handle {{page.version.version}} without spaces
+    url = url.replace(/\{\{page\.version\.version\}\}/g, () => {
+      const version = this.ctx?.version?.version || this.version?.version || 'v26.1';
+      return version;
+    });
+
     // Remove .md extension
-    let url = filePath.replace(/\.md$/, '');
+    url = url.replace(/\.md$/, '');
 
     // Remove .html extension
     url = url.replace(/\.html$/, '');
@@ -320,28 +362,18 @@ module.exports = function(eleventyConfig) {
   // dynamic_include - handles Jekyll's dynamic include pattern
   // Converts {% include {{ page.version.version }}/path.md %}
   // To: {% dynamic_include page.version.version, "/path.md" %}
+  //
+  // This shortcode reads the include file and processes it through Liquid
+  // with the current template context, so variables like version.version work.
 
   eleventyConfig.addAsyncShortcode("dynamic_include", async function(versionVar, pathSuffix) {
     try {
-      // Get the version from the page context
-      // The versionVar comes as a string like "page.version.version"
-      // We need to resolve it from the current context
+      // Get the version from the Eleventy context
+      // In our setup, 'version' is set by the directory data file (v26.1.11tydata.js)
+      let version = this.ctx?.version?.version || this.version?.version;
 
-      let version;
-      if (versionVar === 'page.version.version') {
-        // Most common case - get version from page data
-        version = this.page?.version || this.ctx?.version || this.version;
-      } else if (versionVar === 'site.versions.stable') {
-        // Site-level stable version - read from _data/versions.yml
-        version = this.ctx?.site?.versions?.stable || 'v26.1';
-      } else if (this.ctx && this.ctx[versionVar]) {
-        version = this.ctx[versionVar];
-      } else if (this[versionVar]) {
-        version = this[versionVar];
-      }
-
+      // Fallback: try to extract version from the current page path
       if (!version) {
-        // Try to extract version from the current page path
         const inputPath = this.page?.inputPath || '';
         const versionMatch = inputPath.match(/[/\\](v\d+\.\d+)[/\\]/);
         version = versionMatch ? versionMatch[1] : 'v26.1'; // Default to stable
@@ -357,9 +389,29 @@ module.exports = function(eleventyConfig) {
       if (fs.existsSync(fullPath)) {
         let content = fs.readFileSync(fullPath, 'utf8');
 
-        // If it's a markdown file, we might want to render it
-        // For now, just return the content (Liquid will process it)
-        return content;
+        // Build the context for Liquid rendering
+        // Include all the data available to the template
+        const context = {
+          // Page data
+          page: this.page || {},
+          // Version data from directory data file
+          version: this.ctx?.version || this.version || { version: version },
+          // Site data
+          site: this.ctx?.site || this.site || {},
+          // All versions for switcher
+          allVersions: this.ctx?.allVersions || this.allVersions || [],
+          // Pass through any other context
+          ...this.ctx
+        };
+
+        // Also add page.version for Jekyll compatibility
+        if (!context.page.version) {
+          context.page.version = context.version;
+        }
+
+        // Render the content through Liquid
+        const rendered = await liquidEngine.parseAndRender(content, context);
+        return rendered;
       } else {
         console.warn(`dynamic_include: File not found: ${fullPath}`);
         return `<!-- Include not found: ${includePath} -->`;

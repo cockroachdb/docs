@@ -124,13 +124,9 @@ function buildVersionsArray() {
  * These values are computed for each page and available in templates
  */
 const eleventyComputed = {
-  // The version of the current page (e.g., 'v26.1')
+  // The version object for the current page
+  // Templates expect page.version.version, page.version.name, etc.
   version: (data) => {
-    return getVersionFromPath(data.page?.inputPath);
-  },
-
-  // Structured version object with additional metadata
-  pageVersion: (data) => {
     const version = getVersionFromPath(data.page?.inputPath);
     if (!version) return null;
 

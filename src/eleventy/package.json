@@ -30,6 +30,7 @@
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "glob": "^13.0.0",
     "js-yaml": "^4.1.1",
+    "liquidjs": "^10.24.0",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",
     "sass": "^1.97.0"
