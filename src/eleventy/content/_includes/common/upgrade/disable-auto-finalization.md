@@ -24,7 +24,6 @@ To disable auto-finalization:
 
 1. Connect to the cluster using the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -48,7 +47,6 @@ To disable auto-finalization:
 
 1. Connect to the cluster using the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -70,7 +68,6 @@ To disable auto-finalization:
 
 1. Connect to the cluster using the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -92,7 +89,6 @@ To disable auto-finalization:
 
 1. Connect to the cluster using the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql
     ~~~

@@ -22,7 +22,6 @@ The `SHOW VIRTUAL CLUSTER` statement lists all virtual clusters running in a Coc
 
 Use the [`GRANT SYSTEM`]({% link "{{ page.version.version }}/grant.md" %}) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
 ~~~
@@ -50,7 +49,6 @@ This table lists all possible responses from the different `SHOW VIRTUAL CLUSTER
 {{site.data.alerts.callout_success}}
 To find the job ID for the replication stream, use the [`SHOW JOBS`]({% link "{{ page.version.version }}/show-jobs.md" %}) statement. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM [SHOW JOBS] WHERE job_type = 'REPLICATION STREAM INGESTION';
 ~~~
@@ -68,7 +66,6 @@ The `data_state` and `status` fields show the current state of a virtual cluster
 
 List all virtual clusters:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW VIRTUAL CLUSTERS;
 ~~~
@@ -77,12 +74,10 @@ SHOW VIRTUAL CLUSTERS;
 
 To show more details about the `main` virtual cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW VIRTUAL CLUSTER main;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~
   id | name | data_state  | service_mode
 -----+------+-------------+---------------
@@ -94,14 +89,12 @@ SHOW VIRTUAL CLUSTER main;
 
 To show the replication status of all virtual clusters:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW VIRTUAL CLUSTERS WITH REPLICATION STATUS;
 ~~~
 
 To show the replication status of the `main` virtual cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 ~~~

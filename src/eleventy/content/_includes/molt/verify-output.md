@@ -1,7 +1,6 @@
 1. Run the [MOLT Verify]({% link "molt/molt-verify.md" %}) command, specifying the source and target [connection strings](#connection-strings) and the tables to validate.
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	molt verify \
 	--source $SOURCE \ 
@@ -11,7 +10,6 @@
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="mysql">
-	{% include "copy-clipboard.html" %} 
 	~~~ shell
 	molt verify \
 	--source $SOURCE \ 
@@ -21,7 +19,6 @@
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="oracle">
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	molt verify \
 	--source $SOURCE \ 

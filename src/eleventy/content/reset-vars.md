@@ -25,12 +25,10 @@ No [privileges]({% link "{{ page.version.version }}/security-reference/authoriza
 
 {{site.data.alerts.callout_success}}You can use <a href="{% link "{{ page.version.version }}/set-vars.md" %}#reset-a-variable-to-its-default-value"><code>SET .. TO DEFAULT</code></a> to reset a session variable as well.{{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET extra_float_digits = -10;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW extra_float_digits;
 ~~~
@@ -42,7 +40,6 @@ No [privileges]({% link "{{ page.version.version }}/security-reference/authoriza
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT random();
 ~~~
@@ -54,12 +51,10 @@ No [privileges]({% link "{{ page.version.version }}/security-reference/authoriza
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > RESET extra_float_digits;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW extra_float_digits;
 ~~~
@@ -71,7 +66,6 @@ No [privileges]({% link "{{ page.version.version }}/security-reference/authoriza
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT random();
 ~~~

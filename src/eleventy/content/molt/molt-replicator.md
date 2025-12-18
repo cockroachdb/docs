@@ -111,28 +111,24 @@ MOLT Replicator provides four commands for different replication scenarios. For 
 
 Use `pglogical` to replicate from PostgreSQL to CockroachDB:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator pglogical
 ~~~
 
 Use `mylogical` to replicate from MySQL to CockroachDB:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator mylogical
 ~~~
 
 Use `oraclelogminer` to replicate from Oracle to CockroachDB:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator oraclelogminer
 ~~~
 
 Use `start` to replicate from CockroachDB to PostgreSQL, MySQL, or Oracle (failback):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator start
 ~~~
@@ -151,28 +147,24 @@ The source connection string **must** point to the primary instance of the sourc
 
 PostgreSQL connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --sourceConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
 ~~~
 
 MySQL connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --sourceConn 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
 ~~~
 
 Oracle connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --sourceConn 'oracle://{username}:{password}@{host}:{port}/{service_name}'
 ~~~
 
 For Oracle Multitenant databases, `--sourcePDBConn` specifies the pluggable database (PDB) connection. `--sourceConn` specifies the container database (CDB):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --sourceConn 'oracle://{username}:{password}@{host}:{port}/{cdb_service_name}'
 --sourcePDBConn 'oracle://{username}:{password}@{host}:{port}/{pdb_service_name}'
@@ -180,7 +172,6 @@ For Oracle Multitenant databases, `--sourcePDBConn` specifies the pluggable data
 
 For failback, `--stagingConn` specifies the CockroachDB connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --stagingConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
 ~~~
@@ -189,7 +180,6 @@ For failback, `--stagingConn` specifies the CockroachDB connection string:
 
 `--targetConn` specifies the connection string of the target CockroachDB database for forward replication:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --targetConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
 ~~~
@@ -204,21 +194,18 @@ MOLT Replicator requires a checkpoint value to start replication from the correc
 
 For PostgreSQL, use `--slotName` to specify the [replication slot created during the data load]({% link "molt/migrate-load-replicate.md" %}#start-fetch). The slot automatically tracks the LSN (Log Sequence Number):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --slotName molt_slot
 ~~~
 
 For MySQL, use `--defaultGTIDSet` with the GTID set from the [MOLT Fetch output]({% link "molt/migrate-load-replicate.md" %}?filters=mysql#start-fetch):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --defaultGTIDSet '4c658ae6-e8ad-11ef-8449-0242ac140006:1-29'
 ~~~
 
 For Oracle, use `--scn` and `--backfillFromSCN` with the SCN values from the [MOLT Fetch output]({% link "molt/migrate-load-replicate.md" %}?filters=oracle#start-fetch):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --scn 26685786
 --backfillFromSCN 26685444
@@ -228,7 +215,6 @@ For Oracle, use `--scn` and `--backfillFromSCN` with the SCN values from the [MO
 
 The staging database stores replication metadata, checkpoints, and buffered mutations. Specify the staging database with `--stagingSchema` and create it automatically with `--stagingCreateSchema`:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --stagingSchema _replicator
 --stagingCreateSchema
@@ -257,7 +243,6 @@ For failback scenarios, secure the connection from CockroachDB to MOLT Replicato
 
 Configure MOLT Replicator with server certificates using the `--tlsCertificate` and `--tlsPrivateKey` flags to specify the certificate and private key file paths. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator start \
 --tlsCertificate ./certs/server.crt \
@@ -288,7 +273,6 @@ The Replicator process re-reads these tables every minute to pick up changes.
 
 To pass the JWT token from the changefeed to the Replicator webhook sink, use the [`webhook_auth_header` option]({% link "{{ site.current_cloud_version }}/create-changefeed.md" %}#options):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED ... WITH webhook_auth_header='Bearer <encoded_token>';
 ~~~
@@ -297,7 +281,6 @@ CREATE CHANGEFEED ... WITH webhook_auth_header='Bearer <encoded_token>';
 
 The following example uses `OpenSSL` to generate keys, but any PEM-encoded RSA or EC keys will work.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 # Generate an EC private key using OpenSSL.
 openssl ecparam -out ec.key -genkey -name prime256v1
@@ -324,7 +307,6 @@ The `make-jwt` command also supports a `--claim` [flag](#make-jwt-flags), which 
 
 You can repeat the `-a` [flag](#make-jwt-flags) to create a claim for multiple schemas:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator make-jwt -a 'database.schema' --claim
 ~~~
@@ -356,7 +338,6 @@ For details on the `make-jwt` command flags, refer to [`make-jwt` flags](#make-j
 
 Use the `version` command to verify the integrity of your MOLT Replicator build and identify potential upstream vulnerabilities.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator version
 ~~~
@@ -382,7 +363,6 @@ Use this information to determine if your build may be subject to vulnerabilitie
 <section class="filter-content" markdown="1" data-scope="postgres">
 To start replication after an [initial data load with MOLT Fetch]({% link "molt/migrate-load-replicate.md" %}#start-fetch), use the `pglogical` command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator pglogical
 ~~~
@@ -391,7 +371,6 @@ replicator pglogical
 <section class="filter-content" markdown="1" data-scope="mysql">
 To start replication after an [initial data load with MOLT Fetch]({% link "molt/migrate-load-replicate.md" %}?filters=mysql#start-fetch), use the `mylogical` command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator mylogical
 ~~~
@@ -400,7 +379,6 @@ replicator mylogical
 <section class="filter-content" markdown="1" data-scope="oracle">
 To start replication after an [initial data load with MOLT Fetch]({% link "molt/migrate-load-replicate.md" %}?filters=oracle#start-fetch), use the `oraclelogminer` command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator oraclelogminer
 ~~~
@@ -408,7 +386,6 @@ replicator oraclelogminer
 
 Specify the source and target database connections. For connection string formats, refer to [Source connection strings](#source-connection-strings) and [Target connection strings](#target-connection-strings):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --sourceConn $SOURCE
 --targetConn $TARGET
@@ -417,14 +394,12 @@ Specify the source and target database connections. For connection string format
 <section class="filter-content" markdown="1" data-scope="oracle">
 For Oracle Multitenant databases, also specify the PDB connection:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --sourcePDBConn $SOURCE_PDB
 ~~~
 
 Specify the source Oracle schema to replicate from:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --sourceSchema migration_schema
 ~~~
@@ -435,7 +410,6 @@ To replicate from the correct position, specify the appropriate checkpoint value
 <section class="filter-content" markdown="1" data-scope="postgres">
 Use `--slotName` to specify the slot created during the data load, which automatically tracks the LSN (Log Sequence Number) checkpoint:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --slotName molt_slot
 ~~~
@@ -444,7 +418,6 @@ Use `--slotName` to specify the slot created during the data load, which automat
 <section class="filter-content" markdown="1" data-scope="mysql">
 Use `--defaultGTIDSet` from the `cdc_cursor` field in the MOLT Fetch output:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --defaultGTIDSet '4c658ae6-e8ad-11ef-8449-0242ac140006:1-29'
 ~~~
@@ -453,7 +426,6 @@ Use `--defaultGTIDSet` from the `cdc_cursor` field in the MOLT Fetch output:
 <section class="filter-content" markdown="1" data-scope="oracle">
 Use the `--scn` and `--backfillFromSCN` values from the MOLT Fetch output:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --scn 26685786
 --backfillFromSCN 26685444
@@ -462,7 +434,6 @@ Use the `--scn` and `--backfillFromSCN` values from the MOLT Fetch output:
 
 Use `--stagingSchema` to specify the staging database. Use `--stagingCreateSchema` to create it automatically on first run:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --stagingSchema _replicator
 --stagingCreateSchema
@@ -471,7 +442,6 @@ Use `--stagingSchema` to specify the staging database. Use `--stagingCreateSchem
 At minimum, the `replicator` command should include the following flags:
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator pglogical \
 --sourceConn $SOURCE \
@@ -485,7 +455,6 @@ For detailed steps, refer to [Load and replicate]({% link "molt/migrate-load-rep
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator mylogical \
 --sourceConn $SOURCE \
@@ -499,7 +468,6 @@ For detailed steps, refer to [Load and replicate]({% link "molt/migrate-load-rep
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator oraclelogminer \
 --sourceConn $SOURCE \
@@ -528,7 +496,6 @@ When resuming replication after an interruption, MOLT Replicator automatically u
 Rerun the same `replicator` command used during [forward replication](#forward-replication-with-initial-load), specifying the same `--stagingSchema` value as before. Omit `--stagingCreateSchema` and any checkpoint flags. For example:
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator pglogical \
 --sourceConn $SOURCE \
@@ -541,7 +508,6 @@ For detailed steps, refer to [Resume replication]({% link "molt/migrate-resume-r
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator mylogical \
 --sourceConn $SOURCE \
@@ -553,7 +519,6 @@ For detailed steps, refer to [Resume replication]({% link "molt/migrate-resume-r
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator oraclelogminer \
 --sourceConn $SOURCE \
@@ -572,42 +537,36 @@ When replicating from CockroachDB back to the source database, MOLT Replicator a
 
 Use the `start` command for failback:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator start
 ~~~
 
 Specify the target database connection (the database you originally migrated from). For connection string formats, refer to [Target connection strings](#target-connection-strings):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --targetConn $TARGET
 ~~~
 
 Specify the CockroachDB connection string. For details, refer to [Connect using a URL]({% link "{{ site.current_cloud_version }}/connection-parameters.md" %}#connect-using-a-url).
 
-{% include "copy-clipboard.html" %}
 ~~~
 --stagingConn $STAGING
 ~~~
 
 Specify the staging database name. This should be the same staging database created during [Forward replication with initial load](#forward-replication-with-initial-load):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --stagingSchema _replicator
 ~~~
 
 Specify a webhook endpoint address for the changefeed to send changes to. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --bindAddr :30004
 ~~~
 
 Specify TLS certificate and private key file paths for secure webhook connections:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --tlsCertificate ./certs/server.crt
 --tlsPrivateKey ./certs/server.key
@@ -615,7 +574,6 @@ Specify TLS certificate and private key file paths for secure webhook connection
 
 At minimum, the `replicator` command should include the following flags:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator start \
 --targetConn $TARGET \
@@ -649,7 +607,6 @@ By default, MOLT Replicator writes two streams of logs: operational logs to `std
 
 Redirect both streams to ensure all logs are captured for troubleshooting:
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 # Merge both streams to console
 ./replicator ... 2>&1

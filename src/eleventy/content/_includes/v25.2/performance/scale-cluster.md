@@ -4,7 +4,6 @@
 
 1. Run the [`cockroach start`]({% link "{{ page.version.version }}/cockroach-start.md" %}) command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     {{page.certs}} \
@@ -24,7 +23,6 @@
 
 1. Run the [`cockroach start`]({% link "{{ page.version.version }}/cockroach-start.md" %}) command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     {{page.certs}} \

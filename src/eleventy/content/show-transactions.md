@@ -45,7 +45,6 @@ The following fields are returned for each transaction:
 
 ### List active transactions across the cluster
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CLUSTER TRANSACTIONS;
 ~~~
@@ -62,7 +61,6 @@ Alternatively, you can use `SHOW TRANSACTIONS` to receive the same response.
 
 ### List active transactions on the gateway node
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW LOCAL TRANSACTIONS;
 ~~~
@@ -80,7 +78,6 @@ You can use a [`SELECT`]({% link "{{ page.version.version }}/select-clause.md" %
 
 #### Show transactions associated with a specific application
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x as (SHOW CLUSTER TRANSACTIONS) SELECT * FROM x WHERE application_name = 'movr';
 
@@ -97,7 +94,6 @@ You can use a [`SELECT`]({% link "{{ page.version.version }}/select-clause.md" %
 
 To exclude transactions from the [built-in SQL client]({% link "{{ page.version.version }}/cockroach-sql.md" %}), filter for transactions that do not show `$ cockroach sql` as the `application_name`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER TRANSACTIONS) SELECT * FROM x
       WHERE application_name != '$ cockroach sql';

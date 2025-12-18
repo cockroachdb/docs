@@ -32,21 +32,18 @@ The examples on this page demonstrate how to back up and restore from your own s
 
 To take a [full backup]({% link "{{site.current_cloud_version}}/take-full-and-incremental-backups.md" %}#full-backups) of a cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 To take a [full backup]({% link "{{site.current_cloud_version}}/take-full-and-incremental-backups.md" %}#full-backups) of a single database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP DATABASE bank INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 To take a [full backup]({% link "{{site.current_cloud_version}}/take-full-and-incremental-backups.md" %}#full-backups) of a single table or view:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP bank.customers INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
@@ -55,7 +52,6 @@ BACKUP bank.customers INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 
 `BACKUP ... INTO` adds a backup to a [backup collection]({% link "{{site.current_cloud_version}}/take-full-and-incremental-backups.md" %}#backup-collections) location. To view the backup paths in a given collection location (your storage bucket), use [`SHOW BACKUPS`]({% link "{{site.current_cloud_version}}/show-backup.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUPS IN 's3://bucket/path?AUTH=implicit';
 ~~~
@@ -75,7 +71,6 @@ When you want to restore a specific backup, add the backup's subdirectory path (
 
 To restore from the most recent backup ([full or incremental]({% link "{{site.current_cloud_version}}/take-full-and-incremental-backups.md" %})) in the collection's location, use the `LATEST` syntax:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN 's3://bucket/path?AUTH=implicit';
 ~~~
@@ -88,7 +83,6 @@ You cannot restore a backup of a multi-region database into a single-region data
 
 To restore a specific full or incremental backup, specify that backup's subdirectory in the `RESTORE` statement. To view the available subdirectories, use [`SHOW BACKUPS`]({% link "{{site.current_cloud_version}}/show-backup.md" %}). If you are restoring an incremental backup, the URI must point to the storage location that contains the full backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM '2023/03/23-213101.37' IN 's3://bucket/path?AUTH=implicit';
 ~~~
@@ -99,14 +93,12 @@ When a `BACKUP` statement specifies an existing subdirectory in the collection, 
 
 To take an incremental backup using the `LATEST` keyword:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO LATEST IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 To store the backup in an existing subdirectory in the collection:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO {'subdirectory'} IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
@@ -121,7 +113,6 @@ To explicitly control where you store your incremental backups, use the [`increm
 
 This example [creates a schedule]({% link "{{site.current_cloud_version}}/create-schedule-for-backup.md" %}) for a cluster backup with revision history that is taken every day at midnight:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE SCHEDULE schedule_label
   FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
@@ -152,7 +143,6 @@ Refer to the [Take and Restore Encrypted Backups]({% link "{{site.current_cloud_
 
 For example, you can run a backup with AWS KMS with the `BACKUP` statement's `kms` option:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH kms = 'aws:///{key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
@@ -166,7 +156,6 @@ BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 
 For example, to create a [locality-aware backup]({% link "{{site.current_cloud_version}}/take-and-restore-locality-aware-backups.md" %}) where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
@@ -180,7 +169,6 @@ When you run the `BACKUP` statement for a locality-aware backup, check the follo
 
 You can restore the backup by running:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN ('s3://us-east-bucket', 's3://us-west-bucket');
 ~~~
@@ -208,7 +196,6 @@ Only database and table-level backups are possible when using `userfile` as stor
 
 In cases when you need to restore a specific backup, add the backup subdirectory to the `RESTORE` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 RESTORE DATABASE bank FROM '2021/03/24-210532.53' IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
 ~~~
@@ -217,14 +204,12 @@ It is also possible to run `userfile:///bank-backup` as `userfile:///` refers to
 
 To restore from the most recent backup, use [`RESTORE FROM LATEST IN ...`]({% link "{{site.current_cloud_version}}/restore.md" %}#restore-the-most-recent-full-or-incremental-backup):
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 RESTORE FROM LATEST IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
 ~~~
 
 Once the backup data is no longer needed, delete from the `userfile` storage:
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 cockroach userfile delete bank-backup --url {CONNECTION STRING}
 ~~~
@@ -241,7 +226,6 @@ To back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ s
 
 1. While [connected to your self-hosted CockroachDB cluster]({% link "{{site.current_cloud_version}}/connect-to-the-database.md" %}), [back up]({% link "{{site.current_cloud_version}}/backup.md" %}) your databases and/or tables to an [external location]({% link "{{site.current_cloud_version}}/backup.md" %}#backup-file-urls):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     BACKUP DATABASE example_database INTO 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
     ~~~
@@ -264,7 +248,6 @@ To back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ s
 1. [Restore]({% link "{{site.current_cloud_version}}/restore.md" %}) to your CockroachDB {{ site.data.products.cloud }} cluster.
 
     a. Use `SHOW BACKUPS` with your external location to find the backup's subdirectory:
-      {% include "copy-clipboard.html" %}
       ~~~ sql
       SHOW BACKUPS IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
       ~~~
@@ -278,7 +261,6 @@ To back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ s
       ~~~
 
     b. Use the subdirectory to specify the backup to restore:
-      {% include "copy-clipboard.html" %}
       ~~~ sql
       RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
       ~~~

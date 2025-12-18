@@ -103,7 +103,6 @@ This example uses `SELECT ... FOR UPDATE` to lock a row inside a transaction, fo
 
 Back in Terminal 1, update the row and commit the transaction:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 UPDATE kv SET v = v + 5 WHERE k = 1;
 ~~~
@@ -112,7 +111,6 @@ UPDATE kv SET v = v + 5 WHERE k = 1;
 UPDATE 1
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 ~~~
@@ -132,7 +130,6 @@ Now that the transaction in Terminal 1 has committed, the transaction in Termina
 
 The transaction in Terminal 2 can now receive input, so update the row in question again:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 UPDATE kv SET v = v + 5 WHERE k = 1;
 ~~~
@@ -143,7 +140,6 @@ UPDATE 1
 
 Finally, commit the transaction in Terminal 2:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 ~~~

@@ -1,4 +1,3 @@
-{% include "copy-clipboard.html" %}
 ~~~
 pulsar://{host IP}:6650
 ~~~

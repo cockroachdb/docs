@@ -2,14 +2,12 @@
 
 1. In the SQL shell, create the `bank` database that your application will use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
 1. Create a SQL user for your app:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE USER <username> WITH PASSWORD <password>;
     ~~~
@@ -18,7 +16,6 @@
 
 1. Give the user the necessary permissions:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > GRANT ALL ON DATABASE bank TO <username>;
     ~~~
@@ -30,7 +27,6 @@
 1. If you haven't already, [download the CockroachDB binary]({% link "{{ page.version.version }}/install-cockroachdb.md" %}).
 1. Start the [built-in SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}) using the connection string you got from the CockroachDB {{ site.data.products.cloud }} Console:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql \
     --url='<connection-string>'
@@ -38,14 +34,12 @@
 
 1. In the SQL shell, create the `bank` database that your application will use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
 1. Exit the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~

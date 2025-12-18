@@ -47,7 +47,6 @@ Once you create a SQL user, the **Connect to cluster** dialog will show informat
 <section class="filter-content" markdown="1" data-scope="mac linux">
 In a terminal, set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 export JDBC_DATABASE_URL="<jdbc-connection-string>"
 ~~~
@@ -58,7 +57,6 @@ The code sample uses the connection string stored in the environment variable `J
 <section class="filter-content" markdown="1" data-scope="windows">
 In a terminal set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $env:JDBC_DATABASE_URL = "<jdbc-connection-string>"
 ~~~
@@ -70,14 +68,12 @@ The code sample uses the connection string stored in the environment variable `J
 
 1. Clone the `quickstart-code-samples` repo:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
 
 1. Navigate to the `java` directory of the repo:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd quickstart-code-samples/java
     ~~~
@@ -91,7 +87,6 @@ The code sample uses the connection string stored in the environment variable `J
 
 1. Run the application using `gradlew`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./gradlew run
     ~~~
@@ -129,7 +124,6 @@ Once you create a SQL user, the **Connect to cluster** dialog will show informat
 <section class="filter-content" markdown="1" data-scope="mac linux">
 In a terminal set the `DATABASE_URL` environment variable to the connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 export DATABASE_URL="<connection-string>"
 ~~~
@@ -140,7 +134,6 @@ The code sample uses the connection string stored in the environment variable `D
 <section class="filter-content" markdown="1" data-scope="windows">
 In a terminal set the `DATABASE_URL` environment variable to the connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $env:DATABASE_URL = "<connection-string>"
 ~~~
@@ -152,14 +145,12 @@ The code sample uses the connection string stored in the environment variable `D
 
 1. Clone the `quickstart-code-samples` repo:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
 
 1. Navigate to the `node` directory of the repo:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd quickstart-code-samples/node
     ~~~
@@ -174,14 +165,12 @@ The code sample uses the connection string stored in the environment variable `D
 
 1. Install the app requirements:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ npm install
     ~~~
 
 1. Run the app:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ node app.js
     ~~~

@@ -11,7 +11,6 @@ To upgrade from one patch release to another within the same major version, perf
 
 1. Apply the new settings to the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl apply -f example.yaml
     ~~~
@@ -21,7 +20,6 @@ To upgrade from one patch release to another within the same major version, perf
 1. To check the status of the rolling upgrade, run `kubectl get pods`.
 1. Verify that all pods have been upgraded:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -35,7 +33,6 @@ To upgrade from one patch release to another within the same major version, perf
 
 1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb \
     -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":2}}}}'
@@ -47,7 +44,6 @@ To upgrade from one patch release to another within the same major version, perf
 
 1. Change the container image in the StatefulSet:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb \
     --type='json' \
@@ -61,7 +57,6 @@ To upgrade from one patch release to another within the same major version, perf
 1. To check the status of the rolling upgrade, run `kubectl get pods`.
 1. Verify that all pods have been upgraded:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -75,7 +70,6 @@ To upgrade from one patch release to another within the same major version, perf
 
 1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -85,7 +79,6 @@ To upgrade from one patch release to another within the same major version, perf
 
 1. Connect to the cluster using the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -95,14 +88,12 @@ To upgrade from one patch release to another within the same major version, perf
 
 1. Remove the cluster initialization job from when the cluster was created:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl delete job my-release-cockroachdb-init
     ~~~
 
 1. Change the container image in the StatefulSet:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -114,7 +105,6 @@ To upgrade from one patch release to another within the same major version, perf
 1. To check the status of the rolling upgrade, run `kubectl get pods`.
 1. Verify that all pods have been upgraded:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'

@@ -19,19 +19,16 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 1. Clone the code's GitHub repo:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ git clone https://github.com/cockroachlabs/example-app-node-prisma
     ~~~
 
 1. Install the application dependencies:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cd example-app-node-prisma
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ npm install
     ~~~
@@ -42,7 +39,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
     <div class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ echo "DATABASE_URL=<connection-string>" >> .env
     ~~~
@@ -53,7 +49,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
     <div class="filter-content" markdown="1" data-scope="local">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ echo "DATABASE_URL=postgresql://root@localhost:26257/defaultdb?sslmode=disable" >> .env
     ~~~
@@ -68,7 +63,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 1. Run [Prisma Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) to initialize the database with the schema defined in `prisma/prisma.schema`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ node_modules/.bin/prisma migrate dev --name init
     ~~~
@@ -87,7 +81,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 The `index.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations:
 
-{% include "copy-clipboard.html" %}
 ~~~ js
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-node-prisma/main/index.js" %}
 ~~~
@@ -98,7 +91,6 @@ In [production]({% link "{{ page.version.version }}/recommended-production-setti
 
 Run the application code:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ node index.js
 ~~~

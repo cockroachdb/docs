@@ -10,7 +10,6 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 1. Add worker nodes if necessary:
     - On GKE, [resize your cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/resizing-a-cluster). If you deployed a [regional cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster) as we recommended, you will use `--num-nodes` to specify the desired number of worker nodes in each zone. For example:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         gcloud container clusters resize {cluster-name} --region {region-name} --num-nodes 2
         ~~~
@@ -20,7 +19,6 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
 1. Edit your StatefulSet configuration to add pods for each new CockroachDB node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=6
     ~~~
@@ -31,7 +29,6 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
 1. Verify that the new pod started successfully:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~

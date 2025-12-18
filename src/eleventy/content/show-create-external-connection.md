@@ -35,7 +35,6 @@ Parameter | Description
 
 ### Show all external connection create statements
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SHOW CREATE ALL EXTERNAL CONNECTIONS;
 ~~~
@@ -55,7 +54,6 @@ kafka             | CREATE EXTERNAL CONNECTION 'kafka' AS 'kafka://broker.addres
 
 To display the `CREATE` statement for a specific external connection, pass the name of the connection similar to the following:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SHOW CREATE EXTERNAL CONNECTION backup_bucket_1;
 ~~~

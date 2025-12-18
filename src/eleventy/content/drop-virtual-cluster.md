@@ -26,7 +26,6 @@ The `DROP VIRTUAL CLUSTER` statement will delete all data related to the specifi
 
 Use the [`GRANT SYSTEM`]({% link "{{ page.version.version }}/grant.md" %}) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
 ~~~
@@ -51,14 +50,12 @@ Parameter | Description
 
 To restart a PCR stream, drop the virtual cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP VIRTUAL CLUSTER IF EXISTS main;
 ~~~
 
 Next, restart the PCR stream with the [`CREATE VIRTUAL CLUSTER`]({% link "{{ page.version.version }}/create-virtual-cluster.md" %}) syntax:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connection string to primary}';
 ~~~
@@ -67,7 +64,6 @@ CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connectio
 
 Use `IMMEDIATE` to drop a virtual cluster instead of waiting for data to be garbage collected:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP VIRTUAL CLUSTER IF EXISTS main IMMEDIATE;
 ~~~

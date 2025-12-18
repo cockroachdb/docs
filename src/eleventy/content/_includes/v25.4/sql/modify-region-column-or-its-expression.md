@@ -2,28 +2,24 @@ The following instructions show how to change the mapping of the [`crdb_internal
 
 1. [Add a new region column]({% link "{{ page.version.version }}/alter-table.md" %}#add-column) of the same type (`crdb_internal_region`) with the updated scalar expression for the computed column:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE app.public.users ADD COLUMN region_new crdb_internal_region AS ({new_expression}) STORED;
     ~~~
 
 1. Atomically [swap the column names]({% link "{{ page.version.version }}/alter-table.md" %}#rename-column) so the new computed column takes the original name:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE app.public.users RENAME COLUMN region TO region_prev, RENAME COLUMN region_new TO region;
     ~~~
 
 1. Point the table locality at the new computed column using [`ALTER TABLE ... SET LOCALITY`]({% link "{{ page.version.version }}/alter-table.md" %}#set-locality):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE app.public.users SET LOCALITY REGIONAL BY ROW AS region;
     ~~~
 
 1. After verifying the changes have occurred (using a query like `SELECT region, * FROM app.public.users WHERE ...`), [drop the previous computed column]({% link "{{ page.version.version }}/alter-table.md" %}#drop-column):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE app.public.users DROP COLUMN region_prev;
     ~~~

@@ -8,14 +8,12 @@ Index selection can impact [performance]({% link "{{ page.version.version }}/per
 
 The syntax to force a scan of a specific index is:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM table@my_idx;
 ~~~
 
 This is equivalent to the longer expression:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM table@{FORCE_INDEX=my_idx};
 ~~~
@@ -24,14 +22,12 @@ This is equivalent to the longer expression:
 
 The syntax to force a reverse scan of a specific index is:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM table@{FORCE_INDEX=my_idx,DESC};
 ~~~
 
 Forcing a reverse scan is sometimes useful during [performance tuning]({% link "{{ page.version.version }}/performance-best-practices-overview.md" %}). For reference, the full syntax for choosing an index and its scan direction is
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM table@{FORCE_INDEX=idx[,DIRECTION]}
 ~~~
@@ -42,14 +38,12 @@ When a direction is specified, that scan direction is forced; otherwise the [cos
 
 You can verify that the optimizer is choosing your desired scan direction using [`EXPLAIN (OPT)`]({% link "{{ page.version.version }}/explain.md" %}#opt-option). For example, given the table
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE kv (K INT PRIMARY KEY, v INT);
 ~~~
 
 you can check the scan direction with:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > EXPLAIN (opt) SELECT * FROM users@{FORCE_INDEX=primary,DESC};
 ~~~
@@ -66,7 +60,6 @@ you can check the scan direction with:
 
 To force a [partial index scan]({% link "{{ page.version.version }}/partial-indexes.md" %}), your statement must have a `WHERE` clause that implies the partial index filter.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE t (
   a INT,
@@ -99,7 +92,6 @@ To force a [partial GIN index]({% link "{{ page.version.version }}/inverted-inde
 - Implies the partial index.
 - Constrains the GIN index scan.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP TABLE t;
 CREATE TABLE t (

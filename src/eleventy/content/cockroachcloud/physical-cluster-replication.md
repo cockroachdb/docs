@@ -61,7 +61,6 @@ To use PCR, it is necessary to set the `supports_cluster_virtualization` field t
 
 1. Send a `POST` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams) to create the primary cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' \
     --header "Authorization: Bearer {api_secret_key}" \
@@ -96,7 +95,6 @@ Ensure that you replace each of the values for the cluster specification as per 
 
 1. Send a `POST` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams) to create the standby cluster that includes your necessary cluster specification. Ensure that you include `supports_cluster_virtualization` set to `true`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' \
     --header "Authorization: Bearer {api_secret_key}" \
@@ -142,7 +140,6 @@ With the primary and standby clusters set up, you can now start a PCR stream.
 
 1. Send a `POST` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams) to the `/v1/physical-replication-streams` endpoint to start the PCR stream:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST --url https://cockroachlabs.cloud/api/v1/physical-replication-streams \
 --header "Authorization: Bearer {api_secret_key}" \
@@ -187,7 +184,6 @@ To start PCR between clusters, CockroachDB {{ site.data.products.cloud }} sets u
 
 For monitoring the current status of the PCR stream, send a `GET` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/physical-replication-streams/-id-) to the `/v1/physical-replication-streams` endpoint along with the ID of the PCR stream:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
 --header "Authorization: Bearer {api_secret_key}" 
@@ -252,7 +248,6 @@ Failing over from the primary cluster to the standby cluster will stop the PCR s
 
 To fail over to the latest consistent time, you only need to include `"status": "FAILING_OVER"` in your `PATCH` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/physical-replication-streams/-id-) with the PCR stream ID:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request PATCH --url https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id} \
 --header "Authorization: Bearer {api_secret_key}" \
@@ -274,7 +269,6 @@ curl --request PATCH --url https://cockroachlabs.cloud/api/v1/physical-replicati
 
 To specify a timestamp, send a `PATCH` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/physical-replication-streams/-id-) to the `/v1/physical-replication-streams` endpoint along with the primary cluster, standby cluster, or the ID of the PCR stream. Include the `failover_at` field with your required timestamp:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request PATCH "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
 --header "Authorization: Bearer {api_secret_key}" \
@@ -299,7 +293,6 @@ After the failover is complete, both clusters can receive traffic and operate as
 
 Run a `GET` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/physical-replication-streams/-id-) to check when the failover is complete:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
 --header "Authorization: Bearer {api_secret_key}" 

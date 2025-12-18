@@ -145,7 +145,6 @@ The following examples provide connection strings to Amazon S3 and Google Cloud 
 
 To take an encrypted backup with AWS KMS, use the `kms` [option]({% link "{{ page.version.version }}/backup.md" %}#options):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH kms = 'aws:///{key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
@@ -155,7 +154,6 @@ BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 
 To take a [locality-aware backup]({% link "{{ page.version.version }}/take-and-restore-locality-aware-backups.md" %}) with kms encryption, use the `kms` option to specify a comma-separated list of KMS URIs:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH KMS=(
@@ -168,7 +166,6 @@ BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 
 To view a [kms encrypted locality-aware backup](#use-key-management-service), use the `kms` option and the same KMS URIs that were used to create the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM '2023/07/14-211406.03' IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH KMS=(
@@ -177,7 +174,6 @@ SHOW BACKUP FROM '2023/07/14-211406.03' IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID
     );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 database_name | parent_schema_name |      object_name       | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster | regions
 ----------------+--------------------+------------------------+-------------+-------------+------------+----------------------------+------------+------+-----------------+----------
@@ -207,7 +203,6 @@ database_name | parent_schema_name |      object_name       | object_type | back
 
 To decrypt an [encrypted backup](#take-an-encrypted-amazon-s3-backup), use the `kms` option and any subset of the KMS URIs that were used to take the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH kms = 'aws:///{key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
@@ -221,7 +216,6 @@ RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET
 
 To take an encrypted backup with Azure KMS, use the `kms` [option]({% link "{{ page.version.version }}/backup.md" %}#options):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH kms = 'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
@@ -231,7 +225,6 @@ BACKUP INTO 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={ac
 
 To take a [locality-aware backup with kms encryption](#locality-aware-backup-with-kms-encryption), use the `kms` option to specify a comma-separated list of KMS URIs:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH KMS=(
@@ -244,7 +237,6 @@ BACKUP INTO 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={ac
 
 To view a [kms encrypted locality-aware backup](#use-key-management-service), use the `kms` option and the same KMS URIs that were used to create the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM '2023/07/14-211406.03' IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH KMS=(
@@ -253,7 +245,6 @@ SHOW BACKUP FROM '2023/07/14-211406.03' IN 'azure-blob://{container name}?AUTH=s
     );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 database_name | parent_schema_name |      object_name       | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster | regions
 ----------------+--------------------+------------------------+-------------+-------------+------------+----------------------------+------------+------+-----------------+----------
@@ -283,7 +274,6 @@ database_name | parent_schema_name |      object_name       | object_type | back
 
 To decrypt an [encrypted backup](#take-an-encrypted-azure-blob-storage-backup), use the `kms` option and any subset of the KMS URIs that were used to take the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH kms = 'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
@@ -297,7 +287,6 @@ RESTORE FROM LATEST IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOU
 
 To take an encrypted backup with Google Cloud KMS, use the `kms` [option]({% link "{{ page.version.version }}/backup.md" %}#options):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}';
@@ -307,7 +296,6 @@ BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
 
 To take a [locality-aware backup with kms encryption](#locality-aware-backup-with-kms-encryption), use the `kms` option to specify a comma-separated list of KMS URIs:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     WITH KMS=(
@@ -320,7 +308,6 @@ BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
 
 To view a [kms encrypted locality-aware backup](#use-key-management-service), use the `kms` option and the same KMS URIs that were used to create the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM '2023/07/14-211406.03' IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     WITH KMS=(
@@ -329,7 +316,6 @@ SHOW BACKUP FROM '2023/07/14-211406.03' IN 'gs://{BUCKET NAME}?AUTH=specified&CR
     );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 database_name | parent_schema_name |      object_name       | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster | regions
 ----------------+--------------------+------------------------+-------------+-------------+------------+----------------------------+------------+------+-----------------+----------
@@ -359,7 +345,6 @@ database_name | parent_schema_name |      object_name       | object_type | back
 
 To decrypt an [encrypted backup](#take-an-encrypted-google-cloud-storage-backup), use the `kms` option and any subset of the KMS URIs that were used to take the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}';
@@ -379,7 +364,6 @@ RESTORE FROM LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED K
 
 To take an encrypted backup, use the [`encryption_passphrase` option]({% link "{{ page.version.version }}/backup.md" %}#with-encryption-passphrase):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
@@ -392,7 +376,6 @@ To decrypt an encrypted backup, use the [`encryption_passphrase` option]({% link
 
 For example, the encrypted backup created in the previous example can be restored with:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~

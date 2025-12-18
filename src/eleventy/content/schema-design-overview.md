@@ -131,7 +131,6 @@ As you scale to a large number of tables, note that:
 
 If you upgrade to this version with an existing object count above the limit set by [`sql.schema.approx_max_object_count`]({% link "{{ page.version.version }}/cluster-settings.md" %}#setting-sql-schema-approx-max-object-count), the upgrade will complete, but future attempts to create schema objects will return an error until you raise or disable the limit:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Raise the limit
 SET CLUSTER SETTING sql.schema.approx_max_object_count = 50000;

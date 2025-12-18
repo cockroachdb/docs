@@ -7,7 +7,6 @@ To perform a major upgrade:
 
         To be certain that the node is ready, run the following command to connect to the cluster and run a test query.
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         cockroach sql -e 'select 1'
         ~~~

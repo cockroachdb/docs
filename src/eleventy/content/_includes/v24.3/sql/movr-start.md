@@ -1,6 +1,5 @@
 - Run [`cockroach demo`]({% link "{{ page.version.version }}/cockroach-demo.md" %}) to start a temporary, in-memory cluster with the `movr` dataset preloaded:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach demo
     ~~~
@@ -16,7 +15,6 @@
 
         <section class="filter-content" markdown="1" data-scope="secure">
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ cockroach workload init movr 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
         ~~~
@@ -25,7 +23,6 @@
 
         <section class="filter-content" markdown="1" data-scope="insecure">
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ cockroach workload init movr 'postgresql://root@localhost:26257?sslmode=disable'
         ~~~
@@ -35,12 +32,10 @@
 
         <section class="filter-content" markdown="1" data-scope="secure">
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ cockroach sql --certs-dir=certs --host=localhost:26257
         ~~~
 
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         > USE movr;
         ~~~
@@ -49,12 +44,10 @@
 
         <section class="filter-content" markdown="1" data-scope="insecure">
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ cockroach sql --insecure --host=localhost:26257
         ~~~
 
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         > USE movr;
         ~~~        

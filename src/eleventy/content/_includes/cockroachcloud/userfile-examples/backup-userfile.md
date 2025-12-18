@@ -8,7 +8,6 @@ When working on the same cluster, `userfile` storage allows for database and tab
 
 First, run the following statement to backup a database to a directory in the default `userfile` space:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE bank INTO 'userfile://defaultdb.public.userfiles_$user/bank-backup' AS OF SYSTEM TIME '-10s';
 ~~~
@@ -21,7 +20,6 @@ When backing up from a cluster and restoring a database or table that is stored 
 
 `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme by default, unless an [explicit subdirectory]({% link "{{site.current_cloud_version}}/backup.md" %}#subdirectory) is passed with the `BACKUP` statement. To view the backup paths in a given destination, use [`SHOW BACKUPS`]({% link "{{site.current_cloud_version}}/restore.md" %}#view-the-backup-subdirectories):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW BACKUPS IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
 ~~~

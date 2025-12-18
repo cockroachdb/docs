@@ -1,7 +1,6 @@
 <section class="filter-content" markdown="1" data-scope="mac, linux">
 In a terminal set the `DATABASE_URL` environment variable to the connection string that you copied earlier:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 export DATABASE_URL="<connection-string>"
 ~~~
@@ -13,7 +12,6 @@ The code sample uses the connection string stored in the environment variable `D
 
 In a terminal set the `DATABASE_URL` environment variable to the connection string that you copied earlier:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $env:DATABASE_URL = "<connection-string>"
 ~~~

@@ -80,7 +80,6 @@ CockroachDB requires TCP communication on two ports:
 
 1. Run the [`cockroach start`]({% link "{{ page.version.version }}/cockroach-start.md" %}) command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach start \
     --insecure \
@@ -93,7 +92,6 @@ CockroachDB requires TCP communication on two ports:
 
 1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`]({% link "{{ page.version.version }}/cockroach-init.md" %}) command to join the first nodes into a cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach init --insecure --host=<address of any node on --join list>
     ~~~
@@ -108,7 +106,6 @@ CockroachDB comes with a number of [built-in workloads]({% link "{{ page.version
 
 1. Import the TPC-C dataset:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach workload fixtures import tpcc \
     --warehouses=2500 \
@@ -129,7 +126,6 @@ CockroachDB comes with a number of [built-in workloads]({% link "{{ page.version
 
 1. Run TPC-C for 30 minutes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach workload run tpcc \
     --warehouses=2500 \

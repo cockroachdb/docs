@@ -37,7 +37,6 @@ For the purpose of this example, you need:
 - An [enterprise license](enterprise-licensing.html)
 - One CockroachDB node running in insecure mode:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -47,40 +46,34 @@ For the purpose of this example, you need:
 
 In a new terminal, as the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach user set maxroach --insecure
 ~~~
 
 As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql --insecure
 ~~~
 
 Create a database and set it as the default:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE DATABASE test_roles;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET DATABASE = test_roles;
 ~~~
 
 Now, let's [create a role](create-role.html):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE ROLE system_ops;
 ~~~
 
 See what roles are in our databases:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW ROLES;
 ~~~
@@ -95,12 +88,10 @@ See what roles are in our databases:
 
 Next, grant privileges to the `system_ops` role you created:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > GRANT CREATE, SELECT ON DATABASE test_roles TO system_ops;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE test_roles;
 ~~~
@@ -129,21 +120,18 @@ Next, grant privileges to the `system_ops` role you created:
 
 Now, add the `maxroach` user to the `system_ops` role:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > GRANT system_ops TO maxroach;
 ~~~
 
 To test the privileges you just added to the `system_ops` role, use `\q` or `ctrl-d` to exit the interactive shell, and then open the shell again as the `maxroach` user (who is a member of the `system_ops` role):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql --user=maxroach --database=test_roles --insecure
 ~~~
 
 Create a table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE employees (
     id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
@@ -153,7 +141,6 @@ Create a table:
 
 You were able to create the table because `maxroach` has `CREATE` privileges. Now, try to drop the table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > DROP TABLE employees;
 ~~~
@@ -165,7 +152,6 @@ You cannot drop the table because your current user (`maxroach`) is a member of 
 
 `maxroach` has `CREATE` and `SELECT` privileges, so try a `SHOW` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW GRANTS ON TABLE employees;
 ~~~
@@ -184,19 +170,16 @@ Let's switch back to the `root` user to test more of the SQL statements related 
 
 Open `cockroach sql` as the `root` user:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql --insecure
 ~~~
 
 Now that you're logged in as the `root` user, revoke privileges and then drop the `system_ops` role.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > REVOKE ALL ON DATABASE test_roles FROM system_ops;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE test_roles;
 ~~~
@@ -215,12 +198,10 @@ Now that you're logged in as the `root` user, revoke privileges and then drop th
 +------------+--------------------+-------+------------+
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > REVOKE ALL ON TABLE test_roles.* FROM system_ops;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW GRANTS ON TABLE test_roles.*;
 ~~~
@@ -235,7 +216,6 @@ Now that you're logged in as the `root` user, revoke privileges and then drop th
 
 {{site.data.alerts.callout_info}}All of a role or user's privileges must be revoked before it can be dropped.{{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > DROP ROLE system_ops;
 ~~~

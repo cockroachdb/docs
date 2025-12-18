@@ -211,7 +211,6 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID PRIMARY KEY,
@@ -223,7 +222,6 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -240,7 +238,6 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 (6 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -261,7 +258,6 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 
 In this example, we create secondary and GIN indexes during table creation. [Secondary indexes]({% link "{{ page.version.version }}/schema-design-indexes.md" %}) allow efficient access to data with keys other than the primary key. [GIN indexes]({% link "{{ page.version.version }}/inverted-indexes.md" %}) allow efficient access to the schemaless data in a [`JSONB`]({% link "{{ page.version.version }}/jsonb.md" %}) column.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE vehicles (
         id UUID NOT NULL,
@@ -279,7 +275,6 @@ In this example, we create secondary and GIN indexes during table creation. [Sec
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -308,14 +303,12 @@ In this example, we create secondary and GIN indexes during table creation. [Sec
 
 Enable vector indexes:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING feature.vector_index.enabled = true;
 ~~~
 
 The following statement creates a table with a [`VECTOR`]({% link "{{ page.version.version }}/vector.md" %}) column, along with a [vector index]({% link "{{ page.version.version }}/vector-indexes.md" %}) that makes vector search efficient.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE items (
      id uuid DEFAULT gen_random_uuid(),
@@ -324,12 +317,10 @@ CREATE TABLE items (
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW INDEX FROM items;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~
   table_name |      index_name      | non_unique | seq_in_index | column_name | definition | direction | storing | implicit | visible | visibility
 -------------+----------------------+------------+--------------+-------------+------------+-----------+---------+----------+---------+-------------
@@ -355,7 +346,6 @@ You can include a [foreign key action]({% link "{{ page.version.version }}/forei
 
 In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a foreign key constraint is deleted, all dependent rows are also deleted).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -367,7 +357,6 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE vehicles (
         id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -385,7 +374,6 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -412,12 +400,10 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO users (name, dl) VALUES ('Annika', 'ABC-123');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
@@ -429,12 +415,10 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO vehicles (city, owner_id) VALUES ('seattle', '26da1fce-59e1-4290-a786-9068242dd195');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM vehicles;
 ~~~
@@ -446,12 +430,10 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > DELETE FROM users WHERE id = '26da1fce-59e1-4290-a786-9068242dd195';
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM vehicles;
 ~~~
@@ -465,7 +447,6 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 In this example, we create the `users` table, but with some column [constraints]({% link "{{ page.version.version }}/constraints.md" %}). One column is the [primary key]({% link "{{ page.version.version }}/primary-key.md" %}), and another column is given a [unique constraint]({% link "{{ page.version.version }}/unique.md" %}) and a [check constraint]({% link "{{ page.version.version }}/check.md" %}) that limits the length of the string. Primary key columns and columns with unique constraints are automatically indexed.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID PRIMARY KEY,
@@ -477,7 +458,6 @@ In this example, we create the `users` table, but with some column [constraints]
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -494,7 +474,6 @@ In this example, we create the `users` table, but with some column [constraints]
 (6 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -516,7 +495,6 @@ In this example, we create the `users` table, but with some column [constraints]
 
 You can use the [`CREATE TABLE AS`]({% link "{{ page.version.version }}/create-table-as.md" %}) statement to create a new table from the results of a `SELECT` statement. For example, suppose you have a number of rows of user data in the `users` table, and you want to create a new table from the subset of users that are located in New York.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users WHERE city = 'new york';
 ~~~
@@ -532,12 +510,10 @@ You can use the [`CREATE TABLE AS`]({% link "{{ page.version.version }}/create-t
 (5 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users_ny AS SELECT * FROM users WHERE city = 'new york';
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users_ny;
 ~~~
@@ -571,7 +547,6 @@ You can use the [`CREATE TABLE AS`]({% link "{{ page.version.version }}/create-t
 
 #### Create a table including all supported source specifiers
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -597,14 +572,12 @@ You can use the [`CREATE TABLE AS`]({% link "{{ page.version.version }}/create-t
 (1 row
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE vehicles2 (
         LIKE vehicles INCLUDING ALL
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles2;
 ~~~
@@ -633,7 +606,6 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 
 #### Create a table with some source specifiers and a foreign key constraint
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE vehicles3 (
         LIKE vehicles INCLUDING DEFAULTS INCLUDING INDEXES,
@@ -641,7 +613,6 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles3;
 ~~~
@@ -685,7 +656,6 @@ The `GLOBAL` locality is useful for "read-mostly" tables of reference data that 
 
 For example, the `promo_codes` table of the [`movr` database]({% link "{{ page.version.version }}/movr.md" %}) is rarely updated after being initialized, but it needs to be read by nodes in all regions.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE promo_codes (
     code STRING PRIMARY KEY,
@@ -696,7 +666,6 @@ For example, the `promo_codes` table of the [`movr` database]({% link "{{ page.v
     LOCALITY GLOBAL;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW TABLES)
 SELECT * FROM x WHERE table_name='promo_codes';
@@ -721,7 +690,6 @@ The `REGIONAL BY TABLE` locality is useful for tables that require low-latency r
 
 For example, suppose you want to create a table for your application's end users in a specific state:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users_ny (
     id UUID PRIMARY KEY,
@@ -730,7 +698,6 @@ For example, suppose you want to create a table for your application's end users
     LOCALITY REGIONAL BY TABLE IN "us-east1";
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW TABLES) SELECT * FROM x WHERE table_name='users_ny';
 ~~~
@@ -754,7 +721,6 @@ The `REGIONAL BY ROW` locality is useful for tables that require low-latency rea
 
 For example, the `vehicles` table of the [`movr` database]({% link "{{ page.version.version }}/movr.md" %}) is read to and written from nodes in different regions.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE vehicles (
     id UUID PRIMARY KEY,
@@ -782,7 +748,6 @@ The region value for `crdb_region` must be one of the regions added to the datab
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE vehicles (
     id UUID PRIMARY KEY,
@@ -822,7 +787,6 @@ For example:
 
 You can then manually set the values of the region with each [`INSERT`]({% link "{{ page.version.version }}/insert.md" %}) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO vehicles (crdb_region, ...) VALUES ('us-east1', ...);
 ~~~
@@ -841,7 +805,6 @@ Using the `LOCALITY REGIONAL BY ROW AS <region>` clause, you can assign rows to 
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE vehicles (
     id UUID PRIMARY KEY,
@@ -873,7 +836,6 @@ CockroachDB will then assign a region to each row, based on the value of the `re
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE bank (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -886,7 +848,6 @@ For example:
 
 CockroachDB creates a sequence to use as the `numerical` column's default value.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -898,7 +859,6 @@ CockroachDB creates a sequence to use as the `numerical` column's default value.
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -916,12 +876,10 @@ CockroachDB creates a sequence to use as the `numerical` column's default value.
 
 When a new row is added to the table, CockroachDB populates the `numerical` column with the result of the `nextval('bank_numerical_seq')` [built-in function]({% link "{{ page.version.version }}/functions-and-operators.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO bank (order_index, balance) VALUES (1, 0), (2, 0), (3, 0);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
 ~~~
@@ -937,12 +895,10 @@ When a new row is added to the table, CockroachDB populates the `numerical` colu
 
 The `numerical` column in this example follows the `BY DEFAULT` rule. According to this rule, if the value of an identity is explicitly updated, the sequence value is overwritten:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > UPDATE bank SET numerical = 500 WHERE id = '0b533801-052e-4837-8e13-0ef2fa6f8883';
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
 ~~~
@@ -958,17 +914,14 @@ The `numerical` column in this example follows the `BY DEFAULT` rule. According 
 
 Inserting explicit values does not affect the next value of the sequence:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO bank (order_index, balance, numerical) VALUES (4, 0, 3);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO bank (order_index, balance) VALUES (5, 0);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
 ~~~
@@ -992,7 +945,6 @@ If the `numerical` column were to follow the `ALWAYS` rule instead, then the seq
 
 In some situations, you may want to exclude a table's row data from a [backup]({% link "{{ page.version.version }}/backup.md" %}). For example, a table could contain high-churn data that you would like to [garbage collect]({% link "{{ page.version.version }}/architecture/storage-layer.md" %}#garbage-collection) more quickly than the [incremental backup]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#incremental-backups) schedule for the database or cluster that will hold the table. You can use the `exclude_data_from_backup = true` parameter with `CREATE TABLE` to mark a table's row data for exclusion from a backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE promo_codes (
     code VARCHAR NOT NULL,

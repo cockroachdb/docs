@@ -233,7 +233,6 @@ In CockroachDB, the following are aliases for `NOT VISIBLE`:
 
 #### Edit a replication zone
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 4;
 ~~~
@@ -246,7 +245,6 @@ When you discard a zone configuration, the objects it was applied to will then i
 You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or partitions if the [multi-region abstractions]({% link "{{ page.version.version }}/migrate-to-multiregion-sql.md" %}#replication-zone-patterns-and-multi-region-sql-abstractions) created the zone configuration.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE DISCARD;
 ~~~
@@ -261,7 +259,6 @@ ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE DISCAR
 
 Suppose we have a table called `students_by_list`, a secondary index on the table called `name_idx`, and the primary key of the table is defined as `(country, id)`. We can define partitions on the index by list:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX students_by_list@name_idx PARTITION BY LIST (country) (
     PARTITION north_america VALUES IN ('CA','US'),
@@ -274,7 +271,6 @@ ALTER INDEX students_by_list@name_idx PARTITION BY LIST (country) (
 
 Suppose we have a table called `students_by_range`, with a secondary index called `name_idx`, and the primary key of the table is defined as `(expected_graduation_date, id)`. We can define partitions on the index by range:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX students_by_range@name_idx PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
@@ -286,7 +282,6 @@ ALTER INDEX students_by_range@name_idx PARTITION BY RANGE (expected_graduation_d
 
 Suppose we have a table named `students`, with a secondary index called `name_idx`, and the primary key is defined as `(country, expected_graduation_date, id)`. We can define partitions and subpartitions on the index:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX students@name_idx PARTITION BY LIST (country) (
     PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (expected_graduation_date) (
@@ -302,7 +297,6 @@ ALTER INDEX students@name_idx PARTITION BY LIST (country) (
 
 #### Repartition an index
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX students_by_range@name_idx PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'),
@@ -312,7 +306,6 @@ ALTER INDEX students_by_range@name_idx PARTITION BY RANGE (expected_graduation_d
 
 #### Unpartition an index
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX students@name_idx PARTITION BY NOTHING;
 ~~~
@@ -321,12 +314,10 @@ ALTER INDEX students@name_idx PARTITION BY NOTHING;
 
 #### Rename an index
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE INDEX on users(name);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW INDEXES FROM users;
 ~~~
@@ -345,12 +336,10 @@ SHOW INDEXES FROM users;
 (8 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX users@name_idx RENAME TO users_name_idx;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW INDEXES FROM users;
 ~~~
@@ -373,7 +362,6 @@ SHOW INDEXES FROM users;
 
 Before scattering, you can view the current replica and leaseholder distribution for an index:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH range_details AS (SHOW RANGES FROM index rides@rides_pkey WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
 ~~~
@@ -393,14 +381,12 @@ WITH range_details AS (SHOW RANGES FROM index rides@rides_pkey WITH DETAILS) SEL
 (9 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX rides@rides_pkey SCATTER;
 ~~~
 
 After scattering, recheck the leaseholder distribution:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH range_details AS (SHOW RANGES FROM index rides@rides_pkey WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
 ~~~
@@ -428,14 +414,12 @@ WITH range_details AS (SHOW RANGES FROM index rides@rides_pkey WITH DETAILS) SEL
 
 Add a new secondary [index]({% link "{{ page.version.version }}/indexes.md" %}) to the `rides` table, on the `revenue` column:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE INDEX revenue_idx ON rides(revenue);
 ~~~
 
 Then split the table ranges by secondary index values:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX rides@revenue_idx SPLIT AT VALUES (25.00), (50.00), (75.00);
 ~~~
@@ -448,7 +432,6 @@ ALTER INDEX rides@revenue_idx SPLIT AT VALUES (25.00), (50.00), (75.00);
 (3 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW RANGES FROM INDEX rides@revenue_idx;
 ~~~
@@ -472,7 +455,6 @@ Add a new secondary [index]({% link "{{ page.version.version }}/indexes.md" %}) 
 
 To remove the split enforcements, run the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER INDEX rides@revenue_idx UNSPLIT AT VALUES (25.00), (50.00), (75.00);
 ~~~
@@ -487,7 +469,6 @@ ALTER INDEX rides@revenue_idx UNSPLIT AT VALUES (25.00), (50.00), (75.00);
 
 You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`]({% link "{{ page.version.version }}/crdb-internal.md" %}) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='rides';
 ~~~
@@ -520,7 +501,6 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
 
 1. Show the indexes on the `rides` table. In the second-to-last column, `visible`, you can see that all indexes have the value `t` (true).
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW INDEXES FROM rides;
     ~~~
@@ -541,7 +521,6 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
 
 1. Explain a query that filters on revenue. Since there is no index on the `revenue` column, the query performs a full scan.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
     ~~~
@@ -573,14 +552,12 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
 
 1. Create the recommended index.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE INDEX ON rides (revenue) STORING (vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time);
     ~~~
 
 1. Display the indexes on the `rides` table to verify the newly created index `rides_revenue_idx`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW INDEXES FROM rides;
     ~~~
@@ -606,7 +583,6 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
 
 1. Explain the query behavior after creating the index. The query now uses the `rides_revenue_idx` index and scans many fewer rows.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
     ~~~
@@ -626,14 +602,12 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
 
 1. Alter the index to be not visible to the optimizer, specifying the `NOT VISIBLE` clause.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER INDEX rides_revenue_idx NOT VISIBLE;
     ~~~
 
 1. Display the table indexes and verify that the index visibility for `rides_revenue_idx` is `f` (false).
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW INDEXES FROM rides;
     ~~~
@@ -659,7 +633,6 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
 
 1. Explain the query behavior after making the index not visible to the optimizer. With the index not visible, the optimizer reverts to full scan and recommends that you make the index visible.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
     ~~~
@@ -695,14 +668,12 @@ Using the `rides_revenue_idx` created in the [preceding example](#set-an-index-t
 
 1. Set the visibility of the index to `0.5`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER INDEX rides_revenue_idx VISIBILITY 0.5;
     ~~~
 
 1. Display the table indexes and verify that the index visibility for `rides_revenue_idx` is `0.5`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW INDEXES FROM rides;
     ~~~
@@ -726,7 +697,6 @@ Using the `rides_revenue_idx` created in the [preceding example](#set-an-index-t
 
 1. Explain the query behavior after making the index partially visible to the optimizer. For the purposes of index recommendations, a partially visible index is treated as not visible. The optimizer recommends that you make this index fully visible.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
     ~~~

@@ -1,4 +1,3 @@
-{% capture formula %}{% include "copy-clipboard.html" %}<div class="highlight"><pre><code class="language-none" data-lang="none">(2 * --max-sql-memory) + --cache &lt;= 80% of system RAM
 </code></pre></div>
 {% endcapture %}
 The default value for `--cache` is 128 MiB. For production deployments, set `--cache` to `25%` or higher. To determine appropriate settings for `--cache` and `--max-sql-memory`, use the following formula: {{ formula }}

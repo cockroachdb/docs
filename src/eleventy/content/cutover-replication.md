@@ -51,12 +51,10 @@ To initiate a cutover to the most recent replicated timestamp, you can specify `
 
 1. To view the current replication timestamp, use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~
     id | name | source_tenant_name |              source_cluster_uri                 |         retained_time           |    replicated_time     | replication_lag | cutover_time |   status
     -----+------+--------------------+-------------------------------------------------+---------------------------------+------------------------+-----------------+--------------+--------------
@@ -70,7 +68,6 @@ To initiate a cutover to the most recent replicated timestamp, you can specify `
 
 1. Run the following from the standby cluster's SQL shell to start the cutover:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO LATEST;
     ~~~
@@ -90,7 +87,6 @@ You can control the point in time that the PCR stream will cut over to.
 
 1. To select a [specific time]({% link "{{ page.version.version }}/as-of-system-time.md" %}) in the past, use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
     ~~~
@@ -106,7 +102,6 @@ You can control the point in time that the PCR stream will cut over to.
 
 1. Specify a timestamp:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO SYSTEM TIME '-1h';
     ~~~
@@ -115,7 +110,6 @@ You can control the point in time that the PCR stream will cut over to.
 
     Similarly, to cut over to a specific time in the future:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO SYSTEM TIME '+5h';
     ~~~
@@ -133,7 +127,6 @@ To monitor for when the replication stream completes, do the following:
 
 1. The completion of the replication is asynchronous; to monitor its progress use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
     ~~~
@@ -148,7 +141,6 @@ To monitor for when the replication stream completes, do the following:
 
 1. Once complete, bring the standby's virtual cluster online with:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER main START SERVICE SHARED;
     ~~~
@@ -163,7 +155,6 @@ To monitor for when the replication stream completes, do the following:
 
 1. To make the standby's virtual cluster the default for connection strings, set the following [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING server.controller.default_target_cluster='main';
     ~~~
@@ -194,7 +185,6 @@ This section illustrates the steps to cut back to the original primary cluster f
 
 1. To begin the cutback to **Cluster A**, the virtual cluster must first stop accepting connections. Connect to the system virtual on **Cluster A**:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url \
     "postgresql://{user}@{node IP or hostname cluster A}:26257?options=-ccluster=system&sslmode=verify-full" \
@@ -203,21 +193,18 @@ This section illustrates the steps to cut back to the original primary cluster f
 
 1. From the system virtual cluster on **Cluster A**, ensure that service to the virtual cluster has stopped:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER {cluster_a} STOP SERVICE;
     ~~~
 
 1. Open another terminal window and generate a connection string for **Cluster B** using `cockroach encode-uri`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach encode-uri {replication user}:{password}@{cluster B node IP or hostname}:26257 --ca-cert certs/ca.crt --inline
     ~~~
 
     Copy the output ready for starting the PCR stream, which requires the connection string to **Cluster B**:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     postgresql://{replication user}:{password}@{cluster B node IP or hostname}:26257/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A
     ~~~
@@ -228,7 +215,6 @@ This section illustrates the steps to cut back to the original primary cluster f
 
 1. Connect to the system virtual cluster for **Cluster B**:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url \
     "postgresql://{user}@{cluster B node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
@@ -237,14 +223,12 @@ This section illustrates the steps to cut back to the original primary cluster f
 
 1. From the system virtual cluster on **Cluster B**, enable rangefeeds:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = 'true';
     ~~~
 
 1. From the system virtual cluster on **Cluster A**, start the replication from **Cluster B** to **Cluster A**. Include the connection string for **Cluster B**:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER {cluster_a} START REPLICATION OF {cluster_b} ON 'postgresql://{replication user}:{password}@{cluster B node IP or hostname}:26257/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
     ~~~
@@ -253,12 +237,10 @@ This section illustrates the steps to cut back to the original primary cluster f
 
 1. Check the status of the virtual cluster on **A**:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW VIRTUAL CLUSTER {cluster_a};
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~
      id |  name  |     data_state     | service_mode
     ----+--------+--------------------+---------------
@@ -270,7 +252,6 @@ This section illustrates the steps to cut back to the original primary cluster f
 
 1. From **Cluster A**, start the cutover:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER {cluster_a} COMPLETE REPLICATION TO LATEST;
     ~~~
@@ -286,14 +267,12 @@ This section illustrates the steps to cut back to the original primary cluster f
 
 1. From **Cluster A**, bring the virtual cluster online:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER {cluster_a} START SERVICE SHARED;
     ~~~
 
 1. To make **Cluster A's** virtual cluster the default for [connection strings]({% link "{{ page.version.version }}/work-with-virtual-clusters.md" %}#sql-clients), set the following [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING server.controller.default_target_cluster='{cluster_a}';
     ~~~

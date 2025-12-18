@@ -133,7 +133,6 @@ DB Console area | System-level privilege | Privileged information
 
 To view timestamps in your preferred timezone in the DB Console, use the [`ui.default_timezone` cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}#setting-ui-default-timezone). This setting supports all valid timezone identifiers, such as `America/New_York` and `Asia/Tokyo`.
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SET CLUSTER SETTING ui.default_timezone = 'America/New_York';
 ~~~

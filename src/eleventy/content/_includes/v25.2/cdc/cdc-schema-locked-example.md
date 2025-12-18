@@ -2,14 +2,12 @@ Use the `schema_locked` [storage parameter]({% link "{{ page.version.version }}/
 
 Enable `schema_locked` on the watched table with the [`ALTER TABLE`]({% link "{{ page.version.version }}/alter-table.md" %}) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE watched_table SET (schema_locked = true);
 ~~~
 
 While `schema_locked` is enabled on a table, attempted schema changes on the table will be rejected and an error returned. If you need to run a schema change on the locked table, unlock the table with `schema_locked = false`, complete the schema change, and then lock the table again with `schema_locked = true`. The changefeed will run as normal while `schema_locked = false`, but it will not benefit from the performance optimization.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE watched_table SET (schema_locked = false);
 ~~~

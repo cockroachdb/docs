@@ -22,7 +22,6 @@ This error will occur in various scenarios, including but not limited to:
 
 To see an example of this error, start by creating the following table.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE T(x INT);
 INSERT INTO T(x) VALUES (1), (2), (3);
@@ -30,7 +29,6 @@ INSERT INTO T(x) VALUES (1), (2), (3);
 
 Then, enter the following multi-statement transaction, which will trigger the error.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 ALTER TABLE t ADD CONSTRAINT unique_x UNIQUE(x);
@@ -46,7 +44,6 @@ Manual inspection may be required to determine the actual state of the database.
 
 In this example, the [`INSERT`]({% link "{{ page.version.version }}/insert.md" %}) statement committed, but the [`ALTER TABLE`]({% link "{{ page.version.version }}/alter-table.md" %}) statement adding a [`UNIQUE` constraint]({% link "{{ page.version.version }}/unique.md" %}) failed.  We can verify this by looking at the data in table `t` and seeing that the additional non-unique value `3` was successfully inserted.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM t;
 ~~~

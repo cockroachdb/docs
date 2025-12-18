@@ -1,4 +1,3 @@
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE t CONFIGURE ZONE DISCARD;
 ~~~

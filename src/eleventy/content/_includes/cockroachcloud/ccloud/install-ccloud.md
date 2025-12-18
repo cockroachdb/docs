@@ -17,7 +17,6 @@ You can install `ccloud` using either Homebrew or by downloading the binary.
 1. [Install Homebrew](http://brew.sh/).
 1. Install using the `ccloud` tap:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     brew install cockroachdb/tap/ccloud
     ~~~
@@ -26,14 +25,12 @@ You can install `ccloud` using either Homebrew or by downloading the binary.
 
 In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-amd64_{{ ccloud_version }}.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
 ~~~
 
 Use the ARM 64 binary if you have an M-series Mac:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-arm64_{{ ccloud_version }}.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
 ~~~
@@ -42,7 +39,6 @@ curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-arm64_{{ ccloud_versi
 <section class="filter-content" markdown="1" data-scope="linux">
 In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_{{ ccloud_version }}.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
 ~~~
@@ -51,7 +47,6 @@ curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_{{ ccloud_versio
 <section class="filter-content" markdown="1" data-scope="windows">
 In a PowerShell window, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud/ccloud_windows-amd64_{{ ccloud_version }}.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force ccloud/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
 ~~~

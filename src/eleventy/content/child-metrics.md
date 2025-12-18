@@ -13,7 +13,6 @@ The metrics and their potential child metrics are determined by the specific fea
 
 `server.child_metrics.enabled` is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({% link "{{ page.version.version }}/set-cluster-setting.md" %}) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 ~~~

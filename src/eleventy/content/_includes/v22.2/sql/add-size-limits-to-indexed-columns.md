@@ -4,19 +4,16 @@ Values exceeding 1 MiB can lead to [storage layer write amplification](architect
 
 To add a size limit using [`CREATE TABLE`](create-table.html):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE name (first STRING(100), last STRING(100));
 ~~~
 
 To add a size limit using [`ALTER TABLE ... ALTER COLUMN`](alter-table.html#alter-column):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET enable_experimental_alter_column_type_general = true;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE name ALTER first TYPE STRING(99);
 ~~~

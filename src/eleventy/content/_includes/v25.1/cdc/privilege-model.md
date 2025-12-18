@@ -31,7 +31,6 @@ Viewing and managing changefeed jobs with the `CHANGEFEED` privilege is **deprec
 
 You can [grant]({% link "{{ page.version.version }}/grant.md" %}#grant-privileges-on-specific-tables-in-a-database) a user the `CHANGEFEED` privilege to allow them to create changefeeds on a specific table:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 GRANT CHANGEFEED ON TABLE example_table TO user;
 ~~~
@@ -42,7 +41,6 @@ These users will be able to create changefeeds, but they will not be able to run
 
 You can add `CHANGEFEED` to the user or role's [default privileges]({% link "{{ page.version.version }}/security-reference/authorization.md" %}#default-privileges) with [`ALTER DEFAULT PRIVILEGES`]({% link "{{ page.version.version }}/alter-default-privileges.md" %}#grant-default-privileges-to-a-specific-role):
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 ALTER DEFAULT PRIVILEGES GRANT CHANGEFEED ON TABLES TO user;
 ~~~
@@ -60,7 +58,6 @@ To give a set of users access to a specific job, or set of jobs, assign them to 
 
 {% include "new-in.html", version: "v25.1" %} You can transfer ownership of a job to a role or user using the [`ALTER JOB`]({% link "{{ page.version.version }}/alter-job.md" %}) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 ALTER JOB job_ID OWNER TO role_name;
 ~~~

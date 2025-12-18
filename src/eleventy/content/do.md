@@ -30,7 +30,6 @@ The `DO` [statement]({% link "{{ page.version.version }}/sql-statements.md" %}) 
 
 The following example uses the [PL/pgSQL `DECLARE` syntax]({% link "{{ page.version.version }}/plpgsql.md" %}#declare-a-variable) to declare variables to use in the code block.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DO $$
 DECLARE
@@ -52,7 +51,6 @@ DO
 
 The following example uses the [PL/pgSQL `WHILE` syntax]({% link "{{ page.version.version }}/plpgsql.md" %}#write-loops) to loop through several statements.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DO $$
 DECLARE
@@ -78,7 +76,6 @@ DO
 
 The following example uses a [common table expression]({% link "{{ page.version.version }}/common-table-expressions.md" %}) in the body of the code block.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DO $$
 DECLARE

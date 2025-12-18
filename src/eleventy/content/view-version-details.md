@@ -6,7 +6,6 @@ toc: false
 
 To view version details for a specific `cockroach` binary, run the `cockroach version` [command](cockroach-commands.html):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach version
 ~~~

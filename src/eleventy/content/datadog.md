@@ -68,7 +68,6 @@ tls_ca_cert: /custom/dir/path/ca.crt
 
 Optionally enable Datadog to collect [CockroachDB logs]({% link "{{ page.version.version }}/logging-overview.md" %}) by adding the following block to `cockroachdb.d/conf.yaml`:
 
-{% include "copy-clipboard.html" %}
 ~~~ yaml
 logs:
  - type: file
@@ -138,14 +137,12 @@ To test the dashboard functionality, use [`cockroach workload`]({% link "{{ page
 
 Initialize the workload for MovR, a fictional vehicle-sharing company:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach workload init movr 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
 ~~~
 
 Run the MovR workload for 5 minutes:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach workload run movr --duration=5m 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
 ~~~

@@ -27,14 +27,12 @@ The following example uses MovR, a fictional vehicle-sharing application, to dem
 
 To follow along, run [`cockroach demo movr`]({% link "{{ page.version.version }}/cockroach-demo.md" %}) with the `--nodes` and `--demo-locality` tags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database]({% link "{{ page.version.version }}/sql-name-resolution.md" %}#current-database).
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach demo movr --nodes=3 --demo-locality=region=us-east,az=a:region=us-central,az=b:region=us-west1,az=c
 ~~~
 
 ### Show locality
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW LOCALITY;
 ~~~
@@ -50,7 +48,6 @@ $ cockroach demo movr --nodes=3 --demo-locality=region=us-east,az=a:region=us-ce
 
 If you know the locality key, you can use the [`crdb_internal.locality_value`]({% link "{{ page.version.version }}/functions-and-operators.md" %}#system-info-functions) built-in function to return the locality value for the current node:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM crdb_internal.locality_value('region');
 ~~~
@@ -62,7 +59,6 @@ If you know the locality key, you can use the [`crdb_internal.locality_value`]({
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM crdb_internal.locality_value('az');
 ~~~

@@ -34,7 +34,6 @@ The **Connection info** dialog shows information about how to connect to your cl
 1. If you haven't already, [download the CockroachDB binary]({% link "{{ page.version.version }}/install-cockroachdb.md" %}).
 1. Run the [`cockroach demo`]({% link "{{ page.version.version }}/cockroach-demo.md" %}) command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach demo \
     --no-example-database

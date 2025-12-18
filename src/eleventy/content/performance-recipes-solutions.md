@@ -32,13 +32,11 @@ This page provides solutions for common performance issues in your clusters. See
 
 * The following query returns statements with full table scans in their statement plan:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW FULL TABLE SCANS;
     ~~~
 * The following query against the `crdb_internal.node_statement_statistics` table returns results:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT count(*) as total_full_scans
     FROM crdb_internal.node_statement_statistics

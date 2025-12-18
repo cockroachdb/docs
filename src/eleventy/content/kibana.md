@@ -34,7 +34,6 @@ This tutorial assumes that you have [started a secure CockroachDB cluster]({% li
 
 From your Metricbeat installation directory, run:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ./metricbeat modules enable cockroachdb
 ~~~
@@ -65,14 +64,12 @@ For example, if you used [`cockroach cert`]({% link "{{ page.version.version }}/
 
 Load the Kibana dashboards (this may take a few moments):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ./metricbeat setup
 ~~~
 
 Launch Metricbeat:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ./metricbeat -e
 ~~~
@@ -95,14 +92,12 @@ To test the dashboard functionality, use [`cockroach workload`]({% link "{{ page
 
 Initialize the workload for MovR, a fictional vehicle-sharing company:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach workload init movr 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
 ~~~
 
 Run the MovR workload for 5 minutes:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach workload run movr --duration=5m 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
 ~~~

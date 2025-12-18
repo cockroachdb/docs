@@ -93,14 +93,12 @@ The procedure shown here only works if you get the range IDs from the table **be
 
 1. Lower the [`gc.ttlseconds` parameter]({% link "{{ page.version.version }}/configure-replication-zones.md" %}#gc-ttlseconds) to 10 minutes.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE t CONFIGURE ZONE USING gc.ttlseconds = 600;
     ~~~
 
 1. Find the IDs of the [ranges]({% link "{{ page.version.version }}/architecture/overview.md" %}#architecture-range) storing the table data using [`SHOW RANGES`]({% link "{{ page.version.version }}/show-ranges.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT range_id FROM [SHOW RANGES FROM TABLE t];
     ~~~
@@ -116,7 +114,6 @@ The procedure shown here only works if you get the range IDs from the table **be
 
 1. Drop the table using [`DROP TABLE`]({% link "{{ page.version.version }}/drop-table.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP TABLE t;
 ~~~
@@ -131,7 +128,6 @@ When a query is executed, a process records query execution statistics on system
 
 The CockroachDB `internal-delete-old-sql-stats` process cleans up query execution statistics collected on system tables, including `system.statement_statistics` and `system.transaction_statistics`. These system tables have a default row limit of 1 million, set by the `sql.stats.persisted_rows.max` [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}). When this limit is exceeded, there is an hourly cleanup job that deletes all of the data that surpasses the row limit, starting with the oldest data first. For more information about the cleanup job, use the following query:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM crdb_internal.jobs WHERE job_type='AUTO SQL STATS COMPACTION';
 ~~~
@@ -152,12 +148,10 @@ To reduce the interval for storage of time-series data:
 
   For example, to change the storage interval for time-series data at 10s resolution to 5 days, run the following [`SET CLUSTER SETTING`]({% link "{{ page.version.version }}/set-cluster-setting.md" %}) command:
 
-  {% include "copy-clipboard.html" %}
   ~~~ sql
   > SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '120h0m0s';
   ~~~
 
-  {% include "copy-clipboard.html" %}
   ~~~ sql
   > SHOW CLUSTER SETTING timeseries.storage.resolution_10s.ttl;
   ~~~
@@ -187,12 +181,10 @@ When storage of time-series metrics is disabled, the DB Console Metrics dashboar
 
 To disable the storage of time-series data, run the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.enabled = false;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CLUSTER SETTING timeseries.storage.enabled;
 ~~~
@@ -206,12 +198,10 @@ To disable the storage of time-series data, run the following command:
 
 This setting only prevents the collection of new time-series data. To also delete all existing time-series data, also change both the `timeseries.storage.resolution_10s.ttl` and `timeseries.storage.resolution_30m.ttl` cluster settings:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '0s';
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.resolution_30m.ttl = '0s';
 ~~~

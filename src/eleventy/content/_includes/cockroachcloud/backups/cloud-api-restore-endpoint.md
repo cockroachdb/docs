@@ -20,7 +20,6 @@ Before a cluster can be restored from a managed backup, the destination cluster 
 
 To restore a cluster to a recent managed backup, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "CLUSTER"`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
@@ -33,7 +32,6 @@ curl --request POST \
 
 By default, the restore job uses the most recent backup stored within the last 7 days on the cluster specified in `source_cluster_id`. To restore a specific backup, include the `backup_id` field and specify a backup ID from the [managed backups list](#view-managed-backups):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
@@ -47,7 +45,6 @@ curl --request POST \
 {% if page.name == "managed-backups-advanced.md" %}
 To restore a cluster backup into a different cluster, ensure that the destination cluster is created and contains no databases/schemas/tables. Send the restore request to the destination cluster ID, specifying the ID of the source cluster as `source_cluster_id`. Both the source cluster and the destination cluster must use the Advanced plan.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores \
@@ -80,7 +77,6 @@ If the request is successful, the client recieves a JSON response that describes
 
 To restore one or more databases from a cluster's managed backup, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "DATABASE"`. Specify the name of the databases in `objects`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
@@ -101,7 +97,6 @@ curl --request POST \
 
 By default, the database is restored into the original database name from the managed backup. To restore the database contents into a new database, include the field `restore_opts.new_db_name` with the new database name. You can only restore one database at a time when using this option.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
@@ -122,7 +117,6 @@ curl --request POST \
 
 To restore from a specific backup rather than the most recently created managed backup, include the `backup_id` field specifying a backup ID:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
@@ -140,7 +134,6 @@ curl --request POST \
 
 To restore a database from a source cluster's managed backup into a different cluster, send the restore request to the destination cluster ID. Specify the ID of the backup's cluster as `source_cluster_id`. Both the source cluster and the destination cluster must use the Advanced plan.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores \
@@ -175,7 +168,6 @@ If the request is successful, the client recieves a response containing JSON des
 
 To restore a one or more tables from a cluster's managed backup, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "TABLE"`. Specify the fully qualified name of the source tables in `objects`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
@@ -200,7 +192,6 @@ curl --request POST \
 
 By default, the table is restored into the original database name from the managed backup. To restore the table into a different database, include the field `restore_opts.into_db` with the desired database name. The following example restores the `tpcc.public.warehouse` table from the most recent managed backup into `tpcc2.public.warehouse` on the cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
@@ -228,7 +219,6 @@ curl --request POST \
 
 To restore from a specific backup rather than the most recently created managed backup, include the `backup_id` field specifying a backup ID:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
@@ -248,7 +238,6 @@ curl --request POST \
 
 To restore a table from a source cluster's managed backup into a different cluster, send the restore request to the destination cluster ID. Specify the ID of the backup's cluster as `source_cluster_id`. Both the source cluster and the destination cluster must use the Advanced plan.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
 --url https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores \
@@ -290,7 +279,6 @@ If the request is successful, the client recieves a response containing JSON des
 
 To view the status of a restore job using the cloud API, send a `GET` request to the `/v1/clusters/{cluster_id}/restores/{restore_id}` endpoint where `restore_id` is the `id` from the JSON response:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores/{restore_id} \

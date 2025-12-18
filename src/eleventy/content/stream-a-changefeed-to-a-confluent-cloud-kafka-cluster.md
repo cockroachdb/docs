@@ -34,7 +34,6 @@ In this step, you'll use the Confluent CLI to create and configure a Kafka clust
 
 1. Ensure you are logged in to Confluent Cloud:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent login --save
     ~~~
@@ -43,7 +42,6 @@ In this step, you'll use the Confluent CLI to create and configure a Kafka clust
 
 1. List the [environments](https://docs.confluent.io/cloud/current/access-management/hierarchy/cloud-environments.html) in your Confluent Cloud account:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent environment list
     ~~~
@@ -52,21 +50,18 @@ In this step, you'll use the Confluent CLI to create and configure a Kafka clust
 
 1. If you would prefer to create an environment, run the following command with a name for your environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent environment create {ENVIRONMENT NAME}
     ~~~
 
 1. Set the environment that you would like to create your cluster in, using the environment's `ID`, which starts with `env-`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent environment use {ENVIRONMENT ID}
     ~~~
 
 1. Create a Kafka cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent kafka cluster create movr-confluent-tutorial --cloud "gcp" --region "us-east1"
     ~~~
@@ -97,7 +92,6 @@ In this step, you'll use the Confluent CLI to create and configure a Kafka clust
 
     You'll need this information later in the tutorial, but you can also access this status at any time with the following command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent kafka cluster describe {CLUSTER ID}
     ~~~
@@ -112,7 +106,6 @@ In this step, you'll create an API key and secret for your Kafka cluster, which 
 
 1. Create the API key for your Kafka cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent api-key create --resource {CLUSTER ID}
     ~~~
@@ -121,12 +114,10 @@ In this step, you'll create an API key and secret for your Kafka cluster, which 
 
 1. To make the consumer setup easier later in the tutorial, you can store the API key locally and set it as your active API key:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent api-key store --resource {CLUSTER ID}
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent api-key use {API KEY} --resource {CLUSTER ID}
     ~~~
@@ -139,7 +130,6 @@ Next, you'll create the Kafka topics for your changefeed messages.
 
 1. Ensure you have the correct active Kafka cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent kafka cluster use {CLUSTER ID}
     ~~~
@@ -150,7 +140,6 @@ Next, you'll create the Kafka topics for your changefeed messages.
 
 1. Run the following command to create a topic:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     confluent kafka topic create users
     ~~~
@@ -167,7 +156,6 @@ In this step, you'll create the Schema Registry in your environment.
 
 Enable the Schema Registry for the active environment:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 confluent schema-registry cluster enable --cloud "gcp" --geo "us"
 ~~~
@@ -187,7 +175,6 @@ You will receive output showing the Schema Registry's ID and its endpoint URL:
 
 Generate an API and secret key for the Schema Registry using the ID from your output:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 confluent api-key create --resource {SCHEMA REGISTRY ID}
 ~~~
@@ -200,7 +187,6 @@ In this step, you'll start a Kafka consumer for the changefeed messages.
 
 Run the following command to create a consumer:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 confluent kafka topic consume users \
  --value-format avro \
@@ -229,28 +215,24 @@ To create your changefeed, you'll prepare your CockroachDB cluster with the `mov
 
 1. In a new terminal window, initiate the `movr` workload for your cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach workload init movr {"CONNECTION STRING"}
     ~~~
 
 1. Run the workload to generate some data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach workload run movr --duration=1m {"CONNECTION STRING"}
     ~~~
 
 1. Start a [SQL session]({% link "{{ page.version.version }}/cockroach-sql.md" %}) for your CockroachDB cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url {"CONNECTION STRING"}
     ~~~
 
 1. Before you can create a changefeed, it is necessary to enable rangefeeds on your cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
@@ -278,7 +260,6 @@ You can also [create external connections]({% link "{{ page.version.version }}/c
 
 1. Create an external connection for the Kafka URI:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION kafka AS "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
     ~~~
@@ -298,14 +279,12 @@ You can also [create external connections]({% link "{{ page.version.version }}/c
 
 1. Create an external connection for the Confluent Schema Registry URI:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION confluent_registry AS "https://{SCHEMA REGISTRY API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY ENDPOINT URL}:443"
     ~~~
 
 1. Create the changefeed with any other options you need to configure your changefeed:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     CREATE CHANGEFEED FOR TABLE users INTO "external://kafka" WITH updated, format = avro, confluent_schema_registry = "external://confluent_registry";
     ~~~

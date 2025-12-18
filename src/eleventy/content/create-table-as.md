@@ -93,7 +93,6 @@ The user must have the `CREATE` [privilege]({% link "{{ page.version.version }}/
 
 ### Create a table from a `SELECT` query
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users WHERE city = 'new york';
 ~~~
@@ -109,12 +108,10 @@ The user must have the `CREATE` [privilege]({% link "{{ page.version.version }}/
 (6 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users_ny AS SELECT * FROM users WHERE city = 'new york';
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users_ny;
 ~~~
@@ -134,12 +131,10 @@ The user must have the `CREATE` [privilege]({% link "{{ page.version.version }}/
 
 This statement creates a copy of an existing table but with changed column names:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users_ny_names (user_id, user_name) AS SELECT id, name FROM users WHERE city = 'new york';
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users_ny_names;
 ~~~
@@ -157,12 +152,10 @@ This statement creates a copy of an existing table but with changed column names
 
 ### Create a table from a `VALUES` clause
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE drivers (id, city, name) AS VALUES (gen_random_uuid(), 'new york', 'Harry Potter'), (gen_random_uuid(), 'seattle', 'Evelyn Martin');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM drivers;
 ~~~
@@ -176,12 +169,10 @@ This statement creates a copy of an existing table but with changed column names
 
 ### Create a copy of an existing table
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users_ny_copy AS TABLE users_ny;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users_ny_copy;
 ~~~
@@ -205,12 +196,10 @@ original table.
 
 You can specify the [primary key]({% link "{{ page.version.version }}/primary-key.md" %}) of a new table created from a selection query:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users_ny_pk (id, city, name PRIMARY KEY) AS SELECT id, city, name FROM users WHERE city = 'new york';
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users_ny_pk;
 ~~~
@@ -226,7 +215,6 @@ You can specify the [primary key]({% link "{{ page.version.version }}/primary-ke
 (6 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE users_ny_pk;
 ~~~
@@ -247,12 +235,10 @@ You can specify the [primary key]({% link "{{ page.version.version }}/primary-ke
 
 You can define the [column families]({% link "{{ page.version.version }}/column-families.md" %}) of a new table created from a selection query:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users_ny_alt (id PRIMARY KEY FAMILY ids, name, city FAMILY locs, address, credit_card FAMILY payments) AS SELECT id, name, city, address, credit_card FROM users WHERE city = 'new york';
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users_ny_alt;
 ~~~
@@ -268,7 +254,6 @@ You can define the [column families]({% link "{{ page.version.version }}/column-
 (6 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE users_ny_alt;
 ~~~
@@ -304,7 +289,6 @@ The timestamp must be within the [garbage collection (GC) window]({% link "{{ pa
 
 The following example creates a new table from the [`movr`]({% link "{{ page.version.version }}/movr.md" %}) dataset at the most recent timestamp that can perform a [follower read]({% link "{{ page.version.version }}/follower-reads.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE analysis_vehicle_location_histories
   AS SELECT * FROM movr.vehicle_location_histories
@@ -322,7 +306,6 @@ The following steps use a table from the [`movr`]({% link "{{ page.version.versi
 
 1. Get a timestamp before the table is deleted in an upcoming step:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT now();
     ~~~
@@ -336,7 +319,6 @@ The following steps use a table from the [`movr`]({% link "{{ page.version.versi
 
 1. Wait a few seconds to simulate time passing (adjust as needed):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT pg_sleep(5);
     ~~~
@@ -350,7 +332,6 @@ The following steps use a table from the [`movr`]({% link "{{ page.version.versi
 
 1. Drop the original table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     DROP TABLE movr.vehicle_location_histories;
     ~~~
@@ -361,7 +342,6 @@ The following steps use a table from the [`movr`]({% link "{{ page.version.versi
 
 1. Restore the table using the [`AS OF SYSTEM TIME`]({% link "{{ page.version.version }}/as-of-system-time.md" %}) clause and the timestamp you obtained before dropping the table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE movr.vehicle_location_histories AS SELECT * FROM movr.vehicle_location_histories AS OF SYSTEM TIME '2025-06-17 15:04:15.82632+00';
     ~~~

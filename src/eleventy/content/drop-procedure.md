@@ -31,7 +31,6 @@ To drop a procedure, a user must have the `DROP` [privilege]({% link "{{ page.ve
 
 The following statement drops the [`delete_earliest_histories` example procedure]({% link "{{ page.version.version }}/stored-procedures.md" %}#create-a-stored-procedure-using-pl-pgsql):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP PROCEDURE delete_earliest_histories;
 ~~~

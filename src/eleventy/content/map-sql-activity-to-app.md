@@ -13,7 +13,6 @@ This page shows how to set and filter database workloads by application name.
 
 It is best practice to set the application name with CockroachDB. You can do this in the [connection string]({% link "{{ page.version.version }}/connection-parameters.md" %}#additional-connection-parameters) `postgres://root@<servername>:26257/mydb?application_name=movr_app` or at the [session level]({% link "{{ page.version.version }}/set-vars.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SET application_name = movr_app;
 ~~~
@@ -28,7 +27,6 @@ If parts of your applications or known microservices are experiencing performanc
 
 You can also programmatically filter `crdb_internal` tables [`crdb_internal.statement_statistics`]({% link "{{ page.version.version }}/crdb-internal.md" %}#statement_statistics) and [`crdb_internal.transaction_statistics`]({% link "{{ page.version.version }}/crdb-internal.md" %}#transaction_statistics) by application name. This example shows the first 60 characters of query text and statement statistics for queries associated with the `movr_app` application:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SELECT app_name, substring(metadata ->> 'query',1,60) AS statement_text,
    metadata -> 'distsql' AS is_distsql,

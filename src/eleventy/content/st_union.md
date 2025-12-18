@@ -25,14 +25,12 @@ In this example, we will generate a single geometry from many individual points 
 
 1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)]({% link "{{ page.version.version }}/architecture/glossary.md" %}#wkt) format:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE tmp (ID UUID DEFAULT gen_random_uuid(), geom_text STRING);
     ~~~
 
 1. Insert the points with the following statement:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     INSERT INTO tmp (geom_text) VALUES
     ('POINT (-73.962090000000003 40.609226)'),
@@ -214,7 +212,6 @@ In this example, we will generate a single geometry from many individual points 
 
 1. Run the query below, which gathers the points into a single geometry using `ST_Union`, and converts the geometry to [GeoJSON]({% link "{{ page.version.version }}/architecture/glossary.md" %}#geojson) so that we can view it with [geojson.io](http://geojson.io):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     WITH
         the_geoms_table
@@ -240,7 +237,6 @@ In this example, we will generate a single geometry from many individual points 
 
 1. Finally, drop the temporary table if you no longer need it:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     DROP TABLE tmp;
     ~~~

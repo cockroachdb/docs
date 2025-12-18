@@ -1,6 +1,5 @@
 - At the cluster level, set `disallow_full_table_scans` for some or all users and roles. For example:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER ROLE ALL SET disallow_full_table_scans = true;
     ~~~

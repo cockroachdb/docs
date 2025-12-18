@@ -29,7 +29,6 @@ To create a changefeed with `EXPERIMENTAL CHANGEFEED FOR`, a user must have the 
 
 You can [grant]({% link "{{ page.version.version }}/grant.md" %}#grant-privileges-on-specific-tables-in-a-database) a user the `SELECT` privilege to allow them to create sinkless changefeeds on a specific table:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 GRANT SELECT ON TABLE example_table TO user;
 ~~~
@@ -94,7 +93,6 @@ Below are clarifications for particular SQL types and values for Avro changefeed
 
 To start a changefeed:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 EXPERIMENTAL CHANGEFEED FOR cdc_test;
 ~~~
@@ -112,7 +110,6 @@ For step-by-step guidance on creating a sinkless changefeed, see the [Changefeed
 
 To start a changefeed in Avro format:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 EXPERIMENTAL CHANGEFEED FOR cdc_test WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
 ~~~
@@ -130,14 +127,12 @@ For step-by-step guidance on creating a sinkless changefeed with Avro, see the [
 
 To create a changefeed on a table with column families, use the `FAMILY` keyword for a specific column family:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 EXPERIMENTAL CHANGEFEED FOR TABLE cdc_test FAMILY f1;
 ~~~
 
 To create a changefeed on a table and output changes for each column family, use the `split_column_families` option:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 EXPERIMENTAL CHANGEFEED FOR TABLE cdc_test WITH split_column_families;
 ~~~

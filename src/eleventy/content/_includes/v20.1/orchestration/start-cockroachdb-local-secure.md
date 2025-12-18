@@ -6,14 +6,12 @@ Some environments, such as Amazon EKS, do not support certificates signed by Kub
 
 - Using the Kubernetes CA: [`cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml). 
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml
     ~~~
 
 - Using a non-Kubernetes CA: [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml)
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml
     ~~~
@@ -37,7 +35,6 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
 1. Use the config file you downloaded to create the StatefulSet that automatically creates 3 pods, each running a CockroachDB node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create -f cockroachdb-statefulset-secure.yaml
     ~~~
@@ -58,7 +55,6 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     1. Get the names of the `Pending` CSRs:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get csr
         ~~~
@@ -75,7 +71,6 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     2. Examine the CSR for the first pod:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl describe csr default.node.cockroachdb-0
         ~~~
@@ -104,7 +99,6 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     3. If everything looks correct, approve the CSR for the first pod:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl certificate approve default.node.cockroachdb-0
         ~~~
@@ -119,7 +113,6 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     1. Confirm that three pods are `Running` successfully. Note that they will not be considered `Ready` until after the cluster has been initialized:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -133,7 +126,6 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     2. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get pv
         ~~~
@@ -147,7 +139,6 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     3. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl create \
         -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml
@@ -159,7 +150,6 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     4. Approve the CSR for the one-off pod from which cluster initialization happens:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl certificate approve default.client.root
         ~~~
@@ -170,7 +160,6 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     5. Confirm that cluster initialization has completed successfully. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get job cluster-init-secure
         ~~~
@@ -180,7 +169,6 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
         cluster-init-secure   1/1           23s        35s
         ~~~
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -201,12 +189,10 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 1. Create two directories:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ mkdir my-safe-directory
     ~~~
@@ -218,7 +204,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 2. Create the CA certificate and key pair:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -227,7 +212,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 3. Create a client certificate and key pair for the root user:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -237,7 +221,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 4. Upload the client certificate and key to the Kubernetes cluster as a secret:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create secret \
     generic cockroachdb.client.root \
@@ -250,7 +233,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 5. Create the certificate and key pair for your CockroachDB nodes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost 127.0.0.1 \
@@ -266,7 +248,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 6. Upload the node certificate and key to the Kubernetes cluster as a secret:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create secret \
     generic cockroachdb.node \
@@ -279,7 +260,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 7. Check that the secrets were created on the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get secrets
     ~~~
@@ -293,7 +273,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 8. Use the config file you downloaded to create the StatefulSet that automatically creates 3 pods, each running a CockroachDB node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create -f cockroachdb-statefulset.yaml
     ~~~
@@ -312,7 +291,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
     1. Confirm that three pods are `Running` successfully. Note that they will not be considered `Ready` until after the cluster has been initialized:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -326,7 +304,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
     2. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get pv
         ~~~
@@ -340,7 +317,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
     3. Run `cockroach init` on one of the pods to complete the node startup process and have them join together as a cluster:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-0 \
         -- /cockroach/cockroach init \
@@ -353,7 +329,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
     4. Confirm that cluster initialization has completed successfully. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get pods
         ~~~

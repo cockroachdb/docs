@@ -17,7 +17,6 @@ The settings described on this page are **not recommended** for use in productio
 
 The [`cockroach start-single-node`]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}) command below starts a single-node, insecure cluster with [in-memory storage]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}#store). Using in-memory storage improves the speed of the cluster for local testing purposes.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach start-single-node --insecure --store=type=mem,size=0.25 --advertise-addr=localhost
 ~~~
@@ -36,7 +35,6 @@ We recommend the following additional [cluster settings]({% link "{{ page.versio
 
 To change all of the settings described above at once, run the following SQL statements:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms';
 SET CLUSTER SETTING jobs.registry.interval.gc = '30s';
@@ -62,7 +60,6 @@ By default, `cockroach start-single-node` logs cluster activity to a file with t
 
 To customize logging behavior for local clusters, use the [`--log` flag]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}#logging):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach start-single-node --insecure --store=type=mem,size=0.25 --advertise-addr=localhost --log="{file-defaults: {dir: /path/to/logs}, sinks: {stderr: {filter: NONE}}}"
 ~~~

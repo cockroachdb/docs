@@ -3,14 +3,12 @@
 Create a dedicated migration user (for example, `MIGRATION_USER`) on the source database. This user is responsible for reading data from source tables during the migration. You will pass this username in the [source connection string](#source-connection-string).
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE USER migration_user WITH PASSWORD 'password';
 ~~~
 
 Grant the user privileges to connect, view schema objects, and select the tables you migrate.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT CONNECT ON DATABASE source_database TO migration_user;
 GRANT USAGE ON SCHEMA migration_schema TO migration_user;
@@ -21,14 +19,12 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO mi
 {% if page.name != "migrate-bulk-load.md" %}
 Grant the `SUPERUSER` role to the user (recommended for replication configuration):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER USER migration_user WITH SUPERUSER;
 ~~~
 
 Alternatively, grant the following permissions to create replication slots, access replication data, create publications, and add tables to publications:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER USER migration_user WITH LOGIN REPLICATION;
 GRANT CREATE ON DATABASE source_database TO migration_user;
@@ -40,14 +36,12 @@ Run the `ALTER TABLE` command for each table to replicate.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE USER 'migration_user'@'%' IDENTIFIED BY 'password';
 ~~~
 
 Grant the user privileges to select only the tables you migrate:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT SELECT ON source_database.* TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
@@ -56,7 +50,6 @@ FLUSH PRIVILEGES;
 {% if page.name != "migrate-bulk-load.md" %}
 For replication, grant additional privileges for binlog access:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
@@ -65,7 +58,6 @@ FLUSH PRIVILEGES;
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE USER MIGRATION_USER IDENTIFIED BY 'password';
 ~~~
@@ -80,7 +72,6 @@ Grant the user privileges to connect, read metadata, and `SELECT` and `FLASHBACK
 
 Connect to the Oracle CDB as a DBA and grant the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Basic access
 GRANT CONNECT TO C##MIGRATION_USER;
@@ -108,7 +99,6 @@ GRANT SELECT ON DBA_TABLES TO C##MIGRATION_USER;
 
 Connect to the Oracle PDB (not the CDB) as a DBA and grant the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Allow C##MIGRATION_USER to connect to the PDB and see active transaction metadata
 GRANT CONNECT TO C##MIGRATION_USER;
@@ -129,7 +119,6 @@ GRANT SELECT, FLASHBACK ON migration_schema.tbl TO C##MIGRATION_USER;
 
 Connect to the Oracle database as a DBA and grant the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Basic access
 GRANT CONNECT TO MIGRATION_USER;
@@ -168,7 +157,6 @@ Verify that you are connected to the primary server by running `SELECT pg_is_in_
 
 Enable logical replication by setting `wal_level` to `logical` in `postgresql.conf` or in the SQL shell. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER SYSTEM SET wal_level = 'logical';
 ~~~
@@ -202,7 +190,6 @@ GTID replication sends all database changes to Replicator. To limit replication 
 
 Enable `ARCHIVELOG` mode for LogMiner to access archived redo logs:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Check current log mode
 SELECT log_mode FROM v$database;
@@ -219,7 +206,6 @@ SELECT log_mode FROM v$database; -- Expected: ARCHIVELOG
 
 Enable supplemental logging for primary keys:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Enable minimal supplemental logging for primary keys
 ALTER DATABASE ADD SUPPLEMENTAL LOG DATA (PRIMARY KEY) COLUMNS;
@@ -233,7 +219,6 @@ SELECT supplemental_log_data_min, supplemental_log_data_pk FROM v$database;
 
 Enable `FORCE LOGGING` to ensure all changes are logged:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE FORCE LOGGING;
 
@@ -245,7 +230,6 @@ SELECT force_logging FROM v$database; -- Expected: YES
 
 Create a checkpoint table called `_replicator_sentinel` in the Oracle schema you will migrate:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE migration_schema."_replicator_sentinel" (
   keycol NUMBER PRIMARY KEY,
@@ -255,7 +239,6 @@ CREATE TABLE migration_schema."_replicator_sentinel" (
 
 Grant privileges to modify the checkpoint table. In Oracle Multitenant, grant the privileges on the PDB:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT SELECT, INSERT, UPDATE ON migration_schema."_replicator_sentinel" TO C##MIGRATION_USER;
 ~~~
@@ -264,7 +247,6 @@ GRANT SELECT, INSERT, UPDATE ON migration_schema."_replicator_sentinel" TO C##MI
 
 Grant LogMiner privileges. In Oracle Multitenant, grant the permissions on the CDB:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Access to necessary V$ views
 GRANT SELECT ON V_$LOG TO C##MIGRATION_USER;
@@ -294,7 +276,6 @@ The user must:
 
 Query the locations of redo files in the Oracle database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT
     l.GROUP#,
@@ -321,7 +302,6 @@ _________ _________________________________________ ____________ _______________
 
 Get the current snapshot System Change Number (SCN):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT CURRENT_SCN FROM V$DATABASE;
 ~~~
@@ -336,7 +316,6 @@ CURRENT_SCN
 
 Add the redo log files to LogMiner, using the redo log file paths you queried:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 EXEC DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '/opt/oracle/oradata/ORCLCDB/redo01.log', OPTIONS => DBMS_LOGMNR.NEW);
 EXEC DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '/opt/oracle/oradata/ORCLCDB/redo02.log', OPTIONS => DBMS_LOGMNR.ADDFILE);
@@ -345,7 +324,6 @@ EXEC DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '/opt/oracle/oradata/ORCLCDB/redo03.
 
 Start LogMiner, specifying the SCN you queried:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 EXEC DBMS_LOGMNR.START_LOGMNR(
   STARTSCN => 2358840,

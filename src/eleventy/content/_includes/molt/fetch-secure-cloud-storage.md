@@ -11,7 +11,6 @@ Ensure that access control is properly configured for [Amazon S3](#amazon-s3), [
 
 - Set the following environment variables in the terminal running `molt fetch`:
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	export AWS_REGION='us-east-1'
 	export AWS_SECRET_ACCESS_KEY='key'
@@ -50,7 +49,6 @@ Ensure that access control is properly configured for [Amazon S3](#amazon-s3), [
 
 	Using `gcloud`:
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	gcloud init
 	gcloud auth application-default login
@@ -58,7 +56,6 @@ Ensure that access control is properly configured for [Amazon S3](#amazon-s3), [
 
 	Using the environment variable:
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	export GOOGLE_APPLICATION_CREDENTIALS={path_to_cred_json}
 	~~~
@@ -90,7 +87,6 @@ Ensure that access control is properly configured for [Amazon S3](#amazon-s3), [
 
 - Set the following environment variables in the terminal running `molt fetch`:
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	export AZURE_ACCOUNT_NAME='account'
 	export AZURE_ACCOUNT_KEY='key'
@@ -98,7 +94,6 @@ Ensure that access control is properly configured for [Amazon S3](#amazon-s3), [
 
 	You can also speicfy client and tenant credentials as environment variables:
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	export AZURE_CLIENT_SECRET='secret'
 	export AZURE_TENANT_ID='id'

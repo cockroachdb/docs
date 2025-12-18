@@ -33,7 +33,6 @@ CockroachDB also supports _locality-restricted backup execution_, which allows y
 
 For example, to create a locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
@@ -47,7 +46,6 @@ When you run the `BACKUP` statement for a locality-aware backup, check the follo
 
 You can restore the backup by running:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN ('s3://us-east-bucket', 's3://us-west-bucket');
 ~~~
@@ -66,7 +64,6 @@ For guidance on connecting to other storage options or using other authenticatio
 
 To determine the locality that a node was started with, run [`SHOW LOCALITY`]({% link "{{ page.version.version }}/show-locality.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SHOW LOCALITY;
 ~~~
@@ -109,7 +106,6 @@ And the restored cluster does not have [nodes with the locality]({% link "{{ pag
 
 For example, use the following to create a locality-aware backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west')
@@ -117,7 +113,6 @@ BACKUP INTO
 
 Restore a locality-aware backup with:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
 ~~~
@@ -136,7 +131,6 @@ There is different syntax for taking an incremental backup depending on where yo
 
 - To append your incremental backup to the full backup in the [`incrementals` directory]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#backup-collections):
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	BACKUP INTO LATEST IN
 		('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
@@ -148,7 +142,6 @@ There is different syntax for taking an incremental backup depending on where yo
 
 - To explicitly control the subdirectory for your incremental backup:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	BACKUP INTO {subdirectory} IN
 			('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
@@ -158,7 +151,6 @@ There is different syntax for taking an incremental backup depending on where yo
 
 - To append your incremental backup to the full backup using the [`incremental_location`]({% link "{{ page.version.version }}/backup.md" %}#options) option to send your incremental backups to a different location, you must include the same number of locality-aware URIs for the full backup destination and the `incremental_location` option:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	BACKUP INTO LATEST IN
 		('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west') WITH incremental_location = ('s3://us-east-bucket-2?COCKROACH_LOCALITY=default', 's3://us-west-bucket-2?COCKROACH_LOCALITY=region%3Dus-west');
@@ -174,7 +166,6 @@ A locality-aware backup URI can also be used in place of any incremental backup 
 
 For example, an incremental locality-aware backup created with
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO LATEST IN
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west')
@@ -182,7 +173,6 @@ BACKUP INTO LATEST IN
 
 can be restored by running:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
 ~~~

@@ -46,7 +46,6 @@ For more information, refer to: [Get Started with the `ccloud` CLI
 
 To authenticate `ccloud` to a particular organization, run the following command. `ccloud` will open up your machine's default browser, attempt to authenticate to the console and export a temporary auth token.
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 ccloud auth login --org <organization label>
 ~~~

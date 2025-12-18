@@ -46,7 +46,6 @@ Only cluster regions specified at node startup can be used as [database regions]
 
 Here is the [`CREATE DATABASE`]({% link "{{ page.version.version }}/create-database.md" %}) statement for the `movr` database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > {% remote_include "https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql", "-- START database", "-- END database" %}
 ~~~
@@ -75,14 +74,12 @@ As shown in the `CREATE TABLE` statements below, the `REGIONAL BY ROW` clauses d
 
 Here is the `CREATE TABLE` statement for the `users` table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > {% remote_include "https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql", "-- START users", "-- END users" %}
 ~~~
 
 ## The `vehicles` table
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > {% remote_include "https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql", "-- START vehicles", "-- END vehicles" %}
 ~~~
@@ -91,7 +88,6 @@ The `vehicles` table has a [foreign key constraint]({% link "{{ page.version.ver
 
 ## The `rides` table
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > {% remote_include "https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql", "-- START rides", "-- END rides" %}
 ~~~

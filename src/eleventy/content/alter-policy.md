@@ -33,7 +33,6 @@ to update the parameters and potentially the diagram.
 
 -->
 
-{% include "copy-clipboard.html" %}
 ~~~
 ALTER POLICY policy_name ON table_name RENAME TO new_policy_name;
 
@@ -58,14 +57,12 @@ Parameter | Description
 
 In this example, you will start by only allowing users to see or modify their own rows in an `orders` table. Then, as the schema is updated due to business requirements, you will refine the policy to take into account the new requirements.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE orders (user_id TEXT PRIMARY KEY, order_details TEXT);
 ~~~
 
 The original policy on the table was as follows:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE POLICY user_orders_policy ON orders
     FOR ALL
@@ -76,7 +73,6 @@ CREATE POLICY user_orders_policy ON orders
 
 However, the `orders` table schema will be updated to include an `is_archived` flag, and the initial policy will need refinement.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Assume this change was made after the initial policy was created
 ALTER TABLE orders ADD COLUMN is_archived BOOLEAN DEFAULT FALSE NOT NULL;
@@ -90,14 +86,12 @@ The policy requirements have changed as follows:
 
 This assumes the `customer_service` role has been created:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE ROLE customer_service;
 ~~~
 
 This leads to the following `ALTER POLICY` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER POLICY user_orders_policy ON orders
     TO customer_service

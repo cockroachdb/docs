@@ -25,12 +25,10 @@ Bounded staleness reads have the following limitations:
 
 For example, let's look at a read query that cannot be served as a bounded staleness read. We will use a [demo cluster]({% link "{{ page.version.version }}/cockroach-demo.md" %}), which automatically loads the [MovR dataset]({% link "{{ page.version.version }}/movr.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach demo
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT code FROM promo_codes AS OF SYSTEM TIME with_max_staleness('10s') LIMIT 1;
 ERROR: unimplemented: cannot use bounded staleness for queries that may touch more than one row or require an index join
@@ -43,7 +41,6 @@ As noted by the error message, this query cannot be served as a bounded stalenes
 
 We can verify that more than one row would be touched by issuing [`EXPLAIN`]({% link "{{ page.version.version }}/explain.md" %}) on the same query, but without the [`AS OF SYSTEM TIME`]({% link "{{ page.version.version }}/as-of-system-time.md" %}) clause:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 EXPLAIN SELECT code FROM promo_codes LIMIT 5;
 ~~~

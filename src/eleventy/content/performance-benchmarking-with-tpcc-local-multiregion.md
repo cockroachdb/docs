@@ -30,7 +30,6 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 In the terminal, use the [`cockroach demo`]({% link "{{ page.version.version }}/cockroach-demo.md" %}) command to start a simulated multi-region cluster with 9 nodes:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach demo --global --nodes 9 --no-example-database --insecure
 ~~~
@@ -49,7 +48,6 @@ CockroachDB comes with a number of [built-in workloads]({% link "{{ page.version
 
 In a second terminal window (call it terminal 2), use [`cockroach workload`]({% link "{{ page.version.version }}/cockroach-workload.md" %}) to load the initial schema and data:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach workload init tpcc \
 --warehouses=10 \
@@ -67,7 +65,6 @@ Run the workload for 10 "warehouses" of data for ten minutes. In order to spread
 
 In terminal 2:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 cockroach workload run tpcc \
 --warehouses=10 \
@@ -83,7 +80,6 @@ cockroach workload run tpcc \
 
 In terminal 3:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 cockroach workload run tpcc \
 --warehouses=10 \
@@ -99,7 +95,6 @@ cockroach workload run tpcc \
 
 In terminal 4:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 cockroach workload run tpcc \
 --warehouses=10 \
@@ -165,7 +160,6 @@ You will also see some audit checks and latency statistics for each individual q
 
 When you're done with your test cluster, switch back to terminal 1 where [`cockroach demo`]({% link "{{ page.version.version }}/cockroach-demo.md" %}) is still running and issue `\q` at the SQL prompt to gracefully shut down the demo cluster.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 \q
 ~~~

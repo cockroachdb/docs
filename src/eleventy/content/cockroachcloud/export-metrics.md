@@ -74,7 +74,6 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 
 1. Determine your cluster's cloud provider account ID. This command uses the third-party JSON parsing tool [`jq`](https://stedolan.github.io/jq/download/) to isolate just the needed `aws_account_id` field:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
@@ -103,7 +102,6 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 
 1. Select the new policy, and paste the following into the **Permissions** tab, with the **{} JSON** option selected:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     {
         "Version": "2012-10-17",
@@ -137,7 +135,6 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 
 1. Issue the following [Cloud API]({% link "cockroachcloud/cloud-api.md" %}) command to enable metrics export for your CockroachDB {{ site.data.products.standard }} cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
@@ -156,7 +153,6 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
@@ -193,7 +189,6 @@ OR
 
 1. Issue the following Cloud API command to enable metrics export for your CockroachDB {{ site.data.products.standard }} cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
@@ -209,7 +204,6 @@ OR
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
@@ -238,7 +232,6 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 
 1. Issue the following [Cloud API]({% link "cockroachcloud/cloud-api.md" %}) command to enable metrics export for your CockroachDB {{ site.data.products.standard }} cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/prometheus \
@@ -251,7 +244,6 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/prometheus \
@@ -275,7 +267,6 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 
 1. You can test a scrape endpoint by using the following Cloud API command:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/prometheus/{cluster_region}/scrape \
@@ -308,7 +299,6 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 
 1. Once metrics export has been enabled and the scrape endpoint(s) tested, you need to configure your metrics collector to periodically poll the scrape endpoint(s). Configure your [Prometheus configuration](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) file's [`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config) as in the following example:
 
-    {% include "copy-clipboard.html" %}
     ~~~yaml
     global:
       scrape_interval: 10s
@@ -345,7 +335,6 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 
 To check the status of an existing Amazon CloudWatch metrics export configuration, use the following Cloud API command:
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
@@ -363,7 +352,6 @@ Where:
 
 To check the status of an existing Datadog metrics export configuration, use the following Cloud API command:
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
@@ -381,7 +369,6 @@ Where:
 
 To check the status of an existing Prometheus metrics export configuration, use the following Cloud API command:
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/prometheus \
@@ -411,7 +398,6 @@ To update an existing CockroachDB {{ site.data.products.standard }} metrics expo
 
 To disable an existing Amazon CloudWatch metrics export configuration, and stop sending metrics to CloudWatch, use the following Cloud API command:
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request DELETE \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
@@ -429,7 +415,6 @@ Where:
 
 To disable an existing Datadog metrics export configuration, and stop sending metrics to Datadog, use the following Cloud API command:
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request DELETE \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
@@ -447,7 +432,6 @@ Where:
 
 To disable an existing Prometheus metrics export configuration, and stop sending metrics to Prometheus, use the following Cloud API command:
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request DELETE \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/prometheus \

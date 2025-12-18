@@ -2,7 +2,6 @@
 
 Once [partitions have been defined for a table or a secondary index](partition-by.html), to control replication for a partition, use `ALTER PARTITION <partition> OF INDEX <table@index> CONFIGURE ZONE`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER PARTITION us_west OF INDEX vehicles@primary
     CONFIGURE ZONE USING
@@ -14,7 +13,6 @@ Once [partitions have been defined for a table or a secondary index](partition-b
 CONFIGURE ZONE 1
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER PARTITION us_west OF INDEX vehicles@vehicles_auto_index_fk_city_ref_users
     CONFIGURE ZONE USING
@@ -28,7 +26,6 @@ CONFIGURE ZONE 1
 
 To define replication zones for identically named partitions of a table and its secondary indexes, you can use the `<table>@*` syntax to save several steps:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER PARTITION us_west OF INDEX vehicles@*
     CONFIGURE ZONE USING
@@ -38,7 +35,6 @@ To define replication zones for identically named partitions of a table and its 
 
 To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FOR PARTITION <partition> OF INDEX <table@index>`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FOR PARTITION us_west OF INDEX vehicles@primary;
 ~~~

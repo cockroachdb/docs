@@ -4,7 +4,6 @@
 
 1. Apply the [custom resource definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) for the Operator:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/crds.yaml
     ~~~
@@ -19,7 +18,6 @@
 
     1. Download the Operator manifest:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
         ~~~
@@ -30,14 +28,12 @@
 
     1. Instead of using the command below, apply your local version of the Operator manifest to the cluster:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl apply -f operator.yaml
         ~~~
 
     If you want to use the default namespace settings:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
@@ -57,7 +53,6 @@
 
 1. Validate that the Operator is running:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -75,7 +70,6 @@ By default, the Operator will generate and sign 1 client and 1 node certificate 
 
 1. Download `example.yaml`, a custom resource that tells the Operator how to configure the Kubernetes cluster.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/example.yaml
     ~~~
@@ -86,7 +80,6 @@ By default, the Operator will generate and sign 1 client and 1 node certificate 
 
 1. Apply `example.yaml`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f example.yaml
     ~~~
@@ -99,7 +92,6 @@ By default, the Operator will generate and sign 1 client and 1 node certificate 
 
 1. Check that the pods were created:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~

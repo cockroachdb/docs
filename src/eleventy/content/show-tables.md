@@ -48,7 +48,6 @@ To optimize the performance of the `SHOW TABLES` statement, you can do the follo
 
 `SHOW TABLES` uses the [current schema]({% link "{{ page.version.version }}/sql-name-resolution.md" %}#current-schema) `public` set by default in `search_path`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -67,7 +66,6 @@ To optimize the performance of the `SHOW TABLES` statement, you can do the follo
 
 Alternatively, within the built-in SQL shell, you can use the `\dt` [shell command]({% link "{{ page.version.version }}/cockroach-sql.md" %}#commands):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > \dt
 ~~~
@@ -88,12 +86,10 @@ Alternatively, within the built-in SQL shell, you can use the `\dt` [shell comma
 
 You can show the tables in schemas other than the current schema. You can also show the schema by table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES FROM movr.information_schema;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES FROM information_schema;
 ~~~
@@ -116,12 +112,10 @@ Because `movr` is the current database, these statements return the same output:
 
 You can also show tables from a different database.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES FROM system.public;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES FROM system;
 ~~~
@@ -143,14 +137,12 @@ Because `public` is the current schema, these statements return the same output:
 
 You can use [`COMMENT ON`]({% link "{{ page.version.version }}/comment-on.md" %}) to add comments on a table.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > COMMENT ON TABLE users IS 'This table contains information about users.';
 ~~~
 
 To view a table's comments:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES FROM movr WITH COMMENT;
 ~~~
@@ -169,7 +161,6 @@ To view a table's comments:
 
 You can also view comments on a table with [`SHOW CREATE`]({% link "{{ page.version.version }}/show-create.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -197,7 +188,6 @@ The virtual tables in the `pg_catalog`, `information_schema`, and `crdb_internal
 
 To view virtual tables with comments and documentation links, use `SHOW TABLES FROM <virtual schema> WITH COMMENT`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES FROM information_schema WITH COMMENT;
 ~~~
@@ -231,7 +221,6 @@ For [multi-region]({% link "{{ page.version.version }}/multiregion-overview.md" 
 
 1. [Set the primary region]({% link "{{ page.version.version }}/alter-database.md" %}#set-primary-region) on `movr` to `us-east`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER DATABASE movr SET PRIMARY REGION "us-east";
     ~~~
@@ -240,12 +229,10 @@ For [multi-region]({% link "{{ page.version.version }}/multiregion-overview.md" 
 
 1. Configure the `users` table to be [`REGIONAL BY ROW`]({% link "{{ page.version.version }}/alter-table.md" %}#set-the-table-locality-to-regional-by-row):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW TABLES;
     ~~~

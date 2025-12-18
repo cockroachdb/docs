@@ -35,7 +35,6 @@
 
     1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure \
         -- ./cockroach sql \
@@ -47,7 +46,6 @@
 
     1. Launch a temporary interactive pod and start the [built-in SQL client](cockroach-sql.html) inside it:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl run cockroachdb -it \
         --image=cockroachdb/cockroach \
@@ -62,21 +60,18 @@
 
     1. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html) to the version you are upgrading from:
 
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         > SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version | remove_first: "v" }}';
         ~~~
 
     1. Exit the SQL shell and delete the temporary pod:
 
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         > \q
         ~~~
 
 1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -90,12 +85,10 @@
     For Helm, you must remove the cluster initialization job from when the cluster was created before the cluster version can be changed.
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl delete job my-release-cockroachdb-init
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -106,7 +99,6 @@
 
 1. Check the status of your cluster's pods. You should see one of them being restarted:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -128,7 +120,6 @@
 
     {% if page.secure == true %}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -138,7 +129,6 @@
 
     {% else %}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach \
@@ -152,7 +142,6 @@
 
 1. Run the following SQL query to verify that the number of underreplicated ranges is zero:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT sum((metrics->>'ranges.underreplicated')::DECIMAL)::INT AS ranges_underreplicated FROM crdb_internal.kv_store_status;
     ~~~
@@ -168,14 +157,12 @@
 
 1. Exit the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~
 
 1. Decrement the partition value by 1 to allow the next pod in the cluster to update:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -187,7 +174,6 @@
 
 1. Check the image of each pod to confirm that all have been upgraded:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -217,7 +203,6 @@
 
     1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure \
         -- ./cockroach sql \
@@ -229,7 +214,6 @@
 
     1. Launch a temporary interactive pod and start the [built-in SQL client](cockroach-sql.html) inside it:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl run cockroachdb -it \
         --image=cockroachdb/cockroach \
@@ -244,7 +228,6 @@
 
     1. Re-enable auto-finalization:
 
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
         ~~~
@@ -253,7 +236,6 @@
 
     1. Exit the SQL shell and delete the temporary pod:
 
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         > \q
         ~~~

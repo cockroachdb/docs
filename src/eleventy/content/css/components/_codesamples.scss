@@ -7,15 +7,18 @@
 }
 
 /* Works in conjunction with /js/customscripts.js to make shell terminals prompts ($) totally unselectable */
-.language-shell::before {
+/* Position the prompt inside the code area using the code element's ::before */
+.language-shell code::before {
 	color: $cl_syntax_aqua;
     content: "$ ";
+    user-select: none;
 }
 
 /* Works in conjunction with /js/customscripts.js to make SQL terminals prompts (>) totally unselectable */
-.language-sql::before {
+.language-sql code::before {
 	color: $cl_syntax_aqua;
     content: "> ";
+    user-select: none;
 }
 
 span.funcdesc {

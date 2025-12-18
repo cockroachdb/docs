@@ -14,7 +14,6 @@ For each additional node you want to add to the cluster, complete the following 
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
@@ -22,7 +21,6 @@ For each additional node you want to add to the cluster, complete the following 
 
 3. Copy the binary into the `PATH`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -31,7 +29,6 @@ For each additional node you want to add to the cluster, complete the following 
 
 4. Run the [`cockroach start`](start-a-node.html) command just like you did for the initial nodes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start --insecure \
     --advertise-addr=<node4 address> \
@@ -54,7 +51,6 @@ For each additional node you want to add to the cluster, complete the following 
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
@@ -62,7 +58,6 @@ For each additional node you want to add to the cluster, complete the following 
 
 3. Copy the binary into the `PATH`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -71,35 +66,30 @@ For each additional node you want to add to the cluster, complete the following 
 
 4. Create the Cockroach directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ mkdir /var/lib/cockroach
     ~~~
 
 5. Create a Unix user named `cockroach`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ useradd cockroach
     ~~~
 
 6. Change the ownership of `Cockroach` directory to the user `cockroach`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ chown cockroach /var/lib/cockroach
     ~~~
 
 7. Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ wget -qO- https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service
     ~~~
 
     Alternatively, you can create the file yourself and copy the script into it:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     {% dynamic_include page.version.version, "/prod-deployment/insecurecockroachdb.service" %}
     ~~~

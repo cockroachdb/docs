@@ -29,7 +29,6 @@
 
 	For example, a PostgreSQL connection string with TLS certificates:
 
-	{% include "copy-clipboard.html" %}
 	~~~
 	postgresql://migration_user@db.example.com:5432/appdb?sslmode=verify-full&sslrootcert=/etc/molt/certs/ca.pem&sslcert=/etc/molt/certs/client.crt&sslkey=/etc/molt/certs/client.key
 	~~~
@@ -38,7 +37,6 @@
 
 	- Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:
 
-		{% include "copy-clipboard.html" %}
 		~~~ shell
 		molt escape-password --password 'a$52&'
 		~~~

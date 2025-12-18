@@ -43,19 +43,16 @@ The following examples use the [`bank` demo database schema](cockroach-demo.html
 
 To follow along, run [`cockroach demo bank`](cockroach-demo.html) to start a temporary, in-memory cluster with the `bank` schema and dataset preloaded:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach demo bank
 ~~~
 
 ### Add a single column
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN active BOOL;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -72,12 +69,10 @@ $ cockroach demo bank
 
 ### Add multiple columns
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN location STRING, ADD COLUMN currency STRING;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -96,12 +91,10 @@ $ cockroach demo bank
 
 ### Add a column with a `NOT NULL` constraint and a `DEFAULT` value
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN interest DECIMAL NOT NULL DEFAULT (DECIMAL '1.3');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -120,12 +113,10 @@ $ cockroach demo bank
 
 ### Add a column with a `UNIQUE` constraint
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN address STRING UNIQUE;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -145,7 +136,6 @@ $ cockroach demo bank
 
 ###  Add a column with a `FOREIGN KEY` constraint
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE customers (
   id INT PRIMARY KEY,
@@ -153,12 +143,10 @@ $ cockroach demo bank
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN cust_number INT REFERENCES customers(id);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -178,7 +166,6 @@ $ cockroach demo bank
 (9 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM bank;
 ~~~
@@ -193,12 +180,10 @@ $ cockroach demo bank
 
 ### Add a column with collation
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN more_names STRING COLLATE en;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -222,12 +207,10 @@ $ cockroach demo bank
 
 #### Add a column and assign it to a new column family
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN location1 STRING CREATE FAMILY f1;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE bank;
 ~~~
@@ -257,12 +240,10 @@ $ cockroach demo bank
 
 #### Add a column and assign it to an existing column family
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN location2 STRING FAMILY f1;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE bank;
 ~~~
@@ -293,12 +274,10 @@ $ cockroach demo bank
 
 #### Add a column and create a new column family if column family does not exist
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN new_name STRING CREATE IF NOT EXISTS FAMILY f2;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE bank;
 ~~~
@@ -335,12 +314,10 @@ $ cockroach demo bank
 
 For example, suppose you add a new column to the `bank` table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN last_updated TIMESTAMPTZ DEFAULT now() ON UPDATE now();
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT id, balance, last_updated FROM bank LIMIT 5;
 ~~~
@@ -358,12 +335,10 @@ For example, suppose you add a new column to the `bank` table:
 
 When any value in any row of the `bank` table is updated, CockroachDB re-evaluates the `ON UPDATE` expression and updates the `last_updated` column with the result.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > UPDATE bank SET balance = 500 WHERE id = 0;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT id, balance, last_updated FROM bank LIMIT 5;
 ~~~

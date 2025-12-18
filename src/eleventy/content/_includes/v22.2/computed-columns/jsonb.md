@@ -1,6 +1,5 @@
 In this example, create a table with a `JSONB` column and a stored computed column:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE student_profiles (
     id STRING PRIMARY KEY AS (profile->>'id') STORED,
@@ -10,14 +9,12 @@ In this example, create a table with a `JSONB` column and a stored computed colu
 
 Create a compute column after you create a table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE student_profiles ADD COLUMN age INT AS ( (profile->>'age')::INT) STORED;
 ~~~
 
 Then, insert a few rows of data:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO student_profiles (profile) VALUES
     ('{"id": "d78236", "name": "Arthur Read", "age": "16", "school": "PVPHS", "credits": 120, "sports": "none"}'),
@@ -25,7 +22,6 @@ Then, insert a few rows of data:
     ('{"name": "Ernie Narayan", "school" : "Brooklyn Tech", "id": "t63512", "sports": "Track and Field", "clubs": "Chess"}');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM student_profiles;
 ~~~
@@ -43,7 +39,6 @@ The primary key `id` is computed as a field from the `profile` column.  Addition
 
 This example shows how add a stored computed column with a [coerced type](scalar-expressions.html#explicit-type-coercions):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE json_data (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -52,12 +47,10 @@ CREATE TABLE json_data (
 INSERT INTO json_data (json_info) VALUES ('{"amount": "123.45"}');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE json_data ADD COLUMN amount DECIMAL AS ((json_info->>'amount')::DECIMAL) STORED;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM json_data;
 ~~~

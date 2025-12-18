@@ -89,21 +89,18 @@ On your local workstation's terminal:
 
 1. After connecting to the cluster, create a database named `todos`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE todos;
     ~~~
 
 1. Select the `todos` database:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > USE todos;
     ~~~
 
 1. Create a table `todos` with the following schema:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE TABLE todos (
     	todo_id INT8 NOT NULL DEFAULT unique_rowid(),
@@ -127,21 +124,18 @@ In a new terminal:
 
 1. Clone the `examples-python` repository to your local machine:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ git clone https://github.com/cockroachdb/examples-python
     ~~~
 
 1. Navigate to the `flask-alchemy` folder:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cd examples-python/flask-sqlalchemy
     ~~~
 
 1. In the `hello.cfg` file, replace the value for the `SQLALCHEMY_DATABASE_URI` with the application connection string you generated in [Step 3. Find the cluster's connection details](#step-3-find-the-clusters-connection-details). Replace `defaultdb` with `todos` to connect to the `todos` database. Save the file.
 
-    {% include "copy-clipboard.html" %}
     ~~~
     SQLALCHEMY_DATABASE_URI = 'cockroachdb://{username}:{password}@{host}:26257/todos?sslmode=verify-full&sslrootcert=$Home/Library/CockroachCloud/certs/{cluster-name}-ca.crt'
     ~~~
@@ -156,7 +150,6 @@ In a new terminal:
 
 1. Install the following Python packages to satisfy the example app's dependencies. The `sqlalchemy-cockroachdb` package accounts for some differences between CockroachDB and PostgreSQL:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ pip install flask sqlalchemy sqlalchemy-cockroachdb Flask-SQLAlchemy
     ~~~
@@ -165,7 +158,6 @@ In a new terminal:
 
 1. Run the `hello.py` code:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ python hello.py
     ~~~
@@ -186,7 +178,6 @@ These steps show how to deploy your app locally using Kubernetes.
 
 On your local workstation's terminal:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ minikube start
 ~~~
@@ -197,7 +188,6 @@ The startup procedure might take a few minutes.
 
 Create a Kubernetes secret to store the CA certificate you downloaded earlier:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ kubectl create secret generic <username>-secret \
   --from-file $Home/Library/CockroachCloud/certs/<cluster-name>-ca.crt
@@ -205,7 +195,6 @@ $ kubectl create secret generic <username>-secret \
 
 Verify the Kubernetes secret was created:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ kubectl get secrets
 ~~~
@@ -220,7 +209,6 @@ default-token-875zk   kubernetes.io/service-account-token   3      75s
 
 In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate directory path from the default location to `/data/certs` and save the file.
 
-{% include "copy-clipboard.html" %}
 ~~~
 SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=verify-full&sslrootcert=$Home/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
 ~~~
@@ -229,7 +217,6 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. In the `flask-sqlalchemy` folder, create a file named `Dockerfile` with the following contents:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     FROM python:3.7-slim
 
@@ -250,21 +237,18 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. Set the environment variable:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ eval $(minikube docker-env)
     ~~~
 
 1. Create the Docker image:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ docker build -t appdocker .
     ~~~
 
 1. Verify the image was created:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ docker image ls
     ~~~
@@ -278,7 +262,6 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. In the `flask-alchemy` folder, create a file named `app-deployment.yaml` and copy the following code into the file. Replace the `{username}` placeholder with the SQL user's username that you created [while preparing the cluster](#step-2-create-a-sql-user):
 
-    {% include "copy-clipboard.html" %}
     ~~~
     apiVersion: apps/v1
     kind: Deployment
@@ -331,7 +314,6 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. Create the deployment with `kubectl`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f app-deployment.yaml
     ~~~
@@ -343,7 +325,6 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. Verify that the deployment is ready and the load balancer service is pending:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get deployments
     ~~~
@@ -353,7 +334,6 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
     appdeploy      3/3     3            3           27s
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get services
     ~~~
@@ -365,7 +345,6 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. Start the app:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ minikube service appdeploy
     ~~~
@@ -374,7 +353,6 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
     1. Get the name of one of the pods:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -388,7 +366,6 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
     1. Port-forward from your local machine to one of the pods:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl port-forward appdeploy-5f5868f6bf-2cjt5 5000:5000
         ~~~

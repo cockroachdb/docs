@@ -34,7 +34,6 @@ In CockroachDB, a transaction is set up by surrounding SQL statements with the [
 
 To use [advanced client-side transaction retries]({% link "{{ page.version.version }}/advanced-client-side-transaction-retries.md" %}), you should also include the [`SAVEPOINT`]({% link "{{ page.version.version }}/savepoint.md" %}), [`ROLLBACK TO SAVEPOINT`]({% link "{{ page.version.version }}/rollback-transaction.md" %}) and [`RELEASE SAVEPOINT`]({% link "{{ page.version.version }}/release-savepoint.md" %}) statements.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > BEGIN;
 

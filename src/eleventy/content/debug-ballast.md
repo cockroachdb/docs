@@ -37,7 +37,6 @@ Flag | Description
 
 ## Example
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach debug ballast cockroach-data/ballast.txt --size=1GiB
 ~~~

@@ -4,7 +4,6 @@ For this service, the most effective technique for improving read and write late
 
 2. Once you've received the trial license, SSH to any node in your cluster and [apply the license](licensing-faqs.html#set-a-license):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql \
     {{page.certs}} \
@@ -12,7 +11,6 @@ For this service, the most effective technique for improving read and write late
     --execute="SET CLUSTER SETTING cluster.organization = '<your org name>';"
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql \
     {{page.certs}} \
@@ -24,7 +22,6 @@ For this service, the most effective technique for improving read and write late
 
     Start with the `users` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql \
     {{page.certs}} \
@@ -43,7 +40,6 @@ For this service, the most effective technique for improving read and write late
 
     Now define partitions for the `vehicles` table and its secondary indexes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql \
     {{page.certs}} \
@@ -60,7 +56,6 @@ For this service, the most effective technique for improving read and write late
     );"
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql \
     {{page.certs}} \
@@ -79,7 +74,6 @@ For this service, the most effective technique for improving read and write late
 
     Next, define partitions for the `rides` table and its secondary indexes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql \
     {{page.certs}} \
@@ -96,7 +90,6 @@ For this service, the most effective technique for improving read and write late
     );"
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql \
     {{page.certs}} \
@@ -113,7 +106,6 @@ For this service, the most effective technique for improving read and write late
     );"
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql \
     {{page.certs}} \
@@ -132,7 +124,6 @@ For this service, the most effective technique for improving read and write late
 
     Finally, drop an unused index on `rides` rather than partition it:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql \
     {{page.certs}} \
@@ -162,42 +153,36 @@ For this service, the most effective technique for improving read and write late
 
     Start with the `users` table partitions:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION new_york OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION boston OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION washington_dc OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION seattle OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION san_francisco OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION los_angeles OF TABLE movr.users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
@@ -206,84 +191,72 @@ For this service, the most effective technique for improving read and write late
 
     Move on to the `vehicles` table and secondary index partitions:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION new_york OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION new_york OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION boston OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION boston OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION washington_dc OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION washington_dc OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION seattle OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION seattle OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION san_francisco OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION san_francisco OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION los_angeles OF TABLE movr.vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION los_angeles OF INDEX vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
@@ -292,126 +265,108 @@ For this service, the most effective technique for improving read and write late
 
     Finish with the `rides` table and secondary index partitions:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION new_york OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION new_york OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION new_york OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION boston OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION boston OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION boston OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION washington_dc OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION washington_dc OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION washington_dc OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-east1-b]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION seattle OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION seattle OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION seattle OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-west1-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION san_francisco OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION san_francisco OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION san_francisco OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION los_angeles OF TABLE movr.rides CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION los_angeles OF INDEX rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \
     --host=<address of any node>
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --execute="ALTER PARTITION los_angeles OF INDEX rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING constraints='[+zone=us-west2-a]';" \
     {{page.certs}} \

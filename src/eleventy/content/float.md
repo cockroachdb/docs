@@ -50,12 +50,10 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 
 ## Examples
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE floats (a FLOAT PRIMARY KEY, b REAL, c DOUBLE PRECISION);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM floats;
 ~~~
@@ -69,12 +67,10 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 (3 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO floats VALUES (1.012345678901, 2.01234567890123456789, CAST('+Inf' AS FLOAT));
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM floats;
 ~~~
@@ -106,7 +102,6 @@ If you cast a float to an integer, it is rounded to the nearest integer. If it i
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT f::INT FROM (VALUES (-1.5::FLOAT), (-0.5::FLOAT), (0.5::FLOAT), (1.5::FLOAT)) v(f);
 ~~~

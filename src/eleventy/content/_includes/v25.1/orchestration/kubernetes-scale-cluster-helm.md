@@ -4,7 +4,6 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. Edit your StatefulSet configuration to add another pod for the new CockroachDB node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -38,7 +37,6 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. Get the name of the `Pending` CSR for the new pod:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get csr
     ~~~
@@ -60,7 +58,6 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. Examine the CSR for the new pod:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl describe csr default.node.my-release-cockroachdb-3
     ~~~
@@ -89,7 +86,6 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. If everything looks correct, approve the CSR for the new pod:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl certificate approve default.node.my-release-cockroachdb-3
     ~~~
@@ -100,7 +96,6 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. Verify that the new pod started successfully:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~

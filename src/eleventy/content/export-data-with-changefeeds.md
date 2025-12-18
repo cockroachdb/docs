@@ -29,14 +29,12 @@ The benefits of using changefeeds for this use case instead of [export]({% link 
 
 To create a changefeed that will only complete an initial scan of a table(s), run the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE movr.users INTO '{scheme}://{host}:{port}?{query_parameters}' WITH initial_scan = 'only', format=csv;
 ~~~
 
 Or, use [CDC queries]({% link "{{ page.version.version }}/cdc-queries.md" %}) to filter the data that your changefeed emits:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED INTO '{scheme}://{host}:{port}?{query_parameters}'
   WITH initial_scan = 'only', format=csv AS SELECT name, city FROM movr.users;
@@ -44,7 +42,6 @@ CREATE CHANGEFEED INTO '{scheme}://{host}:{port}?{query_parameters}'
 
 The job will return a job ID once it has started. You can use `SHOW CHANGEFEED JOBS` to check on the status:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CHANGEFEED JOB {job ID};
 ~~~

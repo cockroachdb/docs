@@ -24,7 +24,6 @@ Run the [MOLT Replicator]({% link "molt/molt-replicator.md" %}) `pglogical` comm
 
 Be sure to specify the same `--slotName` value that you used during your [initial replication command]({% link "molt/migrate-load-replicate.md" %}?filters=postgres#start-replicator). The replication slot on the source PostgreSQL database automatically tracks the LSN (Log Sequence Number) checkpoint, so replication will resume from where it left off.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator pglogical \
 --sourceConn $SOURCE \
@@ -46,7 +45,6 @@ Replicator will automatically use the saved GTID (Global Transaction Identifier)
 For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON source_database.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator mylogical \
 --sourceConn $SOURCE \
@@ -64,7 +62,6 @@ Run the [MOLT Replicator]({% link "molt/molt-replicator.md" %}) `oraclelogminer`
 
 Replicator will automatically find the correct restart SCN (System Change Number) from the `_oracle_checkpoint` table in the staging schema. The restart point is determined by the non-committed row with the smallest `startscn` column value.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator oraclelogminer \
 --sourceConn $SOURCE \

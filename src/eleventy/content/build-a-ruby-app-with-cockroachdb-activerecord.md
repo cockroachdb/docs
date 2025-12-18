@@ -23,7 +23,6 @@ For a more realistic use of Active Record with CockroachDB in a Rails app, see o
 
 Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-ruby-activerecord).
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 ~~~
@@ -34,7 +33,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
     For example, to install `libpq` on macOS with Homebrew, run the following command:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     brew install libpq
     ~~~
@@ -43,7 +41,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
     For example, if you installed `libpq` on macOS with Homebrew, run the following command from the `example-app-ruby-activerecord` directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     bundle config --local build.pg --with-opt-dir="{libpq-path}"
     ~~~
@@ -52,7 +49,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
 1. Install the dependencies:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     bundle install
     ~~~
@@ -63,7 +59,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -72,7 +67,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ export DATABASE_URL="{connection-string}"
     ~~~
@@ -85,7 +79,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
 1. Run the code to create a table and insert some rows:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ruby main.rb
     ~~~

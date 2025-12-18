@@ -8,7 +8,6 @@ To access the cluster's [DB Console](ui-overview.html):
 
     <section class="filter-content" markdown="1" data-scope="operator">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -20,7 +19,6 @@ To access the cluster's [DB Console](ui-overview.html):
 
     <section class="filter-content" markdown="1" data-scope="manual">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -40,14 +38,12 @@ To access the cluster's [DB Console](ui-overview.html):
 
 1.  Assign `roach` to the `admin` role (you only need to do this once):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > GRANT admin TO roach;
     ~~~
 
 1. Exit the SQL shell and pod:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~
@@ -58,7 +54,6 @@ To access the cluster's [DB Console](ui-overview.html):
 
     <section class="filter-content" markdown="1" data-scope="operator">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl port-forward service/cockroachdb-public 8080
     ~~~
@@ -67,7 +62,6 @@ To access the cluster's [DB Console](ui-overview.html):
 
     <section class="filter-content" markdown="1" data-scope="manual">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl port-forward service/cockroachdb-public 8080
     ~~~
@@ -76,7 +70,6 @@ To access the cluster's [DB Console](ui-overview.html):
 
     <section class="filter-content" markdown="1" data-scope="helm">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl port-forward service/my-release-cockroachdb-public 8080
     ~~~

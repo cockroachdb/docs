@@ -77,14 +77,12 @@ If you used the duplicate indexes pattern, the steps for backing out the old con
 
 1. Remove the replication zone configurations you added using the [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`]({% link "{{ page.version.version }}/alter-database.md" %}#configure-zone) statement. Note that this will remove all zone configurations from the table. If you had any additional customizations beyond what are required for the duplicate indexes pattern, you will have to reapply them.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE postal_codes CONFIGURE ZONE DISCARD;
     ~~~
 
 1. Drop the extra indexes you added. This will have the side effect of also deleting the zone configurations you added to those indexes.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     DROP INDEX postal_codes@idx_central;
     DROP INDEX postal_codes@idx_east;
@@ -98,14 +96,12 @@ If you applied the geo-partitioned replicas pattern, the steps for backing out t
 
 1. Remove the manually created table partition. This will also automatically remove the replication zone configurations that were applied to the partition as part of the instructions.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE users PARTITION BY NOTHING;
     ~~~
 
 1. Remove the manually created partition on the secondary indexes. This will also automatically remove the replication zone configurations that were applied to the partition as part of the instructions.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER INDEX users_last_name_index PARTITION BY NOTHING;
     ~~~
@@ -122,14 +118,12 @@ If you applied the geo-partitioned leaseholders pattern, the steps for backing o
 
 1. Remove the manually created table partition. This will also automatically remove the replication zone configurations that were applied to the partition as part of the instructions.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE users PARTITION BY NOTHING;
     ~~~
 
 1. Remove the manually created partition on the secondary indexes. This will also automatically remove the replication zone configurations that were applied to the partition as part of the instructions.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER INDEX users_last_name_index PARTITION BY NOTHING;
     ~~~
@@ -142,7 +136,6 @@ The steps from this point forward assume that you have cleared your prior replic
 
 Every multi-region database needs to have a primary region. To set the primary region, issue the [ALTER DATABASE ... SET PRIMARY REGION]({% link "{{ page.version.version }}/alter-database.md" %}#set-primary-region) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE foo SET PRIMARY REGION = "us-west1"
 ~~~
@@ -151,7 +144,6 @@ ALTER DATABASE foo SET PRIMARY REGION = "us-west1"
 
 To add another region to the database, issue the [`ADD REGION`]({% link "{{ page.version.version }}/alter-database.md" %}#add-region) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE foo ADD REGION "us-central1";
 ~~~
@@ -165,7 +157,6 @@ Depending on your desired database [survival goal]({% link "{{ page.version.vers
 
 For example, to set a region survival goal, issue the following SQL statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE foo SURVIVE REGION FAILURE;
 ~~~
@@ -182,7 +173,6 @@ As described in [Replication zone patterns and multi-region SQL abstractions](#r
 
 For example, to configure the `postal_codes` table from the [duplicate indexes example](#duplicate-indexes) to use [multi-region SQL]({% link "{{ page.version.version }}/multiregion-overview.md" %}), you would enter the following statements to make the `postal_codes` table a [`GLOBAL` table]({% link "{{ page.version.version }}/global-tables.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE postal_codes SET LOCALITY GLOBAL;
 ~~~
@@ -205,7 +195,6 @@ A [`REGIONAL BY ROW`]({% link "{{ page.version.version }}/table-localities.md" %
 - [`voter_constraints`]({% link "{{ page.version.version }}/configure-replication-zones.md" %}#voter_constraints)
 - [`lease_preferences`]({% link "{{ page.version.version }}/configure-replication-zones.md" %}#lease_preferences)
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM TABLE users;
 ~~~
@@ -227,7 +216,6 @@ SHOW ZONE CONFIGURATION FROM TABLE users;
 
 The same table, loaded in a demo cluster with no zone configuration changes, looks like this:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM TABLE users;
 ~~~
@@ -261,7 +249,6 @@ A [`GLOBAL`]({% link "{{ page.version.version }}/table-localities.md" %}) table 
 - [`voter_constraints`]({% link "{{ page.version.version }}/configure-replication-zones.md" %}#voter_constraints)
 - [`lease_preferences`]({% link "{{ page.version.version }}/configure-replication-zones.md" %}#lease_preferences)
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 ~~~
@@ -284,7 +271,6 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 
 The same table, loaded in a demo cluster with no zone configuration changes, looks like this:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 ~~~

@@ -70,7 +70,6 @@ The examples in this section use the following setup.
 
 `SHOW SUPER REGIONS FROM DATABASE` returns the [super regions]({% link "{{ page.version.version }}/multiregion-overview.md" %}#super-regions) for the specified database.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW SUPER REGIONS FROM DATABASE movr;
 ~~~

@@ -1,6 +1,5 @@
 #### Create a changefeed connected to Kafka
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka://host:port'
@@ -27,7 +26,6 @@ For more information on how to create a changefeed connected to Kafka, see [Stre
 **This is an experimental feature.** The interface and output are subject to change.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'experimental-scheme://host?parameters'

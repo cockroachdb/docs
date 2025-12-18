@@ -32,14 +32,12 @@ To test the dashboard functionality, use [`cockroach workload`]({% link "{{ page
 
 Initialize the workload for MovR, a fictional vehicle-sharing company:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach workload init movr  "postgresql://<username>:<password>@<host-address>:26257/movr?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster%<cluster-id>"
 ~~~
 
 Run the MovR workload for 5 minutes:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach workload run movr --duration=5m <username>:<password>@<host-address>:26257/movr?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster%<cluster-id>"
 ~~~

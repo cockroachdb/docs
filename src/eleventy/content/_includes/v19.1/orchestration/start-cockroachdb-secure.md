@@ -2,7 +2,6 @@
 
     Download [`cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml
     ~~~
@@ -13,14 +12,12 @@
     We recommend setting `cache` and `max-sql-memory` each to 1/4 of your memory allocation. For example, if you are allocating 8Gi of memory to each CockroachDB node, substitute the following values in [this line](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml#L247):
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     --cache 2Gi --max-sql-memory 2Gi
     ~~~
     
     Use the file to create the StatefulSet and start the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create -f cockroachdb-statefulset-secure.yaml
     ~~~
@@ -41,7 +38,6 @@
 
     1. Download our [performance version of `cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml):
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml
         ~~~
@@ -50,7 +46,6 @@
 
     3. Use the file to create the StatefulSet and start the cluster:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl create -f cockroachdb-statefulset-secure.yaml
         ~~~
@@ -63,7 +58,6 @@
 
     1. Get the names of the `Pending` CSRs:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get csr
         ~~~
@@ -80,7 +74,6 @@
 
     2. Examine the CSR for the first pod:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl describe csr default.node.cockroachdb-0
         ~~~
@@ -109,7 +102,6 @@
 
     3. If everything looks correct, approve the CSR for the first pod:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl certificate approve default.node.cockroachdb-0
         ~~~
@@ -124,7 +116,6 @@
 
     1. Confirm that three pods are `Running` successfully. Note that they will not be considered `Ready` until after the cluster has been initialized:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -138,7 +129,6 @@
 
     2. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get persistentvolumes
         ~~~
@@ -152,7 +142,6 @@
 
     3. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl create \
         -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml
@@ -164,7 +153,6 @@
 
     4. Approve the CSR for the one-off pod from which cluster initialization happens:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl certificate approve default.client.root
         ~~~
@@ -175,7 +163,6 @@
 
     5. Confirm that cluster initialization has completed successfully. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get job cluster-init-secure
         ~~~
@@ -185,7 +172,6 @@
         cluster-init-secure   1/1           23s        35s
         ~~~
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get pods
         ~~~

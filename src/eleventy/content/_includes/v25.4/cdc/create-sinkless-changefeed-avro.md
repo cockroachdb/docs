@@ -2,7 +2,6 @@ In this example, you'll set up a sinkless changefeed for a single-node cluster t
 
 1. Use the [`cockroach start-single-node`]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}) command to start a single-node cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start-single-node \
     --insecure \
@@ -14,7 +13,6 @@ In this example, you'll set up a sinkless changefeed for a single-node cluster t
 
 1. Move into the extracted `confluent-<version>` directory and start Confluent:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ ./bin/confluent local services start
     ~~~
@@ -23,7 +21,6 @@ In this example, you'll set up a sinkless changefeed for a single-node cluster t
 
 1. As the `root` user, open the [built-in SQL client]({% link "{{ page.version.version }}/cockroach-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
     ~~~
@@ -34,28 +31,24 @@ In this example, you'll set up a sinkless changefeed for a single-node cluster t
 
 1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 1. Create table `bar`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE bar (a INT PRIMARY KEY);
     ~~~
 
 1. Insert a row into the table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     INSERT INTO bar VALUES (0);
     ~~~
 
 1. Start the basic changefeed:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE bar WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
@@ -67,7 +60,6 @@ In this example, you'll set up a sinkless changefeed for a single-node cluster t
 
 1. In a new terminal, add another row:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
     ~~~
@@ -86,7 +78,6 @@ In this example, you'll set up a sinkless changefeed for a single-node cluster t
 
     Get the process ID of the node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -97,7 +88,6 @@ In this example, you'll set up a sinkless changefeed for a single-node cluster t
 
     Gracefully shut down the node, specifying its process ID:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kill -TERM 21766
     ~~~
@@ -109,14 +99,12 @@ In this example, you'll set up a sinkless changefeed for a single-node cluster t
 
 1. To stop Confluent, move into the extracted `confluent-<version>` directory and stop Confluent:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ ./bin/confluent local services stop
     ~~~
 
     To terminate all Confluent processes, use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ ./bin/confluent local destroy
     ~~~

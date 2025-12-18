@@ -58,7 +58,6 @@ SELECT ... FROM ... AS OF SYSTEM TIME follower_read_timestamp();
 
 To see the current value of the follower read timestamp, execute the following query:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT now() - follower_read_timestamp();
 ~~~
@@ -117,14 +116,12 @@ This example performs a bounded staleness follower read against a [demo cluster]
 
 1. Start the demo cluster with 3 nodes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach demo --nodes=3
     ~~~
 
 1. Issue a single-statement point query to [select]({% link "{{ page.version.version }}/selection-queries.md" %}) a single row from a table at a historical [timestamp]({% link "{{ page.version.version }}/timestamp.md" %}) by passing the output of the `with_max_staleness()` [function]({% link "{{ page.version.version }}/functions-and-operators.md" %}) to the [`AS OF SYSTEM TIME`]({% link "{{ page.version.version }}/as-of-system-time.md" %}) clause:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT code FROM promo_codes AS OF SYSTEM TIME with_max_staleness('10s') where code = '0_explain_theory_something';
     ~~~
@@ -149,7 +146,6 @@ This example performs a bounded staleness follower read against a [demo cluster]
 
     You can verify using [`EXPLAIN`]({% link "{{ page.version.version }}/explain.md" %}) that the reason this query was able to perform a bounded staleness read is that it performed a point lookup from a single row:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN SELECT code FROM promo_codes AS OF SYSTEM TIME with_max_staleness('10s') where code = '0_explain_theory_something';
     ~~~
@@ -175,7 +171,6 @@ To verify that a specific query uses a follower read, use [`EXPLAIN ANALYZE`]({%
 
 1. Use the `\demo ls` [shell command]({% link "{{ page.version.version }}/cockroach-demo.md" %}#commands) to list the connection parameters for all nodes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     \demo ls
     ~~~
@@ -192,7 +187,6 @@ To verify that a specific query uses a follower read, use [`EXPLAIN ANALYZE`]({%
 
     Identify the leaseholder node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT lease_holder FROM [SHOW RANGES FROM TABLE promo_codes WITH DETAILS];
     ~~~
@@ -205,14 +199,12 @@ To verify that a specific query uses a follower read, use [`EXPLAIN ANALYZE`]({%
 
     Connect to a node other than node 1 (such as node 3, using the preceding output):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url='postgresql://demo:demo37199@127.0.0.1:26259/movr?options=-ccluster%3Ddemoapp&sslmode=equire&sslrootcert=%2FUsers%2Fuser%2F.cockroach-demo%2Fca.crt'
     ~~~
 
 1. Issue the [`EXPLAIN ANALYZE`]({% link "{{ page.version.version }}/explain-analyze.md" %}) statement on the non-leaseholder node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN ANALYZE SELECT code FROM promo_codes AS OF SYSTEM TIME with_max_staleness('10s') where code = '0_explain_theory_something';
     ~~~

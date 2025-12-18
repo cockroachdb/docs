@@ -117,7 +117,6 @@ The [`EXPLAIN`]({% link "{{ page.version.version }}/explain.md" %}#success-respo
 
   - To understand usage statistics for an index, query the [`crdb_internal.index_usage_statistics`]({% link "{{ page.version.version }}/crdb-internal.md" %}#index_usage_statistics) table.
 
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         SELECT * FROM crdb_internal.index_usage_statistics;
         ~~~
@@ -136,7 +135,6 @@ Recall that the `vehicles` table that you created in [Create a Table]({% link "{
 
 Open `max_init.sql`, and, under the `CREATE TABLE` statement for the `vehicles` table, add a `CREATE INDEX` statement for an index on the `type` and `available` columns of the `vehicles` table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE INDEX type_available_idx ON movr.vehicles (type, available);
 ~~~
@@ -147,7 +145,6 @@ The MovR app might also need to display the vehicle's location and ID, but the a
 
 To help avoid unnecessary full table scans, add a `STORING` clause to the index:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE INDEX type_available_idx ON movr.vehicles (type, available) STORING (last_location);
 ~~~
@@ -156,7 +153,6 @@ The index will now store the values in `last_location`, which will improve the p
 
 The `max_init.sql` file should now look similar to the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
@@ -189,7 +185,6 @@ CREATE TABLE movr.max_schema.rides (
 
 If you executed this file when following the [Create a Table]({% link "{{ page.version.version }}/schema-design-table.md" %}) example, then all of these objects already exist. To clear the database and re-initialize the schemas, first execute the statements in the `dbinit.sql` file as the `root` user:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -199,7 +194,6 @@ $ cockroach sql \
 
 Then, execute the statements in the `max_init.sql` and `abbey_init.sql` files:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -208,7 +202,6 @@ $ cockroach sql \
 -f max_init.sql
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -221,7 +214,6 @@ After the statements have been executed, you can see the new index in the [Cockr
 
 Open the SQL shell to your cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -231,7 +223,6 @@ $ cockroach sql \
 
 To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`]({% link "{{ page.version.version }}/show-index.md" %}) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW INDEXES FROM movr.max_schema.vehicles;
 ~~~
@@ -257,7 +248,6 @@ The `last_location` column's `storing` value is `true` in the `type_available_id
 
 To see an index definition, use a [`SHOW CREATE`]({% link "{{ page.version.version }}/show-create.md" %}) statement on the table that contains the index:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE movr.max_schema.vehicles;
 ~~~

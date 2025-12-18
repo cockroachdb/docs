@@ -33,7 +33,6 @@ Before you begin, it may be useful to enable authentication logging, which can h
 
 Enable OIDC authorization and configure the groups claim:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Enable OIDC authorization
 SET CLUSTER SETTING server.oidc_authentication.authorization.enabled = true;
@@ -59,7 +58,6 @@ Group names from the IdP are normalized using case folding and Unicode normaliza
 
 For example, if your OIDC tokens contain groups named `developers` and `analysts`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Create role for developers
 CREATE ROLE developers;
@@ -74,7 +72,6 @@ GRANT SELECT ON DATABASE analytics TO analysts;
 
 Users logging into the DB Console via OIDC must be pre-created in CockroachDB:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE ROLE alice LOGIN;
 CREATE ROLE bob LOGIN;
@@ -92,7 +89,6 @@ Automatic user provisioning for OIDC is planned for a future release. Currently,
 
 1. Using your `admin` credentials in a SQL shell, verify the user's role assignments:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     -- View roles granted to a specific user
     SHOW GRANTS FOR alice;
@@ -152,7 +148,6 @@ This behavior ensures that users without group memberships cannot access the clu
 
 Enable [`SESSION` logging]({% link "{{ page.version.version }}/logging.md" %}#sessions) to preserve data that will help troubleshoot OIDC authorization issues:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~

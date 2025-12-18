@@ -54,7 +54,6 @@ In this case, you will also need to add a new column to the `rides` table that s
 
 For example, you could create a column named `discounted`, of data type [`BOOL`]({% link "{{ page.version.version }}/bool.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE rides ADD COLUMN discounted BOOL DEFAULT false;
 ~~~
@@ -63,7 +62,6 @@ ALTER TABLE rides ADD COLUMN discounted BOOL DEFAULT false;
 
 In Python, a batch-update script might look similar to the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 #!/usr/bin/env python3
 

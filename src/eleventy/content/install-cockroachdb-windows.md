@@ -34,7 +34,6 @@ You can download and install CockroachDB for Windows in two ways. Either:
         - `{ VERSION }`: the full version of CockroachDB to download, such as `{{ page.version.name }}`. Replace this value in both the `Invoke-WebRequest` statement and the `Copy-Item` statement.
         - `{ INSTALL_DIRECTORY }`: the local file path where the `cockroachdb.exe` executable will be installed. Replace the value in both the `Destination` argument and the `$Env:PATH` statement, which adds the destination directory to your `PATH`.
 
-            {% include "copy-clipboard.html" %}
             ~~~ powershell
             $ErrorActionPreference = "Stop";
             [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach;
@@ -44,12 +43,10 @@ You can download and install CockroachDB for Windows in two ways. Either:
             ~~~
     1. Run the PowerShell script. To run a PowerShell script from a file, use syntax like:
 
-        {% include "copy-clipboard.html" %}
         ~~~ powershell
         powershell.exe -Command "{path_to_script}"
         ~~~
     1. Check that the installation succeeded and that you can run `cockroach` commands:
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         cockroach version
         ~~~
@@ -84,7 +81,6 @@ Intel binaries can run on ARM systems, but with a significant reduction in perfo
 
 1. In PowerShell, confirm that Docker is running in the background:
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker version
     ~~~
@@ -95,7 +91,6 @@ Intel binaries can run on ARM systems, but with a significant reduction in perfo
 
 1. <a id="win-docker-step3-{{ page.version.name }}"></a>Visit [Docker Hub](https://hub.docker.com/layers/{{page.release_info.docker_image}}/) and make a note of the full version of CockroachDB to pull. Releases are rolled out gradually, so the latest version may not yet be available. Using the `latest` tag is not recommended; to pull the latest release within a major version, use a tag like `latest-{{ page.version.version }}`. The following command always pulls the `{{ page.version.name }}` image.
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker pull {{ page.release_info.docker_image }}:{{ page.version.name }}
     ~~~

@@ -7,7 +7,6 @@ Patch version upgrades can be performed without a valid license key, with the fo
 
 If you have an **Enterprise Free** or **Enterprise Trial** license, you must enable telemetry using the [`diagnostics.reporting.enabled`]({% link "{{ page.version.version }}/cluster-settings.md" %}#setting-diagnostics-reporting-enabled) cluster setting, as shown below in order to finalize a major version upgrade:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING diagnostics.reporting.enabled = true;
 ~~~

@@ -33,7 +33,6 @@ The user must be a member of the [`admin`](security-reference/authorization.html
 
 To change the survival goal of a multi-region database to survive zone failures, use the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE {db} SURVIVE ZONE FAILURE;
 ~~~
@@ -52,7 +51,6 @@ For more information about the zone survival goal, see [Surviving zone failures]
 
 To change the survival goal of a multi-region database to survive region failures, use the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE {db} SURVIVE REGION FAILURE;
 ~~~

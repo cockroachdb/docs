@@ -43,7 +43,6 @@ Use these parameters to specify your credentials:
 
 As an example:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS_KEY_ID={access key ID}&AWS_SECRET_ACCESS_KEY={secret access key}';
 ~~~
@@ -70,14 +69,12 @@ Role assumption applies the principle of least privilege rather than directly pr
 
 If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/) (i.e., the machines running the backup).
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE <database> INTO 's3://{bucket name}/{path}?AUTH=implicit';
 ~~~
 
 You [can associate an EC2 instance with an IAM role](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) to provide implicit access to S3 storage within the IAM role's policy. In the following command, the `instance example` EC2 instance is [associated](https://docs.aws.amazon.com/cli/latest/reference/ec2/associate-iam-instance-profile.html) with the `example profile` instance profile, giving the EC2 instance implicit access to any `example profile` S3 buckets.
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example profile} --region={us-east-2} --instance-id {instance example}
 ~~~
@@ -155,7 +152,6 @@ For example, to configure a user to assume an IAM role that allows a bulk operat
     - In the trust policy you need to include the ARN of the user that you want to assume the role under `Principal`. You can also include the [`Condition` attribute](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html) to further control access to the Amazon S3 bucket. For example, this could limit the operation to a specified date range, to users with multi-factor authentication enabled, or to specific IP addresses.
         - The `Condition` attribute allows you to specify an external ID that the user has provided with their ARN. For example:
 
-            {% include "copy-clipboard.html" %}
             ~~~json
             "Condition": {"StringEquals": {"sts:ExternalId": "Unique ID Assigned by the user"}}
             ~~~
@@ -166,21 +162,18 @@ For example, to configure a user to assume an IAM role that allows a bulk operat
 
 1. Run the bulk operation. If using [specified authentication](#amazon-s3-specified), pass in the S3 bucket's URL with the IAM user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. If using [implicit authentication](#google-cloud-storage-implicit), specify `AUTH=IMPLICIT` instead. For assuming the role, pass the assumed role's ARN, which you can copy from the IAM role's summary page:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     BACKUP DATABASE movr INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE=arn%3Aaws%3Aiam%3A%3A{account ID}%3Arole%2F{role name}' AS OF SYSTEM TIME '-10s';
     ~~~
 
     If your user also has an external ID, you can pass that with `ASSUME_ROLE`:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     BACKUP DATABASE movr INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE=arn%3Aaws%3Aiam%3A%3A{account ID}%3Arole%2F{role name}%3Bexternal_id%3D{Unique ID}' AS OF SYSTEM TIME '-10s';
     ~~~
 
     CockroachDB also supports authentication for assuming roles when taking encrypted backups. To use with an encrypted backup, pass the `ASSUME_ROLE` parameter to the KMS URI as well as the bucket's:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     BACKUP INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE={ARN}' WITH kms = 'aws:///{key}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&REGION={region}&ASSUME_ROLE={ARN}';
     ~~~
@@ -219,14 +212,12 @@ Has permission to assume role A. See [step 2](#step-2-user). | Has a trust polic
 
 When passing a chained role into `BACKUP`, it will follow this pattern:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE movr INTO "s3://{bucket name}?AWS_ACCESS_KEY_ID={user's key}&AWS_SECRET_ACCESS_KEY={user's secret key}&ASSUME_ROLE={role A ARN}%2C{role B ARN}%2C{role C ARN}" AS OF SYSTEM TIME '-10s';
 ~~~
 
 You can also specify a different [external ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) for each chained role. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE movr INTO "s3://{bucket name}?AWS_ACCESS_KEY_ID={user's key}&AWS_SECRET_ACCESS_KEY={user's secret key}&ASSUME_ROLE={role A ARN}%3Bexternal_id%3D{ID A}%2C{role B ARN}%3Bexternal_id%3D{ID B}%2C{role C ARN}%3Bexternal_id%3D{ID C}" AS OF SYSTEM TIME '-10s';
 ~~~
@@ -275,21 +266,18 @@ IAM role name | Operation
 
 Construct the ARN for your identity role. You will need this to add into the Trust Policy of an operation role or intermediary role. The IAM role's ARN follows this pattern (in this example the `crl-dr-store-user` role name is used for a backup):
 
-{% include "copy-clipboard.html" %}
 ~~~
 arn:aws:iam::{AWS account ID}:role/crl-dr-store-user-{cluster ID suffix}
 ~~~
 
 You can find the AWS account ID and your cluster's ID using the [Cloud API]({% link "cockroachcloud/cloud-api.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request GET --url https://cockroachlabs.cloud/api/v1/clusters --header "Authorization: Bearer {secret key}"
 ~~~
 
 Combine the last 12 digits of your cluster's `id` and the full 12-digit `account_id` in the following fashion to form the ARN:
 
-{% include "copy-clipboard.html" %}
 ~~~
 arn:aws:iam::{123456789123}:role/crl-dr-store-user-{123456789123}
 ~~~
@@ -382,14 +370,12 @@ To access the storage bucket with `specified` credentials, it's necessary to [cr
 
 [The JSON credentials file for authentication](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#iam-service-account-keys-create-console) can be downloaded from the **Service Accounts** page in the Google Cloud Console and then [base64-encoded](https://tools.ietf.org/html/rfc4648):
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 cat gcs_key.json | base64
 ~~~
 
 Include `AUTH=specified` and pass the encoded JSON object to the `CREDENTIALS` parameter:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}';
 ~~~
@@ -419,7 +405,6 @@ For CockroachDB clusters running in other environments, `implicit` authenticatio
 
 1. Create an environment variable instructing CockroachDB where the credentials file is located. The environment variable must be exported on each CockroachDB node:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     export GOOGLE_APPLICATION_CREDENTIALS="/{cockroach}/gcs_key.json"
     ~~~
@@ -430,7 +415,6 @@ For CockroachDB clusters running in other environments, `implicit` authenticatio
 
 1. Run a backup (or other bulk operation) to the storage bucket with the `AUTH` parameter set to `implicit`:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit';
     ~~~
@@ -468,14 +452,12 @@ For this example, both service accounts have already been created. If you need t
 
 1. Finally, you will run the bulk operation from your CockroachDB cluster. If you're using [specified authentication](#google-cloud-storage-specified), pass in the GCS bucket's URL with the IAM user's `CREDENTIALS`. If you're using [implicit authentication](#google-cloud-storage-implicit), specify `AUTH=IMPLICIT` instead. For assuming the role, pass the assumed role's service account name, which you can copy from the **Service Accounts** page:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}%40{project name}.iam.gserviceaccount.com';
     ~~~
 
     CockroachDB also supports authentication for assuming roles when taking encrypted backups. To use with an encrypted backup, pass the `ASSUME_ROLE` parameter to the KMS URI as well as the bucket's:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}%40{project name}.iam.gserviceaccount.com' WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=IMPLICIT&ASSUME_ROLE={service account name}%40{project name}.iam.gserviceaccount.com';
     ~~~
@@ -504,7 +486,6 @@ Credentials included in `AUTH=implicit` or `specified` | Grants access to **A** 
 
 When passing a chained role into `BACKUP`, it will follow this pattern with each chained role separated by a `,` character:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={intermediate service account name}%40{project name}.iam.gserviceaccount.com%2C{final service account name}%40{project name}.iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
 ~~~
@@ -555,14 +536,12 @@ IAM role name | Operation
 
 Construct the service account name for your identity service account. You will need this to add to the operation role or intermediary role. The identity service account name follows this pattern (in this example the `crl-dr-store-user` role name is used for a backup):
 
-{% include "copy-clipboard.html" %}
 ~~~
 crl-dr-store-user-{cluster id suffix}@{project id}.iam.gserviceaccount.com
 ~~~
 
 You can find the GCP project ID and your cluster's ID using the [Cloud API]({% link "cockroachcloud/cloud-api.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request GET --url https://cockroachlabs.cloud/api/v1/clusters --header "Authorization: Bearer {secret key}"
 ~~~
@@ -571,7 +550,6 @@ Use the last 12 digits of your cluster's `id` and the `account_id` to form the s
 
 This will look similar to:
 
-{% include "copy-clipboard.html" %}
 ~~~
 crl-dr-store-user-d1234567891d@crl-prod-6tc.iam.gserviceaccount.com
 ~~~
@@ -631,7 +609,6 @@ To run an operation, use [`implicit` authentication](#google-cloud-storage-impli
 
 For a backup to Google Cloud Storage:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE defaultdb INTO "gs://{bucket name}?AUTH=implicit&ASSUME_ROLE=crl-dr-store-user-{cluster ID suffix}%40{project ID}.iam.gserviceaccount.com%2C{operation service account name}%40{project name}.iam.gserviceaccount.com" AS OF SYSTEM TIME '-10s';
 ~~~
@@ -644,7 +621,6 @@ To run the bulk operation, you can use [`implicit` authentication](#google-cloud
 
 For a backup to your Google Cloud Storage bucket:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE {database} INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={operation service account}%40{project name}.iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
 ~~~
@@ -734,40 +710,34 @@ To set up `implicit` authentication to Azure Blob Storage (or a KMS resource), y
 1. You can pass the credentials by exporting as an environment variable or pass the credentials with `systemd`:
     - Create an environment variable instructing CockroachDB where the credentials file is located. The environment variable must be exported on each CockroachDB node:
 
-        {% include "copy-clipboard.html" %}
         ~~~shell
         export COCKROACH_AZURE_APPLICATION_CREDENTIALS_FILE="/{path}/credentials.yaml"
         ~~~
     - Alternatively, to pass the credentials using [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/), edit the `cockroach` unit file:
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         systemctl edit cockroach.service
         ~~~
 
         Add the environment variable under `[Service]`:
 
-        {% include "copy-clipboard.html" %}
         ~~~
         Environment="COCKROACH_AZURE_APPLICATION_CREDENTIALS_FILE=/{path}/credentials.yaml"
         ~~~
 
         Reload the `cockroach.service` unit file with the updated configuration:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         systemctl daemon-reload
         ~~~
 
         Restart the `cockroach` process on each of the cluster's nodes with, which will reload the configuration files:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         systemctl restart cockroach
         ~~~
 
 1. Form the URI to run a [job]({% link "{{ page.version.version }}/show-jobs.md" %}). You must include the container name and Azure account name in your URI along with the `AUTH=implicit` parameter:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     BACKUP DATABASE {database} INTO 'azure-blob://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}';
     ~~~

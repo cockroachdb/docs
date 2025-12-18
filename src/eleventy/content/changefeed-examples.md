@@ -41,7 +41,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Use the [`cockroach start-single-node`]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}) command to start a single-node cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
@@ -50,7 +49,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. In a new terminal window, go to the extracted `confluent-<version>` directory and start Confluent:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/confluent local services start
     ~~~
@@ -59,7 +57,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Create two Kafka topics:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/kafka-topics \
     --create \
@@ -69,7 +66,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     --topic office_dogs
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/kafka-topics \
     --create \
@@ -89,7 +85,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Start the changefeed:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092';
     ~~~
@@ -108,7 +103,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topics:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/kafka-console-consumer \
     --bootstrap-server=localhost:9092 \
@@ -129,7 +123,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Back in the SQL client, insert more data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
@@ -146,7 +139,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Get the process ID of the node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -157,7 +149,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Gracefully shut down the node, specifying its process ID:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kill -TERM 21766
     ~~~
@@ -169,7 +160,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/confluent local services stop
     ~~~
@@ -180,7 +170,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Use the [`cockroach start-single-node`]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}) command to start a single-node cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
@@ -189,7 +178,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Move into the extracted `confluent-<version>` directory and start Confluent:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/confluent local services start
     ~~~
@@ -198,7 +186,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Create two Kafka topics:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/kafka-topics \
     --create \
@@ -208,7 +195,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     --topic office_dogs
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/kafka-topics \
     --create \
@@ -228,7 +214,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Start the changefeed:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092' WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
@@ -249,7 +234,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. In a new terminal, move into the extracted `confluent-<version>` directory and start watching the Kafka topics:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/kafka-avro-console-consumer \
     --bootstrap-server=localhost:9092 \
@@ -270,7 +254,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Back in the SQL client, insert more data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     INSERT INTO office_dogs VALUES (3, 'Ernie');
     ~~~
@@ -287,7 +270,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Get the process ID of the node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -298,7 +280,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Gracefully shut down the node, specifying its process ID:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kill -TERM 21766
     ~~~
@@ -310,7 +291,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/confluent local services stop
     ~~~
@@ -348,7 +328,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Back in the SQL shell, create a changefeed:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.users, movr.vehicles INTO 'confluent-cloud://pkc-lzvrd.us-west4.gcp.confluent.cloud:9092?api_key={API key}&api_secret={url-encoded API secret}&topic_name=users_and_vehicles' WITH resolved;
     ~~~
@@ -375,7 +354,6 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 
     In a new terminal window, create a [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) attached to your Google Project:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud iam service-accounts create cdc-demo --project cockroach-project
     ~~~
@@ -384,28 +362,24 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 
     To ensure that your Service Account has the correct permissions to publish to the sink, use the following command to give the Service Account the predefined [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud projects add-iam-policy-binding cockroach-project --member='serviceAccount:cdc-demo@cockroach-project.iam.gserviceaccount.com' --role='roles/pubsub.editor'
     ~~~
 
 1. Create the Pub/Sub [topic]({% link "{{ page.version.version }}/changefeed-sinks.md" %}#pub-sub-topic-naming) to which your changefeed will emit messages:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud pubsub topics create movr-users --project cockroach-project
     ~~~
 
     Run the following command to create a subscription within the `movr-users` topic:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud pubsub subscriptions create movr-users-sub --topic=movr-users --topic-project=cockroach-project
     ~~~
 
 1. With the topic and subscription set up, you can now download your Service Account credentials. Use the [`gcloud iam service-accounts keys create`](https://cloud.google.com/sdk/gcloud/reference/iam/service-accounts/keys/create) command to specify where to download the JSON credential file (`credentials.json`):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud iam service-accounts keys create credentials.json --iam-account=cdc-demo@cockroach-project.iam.gserviceaccount.com
     ~~~
@@ -414,14 +388,12 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 
     If you're working on macOS:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cat credentials.json | base64
     ~~~
 
     If you're working on Linux, run the following to ensure that lines are not wrapped in the output:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cat credentials.json | base64 -w 0
     ~~~
@@ -430,7 +402,6 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 
 1. Back in the SQL shell, create a changefeed that will emit messages to your Pub/Sub topic. Ensure that you have base64 encoded the entire credentials JSON object for your Service Account and then run:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?region=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded credentials}';
     ~~~
@@ -452,7 +423,6 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     - The Google Cloud Console. From the Pub/Sub menu, select **Subscriptions** in the left-hand navigation and then select the subscription ID from your list of subscriptions. On the subscription's overview, click **Messages**, and then **Pull** to view messages.
     - The `gcloud` CLI. From your terminal, run the following command:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         gcloud pubsub subscriptions pull movr-users-sub --auto-ack --limit=10
         ~~~
@@ -481,7 +451,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Use the [`cockroach start-single-node`]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}) command to start a single-node cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
@@ -492,7 +461,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Start the changefeed:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 's3://example-bucket-name/test?AWS_ACCESS_KEY_ID=enter_key-here&AWS_SECRET_ACCESS_KEY=enter_key_here' with updated, resolved='10s';
     ~~~
@@ -514,7 +482,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Get the process ID of the node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -525,7 +492,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     Gracefully shut down the node, specifying its process ID:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kill -TERM 21766
     ~~~
@@ -568,14 +534,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Create an [external connection]({% link "{{ page.version.version }}/create-external-connection.md" %}) to store your connection string:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION eventhub AS 'azure-event-hub://{your-event-hubs-namespace}.servicebus.windows.net:9093?shared_access_key_name={policy-name}&shared_access_key={url-encoded key}';
     ~~~
 
 1. Create the changefeed to your Event Hub:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.rides, movr.users INTO 'external://eventhub';
     ~~~
@@ -597,7 +561,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Use the [`cockroach start-single-node`]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}) command to start a single-node cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
@@ -606,14 +569,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
      First create the schema for the workload:
 
-     {% include "copy-clipboard.html" %}
      ~~~shell
      cockroach workload init movr "postgresql://root@127.0.0.1:26257?sslmode=disable"
      ~~~
 
      Then run the workload:
 
-     {% include "copy-clipboard.html" %}
      ~~~shell
      cockroach workload run movr --duration=1m "postgresql://root@127.0.0.1:26257?sslmode=disable"
      ~~~
@@ -622,31 +583,26 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. In a separate terminal window, set up your HTTP server. Clone the test repository:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     git clone https://github.com/cockroachlabs/cdc-webhook-sink-test-server.git
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     cd cdc-webhook-sink-test-server/go-https-server
     ~~~
 
 1. Next make the script executable and then run the server (passing a specific port if preferred, otherwise it will default to `:3000`):
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     chmod +x ./server.sh
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     ./server.sh <port>
     ~~~
 
 1. Back in your SQL shell, run the following statement to create a changefeed that emits to your webhook sink:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true' WITH updated;
     ~~~
@@ -688,14 +644,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. In a terminal window where your Pulsar sink is hosted, start the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     bin/pulsar standalone
     ~~~
 
     If you're running Pulsar in a Docker container, use the `docker run` command to start the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker run -it -p 6650:6650 -p 8080:8080 --name pulsar-standalone apachepulsar/pulsar:latest bin/pulsar standalone
     ~~~
@@ -705,7 +659,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     If you want to create a topic name first, use the [`pulsar-admin`](https://pulsar.apache.org/docs/2.10.x/reference-cli-tool) tool to specify the topic's tenant and namespace. This example uses the default namespace:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     bin/pulsar-admin topics create persistent://public/default/topic-name
     ~~~
@@ -716,14 +669,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. Enter the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --insecure
     ~~~
 
 1. Create your changefeed:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.rides INTO 'pulsar://{host IP}:6650';
     ~~~
@@ -734,14 +685,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. In a different terminal window, start a [Pulsar consumer](https://pulsar.apache.org/docs/next/tutorials-produce-consume/) to read messages from the changefeed. This example consumes messages from the `rides` topic:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     bin/pulsar-client consume rides -s sub1 -n 0
     ~~~
 
     If you're running Pulsar in a Docker container, use the `docker run` command to start a consumer:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker run -it --network="host" apachepulsar/pulsar:latest bin/pulsar-client consume rides -s sub1 -n 0
     ~~~

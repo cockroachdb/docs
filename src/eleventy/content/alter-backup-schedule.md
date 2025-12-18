@@ -57,7 +57,6 @@ The examples in this section start with the following created backup schedule. E
 
 First, create a schedule that will take daily full backups of the cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE SCHEDULE aws_backups
   FOR BACKUP INTO 'external://s3_storage'
@@ -85,7 +84,6 @@ The command returns the following output. Note that the [`detached` option](#det
 
 You can change the storage location to which your backup schedule is taking backups with the `SET INTO` command. Use the schedule ID to specify the schedule to modify and the new storage location URI. This statement also changes the schedule's label to match the change in backup location:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER BACKUP SCHEDULE 814155335856521217 SET INTO 'external://gcs_storage', SET LABEL gcs_backups;
 ~~~
@@ -106,7 +104,6 @@ To adjust the frequency of your scheduled backups, use `SET` with `FULL BACKUP` 
 
 The following command adds incremental backups to the schedule occurring hourly:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER BACKUP SCHEDULE 814155335856521217 SET FULL BACKUP '@daily', SET RECURRING '@hourly';
 ~~~
@@ -179,14 +176,12 @@ The incremental backup schedule's `BACKUP` statement shows that it will read fil
 
 You can alter an active schedule to run an incremental schedule immediately with `EXECUTE IMMEDIATELY`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER BACKUP SCHEDULE 814168045421199361 EXECUTE IMMEDIATELY;
 ~~~
 
 To run the full backup schedule instead, specify `FULL`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER BACKUP SCHEDULE 814168045421199361 EXECUTE FULL IMMEDIATELY;
 ~~~

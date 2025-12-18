@@ -11,7 +11,6 @@ To perform a major upgrade:
 
 1. Apply the new settings to the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl apply -f example.yaml
     ~~~
@@ -21,7 +20,6 @@ To perform a major upgrade:
 1. To check the status of the rolling upgrade, run `kubectl get pods`.
 1. Verify that all pods have been upgraded:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -38,7 +36,6 @@ To perform a major upgrade:
 1.
 1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb \
     -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":2}}}}'
@@ -50,7 +47,6 @@ To perform a major upgrade:
 
 1. Change the container image in the StatefulSet:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb \
     --type='json' \
@@ -64,7 +60,6 @@ To perform a major upgrade:
 1. To check the status of the rolling upgrade, run `kubectl get pods`.
 1. After the pod has been restarted with the new image, start the CockroachDB [built-in SQL client]({% link "{{ page.version.version }}/cockroach-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \-- ./cockroach sql \
     --certs-dir=/cockroach-certs \
@@ -73,7 +68,6 @@ To perform a major upgrade:
 
 1. Run the following SQL query to verify that the number of underreplicated ranges is zero:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT sum((metrics->>'ranges.underreplicated')::DECIMAL)::INT AS ranges_underreplicated FROM crdb_internal.kv_store_status;
     ~~~
@@ -89,14 +83,12 @@ To perform a major upgrade:
 
 1. Exit the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~
 
 1. Decrement the partition value by 1 to allow the next pod in the cluster to update:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb \
     -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":1}}}}'
@@ -110,7 +102,6 @@ To perform a major upgrade:
 
 1. Check the image of each pod to confirm that all have been upgraded:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -132,7 +123,6 @@ To perform a major upgrade:
 
 1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -142,7 +132,6 @@ To perform a major upgrade:
 
 1. Connect to the cluster using the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -152,14 +141,12 @@ To perform a major upgrade:
 
 1. Remove the cluster initialization job from when the cluster was created:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl delete job my-release-cockroachdb-init
     ~~~
 
 1. Change the container image in the StatefulSet:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -185,7 +172,6 @@ To perform a major upgrade:
 
     {% if page.secure == true %}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -195,7 +181,6 @@ To perform a major upgrade:
 
     {% else %}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach \
@@ -209,7 +194,6 @@ To perform a major upgrade:
 
 1. Run the following SQL query to verify that the number of underreplicated ranges is zero:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT sum((metrics->>'ranges.underreplicated')::DECIMAL)::INT AS ranges_underreplicated FROM crdb_internal.kv_store_status;
     ~~~
@@ -225,14 +209,12 @@ To perform a major upgrade:
 
 1. Exit the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~
 
 1. Decrement the partition value by 1 to allow the next pod in the cluster to update:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -244,7 +226,6 @@ To perform a major upgrade:
 
 1. Check the image of each pod to confirm that all have been upgraded:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'

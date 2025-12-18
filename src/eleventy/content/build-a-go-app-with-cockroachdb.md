@@ -19,7 +19,6 @@ This tutorial shows you how build a simple CRUD Go application with CockroachDB 
 
 Clone the code's GitHub repo:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-go-pgx/
 ~~~
@@ -33,7 +32,6 @@ The project has the following directory structure:
 
 The `main.go` file contains the code for `CREATE TABLE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations. The file also executes the `main` method of the program.
 
-{% include "copy-clipboard.html" %}
 ~~~ go
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/main/main.go" %}
 ~~~
@@ -46,7 +44,6 @@ CockroachDB may require the [client to retry a transaction]({% link "{{ page.ver
 
 1. Navigate to the `example-app-go-pgx` directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cd example-app-go-pgx
     ~~~
@@ -55,7 +52,6 @@ CockroachDB may require the [client to retry a transaction]({% link "{{ page.ver
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -64,7 +60,6 @@ CockroachDB may require the [client to retry a transaction]({% link "{{ page.ver
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     export DATABASE_URL="{connection-string}"
     ~~~
@@ -77,14 +72,12 @@ CockroachDB may require the [client to retry a transaction]({% link "{{ page.ver
 
 1. Initialize the module:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ go mod tidy
     ~~~
 
 1. Run the code:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ go run main.go
     ~~~

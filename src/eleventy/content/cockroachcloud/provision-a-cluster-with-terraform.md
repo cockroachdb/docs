@@ -36,7 +36,6 @@ Before you start this tutorial, you must
 {% capture remaining_steps %}
 1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key]({% link "cockroachcloud/managing-access.md" %}#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     export COCKROACH_API_KEY={API key}
     ~~~
@@ -47,7 +46,6 @@ Before you start this tutorial, you must
 
 1. Initialize the provider:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     terraform init -upgrade
     ~~~
@@ -56,14 +54,12 @@ Before you start this tutorial, you must
 
 1. Create the Terraform plan. This shows the actions the provider will take, but won't perform them:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     terraform plan
     ~~~
 
 1. Create the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     terraform apply
     ~~~
@@ -79,7 +75,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.basic }} c
 
 1. In a terminal create a new file named `main.tf` with the following contents:
 
-    {% include "copy-clipboard.html" %}
     ~~~ hcl
     terraform {
       required_providers {
@@ -126,7 +121,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.standard }
 
 1. In a terminal create a new file named `main.tf` with the following contents:
 
-    {% include "copy-clipboard.html" %}
     ~~~ hcl
     terraform {
       required_providers {
@@ -175,7 +169,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.advanced }
 
 1. In a terminal create a new file named `main.tf` with the following contents:
 
-    {% include "copy-clipboard.html" %}
     ~~~ hcl
     terraform {
       required_providers {
@@ -218,7 +211,6 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.advanced }
 
 The `terraform show` command shows detailed information of your cluster resources.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 terraform show
 ~~~
@@ -236,7 +228,6 @@ To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ sit
 1. Edit the cluster's Terraform template:
     - Change `plan` to `STANDARD`.
     - Replace the contents of `serverless {}` (which may be empty) with the provisioned vCPUs for the cluster. This field is required for CockroachDB {{ site.data.products.standard }}. It is not possible to set storage limitations on CockroachDB {{ site.data.products.standard }}.
-      {% include "copy-clipboard.html" %}
       ~~~ hcl
         serverless = {
           usage_limits = {
@@ -245,7 +236,6 @@ To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ sit
         }
       ~~~
 1. Apply the template:
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     terraform apply
     ~~~
@@ -255,7 +245,6 @@ To change a cluster's plan from CockroachDB {{ site.data.products.standard }} to
 1. Edit the cluster's Terraform template:
     -  Change `plan` to `BASIC`.
     - Replace the contents of `serverless {...}` with optional limits for Request Units and Storage. The `provisioned_virtual_cpus` field is not supported on CockroachDB {{ site.data.products.basic }}.
-      {% include "copy-clipboard.html" %}
       ~~~ hcl
         serverless = {
           usage_limits = {
@@ -266,14 +255,12 @@ To change a cluster's plan from CockroachDB {{ site.data.products.standard }} to
       ~~~
     - Remove configurations for features that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity. Otherwise, applying the template will fail.
 1. Apply the template:
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     terraform apply
     ~~~
 
 To use the CockroachDB {{ site.data.products.cloud }} API to switch a cluster's plan in place between {{ site.data.products.basic }} and {{ site.data.products.standard }}, send a `PATCH` request to the [`clusters/{cluster_id}` endpoint](https://cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-) updating the `plan` and `serverless.usage_limits` as needed. The following example sets the `plan` to `STANDARD` and updates the `usage_limits` to provision VCPUs as required for a {{ site.data.products.standard }} plan:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request PATCH \ --url  https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
 --header "Authorization: Bearer <your_api_key>" \
@@ -288,7 +275,6 @@ Sending a `destory` command permanently deletes the cluster and all the data wit
 
 If you want to delete a cluster managed by Terraform, run the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 terraform destroy
 ~~~

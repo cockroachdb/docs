@@ -4,7 +4,6 @@ When you discard a zone configuration, the objects it was applied to will then i
 You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or partitions if the [multi-region abstractions]({% link "{{ page.version.version }}/migrate-to-multiregion-sql.md" %}#replication-zone-patterns-and-multi-region-sql-abstractions) created the zone configuration.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE t CONFIGURE ZONE DISCARD;
 ~~~

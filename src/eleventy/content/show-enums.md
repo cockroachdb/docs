@@ -23,17 +23,14 @@ Parameter | Description
 
 The following example creates a [user-defined type]({% link "{{ page.version.version }}/create-type.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TYPE weekday AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TYPE weekend AS ENUM ('sunday', 'saturday');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -46,7 +43,6 @@ The following example creates a [user-defined type]({% link "{{ page.version.ver
 (2 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW ENUMS FROM movr.public;
 ~~~

@@ -117,7 +117,6 @@ If the `AUTH` parameter is not provided, AWS connections default to `specified` 
 
 As an example:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS_KEY_ID={access key ID}&AWS_SECRET_ACCESS_KEY={secret access key}';
 ~~~
@@ -126,14 +125,12 @@ BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS
 
 If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/) (i.e., the machines running the backup).
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE <database> INTO 's3://{bucket name}/{path}?AUTH=implicit';
 ~~~
 
 You [can associate an EC2 instance with an IAM role](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) to provide implicit access to S3 storage within the IAM role's policy. In the following command, the `instance example` EC2 instance is [associated](https://docs.aws.amazon.com/cli/latest/reference/ec2/associate-iam-instance-profile.html) with the `example profile` instance profile, giving the EC2 instance implicit access to any `example profile` S3 buckets.
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example profile} --region={us-east-2} --instance-id {instance example}
 ~~~
@@ -150,14 +147,12 @@ To access the storage bucket with `specified` credentials, it's necessary to [cr
 
 [The JSON credentials file for authentication](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#iam-service-account-keys-create-console) can be downloaded from the **Service Accounts** page in the Google Cloud Console and then [base64-encoded](https://tools.ietf.org/html/rfc4648):
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 cat gcs_key.json | base64
 ~~~
 
 Pass the encoded JSON object to the `CREDENTIALS` parameter:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}';
 ~~~
@@ -174,7 +169,6 @@ For CockroachDB clusters running in other environments, `implicit` authenticatio
 
   1. Create an environment variable instructing CockroachDB where the credentials file is located. The environment variable must be exported on each CockroachDB node:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     export GOOGLE_APPLICATION_CREDENTIALS="/{cockroach}/gcs_key.json"
     ~~~
@@ -185,7 +179,6 @@ For CockroachDB clusters running in other environments, `implicit` authenticatio
 
   1. Run a backup (or other bulk operation) to the storage bucket with the `AUTH` parameter set to `implicit`:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit';
     ~~~
@@ -200,7 +193,6 @@ If the use of implicit credentials is disabled with [`--external-io-disable-impl
 
 To access Azure storage containers, it is necessary to [url encode](https://en.wikipedia.org/wiki/Percent-encoding) the account key since it is base64-encoded and may contain `+`, `/`, `=` characters. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
 ~~~

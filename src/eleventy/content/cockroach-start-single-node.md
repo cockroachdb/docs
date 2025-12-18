@@ -154,7 +154,6 @@ Field | Description
 <section class="filter-content" markdown="1" data-scope="secure">
 1. Create two directories for certificates:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
@@ -166,7 +165,6 @@ Field | Description
 
 1. Create the CA (Certificate Authority) certificate and key pair:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -175,7 +173,6 @@ Field | Description
 
 1. Create the certificate and key pair for the node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost \
@@ -186,7 +183,6 @@ Field | Description
 
 1. Create a client certificate and key pair for the `root` user:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -196,7 +192,6 @@ Field | Description
 
 1. Start the single-node cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start-single-node \
     --certs-dir=certs \
@@ -207,7 +202,6 @@ Field | Description
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 <p></p>
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach start-single-node \
 --insecure \
@@ -230,7 +224,6 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     Get the process ID of the node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -241,7 +234,6 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     Gracefully shut down the node, specifying its process ID:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kill -TERM 19584
     ~~~
@@ -253,7 +245,6 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 1. Restart the node with the [`cockroach start`]({% link "{{ page.version.version }}/cockroach-start.md" %}) command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -268,7 +259,6 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 1. In new terminal windows, add two more nodes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -278,7 +268,6 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -292,14 +281,12 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 1. Open the [built-in SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
 1. Update preconfigured [replication zones]({% link "{{ page.version.version }}/configure-replication-zones.md" %}) to replicate user data 3 times and import internal data 5 times:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER RANGE default CONFIGURE ZONE USING num_replicas = 3;
     ALTER DATABASE system CONFIGURE ZONE USING num_replicas = 5;
@@ -319,7 +306,6 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     Get the process ID of the node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -330,7 +316,6 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     Gracefully shut down the node, specifying its process ID:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kill -TERM 19584
     ~~~
@@ -342,7 +327,6 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 1. Restart the node with the [`cockroach start`]({% link "{{ page.version.version }}/cockroach-start.md" %}) command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -355,7 +339,6 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 1. In new terminal windows, add two more nodes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -365,7 +348,6 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -379,14 +361,12 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 1. Open the [built-in SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
 1. Update preconfigured [replication zones]({% link "{{ page.version.version }}/configure-replication-zones.md" %}) to replicate user data 3 times and import internal data 5 times:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER RANGE default CONFIGURE ZONE USING num_replicas = 3;
     ALTER DATABASE system CONFIGURE ZONE USING num_replicas = 5;

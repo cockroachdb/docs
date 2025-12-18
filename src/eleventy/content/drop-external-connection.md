@@ -19,7 +19,6 @@ Users must have the [`DROP` privilege]({% link "{{ page.version.version }}/secur
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT DROP ON EXTERNAL CONNECTION backup_bucket TO user;
 ~~~
@@ -42,7 +41,6 @@ Parameter | Description
 
 To delete an external connection named `backup_storage`, run the following:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 DROP EXTERNAL CONNECTION backup_storage;
 ~~~

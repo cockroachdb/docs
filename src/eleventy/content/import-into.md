@@ -182,7 +182,6 @@ To import into a new table, use [`CREATE TABLE`]({% link "{{ page.version.versio
 
 1. Create the new table with the necessary columns and data types:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     CREATE TABLE users (
             id UUID PRIMARY KEY,
@@ -195,7 +194,6 @@ To import into a new table, use [`CREATE TABLE`]({% link "{{ page.version.versio
 
 1. Use `IMPORT INTO` to import the data into the new table:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     IMPORT INTO users (id, city, name, address, credit_card)
         CSV DATA (
@@ -205,7 +203,6 @@ To import into a new table, use [`CREATE TABLE`]({% link "{{ page.version.versio
 
 ### Import into an existing table from a CSV file
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -219,7 +216,6 @@ The column order in your `IMPORT` statement must match the column order in the C
 
 ### Import into an existing table from multiple CSV files
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -241,7 +237,6 @@ You can specify [file patterns to match](https://golang.org/pkg/path/filepath/#M
 
 These only match files directly under the specified path and do not descend into additional directories recursively.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT INTO users (id, city, name, address, credit_card)
   CSV DATA (
@@ -255,7 +250,6 @@ IMPORT INTO users (id, city, name, address, credit_card)
 
 To specify the table schema in-line:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > IMPORT INTO customers
     AVRO DATA (
@@ -267,7 +261,6 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Import into an existing table from a delimited data file
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > IMPORT INTO customers
     DELIMITED DATA (

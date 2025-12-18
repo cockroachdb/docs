@@ -1,6 +1,5 @@
 To control replication for a specific table,  use the `ALTER TABLE ... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
 ~~~
@@ -9,7 +8,6 @@ To control replication for a specific table,  use the `ALTER TABLE ... CONFIGURE
 CONFIGURE ZONE 1
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FROM TABLE users;
 ~~~

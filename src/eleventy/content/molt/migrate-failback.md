@@ -23,7 +23,6 @@ For details on enabling CockroachDB changefeeds, refer to [Create and Configure 
 
 If you are migrating to a CockroachDB {{ site.data.products.core }} cluster, [enable rangefeeds]({% link "{{ site.current_cloud_version }}/create-and-configure-changefeeds.md" %}#enable-rangefeeds) on the cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
@@ -36,21 +35,18 @@ The following settings can impact source cluster performance and stability, espe
 
 To lower changefeed emission latency, but increase SQL foreground latency:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING kv.rangefeed.closed_timestamp_refresh_interval = '250ms';
 ~~~
 
 To lower the [closed timestamp]({% link "{{ site.current_cloud_version }}/architecture/transaction-layer.md" %}#closed-timestamps) lag duration:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING kv.closed_timestamp.target_duration = '1s';
 ~~~
 
 To improve catchup speeds but increase cluster CPU usage:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING kv.rangefeed.concurrent_catchup_iterators = 64;
 ~~~
@@ -62,7 +58,6 @@ You should have already created a migration user on the target database (your or
 For failback replication, grant the user additional privileges to write data back to the target database:
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Grant INSERT and UPDATE on tables to fail back to
 GRANT INSERT, UPDATE ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
@@ -71,7 +66,6 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT INSERT, UPDATE ON TABL
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Grant INSERT and UPDATE on tables to fail back to
 GRANT SELECT, INSERT, UPDATE ON source_database.* TO 'migration_user'@'%';
@@ -80,7 +74,6 @@ FLUSH PRIVILEGES;
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Grant INSERT, UPDATE, and FLASHBACK on tables to fail back to
 GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.employees TO MIGRATION_USER;
@@ -143,7 +136,6 @@ Always use **secure TLS connections** for failback replication to protect data i
 
 Generate self-signed TLS certificates or certificates from an external CA. Ensure the TLS server certificate and key are accessible on the MOLT Replicator host machine via a relative or absolute file path. When you [start failback with Replicator](#start-replicator), specify the paths with `--tlsCertificate` and `--tlsPrivateKey`. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 replicator start \
 ... \
@@ -153,7 +145,6 @@ replicator start \
 
 The client certificates defined in the changefeed webhook URI must correspond to the server certificates specified in the `replicator` command. This ensures proper TLS handshake between the changefeed and MOLT Replicator. To include client certificates in the changefeed webhook URL, encode them with `base64` and then URL-encode the output with `jq`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 base64 -i ./client.crt | jq -R -r '@uri'
 base64 -i ./client.key | jq -R -r '@uri'
@@ -162,7 +153,6 @@ base64 -i ./ca.crt | jq -R -r '@uri'
 
 When you [create the changefeed](#create-the-cockroachdb-changefeed), pass the encoded certificates in the changefeed URL, where `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link "{{ site.current_cloud_version }}/changefeed-sinks.md" %}#webhook-parameters). For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE table1, table2
 INTO 'webhook-https://host:port/database/schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}'
@@ -193,7 +183,6 @@ For additional details on the webhook sink URI, refer to [Webhook sink]({% link 
 
     `--stagingSchema` specifies the staging database name (`_replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication]({% link "molt/migrate-load-replicate.md" %}#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     replicator start \
     --targetConn $TARGET \
@@ -212,7 +201,6 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
 
 1. Get the current logical timestamp from CockroachDB, after [ensuring that forward replication has fully drained](#stop-forward-replication):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT cluster_logical_timestamp();
     ~~~
@@ -234,7 +222,6 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="postgres">
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
     INTO 'webhook-https://replicator-host:30004/migration_schema/public?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
@@ -243,7 +230,6 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     </section>
 
     <section class="filter-content" markdown="1" data-scope="mysql">
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
     INTO 'webhook-https://replicator-host:30004/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
@@ -252,7 +238,6 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     </section>
 
     <section class="filter-content" markdown="1" data-scope="oracle">
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
     INTO 'webhook-https://replicator-host:30004/MIGRATION_SCHEMA?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \

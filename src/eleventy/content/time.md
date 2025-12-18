@@ -74,12 +74,10 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`]({% link "{{ page.version.versi
 
 ### Create a table with a `TIME`-typed column
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS time (time_id INT PRIMARY KEY, time_val TIME);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM time;
 ~~~
@@ -92,12 +90,10 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`]({% link "{{ page.version.versi
 (2 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > UPSERT INTO time VALUES (1, TIME '05:40:00'), (2, TIME '05:41:39');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM time;
 ~~~
@@ -116,7 +112,6 @@ The SQL shell displays the date and time zone due to the Go SQL driver it uses. 
 
 Comparing `TIME` values:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT (SELECT time_val FROM time WHERE time_id = 1) < (SELECT time_val FROM time WHERE time_id = 2);
 ~~~
@@ -131,12 +126,10 @@ Comparing `TIME` values:
 
 ### Create a table with a `TIME`-typed column, with precision
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS time_precise (time_id INT PRIMARY KEY, time_val TIME(4));
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM time_precise;
 ~~~
@@ -149,12 +142,10 @@ Comparing `TIME` values:
 (2 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > UPSERT INTO time_precise VALUES (1, TIME '05:40:00.123456'), (2, TIME '05:41:39.12345');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM time_precise;
 ~~~
@@ -169,7 +160,6 @@ Comparing `TIME` values:
 
 To change the precision level of a column, you can use an [`ALTER COLUMN ... SET DATA TYPE`]({% link "{{ page.version.version }}/alter-table.md" %}#alter-column) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE time_precise ALTER COLUMN time_val SET DATA TYPE TIME(5);
 ~~~
@@ -178,7 +168,6 @@ To change the precision level of a column, you can use an [`ALTER COLUMN ... SET
 ALTER TABLE
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM time_precise;
 ~~~
@@ -195,7 +184,6 @@ You can reduce the precision of the values of `DECIMAL`, `TIMESTAMP`, and `TIMES
 
 For example, to lower the precision of the `time_val` column, which is of type `TIME(5)`, use the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE time_precise ALTER COLUMN time_val SET DATA TYPE TIME(3);
 ~~~

@@ -16,7 +16,6 @@ To use this guide, it's important to understand some of CockroachDB's terminolog
 
 Try running:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach start-single-node --insecure
 ~~~
@@ -30,16 +29,13 @@ When starting a node, the directory you choose to store the data in also contain
 **Solution:** Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:
 
 -   Choose a different directory to store the CockroachDB data:
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start-single-node --store=<new directory> --insecure
     ~~~
 -   Remove the existing directory and start the node again:
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ rm -r cockroach-data/
     ~~~
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start-single-node --insecure
     ~~~
@@ -72,7 +68,6 @@ See [Why is my process hanging when I try to start it in the background?]({% lin
 
 If the CockroachDB node appeared to [start successfully]({% link "{{ page.version.version }}/start-a-local-cluster.md" %}), in a separate terminal run:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql --insecure -e "show databases"
 ~~~
@@ -138,17 +133,14 @@ node belongs to cluster {"cluster hash"} but is attempting to connect to a gossi
 **Solution:** Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:
 
 -   Choose a different directory to store the CockroachDB data:
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start --store=<new directory> --join=<cluster host> <other flags>
     ~~~
 -   Remove the existing directory and start a node joining the cluster again:
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ rm -r cockroach-data/
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start --join=<cluster host>:26257 <other flags>
     ~~~
@@ -182,7 +174,6 @@ After [compaction]({% link "{{ page.version.version }}/architecture/storage-laye
 
 Outside of performing cluster maintenance, return `kv.snapshot_rebalance.max_rate` to its [default value]({% link "{{ page.version.version }}/cluster-settings.md" %}#setting-kv-snapshot-rebalance-max-rate).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESET CLUSTER SETTING kv.snapshot_rebalance.max_rate;
 ~~~

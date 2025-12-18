@@ -4,7 +4,6 @@
 	<section class="filter-content" markdown="1" data-scope="oracle">
 	The following message shows the appropriate values for the `--backfillFromSCN` and `--scn` replication flags to use when [starting Replicator](#start-replicator):
 
-	{% include "copy-clipboard.html" %}
 	~~~ 
 	replication-only mode should include the following replicator flags: --backfillFromSCN 26685444 --scn 26685786
 	~~~
@@ -81,7 +80,6 @@
 	{% if page.name != "migrate-bulk-load.md" %}
 	This message includes a `cdc_cursor` value. You must set the `--defaultGTIDSet` replication flag to this value when [starting Replicator](#start-replicator):
 
-	{% include "copy-clipboard.html" %}
 	~~~ 
 	--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29
 	~~~

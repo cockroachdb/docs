@@ -1,3 +1,15 @@
+// Wrapper for code blocks with copy button (added via JS)
+.code-block-wrapper {
+  position: relative;
+
+  .copy-clipboard {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+  }
+}
+
 .copy-clipboard {
   position: relative;
   margin-top: 15px;

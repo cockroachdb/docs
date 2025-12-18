@@ -1,4 +1,3 @@
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FROM RANGE default;
 ~~~

@@ -52,7 +52,6 @@ If you enable the option to redact sensitive settings, the sensitive setting val
 
 To enable this redaction of sensitive setting values, set the cluster setting [`server.redact_sensitive_settings.enabled`]({% link "{{ page.version.version }}/cluster-settings.md" %}#setting-server-redact-sensitive-settings-enabled) to `true`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING server.redact_sensitive_settings.enabled = 'true';
 ~~~

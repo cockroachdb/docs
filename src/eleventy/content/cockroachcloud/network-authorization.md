@@ -93,7 +93,6 @@ To access the DB Console, you must first authorize your current IP address:
 
 1. Visit your cluster's IP allowlist page:
 
-    {% include "copy-clipboard.html" %}
     ~~~txt
     https://cockroachlabs.cloud/cluster/{ your cluster UUID }/networking/allowlist
     ~~~
@@ -124,7 +123,6 @@ To access your cluster's DB Console:
 
 (Optional) To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL that opens in the browser. These IP addresses are static for the lifecycle of the cluster. For example, to use the `dig` command:
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 dig examplary-advanced-clusterberry-77tq.cockroachlabs.cloud | grep -A3 'ANSWER SECTION'
 ~~~

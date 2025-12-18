@@ -34,7 +34,6 @@ Changefeed progress is exposed as a [high-water timestamp]({% link "{{ page.vers
 - On the [**Jobs** page]({% link "{{ page.version.version }}/ui-jobs-page.md" %}) of the DB Console. Hover over the high-water timestamp column to view the [system time]({% link "{{ page.version.version }}/as-of-system-time.md" %}).
 - Using `SHOW CHANGEFEED JOB <job_id>`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW CHANGEFEED JOB 383870400694353921;
     ~~~
@@ -80,26 +79,22 @@ If you are running a changefeed with the [`confluent_schema_registry`]({% link "
 
 To start a changefeed with a metrics label, set the following cluster setting to `true`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled=true;
 ~~~
 
 Create the changefeed, passing the `metrics_label` option with the label name as its value:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE movr.rides INTO 'kafka://host:port' WITH metrics_label=rides;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'kafka://host:port' WITH metrics_label=vehicles;
 ~~~
 
 Multiple changefeeds can be added to a label:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE movr.vehicle_location_histories INTO 'kafka://host:port' WITH metrics_label=vehicles;
 ~~~

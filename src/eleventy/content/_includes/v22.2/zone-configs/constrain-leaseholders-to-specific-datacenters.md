@@ -4,7 +4,6 @@ The [`ALTER TABLE ... CONFIGURE ZONE`](alter-table.html#configure-zone) statemen
 
 For more information about how the `lease_preferences` field works, see its description in the [Replication zone variables](configure-replication-zones.html#replication-zone-variables) section.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users CONFIGURE ZONE USING num_replicas = 3, constraints = '{"+region=us-east1": 1, "+region=us-west1": 1}', lease_preferences = '[[+region=us-east1], [+region=us-west1]]';
 ~~~
@@ -13,7 +12,6 @@ For more information about how the `lease_preferences` field works, see its desc
 CONFIGURE ZONE 1
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FROM TABLE users;
 ~~~

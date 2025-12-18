@@ -44,7 +44,6 @@ Only members of the `admin` role can run `COPY` statements. By default, the `roo
 
 To run the examples, use [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the [`movr` database](movr.html) preloaded.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach demo
 ~~~
@@ -53,7 +52,6 @@ cockroach demo
 
 1. Start copying data to the `users` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     COPY users FROM STDIN;
     ~~~
@@ -91,7 +89,6 @@ cockroach demo
 
 1. Query the `users` table for the rows that you just inserted:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM users WHERE id IN ('8a3d70a3-d70a-4000-8000-00000000001d', '9eb851eb-851e-4800-8000-00000000001e');
     ~~~
@@ -117,14 +114,12 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. Create a new table that you will load with CSV-formatted data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
     ~~~
 
 1. Start copying data to the `setecastronomy` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     COPY setecastronomy FROM STDIN WITH CSV;
     ~~~
@@ -138,14 +133,12 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. Enter some CSV-delimited data to copy to the table:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     "My name is Werner Brandes","My voice is my passport"
     ~~~
 
 1. Mark the end of data with `\.` on its own line:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     \.
     ~~~
@@ -156,7 +149,6 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. View the data in the `setecastronomy` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM setecastronomy;
     ~~~
@@ -172,14 +164,12 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. Create a new table that you will load with CSV-formatted data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
     ~~~
 
 1. Start copying data to the `setecastronomy` table, specifying an escape character for quoting the fields:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     COPY setecastronomy FROM STDIN WITH CSV DELIMITER ',' ESCAPE '\';
     ~~~
@@ -193,14 +183,12 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. Enter some CSV-delimited data to copy to the table:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     "My name is Werner Brandes","\"My\" \"voice\" \"is\" \"my\" \"passport\""
     ~~~
 
 1. Mark the end of data with `\.` on its own line:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     \.
     ~~~
@@ -211,7 +199,6 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. View the data in the `setecastronomy` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM setecastronomy;
     ~~~
@@ -228,21 +215,18 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. Create a new table that you will load with CSV-formatted data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
     ~~~
 
 1. Start copying data to the `setecastronomy` table, specifying that CockroachDB should skip the header (first line of CSV input):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     COPY setecastronomy FROM STDIN WITH CSV HEADER;
     ~~~
 
 1. Enter the data, including the header line:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     "name","phrase"
     "Hi, my name is Werner Brandes","My voice is my passport; verify me"
@@ -250,7 +234,6 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. Mark the end of data with `\.` on its own line:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     \.
     ~~~
@@ -261,7 +244,6 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. View the data in the `setecastronomy` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM setecastronomy;
     ~~~
@@ -279,28 +261,24 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. Create a new table that you will load with CSV-formatted data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE IF NOT EXISTS mybytes(a INT PRIMARY KEY, b BYTEA);
     ~~~
 
 1. Set the `bytea_output` [session variable](set-vars.html#supported-variables) to specify that CockroachDB should ingest hex-encoded byte array data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET bytea_output = 'escape';
     ~~~
 
 1. Start copying data to the `mybytes` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     COPY mybytes FROM STDIN WITH CSV;
     ~~~
 
 1. Enter some CSV-delimited data to copy to the table:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     1,X'6869
     2,x'6869
@@ -310,7 +288,6 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. Mark the end of data with `\.` on its own line:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     \.
     ~~~
@@ -321,7 +298,6 @@ You can copy CSV data into CockroachDB using the following methods:
 
 1. View the data in the `mybytes` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM mybytes;
     ~~~

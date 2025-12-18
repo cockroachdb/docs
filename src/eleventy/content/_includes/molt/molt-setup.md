@@ -44,7 +44,6 @@ Before starting the [initial data load](#start-fetch), configure the [garbage co
 
 Increase the GC TTL before starting the data load. For example, to set the GC TTL to 24 hours:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE defaultdb CONFIGURE ZONE USING gc.ttlseconds = 86400;
 ~~~
@@ -55,7 +54,6 @@ The GC TTL duration must be higher than your expected time for the initial data 
 
 Once replication has started successfully (which automatically protects its own data range), you can restore the GC TTL to its original value. For example, to restore to 5 minutes:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE defaultdb CONFIGURE ZONE USING gc.ttlseconds = 300;
 ~~~

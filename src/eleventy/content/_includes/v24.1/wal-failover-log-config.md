@@ -1,4 +1,3 @@
-{% include "copy-clipboard.html" %}
 ~~~ yaml
 file-defaults:
  buffered-writes: false

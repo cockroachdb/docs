@@ -1,6 +1,5 @@
 This example creates a nightly export of some filtered table data with a [scheduled changefeed]({% link "{{ page.version.version }}/create-schedule-for-changefeed.md" %}) that will run just after midnight every night. The changefeed uses [CDC queries]({% link "{{ page.version.version }}/cdc-queries.md" %}) to query the table and filter the data it will send to the sink:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE SCHEDULE sf_skateboard FOR CHANGEFEED INTO 'external://cloud-sink' WITH format=csv
   AS SELECT current_location, id, type, status FROM vehicles

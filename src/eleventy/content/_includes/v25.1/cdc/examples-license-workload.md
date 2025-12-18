@@ -2,7 +2,6 @@
 
 1. Use the [`cockroach start-single-node`]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}) command to start a single-node cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
@@ -11,14 +10,12 @@
 
      In a new terminal, first create the schema for the workload:
 
-     {% include "copy-clipboard.html" %}
      ~~~shell
      cockroach workload init movr "postgresql://root@127.0.0.1:26257?sslmode=disable"
      ~~~
 
      Then run the workload:
 
-     {% include "copy-clipboard.html" %}
      ~~~shell
      cockroach workload run movr --duration=1m "postgresql://root@127.0.0.1:26257?sslmode=disable"
      ~~~

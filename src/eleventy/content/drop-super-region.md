@@ -67,7 +67,6 @@ The examples in this section use the following setup.
 
 To drop a super region from a multi-region database, use a [`DROP SUPER REGION`](drop-super-region.html) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE movr DROP SUPER REGION "usa";
 ~~~
@@ -80,7 +79,6 @@ Note that you cannot [drop a region](drop-region.html) that is part of a super r
 
 For example, using the super region that was added in [`ADD SUPER REGION`](add-super-region.html#add-a-super-region-to-a-database):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE movr DROP REGION "us-west1";
 ~~~

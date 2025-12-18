@@ -2,7 +2,6 @@
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
     ~~~
@@ -11,7 +10,6 @@
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     export DATABASE_URL="{connection-string}"
     ~~~
@@ -23,7 +21,6 @@
 
 1. To initialize the example database, use the [`cockroach sql`]({% link "{{ page.version.version }}/cockroach-sql.md" %}) command to execute the SQL statements in the `dbinit.sql` file:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cat dbinit.sql | cockroach sql --url $DATABASE_URL
     ~~~

@@ -31,7 +31,6 @@ docs_area: manage
 
 To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`]({% link "{{ page.version.version }}/create-schedule-for-backup.md" %}) statement. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE SCHEDULE schedule_label
   FOR BACKUP INTO 's3://test/backups/test_schedule_1?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -86,7 +85,6 @@ Once a backup schedule is successfully created, you can [view the schedule](#vie
 
 ### View the schedule
 
-{% include "copy-clipboard.html" %}
 ~~~~
 > SHOW SCHEDULES FOR BACKUP;
 ~~~~
@@ -97,14 +95,12 @@ For more information, see [`SHOW SCHEDULES`]({% link "{{ page.version.version }}
 
 To pause a schedule, you can either specify the schedule's `id`:
 
-{% include "copy-clipboard.html" %}
 ~~~~ sql
 > PAUSE SCHEDULE 589963390487363585;
 ~~~~
 
 Or nest a [`SELECT` clause]({% link "{{ page.version.version }}/select-clause.md" %}) that retrieves `id`(s) inside the `PAUSE SCHEDULES` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~~ sql
 > PAUSE SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~~
@@ -115,14 +111,12 @@ For more information, see [`PAUSE SCHEDULES`]({% link "{{ page.version.version }
 
 To resume a paused schedule, you can either specify the schedule's `id`:
 
-{% include "copy-clipboard.html" %}
 ~~~~ sql
 > RESUME SCHEDULE 589963390487363585;
 ~~~~
 
 Or nest a [`SELECT` clause]({% link "{{ page.version.version }}/select-clause.md" %}) that retrieves `id`(s) inside the `RESUME SCHEDULES` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~~ sql
 > RESUME SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~~
@@ -133,14 +127,12 @@ For more information, see [`RESUME SCHEDULES`]({% link "{{ page.version.version 
 
 To drop a schedule, you can either specify the schedule's `id`:
 
-{% include "copy-clipboard.html" %}
 ~~~~ sql
 > DROP SCHEDULE 589963390487363585;
 ~~~~
 
 Or nest a [`SELECT` clause]({% link "{{ page.version.version }}/select-clause.md" %}) that retrieves `id`(s) inside the `DROP SCHEDULES` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~~ sql
 > DROP SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~~
@@ -159,7 +151,6 @@ After CockroachDB successfully initiates a scheduled backup, it registers the ba
 
 To view jobs for a specific [backup schedule]({% link "{{ page.version.version }}/create-schedule-for-backup.md" %}), use the schedule's `id`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -172,7 +163,6 @@ To view jobs for a specific [backup schedule]({% link "{{ page.version.version }
 
 You can also view multiple schedules by nesting a [`SELECT` clause]({% link "{{ page.version.version }}/select-clause.md" %}) that retrieves `id`(s) inside the `SHOW JOBS` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
@@ -191,7 +181,6 @@ For more information, see [`SHOW JOBS`]({% link "{{ page.version.version }}/show
 
 To pause jobs for a specific [backup schedule]({% link "{{ page.version.version }}/create-schedule-for-backup.md" %}), use the schedule's `id`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > PAUSE JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -201,7 +190,6 @@ PAUSE JOBS FOR SCHEDULES 1
 
 You can also pause multiple schedules by nesting a [`SELECT` clause]({% link "{{ page.version.version }}/select-clause.md" %}) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > PAUSE JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
@@ -216,7 +204,6 @@ For more information, see [`PAUSE JOB`]({% link "{{ page.version.version }}/paus
 
 To resume jobs for a specific [backup schedule]({% link "{{ page.version.version }}/create-schedule-for-backup.md" %}), use the schedule's `id`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > RESUME JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -226,7 +213,6 @@ RESUME JOBS FOR SCHEDULES 1
 
 You can also resume multiple schedules by nesting a [`SELECT` clause]({% link "{{ page.version.version }}/select-clause.md" %}) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > RESUME JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
@@ -241,7 +227,6 @@ For more information, see [`RESUME JOB`]({% link "{{ page.version.version }}/res
 
 To cancel jobs for a specific [backup schedule]({% link "{{ page.version.version }}/create-schedule-for-backup.md" %}), use the schedule's `id`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CANCEL JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -251,7 +236,6 @@ CANCEL JOBS FOR SCHEDULES 1
 
 You can also CANCEL multiple schedules by nesting a [`SELECT` clause]({% link "{{ page.version.version }}/select-clause.md" %}) that retrieves `id`(s) inside the `CANCEL JOBS` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CANCEL JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
@@ -266,7 +250,6 @@ For more information, see [`CANCEL JOB`]({% link "{{ page.version.version }}/can
 
 To restore from a scheduled backup, use the [`RESTORE`]({% link "{{ page.version.version }}/restore.md" %}) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > RESTORE
     FROM '2020/08/19-035600.00' IN 's3://test/backups/test_schedule_1?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'

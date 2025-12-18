@@ -14,7 +14,6 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
 
 1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm repo add cockroachdb https://charts.cockroachdb.com/
     ~~~
@@ -25,7 +24,6 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
 
 1. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/Chart.yaml):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm repo update
     ~~~
@@ -46,7 +44,6 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
         For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
         {{site.data.alerts.end}}
 
-        {% include "copy-clipboard.html" %}
         ~~~
         conf:
           cache: "2Gi"
@@ -67,7 +64,6 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
     This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm install my-release --values {custom-values}.yaml cockroachdb/cockroachdb
     ~~~
@@ -76,7 +72,6 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
 
 1. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -91,7 +86,6 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
 
 1. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pv
     ~~~
@@ -105,7 +99,6 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
 
 1. Check that the secrets were created on the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get secrets
     ~~~

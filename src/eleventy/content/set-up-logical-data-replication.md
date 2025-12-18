@@ -78,7 +78,6 @@ For example, consider a table with a unique `name` column where the following op
 
 On the **source cluster**:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- writes to the source table
 INSERT INTO city (1, nyc); -- timestamp 1
@@ -88,7 +87,6 @@ INSERT INTO city (100, nyc); -- timestamp 3
 
 LDR replicates the write to the **destination cluster**: 
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- replicates to the destination table
 INSERT INTO city (100, nyc); -- timestamp 4
@@ -98,7 +96,6 @@ _Timestamp 5:_ [Range]({% link "{{ page.version.version }}/architecture/glossary
 
 _Timestamp 6:_ On the destination cluster, LDR attempts to replicate the row `(1, nyc)`, but it enters the retry queue for 1 minute due to the unavailable range. LDR adds `1, nyc` to the DLQ table after retrying and observing the `UNIQUE` constraint violation:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- writes to the DLQ
 INSERT INTO city (1, nyc); -- timestamp 6
@@ -106,7 +103,6 @@ INSERT INTO city (1, nyc); -- timestamp 6
 
 _Timestamp 7:_ LDR continues to replicate writes:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- replicates to the destination table
 INSERT INTO city (1, philly); -- timestamp 7
@@ -127,21 +123,18 @@ If you are setting up bidirectional LDR, you **must** run this step on both clus
 
 1. Enter the SQL shell for **both** clusters in separate terminal windows:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url "postgresql://root@{node IP or hostname}:26257?sslmode=verify-full" --certs-dir=certs
     ~~~
 
 1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}) on the **source** cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 1. On the **destination**, create a user who will start the LDR job:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     CREATE USER {your_username} WITH PASSWORD '{your_password}';
     ~~~
@@ -149,20 +142,17 @@ If you are setting up bidirectional LDR, you **must** run this step on both clus
 1. Choose the appropriate privilege based on the SQL statement the user on the destination cluster will run. (For details on which syntax to use, refer to the [Syntax](#syntax) section at the beginning of this tutorial):
     - [`CREATE LOGICAL REPLICATION STREAM`]({% link "{{ page.version.version }}/create-logical-replication-stream.md" %}) (replicating into an **existing table**). Grant the [`REPLICATIONDEST` privilege]({% link "{{ page.version.version }}/security-reference/authorization.md" %}#replicationdest) on the **destination table**, which allows the user to stream data into the existing table:
 
-        {% include "copy-clipboard.html" %}
         ~~~sql
         GRANT REPLICATIONDEST ON TABLE {your_db}.{your_schema}.{your_table} TO {your_username};
         ~~~
     - [`CREATE LOGICALLY REPLICATED`]({% link "{{ page.version.version }}/create-logically-replicated.md" %}) (creating a **new table** as part of the replication). Grant the [`CREATE` privilege]({% link "{{ page.version.version }}/create-database.md" %}#required-privileges) on the **parent database**, which allows the user to create a new table in the specified database, and the user will automatically have `REPLICATIONDEST` on the table they create:
 
-        {% include "copy-clipboard.html" %}
         ~~~sql
         GRANT CREATE ON DATABASE {your_db} TO {your_username};
         ~~~
 
 1. On the **source**, grant the user who will be [specified in the connection string to the source cluster](#step-2-connect-from-the-destination-to-the-source) the [`REPLICATIONSOURCE` privilege]({% link "{{ page.version.version }}/security-reference/authorization.md" %}#replicationsource):
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     GRANT REPLICATIONSOURCE ON TABLE {your_db}.{your_schema}.{your_table} TO {your_username};
     ~~~
@@ -185,7 +175,6 @@ You can use the `cockroach encode-uri` command to generate a connection string c
 
 1. On the **source** cluster in a new terminal window, generate a connection string, by passing the replication user, node IP, and port, along with the directory to the source cluster's CA certificate:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach encode-uri {user}:{password}@{node IP}:26257 --ca-cert {path to CA certificate} --inline
     ~~~
@@ -198,14 +187,12 @@ You can use the `cockroach encode-uri` command to generate a connection string c
 
 1. In the SQL shell on the **destination** cluster, create an [external connection]({% link "{{ page.version.version }}/create-external-connection.md" %}) using the source cluster's connection string. Prefix the `postgresql://` scheme to the connection string and replace `{source}` with your external connection name:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{user}:{password}@{node IP}:26257?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded certificate}-----END+CERTIFICATE-----%0A';
     ~~~
 
     If the source and destination cluster's nodes are on different networks, you can route LDR traffic through the destination cluster's load balancer. Add `&crdb_route=gateway` to the connection string:
     
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{user}:{password}@{node IP}:26257?options=-ccluster%3Dsystem&crdb_route=gateway&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded certificate}-----END+CERTIFICATE-----%0A';
     ~~~
@@ -222,7 +209,6 @@ Once the source cluster has made a connection to the destination cluster, the de
 
 1. On cluster **B**, run:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach encode-uri {user}:{password}@{node IP}:26257 --ca-cert {path to CA certificate} --inline
     ~~~
@@ -235,14 +221,12 @@ Once the source cluster has made a connection to the destination cluster, the de
 
 1. On cluster **A**, create an [external connection]({% link "{{ page.version.version }}/create-external-connection.md" %}) using cluster B's connection string (source in LDR stream 2). Prefix the `postgresql://` scheme to the connection string and replace `{source}` with your external connection name:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{user}:{password}@{node IP}:26257?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded certificate}-----END+CERTIFICATE-----%0A';
     ~~~
 
     If cluster A and cluster B's nodes are on different networks, you can route LDR traffic through the destination cluster's load balancer. Add `&crdb_route=gateway` to the connection string:
     
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{user}:{password}@{node IP}:26257?options=-ccluster%3Dsystem&crdb_route=gateway&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded certificate}-----END+CERTIFICATE-----%0A';
     ~~~
@@ -262,7 +246,6 @@ Use `CREATE LOGICALLY REPLICATED` to create either a unidirectional or bidirecti
 
 - Unidirectional LDR: run the following from the **destination** cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH unidirectional;
     ~~~
@@ -271,14 +254,12 @@ Use `CREATE LOGICALLY REPLICATED` to create either a unidirectional or bidirecti
 
     Run the following from the **destination** cluster (i.e., the cluster that currently does not have the table):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH bidirectional ON 'external://destination';
     ~~~
 
 You can include multiple tables in the LDR stream for unidirectional or bidirectional setups. Ensure that the table name in the source table list and destination table list are in the same order so that the tables correctly map between the source and destination for replication:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE LOGICALLY REPLICATED TABLE ({database.public.destination_table_name_1}, {database.public.destination_table_name_2}) FROM TABLE ({database.public.source_table_name_1}, {database.public.source_table_name_2}) ON 'external://source' WITH bidirectional ON 'external://destination', label=track_job;
 ~~~
@@ -289,14 +270,12 @@ With the LDR streams created, move to [Step 4](#step-4-manage-and-monitor-the-ld
 
 Ensure you've created the table on the destination cluster with a matching schema definition to the source cluster table. From the **destination** cluster, start LDR. Use the [fully qualified]({% link "{{ page.version.version }}/sql-name-resolution.md" %}) table name for the source and destination tables:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.source_table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.destination_table_name};
 ~~~
 
 If you would like to add multiple tables to the LDR job, ensure that the table name in the source table list and destination table list are in the same order:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE LOGICAL REPLICATION STREAM FROM TABLES ({database.public.source_table_name_1},{database.public.source_table_name_2},...)  ON 'external://{source_external_connection}' INTO TABLES ({database.public.destination_table_name_1},{database.public.destination_table_name_2},...);
 ~~~
@@ -307,7 +286,6 @@ CREATE LOGICAL REPLICATION STREAM FROM TABLES ({database.public.source_table_nam
 
 Once LDR has started, an LDR job will run on the destination cluster. You can [pause]({% link "{{ page.version.version }}/pause-job.md" %}), [resume]({% link "{{ page.version.version }}/resume-job.md" %}), or [cancel]({% link "{{ page.version.version }}/cancel-job.md" %}) the LDR job with the job ID. Use [`SHOW LOGICAL REPLICATION JOBS`]({% link "{{ page.version.version }}/show-logical-replication-jobs.md" %}) to display the LDR job IDs:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW LOGICAL REPLICATION JOBS;
 ~~~

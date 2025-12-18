@@ -1,6 +1,5 @@
     <section class="filter-content" markdown="1" data-scope="mac">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl --create-dirs -o ~/Library/CockroachCloud/certs/<cluster-name>-ca.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
     ~~~
@@ -11,7 +10,6 @@
 
     <section class="filter-content" markdown="1" data-scope="linux">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl --create-dirs -o ~/Library/CockroachCloud/certs/<cluster-name>-ca.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
     ~~~
@@ -22,7 +20,6 @@
 
     <section class="filter-content" markdown="1" data-scope="windows">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     mkdir -p $env:appdata/CockroachCloud/certs/<cluster-name>-ca.crt; Invoke-WebRequest -Uri https://cockroachlabs.cloud/clusters/<cluster-id>/cert -OutFile $env:appdata/CockroachCloud/certs/<cluster-name>-ca.crt
     ~~~

@@ -70,7 +70,6 @@ Some schema change operations, like adding or dropping columns or altering prima
 
 To estimate the size of the indexes in your table, use the [`SHOW RANGES`]({% link "{{ page.version.version }}/show-ranges.md" %}) statement.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 SHOW RANGES FROM TABLE {table name} WITH DETAILS, KEYS, INDEXES;
 ~~~
@@ -83,21 +82,18 @@ In many cases this range size is trivial, but when the range size is many gigaby
 
 1. Start a 3 node [`cockroach demo`]({% link "{{ page.version.version }}/cockroach-demo.md" %}) cluster with the MovR dataset.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach demo --nodes 3
     ~~~
 
 1. Turn off the deprecated behavior of `SHOW RANGES`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING sql.show_ranges_deprecated_behavior.enabled TO 'false';
     ~~~
 
 1. Find the range size of the indexes in the `movr.vehicles` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     WITH x AS (
             SHOW RANGES FROM TABLE movr.vehicles WITH DETAILS, KEYS, INDEXES
@@ -143,7 +139,6 @@ As noted in [Known limitations](#known-limitations), you cannot run schema chang
 
 However, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > BEGIN;
   SAVEPOINT cockroach_restart;
@@ -187,7 +182,6 @@ Some schema changes can be used in combination in a single `ALTER TABLE` stateme
 
 You can check on the status of the schema change jobs on your system at any time using the [`SHOW JOBS`][show-jobs] statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW JOBS) SELECT * FROM x WHERE job_type = 'SCHEMA CHANGE';
 ~~~
@@ -218,14 +212,12 @@ With `autocommit_before_ddl` enabled, [`COMMIT`]({% link "{{ page.version.versio
 
 To enable this setting for the current [session]({% link "{{ page.version.version }}/show-sessions.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET autocommit_before_ddl = on;
 ~~~
 
 To enable it for [all users]({% link "{{ page.version.version }}/alter-role.md" %}#set-default-session-variable-values-for-all-users):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER ROLE ALL SET autocommit_before_ddl = on
 ~~~

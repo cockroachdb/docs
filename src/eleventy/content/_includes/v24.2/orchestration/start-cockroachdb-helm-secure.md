@@ -10,7 +10,6 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
 
 1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm repo add cockroachdb https://charts.cockroachdb.com/
     ~~~
@@ -21,7 +20,6 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
 
 1. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/Chart.yaml):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm repo update
     ~~~
@@ -42,7 +40,6 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
         For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
         {{site.data.alerts.end}}
 
-        {% include "copy-clipboard.html" %}
         ~~~ yaml
         conf:
           cache: "2Gi"
@@ -69,7 +66,6 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
     To allow the CockroachDB pods to successfully deploy, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm commands.
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm install my-release --values {custom-values}.yaml cockroachdb/cockroachdb
     ~~~
@@ -78,7 +74,6 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
 
 1. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -93,7 +88,6 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
 
 1. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pv
     ~~~

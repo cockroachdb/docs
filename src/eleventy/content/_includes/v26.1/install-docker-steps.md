@@ -49,7 +49,6 @@ Experimental images are not qualified for production use and not eligible for su
 
 1. Pull the image. Replace `{TAG}` with the tag from the previous step.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker pull cockroachdb/cockroach:{TAG}
     ~~~

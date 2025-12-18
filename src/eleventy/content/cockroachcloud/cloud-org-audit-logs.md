@@ -14,7 +14,6 @@ This page provides some examples of exporting CockroachDB {{ site.data.products.
 
 This example requests audit logs without defining the starting timestamp, sort order, or limit.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/auditlogevents \
@@ -24,7 +23,6 @@ curl --request GET \
 
 By default, the earliest 200 audit logs for your CockroachDB {{ site.data.products.cloud }} organization are returned in ascending order, starting from when the organization was created. If more records are available, the response will include the field `next_starting_from` with a timestamp. To export the next batch of entries, send a second request and set `starting_from` to the value of `next_starting_from`.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/auditlogevents?starting_from=2022-10-09T02:40:35.054818Z \
@@ -36,7 +34,6 @@ curl --request GET \
 
 This example requests the 300 most recent audit logs, starting from the current timestamp.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/auditlogevents?sort_order=DESC&limit=300 \
@@ -52,7 +49,6 @@ This example shows how to retrieve the 200 events on each side of a given timest
 
 First, retrieve roughly 200 entries for the specified timestamp and later.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/auditlogevents?starting_from=2022-10-09T02:40:00.262143Z&sort_order=ASC \
@@ -62,7 +58,6 @@ curl --request GET \
 
 Next, retrieve roughly 200 less recent entries for the specified timestamp and earlier.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/auditlogevents?starting_from=2022-10-09T02:40:00.262143Z&sort_order=DESC \

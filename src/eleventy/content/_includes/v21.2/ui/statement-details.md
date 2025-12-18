@@ -111,7 +111,6 @@ The **Explain Plan** section displays CockroachDB's statement plan for an [expla
 
 By default, the explain plan for each fingerprint is sampled every 5 minutes. You can change the interval with the [`sql.metrics.statement_details.plan_collection.period`]({{ link_prefix }}cluster-settings.html#settings) cluster setting. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`]({{ link_prefix }}set-cluster-setting.html) command:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.plan_collection.period  = '2m0s';
 ~~~

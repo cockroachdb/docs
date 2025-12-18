@@ -4,14 +4,12 @@ Values exceeding 1 MiB can lead to [storage layer write amplification]({% link "
 
 To add a size limit using [`CREATE TABLE`]({% link "{{ page.version.version }}/create-table.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE name (first STRING(100), last STRING(100));
 ~~~
 
 To add a size limit using [`ALTER TABLE ... ALTER COLUMN`]({% link "{{ page.version.version }}/alter-table.md" %}#alter-column):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE name ALTER first TYPE STRING(99);
 ~~~

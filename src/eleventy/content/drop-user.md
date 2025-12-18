@@ -35,7 +35,6 @@ All of a user's privileges must be revoked before the user can be dropped.
 
 In this example, first check a user's privileges. Then, revoke the user's privileges before removing the user.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE DATABASE test;
 CREATE TABLE customers (k int, v int);
@@ -43,7 +42,6 @@ CREATE USER max;
 GRANT ALL ON TABLE customers TO max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON customers FOR max;
 ~~~
@@ -55,7 +53,6 @@ SHOW GRANTS ON customers FOR max;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 REVOKE CREATE,INSERT,UPDATE ON customers FROM max;
 ~~~
@@ -64,7 +61,6 @@ REVOKE CREATE,INSERT,UPDATE ON customers FROM max;
 
 In addition to removing a user's privileges, a user's [default privileges]({% link "{{ page.version.version }}/security-reference/authorization.md" %}#default-privileges) must be removed prior to dropping the user. If you attempt to drop a user with modified default privileges, you will encounter an error like the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP USER max;
 ~~~
@@ -76,7 +72,6 @@ SQLSTATE: 2BP01
 
 To see what privileges the user still has remaining on the table, issue the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON TABLE test.customers FOR max;
 ~~~
@@ -95,14 +90,12 @@ SHOW GRANTS ON TABLE test.customers FOR max;
 
 To drop the user you must revoke all of the user's remaining privileges:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 REVOKE ALL ON TABLE public.customers FROM max;
 ~~~
 
 Now dropping the user should succeed:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP USER max;
 ~~~

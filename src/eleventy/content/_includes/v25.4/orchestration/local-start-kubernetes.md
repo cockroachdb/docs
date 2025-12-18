@@ -16,7 +16,6 @@ Feature | Description
 
 1. Start a local Kubernetes cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     minikube start
     ~~~

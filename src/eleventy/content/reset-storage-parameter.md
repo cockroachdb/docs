@@ -46,7 +46,6 @@ The user must be a member of the [`admin`](security-reference/authorization.html
 
 Following the example in [`WITH` (storage parameter)](with-storage-parameter.html#create-a-table-with-row-level-ttl-enabled), the `ttl_test` table has three TTL-related storage parameters active on the table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE TABLE ttl_test;
 ~~~
@@ -66,12 +65,10 @@ SHOW CREATE TABLE ttl_test;
 
 To remove these settings, run the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE ttl_test RESET (ttl);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE TABLE ttl_test;
 ~~~

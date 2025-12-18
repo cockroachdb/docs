@@ -111,7 +111,6 @@ To shut down the CockroachDB cluster:
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~
@@ -137,7 +136,6 @@ To shut down the CockroachDB cluster:
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm uninstall my-release
     ~~~
@@ -150,25 +148,21 @@ To shut down the CockroachDB cluster:
 2. Stop Kubernetes:
     - Hosted GKE:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ gcloud container clusters delete cockroachdb --region {region-name}
         ~~~
     - Hosted EKS:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ eksctl delete cluster --name cockroachdb
         ~~~
     - Manual GCE:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ cluster/kube-down.sh
         ~~~
     - Manual AWS:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ cluster/kube-down.sh
         ~~~

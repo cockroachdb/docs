@@ -50,7 +50,6 @@ The operations described in this page require an API key with very broad permiss
 
 1. Save your API key and cluster UUID as environment variables.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     CC_API_KEY={ your API key }
     CLUSTER_ID={ your cluster UUID }
@@ -58,7 +57,6 @@ The operations described in this page require an API key with very broad permiss
 
 1. Inspect your cluster with the Cloud API:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
     --header "Authorization: Bearer $CC_API_KEY" \
@@ -109,7 +107,6 @@ Essential external traffic destined to resources managed by Cockroach Labs is al
 
 1. Make a `POST` request ordering the API to update your cluster's egress policy from default allow-all to deny-all. This allows you to add egress rules to explicitly allow egress traffic from the cluster to certain external destinations.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request POST \
     --header "Authorization: Bearer $CC_API_KEY" \
@@ -140,7 +137,6 @@ The following steps create one FQDN rule and one CIDR rule.
 
 1. First, create a YAML manifest for a FQDN-based rule. This example allows egress traffic from the cluster to `storage.googleapis.com` (the Google Cloud Platform (GCP) storage API) on ports 80 and 443.
 
-    {% include "copy-clipboard.html" %}
     ~~~yaml
     ---
     name: "roach-buckets"
@@ -152,7 +148,6 @@ The following steps create one FQDN rule and one CIDR rule.
 
 1. Next, create a YAML manifest for a CIDR-based rule. This example adds egress traffic from the cluster to the IPv4 subnet `123.34.62.123/32` (which matches a single IPv4 address) on port 443, which may be, for example, the load balancer for a Kafka cluster running in your organization's internal network or private cloud.
 
-    {% include "copy-clipboard.html" %}
     ~~~yaml
     --- # egress-rule2.yml
     name: "roach-kafka"
@@ -164,7 +159,6 @@ The following steps create one FQDN rule and one CIDR rule.
 
 1. Use Ruby (or another technique), to compile human-editable YAML into API-parsable JSON:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     ruby -ryaml -rjson -e 'puts(YAML.load(ARGF.read).to_json)' < egress-rule1.yml > egress-rule1.json
     ruby -ryaml -rjson -e 'puts(YAML.load(ARGF.read).to_json)' < egress-rule2.yml > egress-rule2.json
@@ -176,7 +170,6 @@ The following steps create one FQDN rule and one CIDR rule.
     On macOS, you can install `jq` from Homebrew: `brew install jq`
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     cat egress-rule1.json |jq
     cat egress-rule2.json |jq
@@ -206,7 +199,6 @@ The following steps create one FQDN rule and one CIDR rule.
 
 1. Make a `POST` request to create each rule from its JSON payload.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request POST \
     --header "Authorization: Bearer $CC_API_KEY" \
@@ -265,7 +257,6 @@ The following steps create one FQDN rule and one CIDR rule.
 Refer to the list of [rule statuses](#rule-statuses).
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request GET \
 --header "Authorization: Bearer $CC_API_KEY" \
@@ -297,7 +288,6 @@ curl --request GET \
 Consult the glossary of [rule statuses](#rule-statuses).
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request GET \
 --header "Authorization: Bearer $CC_API_KEY" \
@@ -351,7 +341,6 @@ To delete a rule, make `DELETE` request to the rule's path.
 Your cluster's firewall behavior is enforced asynchronously after the API response. After submitting the request, [check your egress rules](#check-egress-rules-for-a-cluster) to confirm that the deletion is complete.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 curl --request DELETE \
 --header "Authorization: Bearer $CC_API_KEY" \

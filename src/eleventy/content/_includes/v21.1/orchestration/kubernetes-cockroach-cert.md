@@ -4,7 +4,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 1. Create two directories:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
@@ -16,7 +15,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 1. Create the CA certificate and key pair:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -25,7 +23,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 1. Create a client certificate and key pair for the root user:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -35,7 +32,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 1. Upload the client certificate and key to the Kubernetes cluster as a secret:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create secret \
     generic cockroachdb.client.root \
@@ -48,7 +44,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 1. Create the certificate and key pair for your CockroachDB nodes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost 127.0.0.1 \
@@ -64,7 +59,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 1. Upload the node certificate and key to the Kubernetes cluster as a secret:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create secret \
     generic cockroachdb.node \
@@ -77,7 +71,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
 1. Check that the secrets were created on the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get secrets
     ~~~

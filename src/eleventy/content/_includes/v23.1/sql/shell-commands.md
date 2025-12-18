@@ -38,7 +38,6 @@ Commands use the SQL [`LIKE` syntax]({% link "{{ page.version.version }}/scalar-
 
 For example to list all schemas that begin with the letter "p" you'd use the following pattern:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 \dn p%
 ~~~

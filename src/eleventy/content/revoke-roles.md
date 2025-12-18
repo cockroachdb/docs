@@ -38,7 +38,6 @@ Parameter | Description
 
 ### Revoke role membership
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW GRANTS ON ROLE design;
 ~~~
@@ -54,12 +53,10 @@ Parameter | Description
 +--------+---------+---------+
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > REVOKE design FROM lola;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW GRANTS ON ROLE design;
 ~~~
@@ -78,7 +75,6 @@ Parameter | Description
 
 To revoke a user or role's admin option from a role (without revoking the membership):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > REVOKE ADMIN OPTION FOR design FROM ernie;
 ~~~

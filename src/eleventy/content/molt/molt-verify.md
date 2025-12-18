@@ -43,7 +43,6 @@ Complete the following items before using MOLT Verify:
 
   - Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         molt escape-password --password 'a$52&'
         ~~~
@@ -80,7 +79,6 @@ Flag | Description
 
 To compare a PostgreSQL database with a CockroachDB database:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 molt verify \
   --source 'postgresql://{username}:{password}@{host}:{port}/{database}' \
@@ -89,7 +87,6 @@ molt verify \
 
 To compare a MySQL database with a CockroachDB database:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 molt verify \
   --source 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}' \

@@ -29,12 +29,10 @@ Parameter | Description
 
 ### Show schemas in the current database
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE SCHEMA org_one;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~

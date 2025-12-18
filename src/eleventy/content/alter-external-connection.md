@@ -24,7 +24,6 @@ To update an external connection, a user must have the `UPDATE` privilege on tha
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 GRANT UPDATE ON EXTERNAL CONNECTION backup_bucket TO user;
 ~~~
@@ -70,7 +69,6 @@ For more information on authentication and forming the URI that an external conn
 
 In this example, you update the `backup_bucket` external connection to a new Amazon S3 URI to rotate your auth token.
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 ALTER EXTERNAL CONNECTION backup_bucket AS 's3://bucket name?AWS_ACCESS_KEY_ID={new access key}&AWS_SECRET_ACCESS_KEY={new secret access key}';
 ~~~

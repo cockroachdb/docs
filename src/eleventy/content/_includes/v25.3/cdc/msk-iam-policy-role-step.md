@@ -3,7 +3,6 @@
 
     Replace the instances of `arn:aws:kafka:{region}:{account ID}:cluster/{msk-cluster-name}` with the MSK ARN from your cluster's summary page and add `/*` to the end, like the following:
 
-    {% include "copy-clipboard.html" %}
     ~~~json
     {
         "Version": "2012-10-17",

@@ -27,7 +27,6 @@ Avoid using the `-v` / `--volume` command to mount a local macOS filesystem into
 
 To create the [Docker volume](https://docs.docker.com/storage/volumes/) where the cluster will store its data, run the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 docker volume create roach-single
 ~~~
@@ -51,7 +50,6 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
 1. Start the cluster node and configure it to listen on port 26257 for SQL clients and run DB Console on port 8080.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker run -d \
       --env COCKROACH_DATABASE={DATABASE_NAME} \
@@ -76,7 +74,6 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
 1. After the cluster is initialized, the cluster node prints helpful [startup details]({% link "{{ page.version.version }}/cockroach-start.md" %}#standard-output) to its log, including the DB Console URL and the SQL connection string. To retrieve `roach-single`'s startup details:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker exec -it roach-single grep 'node starting' /cockroach/cockroach-data/logs/cockroach.log -A 11
     ~~~
@@ -102,7 +99,6 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
 1. After the cluster is initialized, you can connect to it, run tests on it, and stop it using the same instructions as a multi-node cluster. To monitor the cluster node's logs interactively:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker logs --follow roach-single
     ~~~
@@ -111,7 +107,6 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
 1. To connect to the cluster interactively using the `cockroach sql` command-line interface, set `--url` cluster's SQL connection string, which is printed next to `sql:` in the cluster's startup details. Connect to the `roach-single` cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker exec -it roach-single ./cockroach sql --url="postgresql://root@127.0.0.1:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt"
     ~~~
@@ -126,19 +121,16 @@ When you started the cluster container, you published the container's DB Console
 
 1. Use the `docker stop` and `docker rm` commands to stop and remove the container (and therefore the single-node cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes]({% link "{{ page.version.version }}/node-shutdown.md" %}#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker stop -t 300 roach-single
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker rm roach-single
     ~~~
 
 1. If you do not plan to restart the cluster, you can also remove the Docker volume that contains the cluster's data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker volume rm roach-single
     ~~~

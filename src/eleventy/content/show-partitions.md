@@ -54,7 +54,6 @@ The `movr` database in this example is pre-partitioned. For information about pa
 
 ### Show table partitions
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW PARTITIONS FROM TABLE users;
 ~~~
@@ -85,7 +84,6 @@ The `movr` database in this example is pre-partitioned. For information about pa
 
 You can also use [`SHOW CREATE TABLE`]({% link "{{ page.version.version }}/show-create.md" %}) to view partitions on a table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -117,14 +115,12 @@ You can also use [`SHOW CREATE TABLE`]({% link "{{ page.version.version }}/show-
 
 If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output includes a warning.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER PARTITION us_west OF TABLE users CONFIGURE ZONE DISCARD;
   ALTER PARTITION us_east OF TABLE users CONFIGURE ZONE DISCARD;
   ALTER PARTITION europe_west OF TABLE users CONFIGURE ZONE DISCARD;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -152,7 +148,6 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 
 ### Show partitions by index
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW PARTITIONS FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
 ~~~
@@ -183,7 +178,6 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 
 ### Show partitions by database
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW PARTITIONS FROM DATABASE movr;
 ~~~

@@ -16,7 +16,6 @@ You can reference multiple columns in an expression index.
 
 To create an expression index, use the syntax:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE INDEX index_name ON table_name (expression(column_name));
 ~~~
@@ -25,7 +24,6 @@ CREATE INDEX index_name ON table_name (expression(column_name));
 
 To view the expression used to generate the index, run `SHOW CREATE TABLE`:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -47,7 +45,6 @@ To view the expression used to generate the index, run `SHOW CREATE TABLE`:
 ### Create various expression indexes
 
 Suppose you have a table with the following columns:
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE TABLE t (i INT, b BOOL, s STRING, j JSON);
 ~~~
@@ -55,19 +52,16 @@ CREATE TABLE t (i INT, b BOOL, s STRING, j JSON);
 The following examples illustrate how to create various types of expression indexes.
 
 A partial, multi-column index, where one column is defined with an expression:
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE INDEX ON t (lower(s), b) WHERE i > 0;
 ~~~
 
 A unique, partial, multi-column index, where one column is defined with an expression:
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE UNIQUE INDEX ON t (lower(s), b) WHERE i > 0;
 ~~~
 
 A GIN, partial, multi-column index, where one column is defined with an expression:
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE INVERTED INDEX ON t (lower(s), i, j) WHERE b;
 ~~~
@@ -84,7 +78,6 @@ Normally an index is used only if the cost of using the index is less than the c
 
 Create a table of three users with a JSON object in the `user_profile` column:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 > CREATE TABLE users (
   profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -100,7 +93,6 @@ Create a table of three users with a JSON object in the `user_profile` column:
 
 When you perform a query that filters on the `user_profile->'birthdate'` column:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 > EXPLAIN SELECT jsonb_pretty(user_profile) FROM users WHERE user_profile->>'birthdate' = '2011-11-07';
 ~~~
@@ -130,14 +122,12 @@ Time: 2ms total (execution 1ms / network 0ms)
 
 To limit the number of rows scanned, create an expression index on the `birthdate` field:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 > CREATE INDEX timestamp_idx ON users (parse_timestamp(user_profile->>'birthdate'));
 ~~~
 
 When you filter on the expression `parse_timestamp(user_profile->'birthdate')`, only the row matching the filter is scanned:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 > EXPLAIN SELECT jsonb_pretty(user_profile) FROM users WHERE parse_timestamp(user_profile->>'birthdate') = '2011-11-07';
 ~~~

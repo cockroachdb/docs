@@ -19,7 +19,6 @@ The standby cluster will also require separate monitoring to ensure observabilit
 
 In the standby cluster's SQL shell, you can query `SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS` for detail on status and timestamps for planning [failover]({% link "{{ page.version.version }}/failover-replication.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 ~~~
@@ -69,7 +68,6 @@ To verify that the data at a certain point in time is correct on the standby clu
 
 1. Retrieve the current replicated time of the replication job on the standby cluster with [`SHOW VIRTUAL CLUSTER`]({% link "{{ page.version.version }}/show-virtual-cluster.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT replicated_time FROM [SHOW VIRTUAL CLUSTER standbymain WITH REPLICATION STATUS];
     ~~~
@@ -84,7 +82,6 @@ To verify that the data at a certain point in time is correct on the standby clu
 
 1. From the **primary cluster's system virtual cluster**, specify a timestamp at or earlier than the current `replicated_time` to retrieve the fingerprint. This example uses the current `replicated_time`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER main] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
     ~~~
@@ -99,7 +96,6 @@ To verify that the data at a certain point in time is correct on the standby clu
 
 1. From the **standby cluster's system virtual cluster**, specify the same timestamp used on the primary cluster to retrieve the standby cluster's fingerprint:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM [SHOW EXPERIMENTAL_FINGERPRINTS FROM VIRTUAL CLUSTER standbymain] AS OF SYSTEM TIME '2024-01-09 16:15:45.291575+00';
     ~~~

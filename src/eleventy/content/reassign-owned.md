@@ -39,24 +39,20 @@ Parameter | Description
 
 Suppose that the current owner of the `users`, `vehicles`, and `rides` tables in the `movr` database is a role named `cockroachlabs`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE ROLE cockroachlabs;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > GRANT CREATE ON DATABASE movr TO cockroachlabs;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users OWNER TO cockroachlabs;
 > ALTER TABLE vehicles OWNER TO cockroachlabs;
 > ALTER TABLE rides OWNER TO cockroachlabs;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -75,22 +71,18 @@ Suppose that the current owner of the `users`, `vehicles`, and `rides` tables in
 
 Now suppose you want to change the owner for all of the tables owned by `cockroachlabs` to a new role named `movrlabs`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE ROLE movrlabs;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > GRANT CREATE ON DATABASE movr TO movrlabs;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > REASSIGN OWNED BY cockroachlabs TO movrlabs;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES;
 ~~~

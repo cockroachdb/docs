@@ -25,7 +25,6 @@ For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [B
 
 Clone the code's GitHub repo:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/example-app-java-jdbc/
 ~~~
@@ -53,7 +52,6 @@ The project has the following directory structure:
 
 The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDATE` SQL operations. The file also contains the `main` method of the program.
 
-{% include "copy-clipboard.html" %}
 ~~~ java
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java" %}
 ~~~
@@ -78,7 +76,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 1. Navigate to the `example-app-java-jdbc` directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd example-app-java-jdbc
     ~~~
@@ -87,7 +84,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     export JDBC_DATABASE_URL=jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
     ~~~
@@ -98,7 +94,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     1. Paste in the command you copied earlier:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         export JDBC_DATABASE_URL="{connection-string}"
         ~~~
@@ -111,7 +106,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](connect-to-the-database.html?filters=java):
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         cockroach convert-url --url $DATABASE_URL
         ~~~
@@ -125,7 +119,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         export JDBC_DATABASE_URL="{jdbc-connection-string}"
         ~~~
@@ -136,7 +129,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 Compile and run the code:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ./gradlew run
 ~~~
@@ -212,7 +204,6 @@ BUILD SUCCESSFUL in 8s
 
 To set the session variable in the JDBC connection string, add them to the [`options` parameter]({% link "{{ page.version.version }}/connection-parameters.md" %}#supported-options-parameters):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 export JDBC_DATABASE_URL=jdbc:postgresql://{host}:{port}/{database}?options=-c%20{session variable name}%3D{session variable value}
 ~~~
@@ -236,7 +227,6 @@ options=-c unbounded_parallel_scans=on
 
 To set session variables as properties of the JDBC data source, set `options` using `setProperty`:
 
-{% include "copy-clipboard.html" %}
 ~~~ java
 Properties props = new Properties();
 props.setProperty("options", "-c {session variable name}={session variable value}");
@@ -250,7 +240,6 @@ Where:
 
 To add more than one session variable, append additional `-c` settings:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 props.setProperty("options", "-c sql_safe_updates=true -c statement_timeout=30");
 ~~~
@@ -291,7 +280,6 @@ Specifically, it does the following:
 1. Given an overall update size of 500 rows (for example), split it into batches of size 128 and execute each batch in turn.
 1. Finally, commit the batches of statements you've just executed.
 
-{% include "copy-clipboard.html" %}
 ~~~ java
 int BATCH_SIZE = 128;
 connection.setAutoCommit(false);

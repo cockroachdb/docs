@@ -19,7 +19,6 @@ In the example statement below, we export the tornadoes database used in [Query 
 
 The statement will place the CSV file in the node's [store directory]({% link "{{ page.version.version }}/cockroach-start.md" %}#store), in a subdirectory named `extern/tornadoes`. The file's name is automatically generated, and will be displayed as output in the [SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 EXPORT INTO CSV 'nodelocal://self/tornadoes' WITH nullas = '' FROM SELECT * from "1950-2018-torn-initpoint";
 ~~~
@@ -43,7 +42,6 @@ To combine multiple CSVs into one file:
 
 1. Open the CSV file where you will be storing the combined output in a text editor.  You will need to manually add the CSV header columns to that file so that the `ogr2ogr` output we generate below will have the proper column names.  Start by running the statement below on the table you are exporting to get the necessary column names:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     WITH x AS (SHOW COLUMNS FROM "1950-2018-torn-initpoint") SELECT string_agg(column_name, ',') FROM x;
     ~~~
@@ -62,7 +60,6 @@ To combine multiple CSVs into one file:
 
 1. Concatenate the non-header data from all of the exported CSV files, and append the output to the target CSV file as shown below.  The node's store directory on this machine is `/tmp/node0`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cat /tmp/node0/extern/tornadoes/*.csv >> tornadoes.csv
     ~~~
@@ -73,7 +70,6 @@ Now that you have your data in CSV format, you can convert it to other spatial f
 
 For example, to convert the data to SQL, run the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ogr2ogr -f PGDUMP tornadoes.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF -oo GEOM_POSSIBLE_NAMES=geom -oo KEEP_GEOM_COLUMNS=off tornadoes.csv
 ~~~

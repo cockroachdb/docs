@@ -38,42 +38,36 @@ Flag | Description
 
 Generate a debug zip file:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach debug zip ./cockroach-data/logs/debug.zip --insecure
 ~~~
 
 Unzip the file:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 unzip ./cockroach-data/logs/debug.zip
 ~~~
 
 Merge the logs in the debug folder:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach debug merge-logs debug/nodes/*/logs/* --format=crdb-v1
 ~~~
 
 Alternatively, filter the merged logs for a specified time range:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach debug merge-logs debug/nodes/*/logs/* --format=crdb-v1 --from="231031 19:19:50.917185" --to="231031 19:19:57.189263"
 ~~~
 
 You can also filter the merged logs for a regular expression:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach debug merge-logs debug/nodes/*/logs/* --format=crdb-v1 --filter="ALL SECURITY CONTROLS HAVE BEEN DISABLED"
 ~~~
 
 You can redact sensitive information from the merged logs:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach debug merge-logs debug/nodes/*/logs/* --format=crdb-v1 --redact
 ~~~

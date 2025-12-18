@@ -19,7 +19,6 @@ This tutorial shows you how build a simple Ruby application with CockroachDB and
 
 Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-ruby-pg).
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 git clone https://github.com/cockroachlabs/hello-world-ruby-pg
 ~~~
@@ -32,7 +31,6 @@ The code connects as the user you created and executes some basic SQL statements
 
     For example, to install `libpq` on macOS with Homebrew, run the following command:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     brew install libpq
     ~~~
@@ -41,7 +39,6 @@ The code connects as the user you created and executes some basic SQL statements
 
     For example, if you installed `libpq` on macOS with Homebrew, run the following command from the `hello-world-ruby-pg` directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     bundle config --local build.pg --with-opt-dir="{libpq-path}"
     ~~~
@@ -50,7 +47,6 @@ The code connects as the user you created and executes some basic SQL statements
 
 1. Install the dependencies:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     bundle install
     ~~~
@@ -61,7 +57,6 @@ The code connects as the user you created and executes some basic SQL statements
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -70,7 +65,6 @@ The code connects as the user you created and executes some basic SQL statements
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ export DATABASE_URL="{connection-string}"
     ~~~
@@ -83,7 +77,6 @@ The code connects as the user you created and executes some basic SQL statements
 
 1. Run the code to create a table and insert some rows:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ruby main.rb
     ~~~

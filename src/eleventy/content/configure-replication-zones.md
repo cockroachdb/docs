@@ -137,7 +137,6 @@ You can verify [the inheritance behavior described previously](#how-zone-config-
 
 Start a [demo cluster]({% link "{{ page.version.version }}/cockroach-demo.md" %}). Create a sample database and table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS test;
 USE test;
@@ -146,14 +145,12 @@ CREATE TABLE IF NOT EXISTS kv (k INT, v INT);
 
 Next, manually set a zone configuration field at the database level. In this example, use `num_replicas`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE test CONFIGURE ZONE USING num_replicas = 1;
 ~~~
 
 Check that the child table `test.kv` inherits the value of `num_replicas` from its parent database. You should see output like the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM TABLE test.kv;
 ~~~
@@ -173,7 +170,6 @@ SHOW ZONE CONFIGURATION FROM TABLE test.kv;
 
 Then, set the `num_replicas` field on the table to a different value than its parent database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE kv CONFIGURE ZONE USING num_replicas = 5;
 ~~~
@@ -184,7 +180,6 @@ In other words, **the value of this field on the table's zone config has diverge
 
 Next, check the zone config for the table `test.kv`, and verify that its value of `num_replicas` has diverged:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM TABLE kv;
 ~~~
@@ -204,7 +199,6 @@ SHOW ZONE CONFIGURATION FROM TABLE kv;
 
 Next, change the value of `num_replicas` for the `test` database again. Once again, choose a different value than its child table `test.kv` (which has `num_replicas = 5`).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE test CONFIGURE ZONE USING num_replicas = 7;
 ~~~
@@ -213,7 +207,6 @@ ALTER DATABASE test CONFIGURE ZONE USING num_replicas = 7;
 
 The following [`SHOW ZONE CONFIGURATION`]({% link "{{ page.version.version }}/show-zone-configurations.md" %}) statement confirms that the value of the `num_replicas` field on the `kv` table is no longer inherited from its parent database `test`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM TABLE kv;
 ~~~
@@ -233,17 +226,14 @@ SHOW ZONE CONFIGURATION FROM TABLE kv;
 
 Note that even if you manually change the value of `num_replicas` in `kv` to match the value of its parent `test`, further changes to `test` **will still not be propagated downward to `test.kv`**. Confirm this by running the following statements:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE test.kv CONFIGURE ZONE USING num_replicas = 7;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE test CONFIGURE ZONE USING num_replicas = 9;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM TABLE kv;
 ~~~
@@ -267,14 +257,12 @@ However, you can confirm that other fields on `test.kv` which have not been modi
 
 Change the value of `gc.ttlseconds` on the `test` database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE test CONFIGURE ZONE USING gc.ttlseconds = 600;
 ~~~
 
 Next, confirm that the value of `gc.ttlseconds` from the `test` database is inherited by the `test.kv` table as expected:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM TABLE test.kv;
 ~~~
@@ -294,7 +282,6 @@ SHOW ZONE CONFIGURATION FROM TABLE test.kv;
 
 To return the `test.kv` table to a state where it goes back to inheriting all of its values from its parent database `test`, use the [`ALTER TABLE ... CONFIGURE ZONE DISCARD`]({% link "{{ page.version.version }}/alter-table.md" %}#remove-a-replication-zone) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE test.kv CONFIGURE ZONE DISCARD;
 ~~~
@@ -325,7 +312,6 @@ Use the `ALTER ... CONFIGURE ZONE` statement to [add](#create-a-replication-zone
 
 Use the `ALTER ... CONFIGURE ZONE` [statement]({% link "{{ page.version.version }}/sql-statements.md" %}) to set a replication zone:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE t CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 5, constraints = '[-region=west]';
 ~~~
@@ -538,21 +524,18 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. On any node, open the [built-in SQL client]({% link "{{ page.version.version }}/cockroach-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 1. Create the database for the West Coast application:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE west_app_db;
     ~~~
 
 1. Configure a replication zone for the database:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER DATABASE west_app_db
     CONFIGURE ZONE USING constraints = '{"+region=us-west1": 2, "+region=us-central1": 1}', num_replicas = 3;
@@ -564,7 +547,6 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. View the replication zone:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR DATABASE west_app_db;
     ~~~
@@ -629,21 +611,18 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. On any node, open the [built-in SQL client]({% link "{{ page.version.version }}/cockroach-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 1. Create the database for application 1:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE app1_db;
     ~~~
 
 1. Configure a replication zone for the database used by application 1:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER DATABASE app1_db CONFIGURE ZONE USING num_replicas = 5;
     ~~~
@@ -654,7 +633,6 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. View the replication zone:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR DATABASE app1_db;
     ~~~
@@ -676,21 +654,18 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Still in the SQL client, create a database for application 2:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE app2_db;
     ~~~
 
 1. Configure a replication zone for the database used by application 2:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER DATABASE app2_db CONFIGURE ZONE USING constraints = '[+az=us-2]';
     ~~~
 
 1. View the replication zone:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR DATABASE app2_db;
     ~~~
@@ -754,33 +729,28 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. On any node, open the [built-in SQL client]({% link "{{ page.version.version }}/cockroach-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 1. Create a database and table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE db;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE TABLE db.important_table;
     ~~~
 
 1. Configure a replication zone for the table that must be replicated more strictly:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER TABLE db.important_table CONFIGURE ZONE USING num_replicas = 5, constraints = '[+ssd]'
     ~~~
 
 1. View the replication zone:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR TABLE db.important_table;
     ~~~
@@ -838,21 +808,18 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. On any node, open the [built-in SQL client]({% link "{{ page.version.version }}/cockroach-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 1. Configure the default replication zone:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
 1. View the replication zone:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR RANGE default;
     ~~~
@@ -873,12 +840,10 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Configure the `meta` replication zone:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 7;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR RANGE meta;
     ~~~
@@ -899,12 +864,10 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 1. Configure the `timeseries` replication zone:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER RANGE timeseries CONFIGURE ZONE USING num_replicas = 3;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR RANGE timeseries;
     ~~~

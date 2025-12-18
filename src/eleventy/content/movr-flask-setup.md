@@ -22,7 +22,6 @@ For debugging and development purposes, you can use the [`cockroach demo`]({% li
 
 1. To set up the demo multi-region cluster, run `cockroach demo`, with the `--nodes` and `--demo-locality` flags. The localities specified below assume GCP region names.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach demo \
       --nodes=9 \
@@ -37,7 +36,6 @@ For debugging and development purposes, you can use the [`cockroach demo`]({% li
 
 1. In a new terminal, load the `dbinit.sql` script to the demo database. This file contains the `movr` database schema that we covered in [Create a Multi-Region Database Schema]({% link "{{ page.version.version }}/movr-flask-database.md" %}).
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql \
       --url='postgres://demo:<demo_password>@127.0.0.1:26257?sslmode=require' \
@@ -46,7 +44,6 @@ For debugging and development purposes, you can use the [`cockroach demo`]({% li
 
 1. Verify that the database schema loaded:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW TABLES;
     ~~~
@@ -70,7 +67,6 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dep
 
 1. Initialize the project's virtual environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     pipenv
     ~~~
@@ -79,14 +75,12 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dep
 
 1. Install the packages listed in the `Pipfile`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     pipenv install
     ~~~
 
 1. Activate the virtual environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     pipenv shell
     ~~~
@@ -95,7 +89,6 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dep
 
 1. To test out the application, you can run the server file:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     python server.py
     ~~~

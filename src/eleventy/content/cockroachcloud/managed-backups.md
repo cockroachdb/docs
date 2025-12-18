@@ -144,7 +144,6 @@ You can use the [CockroachDB {{ site.data.products.cloud }} Terraform provider](
 
 In your `main.tf` Terraform configuration file, use the `backup_config` attribute on the `cockroach_cluster` resource to modify the settings of managed backups. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ hcl
 resource "cockroach_cluster" "standard" {
   name           = "cockroach-standard"

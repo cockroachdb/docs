@@ -3,7 +3,6 @@ Find the transactions and statements within the transactions that are experienci
 * The [Transactions page](ui-transactions-page.html) and the [Statements page](ui-statements-page.html) in the DB Console allow you to sort by contention.
 * Create views for the information in the `crdb_internal.cluster_contention_events` table to find the tables and indexes that are experiencing contention.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE VIEW contended_tables (database_name, schema_name, name, num_contention_events)
     AS SELECT DISTINCT database_name, schema_name, name, num_contention_events
@@ -23,7 +22,6 @@ Find the transactions and statements within the transactions that are experienci
 
     Then run a select statement from the `contended_tables` or `contended_indexes` view.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM contended_tables;
     SELECT * FROM contended_indexes;

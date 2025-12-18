@@ -86,7 +86,6 @@ For debugging and troubleshooting on production clusters, the most performant wa
 
 Let's say you have a  `customers` table that contains personally identifiable information (PII). To turn on audit logs for that table, run the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
@@ -115,7 +114,6 @@ For a more detailed example, see [SQL Audit Logging](sql-audit-logging.html).
 
 To turn off logging, issue the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 ~~~

@@ -38,14 +38,12 @@ Parameter | Description
 
 The following statement creates a function to compute the square of integers:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION sq(a INT) RETURNS INT AS 'SELECT a*a' LANGUAGE SQL;
 ~~~
 
 The following statement invokes the `sq` function:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT sq(2);
 ~~~
@@ -65,12 +63,10 @@ SELECT sq(2);
 
 The following statement defines a function that returns the total number of MovR application users.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION num_users() RETURNS INT AS 'SELECT count(*) FROM users' LANGUAGE SQL;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT num_users();
 ~~~
@@ -86,7 +82,6 @@ SELECT num_users();
 
 The following statement defines a function that updates the `rules` value for a specified row in `promo_codes`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION update_code(
   code_name VARCHAR,
@@ -107,7 +102,6 @@ Given the `promo_codes` row:
   0_building_it_remember   | Door let Mrs manager buy model. Course rock training together. | 2019-01-09 03:04:05 | 2019-01-14 03:04:05 | {"type": "percent_discount", "value": "10%"}
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT update_code('0_building_it_remember', '{"type": "percent_discount", "value": "50%"}');
 ~~~
@@ -122,14 +116,12 @@ SELECT update_code('0_building_it_remember', '{"type": "percent_discount", "valu
 
 The following statement defines a function that returns the total revenue for rides taken in European cities.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION total_euro_revenue() RETURNS DECIMAL LANGUAGE SQL AS $$
   SELECT SUM(revenue) FROM rides WHERE city IN ('paris', 'rome', 'amsterdam')
 $$;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT total_euro_revenue();
 ~~~
@@ -147,14 +139,12 @@ The following statement defines a function that returns information for all vehi
 [`RETURNS TABLE`](#create-a-function-that-returns-a-table) also returns a set of results, each formatted as a [`RECORD`](#create-a-function-that-returns-a-record-type) type.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION available_vehicles() RETURNS SETOF vehicles LANGUAGE SQL AS $$
   SELECT * FROM vehicles WHERE status = 'available'
 $$;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT city,current_location,type FROM available_vehicles();
 ~~~
@@ -176,7 +166,6 @@ The following function returns the information for the user that most recently c
 
 In the function subquery, the latest `end_time` timestamp is used to determine the most recently completed ride:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION last_rider() RETURNS RECORD LANGUAGE SQL AS $$
   SELECT * FROM users WHERE id = (
@@ -185,7 +174,6 @@ CREATE OR REPLACE FUNCTION last_rider() RETURNS RECORD LANGUAGE SQL AS $$
 $$;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT last_rider();
 ~~~
@@ -207,7 +195,6 @@ The `RETURNS TABLE` clause specifies the column names to output: `id`, `name`, `
 [`OUT` and `INOUT` parameters](#create-a-function-that-uses-out-and-inout-parameters) cannot be used with `RETURNS TABLE`.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION last_x_riders(x INT) RETURNS TABLE(id UUID, name VARCHAR, city VARCHAR, end_time TIMESTAMP) LANGUAGE SQL AS $$
   WITH recent_rides AS (
@@ -221,7 +208,6 @@ CREATE OR REPLACE FUNCTION last_x_riders(x INT) RETURNS TABLE(id UUID, name VARC
 $$;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM last_x_riders(5);
 ~~~
@@ -241,7 +227,6 @@ SELECT * FROM last_x_riders(5);
 
 The following statement uses a combination of `OUT` and `INOUT` parameters to modify a provided value and output the result. An `OUT` parameter returns a value, while an `INOUT` parameter passes an input value and returns a value.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION double_triple(INOUT double INT, OUT triple INT) AS 
   $$
@@ -252,7 +237,6 @@ CREATE OR REPLACE FUNCTION double_triple(INOUT double INT, OUT triple INT) AS
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT double_triple(1);
 ~~~
@@ -265,7 +249,6 @@ SELECT double_triple(1);
 
 The `CREATE FUNCTION` statement does not need a `RETURN` statement because this is added implicitly for a function with `OUT` parameters:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE FUNCTION double_triple;
 ~~~
@@ -291,7 +274,6 @@ SHOW CREATE FUNCTION double_triple;
 
 The following statement defines a function that invokes the [`double_triple` example function](#create-a-function-that-uses-out-and-inout-parameters). 
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION f(input_value INT)
   RETURNS RECORD 
@@ -302,7 +284,6 @@ CREATE OR REPLACE FUNCTION f(input_value INT)
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT f(1);
 ~~~
@@ -321,7 +302,6 @@ SELECT f(1);
 
 A trigger function is a [function that is executed by a trigger]({% link "{{ page.version.version }}/triggers.md" %}#trigger-function). A trigger function must return type `TRIGGER` and is written in [PL/pgSQL]({% link "{{ page.version.version }}/plpgsql.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION change_name()
 RETURNS TRIGGER AS $$
@@ -340,7 +320,6 @@ The following example defines a function using the `SECURITY DEFINER` clause. Th
 
 1. Create two roles:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE ROLE owner;
     CREATE ROLE invoker;
@@ -348,21 +327,18 @@ The following example defines a function using the `SECURITY DEFINER` clause. Th
 
 1. Grant a [`SELECT` privilege]({% link "{{ page.version.version }}/grant.md" %}#supported-privileges) on the `user_promo_codes` table to the `owner` role.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     GRANT SELECT ON TABLE user_promo_codes TO owner;
     ~~~
 
 1. Set your role to `owner`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET ROLE owner;
     ~~~
 
 1. Create a simple `SECURITY DEFINER` function that reads the contents of `user_promo_codes`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE OR REPLACE FUNCTION get_codes() 
       RETURNS SETOF RECORD 
@@ -375,7 +351,6 @@ The following example defines a function using the `SECURITY DEFINER` clause. Th
 
 1. Grant the [`EXECUTE` privilege]({% link "{{ page.version.version }}/grant.md" %}#supported-privileges) on the `get_codes` function to the `invoker` role.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     GRANT EXECUTE ON FUNCTION get_codes() TO invoker;
     ~~~
@@ -386,14 +361,12 @@ The following example defines a function using the `SECURITY DEFINER` clause. Th
 
 1. Set your role to `invoker`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET ROLE invoker;
     ~~~
 
 1. `invoker` does not have the privileges to read the `user_promo_codes` table directly:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM user_promo_codes;
     ~~~
@@ -405,7 +378,6 @@ The following example defines a function using the `SECURITY DEFINER` clause. Th
 
 1. As `invoker`, call the `get_codes` function to read `user_promo_codes`, since `SECURITY DEFINER` is executed with the privileges of the `owner` role (i.e., `SELECT` on `user_promo_codes`).
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT get_codes();
     ~~~

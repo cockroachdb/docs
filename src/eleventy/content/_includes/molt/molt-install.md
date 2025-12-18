@@ -35,21 +35,18 @@ MOLT Fetch is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
 
 [Docker multi-platform images](https://hub.docker.com/r/cockroachdb/molt/tags) containing both the AMD and ARM `molt` and `replicator` binaries are available. To pull the latest image for PostgreSQL and MySQL:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 docker pull cockroachdb/molt
 ~~~
 
 To pull a specific version (for example, `1.1.3`):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 docker pull cockroachdb/molt:1.1.3
 ~~~
 
 To pull the latest image for Oracle (note that only `linux/amd64` is supported):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 docker pull cockroachdb/molt:oracle-latest
 ~~~
@@ -60,14 +57,12 @@ docker pull cockroachdb/molt:oracle-latest
 
 [Docker images for MOLT Replicator](https://hub.docker.com/r/cockroachdb/replicator/tags) are also available as a standalone binary:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 docker pull cockroachdb/replicator
 ~~~
 
 To pull a specific version (for example, `v1.1.1`):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 docker pull cockroachdb/replicator:v1.1.1
 ~~~

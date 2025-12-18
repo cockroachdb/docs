@@ -30,7 +30,6 @@ Prompt variable | Description
 
 For example, to change the prompt to just the user, host, and database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 \set prompt1 %n@%m/%/
 ~~~

@@ -1,6 +1,5 @@
 To import from `userfile`, first create the table that you would like to import into:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE TABLE customers (
   id INT,
@@ -13,7 +12,6 @@ CREATE TABLE customers (
 
 Then, use `IMPORT INTO` to import data into the table:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 IMPORT INTO customers (id, dob, first_name, last_name, joined)
    CSV DATA ('userfile:///test-data.csv');

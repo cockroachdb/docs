@@ -43,7 +43,6 @@ You can look more closely at the behavior of a statement by visualizing a [state
 
 1. Start Jaeger:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker run -d --name jaeger -p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
     ~~~
@@ -136,7 +135,6 @@ Additional [cluster settings]({% link "{{ page.version.version }}/cluster-settin
 
 To configure the trace sampling probability and duration, set the following cluster settings:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Enable trace sampling at a rate of 1%
 SET CLUSTER SETTING sql.trace.txn.sample_rate = 0.01;
@@ -384,7 +382,6 @@ To log CockroachDB-generated SQL queries as well, use `--vmodule=exec_log=3`.
 
 From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function]({% link "{{ page.version.version }}/functions-and-operators.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT crdb_internal.set_vmodule('exec_log=2');
 ~~~
@@ -467,7 +464,6 @@ To decrease the CPU usage of SCRAM password hashing while keeping SCRAM enabled:
 
 1. Set the [`server.user_login.password_hashes.default_cost.scram_sha_256` cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}#setting-server-user-login-password-hashes-default-cost-scram-sha-256) to `4096`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING server.user_login.password_hashes.default_cost.scram_sha_256 = 4096;
     ~~~
@@ -486,14 +482,12 @@ As an alternative to the [mitigation steps listed above](#mitigation-steps-while
 
 1. Set the [`server.user_login.password_encryption` cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}#setting-server-user-login-password-encryption) to `crdb-bcrypt`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING server.user_login.password_encryption = 'crdb-bcrypt';
     ~~~
 
 1. Ensure the [`server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled` cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}#setting-server-user-login-downgrade-scram-stored-passwords-to-bcrypt-enabled) is set to `true`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled = true;
     ~~~

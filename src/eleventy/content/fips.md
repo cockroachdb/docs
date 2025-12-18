@@ -70,7 +70,6 @@ Once FIPS mode is enabled, install OpenSSL so that the FIPS-validated OpenSSL li
 
 To install OpenSSL on RHEL:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 microdnf -y install openssl crypto-policies-scripts
 fips-mode-setup --enable
@@ -84,14 +83,12 @@ If FIPS mode is not enabled in the Linux kernel, or if OpenSSL is not configured
 
 1. You can list the FIPS-validated ciphers using the `openssl ciphers` command. If FIPS mode is disabled, a `no cipher match` error occurs.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     openssl ciphers FIPS -v
     ~~~
 
 1. When FIPS mode is enabled, the `sysctl` variable `fips_enabled` is set to `1`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     sysctl crypto.fips_enabled
     ~~~
@@ -106,7 +103,6 @@ If FIPS mode is not enabled in the Linux kernel, or if OpenSSL is not configured
 
 1. The MD5 hashing algorithm is not compatible with FIPS 140-2. If the following command **fails**, FIPS mode is enabled:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     echo "test" | openssl md5
     ~~~
@@ -227,7 +223,6 @@ Upgrading an existing CockroachDB cluster's binary in-place to be FIPS-ready is 
 
 If the CockroachDB binary is FIPS-ready, the string `fips` is appended to the Go version in the `cockroach version` command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach version |grep fips
 ~~~
@@ -244,7 +239,6 @@ This indicates that CockroachDB was built using [Red Hat's Go FIPS with OpenSSL 
 1. Go to [Download FIPS-ready Runtimes](#download-fips-ready-runtimes) and copy the name of a FIPS-ready Docker image tag.
 1. Pull the Docker image locally, create a new container that uses it, run the container, and attach to it. The following example gives the running container the name `cockroachdb-fips-container`. Replace `{image_tag}` with the name of the Docker image tag you copied.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker run {image_tag} --name="cockroachdb-fips-container" -i
     ~~~

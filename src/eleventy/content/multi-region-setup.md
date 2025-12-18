@@ -26,7 +26,6 @@ For debugging and development purposes, you can use the [`cockroach demo`](cockr
 
 1. To set up the demo multi-region cluster, run `cockroach demo`, with the `--nodes` and `--demo-locality` flags. The localities specified below assume GCP region names.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach demo \
     --nodes=9 \
@@ -49,7 +48,6 @@ For debugging and development purposes, you can use the [`cockroach demo`](cockr
 
 1. Open another terminal window. In the new window, run the following command to load `dbinit.sql` to the demo database. This file contains the `movr` database definition, and SQL instructions to geo-partition the database.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --insecure --url='postgresql://root@127.0.0.1:62268/movr' < dbinit.sql
     ~~~
@@ -57,7 +55,6 @@ For debugging and development purposes, you can use the [`cockroach demo`](cockr
 
 1. In the demo cluster terminal, verify that the database schema loaded properly:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW TABLES;
     ~~~
@@ -81,7 +78,6 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dep
 
 1. Run the following command to initialize the project's virtual environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ pipenv --three
     ~~~
@@ -90,7 +86,6 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dep
 
 1. Run the following command to install the packages listed in the `Pipfile`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ pipenv install
     ~~~
@@ -107,7 +102,6 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dep
 
 1. Activate the virtual environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ pipenv shell
     ~~~
@@ -116,7 +110,6 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dep
 
 1. To test out the application, you can run the server file:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ python server.py
     ~~~

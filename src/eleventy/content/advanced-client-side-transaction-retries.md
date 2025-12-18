@@ -19,7 +19,6 @@ To improve the performance of transactions that fail due to [contention]({% link
 
 A retryable transaction goes through the process described below, which maps to the following SQL statements:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > BEGIN;                                  -- #1
 > SAVEPOINT cockroach_restart;            -- #2

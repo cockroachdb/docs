@@ -70,12 +70,10 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 ## Examples
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE strings (a STRING PRIMARY KEY, b STRING(4), c TEXT);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM strings;
 ~~~
@@ -89,12 +87,10 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 (3 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO strings VALUES ('a1b2c3d4', 'e5f6', 'g7h8i9');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM strings;
 ~~~
@@ -106,12 +102,10 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE aliases (a STRING PRIMARY KEY, b VARCHAR, c CHAR);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM aliases;
 ~~~
@@ -156,7 +150,6 @@ While both `STRING` and `BYTES` can appear to have similar behavior in many situ
 
 `STRING` treats all of its data as characters, or more specifically, Unicode code points. `BYTES` treats all of its data as a byte string. This difference in implementation can lead to dramatically different behavior. For example, let's take a complex Unicode character such as ☃ ([the snowman emoji](https://emojipedia.org/snowman/)):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT length('☃'::string);
 ~~~
@@ -191,7 +184,6 @@ You can cast a `STRING` value of hexadecimal digits prefixed by `x` or `X` to a 
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT 'XAB'::BIT(8)
 ~~~
@@ -209,7 +201,6 @@ For example:
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT 1 || 'item';
 ~~~
@@ -221,7 +212,6 @@ For example:
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT true || 'item';
 ~~~
@@ -237,7 +227,6 @@ Concatenating a `STRING` value with a [`NULL` value]({% link "{{ page.version.ve
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT NULL || 'item';
 ~~~
@@ -253,7 +242,6 @@ For example:
 
 You can use the [`parse_timestamp()` function]({% link "{{ page.version.version }}/functions-and-operators.md" %}) to parse strings in `TIMESTAMP` format.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT parse_timestamp ('2022-05-28T10:53:25.160Z');
 ~~~
@@ -269,7 +257,6 @@ SELECT parse_timestamp ('2022-05-28T10:53:25.160Z');
 
 You can use the [`to_tsvector()` function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#full-text-search-functions) to parse strings in [`TSVECTOR`]({% link "{{ page.version.version }}/tsvector.md" %}) format. This will normalize the tokens into lexemes, and will add an integer position to each lexeme.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT to_tsvector('How do trees get on the internet?');
 ~~~
@@ -288,7 +275,6 @@ You can use the [`to_tsquery()`, `plainto_tsquery()`, and `phraseto_tsquery()` f
 
 When using `to_tsquery()`, the string input must be formatted as a [`TSQUERY`]({% link "{{ page.version.version }}/tsquery.md" %}#syntax), with operators separating tokens.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT to_tsquery('How & do & trees & get & on & the & internet?');
 ~~~

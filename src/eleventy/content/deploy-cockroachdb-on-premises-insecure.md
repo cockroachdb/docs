@@ -55,7 +55,6 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 1. Install HAProxy:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ apt-get install haproxy
     ~~~
@@ -64,7 +63,6 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 1. Run the [`cockroach gen haproxy`]({% link "{{ page.version.version }}/cockroach-gen.md" %}) command, specifying the address of any CockroachDB node:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach gen haproxy --insecure \
     --host=<address of any node> \
@@ -75,7 +73,6 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 1. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ haproxy -f haproxy.cfg
     ~~~

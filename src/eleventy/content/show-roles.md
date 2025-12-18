@@ -23,7 +23,6 @@ The role must have the [`SELECT`]({% link "{{ page.version.version }}/select-cla
 
 ## Example
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW ROLES;
 ~~~

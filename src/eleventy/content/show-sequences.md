@@ -25,12 +25,10 @@ Parameter | Description
 
 ## Example
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE SEQUENCE sequence_test;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~

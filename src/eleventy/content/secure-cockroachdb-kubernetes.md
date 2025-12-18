@@ -41,7 +41,6 @@ By default, the {{ site.data.products.public-operator }} will generate and sign 
 
 To use your own certificate authority instead, add the following to the {{ site.data.products.public-operator }}'s custom resource **before** [initializing the cluster]({% link "{{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md" %}#initialize-the-cluster):
 
-{% include "copy-clipboard.html" %}
 ~~~ yaml
 spec:
   nodeTLSSecret: {node_secret_name}
@@ -65,7 +64,6 @@ By default on secure deployments, the Helm chart will generate and sign one clie
 
 To use your own certificate authority instead, specify the following in the custom values file you created when [deploying the cluster]({% link "{{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md" %}?filters=helm#step-2-start-cockroachdb):
 
-{% include "copy-clipboard.html" %}
 ~~~ yaml
 tls:
   enabled: true
@@ -96,7 +94,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Create two directories:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     mkdir certs my-safe-directory
     ~~~
@@ -108,7 +105,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Create the CA certificate and key pair:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-ca \
       --certs-dir=certs \
@@ -117,7 +113,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Create a client certificate and key pair for the root user:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-client root \
       --certs-dir=certs \
@@ -126,7 +121,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Upload the client certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the {{ site.data.products.public-operator }}:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.client.root \
       --from-file=tls.key=certs/client.root.key \
@@ -140,7 +134,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Create the certificate and key pair for your CockroachDB nodes, specifying the namespace you used when [deploying the cluster]({% link "{{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md" %}#initialize-the-cluster). This example uses the {{ site.data.products.public-operator }}'s default namespace (`cockroach-operator-system`):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-node localhost \
       127.0.0.1 \
@@ -156,7 +149,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Upload the node certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the {{ site.data.products.public-operator }}:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.node \
       --from-file=tls.key=certs/node.key \
@@ -170,7 +162,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Check that the secrets were created on the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl get secrets
     ~~~
@@ -194,7 +185,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 <section class="filter-content" markdown="1" data-scope="helm">
 1. Create two directories:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     mkdir certs my-safe-directory
     ~~~
@@ -206,7 +196,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Create the CA certificate and key pair:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-ca \
       --certs-dir=certs \
@@ -215,7 +204,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Create a client certificate and key pair for the root user:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-client root \
       --certs-dir=certs \
@@ -224,7 +212,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Upload the client certificate and key to the Kubernetes cluster as a secret:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.client.root --from-file=certs
     ~~~
@@ -235,7 +222,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Create the certificate and key pair for your CockroachDB nodes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-node localhost \
       127.0.0.1 \
@@ -255,7 +241,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Upload the node certificate and key to the Kubernetes cluster as a secret:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.node --from-file=certs
     ~~~
@@ -266,7 +251,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Check that the secrets were created on the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl get secrets
     ~~~
@@ -280,7 +264,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Specify the following in the custom values file you created when [deploying the cluster]({% link "{{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md" %}?filters=helm#step-2-start-cockroachdb), using the generated secret names:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     tls:
       enabled: true
@@ -292,7 +275,6 @@ Complete the following steps **before** [initializing the cluster]({% link "{{ p
 
 1. Apply the custom values to override the default Helm chart [values](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml):
 
-	{% include "copy-clipboard.html" %}
     ~~~ shell
     helm upgrade {release-name} --values {custom-values}.yaml cockroachdb/cockroachdb
     ~~~
@@ -314,7 +296,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Create a new client certificate and key pair for the root user, overwriting the previous certificate and key:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-client root \
         --certs-dir=certs \
@@ -324,7 +305,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Upload the new client certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the {{ site.data.products.public-operator }}:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.client.root.2 \
       --from-file=tls.key=certs/client.root.key \
@@ -338,7 +318,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Create a new certificate and key pair for your CockroachDB nodes, overwriting the previous certificate and key. Specify the namespace you used when [deploying the cluster]({% link "{{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md" %}#initialize-the-cluster). This example uses the {{ site.data.products.public-operator }}'s default namespace (`cockroach-operator-system`):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-node localhost \
       127.0.0.1 \
@@ -355,7 +334,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Upload the new node certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the {{ site.data.products.public-operator }}:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.node.2 \
       --from-file=tls.key=certs/node.key \
@@ -377,7 +355,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Check that the secrets were created on the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl get secrets
     ~~~
@@ -395,7 +372,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Apply the new settings to the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl apply -f example.yaml
     ~~~
@@ -404,7 +380,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. You can observe this process:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl get pods
     ~~~
@@ -419,7 +394,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Delete the existing client secret that is no longer in use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl delete secret cockroachdb.client.root
     ~~~
@@ -430,7 +404,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Delete the existing node secret that is no longer in use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl delete secret cockroachdb.node
     ~~~
@@ -447,7 +420,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Upload the CA certificate that you previously created to the Kubernetes cluster as a secret:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.ca \
       --from-file=certs/ca.crt
@@ -459,7 +431,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Specify the following in the custom values file you created when [deploying the cluster]({% link "{{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md" %}?filters=helm#step-2-start-cockroachdb), using the generated secret name:
 
-    {% include "copy-clipboard.html" %}
     ~~~ yaml
     selfSigner:
       enabled: true
@@ -474,7 +445,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Customize the following `selfSigner` fields to set the frequency of certificate rotation. These should correspond to the durations of the CA, client, and node certificates.
 
-    {% include "copy-clipboard.html" %}
     ~~~ yaml
     selfSigner:
     minimumCertDuration: 624h
@@ -495,7 +465,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
     Certificate duration is configured when running [`cockroach cert`]({% link "{{ page.version.version }}/cockroach-cert.md" %}#general). You can check the expiration dates of the `cockroach cert` certificates by running:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert list --certs-dir=certs
     ~~~
@@ -504,7 +473,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
 
 1. Apply the custom values to override the default Helm chart [values](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     helm upgrade {release-name} --values {custom-values}.yaml cockroachdb/cockroachdb
     ~~~
@@ -523,7 +491,6 @@ Previously, the Helm chart used a self-signer for cluster authentication. This a
 
 1. Create a file named `issuer.yaml` that configures an `Issuer`, which represents a certificate authority that can sign certificates. This example creates an issuer that can sign self-signed CA certificates. To customize your issuer, refer to [Issuer Configuration](https://cert-manager.io/docs/configuration/) in the `cert-manager` project's documentation.
 
-    {% include "copy-clipboard.html" %}
     ~~~yaml
     apiVersion: cert-manager.io/v1
     kind: Issuer
@@ -535,14 +502,12 @@ Previously, the Helm chart used a self-signer for cluster authentication. This a
 
 1. Use `kubectl apply` to create the issuer from the YAML file:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     kubectl apply -f issuer.yaml
     ~~~
 
 1. Enable and configure `cert-manager` in the Helm chart's `values.yaml` file. The following options are required. For more options, refer to [`cert-manager`](https://github.com/cockroachdb/helm-charts/tree/master/cockroachdb#cert-manager) in the CockroachDB Helm chart documentation.
 
-    {% include "copy-clipboard.html" %}
     ~~~yaml
     tls.certs.selfSigner.enabled: false
     tls.certs.certManager: true
@@ -554,7 +519,6 @@ Previously, the Helm chart used a self-signer for cluster authentication. This a
 
 1. Apply the updated Helm chart:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     helm install my-release --values values.yaml cockroachdb/cockroachdb
     ~~~
@@ -581,21 +545,18 @@ These steps demonstrate how to use the [`openssl genrsa`](https://www.openssl.or
 
 1. Generate a 4096-bit RSA private key:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     openssl genrsa -out tls.key 4096
     ~~~
 
 1. Generate an X.509 certificate, valid for 10 years. You will be prompted for the certificate field values.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     openssl req -x509 -new -nodes -key tls.key -sha256 -days 3650 -out tls.crt
     ~~~
 
 1. Create the secret, making sure that [you are in the correct namespace]({% link "{{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md" %}#install-the-operator):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret tls cockroach-operator-webhook-ca --cert=tls.crt --key=tls.key
     ~~~
@@ -606,14 +567,12 @@ These steps demonstrate how to use the [`openssl genrsa`](https://www.openssl.or
 
 1. Remove the certificate and key from your local environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     rm tls.crt tls.key
     ~~~
 
 1. Roll the {{ site.data.products.public-operator }} deployment to ensure a new server certificate is generated:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl rollout restart deploy/cockroach-operator-manager
     ~~~

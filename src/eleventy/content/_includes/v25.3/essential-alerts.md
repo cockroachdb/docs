@@ -419,7 +419,6 @@ Changefeeds can suffer permanent failures (that the [jobs system]({% link "{{ pa
 
 1. If the alert is triggered during cluster maintenance, mute it. Otherwise start investigation with the following query:
 
-    {% include "copy-clipboard.html" %}
     ```sql
     SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency", created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused', 'pause-requested') ORDER BY created DESC;
     ```
@@ -455,14 +454,12 @@ Changefeed has fallen behind. This is determined by the end-to-end lag between a
 
 1. In the DB Console, navigate to **Metrics**, [**Changefeeds** dashboard]({% link "{{ page.version.version }}/ui-cdc-dashboard.md" %}) for the cluster and check the maximum values on the [**Commit Latency** graph]({% link "{{ page.version.version }}/ui-cdc-dashboard.md" %}#commit-latency). Alternatively, individual changefeed latency can be verified by using the following SQL query:
 
-    {% include "copy-clipboard.html" %}
     ```sql
     SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency", created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused', 'pause-requested') ORDER BY created DESC;
     ```
 
 2. Copy the `job_id` for the changefeed job with highest `changefeed latency` and pause the job:
 
-    {% include "copy-clipboard.html" %}
     ```sql
     PAUSE JOB 681491311976841286;
     ```
@@ -471,7 +468,6 @@ Changefeed has fallen behind. This is determined by the end-to-end lag between a
 
 4. After the job is `paused`, resume the job.
 
-    {% include "copy-clipboard.html" %}
     ```sql
     RESUME JOB 681491311976841286;
     ```
@@ -493,7 +489,6 @@ Changefeed jobs should not be paused for a long time because [the protected time
 
 1. Check the status of each changefeed using the following SQL query: 
 
-    {% include "copy-clipboard.html" %}
     ```sql
     SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency",created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused','pause-requested') ORDER BY created DESC;
     ```
@@ -502,7 +497,6 @@ Changefeed jobs should not be paused for a long time because [the protected time
 
 3. Resume paused changefeed(s) with the `job_id` using:
    
-    {% include "copy-clipboard.html" %}
     ```sql
     RESUME JOB 681491311976841286;
     ```

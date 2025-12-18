@@ -4,7 +4,6 @@
 
 To view a list of [locality-aware backups]({% link "{{ page.version.version }}/take-and-restore-locality-aware-backups.md" %}), pass the endpoint [collection URI]({% link "{{ page.version.version }}/backup.md" %}#backup-file-urls) that is set as the `default` location with `COCKROACH_LOCALITY=default`: 
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW BACKUPS IN 's3://{default collection URI}/{path}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
 ~~~
@@ -19,7 +18,6 @@ To view a list of [locality-aware backups]({% link "{{ page.version.version }}/t
 
 To view a [locality-aware backup]({% link "{{ page.version.version }}/take-and-restore-locality-aware-backups.md" %}), pass locality-aware backup URIs to `SHOW BACKUP`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW BACKUP FROM LATEST IN ('s3://{bucket name}/locality?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}&COCKROACH_LOCALITY=default', 's3://{bucket name}/locality?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}&COCKROACH_LOCALITY=region%3Dus-west');
 ~~~

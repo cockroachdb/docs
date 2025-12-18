@@ -50,14 +50,12 @@ For more detail and an example through the backup and [restore](restore.html) pr
 
 To set the `exclude_data_from_backup` parameter for a table, run the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE movr.user_promo_codes SET (exclude_data_from_backup = true);
 ~~~
 
 The `CREATE` statement for this table will now show the parameter set:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE user_promo_codes;
 ~~~
@@ -81,7 +79,6 @@ Backups will no longer include the data within the `user_promo_codes` table. The
 
 To remove this parameter from a table, run:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE movr.user_promo_codes SET (exclude_data_from_backup = false);
 ~~~

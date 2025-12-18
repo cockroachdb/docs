@@ -167,14 +167,12 @@ If the [**CPU** chart]({% link "cockroachcloud/metrics-request-units.md" %}#cpu)
 
 Say you have a simple key-value pair table with a secondary index:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE kv (k INT PRIMARY KEY, v STRING, INDEX (v));
 ~~~
 
 Now you insert a row into the table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
 ~~~
@@ -199,7 +197,6 @@ Note that this is not exact, as there can be slight variations in multiple parts
 
 You can use the [`EXPLAIN ANALYZE` SQL command]({% link "{{site.current_cloud_version}}/explain-analyze.md" %}#global-properties) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 EXPLAIN ANALYZE INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
 ~~~

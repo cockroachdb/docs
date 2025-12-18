@@ -2,7 +2,6 @@
 
 To retrieve information about a specific cluster, make a `GET` request to the `/v1/clusters/{cluster_id}/backups-config` endpoint.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups-config \
@@ -38,7 +37,6 @@ If the request is successful, the API will return details about the managed back
 
 To configure the frequency and retention of managed backups, send a `PUT` request to the `/v1/clusters/{cluster_id}/backups-config` endpoint.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request PUT \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups-config \

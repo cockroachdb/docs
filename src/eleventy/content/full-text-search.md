@@ -34,7 +34,6 @@ To make a document searchable, convert it to the [`TSVECTOR`]({% link "{{ page.v
 
 The `to_tsvector()` [built-in function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#full-text-search-functions) converts a string input into a `TSVECTOR` value:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT to_tsvector('How do trees get on the internet?');
 ~~~
@@ -59,7 +58,6 @@ A full-text search attempts to match a *query* to a document. A full-text search
 
 - The `to_tsquery()` [built-in function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#full-text-search-functions) normalizes a `TSQUERY` input. The input must also be formatted as a `TSQUERY`, or the statement will error.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT to_tsquery('How & do & trees & get & on & the & internet?');
     ~~~
@@ -72,7 +70,6 @@ A full-text search attempts to match a *query* to a document. A full-text search
 
 - The `plainto_tsquery()` [built-in function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#full-text-search-functions) converts a string input into a `TSQUERY` value, and separates the lexemes with `&` (AND):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT plainto_tsquery('How do trees get on the internet?');
     ~~~
@@ -111,7 +108,6 @@ The `ts_rank()` [built-in function]({% link "{{ page.version.version }}/function
 SELECT ts_rank(to_tsvector('How do trees get on the internet?'), plainto_tsquery('how to get internet'));
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~
    ts_rank
 --------------
@@ -124,7 +120,6 @@ In this example, three lexemes match, resulting in a higher rank:
 SELECT ts_rank(to_tsvector('How do trees get on the internet?'), plainto_tsquery('wow, do trees get internet?'));
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~
    ts_rank
 --------------
@@ -179,7 +174,6 @@ The supported dictionaries are English, Danish, Dutch, Finnish, French, German, 
 
 You can specify a text search configuration as the first parameter when calling any of the [built-in functions]({% link "{{ page.version.version }}/functions-and-operators.md" %}#full-text-search-functions) to [process a document](#process-a-document) or [form a query](#form-a-query). For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT to_tsvector('swedish', 'Hur får träd tillgång till internet?');
 ~~~
@@ -192,7 +186,6 @@ SELECT to_tsvector('swedish', 'Hur får träd tillgång till internet?');
 
 If you do not specify a configuration when calling the function, the value of the [`default_text_search_config`]({% link "{{ page.version.version }}/set-vars.md" %}#default-text-search-config)  session variable is used. This defaults to `english` and can be changed as follows:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET default_text_search_config = swedish;
 ~~~
@@ -209,7 +202,6 @@ At this time, only the dictionary can be specified in a text search configuratio
 
 Use the `@@` operator to match a query (`TSQUERY`) to a searchable document (`TSVECTOR`). In the following example, because the `TSQUERY` comprises the lexemes `get` and `internet`, which are both contained in the `TSVECTOR`, the output will be `true`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT to_tsvector('How do trees get on the internet?') @@ to_tsquery('How & to & get & internet?');
 ~~~
@@ -222,7 +214,6 @@ SELECT to_tsvector('How do trees get on the internet?') @@ to_tsquery('How & to 
 
 Use the `plainto_tsquery()` [built-in function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#full-text-search-functions) to match text to a searchable document. This search is equivalent to the preceding example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT to_tsvector('How do trees get on the internet?') @@ plainto_tsquery('How to get internet?');
 ~~~
@@ -235,7 +226,6 @@ SELECT to_tsvector('How do trees get on the internet?') @@ plainto_tsquery('How 
 
 Use the `phraseto_tsquery()` [built-in function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#full-text-search-functions) to match text phrases to a searchable document. Because `phraseto_tsquery()` separates the lexemes `get` and `internet` with the `<->` (FOLLOWED BY) operator, and the document does not contain a phrase like "get internet", the output will be `false`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT to_tsvector('How do trees get on the internet?') @@ phraseto_tsquery('How to get internet?');
 ~~~
@@ -254,14 +244,12 @@ You can create an [expression index]({% link "{{ page.version.version }}/express
 
 Given the table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE t (a STRING);
 ~~~
 
 Create an expression index that converts column `a` to `TSVECTOR`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE INDEX ON t USING GIN (to_tsvector('english', a));
 ~~~
@@ -276,14 +264,12 @@ You can create a full-text index on a [stored computed column]({% link "{{ page.
 
 Given the table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE t (a STRING);
 ~~~
 
 Add a new `TSVECTOR` column that is computed from `a` using [`to_tsvector()`](#process-a-document):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE t ADD COLUMN b TSVECTOR 
   AS (to_tsvector('english', a)) STORED;
@@ -295,7 +281,6 @@ When using a [full-text search function]({% link "{{ page.version.version }}/fun
 
 View the columns on the table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW COLUMNS FROM t;
 ~~~
@@ -319,14 +304,12 @@ CREATE INDEX ON t USING GIN (b);
 
 1. Create a table with `STRING` columns:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	CREATE TABLE dadjokes (opener STRING, response STRING);
 	~~~
 
 1. Populate the table with sample values. These are the documents that you will search:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	INSERT INTO dadjokes (opener, response) VALUES
 	  ('How do trees get on the internet?', 'They log on.'),
@@ -343,7 +326,6 @@ CREATE INDEX ON t USING GIN (b);
 
 1. You can use `LIKE` or `ILIKE` to search for text. However, the results will be unranked:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT opener, response
     FROM dadjokes

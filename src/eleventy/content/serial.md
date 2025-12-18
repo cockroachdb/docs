@@ -91,35 +91,30 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 1. Create a table with a `SERIAL` column:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE TABLE increment (a SERIAL PRIMARY KEY);
     ~~~
 
 1. Run four transactions for inserting rows:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
     > ROLLBACK;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
     > COMMIT;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
     > ROLLBACK;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
@@ -128,7 +123,6 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 1. View the rows created:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SELECT * from increment;
     ~~~
@@ -190,14 +184,12 @@ If this happens, CockroachDB cannot guarantee whether `x < y` or `x > y`. Even t
 
 In this example, we create a table with the `SERIAL` column as the primary key so we can auto-generate unique IDs on insert.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE serial (a SERIAL PRIMARY KEY, b STRING, c BOOL);
 ~~~
 
 The [`SHOW COLUMNS`]({% link "{{ page.version.version }}/show-columns.md" %}) statement shows that the `SERIAL` type is just an alias for `INT` with `unique_rowid()` as the default.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM serial;
 ~~~
@@ -213,17 +205,14 @@ The [`SHOW COLUMNS`]({% link "{{ page.version.version }}/show-columns.md" %}) st
 
 When we insert rows without values in column `a` and display the new rows, we see that each row has defaulted to a unique value in column `a`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO serial (b,c) VALUES ('red', true), ('yellow', false), ('pink', true);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO serial (a,b,c) VALUES (123, 'white', false);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM serial;
 ~~~

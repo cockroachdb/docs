@@ -20,7 +20,6 @@ To follow along with the example below, you will need the following prerequisite
     {% dynamic_include page.version.version, "/spatial/ogr2ogr-supported-version.md" %}
 - [Python 3](https://www.python.org)
 - The bus-stop GeoPackage data:
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl -o gpkg_trans_better_bus_stops.zip https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_metc/trans_better_bus_stops/gpkg_trans_better_bus_stops.zip && unzip gpkg_trans_better_bus_stops.zip
     ~~~
@@ -29,7 +28,6 @@ To follow along with the example below, you will need the following prerequisite
 
 Convert the GeoPackage data to CSV using the following `ogr2ogr` command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ogr2ogr -f CSV busstops.CSV -lco GEOMETRY=AS_WKT trans_better_bus_stops.gpkg
 ~~~
@@ -42,7 +40,6 @@ Each node in the CockroachDB cluster needs to have access to the files being imp
 
 For local testing, you can [start a local file server]({% link "{{ page.version.version }}/use-a-local-file-server.md" %}).  The following command will start a local file server listening on port 3000:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 python3 -m http.server 3000
 ~~~
@@ -51,12 +48,10 @@ python3 -m http.server 3000
 
 Create a database to hold the bus-stop data:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE DATABASE busstops;
 USE busstops;
@@ -68,14 +63,12 @@ To import the CSV data, you need to create a table with the necessary columns an
 
 Convert the GeoPackage data to SQL using the following `ogr2ogr` command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ogr2ogr -f PGDUMP busstops.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF trans_better_bus_stops.gpkg
 ~~~
 
 Create a CockroachDB table that corresponds to the DDL statements in `busstops.sql`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE busstops (
     geom GEOMETRY(POINT) NULL,
@@ -95,7 +88,6 @@ CREATE TABLE busstops (
 
 Since the file is being served from a local server and is formatted as CSV, you can import the data using the following [`IMPORT INTO`]({% link "{{ page.version.version }}/import-into.md" %}) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT INTO busstops CSV DATA ('http://localhost:3000/busstops.csv') WITH skip = '1';
 ~~~

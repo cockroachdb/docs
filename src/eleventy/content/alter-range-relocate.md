@@ -31,7 +31,6 @@ To alter a range and move a lease or replica between stores, the user must have 
 
 To use `ALTER RANGE ... RELOCATE`, you will need to know your cluster's store IDs. To get the store IDs, run the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT store_id FROM crdb_internal.kv_store_status;
 ~~~
@@ -57,7 +56,6 @@ To use `ALTER RANGE ... RELOCATE`, you need to know how to find the range ID, le
 
 For example, to get all range IDs, leaseholder store IDs, and leaseholder localities for the [`movr.users`](movr.html) table, use the following query:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH user_info AS (SHOW RANGES FROM TABLE users) SELECT range_id, lease_holder, lease_holder_locality FROM user_info;
 ~~~
@@ -83,7 +81,6 @@ WITH user_info AS (SHOW RANGES FROM TABLE users) SELECT range_id, lease_holder, 
 
 To move the lease for range ID 70 to store ID 4:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER RANGE 70 RELOCATE LEASE TO 4;
 ~~~
@@ -99,7 +96,6 @@ ALTER RANGE 70 RELOCATE LEASE TO 4;
 
 To move the leases for all data in the [`movr.users`](movr.html) table to a specific store:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER RANGE RELOCATE LEASE TO 2 FOR SELECT range_id from crdb_internal.ranges where table_name = 'users'
 ~~~
@@ -125,7 +121,6 @@ When it isn't possible to move a lease for a range to the specified store, the `
 
 If you know the store where a range's replica is located, you can move it to another store:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER RANGE 45 RELOCATE FROM 2 to 4;
 ~~~
@@ -141,7 +136,6 @@ ALTER RANGE 45 RELOCATE FROM 2 to 4;
 
 To move the replicas for all data in the [`movr.users`](movr.html) table on one store to another store:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER RANGE RELOCATE FROM 2 TO 7 FOR SELECT range_id from crdb_internal.ranges where table_name = 'users';
 ~~~
@@ -167,7 +161,6 @@ See the `result` column in the output for the status of the operation. If it's `
 
 To move all of a range's voting replicas from one store to another store:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER RANGE RELOCATE VOTERS FROM 7 TO 2 FOR SELECT range_id from crdb_internal.ranges where table_name = 'users';
 ~~~
@@ -197,7 +190,6 @@ To move a range's [non-voting replicas](architecture/replication-layer.html#non-
 This statement will only have an effect on clusters that have non-voting replicas configured, such as [multiregion clusters](multiregion-overview.html). If your cluster is not a multiregion cluster, it doesn't do anything, and will display errors in the `result` field as shown below.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER RANGE RELOCATE NONVOTERS FROM 7 TO 2 FOR SELECT range_id from crdb_internal.ranges where table_name = 'users';
 ~~~

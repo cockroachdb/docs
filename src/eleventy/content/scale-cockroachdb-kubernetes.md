@@ -45,7 +45,6 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
 1. If you need to add worker nodes, resize your GKE cluster by specifying the desired number of worker nodes in each zone:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud container clusters resize {cluster-name} --region {region-name} --num-nodes 2
     ~~~
@@ -60,7 +59,6 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
         View the PVCs on the cluster:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         kubectl get pvc
         ~~~
@@ -77,7 +75,6 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
   1. The PVC names correspond to the pods they are bound to. For example, if the pods `cockroachdb-3`, `cockroachdb-4`, and `cockroachdb-5` had been removed by [scaling the cluster down](#remove-nodes) from 6 to 3 nodes, `datadir-cockroachdb-3`, `datadir-cockroachdb-4`, and `datadir-cockroachdb-5` would be the PVCs for the orphaned persistent volumes. To verify that a PVC is not currently bound to a pod:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         kubectl describe pvc datadir-cockroachdb-5
         ~~~
@@ -96,7 +93,6 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
         Before deleting any persistent volumes, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).
         {{site.data.alerts.end}}
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         kubectl delete pvc datadir-cockroachdb-3 datadir-cockroachdb-4 datadir-cockroachdb-5
         ~~~
@@ -119,14 +115,12 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
 1. Apply the new settings to the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f example.yaml
     ~~~
 
 1. Verify that the new pods were successfully started:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl get pods
     ~~~
@@ -188,7 +182,6 @@ If your nodes are distributed across 3 availability zones (as in our [deployment
 
 1. Apply the new settings to the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f example.yaml
     ~~~
@@ -197,7 +190,6 @@ If your nodes are distributed across 3 availability zones (as in our [deployment
     
 1. Verify that the pods were successfully removed:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl get pods
     ~~~
@@ -222,7 +214,6 @@ This workflow is unsupported and should be enabled at your own risk.
 
 1. Download the {{ site.data.products.public-operator }} manifest:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
@@ -236,14 +227,12 @@ This workflow is unsupported and should be enabled at your own risk.
 
 1. Reapply the {{ site.data.products.public-operator }} manifest:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f operator.yaml
     ~~~
 
 1. Validate that the {{ site.data.products.public-operator }} is running:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~

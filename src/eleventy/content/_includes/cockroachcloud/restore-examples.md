@@ -2,7 +2,6 @@
 
 `BACKUP ... INTO` adds a backup to a [collection]({% link "{{site.current_cloud_version}}/take-full-and-incremental-backups.md" %}#backup-collections) within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`]({% link "{{site.current_cloud_version}}/restore.md" %}#view-the-backup-subdirectories):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW BACKUPS IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
@@ -11,7 +10,6 @@
 
 To restore a full cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
@@ -22,7 +20,6 @@ To view the available subdirectories to restore a backup from, use [`SHOW BACKUP
 
 To restore a database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
@@ -37,14 +34,12 @@ To view the available subdirectories to restore a backup from, use [`SHOW BACKUP
 
 To restore a single table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > RESTORE TABLE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
 To restore multiple tables:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > RESTORE TABLE bank.customers, bank.accounts FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~

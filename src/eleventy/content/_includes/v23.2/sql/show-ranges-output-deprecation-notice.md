@@ -1,6 +1,5 @@
 The statement syntax and output documented on this page use the updated `SHOW RANGES` that **is the default in CockroachDB v23.2**. To disable this syntax and output, set the [cluster setting `sql.show_ranges_deprecated_behavior.enabled`]({% link "{{ page.version.version }}/cluster-settings.md" %}#setting-sql-show-ranges-deprecated-behavior-enabled)  to `true`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING sql.show_ranges_deprecated_behavior.enabled = true;
 ~~~

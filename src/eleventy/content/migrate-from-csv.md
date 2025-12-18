@@ -47,7 +47,6 @@ You will need to write a [`CREATE TABLE`]({% link "{{ page.version.version }}/cr
 
 For example, to import the data from `employees.csv` into an `employees` table, issue the following statement to create the table:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE TABLE employees (
   emp_no INT PRIMARY KEY,
@@ -61,7 +60,6 @@ CREATE TABLE employees (
 
 Next, use `IMPORT INTO` to import the data into the new table:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)
      CSV DATA (
@@ -99,7 +97,6 @@ The `delimiter` option is used to set the Unicode character that marks where eac
 
 Example usage:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)
      CSV DATA (
@@ -113,7 +110,6 @@ The `comment` option determines which Unicode character marks the rows in the da
 
 Example usage:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)
      CSV DATA (
@@ -127,7 +123,6 @@ The `skip` option determines the number of header rows to skip when importing a 
 
 Example usage:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)
      CSV DATA (
@@ -145,7 +140,6 @@ To match the `nullif` setting, a CSV input value must be unquoted. For details, 
 
 Example usage:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)
      CSV DATA (
@@ -164,7 +158,6 @@ The `compress` option defines which decompression codec should be used on the CS
 
 Example usage:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)
      CSV DATA (

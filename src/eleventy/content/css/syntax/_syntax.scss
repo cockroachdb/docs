@@ -8,11 +8,62 @@
   pre code {
     background-color: $cl_syntax_purple_dark;
   }
+}
+
+// Plain pre/code blocks (no syntax highlighting) should have same styling
+pre:not(.highlight) {
+  background: $cl_syntax_purple_dark;
+  border-radius: 4px;
+  padding: 20px 30px;
+  overflow-x: auto;
+
+  code {
+    background-color: $cl_syntax_purple_dark;
+    color: #fff;
+  }
+}
+
+.highlight {
 
   a code {
     color: $cl_green;
   }
 
+  // Prism.js token classes (used by Eleventy syntax highlighter)
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata { color: $cl_syntax_gray; }
+  .token.punctuation { color: $cl_syntax_gray_light; }
+  .token.property,
+  .token.tag,
+  .token.boolean,
+  .token.number,
+  .token.constant,
+  .token.symbol { color: $cl_syntax_blue; }
+  .token.selector,
+  .token.attr-name,
+  .token.string,
+  .token.char,
+  .token.builtin { color: $cl_syntax_green; }
+  .token.operator,
+  .token.entity,
+  .token.url,
+  .token.variable { color: $cl_syntax_aqua; }
+  .token.atrule,
+  .token.attr-value,
+  .token.keyword { color: $cl_syntax_purple; }
+  .token.function,
+  .token.class-name { color: $cl_syntax_red; }
+  .token.regex,
+  .token.important { color: $cl_syntax_green; }
+  .token.important,
+  .token.bold { font-weight: bold; }
+  .token.italic { font-style: italic; }
+  .token.builtin.class-name { color: $cl_syntax_green; }
+  .token.assign-left { color: $cl_syntax_aqua; }
+
+  // Rouge class names (original Jekyll syntax highlighting)
   .err { color: $cl_syntax_red; background-color: #e3d2d2 } /* Error */
   .k { color: $cl_syntax_purple; } /* Keyword */
   .c { color: $cl_syntax_gray; } /* Comment */

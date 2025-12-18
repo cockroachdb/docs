@@ -2,14 +2,12 @@ This example assumes you are running a [local unsecured cluster](start-a-local-c
 
 First, connect to the running cluster (call this Terminal 1):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
 Next, create a table and insert some rows:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 INSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
@@ -17,7 +15,6 @@ INSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
 
 Next, we'll start a [transaction](transactions.html) and lock the row we want to operate on:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 SELECT * FROM kv WHERE k = 1 FOR UPDATE;
@@ -34,14 +31,12 @@ Press **Enter** twice in the [SQL client](cockroach-sql.html) to send the statem
 
 Now open another terminal and connect to the database from a second client (call this Terminal 2):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
 From Terminal 2, start a transaction and try to lock the same row for updates that is already being accessed by the transaction we opened in Terminal 1:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 SELECT * FROM kv WHERE k = 1 FOR UPDATE;

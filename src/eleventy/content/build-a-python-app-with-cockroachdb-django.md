@@ -25,7 +25,6 @@ The example code and instructions on this page use Python 3.9 and Django 3.1.
 
 Clone the code's GitHub repo:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-python-django/
 ~~~
@@ -65,7 +64,6 @@ The major version of `django-cockroachdb` must correspond to the major version o
 
 The `requirements.txt` file at the top level of the `example-app-python-django` project directory contains a list of the requirements needed to run this application:
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/requirements.txt" %}
 ~~~
@@ -74,26 +72,22 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 
 1. Install `virtualenv`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ pip install virtualenv
     ~~~
 
 1. At the top level of the app's project directory, create and then activate a virtual environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ virtualenv env
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ source env/bin/activate
     ~~~
 
 1. Install the modules listed in `requirements.txt` to the virtual environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ pip install -r requirements.txt
     ~~~
@@ -106,7 +100,6 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 
 Open `cockroach_example/cockroach_example/settings.py`, and configure [the `DATABASES` dictionary](https://docs.djangoproject.com/en/3.2/ref/settings/#databases) to connect to your cluster using the connection parameters that you copied earlier.
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 DATABASES = {
     'default': {
@@ -133,7 +126,6 @@ After you have configured the app's database connection, you can start building 
 
 Start by building some [models](https://docs.djangoproject.com/en/3.1/topics/db/models/), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/models.py" download>download the file directly</a>.
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/models.py" %}
 ~~~
@@ -144,7 +136,6 @@ In this file, we define some simple classes that map to the tables in the cluste
 
 Next, build out some [class-based views](https://docs.djangoproject.com/en/3.1/topics/class-based-views/) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/views.py" download>download the file directly</a>.
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/views.py" %}
 ~~~
@@ -157,7 +148,6 @@ Importantly, the file defines a [transaction retry loop]({% link "{{ page.versio
 
 Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.1/topics/http/urls/) in a file called `urls.py`. You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/urls.py" download>download the file directly</a> and replace the existing one.
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/urls.py" %}
 ~~~
@@ -166,12 +156,10 @@ Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.1/topics/ht
 
 In the top `cockroach_example` directory, use the [`manage.py` script](https://docs.djangoproject.com/en/3.1/ref/django-admin/) to create [Django migrations](https://docs.djangoproject.com/en/3.1/topics/migrations/) that initialize the database for the application:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ python manage.py makemigrations cockroach_example
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ python manage.py migrate
 ~~~
@@ -182,7 +170,6 @@ This initializes the tables defined in `models.py`, in addition to some other ta
 
 1. In a different terminal, navigate to the top of the `cockroach_example` directory, and start the app:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ python manage.py runserver 0.0.0.0:8000
     ~~~
@@ -199,7 +186,6 @@ This initializes the tables defined in `models.py`, in addition to some other ta
 
 1. In a new terminal, use `curl` to send a POST request to the application:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl --header "Content-Type: application/json" \
     --request POST \
@@ -210,7 +196,6 @@ This initializes the tables defined in `models.py`, in addition to some other ta
 
 1. Send a GET request to read from the `cockroach_example_customers` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl http://0.0.0.0:8000/customer/
     ~~~
@@ -221,7 +206,6 @@ This initializes the tables defined in `models.py`, in addition to some other ta
 
     You can also query the table directly in the [SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}) to see the changes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SELECT * FROM cockroach_example_customers;
     ~~~

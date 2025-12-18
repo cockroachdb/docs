@@ -16,7 +16,6 @@ The following survival goals are available:
 
 The zone failure survival goal is the default. You can configure a database to survive region failures at the cost of slower write performance (due to network hops) using the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE <db> SURVIVE REGION FAILURE;
 ~~~

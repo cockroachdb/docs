@@ -1,6 +1,5 @@
 You may also want to configure the [managed backup]({% link "cockroachcloud/managed-backups.md" %}) settings your CockroachDB {{ site.data.products.standard }} cluster takes automatically. To do so, include the `backup_config` attribute in the `cockroach_cluster` resource:
 
-    {% include "copy-clipboard.html" %}
     ~~~ hcl
     backup_config = {
         enabled           = true

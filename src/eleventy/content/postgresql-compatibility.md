@@ -57,7 +57,6 @@ ERROR:  zero raised to a negative power is undefined
 
 In CockroachDB, these expressions instead return Infinity:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT 1e300::float * 1e10::float;
 ~~~
@@ -69,7 +68,6 @@ SELECT 1e300::float * 1e10::float;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT pow(0::float, -1::float);
 ~~~
@@ -85,7 +83,6 @@ SELECT pow(0::float, -1::float);
 
 In PostgreSQL, the unary `~` (bitwise not) operator has a low precedence. For example, the following query is parsed as `~ (1 + 2)` because `~` has a lower precedence than `+`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT ~1 + 2;
 ~~~
@@ -113,7 +110,6 @@ In CockroachDB, the precedence from highest to lowest is: `&`, `#`, `|`.
 
 In PostgreSQL, division of integers results in an integer. For example, the following query returns `1`, since the `1 / 2` is truncated to `0`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT 1 + 1 / 2;
 ~~~
@@ -133,7 +129,6 @@ In CockroachDB, integer division results in a `decimal`. CockroachDB instead pro
 
 In PostgreSQL, the shift operators (`<<`, `>>`) sometimes modulo their second argument to the bit size of the underlying type. For example, the following query results in a `1` because the int type is 32 bits, and `32 % 32` is `0`, so this is the equivalent of `1 << 0`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT 1::int << 32;
 ~~~
@@ -149,7 +144,6 @@ In CockroachDB, no such modulo is performed.
 
 **Porting instructions:** Manually add a modulo to the second argument. Also note that CockroachDB's [`INT`]({% link "{{ page.version.version }}/int.md" %}) type is always 64 bits. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT 1::int << (x % 64);
 ~~~
@@ -166,7 +160,6 @@ CockroachDB validates [`CHECK`]({% link "{{ page.version.version }}/check.md" %}
 
 If this difference matters to your client, you can `INSERT ON CONFLICT` from a `SELECT` statement and check the inserted value as part of the `SELECT`. For example, instead of defining `CHECK (x > 0)` on `t.x` and using `INSERT INTO t(x) VALUES (3) ON CONFLICT (x) DO UPDATE SET x = excluded.x`, you could do the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO t (x)
     SELECT if (x <= 0, crdb_internal.force_error('23514', 'check constraint violated'), x)

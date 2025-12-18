@@ -37,7 +37,6 @@ Do the following:
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql \
 --url='postgres://{username}:{password}@{globalhost}:26257/{cluster_name}.{database}?sslmode=verify-full&sslrootcert={path to the CA certificate}'
@@ -51,7 +50,6 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include "copy-clipboard.html" %}
 ~~~ go
 import (
     "database/sql"
@@ -76,7 +74,6 @@ defer db.Close()
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include "copy-clipboard.html" %}
 ~~~ java
 import java.sql.*;
 import javax.sql.DataSource;
@@ -102,7 +99,6 @@ ds.setApplicationName("BasicExample");
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 import psycopg2
 

@@ -4,14 +4,12 @@ To finalize a major-version upgrade:
 
 1. Connect to the cluster using the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql
     ~~~
 
 1. Run the following command. Replace `{VERSION}` with the new major version, such as `{{ major_version_numeric }}`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING version = '{VERSION}';
     ~~~
@@ -30,7 +28,6 @@ To finalize a major-version upgrade:
 
 1. To confirm that finalization has completed, check the cluster version:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW CLUSTER SETTING version;
     ~~~

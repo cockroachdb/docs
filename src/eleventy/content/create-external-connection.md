@@ -26,7 +26,6 @@ To create an external connection, a user must have the `EXTERNALCONNECTION` [sys
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 GRANT SYSTEM EXTERNALCONNECTION TO user;
 ~~~
@@ -35,7 +34,6 @@ To use a specific external connection during an operation, the user must also ha
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 GRANT USAGE ON EXTERNAL CONNECTION backup_bucket TO user;
 ~~~
@@ -104,14 +102,12 @@ In this example, you create an external connection for an Amazon S3 bucket that 
 
 1. Define your external connection that references the S3 bucket's URI:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION backup_bucket AS 's3://bucket name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY={secret access key}';
     ~~~
 
 1. Verify that the new external connection was created successfully with [`SHOW CREATE EXTERNAL CONNECTION`]({% link "{{ page.version.version }}/show-create-external-connection.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SHOW CREATE ALL EXTERNAL CONNECTIONS;
     ~~~
@@ -124,7 +120,6 @@ In this example, you create an external connection for an Amazon S3 bucket that 
 
 1. Run the backup to your S3 bucket using the external connection's name:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     BACKUP DATABASE movr INTO 'external://backup_bucket' AS OF SYSTEM TIME '-10s' WITH revision_history;
     ~~~
@@ -135,7 +130,6 @@ In this example, you create an external connection for an Amazon S3 bucket that 
 
 1. Use [`SHOW BACKUP`]({% link "{{ page.version.version }}/show-backup.md" %}) to view your backups in the storage defined by the external connection:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SHOW BACKUPS IN 'external://backup_bucket';
     ~~~
@@ -149,14 +143,12 @@ In this example, you create an external connection for an Amazon S3 bucket that 
 
 1. In the event that a restore is necessary, use `RESTORE` with the external connection:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     RESTORE DATABASE movr FROM LATEST IN 'external://backup_bucket';
     ~~~
 
 1. When you no longer need the external connection, you can delete it with [`DROP EXTERNAL CONNECTION`]({% link "{{ page.version.version }}/drop-external-connection.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     DROP EXTERNAL CONNECTION backup_bucket;
     ~~~
@@ -167,7 +159,6 @@ In this example, you create an external connection to a Kafka sink to which a ch
 
 1. Define your external connection that references the Kafka sink URI and any [connection parameters]({% link "{{ page.version.version }}/changefeed-sinks.md" %}#kafka):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION kafka_sink AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256';
     ~~~
@@ -176,7 +167,6 @@ In this example, you create an external connection to a Kafka sink to which a ch
 
 1. Create your changefeed using the external connection's name:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.users INTO 'external://kafka_sink' WITH resolved;
     ~~~

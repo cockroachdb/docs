@@ -7,7 +7,6 @@ To upgrade from one patch release to another within the same major version, perf
 
     Unless there are tens of thousands of ranges on the node, it's usually sufficient to wait one minute. To be certain that the node is ready, run the following command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql -e 'select 1'
     ~~~

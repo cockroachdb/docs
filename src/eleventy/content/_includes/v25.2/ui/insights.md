@@ -293,7 +293,6 @@ By default, the function returns index recommendations sourced from all statemen
 
 After running the [query]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) mentioned in the preceding [**Schema Insights** tab](#schema-insights-tab) section, run the following related query more than six times to generate another **Create Index** insight.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT
   name, users.city, rides.city, count(rides.id) AS sum
@@ -311,7 +310,6 @@ LIMIT
 
 Run the `workload_index_recs` function to return the `CREATE INDEX` recommendation associated with two fingerprint IDs:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT workload_index_recs();
 ~~~
@@ -324,7 +322,6 @@ SELECT workload_index_recs();
 
 To display the query strings corresponding to the fingerprint IDs, run a query that joins the `workload_index_recs` function with the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#statement_statistics) table.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT ss.index_recommendations,
 (ss.statistics->'statistics'->>'lastExecAt')::TIMESTAMPTZ AS lastExecAt, -- Time the statement was last execut

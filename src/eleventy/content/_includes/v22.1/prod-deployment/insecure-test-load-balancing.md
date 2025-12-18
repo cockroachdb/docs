@@ -14,7 +14,6 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, see [Performa
 
 1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
@@ -22,7 +21,6 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, see [Performa
 
 1. Copy the binary into the `PATH`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -31,7 +29,6 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, see [Performa
 
 1. Use the [`cockroach workload`](cockroach-workload.html) command to load the initial schema and data, pointing it at the IP address of the load balancer:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach workload init tpcc \
     'postgresql://root@<IP ADDRESS OF LOAD BALANCER>:26257/tpcc?sslmode=disable'
@@ -39,7 +36,6 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, see [Performa
 
 1. Use the `cockroach workload` command to run the workload for 10 minutes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach workload run tpcc \
     --duration=10m \

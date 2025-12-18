@@ -35,7 +35,6 @@ Parameter | Description
 
 To transfer job ownership from the user who created the job to a role they're a member of:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER JOB job_id OWNER TO role_name;
 ~~~

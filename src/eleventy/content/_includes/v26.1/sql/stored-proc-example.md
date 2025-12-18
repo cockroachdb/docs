@@ -2,7 +2,6 @@ The following {% if page.name == "stored-procedures.md" %}stored procedure{% els
 
 It uses the {% if page.name == "plpgsql.md" %}PL/pgSQL{% else %}[PL/pgSQL]({% link "{{ page.version.version }}/plpgsql.md" %}){% endif %} [`WHILE`]({% link "{{ page.version.version }}/plpgsql.md" %}#write-loops) syntax to iterate through the rows, [`RAISE`] to return notice and error messages, and `REFCURSOR` to define a cursor that fetches the next rows to be affected by the procedure.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE delete_earliest_histories (
 	num_deletions INT, remaining_histories REFCURSOR
@@ -45,14 +44,12 @@ $$;
 
 Open a [transaction]({% link "{{ page.version.version }}/transactions.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 ~~~
 
 Call the stored procedure, specifying 5 rows to delete and a `rides_left` cursor name:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CALL delete_earliest_histories (5, 'rides_left');
 ~~~
@@ -68,7 +65,6 @@ CALL
 
 Use the cursor to fetch the 3 earliest remaining rows in `vehicle_location_histories`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 FETCH 3 from rides_left;
 ~~~
@@ -90,7 +86,6 @@ The example works as follows:
 
 [`CREATE PROCEDURE`]({% link "{{ page.version.version }}/create-procedure.md" %}) defines a stored procedure called `delete_earliest_histories` with an `INT` and a `REFCURSOR` parameter.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE delete_earliest_histories (
 	num_deletions INT, remaining_histories REFCURSOR
@@ -99,14 +94,12 @@ CREATE OR REPLACE PROCEDURE delete_earliest_histories (
 
 `LANGUAGE` specifies [PL/pgSQL]({% link "{{ page.version.version }}/plpgsql.md" %}) as the language for the stored procedure.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 LANGUAGE PLpgSQL
 ~~~
 
 `DECLARE` specifies the [PL/pgSQL variable definitions]({% link "{{ page.version.version }}/plpgsql.md" %}#declare-a-variable) that are used in the procedure body.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DECLARE
 	counter INT := 0;
@@ -117,7 +110,6 @@ DECLARE
 
 `BEGIN` and `END` [group the PL/pgSQL statements]({% link "{{ page.version.version }}/plpgsql.md" %}#structure) in the procedure body.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN
   ...
@@ -154,7 +146,6 @@ WHILE counter < num_deletions LOOP
 
 The `OPEN` statement [opens a cursor]({% link "{{ page.version.version }}/plpgsql.md" %}#open-and-use-cursors) for all remaining rows in `vehicle_location_histories`, sorted by timestamp. After calling the procedure in an open transaction, the cursor can be used to fetch rows from the table.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 OPEN remaining_histories FOR SELECT * FROM vehicle_location_histories ORDER BY timestamp;
 ~~~

@@ -1,6 +1,5 @@
 1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm repo add cockroachdb https://charts.cockroachdb.com/
     ~~~
@@ -11,7 +10,6 @@
 
 1. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/Chart.yaml):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm repo update
     ~~~
@@ -20,7 +18,6 @@
 
     Create a `my-values.yaml` file to override the defaults in `values.yaml`, substituting your own values in this example based on the guidelines below.
 
-    {% include "copy-clipboard.html" %}
     ~~~
     statefulset:
       resources:
@@ -41,7 +38,6 @@
 
 1. For an insecure deployment, set `tls.enabled` to `false`. For clarity, this example includes the example configuration from the previous steps.
 
-    {% include "copy-clipboard.html" %}
     ~~~
     statefulset:
       resources:
@@ -70,7 +66,6 @@
     This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm install my-release --values my-values.yaml cockroachdb/cockroachdb
     ~~~
@@ -79,7 +74,6 @@
 
 1. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -94,7 +88,6 @@
 
 1. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pv
     ~~~

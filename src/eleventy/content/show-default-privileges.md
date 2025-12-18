@@ -34,7 +34,6 @@ To show default privileges, the user/role must have any [privilege]({% link "{{ 
 
 ### Show default privileges for objects created by the current user
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -52,7 +51,6 @@ To show default privileges, the user/role must have any [privilege]({% link "{{ 
 
 ### Show default privileges for objects created by any user/role
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ALL ROLES;
 ~~~
@@ -66,12 +64,10 @@ To show default privileges, the user/role must have any [privilege]({% link "{{ 
 
 ### Show default privileges for objects created by a specific user/role
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE USER max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ROLE max;
 ~~~
@@ -89,17 +85,14 @@ To show default privileges, the user/role must have any [privilege]({% link "{{ 
 
 ### Show default privileges for objects in a specific schema
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE SCHEMA test;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER DEFAULT PRIVILEGES IN SCHEMA test GRANT SELECT ON TABLES TO max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES IN SCHEMA test;
 ~~~
@@ -115,7 +108,6 @@ To show default privileges, the user/role must have any [privilege]({% link "{{ 
 
 To show the default [privileges]({% link "{{ page.version.version }}/security-reference/authorization.md" %}#privileges) that a user received as a grantee, issue the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW DEFAULT PRIVILEGES FOR GRANTEE root;
 ~~~

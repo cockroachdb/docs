@@ -6,14 +6,12 @@ Use the following workflow to enable `MuxRangefeed`:
 
 1. Enable the cluster setting:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING changefeed.mux_rangefeed.enabled = true;
     ~~~
 
 1. After enabling the setting, pause the changefeed:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     PAUSE JOB {job ID};
     ~~~
@@ -22,7 +20,6 @@ Use the following workflow to enable `MuxRangefeed`:
 
 1. Resume the changefeed for the cluster setting to take effect:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     RESUME JOB {job ID};
     ~~~

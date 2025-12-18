@@ -106,7 +106,6 @@ Value separation is especially beneficial for workloads with large values relati
 
 To enable value separation, set the following [cluster setting]({% link "{{ page.version.version }}/set-cluster-setting.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING storage.value_separation.enabled = true;
 ~~~

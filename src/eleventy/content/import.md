@@ -178,7 +178,6 @@ If initiated correctly, the statement returns when the import is finished or if 
 
 ### Import a PostgreSQL database dump
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT PGDUMP 's3://{BUCKET NAME}/{customers.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH ignore_unsupported_statements;
@@ -188,7 +187,6 @@ For this command to succeed, you need to have created the dump file with specifi
 
 ### Import a table from a PostgreSQL database dump
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT TABLE employees
     FROM PGDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -201,7 +199,6 @@ For this command to succeed, you need to have created the dump file with specifi
 
 ### Import a MySQL database dump
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT MYSQLDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
@@ -210,7 +207,6 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 ### Import a table from a MySQL database dump
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT TABLE employees
     FROM MYSQLDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH skip_foreign_keys;
@@ -224,7 +220,6 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 The `row_limit` option determines the number of rows to import. This option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped]({% link "{{ page.version.version }}/drop-table.md" %}) before running the actual import.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT PGDUMP
     's3://{BUCKET NAME}/{customers.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -236,7 +231,6 @@ IMPORT PGDUMP
 
 CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT TABLE employees
     FROM PGDUMP 's3://{BUCKET NAME}/{employees-full.sql.gz}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
@@ -244,7 +238,6 @@ IMPORT TABLE employees
 
 Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT TABLE employees
     FROM PGDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -257,7 +250,6 @@ IMPORT TABLE employees
 
 To use the `DETACHED` option with `IMPORT` in a transaction:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 
@@ -325,7 +317,6 @@ customers.sql
 
 Then, specify which node to access by including the `nodeID` in the `IMPORT` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT TABLE customers FROM PGDUMP 'nodelocal://2/customers.sql';
 ~~~
@@ -356,7 +347,6 @@ You can import data into your CockroachDB {{ site.data.products.cloud }} cluster
 
 To import a table into your cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,

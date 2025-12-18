@@ -1,6 +1,5 @@
 - At the cluster level, set `disallow_full_table_scans` for some or [all users and roles]({% link "{{ page.version.version }}/alter-role.md" %}#set-default-session-variable-values-for-all-users). For example:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER ROLE ALL SET disallow_full_table_scans = true;
     ~~~

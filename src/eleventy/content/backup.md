@@ -252,7 +252,6 @@ If you need to limit the control specific users have over your storage buckets, 
 
 To take a [full backup]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#full-backups) of a cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
@@ -263,14 +262,12 @@ BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 
 To take a [full backup]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#full-backups) of a single database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP DATABASE bank INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 To take a [full backup]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#full-backups) of multiple databases:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP DATABASE bank, employees INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
@@ -279,14 +276,12 @@ BACKUP DATABASE bank, employees INTO 'external://backup_s3' AS OF SYSTEM TIME '-
 
 To take a [full backup]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#full-backups) of a single table or view:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP bank.customers INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 To take a [full backup]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#full-backups) of multiple tables:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP bank.customers, bank.accounts INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
@@ -295,7 +290,6 @@ BACKUP bank.customers, bank.accounts INTO 'external://backup_s3' AS OF SYSTEM TI
 
  To back up all tables in a [schema]({% link "{{ page.version.version }}/create-schema.md" %}), use a wildcard (`*`) with the schema name:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP test_schema.* INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
@@ -316,14 +310,12 @@ When a `BACKUP` statement specifies an existing subdirectory in the collection, 
 
 To take an incremental backup using the `LATEST` keyword:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO LATEST IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 To store the backup in an existing subdirectory in the collection:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO {'subdirectory'} IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
@@ -338,7 +330,6 @@ To explicitly control where you store your incremental backups, use the [`increm
 
 Use the `DETACHED` [option](#options) to execute the backup [job]({% link "{{ page.version.version }}/show-jobs.md" %}) asynchronously:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s' WITH DETACHED;
 ~~~
@@ -365,7 +356,6 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 To associate your backup objects with a [specific storage class]({% link "{{ page.version.version }}/use-cloud-storage.md" %}#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP DATABASE movr INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING' AS OF SYSTEM TIME '-10s';
 ~~~

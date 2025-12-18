@@ -1,6 +1,5 @@
 #### View a list of the full backup's subdirectories
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW BACKUPS IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
@@ -19,7 +18,6 @@ The path format is `<year>/<month>/<day>-<timestamp>`.
 
 #### View a list of the full and incremental backups in a specific full backup subdirectory
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW BACKUP '2020/09/24-204152.88' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~

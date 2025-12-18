@@ -41,7 +41,6 @@ Create a `drivers` table and split the table based on the compound primary key a
 
 To remove the split enforcements, run the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE drivers UNSPLIT AT VALUES ('new york', '3'), ('new york', '7'), ('chicago', '3'), ('chicago', '7'), ('seattle', '3'), ('seattle', '7');
 ~~~
@@ -60,7 +59,6 @@ To remove the split enforcements, run the following:
 
 You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`](crdb-internal.html) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='drivers';
 ~~~
@@ -87,7 +85,6 @@ Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue`
 
 To remove the split enforcements, run the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER INDEX rides@revenue_idx UNSPLIT AT VALUES (25.00), (50.00), (75.00);
 ~~~
@@ -102,7 +99,6 @@ To remove the split enforcements, run the following:
 
 You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`](crdb-internal.html) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='rides';
 ~~~

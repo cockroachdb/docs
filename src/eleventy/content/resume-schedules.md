@@ -35,7 +35,6 @@ The following users can resume a schedule:
 
 ### Pause a schedule
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > PAUSE SCHEDULE 589963390487363585;
 ~~~
@@ -46,7 +45,6 @@ PAUSE SCHEDULES 1
 
 ### Resume a single schedule
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > RESUME SCHEDULE 589963390487363585;
 ~~~
@@ -59,7 +57,6 @@ RESUME SCHEDULES 1
 
 To resume multiple schedules, nest a [`SELECT` clause]({% link "{{ page.version.version }}/select-clause.md" %}) that retrieves `id`(s) inside the `RESUME SCHEDULES` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > RESUME SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~

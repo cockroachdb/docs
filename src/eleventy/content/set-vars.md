@@ -76,12 +76,10 @@ CockroachDB supports the following syntax cases, for compatibility with common S
 
 The following examples demonstrate how to use `SET` to configure the default database for the current session:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET application_name = movr_app;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW application_name;
 ~~~
@@ -97,12 +95,10 @@ SHOW application_name;
 
 The following demonstrates how to use quoting to use values containing spaces:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET application_name = "movr app";
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW application_name;
 ~~~
@@ -118,12 +114,10 @@ SHOW application_name;
 
 The following demonstrates how to assign a list of values:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET search_path = pg_catalog,public;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW search_path;
 ~~~
@@ -141,7 +135,6 @@ SHOW search_path;
 You can use [`RESET`]({% link "{{ page.version.version }}/reset-vars.md" %}) to reset a session variable as well.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW search_path;
 ~~~
@@ -153,12 +146,10 @@ SHOW search_path;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET search_path = DEFAULT;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW search_path;
 ~~~
@@ -174,7 +165,6 @@ SHOW search_path;
 
  To set a variable for the duration of a single transaction, use the `SET LOCAL` statement.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW application_name;
 ~~~
@@ -186,7 +176,6 @@ SHOW application_name;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 SET LOCAL application_name = demo;
@@ -200,7 +189,6 @@ SHOW application_name;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 SHOW application_name;
@@ -217,7 +205,6 @@ SHOW application_name;
 
  You can roll back session variable settings to [savepoints]({% link "{{ page.version.version }}/savepoint.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW timezone;
 ~~~
@@ -229,7 +216,6 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 SET timezone = '+3';
@@ -244,7 +230,6 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET LOCAL timezone = '+1';
 SHOW timezone;
@@ -257,7 +242,6 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ROLLBACK TO SAVEPOINT s1;
 SHOW timezone;
@@ -270,7 +254,6 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 SHOW timezone;
@@ -291,7 +274,6 @@ SHOW timezone;
 To assume a new role, the current user must be a member of the `admin` role, or a member of the target role.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW role;
 ~~~
@@ -303,7 +285,6 @@ SHOW role;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE ROLE new_role;
 SHOW ROLES;
@@ -318,7 +299,6 @@ SHOW ROLES;
 (3 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET ROLE new_role;
 SHOW role;
@@ -333,7 +313,6 @@ SHOW role;
 
 To reset the role of the current user, use a [`RESET`]({% link "{{ page.version.version }}/reset-vars.md" %}) statement. `RESET ROLE` is equivalent to `SET role = 'none'` and `SET role = current_user()`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESET ROLE;
 SHOW role;
@@ -348,7 +327,6 @@ SHOW role;
 
 To assume a role for the duration of a single transaction, use `SET LOCAL ROLE`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 SET LOCAL ROLE new_role;
@@ -362,7 +340,6 @@ SHOW role;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 SHOW role;
@@ -393,7 +370,6 @@ When setting a time zone, note the following:
 
 - To see a list of supported timezones, their nicknames, and their offsets, run the following query:
 
-  {% include "copy-clipboard.html" %}
   ~~~ sql
   SELECT * FROM pg_timezone_names;
   ~~~
@@ -404,12 +380,10 @@ When setting a time zone, note the following:
 
 ### Example: Set the default time zone via `SET TIME ZONE`
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET TIME ZONE 'EST'; -- same as SET "timezone" = 'EST'
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TIME ZONE;
 ~~~
@@ -421,12 +395,10 @@ When setting a time zone, note the following:
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET TIME ZONE DEFAULT; -- same as SET "timezone" = DEFAULT
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TIME ZONE;
 ~~~

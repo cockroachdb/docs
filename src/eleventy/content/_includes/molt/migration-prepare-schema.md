@@ -49,7 +49,6 @@ The MYSQL `FIELD` function is not supported in CockroachDB. Instead, you can use
 
 Example usage:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT array_position(ARRAY[4,1,3,2],1);
 ~~~
@@ -63,7 +62,6 @@ SELECT array_position(ARRAY[4,1,3,2],1);
 
 While MySQL returns 0 when the element is not found, CockroachDB returns `NULL`. So if you are using the `ORDER BY` clause in a statement with the `array_position` function, the caveat is that sort is applied even when the element is not found. As a workaround, you can use the [`COALESCE`]({% link "{{ site.current_cloud_version }}/functions-and-operators.md" %}#conditional-and-function-like-operators) operator.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM table_a ORDER BY COALESCE(array_position(ARRAY[4,1,3,2],5),999);
 ~~~

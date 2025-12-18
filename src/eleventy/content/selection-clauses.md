@@ -55,7 +55,6 @@ names. [These names can be modified with
 
 ### Example
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 > VALUES (1, 2, 3), (4, 5, 6);
 ~~~
@@ -86,7 +85,6 @@ shorter to type.
 
 ### Example
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 > CREATE TABLE employee_copy AS TABLE employee;
 ~~~
@@ -99,12 +97,10 @@ will likely have a simpler schema than `employee`.
 
 Other examples:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 > TABLE employee;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 > INSERT INTO employee_copy TABLE employee;
 ~~~

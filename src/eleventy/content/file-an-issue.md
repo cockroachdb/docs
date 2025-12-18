@@ -19,7 +19,6 @@ To file an issue in GitHub, we need the following information:
 
 1. The first few lines of the log file from each node in the cluster in a timeframe as close as possible to reproducing the issue. On most Unix-based systems running with defaults, you can get this information using the following command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ grep -F '[config]' cockroach-data/logs/cockroach.log
     ~~~

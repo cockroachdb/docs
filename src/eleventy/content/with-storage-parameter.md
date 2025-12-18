@@ -48,7 +48,6 @@ The user must be a member of the [`admin`]({% link "{{ page.version.version }}/s
 
 ### Create a table with row-level TTL enabled
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE ttl_test (
   id UUID PRIMARY KEY default gen_random_uuid(),
@@ -57,7 +56,6 @@ CREATE TABLE ttl_test (
 ) WITH (ttl_expire_after = '3 months');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE TABLE ttl_test;
 ~~~

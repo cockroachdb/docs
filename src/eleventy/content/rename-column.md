@@ -42,7 +42,6 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ### Rename a column
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users (
     id INT PRIMARY KEY,
@@ -51,7 +50,6 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
   );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users RENAME COLUMN family_name TO last_name;
 ~~~
@@ -73,7 +71,6 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 Some subcommands can be used in combination in a single [`ALTER TABLE`](alter-table.html) statement. For example, let's say you create a `users` table with 2 columns, an `id` column for the primary key and a `name` column for each user's last name:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users (
     id INT PRIMARY KEY,
@@ -83,7 +80,6 @@ Some subcommands can be used in combination in a single [`ALTER TABLE`](alter-ta
 
 Then you decide you want distinct columns for each user's first name, last name, and full name, so you execute a single `ALTER TABLE` statement renaming `name` to `last_name`, adding `first_name`, and adding a [computed column](computed-columns.html) called `name` that concatenates `first_name` and `last_name`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users
     RENAME COLUMN name TO last_name,
@@ -92,7 +88,6 @@ Then you decide you want distinct columns for each user's first name, last name,
       AS (CONCAT(first_name, ' ', last_name)) STORED;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~

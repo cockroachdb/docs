@@ -23,7 +23,6 @@ To illustrate this process, we use the following sample data and tools:
 
 Using [Oracle's Data Pump Export utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump-export-utility.html), export the schema:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ expdp user/password directory=datapump dumpfile=oracle_example.dmp content=metadata_only logfile=example.log
 ~~~
@@ -34,7 +33,6 @@ The schema is stored in an Oracle-specific format (e.g., `oracle_example.dmp`).
 
 Using [Oracle's Data Pump Import utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/datapump-import-utility.html), load the exported DMP file to convert it to a SQL file:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ impdp user/password directory=datapump dumpfile=oracle_example.dmp sqlfile=example_sql.sql TRANSFORM=SEGMENT_ATTRIBUTES:N:table PARTITION_OPTIONS=MERGE
 ~~~
@@ -80,12 +78,10 @@ In the example SQL script, `|` is used as a delimiter. Choose a delimiter that w
 
 To extract the data, we ran the script for each table in SQL*Plus:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 $ sqlplus user/password
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > @spool CUSTOMERS
   @spool ADDRESSES
@@ -104,7 +100,6 @@ A data list file (`.lst`) with leading and trailing spaces is created for each t
 
 Exit SQL*Plus:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > EXIT
 ~~~
@@ -131,7 +126,6 @@ for lstfile in sys.argv[1:]:
         writer.writerow(map(string.strip, rec))
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ python3 fix-example.py CUSTOMERS.lst ADDRESSES.lst CARD_DETAILS.lst WAREHOUSES.lst ORDER_ITEMS.lst ORDERS.lst INVENTORIES.lst PRODUCT_INFORMATION.lst LOGON.lst PRODUCT_DESCRIPTIONS.lst ORDERENTRY_METADATA.lst
 ~~~
@@ -168,7 +162,6 @@ For usage examples, see [Migrate from CSV - Configuration Options]({% link "{{ p
 
 Compress the CSV files for a faster import:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ gzip CUSTOMERS.csv ADDRESSES.csv CARD_DETAILS.csv WAREHOUSES.csv ORDER_ITEMS.csv ORDERS.csv INVENTORIES.csv PRODUCT_INFORMATION.csv LOGON.csv PRODUCT_DESCRIPTIONS.csv ORDERENTRY_METADATA.csv
 ~~~
@@ -192,7 +185,6 @@ Using the SQL file created in [Step 2](#step-2-convert-the-oracle-schema-to-sql)
 
 For example, to create a `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE customers (
   customer_id       DECIMAL
@@ -292,7 +284,6 @@ Use [`IMPORT INTO`]({% link "{{ page.version.version }}/import-into.md" %}) to i
 
 For example, to import the data from `CUSTOMERS.csv.gz` into an existing `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 IMPORT INTO CUSTOMERS
   CSV DATA ('https://your-bucket-name.s3.us-east-2.amazonaws.com/CUSTOMERS.csv.gz')
@@ -310,7 +301,6 @@ IMPORT INTO CUSTOMERS
 
 Then add the [computed columns]({% link "{{ page.version.version }}/computed-columns.md" %}), [constraints]({% link "{{ page.version.version }}/alter-table.md" %}#add-constraint), and [function-based indexes]({% link "{{ page.version.version }}/create-index.md" %}). For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > UPDATE CUSTOMERS SET credit_limit = 50000 WHERE credit_limit > 50000;
   ALTER TABLE CUSTOMERS ADD CONSTRAINT CUSTOMER_CREDIT_LIMIT_MAX CHECK (credit_limit <= 50000);

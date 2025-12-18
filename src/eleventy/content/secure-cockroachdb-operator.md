@@ -21,7 +21,6 @@ You can either allow the operator to generate self-signed certificates, provide 
 
 By default, the certificates are created automatically by a self-signer utility, which requires no configuration beyond setting a custom certificate duration if desired. This utility uses `cockroach cert` to automatically generate self-signed certificates for the nodes and root client which are stored in a secret. You can see these certificates by running `kubectl get secrets`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 kubectl get secrets
 ~~~
@@ -39,15 +38,12 @@ If you are deploying on OpenShift you must also set `cockroachdb.tls.selfSigner.
 
 If you wish to supply your own CA certificates to the deployed nodes but allow automatic generation of client certificates, create a Kubernetes secret with the custom CA certificate. To perform these steps using the `cockroach cert` command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 mkdir certs
 ~~~
-{% include "copy-clipboard.html" %}
 ~~~ shell
 mkdir my-safe-directory
 ~~~
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach cert create-ca --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -72,30 +68,24 @@ If you are deploying on OpenShift you must also set `cockroachdb.tls.selfSigner.
 
 Set up your certificates and load them into your Kubernetes cluster as secrets using the following commands:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 mkdir certs
 ~~~
-{% include "copy-clipboard.html" %}
 ~~~ shell
 mkdir my-safe-directory
 ~~~
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach cert create-ca --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach cert create-client root --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
-{% include "copy-clipboard.html" %}
 ~~~ shell
 kubectl create secret generic cockroachdb-root --from-file=certs
 ~~~
 ~~~ shell
 secret/cockroachdb-root created
 ~~~
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach cert create-node --certs-dir=certs --ca-key=my-safe-directory/ca.key localhost 127.0.0.1 my-release-cockroachdb-public my-release-cockroachdb-public.cockroach-ns my-release-cockroachdb-public.cockroach-ns.svc.cluster.local *.my-release-cockroachdb *.my-release-cockroachdb.cockroach-ns *.my-release-cockroachdb.cockroach-ns.svc.cluster.local
 kubectl create secret generic cockroachdb-node --from-file=certs
@@ -193,14 +183,12 @@ The following example uses [cockroach cert commands]({% link "{{ page.version.ve
 
 1. Create two directories:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     mkdir certs my-safe-directory
     ~~~
 
 1. Create the CA certificate and key pair:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-ca \
       --certs-dir=certs \
@@ -209,7 +197,6 @@ The following example uses [cockroach cert commands]({% link "{{ page.version.ve
 
 1. Create a client certificate and key pair for the root user:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-client root \
       --certs-dir=certs \
@@ -218,7 +205,6 @@ The following example uses [cockroach cert commands]({% link "{{ page.version.ve
 
 1. Upload the client certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the {{ site.data.products.cockroachdb-operator }}:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.client.root \
       --from-file=tls.key=certs/client.root.key \
@@ -231,7 +217,6 @@ The following example uses [cockroach cert commands]({% link "{{ page.version.ve
 
 1. Create the certificate and key pair for your CockroachDB nodes, specifying the namespace you used when deploying the cluster. This example uses the `cockroach-ns` namespace:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-node localhost \
       127.0.0.1 \
@@ -247,7 +232,6 @@ The following example uses [cockroach cert commands]({% link "{{ page.version.ve
 
 1. Upload the node certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the {{ site.data.products.cockroachdb-operator }}:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.node \
       --from-file=tls.key=certs/node.key \
@@ -260,7 +244,6 @@ The following example uses [cockroach cert commands]({% link "{{ page.version.ve
 
 1. Check that the secrets were created on the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl get secrets
     ~~~
@@ -301,7 +284,6 @@ If you previously created and signed certificates with `cockroach cert`, follow 
 
 1. Create a new client certificate and key pair for the root user, overwriting the previous certificate and key:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-client root \
       --certs-dir=certs \
@@ -311,7 +293,6 @@ If you previously created and signed certificates with `cockroach cert`, follow 
 
 1. Upload the new client certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the {{ site.data.products.cockroachdb-operator }}:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.client.root.2 \
       --from-file=tls.key=certs/client.root.key \
@@ -324,7 +305,6 @@ If you previously created and signed certificates with `cockroach cert`, follow 
 
 1. Create a new certificate and key pair for your CockroachDB nodes, overwriting the previous certificate and key. Specify the namespace you used when [deploying the cluster]({% link "{{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md" %}#initialize-the-cluster). This example uses the `cockroach-ns` namespace:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach cert create-node localhost \
       127.0.0.1 \
@@ -341,7 +321,6 @@ If you previously created and signed certificates with `cockroach cert`, follow 
 
 1. Upload the new node certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the {{ site.data.products.cockroachdb-operator }}:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret generic cockroachdb.node.2 \
       --from-file=tls.key=certs/node.key \
@@ -366,7 +345,6 @@ If you previously created and signed certificates with `cockroach cert`, follow 
 
 1. Check that the secrets were created on the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl get secrets
     ~~~
@@ -383,14 +361,12 @@ If you previously created and signed certificates with `cockroach cert`, follow 
 
 1. Apply the new settings to the cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
     ~~~
 
     The pods will terminate and restart one at a time, using the new certificates. You can observe this process:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl get pods
     ~~~
@@ -404,7 +380,6 @@ If you previously created and signed certificates with `cockroach cert`, follow 
 
 1. Delete the existing client secret that is no longer in use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl delete secret cockroachdb.client.root
     ~~~
@@ -414,7 +389,6 @@ If you previously created and signed certificates with `cockroach cert`, follow 
 
 1. Delete the existing node secret that is no longer in use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl delete secret cockroachdb.node
     ~~~
@@ -438,21 +412,18 @@ These steps demonstrate how to use the [openssl genrsa](https://www.openssl.org/
 
 1. Generate a 4096-bit RSA private key:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     openssl genrsa -out tls.key 4096
     ~~~
 
 1. Generate an X.509 certificate, valid for 10 years. You will be prompted for the certificate field values.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     openssl req -x509 -new -nodes -key tls.key -sha256 -days 3650 -out tls.crt
     ~~~
 
 1. Create the secret, making sure that you are in the correct namespace:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl create secret tls cockroach-operator-certs --cert=tls.crt --key=tls.key
     ~~~
@@ -462,14 +433,12 @@ These steps demonstrate how to use the [openssl genrsa](https://www.openssl.org/
 
 1. Remove the certificate and key from your local environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     rm tls.crt tls.key
     ~~~
 
 1. Roll the operator deployment to ensure a new server certificate is generated:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     kubectl rollout restart deploy/cockroach-operator-manager
     ~~~

@@ -160,28 +160,24 @@ Follow the recommendations in [Connection security](#connection-security).
 
 PostgreSQL or CockroachDB connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --source 'postgresql://{username}:{password}@{host}:{port}/{database}'
 ~~~
 
 MySQL connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --source 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
 ~~~
 
 Oracle connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --source 'oracle://{username}:{password}@{host}:{port}/{service_name}'
 ~~~
 
 For Oracle Multitenant databases, `--source-cdb` specifies the container database (CDB) connection. `--source` specifies the pluggable database (PDB):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --source 'oracle://{username}:{password}@{host}:{port}/{pdb_service_name}'
 --source-cdb 'oracle://{username}:{password}@{host}:{port}/{cdb_service_name}'
@@ -189,7 +185,6 @@ For Oracle Multitenant databases, `--source-cdb` specifies the container databas
 
 `--target` specifies the [CockroachDB connection string]({% link "{{site.current_cloud_version}}/connection-parameters.md" %}#connect-using-a-url):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --target 'postgresql://{username}:{password}@{host}:{port}/{database}'
 ~~~
@@ -200,21 +195,18 @@ For Oracle Multitenant databases, `--source-cdb` specifies the container databas
 
 `data-load` (default) instructs MOLT Fetch to load the source data into CockroachDB:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --mode data-load
 ~~~
 
 `export-only` instructs MOLT Fetch to export the source data to the specified [cloud storage](#bucket-path) or [local file server](#local-path). It does not load the data into CockroachDB:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --mode export-only
 ~~~
 
 `import-only` instructs MOLT Fetch to load the source data in the specified [cloud storage](#bucket-path) or [local file server](#local-path) into the CockroachDB target:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --mode import-only
 ~~~
@@ -243,7 +235,6 @@ During the [data export phase](#data-export-phase), MOLT Fetch can divide large 
 
 To control the number of shards created per table, use the `--export-concurrency` flag. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --export-concurrency=4
 ~~~
@@ -262,12 +253,10 @@ Stats-based sharding requires that the user has `SELECT` permissions on source t
 
 To optimize stats-based sharding, run [`ANALYZE`](https://www.postgresql.org/docs/current/sql-analyze.html) on source tables before migration to ensure that table statistics are up-to-date and shards are evenly distributed. This requires `MAINTAIN` or `OWNER` permissions on the table. You can analyze specific primary key columns or the entire table. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ANALYZE table_name(PK1, PK2, PK3);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ANALYZE table_name;
 ~~~
@@ -314,7 +303,6 @@ Only the path specified in `--bucket-path` is used. Query parameters, such as cr
 
 Connect to a Google Cloud Storage bucket with [implicit authentication]({% link "{{ site.current_cloud_version }}/cloud-storage-authentication.md" %}#google-cloud-storage-implicit) and [assume role]({% link "{{ site.current_cloud_version }}/cloud-storage-authentication.md" %}#set-up-google-cloud-storage-assume-role):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --bucket-path 'gs://migration/data/cockroach'
 --assume-role 'user-test@cluster-ephemeral.iam.gserviceaccount.com'
@@ -323,7 +311,6 @@ Connect to a Google Cloud Storage bucket with [implicit authentication]({% link 
 
 Connect to an Amazon S3 bucket and explicitly specify the `ap_south-1` region: 
 
-{% include "copy-clipboard.html" %}
 ~~~
 --bucket-path 's3://migration/data/cockroach'
 --import-region 'ap-south-1'
@@ -335,7 +322,6 @@ When `--import-region` is set, `IMPORT INTO` must be used for [data movement](#d
 
 Connect to an Azure Blob Storage container with [implicit authentication]({% link "{{ site.current_cloud_version }}/cloud-storage-authentication.md" %}?filters=azure#azure-blob-storage-implicit-authentication):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --bucket-path 'azure-blob://migration/data/cockroach'
 --use-implicit-auth
@@ -345,7 +331,6 @@ Connect to an Azure Blob Storage container with [implicit authentication]({% lin
 
 `--local-path` instructs MOLT Fetch to write intermediate files to a path within a [local file server]({% link "{{site.current_cloud_version}}/use-a-local-file-server.md" %}). `local-path-listen-addr` specifies the address of the local file server. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --local-path /migration/data/cockroach
 --local-path-listen-addr 'localhost:3000'
@@ -355,7 +340,6 @@ In some cases, CockroachDB will not be able to use the local address specified b
 
 For example, if you are migrating to CockroachDB {{ site.data.products.cloud }}, such that the {{ site.data.products.cloud }} cluster is in a different physical location than the machine running `molt fetch`, then CockroachDB cannot reach an address such as `localhost:3000`. In these situations, use `--local-path-crdb-access-addr` to specify an address for the local file server that is **publicly accessible**. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --local-path /migration/data/cockroach
 --local-path-listen-addr 'localhost:3000'
@@ -385,14 +369,12 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 
 `--schema-filter` specifies a range of schema objects to move to CockroachDB, formatted as a POSIX regex string. For example, to move every table in the source database's `public` schema:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --schema-filter 'public'
 ~~~
 
 `--table-filter` and `--table-exclusion-filter` specify tables to include and exclude from the migration, respectively, formatted as POSIX regex strings. For example, to move every source table that has "user" in the table name and exclude every source table that has "temp" in the table name:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --table-filter '.*user.*' --table-exclusion-filter '.*temp.*'
 ~~~
@@ -401,7 +383,6 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 
 Use `--filter-path` to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table. To apply row-level filters during replication, use [MOLT Replicator]({% link "molt/molt-replicator.md" %}) with userscripts.
 
-{% include "copy-clipboard.html" %}
 ~~~
 --filter-path 'data-filter.json'
 ~~~
@@ -447,7 +428,6 @@ If the expression references columns that are not indexed, MOLT Fetch will emit 
 
 To use `--filter-path` with replication, create and save a TypeScript userscript (e.g., `filter-script.ts`). The following script ensures that only rows where `v > 100` are replicated to `defaultdb.public.t1`:
 
-{% include "copy-clipboard.html" %}
 ~~~ ts
 import * as api from "replicator@v1";
 function disp(doc, meta) {
@@ -464,7 +444,6 @@ api.configureSource("defaultdb.public", {
 
 Apply the userscript with the `--userscript` replication flag:
 
-{% include "copy-clipboard.html" %}
 ~~~ 
 --userscript 'filter-script.ts'
 ~~~
@@ -476,21 +455,18 @@ Apply the userscript with the `--userscript` replication flag:
 
 To load the data without changing the existing data in the tables, use `none`:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --table-handling none
 ~~~
 
 To [truncate]({% link "{{site.current_cloud_version}}/truncate.md" %}) tables before loading the data, use `truncate-if-exists`:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --table-handling truncate-if-exists
 ~~~
 
 To drop existing tables and create new tables before loading the data, use `drop-on-target-and-recreate`:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --table-handling drop-on-target-and-recreate
 ~~~
@@ -517,7 +493,6 @@ When `--skip-pk-check` is set, all tables are treated as if they lack a primary 
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 molt fetch \
   --mode data-load \
@@ -603,7 +578,6 @@ If [`drop-on-target-and-recreate`](#target-table-handling) is set, MOLT Fetch au
 
 `--type-map-file` specifies the path to the JSON file containing the explicit type mappings. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --type-map-file 'type-mappings.json'
 ~~~
@@ -645,7 +619,6 @@ You can define transformation rules to be performed on the target schema during 
 
 Transformation rules are defined in the JSON file indicated by the `--transformations-file` flag. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --transformations-file 'transformation-rules.json'
 ~~~
@@ -714,7 +687,6 @@ When running `molt fetch`, set `--logging debug` and look for `ALTER TABLE ... A
 
 After running `molt fetch`, issue a `SHOW CREATE TABLE` statement on CockroachDB:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE TABLE computed;
 ~~~
@@ -743,7 +715,6 @@ Only one fetch ID and set of continuation tokens, each token corresponding to a 
 
 To retry all data starting from the continuation point, reissue the `molt fetch` command and include the `--fetch-id`.
 
-{% include "copy-clipboard.html" %}
 ~~~
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 ~~~
@@ -754,7 +725,6 @@ To retry a specific table that failed, include both `--fetch-id` and `--continua
 This will retry only the table that corresponds to the continuation token. If the fetch task succeeds, there may still be source data that is not yet loaded into CockroachDB.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 --continuation-token 011762e5-6f70-43f8-8e15-58b4de10a007
@@ -762,7 +732,6 @@ This will retry only the table that corresponds to the continuation token. If th
 
 To retry all data starting from a specific file, include both `--fetch-id` and `--continuation-file-name`. The latter flag specifies the filename of an intermediate file in [cloud or local storage](#data-path). All filenames are prepended with `part_` and have the `.csv.gz` or `.csv` extension, depending on compression type (gzip by default). For example: 
 
-{% include "copy-clipboard.html" %}
 ~~~
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 --continuation-file-name part_00000003.csv.gz
@@ -776,7 +745,6 @@ Continuation is not possible when using [direct copy](#direct-copy).
 
 To view all active continuation tokens, issue a `molt fetch tokens list` command along with `--conn-string`, which specifies the [connection string]({% link "{{site.current_cloud_version}}/connection-parameters.md" %}#connect-using-a-url) for the target CockroachDB database. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 molt fetch tokens list \
 --conn-string 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full'
@@ -827,7 +795,6 @@ To perform a bulk data load migration from your source database to CockroachDB, 
 
 Specify the source and target database connections. For connection string formats, refer to [Source and target databases](#source-and-target-databases):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --source $SOURCE
 --target $TARGET
@@ -835,14 +802,12 @@ Specify the source and target database connections. For connection string format
 
 Specify how to move data to CockroachDB. Use [cloud storage](#bucket-path) for intermediate file storage:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --bucket-path 's3://bucket/path'
 ~~~
 
 Alternatively, use a [local file server](#local-path) for intermediate storage:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --local-path /migration/data/cockroach
 --local-path-listen-addr 'localhost:3000'
@@ -850,14 +815,12 @@ Alternatively, use a [local file server](#local-path) for intermediate storage:
 
 Alternatively, use [direct copy](#direct-copy) to move data directly without intermediate storage:
 
-{% include "copy-clipboard.html" %}
 ~~~
 --direct-copy
 ~~~
 
 Optionally, filter which schemas and tables to migrate. By default, all schemas and tables are migrated. For details, refer to [Schema and table selection](#schema-and-table-selection):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --schema-filter 'public'
 --table-filter '.*user.*'
@@ -865,7 +828,6 @@ Optionally, filter which schemas and tables to migrate. By default, all schemas 
 
 Specify how to handle target tables. By default, `--table-handling` is set to `none`, which loads data without changing existing data in the tables. For details, refer to [Target table handling](#target-table-handling):
 
-{% include "copy-clipboard.html" %}
 ~~~
 --table-handling truncate-if-exists
 ~~~
@@ -875,14 +837,12 @@ When performing a bulk load without subsequent replication, use `--ignore-replic
 - Performing a one-time data migration with no plan to replicate ongoing changes.
 - Exporting data from a read replica where replication checkpoints are unavailable.
 
-{% include "copy-clipboard.html" %}
 ~~~
 --ignore-replication-check
 ~~~
 
 At minimum, the `molt fetch` command should include the source, target, data path, and `--ignore-replication-check` flags:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 molt fetch \
 --source $SOURCE \
@@ -904,7 +864,6 @@ The workflow is the same as [Bulk data load](#bulk-data-load), except:
 
 At minimum, the `molt fetch` command should include the source, target, and data path flags:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 molt fetch \
 --source $SOURCE \

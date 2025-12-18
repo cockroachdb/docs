@@ -1,6 +1,5 @@
 The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB {{ site.data.products.basic }} cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud quickstart
 ~~~

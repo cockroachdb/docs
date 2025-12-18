@@ -17,7 +17,6 @@ The coordinates of each Point and line that make up the Polygon are translated a
 
 A Polygon can be created from SQL by calling the `st_geomfromtext` function on a LineString definition expressed in the [Well Known Text (WKT)]({% link "{{ page.version.version }}/architecture/glossary.md" %}#wkt) format as shown below.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT ST_GeomFromText('POLYGON((0 0, 0 1024, 1024 1024, 1024 0, 0 0))');
 ~~~
@@ -33,7 +32,6 @@ SELECT ST_GeomFromText('POLYGON((0 0, 0 1024, 1024 1024, 1024 0, 0 0))');
 
 To represent a polygon with holes in [WKT]({% link "{{ page.version.version }}/architecture/glossary.md" %}#wkt), add one or more additional lists of coordinates that define the boundaries of the holes as shown below:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT ST_GeomFromText('POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902), (-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832))');
 ~~~
@@ -49,7 +47,6 @@ SELECT ST_GeomFromText('POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75
 
 You can also use the `st_makepolygon` function on a LineString that defines the outer boundary of the Polygon, e.g.:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT ST_MakePolygon('LINESTRING(0 0, 0 1024, 1024 1024, 1024 0, 0 0)');
 ~~~

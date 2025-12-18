@@ -4,7 +4,6 @@ Convert the source schema into a CockroachDB-compatible schema. CockroachDB supp
 
 	For example, a source table defined as `CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);` must have a corresponding schema and table in CockroachDB:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	CREATE SCHEMA migration_schema;
 	CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);

@@ -47,7 +47,6 @@ Field | Value | Description
 
 Specify the connection URI to the [external storage location]({% link "{{ page.version.version }}/use-cloud-storage.md" %}), or a created [external connection]({% link "{{ page.version.version }}/create-external-connection.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CHECK EXTERNAL CONNECTION 'external://cloud-storage';
 ~~~
@@ -62,7 +61,6 @@ CHECK EXTERNAL CONNECTION 'external://cloud-storage';
 
 To modify the testing parameters, use one or a combination of the options: `concurrently`, `time`, `transfer`. For details on each, refer to [Options](#options).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CHECK EXTERNAL CONNECTION 'external://cloud-storage' WITH transfer = '50MiB', concurrently = 5, time = '1ms';
 ~~~

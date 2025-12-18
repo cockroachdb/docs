@@ -43,7 +43,6 @@ To manage the DLQ, you can evaluate entries in the `incoming_row` column and app
 
 As an example, for an LDR stream created on the `movr.public.promo_codes` table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW TABLES;
 ~~~
@@ -118,7 +117,6 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
 1. Redirect your application traffic to one cluster, for example, cluster A. 
 1. Wait for all traffic from cluster B to replicate to cluster A. Check this is complete with:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW LOGICAL REPLICATION JOBS WITH DETAILS;
     ~~~
@@ -134,7 +132,6 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
 
 1. Drop the LDR job on both clusters. Canceling the LDR streams will remove the history retention job, which will cause the data to be garbage collected according to the [`gc.ttlseconds`]({% link "{{ page.version.version }}/configure-replication-zones.md" %}#gc-ttlseconds) setting. Use [`CANCEL JOB`]({% link "{{ page.version.version }}/cancel-job.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CANCEL JOB {ldr_job_id};
     ~~~
@@ -144,7 +141,6 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
 1. Recreate the table and its new schema on cluster B. 
 1. Create new LDR streams for the table on both clusters A and B. Run `CREATE LOGICAL REPLICATION STREAM` from the **destination** cluster for each stream:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
     ~~~
@@ -159,7 +155,6 @@ If you have a unidirectional LDR setup, you should cancel the running LDR stream
 
 1. Drop the LDR job on the **destination** cluster. Canceling the LDR job will remove the history retention job, which will cause the data to be garbage collected according to the [`gc.ttlseconds`]({% link "{{ page.version.version }}/configure-replication-zones.md" %}#gc-ttlseconds) setting. Use [`CANCEL JOB`]({% link "{{ page.version.version }}/cancel-job.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CANCEL JOB {ldr_job_id};
     ~~~
@@ -167,7 +162,6 @@ If you have a unidirectional LDR setup, you should cancel the running LDR stream
 1. Once the job has `canceled`, perform the required schema change on both the source and destination tables.
 1. Start a new LDR job from the **destination** cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
     ~~~

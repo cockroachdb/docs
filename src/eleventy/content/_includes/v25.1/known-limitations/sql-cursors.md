@@ -5,7 +5,6 @@ CockroachDB implements SQL {% if page.name == "known-limitations.md" %} [cursor]
 - `BINARY CURSOR`, which returns data in the Postgres binary format, is not supported. [#77099](https://github.com/cockroachdb/cockroach/issues/77099)
 - `WITH HOLD`, which allows keeping a cursor open for longer than a transaction by writing its results into a buffer, is accepted as valid syntax within a single transaction but is not supported. It acts as a no-op and does not actually perform the function of `WITH HOLD`, which is to make the cursor live outside its parent transaction. Instead, if you are using `WITH HOLD`, you will be forced to close that cursor within the transaction it was created in. [#77101](https://github.com/cockroachdb/cockroach/issues/77101)
     - This syntax is accepted (but does not have any effect):
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         BEGIN;
         DECLARE test_cur CURSOR WITH HOLD FOR SELECT * FROM foo ORDER BY bar;
@@ -13,7 +12,6 @@ CockroachDB implements SQL {% if page.name == "known-limitations.md" %} [cursor]
         COMMIT;
         ~~~
     - This syntax is not accepted, and will result in an error:
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         BEGIN;
         DECLARE test_cur CURSOR WITH HOLD FOR SELECT * FROM foo ORDER BY bar;

@@ -22,7 +22,6 @@ The examples in this tutorial will use three terminals, one for each transaction
 
 In the first terminal, use the [`cockroach demo`]({% link "{{ page.version.version }}/cockroach-demo.md" %}) command to start a temporary, in-memory CockroachDB cluster of one node.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach demo --no-example-database
 ~~~
@@ -31,14 +30,12 @@ It will open an interactive SQL shell to the cluster set to an empty database ca
 
 To distinguish each terminal that you'll use in this tutorial, set the `application_name`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET application_name = 'Transaction 1';  -- to distinguish between transactions
 ~~~
 
 To [connect additional SQL clients to the demo cluster]({% link "{{ page.version.version }}/cockroach-demo.md" %}#connect-an-additional-sql-client-to-the-demo-cluster), run:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 \demo ls
 ~~~
@@ -56,14 +53,12 @@ node 1:
 
 In a second terminal, open another SQL shell to the demo cluster using the `cli` command from the `\demo ls` output:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach sql --certs-dir=/Users/myuser/.cockroach-demo -u demo -d defaultdb
 ~~~
 
 In the second SQL shell, set `application_name`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET application_name = 'Transaction 2';  -- to distinguish between transactions
 ~~~
@@ -72,14 +67,12 @@ SET application_name = 'Transaction 2';  -- to distinguish between transactions
 
 In a third terminal, open another SQL shell to the demo cluster using the `cli` command from the `\demo ls` output:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach sql --certs-dir=/Users/myuser/.cockroach-demo -u demo -d defaultdb
 ~~~
 
 In the third SQL shell, set `application_name`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET application_name = 'Transaction 3';  -- to distinguish between transactions
 ~~~
@@ -100,7 +93,6 @@ In this step, you'll load some initial data to prepare the table for a set of tr
 
 In any of the SQL shells, create a table and insert some data:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP TABLE IF EXISTS t;
 CREATE TABLE t (k INT PRIMARY KEY, v INT);
@@ -131,7 +123,6 @@ To reproduce Example 1 in CockroachDB in preparation for the next section on how
 
 **Terminal 1**
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 UPDATE t SET v=2012 WHERE k=2; -- lock k=2
@@ -139,7 +130,6 @@ UPDATE t SET v=2012 WHERE k=2; -- lock k=2
 
 **Terminal 2**
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 SELECT * FROM t WHERE k=2; -- waiting read
@@ -147,7 +137,6 @@ SELECT * FROM t WHERE k=2; -- waiting read
 
 **Terminal 3**
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 UPDATE t SET v=2032 WHERE k=2; -- waiting write
@@ -155,7 +144,6 @@ UPDATE t SET v=2032 WHERE k=2; -- waiting write
 
 **Terminal 1**
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 ~~~
@@ -173,7 +161,6 @@ When *Transaction 1* releases key `k=2`, *Transaction 2* should output the follo
 
 `COMMIT` Transaction 2:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 ~~~
@@ -182,7 +169,6 @@ COMMIT;
 
 `COMMIT` Transaction 3 and verify that the `UPDATE` has succeeded:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 SELECT * FROM t where k=2;
@@ -288,7 +274,6 @@ COMMIT;
 
 In any of the SQL shells, create a second table and insert some data:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP TABLE IF EXISTS t2;
 CREATE TABLE t2 (k INT PRIMARY KEY, v INT);
@@ -319,7 +304,6 @@ To reproduce Example 2, execute the following SQL statements in the given order 
 
 **Terminal 1**
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET application_name = 'Transaction 4';  -- to distinguish between transactions
 BEGIN;
@@ -328,7 +312,6 @@ UPDATE t2 SET v=4014 WHERE k=4; -- lock k=4
 
 **Terminal 2**
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET application_name = 'Transaction 5';  -- to distinguish between transactions
 BEGIN AS OF SYSTEM TIME '-30s';
@@ -346,7 +329,6 @@ SELECT * FROM t2 WHERE k=4; -- historical read
 
 **Terminal 3**
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET application_name = 'Transaction 6';  -- to distinguish between transactions
 BEGIN;
@@ -365,14 +347,12 @@ SQLSTATE: 25P02
 
 **Terminal 1**
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 ~~~
 
 **Terminal 2**
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 ~~~
@@ -381,7 +361,6 @@ COMMIT;
 
 `COMMIT` *Transaction 6*. Since the `SELECT` statement in Transaction 6 generated an error, `COMMIT` is equivalent to `ROLLBACK`, which aborts the transaction and discards the `UPDATE`. Afterward, verify that the `UPDATE` was discarded.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 COMMIT;
 SELECT * FROM t2 WHERE k=4;

@@ -31,7 +31,6 @@ To call a procedure, a user must have [`EXECUTE` privilege]({% link "{{ page.ver
 
 The following statement calls the [`delete_earliest_histories` example procedure]({% link "{{ page.version.version }}/stored-procedures.md" %}#create-a-stored-procedure-using-pl-pgsql), specifying 5 rows to delete and a `rides_left` cursor name:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CALL delete_earliest_histories (5, 'rides_left');
 ~~~

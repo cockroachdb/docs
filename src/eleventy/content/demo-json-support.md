@@ -35,7 +35,6 @@ This page guides you through a simple demonstration of how CockroachDB can store
 
 For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode, so use the [`cockroach start-single-node`]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}) command in the foreground:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach start-single-node \
 --insecure \
@@ -48,12 +47,10 @@ $ cockroach start-single-node \
 
 In a new terminal window, open the [built-in SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}) and create a new SQL user, `maxroach`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost:26257
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE USER maxroach;
 ~~~
@@ -62,21 +59,18 @@ $ cockroach sql --insecure --host=localhost:26257
 
 Next, create a database called `jsonb_test`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE DATABASE jsonb_test;
 ~~~
 
 Set the database as the default:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET DATABASE = jsonb_test;
 ~~~
 
 Then [grant privileges]({% link "{{ page.version.version }}/grant.md" %}) to the `maxroach` user:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > GRANT ALL ON DATABASE jsonb_test TO maxroach;
 ~~~
@@ -85,7 +79,6 @@ Then [grant privileges]({% link "{{ page.version.version }}/grant.md" %}) to the
 
 Still in the SQL shell, create a table called `programming`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE programming (
     id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
@@ -93,7 +86,6 @@ Still in the SQL shell, create a table called `programming`:
   );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE programming;
 ~~~
@@ -122,14 +114,12 @@ Now that you have a database, a SQL user, and a table, let's run code to insert 
 <section class="filter-content" markdown="1" data-scope="go">
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/json/json-sample.go" download><code>json-sample.go</code></a> file, or create the file yourself and copy the code into it:
 
-{% include "copy-clipboard.html" %}
 ~~~ go
 {% dynamic_include page.version.version, "/json/json-sample.go" %}
 ~~~
 
 In a new terminal window, navigate to your sample code file and run it:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ go run json-sample.go
 ~~~
@@ -144,14 +134,12 @@ The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in 
 <section class="filter-content" markdown="1" data-scope="python">
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/json/json-sample.py" download><code>json-sample.py</code></a> file, or create the file yourself and copy the code into it:
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 {% dynamic_include page.version.version, "/json/json-sample.py" %}
 ~~~
 
 In a new terminal window, navigate to your sample code file and run it:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ python json-sample.py
 ~~~
@@ -170,7 +158,6 @@ The program will loop through that 40 times, but you can start querying the data
 
 Back in the terminal where the SQL shell is running, verify that rows of data are being inserted into your table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT count(*) FROM programming;
 ~~~
@@ -182,7 +169,6 @@ Back in the terminal where the SQL shell is running, verify that rows of data ar
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT count(*) FROM programming;
 ~~~
@@ -198,7 +184,6 @@ You should see the count increasing. Keep checking until you see 1000 rows.
 
 Now, retrieve all the current entries where the link is pointing to somewhere on GitHub:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT id FROM programming \
 WHERE posts @> '{"data": {"domain": "github.com"}}';
@@ -231,7 +216,6 @@ Since you are querying live data, your results for this and the following steps 
 
 The query in the previous step took 103.748ms. To optimize the performance of queries that filter on the `JSONB` column, let's create a [GIN index]({% link "{{ page.version.version }}/inverted-indexes.md" %}) on the column:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE INVERTED INDEX ON programming(posts);
 ~~~
@@ -240,7 +224,6 @@ The query in the previous step took 103.748ms. To optimize the performance of qu
 
 Now that there is a GIN index, the same query will run much faster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT id FROM programming \
 WHERE posts @> '{"data": {"domain": "github.com"}}';
@@ -259,7 +242,6 @@ If the program is still running, press `ctrl-c` to terminate it.
 
 Get the process ID of the node:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ps -ef | grep cockroach | grep -v grep
 ~~~
@@ -270,14 +252,12 @@ ps -ef | grep cockroach | grep -v grep
 
 Then gracefully shut down the node, specifying its process ID:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 kill -TERM 8099
 ~~~
 
 If you do not plan to restart the cluster, remove the node's data store:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ rm -rf json-test
 ~~~

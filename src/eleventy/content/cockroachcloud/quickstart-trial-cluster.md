@@ -94,22 +94,18 @@ To download CockroachDB locally and configure it to connect to the cluster with 
 
 1. You can now run [CockroachDB SQL statements]({% link "cockroachcloud/learn-cockroachdb-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -123,7 +119,6 @@ To download CockroachDB locally and configure it to connect to the cluster with 
 
 1. To exit the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~

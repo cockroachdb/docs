@@ -177,7 +177,6 @@ These logs perform one disk I/O per event. Enabling each setting will impact per
 
 To log SQL client connection events to the `SESSIONS` channel, enable the `server.auth_log.sql_connections.enabled` [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING server.auth_log.sql_connections.enabled = true;
 ~~~
@@ -201,7 +200,6 @@ I210323 21:53:58.305074 53298 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]
 
 To log SQL session authentication events to the `SESSIONS` channel, enable the `server.auth_log.sql_sessions.enabled` [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}) on every cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~
@@ -256,7 +254,6 @@ To log all queries against a specific table, enable auditing on the table with [
 
 This command enables auditing on a `customers` table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
@@ -294,14 +291,12 @@ These events record both successful and denied attempts to access internal syste
 
 This command enables access to unsafe internals for the user `can_access_unsafe_internals`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER ROLE can_access_unsafe_internals SET allow_unsafe_internals = on;
 ~~~
 
 When the user `can_access_unsafe_internals` connects to a session and accesses an unsafe internal object, the event is logged:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT count(*) FROM crdb_internal.active_range_feeds;
 ~~~
@@ -320,14 +315,12 @@ This example shows how to identify users denied access to unsafe internal tables
 
 This command disables access to unsafe internals for the user `can_not_access_unsafe_internals`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER ROLE can_not_access_unsafe_internals SET allow_unsafe_internals = off;
 ~~~
 
 When the user `can_not_access_unsafe_internals` connects to a session and attempts to access an unsafe internal object, the event is logged:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT count(*) FROM crdb_internal.active_range_feeds;
 ~~~
@@ -403,7 +396,6 @@ The [`SQL_EXEC`]({% link "{{ page.version.version }}/logging.md" %}#sql_exec) ch
 
 To log cluster-wide executions, enable the `sql.trace.log_statement_execute` [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING sql.trace.log_statement_execute = true;
 ~~~
@@ -437,7 +429,6 @@ I210330 16:09:04.966129 1885738 9@util/log/event_log.go:32 ⋮ [n1,intExec=‹fi
 
 If you no longer need to log queries across the cluster, you can disable the setting:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING sql.trace.log_statement_execute = false;
 ~~~
@@ -462,7 +453,6 @@ To log all queries that perform full table or index scans to `SQL_PERF`, regardl
 
 For example, to enable the slow query log for all queries with a latency above 100 milliseconds:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING sql.log.slow_query.latency_threshold = '100ms';
 ~~~

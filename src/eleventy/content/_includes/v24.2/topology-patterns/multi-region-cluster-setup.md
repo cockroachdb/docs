@@ -14,7 +14,6 @@ Each [multi-region pattern]({% link "{{ page.version.version }}/topology-pattern
 
 Start each node with the [`--locality`]({% link "{{ page.version.version }}/cockroach-start.md" %}#locality) flag specifying its region and AZ combination. For example, the following command starts a node in the `west1` AZ of the `us-west` region:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach start \
 --locality=region=us-west,zone=west1 \

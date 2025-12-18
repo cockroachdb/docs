@@ -45,12 +45,10 @@ Complete the following items before using Qlik Replicate:
 - Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release]({% link "releases/index.md" %}), and have created a [SQL user]({% link "{{ page.version.version }}/security-reference/authorization.md" %}#sql-users) that you can use for your Qlik Replicate target endpoint.
     - Set the following [session variables]({% link "{{ page.version.version }}/set-vars.md" %}#supported-variables) using [`ALTER ROLE ... SET {session variable}`]({% link "{{ page.version.version }}/alter-role.md" %}#set-default-session-variable-values-for-a-role):
 
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         ALTER ROLE {username} SET copy_from_retries_enabled = true;
         ~~~
 
-        {% include "copy-clipboard.html" %}
         ~~~ sql
         ALTER ROLE {username} SET copy_from_atomic_enabled = false;
         ~~~

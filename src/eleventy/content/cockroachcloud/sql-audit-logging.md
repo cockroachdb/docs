@@ -13,7 +13,6 @@ After you enable SQL audit logging for a table, audit logs are sent to the [`SEN
 
 Use the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({% link "{{site.current_cloud_version}}/alter-table.md" %}#experimental_audit) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE {table_name} EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~

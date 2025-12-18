@@ -35,7 +35,6 @@ For limitations on what PostgreSQL features are supported, refer to Oracle's [De
     1. [Oracle GoldenGate for PostgreSQL](https://www.oracle.com/middleware/technologies/goldengate-downloads.html) is required to pull data from the trail files to CockroachDB.
 - For CockroachDB clusters running v22.1 and earlier, enable the following [cluster settings]({% link "{{ page.version.version }}/cluster-settings.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING sql.defaults.datestyle.enabled = true;
     SET CLUSTER SETTING sql.defaults.intervalstyle.enabled = true;
@@ -53,7 +52,6 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
 
 1. Edit the `ODBC.ini` file to set up the ODBC data sources and configuration:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     # No changes should be needed for CRDBLOCAL
     [ODBC Data Sources]
@@ -71,7 +69,6 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
 
     The path should at least include `/usr/pgsql-13/lib` and `/u01/ggs-pg/lib`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     # The path is a concatenation of your PostgreSQL libraries and GoldenGate installation directory
     export LD_LIBRARY_PATH=/usr/pgsql-13/lib:/u01/ggs-pg/lib
@@ -79,7 +76,6 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
 
 1. Set up the `ODBC.ini` file for the Oracle GoldenGate host:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     # This is needed so that OGG knows where to look for connection details for the database
     export ODBCINI=/etc/odbc.ini
@@ -91,7 +87,6 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
     - Replace the login details with your own. Be sure to prefix the database name with `{hostname}`.
     - Make sure your CockroachDB {{ site.data.products.standard }} cluster's [root CA certificate](https://cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster#connect-to-your-cluster) is in the `TrustStore` path.
 
-    {% include "copy-clipboard.html" %}
     ~~~
     [CRDBSTANDARD]
     # The following driver will always point to your Oracle GoldenGate for PostgreSQL installation
@@ -109,7 +104,6 @@ This section describes how to configure Oracle GoldenGate for PostgreSQL to work
         
 1. Log in to the database:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd /u01/ggs-pg
 
@@ -132,7 +126,6 @@ Complete the steps in this section on a machine and in a directory where Oracle 
 
 1. In the GGSCI terminal, create and open the `epos` parameter file for the Oracle source:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd /u01/ggs # Otherwise known as $OGG_HOME
     ./ggsci
@@ -143,7 +136,6 @@ Complete the steps in this section on a machine and in a directory where Oracle 
 
 1. Edit the parameters that configure Extract to send data to the trail file at `./dirdat/ab` on the remote host:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     EXTRACT epos
     USERIDALIAS gg_source
@@ -154,7 +146,6 @@ Complete the steps in this section on a machine and in a directory where Oracle 
 
 1. In the GGSCI terminal, run the following and start the Extract service.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     add extract epos, tranlog, begin now
     add rmttrail ./dirdat/ab, extract epos megabytes 10
@@ -168,7 +159,6 @@ Complete the steps in this section on a machine and in a directory where Oracle 
 
 1. Check the status of the Extract by creating a test table `OGGADM1.testtable` in Oracle and adding a row:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE OGGADM1.testtable (col1 number, col2 varchar2(20));
     ALTER TABLE OGGADM1.testtable ADD PRIMARY KEY (col1);
@@ -178,7 +168,6 @@ Complete the steps in this section on a machine and in a directory where Oracle 
 
 1. In GGSCI, in another terminal, check that Extract is working correctly:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     stats EXTRACT epos
     ~~~
@@ -228,7 +217,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. Log in to the database from GGSCI:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     export LD_LIBRARY_PATH=/usr/pgsql-13/lib:/u01/ggs-pg/lib
     export ODBCINI=/etc/odbc.ini
@@ -242,7 +230,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. Check the status in the GGSCI terminal:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     info all
     ~~~
@@ -256,7 +243,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. Open the parameter file:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     edit param RORPSQL 
     view param RORPSQL 
@@ -264,7 +250,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. Edit the parameters to configure the `MAP` statement, which maps the source (`OGGADM1.testtable`) to the target (`public.testtable`):
 
-    {% include "copy-clipboard.html" %}
     ~~~
     REPLICAT RORPSQL
     SETENV ( PGCLIENTENCODING = "UTF8" )
@@ -277,7 +262,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. In the GGSCI terminal, run the following and start the Replicat service:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     add replicat RORPSQL, NODBCHECKPOINT, exttrail ./dirdat/ab
     start RORPSQL
@@ -291,7 +275,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. Test that Extract and Replicat are working properly by adding values to `OGGADM1.testtable`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     INSERT INTO OGGADM1.testtable (col1, col2) VALUES (12, 'Example data');
     COMMIT;
@@ -299,7 +282,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. [Connect to the target CockroachDB {{ site.data.products.standard }} cluster]({% link "{{ page.version.version }}/connect-to-the-database.md" %}) and check that the data was delivered to `public.testtable`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM public.testtable;
     ~~~
@@ -312,7 +294,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. Open the GGSCI terminal for Oracle: 
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd $OGG_HOME
     ./ggsci
@@ -320,7 +301,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. Check that Extract is working correctly:
     
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     stats EXTRACT EPOS
     ~~~
@@ -362,7 +342,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. Open the GGSCI terminal for CockroachDB: 
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd $OGG_PG_HOME
     ./ggsci
@@ -370,7 +349,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1.  Check that Replicat is working correctly:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     stats REPLICAT RORPSQL
     ~~~
@@ -415,7 +393,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 1. Keep the [Extract process](#set-up-extract-to-capture-data-from-a-source-database) running on Oracle and the [Replicat process](#set-up-replicat-to-deliver-data-to-cockroachdb) running for CockroachDB.
 1. In the source database, bulk insert some data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     INSERT INTO OGGADM1.testtable2 (col1, col2)
     SELECT level + 99, 'Example data'
@@ -425,7 +402,6 @@ Run the steps in this section on a machine and in a directory where Oracle Golde
 
 1. Run the status command on the Extract GGSCI terminal:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     stats EXTRACT EPOS
     ~~~

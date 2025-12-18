@@ -8,7 +8,6 @@ If MOLT Replicator appears hung or performs poorly:
 
 1. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets. Replace `{host}` and `{metrics-port}` with your Replicator host and the port specified by `--metricsAddr`:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl '{host}:{metrics-port}/debug/pprof/trace?seconds=15' > trace.out
     curl '{host}:{metrics-port}/debug/pprof/profile?seconds=15' > profile.out
@@ -27,14 +26,12 @@ This error occurs when logical replication is not supported.
 
 Verify that the source database supports logical replication by checking the `wal_level` parameter on PostgreSQL:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW wal_level;
 ~~~
 
 If `wal_level` is not set to `logical`, update it and restart PostgreSQL:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER SYSTEM SET wal_level = 'logical';
 ~~~
@@ -47,7 +44,6 @@ ERROR: replication slot "molt_slot" already exists
 
 **Resolution:** Either create a new slot with a different name, or drop the existing slot to start fresh:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT pg_drop_replication_slot('molt_slot');
 ~~~
@@ -64,7 +60,6 @@ run CREATE PUBLICATION molt_fetch FOR ALL TABLES;
 
 **Resolution:** Create the publication on the source database. Ensure you also create the replication slot:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE PUBLICATION molt_publication FOR ALL TABLES;
 SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
@@ -86,7 +81,6 @@ run SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput'); in sourc
 
 **Resolution:** {% if page.name != "migrate-load-replicate.md" %}[Create the replication slot]({% link "molt/migrate-load-replicate.md" %}#configure-source-database-for-replication){% else %}[Create the replication slot](#configure-source-database-for-replication){% endif %} or verify the correct slot name:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
 ~~~
@@ -109,7 +103,6 @@ For PostgreSQL, the replication slot on the source database tracks progress auto
 **Resolution:** Clear the `_replicator.memo` table to remove stale SCN (System Change Number) checkpoints:
 </section>
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DELETE FROM _replicator.memo WHERE true;
 ~~~
@@ -122,7 +115,6 @@ If Replicator repeatedly restarts binlog syncing or starts replication from an u
 
 **Resolution:** Verify the GTID set is valid and **not** purged:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Check if GTID is in executed set
 SELECT GTID_SUBSET('your-gtid-set', @@GLOBAL.gtid_executed) AS in_executed;
@@ -141,7 +133,6 @@ If the GTID is purged or invalid, follow these steps:
 
 1. Increase binlog retention by configuring `binlog_expire_logs_seconds` in MySQL:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     -- Increase binlog retention (example: 7 days = 604800 seconds)
     SET GLOBAL binlog_expire_logs_seconds = 604800;
@@ -153,7 +144,6 @@ If the GTID is purged or invalid, follow these steps:
 
 1. Get a current GTID set to restart replication:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     -- For MySQL < 8.0:
     SHOW MASTER STATUS;
@@ -182,7 +172,6 @@ Invalid GTIDs can occur when GTIDs are purged due to insufficient binlog retenti
 
 **Resolution:** Clear the `_replicator` database memo table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DELETE FROM _replicator.memo WHERE true;
 ~~~

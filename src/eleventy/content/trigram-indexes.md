@@ -20,7 +20,6 @@ Trigram indexes make [substring and similarity matches](https://www.postgresql.o
 
 To display the trigrams within a string, use the `show_trgm()` [built-in function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#trigrams-functions):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT show_trgm('word');
 ~~~
@@ -38,7 +37,6 @@ A trigram index stores every unique trigram within each string being indexed. Wh
 
 Trigrams enable pattern matching even when the prefix of the string is not known. For example: 
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM t WHERE text_col LIKE '%foobar%';
 ~~~
@@ -52,7 +50,6 @@ For example, if you don't know how to spell a name in your database, you can use
 
 To search for names like "Steven" in column `first_name`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT first_name FROM users WHERE first_name % 'steven';
 ~~~
@@ -119,25 +116,21 @@ CREATE TABLE t (a INT, w STRING);
 The following examples illustrate how to create various trigram indexes on column `w`.
 
 A GIN index with trigram matching enabled:
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE INDEX ON t USING GIN (w gin_trgm_ops);
 ~~~
 
 A partial index with trigram matching enabled:
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE INDEX ON t USING GIN (w gin_trgm_ops) WHERE a > 0;
 ~~~
 
 A multi-column index with trigram matching enabled:
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE INDEX ON t USING GIN (a, w gin_trgm_ops);
 ~~~
 
 An expression index with trigram matching enabled:
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 ~~~
@@ -146,14 +139,12 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 
 1. Create a table with a `STRING` column:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE t (w STRING);
     ~~~
 
 2. Populate the table with sample values:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     INSERT INTO t VALUES
       ('foo'),
@@ -174,7 +165,6 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 
 1. See how trigram matching performs without a trigram index. Retrieve the columns with values similar to `word`, using the `%` operator. Sort the results by the output of the `similarity()` [built-in function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#trigrams-functions):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT w, similarity(w, 'word')
       FROM t
@@ -200,7 +190,6 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 
     Values are not included in the results if their similarities do not meet the threshold set by [`pg_trgm.similarity_threshold`]({% link "{{ page.version.version }}/show-vars.md" %}#pg_trgm_similarity_threshold), which defaults to `0.3`. For example:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT similarity('weird', 'word');
     ~~~
@@ -213,7 +202,6 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 
     Notice that the fuzzy search took 30 milliseconds to execute. Without a trigram index, the statement performs a full scan, which you can verify using [`EXPLAIN`]({% link "{{ page.version.version }}/explain.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN SELECT w, similarity(w, 'word')
       FROM t
@@ -245,14 +233,12 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 
 1. To speed up the fuzzy search, create a trigram index on column `w`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE INDEX ON t USING GIN (w gin_trgm_ops);
     ~~~
 
 1. Check that the statement uses the trigram index:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN SELECT w, similarity(w, 'word')
       FROM t
@@ -293,7 +279,6 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 
 1. Execute the statement again and note the improved performance:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT w, similarity(w, 'word')
       FROM t
@@ -318,7 +303,6 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 
 1. Pattern matching with `LIKE` and `ILIKE` is also accelerated by a trigram index:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN SELECT * FROM t WHERE w LIKE '%foo%';
     ~~~

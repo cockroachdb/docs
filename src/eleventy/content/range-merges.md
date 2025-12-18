@@ -15,7 +15,6 @@ Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.range_merge.que
 - `true` to enable range merges *(default)*
 - `false` to disable range merges
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING kv.range_merge.queue_enabled = true;
 ~~~

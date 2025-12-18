@@ -11,7 +11,6 @@ To do this, add a new worker node and then edit your StatefulSet configuration t
 2. Add a pod for the new CockroachDB node:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
     ~~~
@@ -22,7 +21,6 @@ To do this, add a new worker node and then edit your StatefulSet configuration t
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \

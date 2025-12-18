@@ -40,7 +40,6 @@ This indicates starting from an invalid cursor that has been garbage collected.
 
 **Resolution:** Double-check the cursor to ensure it represents a valid range that has not been garbage collected, or extend the GC TTL on the source CockroachDB cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE defaultdb CONFIGURE ZONE USING gc.ttlseconds = {gc_ttl_in_seconds};
 ~~~
@@ -51,14 +50,12 @@ This occurs when resuming a changefeed from a cursor causes excessive data dupli
 
 **Resolution:** Clear the staging database to prevent duplication. **This deletes all checkpoints and buffered data**, so use with caution:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP DATABASE _replicator;
 ~~~
 
 For more targeted cleanup, delete mutations from specific staging tables:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DELETE FROM _replicator.employees WHERE true;
 ~~~

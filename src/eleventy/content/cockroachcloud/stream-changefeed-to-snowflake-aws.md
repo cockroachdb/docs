@@ -46,7 +46,6 @@ Refer to [Connect to your cluster]({% link "cockroachcloud/connect-to-your-clust
 
 1. Enable [rangefeeds](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#enable-rangefeeds):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
@@ -57,14 +56,12 @@ Refer to [Connect to your cluster]({% link "cockroachcloud/connect-to-your-clust
 
 1. In the built-in SQL shell, create a database called `cdc_test`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE DATABASE cdc_test;
     ~~~
 
 1. Set it as the default:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET DATABASE = cdc_test;
     ~~~
@@ -75,7 +72,6 @@ Before you can start a changefeed, you need to create at least one table for the
 
 Create a table called `order_alerts` to target:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE order_alerts (
     id   INT PRIMARY KEY,
@@ -97,7 +93,6 @@ Every change to a watched row is emitted as a record in a configurable format (i
 
 Back in the built-in SQL shell, [create a changefeed](../{{site.current_cloud_version}}/create-changefeed.html). Replace the placeholders with your AWS access key ID and AWS secret access key:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE order_alerts
     INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={access key ID}&AWS_SECRET_ACCESS_KEY={secret access key}'
@@ -120,7 +115,6 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. In the built-in SQL shell, insert data into the `order_alerts` table that the changefeed is targeting:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     INSERT INTO order_alerts
         VALUES
@@ -142,7 +136,6 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. Create a table to store the data to be ingested:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE order_alerts (
        changefeed_record VARIANT
@@ -155,14 +148,12 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. In the worksheet, create a [stage](https://docs.snowflake.com/en/user-guide/data-load-s3-create-stage) called `cdc-stage`, which tells Snowflake where your data files reside in S3. Replace the placeholders with your AWS access key ID and AWS secret access key:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE STAGE cdc_stage url='s3://changefeed-example/' credentials=(aws_key_id='<KEY>' aws_secret_key='<SECRET_KEY>') file_format = (type = json);
     ~~~
 
 1. In the worksheet, create a Snowpipe called `cdc-pipe`, which tells Snowflake to auto-ingest data:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE PIPE cdc_pipe auto_ingest = TRUE as COPY INTO order_alerts FROM @cdc_stage;
     ~~~
@@ -173,7 +164,6 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. In the worksheet, view the Snowpipe:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW PIPES;
     ~~~
@@ -195,14 +185,12 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. Ingest the data from your stage:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER PIPE cdc_pipe refresh;
     ~~~
 
 1. To view the data in Snowflake, query the `order_alerts` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM order_alerts;
     ~~~
@@ -228,7 +216,6 @@ The following points outline two potential workarounds. For detailed instruction
 
     For example, in your materialized view statement, query the required columns and partition, rank, and select only the first row for each primary key:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SELECT * FROM order_alerts QUALIFY row_number() OVER (PARTITION BY id ORDER BY modified DESC) = 1;
     ~~~

@@ -1,6 +1,5 @@
 1. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
     ~~~
@@ -16,7 +15,6 @@
 
     1. Download our [performance version of `cockroachdb-statefulset-insecure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml):
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml
         ~~~
@@ -25,7 +23,6 @@
 
     3. Use the file to create the StatefulSet and start the cluster:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl create -f cockroachdb-statefulset-insecure.yaml
         ~~~
@@ -33,7 +30,6 @@
 2. Confirm that three pods are `Running` successfully. Note that they will not
    be considered `Ready` until after the cluster has been initialized:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -47,7 +43,6 @@
 
 3. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get persistentvolumes
     ~~~
@@ -61,7 +56,6 @@
 
 4. Use our [`cluster-init.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml) file to perform a one-time initialization that joins the nodes into a single cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml
     ~~~
@@ -74,7 +68,6 @@
    should be considered successful and the CockroachDB pods should soon be
    considered `Ready`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get job cluster-init
     ~~~
@@ -84,7 +77,6 @@
     cluster-init   1         1            2m
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~

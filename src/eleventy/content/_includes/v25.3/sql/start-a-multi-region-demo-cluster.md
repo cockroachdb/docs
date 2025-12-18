@@ -1,6 +1,5 @@
 Use the following [`cockroach demo`]({% link "{{ page.version.version }}/cockroach-demo.md" %}) command to start the cluster. This particular combination of flags results in a demo cluster of 9 nodes, with 3 nodes in each region. It sets the appropriate [node localities]({% link "{{ page.version.version }}/cockroach-start.md" %}#locality) and also simulates the network latency that would occur between nodes in these localities. For more information about each flag, see the [`cockroach demo`]({% link "{{ page.version.version }}/cockroach-demo.md" %}#flags) documentation, especially for [`--global`]({% link "{{ page.version.version }}/cockroach-demo.md" %}#global-flag).
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach demo --global --nodes 9 --no-example-database --insecure
 ~~~

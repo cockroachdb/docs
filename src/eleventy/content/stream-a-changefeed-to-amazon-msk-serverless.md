@@ -60,14 +60,12 @@ In this step, you'll prepare the client to connect to the MSK Serverless cluster
     If you need further detail on setting up the Kafka client, refer to the [AWS setup guide](https://docs.aws.amazon.com/msk/latest/developerguide/create-serverless-cluster-client.html).
 1. Move to the directory of your Kafka installation:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. It is necessary to create topics manually for MSK Serverless clusters. To create a topic, run the following:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ~/kafka_2.12-2.8.1/bin/kafka-topics.sh --bootstrap-server {msk serverless endpoint} --command-config client.properties --create --topic {users} --partitions {1}
     ~~~
@@ -106,14 +104,12 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
     External connections define a name for an external connection while passing the provider URI and query parameters:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION msk_serverless AS 'kafka://boot-vab1abab.c1.kafka-serverless.us-east-1.amazonaws.com:9098/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-1&sasl_aws_iam_role_arn=arn:aws:iam::{account ID}:role/{msk-role}&sasl_aws_iam_session_name={user-specified session name}';
     ~~~
 
 1. Use the [`CREATE CHANGEFEED`]({% link "{{ page.version.version }}/create-changefeed.md" %}) statement to start the changefeed using either the external connection (`external://`) or full `kafka://` URI:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.users INTO `external://msk_serverless` WITH resolved;
     ~~~
@@ -129,14 +125,12 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
 1. Return to the terminal that is running the Kafka client. Move to the Kafka installation directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. Run the following command to start a consumer. Set `--topic` to the topic you created in [Step 4.5](#step-4-connect-the-client-to-the-msk-serverless-cluster):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ~/kafka_2.12-2.8.1/bin/kafka-console-consumer.sh --bootstrap-server {msk serverless endpoint} --consumer.config client.properties --topic users --from-beginning
     ~~~

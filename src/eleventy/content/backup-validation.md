@@ -37,14 +37,12 @@ Using `SHOW BACKUP` with the `check_files` option, you can check that all [SST a
 
 1. Take a backup that we'll use for each of the examples on this page:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     BACKUP DATABASE movr INTO "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}" AS OF SYSTEM TIME "-10s";
     ~~~
 
 1. To find a specific backup to validate in the storage location, show the stored backups in the storage location:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SHOW BACKUPS IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}";
     ~~~
@@ -69,7 +67,6 @@ A `schema_only` restore produces close to complete validation coverage on backup
 
 Run `RESTORE` with the `schema_only` option, specifying either `LATEST` or the specific backup you would like to restore:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 RESTORE DATABASE movr FROM "2022/09/19-134123.64" IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}" WITH schema_only;
 ~~~
@@ -84,7 +81,6 @@ You can also use the [`new_db_name` option]({% link "{{ page.version.version }}/
 
 Verify that the table schemas have been restored, but that the tables contain no rows:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SHOW TABLES FROM movr;
 ~~~
@@ -102,7 +98,6 @@ SHOW TABLES FROM movr;
 
 You'll find the tables in place with no rows.
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SELECT * FROM rides;
 ~~~
@@ -114,7 +109,6 @@ SELECT * FROM rides;
 
 Once you have successfully validated the restore, you can revert the cluster to its pre-restore state by dropping the table or database:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 DROP DATABASE movr CASCADE;
 ~~~
@@ -135,7 +129,6 @@ Unlike a `schema_only` restore, a `verify_backup_table_data` restore also reads 
 
 It is necessary to include `schema_only` when you run a restore with `verify_backup_table_data`:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 RESTORE DATABASE movr FROM LATEST IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}" WITH schema_only, verify_backup_table_data;
 ~~~

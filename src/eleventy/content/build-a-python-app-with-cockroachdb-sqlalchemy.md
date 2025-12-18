@@ -21,7 +21,6 @@ This tutorial shows you how build a simple CRUD Python application with Cockroac
 
 Clone the code's GitHub repo:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-python-sqlalchemy/
 ~~~
@@ -38,28 +37,24 @@ The project has the following directory structure:
 
 The `requirements.txt` file includes the required libraries to connect to CockroachDB with SQLAlchemy, including the [`sqlalchemy-cockroachdb` Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb), which accounts for some differences between CockroachDB and PostgreSQL:
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/requirements.txt" %}
 ~~~
 
 The `dbinit.sql` file initializes the database schema that the application uses:
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/dbinit.sql" %}
 ~~~
 
 The `models.py` uses SQLAlchemy to map the `Accounts` table to a Python object:
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/models.py" %}
 ~~~
 
 The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 {% remote_include "https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/main.py" %}
 ~~~
@@ -72,26 +67,22 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 
 1. Install `virtualenv`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ pip install virtualenv
     ~~~
 
 1. At the top level of the app's project directory, create and then activate a virtual environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ virtualenv env
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ source env/bin/activate
     ~~~
 
 1. Install the required modules to the virtual environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ pip install -r requirements.txt
     ~~~
@@ -107,7 +98,6 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 {{site.data.alerts.callout_info}}
 The example application uses the general connection string, which begins with `postgresql://` but modifies it so it uses the `cockroachdb://` prefix. It does this so SQLAlchemy will use the CockroachDB SQLAlchemy adapter.
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 db_uri = os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://")
 ~~~
@@ -115,7 +105,6 @@ db_uri = os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://")
 
 Run the app:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ python main.py
 ~~~
@@ -148,7 +137,6 @@ Deleted account e4f33c55-7230-4080-b5ac-5dde8a7ae41d.
 
 In a SQL shell connected to the cluster, you can verify that the rows were inserted, updated, and deleted successfully:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT COUNT(*) FROM accounts;
 ~~~
@@ -195,7 +183,6 @@ If you see an error message like `transaction is too large to complete; try spli
 
 Instead, we recommend breaking your transaction into smaller units of work (or "chunks"). A pattern that works for inserting large numbers of objects using `run_transaction` to handle retries automatically for you is shown below.
 
-{% include "copy-clipboard.html" %}
 ~~~ python
 {% dynamic_include page.version.version, "/app/python/sqlalchemy/sqlalchemy-large-txns.py" %}
 ~~~

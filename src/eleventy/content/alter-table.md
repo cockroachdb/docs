@@ -703,19 +703,16 @@ The following examples use the [`bank` demo database schema]({% link "{{ page.ve
 
 To follow along, run [`cockroach demo bank`]({% link "{{ page.version.version }}/cockroach-demo.md" %}) to start a temporary, in-memory cluster with the `bank` schema and dataset preloaded:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach demo bank
 ~~~
 
 #### Add a single column
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN active BOOL;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -732,12 +729,10 @@ $ cockroach demo bank
 
 #### Add multiple columns
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN location STRING, ADD COLUMN currency STRING;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -756,12 +751,10 @@ $ cockroach demo bank
 
 #### Add a column with a `NOT NULL` constraint and a `DEFAULT` value
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN interest DECIMAL NOT NULL DEFAULT (DECIMAL '1.3');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -780,12 +773,10 @@ $ cockroach demo bank
 
 #### Add a column with a `UNIQUE` constraint
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN address STRING UNIQUE;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -805,7 +796,6 @@ $ cockroach demo bank
 
 #### Add a column with a `FOREIGN KEY` constraint
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE customers (
   id INT PRIMARY KEY,
@@ -813,12 +803,10 @@ $ cockroach demo bank
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN cust_number INT REFERENCES customers(id);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -838,7 +826,6 @@ $ cockroach demo bank
 (9 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM bank;
 ~~~
@@ -853,12 +840,10 @@ $ cockroach demo bank
 
 #### Add a column with collation
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN more_names STRING COLLATE en;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -882,12 +867,10 @@ $ cockroach demo bank
 
 ##### Add a column and assign it to a new column family
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN location1 STRING CREATE FAMILY f1;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE bank;
 ~~~
@@ -917,12 +900,10 @@ $ cockroach demo bank
 
 ##### Add a column and assign it to an existing column family
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN location2 STRING FAMILY f1;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE bank;
 ~~~
@@ -953,12 +934,10 @@ $ cockroach demo bank
 
 ##### Add a column and create a new column family if column family does not exist
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN new_name STRING CREATE IF NOT EXISTS FAMILY f2;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE bank;
 ~~~
@@ -999,7 +978,6 @@ For example, to move the `new_name` column from `f2` to `f1`:
 
 1. Create a temporary computed column in the target column family of the same data type as the column you want to move:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE bank
         ADD COLUMN newer_name STRING
@@ -1010,7 +988,6 @@ For example, to move the `new_name` column from `f2` to `f1`:
 
 1. Rename the columns:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE bank
         ALTER COLUMN newer_name DROP STORED,
@@ -1022,7 +999,6 @@ For example, to move the `new_name` column from `f2` to `f1`:
 
 1. Drop the old column:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET sql_safe_updates = false;
     ALTER TABLE bank DROP COLUMN old_name;
@@ -1041,12 +1017,10 @@ Moving a column to another column family executes writes to the underlying stora
 
 For example, suppose you add a new column to the `bank` table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN last_updated TIMESTAMPTZ DEFAULT now() ON UPDATE now();
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT id, balance, last_updated FROM bank LIMIT 5;
 ~~~
@@ -1064,12 +1038,10 @@ For example, suppose you add a new column to the `bank` table:
 
 When any value in any row of the `bank` table is updated, CockroachDB re-evaluates the `ON UPDATE` expression and updates the `last_updated` column with the result.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > UPDATE bank SET balance = 500 WHERE id = 0;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT id, balance, last_updated FROM bank LIMIT 5;
 ~~~
@@ -1093,7 +1065,6 @@ When any value in any row of the `bank` table is updated, CockroachDB re-evaluat
 
 Adding the [`UNIQUE` constraint]({% link "{{ page.version.version }}/unique.md" %}) requires that all of a column's values be distinct from one another (except for `NULL` values).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT id_name_unique UNIQUE (id, name);
 ~~~
@@ -1102,7 +1073,6 @@ Adding the [`UNIQUE` constraint]({% link "{{ page.version.version }}/unique.md" 
 
 Adding the [`CHECK` constraint]({% link "{{ page.version.version }}/check.md" %}) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE rides ADD CONSTRAINT check_revenue_positive CHECK (revenue >= 0);
 ~~~
@@ -1113,7 +1083,6 @@ In the process of adding the constraint CockroachDB will run a background job to
 
 You can add check constraints to columns that were created earlier in the transaction. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > BEGIN;
 > ALTER TABLE users ADD COLUMN is_owner STRING;
@@ -1141,7 +1110,6 @@ To add a foreign key constraint, use the following steps.
 
 Given two tables, `users` and `vehicles`, without foreign key constraints:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE users;
 ~~~
@@ -1160,7 +1128,6 @@ Given two tables, `users` and `vehicles`, without foreign key constraints:
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE vehicles;
 ~~~
@@ -1190,7 +1157,6 @@ Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, a
 `CASCADE` does not list the objects it drops or updates, so it should be used with caution.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE vehicles ADD CONSTRAINT users_fk FOREIGN KEY (city, owner_id) REFERENCES users (city, id) ON DELETE CASCADE;
 ~~~
@@ -1205,7 +1171,6 @@ By default, referenced columns must be in the same database as the referencing f
 
 Suppose that you want to add `name` to the composite primary key of the `users` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -1226,14 +1191,12 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
 
 1. Add a [`NOT NULL`]({% link "{{ page.version.version }}/not-null.md" %}) constraint to the `name` column with [`ALTER COLUMN`](#alter-column).
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER TABLE users ALTER COLUMN name SET NOT NULL;
     ~~~
 
 1. In the same transaction, `DROP` the old `"primary"` constraint and [`ADD`](#add-constraint) the new one:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > BEGIN;
     > ALTER TABLE users DROP CONSTRAINT "primary";
@@ -1247,7 +1210,6 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
 
 1. View the table structure: 
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW CREATE TABLE users;
     ~~~
@@ -1283,19 +1245,16 @@ To show how the automatic partitioning of indexes on `REGIONAL BY ROW` tables wo
 
 First, add a column and its unique constraint. We'll use `email` since that is something that should be unique per user.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE users ADD COLUMN email STRING;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE users ADD CONSTRAINT user_email_unique UNIQUE (email);
 ~~~
 
 Next, issue the [`SHOW INDEXES`]({% link "{{ page.version.version }}/show-index.md" %}) statement. You will see that [the implicit region column](#set-the-table-locality-to-regional-by-row) that was added when the table [was converted to regional by row]({% link "{{ page.version.version }}/demo-low-latency-multi-region-deployment.md" %}#configure-regional-by-row-tables) is now indexed:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW INDEXES FROM users;
 ~~~
@@ -1321,7 +1280,6 @@ SHOW INDEXES FROM users;
 
 Next, issue the [`SHOW PARTITIONS`]({% link "{{ page.version.version }}/show-partitions.md" %}) statement. The following output (which is edited for length) will verify that the unique index was automatically [partitioned]({% link "{{ page.version.version }}/partitioning.md" %}) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW PARTITIONS FROM TABLE users;
 ~~~
@@ -1345,7 +1303,6 @@ To ensure that the uniqueness constraint is enforced properly across regions whe
 
 To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`UUID`]({% link "{{ page.version.version }}/uuid.md" %}) column with the `gen_random_uuid()` [function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#id-generation-functions) as the [default value]({% link "{{ page.version.version }}/default-value.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -1357,12 +1314,10 @@ To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`U
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO users (name, city) VALUES ('Petee', 'new york'), ('Eric', 'seattle'), ('Dan', 'seattle');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
@@ -1403,24 +1358,20 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 
 1. Start [`cockroach demo`]({% link "{{ page.version.version }}/cockroach-demo.md" %}) as follows:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach demo --geo-partitioned-replicas
     ~~~
 
 1. Create a multi-region database and an `employees` table. There are three indexes in the table, all `UNIQUE` and all partitioned by the `crdb_region` column. The table schema guarantees that both `id` and `email` are globally unique, while `desk_id` is only unique per region. The indexes on `id` and `email` are implicitly partitioned, while the index on `(crdb_region, desk_id)` is explicitly partitioned. `UNIQUE` indexes can only directly enforce uniqueness on all columns in the index, including partitioning columns, so each of these indexes enforce uniqueness for `id`, `email`, and `desk_id` per region, respectively.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE DATABASE multi_region_test_db PRIMARY REGION "europe-west1" REGIONS "us-west1", "us-east1";
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     USE multi_region_test_db;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE employee (
       id INT PRIMARY KEY,
@@ -1432,7 +1383,6 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 
 1. In the following statement, we add a new user with the required `id`, `email`, and `desk_id` columns. CockroachDB needs to do additional work to enforce global uniqueness for the `id` and `email` columns, which are implicitly partitioned. This additional work is in the form of "uniqueness checks" that the optimizer adds as part of mutation queries.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN INSERT INTO employee VALUES (1, 'joe@example.com', 1);
     ~~~
@@ -1497,7 +1447,6 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 
 1. The following statement updates the user's `email` column. Because the unique index on the `email` column is implicitly partitioned, the optimizer must perform a uniqueness check.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN UPDATE employee SET email = 'joe1@example.com' WHERE id = 1;
     ~~~
@@ -1558,7 +1507,6 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 
 1. If we only update the user's `desk_id`, no uniqueness checks are needed, since the index on that column is explicitly partitioned (it's really `(crdb_region, desk_id)`).
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     EXPLAIN UPDATE employee SET desk_id = 2 WHERE id = 1;
     ~~~
@@ -1602,7 +1550,6 @@ Setting the [`DEFAULT` value constraint]({% link "{{ page.version.version }}/def
 
 The following example inserts the Boolean value `true` whenever you inserted data to the `subscriptions` table without defining a value for the `newsletter` column.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter SET DEFAULT true;
 ~~~
@@ -1611,7 +1558,6 @@ The following example inserts the Boolean value `true` whenever you inserted dat
 
 If the column has a defined [`DEFAULT` value]({% link "{{ page.version.version }}/default-value.md" %}), you can remove the constraint, which means the column will no longer insert a value by default if one is not explicitly defined for the column.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP DEFAULT;
 ~~~
@@ -1620,7 +1566,6 @@ If the column has a defined [`DEFAULT` value]({% link "{{ page.version.version }
 
 To specify that the column cannot contain `NULL` values, set the [`NOT NULL` constraint]({% link "{{ page.version.version }}/not-null.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter SET NOT NULL;
 ~~~
@@ -1629,7 +1574,6 @@ To specify that the column cannot contain `NULL` values, set the [`NOT NULL` con
 
 If the column has the [`NOT NULL` constraint]({% link "{{ page.version.version }}/not-null.md" %}) applied to it, you can remove the constraint, which means the column becomes optional and can have `NULL` values written into it.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP NOT NULL;
 ~~~
@@ -1646,7 +1590,6 @@ If the column has the [`NOT NULL` constraint]({% link "{{ page.version.version }
 
 The [TPC-C]({% link "{{ page.version.version }}/performance-benchmarking-with-tpcc-small.md" %}) database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_credit_lim';
 ~~~
@@ -1662,14 +1605,12 @@ To change the data type from `DECIMAL` to `STRING`:
 
 1. Alter the column type:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER TABLE customer ALTER c_credit_lim TYPE STRING;
     ~~~
 
 1. Verify the type:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_credit_lim';
     ~~~
@@ -1686,7 +1627,6 @@ To change the data type from `DECIMAL` to `STRING`:
 
 The [TPC-C]({% link "{{ page.version.version }}/performance-benchmarking-with-tpcc-small.md" %}) `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_balance';
 ~~~
@@ -1700,12 +1640,10 @@ The [TPC-C]({% link "{{ page.version.version }}/performance-benchmarking-with-tp
 
 To increase the precision of the `c_balance` column from `DECIMAL(12,2)` to `DECIMAL(14,2)`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE customer ALTER c_balance TYPE DECIMAL(14,2);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_balance';
 ~~~
@@ -1721,7 +1659,6 @@ To increase the precision of the `c_balance` column from `DECIMAL(12,2)` to `DEC
 
 You can change the data type of a column and create a new, computed value from the old column values, with a [`USING` clause](#parameters). For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_discount';
 ~~~
@@ -1733,7 +1670,6 @@ You can change the data type of a column and create a new, computed value from t
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT c_discount FROM customer LIMIT 10;
 ~~~
@@ -1754,12 +1690,10 @@ You can change the data type of a column and create a new, computed value from t
 (10 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE customer ALTER c_discount TYPE STRING USING ((c_discount*100)::DECIMAL(4,2)::STRING || ' percent');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_discount';
 ~~~
@@ -1771,7 +1705,6 @@ You can change the data type of a column and create a new, computed value from t
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT c_discount FROM customer LIMIT 10;
 ~~~
@@ -1798,14 +1731,12 @@ To specify that a column won't be returned when using `*` in a [`SELECT` clause]
 
 For example, the `users` table of the [`movr` database]({% link "{{ page.version.version }}/movr.md" %}) contains the `credit_card` column. If you don't want users to see that column when running `SELECT * FROM users;`, you can hide it as follows:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users ALTER COLUMN credit_card SET NOT VISIBLE;
 ~~~
 
 When you run `SELECT *`, the column does not appear:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users WHERE city = 'rome';
 ~~~
@@ -1840,12 +1771,10 @@ fae147ae-147a-4000-8000-000000000031   | 2642076323
 
 To unhide the column, run:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users ALTER COLUMN credit_card SET VISIBLE;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * from user WHERE city = 'rome';
 ~~~
@@ -1871,7 +1800,6 @@ To unhide the column, run:
 
 Suppose that you are storing the data for users of your application in a table called `users`, defined by the following `CREATE TABLE` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users (
   name STRING PRIMARY KEY,
@@ -1883,17 +1811,14 @@ The primary key of this table is on the `name` column. This is a poor choice, as
 
 You can add a column and change the primary key with a couple of `ALTER TABLE` statements:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users ADD COLUMN id UUID NOT NULL DEFAULT gen_random_uuid();
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users ALTER PRIMARY KEY USING COLUMNS (id);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -1927,7 +1852,6 @@ Note that the old primary key index becomes a secondary index, in this case, `us
 
 #### Edit a replication zone
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 4;
 ~~~
@@ -1952,7 +1876,6 @@ CONFIGURE ZONE 1
 
 If you no longer want a column in a table, you can drop it.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -1970,7 +1893,6 @@ If you no longer want a column in a table, you can drop it.
 
 If there is data in the table, the `sql_safe_updates` [session variable]({% link "{{ page.version.version }}/set-vars.md" %}) must be set to `false`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users DROP COLUMN credit_card;
 ~~~
@@ -1980,17 +1902,14 @@ ERROR: rejected (sql_safe_updates = true): ALTER TABLE DROP COLUMN will remove a
 SQLSTATE: 01000
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SET sql_safe_updates = false;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users DROP COLUMN credit_card;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -2009,12 +1928,10 @@ SQLSTATE: 01000
 
 If the column has dependent objects, such as [views]({% link "{{ page.version.version }}/views.md" %}), CockroachDB will not drop the column by default. However, if you want to be sure of the behavior you can include the `RESTRICT` clause.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE VIEW expensive_rides AS SELECT id, city FROM rides WHERE revenue > 90;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE rides DROP COLUMN revenue RESTRICT;
 ~~~
@@ -2033,7 +1950,6 @@ If you want to drop the column and all of its dependent options, include the `CA
 <code>CASCADE</code> does not list objects it drops, so should be used cautiously.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE expensive_rides;
 ~~~
@@ -2045,12 +1961,10 @@ If you want to drop the column and all of its dependent options, include the `CA
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE rides DROP COLUMN revenue CASCADE;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE expensive_rides;
 ~~~
@@ -2064,12 +1978,10 @@ SQLSTATE: 42P01
 
  `DROP COLUMN` drops a column and any indexes on the column being dropped.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE INDEX start_end_idx ON rides(start_time, end_time);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW INDEXES FROM rides) SELECT * FROM x WHERE index_name='start_end_idx';
 ~~~
@@ -2084,7 +1996,6 @@ SQLSTATE: 42P01
 (4 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE rides DROP COLUMN start_time;
 ~~~
@@ -2095,7 +2006,6 @@ HINT: The reclamation delay can be customized in the zone configuration for the 
 ALTER TABLE
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW INDEXES FROM rides) SELECT * FROM x WHERE index_name='start_end_idx';
 ~~~
@@ -2112,7 +2022,6 @@ ALTER TABLE
 
 #### Drop a foreign key constraint
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM vehicles;
 ~~~
@@ -2125,12 +2034,10 @@ ALTER TABLE
 (2 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE vehicles DROP CONSTRAINT fk_city_ref_users;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM vehicles;
 ~~~
@@ -2148,7 +2055,6 @@ ALTER TABLE
 
 Let's say you have a  `customers` table that contains personally identifiable information (PII). To turn on audit logs for that table, run the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
@@ -2177,7 +2083,6 @@ For a more detailed example, see [SQL Audit Logging]({% link "{{ page.version.ve
 
 To turn off logging, issue the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 ~~~
@@ -2188,14 +2093,12 @@ ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 
 Suppose that the current owner of the `rides` table is `root` and you want to change the owner to a new user named `max`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE promo_codes OWNER TO max;
 ~~~
 
 To verify that the owner is now `max`, query the `pg_catalog.pg_tables` table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT tableowner FROM pg_catalog.pg_tables WHERE tablename = 'promo_codes';
 ~~~
@@ -2217,7 +2120,6 @@ If the user running the command is not an admin user, they must own the table an
 
 Suppose we have a table called `students_by_list`, and the primary key of the table is defined as `(country, id)`. We can define partitions on the table by list:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE students_by_list PARTITION BY LIST (country) (
     PARTITION north_america VALUES IN ('CA','US'),
@@ -2230,7 +2132,6 @@ Suppose we have a table called `students_by_list`, and the primary key of the ta
 
 Suppose we have a table called `students_by_range`, and the primary key of the table is defined as `(expected_graduation_date, id)`. We can define partitions on the table by range:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE students_by_range PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
@@ -2242,7 +2143,6 @@ Suppose we have a table called `students_by_range`, and the primary key of the t
 
 Suppose we have a table named `students`, and the primary key is defined as `(country, expected_graduation_date, id)`. We can define partitions and subpartitions on the table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE students PARTITION BY LIST (country) (
     PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (expected_graduation_date) (
@@ -2258,7 +2158,6 @@ Suppose we have a table named `students`, and the primary key is defined as `(co
 
 #### Repartition a table
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE students_by_range PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'),
@@ -2268,7 +2167,6 @@ Suppose we have a table named `students`, and the primary key is defined as `(co
 
 #### Unpartition a table
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE students PARTITION BY NOTHING;
 ~~~
@@ -2277,7 +2175,6 @@ Suppose we have a table named `students`, and the primary key is defined as `(co
 
 #### Rename a column
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users (
     id INT PRIMARY KEY,
@@ -2286,7 +2183,6 @@ Suppose we have a table named `students`, and the primary key is defined as `(co
   );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users RENAME COLUMN family_name TO last_name;
 ~~~
@@ -2308,7 +2204,6 @@ Suppose we have a table named `students`, and the primary key is defined as `(co
 
 Some subcommands can be used in combination in a single [`ALTER TABLE`]({% link "{{ page.version.version }}/alter-table.md" %}) statement. For example, let's say you create a `users` table with 2 columns, an `id` column for the primary key and a `name` column for each user's last name:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users (
     id INT PRIMARY KEY,
@@ -2318,7 +2213,6 @@ Some subcommands can be used in combination in a single [`ALTER TABLE`]({% link 
 
 Then you decide you want distinct columns for each user's first name, last name, and full name, so you execute a single `ALTER TABLE` statement renaming `name` to `last_name`, adding `first_name`, and adding a [computed column]({% link "{{ page.version.version }}/computed-columns.md" %}) called `name` that concatenates `first_name` and `last_name`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users
     RENAME COLUMN name TO last_name,
@@ -2327,7 +2221,6 @@ Then you decide you want distinct columns for each user's first name, last name,
       AS (CONCAT(first_name, ' ', last_name)) STORED;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -2350,7 +2243,6 @@ Then you decide you want distinct columns for each user's first name, last name,
 
 #### Rename a constraint
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE logon (
     login_id INT PRIMARY KEY,
@@ -2360,7 +2252,6 @@ Then you decide you want distinct columns for each user's first name, last name,
   );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM logon;
 ~~~
@@ -2373,12 +2264,10 @@ Then you decide you want distinct columns for each user's first name, last name,
 (2 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE logon RENAME CONSTRAINT logon_customer_id_sales_id_key TO unique_customer_id_sales_id;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM logon;
 ~~~
@@ -2397,7 +2286,6 @@ Then you decide you want distinct columns for each user's first name, last name,
 
 #### Rename a table
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -2414,12 +2302,10 @@ Then you decide you want distinct columns for each user's first name, last name,
 (6 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users RENAME TO riders;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -2438,7 +2324,6 @@ Then you decide you want distinct columns for each user's first name, last name,
 
 To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE IF EXISTS customers RENAME TO clients;
 ~~~
@@ -2453,14 +2338,12 @@ For more detail and an example through the backup and [restore]({% link "{{ page
 
 To set the `exclude_data_from_backup` parameter for a table, run the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE movr.user_promo_codes SET (exclude_data_from_backup = true);
 ~~~
 
 The `CREATE` statement for this table will now show the parameter set:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE user_promo_codes;
 ~~~
@@ -2484,7 +2367,6 @@ Backups will no longer include the data within the `user_promo_codes` table. The
 
 To remove this parameter from a table, run:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE movr.user_promo_codes SET (exclude_data_from_backup = false);
 ~~~
@@ -2495,7 +2377,6 @@ This will ensure that the table's data is stored in subsequent backups that you 
 
 The following `ttl_test` table has three TTL-related storage parameters active on the table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE TABLE ttl_test;
 ~~~
@@ -2515,12 +2396,10 @@ SHOW CREATE TABLE ttl_test;
 
 To remove these settings, run the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE ttl_test RESET (ttl);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE TABLE ttl_test;
 ~~~
@@ -2549,14 +2428,12 @@ SHOW CREATE TABLE ttl_test;
 
 To optimize read and write access to the data in a table from the primary region, use the following statement, which sets the table's home region to the primary region:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE {table} SET LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
 ~~~
 
 To optimize read and write access to the data in a table from the `us-east-1` region, use the following statement, which sets the table's home region to `us-east-1`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE {table} SET LOCALITY REGIONAL BY TABLE IN "us-east-1";
 ~~~
@@ -2577,7 +2454,6 @@ Before setting the locality to `REGIONAL BY ROW` on a table targeted by a change
 
 To make an existing table a _regional by row_ table, use the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE {table} SET LOCALITY REGIONAL BY ROW;
 ~~~
@@ -2586,14 +2462,12 @@ ALTER TABLE {table} SET LOCALITY REGIONAL BY ROW;
 
 Every row in a regional by row table has a column of type `crdb_internal_region` that represents the row's [home region]({% link "{{ page.version.version }}/multiregion-overview.md" %}#table-localities). By default, this column is called `crdb_region` and is hidden. To see a row's home region, issue a statement like the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT crdb_region, id FROM {table};
 ~~~
 
 <a name="update-a-rows-home-region"></a> To update an existing row's home region, use an [`UPDATE`]({% link "{{ page.version.version }}/update.md" %}) statement like the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 ~~~
@@ -2608,7 +2482,6 @@ To add a new row to a regional by row table, you must choose one of the followin
 
 - Set the home region explicitly using an [`INSERT`]({% link "{{ page.version.version }}/insert.md" %}) statement like the following:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     INSERT INTO {table} (crdb_region, ...) VALUES ('us-east-1', ...);
     ~~~
@@ -2623,7 +2496,6 @@ For more information about how this table locality works, see [Regional by row t
 
 Note that you can use a name other than `crdb_region` for the hidden column by using the following statements:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE foo SET LOCALITY REGIONAL BY ROW AS bar;
 SELECT bar, id FROM foo;
@@ -2632,7 +2504,6 @@ INSERT INTO foo (bar, ...) VALUES ('us-east-1', ...);
 
 In fact, you can specify any column definition you like for the `REGIONAL BY ROW AS` column, as long as the column is of type `crdb_internal_region` and is not nullable. For example, you could modify the [movr schema]({% link "{{ page.version.version }}/movr.md" %}#the-movr-database) to have a region column generated as:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
   CASE
@@ -2665,7 +2536,6 @@ The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link "{
 
 1. Start a [multi-node, multi-region `cockroach demo` cluster]({% link "{{ page.version.version }}/cockroach-demo.md" %}#start-a-multi-region-demo-cluster):
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	cockroach demo --global --nodes 9 --insecure
 	~~~
@@ -2674,7 +2544,6 @@ The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link "{
 
 1. In the SQL shell, create a multi-region `demo` database:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	CREATE DATABASE demo PRIMARY REGION "us-east1" REGIONS "us-west1", "europe-west1";
 	USE demo;
@@ -2682,7 +2551,6 @@ The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link "{
 
 1. Verify the regions that are available to the `demo` database:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	SHOW REGIONS FROM DATABASE demo;
 	~~~
@@ -2698,14 +2566,12 @@ The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link "{
 
 1. Enable the following cluster setting:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	SET CLUSTER SETTING feature.infer_rbr_region_col_using_constraint.enabled = true;
 	~~~
 
 1. Create a parent table that is `REGIONAL BY ROW`:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	CREATE TABLE parent (
 	  id INT PRIMARY KEY,
@@ -2715,7 +2581,6 @@ The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link "{
 
 1. Create a child table whose rows should live in the same region as their parent rows. The table's foreign key **must** include `crdb_region`, and the `infer_rbr_region_col_using_constraint` parameter must be set to the name of the foreign key (in this example, `fk_parent`):
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	CREATE TABLE child (
 	  id INT PRIMARY KEY,
@@ -2728,14 +2593,12 @@ The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link "{
 
 1. Insert a row into the parent table that lives in the primary region (`us-east1`):
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	INSERT INTO parent (id, data, crdb_region) VALUES (1, 'east row', 'us-east1');
 	~~~
 
 1. Run the following command to view IDs and connection strings for all nodes in the cluster:
 
-	{% include "copy-clipboard.html" %}
 	~~~ 
 	\demo ls
 	~~~
@@ -2768,14 +2631,12 @@ The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link "{
 
 	In a **new** terminal, connect to a node in a non-primary region (in this example, `us-west1` or `europe-west1`) using its connection string:
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	cockroach sql --insecure -p 26265 -d cluster:demoapp/demo
 	~~~
 
 1. Verify that the node you're connected to is in a non-primary region:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	SHOW LOCALITY;
 	~~~
@@ -2788,14 +2649,12 @@ The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link "{
 
 1. Insert a row into the child table from the node you're connected to:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	INSERT INTO child (id, parent_id, info) VALUES (10, 1, 'hello from gateway');
 	~~~
 
 1. View the value of the hidden `crdb_region` column. Even though the row was inserted from a non-primary gateway region, CockroachDB uses the foreign-key constraint to look up and copy the parent row's region into the child row:
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	SELECT id, parent_id, crdb_region FROM child;
 	~~~
@@ -2808,7 +2667,6 @@ The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link "{
 
 1. If you later need to disable the behavior, [reset the storage parameter](#reset-storage-parameter):
 
-	{% include "copy-clipboard.html" %}
 	~~~ sql
 	ALTER TABLE child RESET (infer_rbr_region_col_using_constraint);
 	~~~
@@ -2825,7 +2683,6 @@ When auto-rehoming is enabled, the [home regions](#crdb_region) of rows in [`REG
 
 To enable auto-rehoming using the [session setting]({% link "{{ page.version.version }}/set-vars.md" %}), issue the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET enable_auto_rehoming = on;
 ~~~
@@ -2837,7 +2694,6 @@ Once enabled, the auto-rehoming behavior described here has the following limita
 
 To enable auto-rehoming for an existing `REGIONAL BY ROW` table, manually update it using an [`ALTER TABLE ... ALTER COLUMN`](#alter-column) statement with an `ON UPDATE` expression:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.public.crdb_internal_region;
 ~~~
@@ -2848,7 +2704,6 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
 
 1. From the [SQL client]({% link "{{ page.version.version }}/cockroach-sql.md" %}) running in terminal 1, set the setting that enables auto-rehoming. You must issue this setting before creating the `REGIONAL BY ROW` tables that you want auto-rehomed.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET enable_auto_rehoming = on;
     ~~~
@@ -2857,7 +2712,6 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
 
 1. Switch back to terminal 1, and check the gateway region of the node you are currently connected to:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT gateway_region();
     ~~~
@@ -2871,7 +2725,6 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
 
 1. Open another terminal (call it _terminal 3_), and use [`cockroach sql`]({% link "{{ page.version.version }}/cockroach-sql.md" %}) to connect to a node in a different region in the demo cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --insecure --host localhost --port 26262
     ~~~
@@ -2892,12 +2745,10 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
 
 1. From the SQL shell prompt that appears in terminal 3, switch to the `movr` database, and verify that the current gateway node is in a different region (`us-west1`):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     USE movr;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT gateway_region();
     ~~~
@@ -2913,7 +2764,6 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
 
    1. First, pick a row at random from the `us-east1` region:
 
-           {% include "copy-clipboard.html" %}
            ~~~ sql
            select * from vehicles where region = 'us-east1' limit 1;
            ~~~
@@ -2928,7 +2778,6 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
 
    1. Next, update that row's `city` and `current_location` to addresses in Seattle, WA (USA). Note that this UUID is different than what you will see in your cluster, so you'll have to update the query accordingly.
 
-           {% include "copy-clipboard.html" %}
            ~~~ sql
            UPDATE vehicles set (city, current_location) = ('seattle', '2604 1st Ave, Seattle, WA 98121-1305') WHERE id = '3e127e68-a3f9-487d-aa56-bf705beca05a';
            ~~~
@@ -2939,7 +2788,6 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
 
    1. Finally, verify that the row has been auto-rehomed in this gateway's region by running the following statement and checking that the `region` column is now `us-west1`:
 
-           {% include "copy-clipboard.html" %}
            ~~~ sql
            SELECT * FROM vehicles WHERE id = '3e127e68-a3f9-487d-aa56-bf705beca05a';
            ~~~
@@ -2957,7 +2805,6 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
 
 To optimize read access to the data in a table from any region (that is, globally), use the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE {table} SET LOCALITY GLOBAL;
 ~~~
@@ -2978,7 +2825,6 @@ Suppose you want to add the `promo_codes` table to a new schema called `cockroac
 
 By default, [unqualified tables]({% link "{{ page.version.version }}/sql-name-resolution.md" %}#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -2997,19 +2843,16 @@ By default, [unqualified tables]({% link "{{ page.version.version }}/sql-name-re
 
 If the new schema does not already exist, [create it]({% link "{{ page.version.version }}/create-schema.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 Then, change the table's schema:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE promo_codes SET SCHEMA cockroach_labs;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -3030,7 +2873,6 @@ Then, change the table's schema:
 
 Before scattering, you can view the current replica and leaseholder distribution for a table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
 ~~~
@@ -3050,14 +2892,12 @@ WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT ra
 (9 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE movr.users SCATTER;
 ~~~
 
 After scattering, recheck the leaseholder distribution:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
 ~~~
@@ -3083,7 +2923,6 @@ WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT ra
 
 #### Split a table
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW RANGES FROM TABLE users;
 ~~~
@@ -3103,7 +2942,6 @@ WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT ra
 (9 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users SPLIT AT VALUES ('chicago'), ('new york'), ('seattle');
 ~~~
@@ -3117,7 +2955,6 @@ WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT ra
 (3 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW RANGES FROM TABLE users;
 ~~~
@@ -3161,7 +2998,6 @@ You may want to split a table with a compound primary key.
 
 Suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. Some users need to sign up to be drivers, so you need a `drivers` table to store driver information.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE drivers (
     id UUID DEFAULT gen_random_uuid(),
@@ -3177,13 +3013,11 @@ The table's compound primary key is on the `city` and `dl` columns. Note that th
 
 Because this table has several columns in common with the `users` table, you can populate the table with values from the `users` table with an `INSERT` statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO drivers (id, city, name, address)
     SELECT id, city, name, address FROM users;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW RANGES FROM TABLE drivers;
 ~~~
@@ -3197,7 +3031,6 @@ Because this table has several columns in common with the `users` table, you can
 
 Now you can split the table based on the compound primary key. Note that you do not have to specify the entire value for the primary key, just the prefix.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE drivers SPLIT AT VALUES ('new york', '3'), ('new york', '7'), ('chicago', '3'), ('chicago', '7'), ('seattle', '3'), ('seattle', '7');
 ~~~
@@ -3214,7 +3047,6 @@ Now you can split the table based on the compound primary key. Note that you do 
 (6 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW RANGES FROM TABLE drivers;
 ~~~
@@ -3236,7 +3068,6 @@ Now you can split the table based on the compound primary key. Note that you do 
 
 You can specify the time at which a split enforcement expires by adding a `WITH EXPIRATION` clause to your `SPLIT` statement. Supported expiration values include [`DECIMAL`]({% link "{{ page.version.version }}/decimal.md" %}), [`INTERVAL`]({% link "{{ page.version.version }}/interval.md" %}), [`TIMESTAMP`]({% link "{{ page.version.version }}/timestamp.md" %}), and [`TIMESTAMPZ`]({% link "{{ page.version.version }}/timestamp.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE vehicles SPLIT AT VALUES ('chicago'), ('new york'), ('seattle') WITH EXPIRATION '2022-01-10 23:30:00+00:00';
 ~~~
@@ -3251,7 +3082,6 @@ You can specify the time at which a split enforcement expires by adding a `WITH 
 
 You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`]({% link "{{ page.version.version }}/crdb-internal.md" %}) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='vehicles';
 ~~~
@@ -3281,7 +3111,6 @@ Create a `drivers` table and split the table based on the compound primary key a
 
 To remove the split enforcements, run the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE drivers UNSPLIT AT VALUES ('new york', '3'), ('new york', '7'), ('chicago', '3'), ('chicago', '7'), ('seattle', '3'), ('seattle', '7');
 ~~~
@@ -3300,7 +3129,6 @@ To remove the split enforcements, run the following:
 
 You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`]({% link "{{ page.version.version }}/crdb-internal.md" %}) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='drivers';
 ~~~
@@ -3329,14 +3157,12 @@ The `drivers` table is still split into ranges at specific primary key column va
 
 In the example [Add the foreign key constraint with `CASCADE`](#add-the-foreign-key-constraint-with-cascade), we add a foreign key constraint as follows:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE vehicles ADD CONSTRAINT users_fk FOREIGN KEY (city, owner_id) REFERENCES users (city, id) ON DELETE CASCADE;
 ~~~
 
 To ensure that the data added to the `vehicles` table prior to the creation of the `users_fk` constraint conforms to that constraint, run the following:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE vehicles VALIDATE CONSTRAINT users_fk;
 ~~~
@@ -3349,7 +3175,6 @@ If present in a [`CREATE TABLE`]({% link "{{ page.version.version }}/create-tabl
 
 To enable [row-level security]({% link "{{ page.version.version }}/row-level-security.md" %}) (RLS) on a table, issue the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 ~~~
@@ -3360,7 +3185,6 @@ ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 
 To disable row-level security, use the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE orders DISABLE ROW LEVEL SECURITY;
 ~~~
@@ -3369,14 +3193,12 @@ ALTER TABLE orders DISABLE ROW LEVEL SECURITY;
 
 To ensure that all access, including by the table [owner]({% link "{{ page.version.version }}/security-reference/authorization.md" %}#object-ownership), adheres to the defined [row-level security]({% link "{{ page.version.version }}/row-level-security.md" %}) policies, issue the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE orders FORCE ROW LEVEL SECURITY;
 ~~~
 
 To remove this restriction, and allow the table owner to bypass RLS policies, issue the following statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER TABLE orders NO FORCE ROW LEVEL SECURITY;
 ~~~

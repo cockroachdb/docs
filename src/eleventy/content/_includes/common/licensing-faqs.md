@@ -70,7 +70,6 @@ For quick local testing of Enterprise features, you can [run a single-node clust
 
 To verify a license, open the [built-in SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}) and use the [`SHOW CLUSTER SETTING`]({% link "{{ page.version.version }}/show-cluster-setting.md" %}) command to check the license key:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CLUSTER SETTING enterprise.license;
 ~~~
@@ -83,7 +82,6 @@ SHOW CLUSTER SETTING enterprise.license;
 
 The license setting is also logged in the `cockroach.log` on the node where the command is run:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cat cockroach.log | grep license
 ~~~

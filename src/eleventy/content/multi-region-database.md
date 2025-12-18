@@ -74,7 +74,6 @@ See below for the [`CREATE TABLE`](create-table.html) statements for each table 
 
 Here is the `CREATE TABLE` statement for the `users` table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > {% remote_include "https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql", "-- START users", "-- END users" %}
 ~~~
@@ -88,7 +87,6 @@ Note the following:
 
 ## The `vehicles` table
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > {% remote_include "https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql", "-- START vehicles", "-- END vehicles" %}
 ~~~
@@ -113,7 +111,6 @@ Note the following:
 
 ## The `rides` table
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > {% remote_include "https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql", "-- START rides", "-- END rides" %}
 ~~~

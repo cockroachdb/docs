@@ -15,7 +15,6 @@ The `ccloud` tool is a command-line interface (CLI) tool that allows you to crea
 
 The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB {{ site.data.products.serverless }} cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud quickstart
 ~~~
@@ -28,7 +27,6 @@ In order to use the `ccloud` commands to configure and manage your clusters, you
 
 1. Run the `ccloud auth login` command and press **Enter** to open a browser window:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ccloud auth login
     ~~~
@@ -43,7 +41,6 @@ In order to use the `ccloud` commands to configure and manage your clusters, you
 
 If you are a member of more than one CockroachDB Cloud organization, use the `--org` flag to set the organization name when authenticating.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud auth login --org {organization-label}
 ~~~
@@ -52,7 +49,6 @@ The organization label is found on the **Settings** page of the CockroachDB Clou
 
 If your organization has a custom URL, use the `--vanity-name` flag to log in:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud auth login --vanity-name {custom-organization-name}
 ~~~
@@ -63,7 +59,6 @@ Replace `{custom-organization-name}` with the portion of the custom sign-in URL 
 
 If you are using `ccloud` on a headless machine, use the `--no-redirect` flag to log in. This allows you to log in to CockroachDB Cloud on a different machine, retrieve an authorization code, and enter the code on the headless machine so `ccloud` can complete authentication.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud auth login --no-redirect
 ~~~
@@ -85,7 +80,6 @@ The `ccloud cluster create` command creates a new CockroachDB {{ site.data.produ
 
 Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.serverless }} cluster.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster create
 ~~~
@@ -103,7 +97,6 @@ The `id` in the output is the cluster ID. You use the `name` in other `ccloud` c
 
 You can set the cluster name, cloud infrastructure provider, region, and [resource limits]({% link "{{site.current_cloud_version}}/architecture/glossary.md" %}#resource-limits) as command options. The following command is equivalent to the previous command that uses the default values.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster create serverless blue-dog us-central1 --cloud GCP --spend-limit 0
 ~~~
@@ -113,7 +106,6 @@ ccloud cluster create serverless blue-dog us-central1 --cloud GCP --spend-limit 
 
 Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.advanced }} cluster.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster create dedicated
 ~~~
@@ -122,7 +114,6 @@ This command creates a 1-node CockroachDB {{ site.data.products.advanced }} clus
 
 You can set the cluster name, cloud infrastructure provider, region, number of nodes, and storage as command options. The following command is equivalent to the previous command that uses the default values.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster create dedicated blue-dog us-central1:1 --cloud GCP --vcpus 4 --storage-gib 110
 ~~~
@@ -138,7 +129,6 @@ The `id` in the output is the cluster ID. You use the `name` in other `ccloud` c
 
 When creating multi-region clusters, you must specify how many nodes should be in each region supported by the cloud infrastructure provider. For example, the following command creates a 12-node cluster where 8 nodes are in `us-central1` and 4 nodes are in `us-west2`. For optimum performance, it is generally recommended to configure the same number of nodes in each region.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster create dedicated blue-dog us-central1:8 us-west2:4 --cloud GCP --vcpus 4 --storage-gib 110
 ~~~
@@ -156,7 +146,6 @@ The IP range must be in [Classless Inter-Domain Routing (CIDR) format](https://w
 
 For example, to allow incoming connections from a single IP address, 1.1.1.1, to your cluster, including the CockroachDB SQL shell and DB Console, use the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster networking allowlist create blue-dog 1.1.1.1/32 --sql --ui
 ~~~
@@ -170,7 +159,6 @@ Success! Created IP allowlist entry for
 
 Use the `ccloud cluster networking allowlist list` command to list the IP allowlists for your cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster networking allowlist list blue-dog
 ~~~
@@ -183,7 +171,6 @@ NETWORK         NAME  UI  SQL
 
 To modify an allowlist entry, use the `ccloud cluster networking allowlist update` command. The following command adds a descriptive name to the previously created entry.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster networking allowlist update blue-dog 1.1.1.1/32 --name home
 ~~~
@@ -197,7 +184,6 @@ Success! Updated IP allowlist entry for
 
 Rerunning the `allowlist list` command shows the updated entry:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster networking allowlist list blue-dog
 ~~~
@@ -210,7 +196,6 @@ NETWORK         NAME  UI  SQL
 
 To delete an entry, run the `ccloud cluster networking allowlist delete` command.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster networking allowlist delete blue-dog 1.1.1.1/32
 ~~~
@@ -228,7 +213,6 @@ Success! Deleted IP allowlist entry for
 
 Use the `ccloud cluster list` command to show information about the clusters in your organization. It outputs columns with the cluster name, the cluster ID, the cluster plan, the creation date, the cluster's current state, the cloud provider, and the version of CockroachDB.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster list
 ~~~
@@ -255,7 +239,6 @@ blue-dog   041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_DEDICATED   2022-03-22 21:
 
 Use the `ccloud cluster info` command with the cluster name as the parameter to show detailed information about your cluster. Find the **Name** column in the output of `ccloud cluster list` to find the name of the cluster.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster info blue-dog
 ~~~
@@ -299,7 +282,6 @@ Cluster info
 
 Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection to the specified cluster using the [cluster ID](#get-information-about-your-cluster-using-ccloud-cluster-info). If you haven't created a SQL user for the specified cluster, you will be prompted to create a new user and set the user password.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster sql blue-dog
 ~~~
@@ -337,7 +319,6 @@ user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
 
 Use the `--sso` flag to connect to your cluster using [single sign-on (SSO) authentication]({% link "cockroachcloud/cloud-sso-sql.md" %}), which will allow you to start a SQL shell without using a password.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster sql --sso blue-dog
 ~~~
@@ -346,7 +327,6 @@ This will open a browser window on the local machine where you will log in to yo
 
 If you are running `ccloud` on a remote machine, use the `--no-redirect` flag. `ccloud` will output a URL that you must copy and paste in your local machine's browser in order to authenticate. After authentication, paste in the authorization code you received in the remote terminal to complete the login process.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster sql --sso --no-redirect blue-dog
 ~~~
@@ -357,7 +337,6 @@ To create a SSO SQL user:
 
 1. Connect to the cluster using the `--sso` flag.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ccloud cluster sql --sso blue-dog
     ~~~
@@ -371,14 +350,12 @@ To create a SSO SQL user:
 
     For example, if the command in the error message creates a `sso_maxroach` user:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ccloud cluster user create blue-dog sso_maxroach
     ~~~
 
 1. Re-run the SQL client command to login and connect to your cluster.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ccloud cluster sql blue-dog --sso
     ~~~
@@ -390,14 +367,12 @@ If the organization is incorrect:
 
 1. Log out of the current organization.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ccloud auth logout
     ~~~
 
 1. Log in to the correct organization.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ccloud auth login --org {organization name}
     ~~~
@@ -408,7 +383,6 @@ If the organization is incorrect:
 
 By default, the `ccloud cluster sql` command will allow connections only from IP addresses in your cluster's [allowlist]({% link "cockroachcloud/network-authorization.md" %}#ip-allowlisting). Use the `--skip-ip-check` flag to disable the client-side IP allowlist check:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster sql blue-dog --skip-ip-check
 ~~~
@@ -419,7 +393,6 @@ Use the `ccloud cluster sql` command to get connection information for the speci
 
 To get the [connection URL]({% link "{{site.current_cloud_version}}/connection-parameters.md" %}#connect-using-a-url), use the `--connection-url` option.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster sql --connection-url blue-dog
 ~~~
@@ -444,7 +417,6 @@ postgresql://blue-dog-5bct.gcp-us-east4.cockroachlabs.cloud:26257/defaultdb?sslm
 
 To get the individual connection parameters, use the `--connection-params` option.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster sql --connection-params blue-dog
 ~~~
@@ -476,7 +448,6 @@ Connection parameters
 
 Use the `ccloud cluster user create` command to create a new SQL user by passing in the cluster name and the username. By default, newly created users are assigned to the `admin` role. An `admin` SQL user has full privileges for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster user create blue-dog maxroach
 ~~~
@@ -490,7 +461,6 @@ Password: ****************
 
 Use the `ccloud cluster delete` command to delete the specified cluster using the cluster name.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud cluster delete blue-dog
 ~~~
@@ -509,7 +479,6 @@ If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. 
 
 Cockroach Labs collects anonymized telemetry events to improve the usability of `ccloud`. Use the `ccloud settings set` command and disable sending telemetry events to Cockroach Labs.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 ccloud settings set --disable-telemetry=true
 ~~~

@@ -105,7 +105,6 @@ If you are going to use [automatic user provisioning]({% link "{{ page.version.v
 1. On the LDAP server, set up test users with memberships in groups that should be synced to CockroachDB users.
 1. If [automatic user provisioning]({% link "{{ page.version.version }}/ldap-authentication.md" %}#option-1-automatic-user-provisioning-recommended) is not enabled, create the matching test users when logged in as an admin to CockroachDB:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE ROLE username1 LOGIN;
     CREATE ROLE username2 LOGIN;
@@ -119,7 +118,6 @@ If you are going to use [automatic user provisioning]({% link "{{ page.version.v
 
     For auto-provisioned users, you can identify them by their `PROVISIONSRC` role option:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     -- View all users and their role assignments
     SHOW USERS;
@@ -136,7 +134,6 @@ If you are going to use [automatic user provisioning]({% link "{{ page.version.v
 
 Enable [`SESSION` logging]({% link "{{ page.version.version }}/logging.md" %}#sessions) to preserve data that will help troubleshoot LDAP issues:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~

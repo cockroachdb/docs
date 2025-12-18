@@ -33,7 +33,6 @@ Before you begin, it may be useful to enable authentication logging, which can h
 
 Enable JWT authorization and configure the groups claim:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Enable JWT authentication (if not already enabled)
 SET CLUSTER SETTING server.jwt_authentication.enabled = true;
@@ -60,7 +59,6 @@ The configuration varies by identity provider:
 
 Okta typically includes groups in the default `groups` claim:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING server.jwt_authentication.group_claim = 'groups';
 SET CLUSTER SETTING server.jwt_authentication.userinfo_group_key = 'groups';
@@ -82,7 +80,6 @@ Example JWT token from Okta:
 
 For Keycloak Groups (default mapping):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING server.jwt_authentication.group_claim = 'groups';
 ~~~
@@ -107,7 +104,6 @@ Example JWT token:
 1. Set the **Token Claim Name** to `roles` (or another simple name)
 1. Configure CockroachDB to use this claim:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING server.jwt_authentication.group_claim = 'roles';
 ~~~
@@ -117,7 +113,6 @@ SET CLUSTER SETTING server.jwt_authentication.group_claim = 'roles';
 
 Azure AD typically uses the `groups` claim:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING server.jwt_authentication.group_claim = 'groups';
 ~~~
@@ -136,7 +131,6 @@ Group names from the IdP are normalized using case folding and Unicode normaliza
 
 For example, if your JWT tokens contain groups named `developers` and `analysts`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 -- Create role for developers
 CREATE ROLE developers;
@@ -157,7 +151,6 @@ If you are going to use [automatic user provisioning]({% link "{{ page.version.v
 
 1. If [automatic user provisioning]({% link "{{ page.version.version }}/sso-sql.md" %}#configure-user-provisioning) is not enabled, create the matching test users when logged in as an admin to CockroachDB:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE ROLE username1 LOGIN;
     CREATE ROLE username2 LOGIN;
@@ -170,7 +163,6 @@ If you are going to use [automatic user provisioning]({% link "{{ page.version.v
 
 1. Using your `admin` credentials, log in to the CockroachDB SQL shell and verify the user's role assignments:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     -- View roles granted to a specific user
     SHOW GRANTS FOR username1;
@@ -181,7 +173,6 @@ If you are going to use [automatic user provisioning]({% link "{{ page.version.v
 
     For auto-provisioned users, you can identify them by their `PROVISIONSRC` role option:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     -- View all users and their provisioning source
     SELECT rolname, rolprovisionsrc FROM pg_roles
@@ -239,7 +230,6 @@ If the JWT token does not contain the configured groups claim, CockroachDB will 
 
 Enable [`SESSION` logging]({% link "{{ page.version.version }}/logging.md" %}#sessions) to preserve data that will help troubleshoot JWT authorization issues:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~

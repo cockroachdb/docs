@@ -8,7 +8,6 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     <section class="filter-content" markdown="1" data-scope="manual">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach:{{page.release_info.version}} \
@@ -33,7 +32,6 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     <section class="filter-content" markdown="1" data-scope="helm">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach:{{page.release_info.version}} \
@@ -64,7 +62,6 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     <section class="filter-content" markdown="1" data-scope="manual">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach:{{page.release_info.version}} \
@@ -79,7 +76,6 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     <section class="filter-content" markdown="1" data-scope="helm">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach:{{page.release_info.version}} \
@@ -115,7 +111,6 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     <section class="filter-content" markdown="1" data-scope="manual">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=3
     ~~~
@@ -128,7 +123,6 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     <section class="filter-content" markdown="1" data-scope="helm">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \

@@ -30,7 +30,6 @@ Before starting the tutorial, do the following:
 1. If you haven't already, [download the CockroachDB SQL Shell binary]({% link "{{ page.version.version }}/install-cockroachdb.md" %}).
 1. Start the [built-in SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}) using the connection string you got from the CockroachDB {{ site.data.products.cloud }} Console earlier:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql \
     --url='postgres://<username>:<password>@<global host>:26257/defaultdb?sslmode=verify-full&sslrootcert={certs_dir}/cc-ca.crt'
@@ -40,14 +39,12 @@ Before starting the tutorial, do the following:
 
 1. In the SQL shell, create the `bank` database that your application will use:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
 1. Exit the SQL shell:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~
@@ -56,7 +53,6 @@ Before starting the tutorial, do the following:
 
 1. Clone the example code's GitHub repo:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     git clone https://github.com/cockroachlabs/example-app-python-django/
     ~~~
@@ -90,26 +86,22 @@ Before starting the tutorial, do the following:
 
 1. At the top level of the app's project directory, create and then activate a virtual environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     virtualenv env
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     source env/bin/activate
     ~~~
 
 1. Install the required modules to the virtual environment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     pip install -r requirements.txt
     ~~~
 
 1. Set the `DATABASE_URL` environment variable to the connection string provided in the **Connection info** window of the CockroachDB {{ site.data.products.cloud }} Console, but with the root certificate located in the local `certs` directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     export DATABASE_URL="postgresql://$USER:$PASSWORD@random-cluster-name-4300.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=root.crt"
     ~~~
@@ -122,7 +114,6 @@ Before starting the tutorial, do the following:
 
 1. Execute the initial database schema migration:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     python3 cockroach_example/manage.py migrate
     ~~~
@@ -131,7 +122,6 @@ Before starting the tutorial, do the following:
 
 1. Run the app:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     python3 cockroach_example/manage.py runserver 0.0.0.0:8000
     ~~~
@@ -148,7 +138,6 @@ Before starting the tutorial, do the following:
 
 1. In a new terminal, use `curl` to send a POST request to the application:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl --header "Content-Type: application/json" \
       --request POST \
@@ -159,7 +148,6 @@ Before starting the tutorial, do the following:
 
 1. Send a GET request to read from the `cockroach_example_customers` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl http://0.0.0.0:8000/customer/
     ~~~
@@ -170,7 +158,6 @@ Before starting the tutorial, do the following:
 
     You can also query the table directly in the [SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}) to see the changes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SELECT * FROM bank.cockroach_example_customers;
     ~~~
@@ -192,7 +179,6 @@ Before starting the tutorial, do the following:
     `gcloud` is included with the [Google Cloud SDK](https://cloud.google.com/sdk) installation.
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud auth login
     ~~~
@@ -201,7 +187,6 @@ Before starting the tutorial, do the following:
 
 1. Create a Google Cloud project for the application deployment:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud projects create {gcp_project_id}
     ~~~
@@ -212,14 +197,12 @@ Before starting the tutorial, do the following:
 
 1. Configure the CLI to use your Google Cloud account and the new project ID by default:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud init
     ~~~
 
 1. Set the `PROJECT_ID` environment variable:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     export PROJECT_ID={gcp_project_id}
     ~~~
@@ -230,7 +213,6 @@ Before starting the tutorial, do the following:
 
 1. Build the Docker image locally:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker build -t gcr.io/$PROJECT_ID/crdb-sample:v1 .
     ~~~
@@ -239,21 +221,18 @@ Before starting the tutorial, do the following:
 
 1. Authenticate Docker with GCP's Container Registry:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud auth configure-docker
     ~~~
 
 1. Enable the Container Registry API for the project:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud services enable containerregistry.googleapis.com
     ~~~
 
 1. Push the Docker image to the project's registry.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     docker push gcr.io/$PROJECT_ID/crdb-sample:v1
     ~~~
@@ -262,26 +241,22 @@ Before starting the tutorial, do the following:
 
 1. Create a service account to manage the secrets for your project:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud iam service-accounts create cockroach-labs
     ~~~
 
 1. Enable the Secret Manager API for the project:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud services enable secretmanager.googleapis.com
     ~~~
 
 1. Create a secret for the connection string stored locally in the `DATABASE_URL` environment variable, and bind the new service account to the secret.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     echo $DATABASE_URL | gcloud secrets create cockroach-connection-uri --data-file=- --replication-policy=automatic
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud secrets add-iam-policy-binding cockroach-connection-uri \
         --member=serviceAccount:cockroach-labs@${PROJECT_ID}.iam.gserviceaccount.com \
@@ -292,14 +267,12 @@ Before starting the tutorial, do the following:
 
 1. Enable the Cloud Run API for the project:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud services enable run.googleapis.com
     ~~~
 
 1. Create a [Cloud Run](https://console.cloud.google.com/run/) service for the application:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     gcloud alpha run deploy crl-app \
       --region us-central1 \
@@ -319,7 +292,6 @@ Before starting the tutorial, do the following:
 
 1. After the revision is deployed, verify that you can send requests to the application from a browser or a REST client:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl https://<GCR_HOST>/customer/
     ~~~

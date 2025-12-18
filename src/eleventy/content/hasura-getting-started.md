@@ -48,7 +48,6 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 
     For example, on Mac you can copy the contents of the CA certificate in a terminal using `pbcopy`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     pbcopy < $HOME/.postgresql/root.crt
     ~~~
@@ -65,7 +64,6 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 
     For example, on Mac you can copy the contents of the CA certificate in a terminal using `pbcopy`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     pbcopy < $HOME/Library/CockroachCloud/certs/fake-puppy-ca.crt
     ~~~
@@ -134,7 +132,6 @@ Your CockroachDB {{ site.data.products.standard }} cluster needs to be configure
 
 1. Connect to your cluster using the SQL client.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url "{connection string}"
     ~~~
@@ -143,7 +140,6 @@ Your CockroachDB {{ site.data.products.standard }} cluster needs to be configure
 
 1. In the SQL client, create an `accounts` table.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE IF NOT EXISTS accounts (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -153,7 +149,6 @@ Your CockroachDB {{ site.data.products.standard }} cluster needs to be configure
 
 1. Insert some data into the `accounts` table.
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     UPSERT INTO accounts (balance) VALUES (1000), (250);
     ~~~
@@ -179,7 +174,6 @@ For example, to create a query that finds all accounts with balances greater tha
 
 This creates the following GraphQL query:
 
-{% include "copy-clipboard.html" %}
 ~~~ graphql
 query GetLargeAccounts {
   accounts(where: {balance: {_gte: "500"}}) {

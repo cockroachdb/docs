@@ -57,17 +57,14 @@ The following privileges can be revoked:
 
 ### Revoke privileges on databases
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE USER max WITH PASSWORD 'roach';
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT CREATE ON DATABASE movr TO max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -81,12 +78,10 @@ SHOW GRANTS ON DATABASE movr;
 (3 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 REVOKE CREATE ON DATABASE movr FROM max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -105,12 +100,10 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 ### Revoke privileges on specific tables in a database
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT ALL ON TABLE rides TO max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON TABLE rides;
 ~~~
@@ -124,12 +117,10 @@ SHOW GRANTS ON TABLE rides;
 (3 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 REVOKE ALL ON TABLE rides FROM max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON TABLE rides;
 ~~~
@@ -144,12 +135,10 @@ SHOW GRANTS ON TABLE rides;
 
 ### Revoke privileges on all tables in a database or schema
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT ALL ON TABLE rides, users TO max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON TABLE movr.*;
 ~~~
@@ -177,19 +166,16 @@ SHOW GRANTS ON TABLE movr.*;
 (17 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 REVOKE ALL ON ALL TABLES IN SCHEMA public FROM max;
 ~~~
 
 This is equivalent to the following syntax:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 REVOKE ALL ON movr.public.* FROM max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON TABLE movr.*;
 ~~~
@@ -223,24 +209,20 @@ SHOW GRANTS ON TABLE movr.*;
 
 For example, the following statement removes the ability to use the [`SET CLUSTER SETTING`]({% link "{{ page.version.version }}/set-cluster-setting.md" %}) statement from the user `maxroach` by revoking the `MODIFYCLUSTERSETTING` system privilege:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 REVOKE SYSTEM MODIFYCLUSTERSETTING FROM max;
 ~~~
 
 ### Revoke privileges on schemas
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE SCHEMA cockroach_labs;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT ALL ON SCHEMA cockroach_labs TO max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -254,12 +236,10 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 (3 rows)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 REVOKE CREATE ON SCHEMA cockroach_labs FROM max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -277,17 +257,14 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 
 To revoke privileges on [user-defined types]({% link "{{ page.version.version }}/create-type.md" %}), use the following statements.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TYPE status AS ENUM ('available', 'unavailable');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT ALL ON TYPE status TO max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON TYPE status;
 ~~~
@@ -304,22 +281,18 @@ SHOW GRANTS ON TYPE status;
 
 ### Revoke role membership
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE ROLE developer WITH CREATEDB;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE USER abbey WITH PASSWORD 'lincoln';
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT developer TO abbey;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -331,12 +304,10 @@ SHOW GRANTS ON ROLE developer;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 REVOKE developer FROM abbey;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -347,12 +318,10 @@ SHOW GRANTS ON ROLE 0
 
 ### Revoke the admin option
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT developer TO abbey WITH ADMIN OPTION;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -364,12 +333,10 @@ SHOW GRANTS ON ROLE developer;
 (1 row)
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 REVOKE ADMIN OPTION FOR developer FROM abbey;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~

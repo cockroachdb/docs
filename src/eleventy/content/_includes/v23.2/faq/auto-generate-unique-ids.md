@@ -2,7 +2,6 @@ To auto-generate unique row identifiers, you can use the `gen_random_uuid()`, `u
 
 To use the [`UUID`]({% link "{{ page.version.version }}/uuid.md" %}) column with the `gen_random_uuid()` [function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#id-generation-functions) as the [default value]({% link "{{ page.version.version }}/default-value.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE users (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -15,12 +14,10 @@ CREATE TABLE users (
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 INSERT INTO users (name, city) VALUES ('Petee', 'new york'), ('Eric', 'seattle'), ('Dan', 'seattle');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM users;
 ~~~
@@ -36,7 +33,6 @@ SELECT * FROM users;
 
 Alternatively, you can use the [`BYTES`]({% link "{{ page.version.version }}/bytes.md" %}) column with the `uuid_v4()` function as the default value:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE users2 (
     id BYTES DEFAULT uuid_v4(),
@@ -49,12 +45,10 @@ CREATE TABLE users2 (
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 INSERT INTO users2 (name, city) VALUES ('Anna', 'new york'), ('Jonah', 'seattle'), ('Terry', 'chicago');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM users;
 ~~~
@@ -74,7 +68,6 @@ This approach has the disadvantage of creating a primary key that may not be use
 
 If it is important for generated IDs to be stored in the same key-value range, you can use an [integer type]({% link "{{ page.version.version }}/int.md" %}) with the `unique_rowid()` [function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#id-generation-functions) as the default value, either explicitly or via the [`SERIAL` pseudo-type]({% link "{{ page.version.version }}/serial.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE users3 (
     id INT DEFAULT unique_rowid(),
@@ -87,12 +80,10 @@ CREATE TABLE users3 (
 );
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 INSERT INTO users3 (name, city) VALUES ('Blake', 'chicago'), ('Hannah', 'seattle'), ('Bobby', 'seattle');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM users3;
 ~~~

@@ -1,7 +1,6 @@
 1. If you haven't already, [download the CockroachDB binary]({% link "{{ page.version.version }}/install-cockroachdb.md" %}).
 1. Run the [`cockroach start-single-node`]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}) command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start-single-node --advertise-addr 'localhost' --insecure
     ~~~

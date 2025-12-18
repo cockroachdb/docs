@@ -57,7 +57,6 @@ Field | Description
 
 After cluster startup, you can view all of the cluster regions available in the cluster with `SHOW REGIONS FROM CLUSTER`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW REGIONS FROM CLUSTER;
 ~~~
@@ -77,7 +76,6 @@ SHOW REGIONS FROM CLUSTER;
 
 [Add an available region]({% link "{{ page.version.version }}/alter-database.md" %}#add-region) as the primary region for the `movr` database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE movr PRIMARY REGION "us-east";
 ~~~
@@ -92,7 +90,6 @@ Only [cluster regions]({% link "{{ page.version.version }}/multiregion-overview.
 
 Then, add more regions to the database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE movr ADD REGION "us-west";
 ~~~
@@ -101,7 +98,6 @@ ALTER DATABASE movr ADD REGION "us-west";
 ALTER DATABASE ADD REGION
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE movr ADD REGION "us-central";
 ~~~
@@ -112,7 +108,6 @@ ALTER DATABASE ADD REGION
 
 To view the regions associated with the database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE movr;
 ~~~
@@ -130,7 +125,6 @@ The `secondary` column in each row says whether that region has been made a _sec
 
 With `movr` set as the current database, the following statement returns the same results:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE;
 ~~~
@@ -139,21 +133,18 @@ SHOW REGIONS FROM DATABASE;
 
 Create another database in the cluster with a primary region:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE DATABASE cockroachlabs PRIMARY REGION "us-east";
 ~~~
 
 Then, add another region to the database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER DATABASE cockroachlabs ADD REGION "us-west";
 ~~~
 
 To show the regions in use by all the databases in a cluster, use `SHOW REGIONS`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW REGIONS;
 ~~~
@@ -169,7 +160,6 @@ SHOW REGIONS;
 
 To show the region information for each database in the cluster, use `SHOW REGIONS FROM ALL DATABASES`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW REGIONS FROM ALL DATABASES;
 ~~~

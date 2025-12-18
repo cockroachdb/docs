@@ -1,6 +1,5 @@
 In this example, create a table with a virtual computed column and an index on that column:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE gymnastics (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -16,7 +15,6 @@ In this example, create a table with a virtual computed column and an index on t
 
 Then, insert a few rows a data:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO gymnastics (athlete, vault, bars, beam, floor) VALUES
     ('Simone Biles', 15.933, 14.800, 15.300, 15.800),
@@ -26,7 +24,6 @@ Then, insert a few rows a data:
     ('Aly Raisman', 15.833, 0, 15.000, 15.366);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM gymnastics;
 ~~~
@@ -44,7 +41,6 @@ Then, insert a few rows a data:
 
 Now, run a query using the secondary index:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT athlete, combined_score FROM gymnastics ORDER BY combined_score DESC;
 ~~~

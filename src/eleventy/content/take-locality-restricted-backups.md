@@ -30,7 +30,6 @@ To specify the locality filter for the coordinating node, run `EXECUTION LOCALIT
 
 You can bind any ordered list of locality key-value pairs, from most inclusive to least inclusive, to a node at startup. For example, a user with a multi-region and multi-cloud deployment may bind each node with `cloud=,region=` locality tiers. To back up to a specific `cloud,region`, add `cloud={cloud},region={region}` as the execution locality arguments:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP DATABASE {database} INTO 'external://backup_storage' WITH EXECUTION LOCALITY = 'cloud=gce,region=us-west1';
 ~~~
@@ -61,14 +60,12 @@ To execute the backup only on nodes in the same region as the cloud storage loca
 
 For example, you can pin the execution of the backup job to `us-west-1`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP DATABASE {database} INTO 'external://backup_storage_uswest' WITH EXECUTION LOCALITY = 'region=us-west-1', DETACHED;
 ~~~
 
 To restore the most recent locality-restricted backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN 'external://backup_storage_uswest' WITH EXECUTION LOCALITY = 'region=us-west-1', DETACHED;
 ~~~
@@ -90,7 +87,6 @@ For details, refer to:
 
 After configuring the nodes in a specific region to use non-voting replicas, you can create the backup job and define its locality requirement for the nodes:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 BACKUP DATABASE {database} INTO 'external://backup_storage' WITH EXECUTION LOCALITY = 'region={region},dc={datacenter}', DETACHED;
 ~~~

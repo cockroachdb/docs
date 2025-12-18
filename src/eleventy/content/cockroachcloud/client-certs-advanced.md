@@ -44,7 +44,6 @@ Alternatively, you can generate certificates [using CockroachDB's `cockroach cer
 
 1. Initialize your shell for Vault.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     export VAULT_ADDR= # your Vault cluster's Public URL
     export VAULT_NAMESPACE="admin"
@@ -52,7 +51,6 @@ Alternatively, you can generate certificates [using CockroachDB's `cockroach cer
 
 1. Authenticate with your admin token.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     vault login
     ~~~
@@ -63,7 +61,6 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
 
 1. Create a PKI secrets engine to serve as your client CA.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     vault secrets enable -path=cockroach_client_ca pki
     ~~~
@@ -76,7 +73,6 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
 
     Refer to: [Vault documentation - PKI Secrets Engine: Setup and Usage](https://developer.hashicorp.com/vault/docs/secrets/pki/setup)
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     vault write \
     cockroach_client_ca/root/generate/internal \
@@ -90,7 +86,6 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
     On macOS, you can install `jq` from Homebrew: `brew install jq`
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     cat "${SECRETS_DIR}/certs/cockroach_client_ca_cert.json" | jq .data.certificate
     ~~~
@@ -133,7 +128,6 @@ You can authenticate to a cluster using the private key and public certificate p
     CockroachDB takes the name of the SQL user to be authenticated from the `common_name` field.
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     vault write "cockroach_client_ca/issue/client" \
     common_name=root \
@@ -142,7 +136,6 @@ You can authenticate to a cluster using the private key and public certificate p
 
 1. Extract the client key and certificate pair from the payload.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     echo -e $(cat "${SECRETS_DIR}/clients/certs.json" | jq .data.private_key | tr -d '"') > "${SECRETS_DIR}/clients/client.root.key"
     echo -e $(cat "${SECRETS_DIR}/clients/certs.json" | jq .data.certificate | tr -d '"') > "${SECRETS_DIR}/clients/client.root.crt"
@@ -150,7 +143,6 @@ You can authenticate to a cluster using the private key and public certificate p
 
 1. Ensure that the key file is owned by and readable only by the current user. CockroachDB will reject requests to authenticate using keys with overly-permissive permissions.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     chmod 0600  ${SECRETS_DIR}/clients/client.root.key
     chown $USER ${SECRETS_DIR}/clients/client.root.key
@@ -178,7 +170,6 @@ The [Cluster Admin]({% link "cockroachcloud/authorization.md" %}#cluster-admin) 
 
     A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request POST \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -193,7 +184,6 @@ The [Cluster Admin]({% link "cockroachcloud/authorization.md" %}#cluster-admin) 
 
 1. Confirm success of the operation with the following `GET` request.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -225,7 +215,6 @@ The [Cluster Admin]({% link "cockroachcloud/authorization.md" %}#cluster-admin) 
 
 Add the [`cockroach_client_ca_cert` resource block](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/client_ca_cert) to your Terraform template and apply the change:
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 resource "cockroach_client_ca_cert" "yourclustername" {
   id = cockroach_cluster.example.id
@@ -258,7 +247,6 @@ The [Cluster Admin]({% link "cockroachcloud/authorization.md" %}#cluster-admin) 
 
     A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request PATCH \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -273,7 +261,6 @@ The [Cluster Admin]({% link "cockroachcloud/authorization.md" %}#cluster-admin) 
 
 1. Confirm success of the operation with the following `GET` request.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -304,7 +291,6 @@ The [Cluster Admin]({% link "cockroachcloud/authorization.md" %}#cluster-admin) 
 
 Update the [`cockroach_client_ca_cert` resource block](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/client_ca_cert) in your Terraform template, then run `terraform apply`.
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 resource "cockroach_client_ca_cert" "yourclustername" {
   id = cockroach_cluster.example.id
@@ -337,7 +323,6 @@ The [Cluster Admin]({% link "cockroachcloud/authorization.md" %}#cluster-admin) 
 
     A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request DELETE \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -350,7 +335,6 @@ The [Cluster Admin]({% link "cockroachcloud/authorization.md" %}#cluster-admin) 
 
 1. Confirm success of the operation with the following `GET` request.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -398,7 +382,6 @@ To use certificate authentication for a SQL client, you must include the filepat
 
 1. Connect using the `cockroach sql` command or the SQL client of your choice:
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     cockroach sql --url "postgresql://root@flooping-frogs-123.gcp-us-east1.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=${HOME}/Library/CockroachCloud/certs/2186fbdb-598c-4797-a463-aaaee865903e/flooping-frogs-ca.crt&sslcert=${SECRETS_DIR}/clients/client.root.crt&sslkey=${SECRETS_DIR}/clients/client.root.key"
     ~~~

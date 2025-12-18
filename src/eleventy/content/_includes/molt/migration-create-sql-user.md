@@ -2,14 +2,12 @@ Create a SQL user in the CockroachDB cluster that has the necessary privileges.
 
 To create a user `crdb_user` in the default database (you will pass this username in the [target connection string](#target-connection-string)):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE USER crdb_user WITH PASSWORD 'password';
 ~~~
 
 Grant database-level privileges for schema creation within the target database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT ALL ON DATABASE defaultdb TO crdb_user;
 ~~~
@@ -20,14 +18,12 @@ Grant user privileges to create internal MOLT tables like `_molt_fetch_exception
 Ensure that you are connected to the target database.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT CREATE ON SCHEMA public TO crdb_user;
 ~~~
 
 If you manually created the target schema (i.e., [`drop-on-target-and-recreate`](#table-handling-mode) will not be used), grant the following privileges on the schema:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA migration_schema TO crdb_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema
@@ -36,7 +32,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
 
 Grant the same privileges for internal MOLT tables:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO crdb_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
@@ -49,14 +44,12 @@ Depending on the MOLT Fetch [data load mode](#data-load-mode) you will use, gran
 
 Grant `SELECT`, `INSERT`, and `DROP` (required because the table is taken offline during the `IMPORT INTO`) privileges on all tables in the [target schema](#create-the-target-schema):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT SELECT, INSERT, DROP ON ALL TABLES IN SCHEMA migration_schema TO crdb_user;
 ~~~
 
 If you plan to use [cloud storage with implicit authentication](#cloud-storage-authentication) for data load, grant the `EXTERNALIOIMPLICITACCESS` [system-level privilege]({% link "{{site.current_cloud_version}}/security-reference/authorization.md" %}#supported-privileges):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT EXTERNALIOIMPLICITACCESS TO crdb_user;
 ~~~
@@ -65,7 +58,6 @@ GRANT EXTERNALIOIMPLICITACCESS TO crdb_user;
 
 Grant [`admin`]({% link "{{site.current_cloud_version}}/security-reference/authorization.md" %}#admin-role) privileges to the user:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT admin TO crdb_user;
 ~~~
@@ -75,7 +67,6 @@ GRANT admin TO crdb_user;
 
 Grant permissions to create the staging schema for replication:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER USER crdb_user CREATEDB;
 ~~~

@@ -25,7 +25,6 @@ Defining an execution locality for a changefeed job, could be useful in the foll
 
 To specify the locality requirements for the coordinating node, run `execution_locality` with key-value pairs that represent the [locality designations]({% link "{{ page.version.version }}/cockroach-start.md" %}#locality) assigned to the cluster at startup.
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'external://cdc' WITH execution_locality='region=us-east-2,cloud=aws';
 ~~~

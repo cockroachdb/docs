@@ -63,28 +63,24 @@ If you do not already have a Kafka cluster, create one with the instructions in 
 
 1. Update the latest version of packages on your machine:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     sudo apt update
     ~~~
 
 1. Install the `default-jre` package, which is a requirement for Kafka:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     sudo apt install default-jre -y
     ~~~
 
 1. Download Kafka v2.8.2:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl https://archive.apache.org/dist/kafka/2.8.2/kafka_2.13-2.8.2.tgz --output kafka_2
     ~~~
 
 1. Extract the Kafka download:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     tar -xvf kafka_2
     ~~~
@@ -95,21 +91,18 @@ In this step, you will update configuration files in your Kafka cluster to set u
 
 1. Move to the following directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd kafka_2.13-2.8.2/config
     ~~~
 
 1. Open the `server.properties` file to edit:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     vi server.properties
     ~~~
 
     Add the following to the end of the `server.properties` file:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     sasl.enabled.mechanisms=OAUTHBEARER
     sasl.mechanism.inter.broker.protocol=OAUTHBEARER
@@ -130,14 +123,12 @@ In this step, you will update configuration files in your Kafka cluster to set u
 
 1. Create a file in the `config` directory called `kafka_server_jaas.conf`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     vi kafka_server_jaas.conf
     ~~~
 
     Add the following contents:
 
-    {% include "copy-clipboard.html" %}
     ~~~
     KafkaServer {
     org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
@@ -152,28 +143,24 @@ The SASL callback handlers added in [Step 4](#step-4-update-kafka-configuration)
 
 1. Clone the library:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     git clone https://github.com/jairsjunior/kafka-oauth.git ~/kafka-oauth
     ~~~
 
 1. Install [Apache Maven](https://maven.apache.org/what-is-maven.html), a tool for building Java-based projects:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     sudo apt install maven
     ~~~
 
 1. Move to the `kafka-oauth` directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd ~/kafka-oauth
     ~~~
 
 1. Run the following to compile and package the project:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     mvn package
     ~~~
@@ -211,35 +198,30 @@ In this step, you will start your Kafka server, create a topic, and run your con
 
 1. Move to the following directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cd kafka_2.13-2.8.2
     ~~~
 
 1. Start the Zookeeper server in one terminal:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/zookeeper-server-start.sh ./config/zookeeper.properties
     ~~~
 
 1. Start the Kafka server in another terminal:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/kafka-server-start.sh ./config/server.properties
     ~~~
 
 1. In another separate terminal window, create a topic to consume:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic vehicles
     ~~~
 
     To consume messages for this topic, run:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic vehicles
     ~~~
@@ -250,7 +232,6 @@ In this step, you will create a changefeed authenticating with Okta.
 
 The Kafka URI must follow this format:
 
-{% include "copy-clipboard.html" %}
 ~~~
 'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your url-encoded Okta domain}'
 ~~~
@@ -263,14 +244,12 @@ Note the following:
 
 Since this is a long URI to run, you can create an [external connection]({% link "{{ page.version.version }}/create-external-connection.md" %}) to represent this URI:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE EXTERNAL CONNECTION kafka_oauth AS 'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your url-encoded Okta domain}';
 ~~~
 
 Create a changefeed that will emit messages to the topic consumer:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'external://kafka_oauth' WITH updated, resolved;
 ~~~

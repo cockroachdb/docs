@@ -37,7 +37,6 @@ The CockroachDB {{ site.data.products.cloud }} AWS account must be added as a pr
 
 You can use the following API call to retrieve your CockroachDB {{ site.data.products.cloud }} `account_id`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
@@ -53,7 +52,6 @@ The following prerequisites apply to the MSK service:
 - Multi-VPC Connectivity must be enabled.
 - Using the `account_id` returned from the `GET /api/v1/clusters/{cluster_id}`, include the following in the [cluster policy](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-cluster-owner-action-policy.html):
 
-    {% include "copy-clipboard.html" %}
     ~~~ json
     {
       "Effect": "Allow",
@@ -78,7 +76,6 @@ The following prerequisites apply to the Google Cloud VPC service:
 
     You can use the following API call to retrieve your CockroachDB {{ site.data.products.cloud }} `account_id`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
@@ -117,7 +114,6 @@ The following example `POST` requests assume that an API key has been created fo
 
 #### AWS private service endpoint
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
@@ -133,7 +129,6 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 
 #### MSK cluster endpoint
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
@@ -149,7 +144,6 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 
 #### GCP private service endpoint
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
@@ -194,7 +188,6 @@ Send a `PATCH` request to the `/api/v1/clusters/{cluster_id}/networking/egress-p
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id}/domain-names \
 -X PATCH \
@@ -213,7 +206,6 @@ The cluster enters maintenance mode once more until the DNS setup is complete, w
 
 Send a `GET` request to the `/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints` endpoint to review the status of all egress private endpoints on the cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -H "Authorization: Bearer {secret_key}"
@@ -257,7 +249,6 @@ To delete a private endpoint, send a `DELETE` request to the `/api/v1/clusters/{
 - `cluster_id`: The CockroachDB {{ site.data.products.cloud }} cluster ID.
 - `endpoint_id`: The `id` value of the egress private endpoint.
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id} \
 -X DELETE \

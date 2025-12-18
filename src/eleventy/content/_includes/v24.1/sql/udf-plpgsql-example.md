@@ -2,7 +2,6 @@ The following {% if page.name == "plpgsql.md" %}[user-defined function]({% link 
 
 It uses the {% if page.name == "plpgsql.md" %}PL/pgSQL{% else %}[PL/pgSQL]({% link "{{ page.version.version }}/plpgsql.md" %}){% endif %} [`LOOP`]({% link "{{ page.version.version }}/plpgsql.md" %}#write-loops) syntax to iterate through a simple calculation, and [`RAISE EXCEPTION`]({% link "{{ page.version.version }}/plpgsql.md" %}#report-messages-and-handle-exceptions) to return an error message if the specified `n` is negative.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE FUNCTION fib(n int) RETURNS INT AS $$
 	DECLARE
@@ -28,7 +27,6 @@ CREATE FUNCTION fib(n int) RETURNS INT AS $$
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT fib(8);
 ~~~

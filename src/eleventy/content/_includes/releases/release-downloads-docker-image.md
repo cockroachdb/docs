@@ -90,7 +90,6 @@ To download the Docker image:
 To download the Docker image (Intel-only):
   {% endif %}
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 ~~~

@@ -93,7 +93,6 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 <a name="show-backups-in"></a>To view a list of the available [full backups]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#full-backups) subdirectories, use the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUPS IN 'external://backup_s3';
 ~~~
@@ -112,7 +111,6 @@ The path format is `<year>/<month>/<day>-<timestamp>`.
 
 To view the most recent backup, use the `LATEST` syntax:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM LATEST IN 'external://backup_s3';
 ~~~
@@ -137,7 +135,6 @@ movr          | public             | _crdb_internal_region      | type        | 
 
 To view a list of the [full]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#full-backups) and [incremental]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#incremental-backups) backups in a specific subdirectory, use the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM '2022/04/08-142355.33' IN 'external://backup_s3';
 ~~~
@@ -165,7 +162,6 @@ To view an incremental backup that was taken with the `incremental_location` opt
 
 You can use the option to show the most recent backup where `incremental_location` has stored the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM LATEST IN {'full backup collectionURI'} WITH incremental_location = {'incremental backup collectionURI'};
 ~~~
@@ -198,7 +194,6 @@ movr          | public             | vehicles                   | table       | 
 
 ### Show a backup with schemas
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP SCHEMAS FROM '2022/04/08-142601.69' IN 'external://backup_s3';
 ~~~
@@ -233,7 +228,6 @@ system        | public             | users                      | table       | 
 
 Use the `WITH privileges` [option](#options) to view a list of which users and roles had which privileges on each database and table in the backup. This parameter also displays the original owner of objects in the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM '2022/07/07-160311.96' IN 'external://backup_s3' WITH privileges;
 ~~~
@@ -262,7 +256,6 @@ You will receive an error if there is a collection of backups in the storage loc
 
 Depending on how the backup was [encrypted]({% link "{{ page.version.version }}/take-and-restore-encrypted-backups.md" %}), use the [`encryption_passphrase` option]({% link "{{ page.version.version }}/backup.md" %}#with-encryption-passphrase) and the same passphrase that was used to create the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}'
       WITH encryption_passphrase = 'password123';
@@ -270,7 +263,6 @@ SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID
 
 Or, use the `kms` option and the same KMS URI that was used to create the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://test/backups/test_explicit_kms?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
       WITH kms = 'aws:///arn:aws:kms:us-east-1:123456789:key/1234-abcd-5678-efgh-90ij?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
@@ -306,7 +298,6 @@ SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://test/backups/test_explicit_kms?
 
  Use `WITH debug_ids` to display the descriptor IDs related to each object in the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' WITH debug_ids;
 ~~~
@@ -340,7 +331,6 @@ For more information on validating a backup, see the [Backup Validation]({% link
 
 Use the `WITH as_json` option to output a backup's internal metadata, contained in its manifest file, as a JSON value:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' WITH as_json;
 ~~~
@@ -353,7 +343,6 @@ The response returned from `SHOW BACKUP FROM ... WITH as_json` is a backup's int
 
 For example, to return a specific entry from the JSON response as a [`string`]({% link "{{ page.version.version }}/string.md" %}) indented and with newlines use the [`jsonb_pretty()`]({% link "{{ page.version.version }}/functions-and-operators.md" %}#jsonb-functions) function:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' with as_json) SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM x;
 ~~~
@@ -368,7 +357,6 @@ WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' wi
 
 To query for particular data, use the [`jsonb_array_elements()` function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#jsonb-functions) to expand the desired elements from the JSON response. The following query returns the paths to each of the data files within the backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' WITH as_json) SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM x);
 ~~~

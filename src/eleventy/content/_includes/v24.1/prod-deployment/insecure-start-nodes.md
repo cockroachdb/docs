@@ -20,7 +20,6 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 1. Run the [`cockroach start`]({% link "{{ page.version.version }}/cockroach-start.md" %}) command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -63,35 +62,30 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 1. Create the Cockroach directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ mkdir /var/lib/cockroach
     ~~~
 
 1. Create a Unix user named `cockroach`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ useradd cockroach
     ~~~
 
 1. Change the ownership of the `cockroach` directory to the user `cockroach`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ chown cockroach /var/lib/cockroach
     ~~~
 
 1.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     curl -o insecurecockroachdb.service https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service
     ~~~
 
     Alternatively, you can create the file yourself and copy the script into it:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     {% dynamic_include page.version.version, "/prod-deployment/insecurecockroachdb.service" %}
     ~~~
@@ -110,14 +104,12 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 1. Start the CockroachDB cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ systemctl start insecurecockroachdb
     ~~~
 
 1. Configure `systemd` to start CockroachDB automatically after a reboot:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     systemctl enable insecurecockroachdb
     ~~~

@@ -43,7 +43,6 @@ $ cockroach userfile delete --help
 
 To delete all files in the directory, pass the `'*'` pattern:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach userfile delete '*' --certs-dir=certs
 ~~~
@@ -60,7 +59,6 @@ Note that because a fully qualified userfile URI was not specified, files in the
 
 To delete a specific file, include the file destination in the command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach userfile delete test-data.csv --certs-dir=certs
 ~~~
@@ -73,7 +71,6 @@ deleted userfile://defaultdb.public.userfiles_root/test-data.csv
 
 To delete all files that match a pattern, use `*`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach userfile delete '*.csv' --certs-dir=certs
 ~~~
@@ -87,14 +84,12 @@ deleted userfile://defaultdb.public.userfiles_root/test-data.csv
 
 If you [uploaded a file to a non-default userfile URI]({% link "{{ page.version.version }}/cockroach-userfile-upload.md" %}#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach userfile upload /Users/maxroach/Desktop/test-data.csv userfile://testdb.public.uploads/test-data.csv
 ~~~
 
 Use the same URI to delete it:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach userfile delete userfile://testdb.public.uploads
 ~~~

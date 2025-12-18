@@ -1,6 +1,5 @@
 CockroachDB does not support using comparison operators (such as `<` or `>`) on [`JSONB`](jsonb.html) elements. For example, the following query does not work and returns an error:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT '{"a": 1}'::JSONB -> 'a' < '{"b": 2}'::JSONB -> 'b';
 ~~~

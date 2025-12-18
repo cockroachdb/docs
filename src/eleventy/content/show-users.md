@@ -23,7 +23,6 @@ The user must have the [`SELECT`]({% link "{{ page.version.version }}/select-cla
 
 ## Example
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW USERS;
 ~~~
@@ -40,7 +39,6 @@ The user must have the [`SELECT`]({% link "{{ page.version.version }}/select-cla
 
 Alternatively, within the built-in SQL shell, you can use the `\du` [shell command]({% link "{{ page.version.version }}/cockroach-sql.md" %}#commands):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > \du
 ~~~

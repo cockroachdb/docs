@@ -2,7 +2,6 @@
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET TIME ZONE +2;
 BEGIN;
@@ -17,7 +16,6 @@ SHOW TIME ZONE;
   <+03>-03
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET TIME ZONE +2;
 BEGIN;

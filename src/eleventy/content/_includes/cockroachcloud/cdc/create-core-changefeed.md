@@ -2,7 +2,6 @@ In this example, you'll set up a core changefeed on your CockroachDB {{ site.dat
 
 1. As the `root` user, open the [built-in SQL client]({% link "{{site.current_cloud_version}}/cockroach-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url {CONNECTION STRING} --format=csv
     ~~~
@@ -13,28 +12,24 @@ In this example, you'll set up a core changefeed on your CockroachDB {{ site.dat
 
 1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link "{{site.current_cloud_version}}/cluster-settings.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 1. Create table `foo`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE TABLE foo (a INT PRIMARY KEY);
     ~~~
 
 1. Insert a row into the table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > INSERT INTO foo VALUES (0);
     ~~~
 
 1. Start the core changefeed:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > EXPERIMENTAL CHANGEFEED FOR foo;
     ~~~
@@ -45,7 +40,6 @@ In this example, you'll set up a core changefeed on your CockroachDB {{ site.dat
 
 1. In a new terminal, add another row:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url {CONNECTION STRING} -e "INSERT INTO foo VALUES (1)"
     ~~~

@@ -13,7 +13,6 @@ To finalize a major-version upgrade:
 
 1. Run the following command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
@@ -28,7 +27,6 @@ To finalize a major-version upgrade:
 
 1. To confirm that finalization has completed, check the cluster version:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW CLUSTER SETTING version;
     ~~~

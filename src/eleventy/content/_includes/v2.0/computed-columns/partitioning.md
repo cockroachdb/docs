@@ -2,7 +2,6 @@
 
 In this example, let's create a table with geo-partitioning and a computed column:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE user_locations (
     locality STRING AS (CASE
@@ -20,7 +19,6 @@ In this example, let's create a table with geo-partitioning and a computed colum
 
 Then, insert a few rows of data:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO user_locations (name, country) VALUES
     ('Leonard McCoy', 'us'),
@@ -32,7 +30,6 @@ Then, insert a few rows of data:
     ('Pavel Chekov', 'au');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM user_locations;
 ~~~

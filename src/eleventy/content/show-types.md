@@ -21,17 +21,14 @@ The `CONNECT` [privilege]({% link "{{ page.version.version }}/security-reference
 
 The following example creates a [user-defined type]({% link "{{ page.version.version }}/create-type.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TYPE weekday AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > CREATE TYPE weekend AS ENUM ('sunday', 'saturday');
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW TYPES;
 ~~~

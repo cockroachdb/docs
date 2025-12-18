@@ -51,7 +51,6 @@ Field | Description
 
 ### Show schedules
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW SCHEDULES;
 ~~~
@@ -74,7 +73,6 @@ To view the `CREATE SCHEDULE` statements for scheduled jobs, use [`SHOW CREATE S
 
 ### Show running schedules
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW RUNNING SCHEDULES;
 ~~~
@@ -94,7 +92,6 @@ To view the `CREATE SCHEDULE` statements for scheduled jobs, use [`SHOW CREATE S
 
 ### Show paused schedules
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW PAUSED SCHEDULES;
 ~~~
@@ -109,7 +106,6 @@ To view the `CREATE SCHEDULE` statements for scheduled jobs, use [`SHOW CREATE S
 
 To view a specific schedule, use the schedule's `id`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SHOW SCHEDULE 588796190012702721;
 ~~~

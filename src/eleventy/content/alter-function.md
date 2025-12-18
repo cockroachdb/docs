@@ -99,14 +99,12 @@ For usage, see [Synopsis](#synopsis).
 
 Suppose that the current owner of a `sq` function is `root` and you want to change the owner to a new user named `max`.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER FUNCTION sq OWNER TO max;
 ~~~
 
 To verify that the owner is now `max`, run a join query against the `pg_catalog.pg_proc` and `pg_catalog.pg_roles` tables:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT rolname FROM pg_catalog.pg_proc f
 JOIN pg_catalog.pg_roles r ON f.proowner = r.oid
@@ -124,19 +122,16 @@ WHERE proname = 'sq';
 
 The following statement defines a function that computes the sum of two arguments:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
 ~~~
 
 The following statement renames the `add` function to `sum`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER FUNCTION add(a INT, b INT) RENAME TO sum;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE FUNCTION sum;
 ~~~
@@ -160,7 +155,6 @@ The default schema for the function `sum` is `public`:
 
 Since there is also a [built-in function]({% link "{{ page.version.version }}/functions-and-operators.md" %}#aggregate-functions) named `sum`, you must specify the `public` schema to invoke your user-defined `sum` function:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT public.sum(1,2);
 ~~~
@@ -173,7 +167,6 @@ SELECT public.sum(1,2);
 
 If you do not specify `public` when invoking a user-defined function, you will get an error when invoking a built-in function with the same name:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT sum(1,2);
 ~~~
@@ -189,7 +182,6 @@ Suppose you want to add the user-defined `sum` function from the [preceding exam
 
 By default, [unqualified functions]({% link "{{ page.version.version }}/sql-name-resolution.md" %}#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE FUNCTION public.sum;
 ~~~
@@ -211,19 +203,16 @@ SHOW CREATE FUNCTION public.sum;
 
 If the new schema does not already exist, [create it]({% link "{{ page.version.version }}/create-schema.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 Then, change the function's schema:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER FUNCTION public.sum SET SCHEMA cockroach_labs;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CREATE FUNCTION cockroach_labs.sum;
 ~~~

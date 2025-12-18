@@ -30,7 +30,6 @@ For more details and examples, refer to [SSO to CockroachDB clusters using JWT](
 
 1. Authenticate `ccloud` to your CockroachDB {{ site.data.products.cloud }} organization. When you run the following command, your workstation's default browser opens the CockroachDB {{ site.data.products.cloud }} login page for your organization.
 
-	{% include "copy-clipboard.html" %}
 	~~~shell
 	ccloud auth login --org {your organization label}
 	# when running ccloud on a remote host, add the following:
@@ -39,7 +38,6 @@ For more details and examples, refer to [SSO to CockroachDB clusters using JWT](
 
 1. You may then use the `ccloud` utility to authenticate to your CockroachDB {{ site.data.products.cloud }} cluster, allowing you to access the SQL interface. Your browser will open again as `ccloud` requests an access token, although will not need to log in again if you are already logged in.
 
-	{% include "copy-clipboard.html" %}
 	~~~shell
 	ccloud cluster sql --sso {your cluster name}
 	# when running ccloud on a remote host, add the following:
@@ -57,7 +55,6 @@ For example, a user named `docs_rule@cockroachlabs.com` would need a SQL usernam
 
 You can [create a user]({% link "cockroachcloud/ccloud-get-started.md" %}#create-a-sql-user-using-ccloud-cluster-user-create) with:
 
-{% include "copy-clipboard.html" %}
  ~~~shell
  `ccloud cluster user create {cluster name} {SSO SQL username}`
  ~~~

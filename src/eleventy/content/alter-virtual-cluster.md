@@ -19,7 +19,6 @@ To run the `ALTER VIRTUAL CLUSTER` statement from the standby cluster, users req
 
 Use the [`GRANT SYSTEM`]({% link "{{ page.version.version }}/grant.md" %}) statement to grant the necessary privileges, for example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
 ~~~
@@ -61,7 +60,6 @@ Option | Value | Description
 
 To start the [failover]({% link "{{ page.version.version }}/failover-replication.md" %}#failover) process from the standby cluster, use `COMPLETE REPLICATION` and provide the timestamp to restore as of:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO {failover time specification};
 ~~~
@@ -77,14 +75,12 @@ You can use either:
 
 When a virtual cluster is [`ready`]({% link "{{ page.version.version }}/show-virtual-cluster.md" %}#responses) after initiating the failover process, you must start the service so that the virtual cluster is ready to accept SQL connections. On the standby cluster, run:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER VIRTUAL CLUSTER main START SERVICE SHARED;
 ~~~
 
 To stop the `shared` service for a virtual cluster and prevent it from accepting SQL connections:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER VIRTUAL CLUSTER main STOP SERVICE;
 ~~~
@@ -93,7 +89,6 @@ ALTER VIRTUAL CLUSTER main STOP SERVICE;
 
 To [fail back]({% link "{{ page.version.version }}/failover-replication.md" %}#failback) to a cluster that was previously the primary cluster, use the `ALTER VIRTUAL CLUSTER` syntax:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER VIRTUAL CLUSTER {original_primary_vc} START REPLICATION OF {promoted_standby_vc} ON {connection_string_standby};
 ~~~

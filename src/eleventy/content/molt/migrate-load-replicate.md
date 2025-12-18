@@ -20,7 +20,6 @@ Perform the initial load of the source data.
 	<section class="filter-content" markdown="1" data-scope="postgres">
 	You **must** include `--pglogical-replication-slot-name` and `--pglogical-publication-and-slot-drop-and-recreate` to automatically create the publication and replication slot during the data load.
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	molt fetch \
 	--source $SOURCE \
@@ -35,7 +34,6 @@ Perform the initial load of the source data.
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="mysql">
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	molt fetch \
 	--source $SOURCE \
@@ -50,7 +48,6 @@ Perform the initial load of the source data.
 	<section class="filter-content" markdown="1" data-scope="oracle">
 	The command assumes an Oracle Multitenant (CDB/PDB) source. `--source-cdb` specifies the container database (CDB) connection string.
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	molt fetch \
 	--source $SOURCE \
@@ -145,7 +142,6 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 <section class="filter-content" markdown="1" data-scope="postgres">
 1. Run the `replicator` command, using the same slot name that you specified with `--pglogical-replication-slot-name` in the [Fetch command](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	replicator pglogical \
 	--sourceConn $SOURCE \
@@ -162,7 +158,6 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 <section class="filter-content" markdown="1" data-scope="mysql">
 1. Run the `replicator` command, specifying the GTID from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	replicator mylogical \
 	--sourceConn $SOURCE \
@@ -184,7 +179,6 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 <section class="filter-content" markdown="1" data-scope="oracle">
 1. Run the `replicator` command, specifying the backfill and starting SCN from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
-	{% include "copy-clipboard.html" %}
 	~~~ shell
 	replicator oraclelogminer \
 	--sourceConn $SOURCE \

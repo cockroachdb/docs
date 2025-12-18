@@ -54,17 +54,14 @@ Avoid using the `-v` / `--volume` command to mount a local macOS filesystem into
 
 Create a [Docker volume](https://docs.docker.com/storage/volumes/) for each container. You can create only one volume at a time.
 
-{% include "copy-clipboard.html" %}
 ~~~ powershell
 docker volume create roach1
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ powershell
 docker volume create roach2
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ powershell
 docker volume create roach3
 ~~~
@@ -85,7 +82,6 @@ When SQL and inter-node traffic are separated, some client commands need to be m
 
     CockroachDB starts in insecure mode and a `certs` directory is not created.
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker run -d '
     --name=roach1 '
@@ -118,7 +114,6 @@ When SQL and inter-node traffic are separated, some client commands need to be m
 
     CockroachDB starts in insecure mode and a `certs` directory is not created.
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker run -d '
       --name=roach2 '
@@ -138,7 +133,6 @@ When SQL and inter-node traffic are separated, some client commands need to be m
 
 1. Start the third node and configure it to listen on `roach3:26259` for SQL clients and `roach2:8082` for the DB Console and to publish these ports, and to use `roach3:26357`for inter-node traffic. The offsets for the published ports avoid conflicts with `roach1`'s and `roach2`'s published ports. The named volume `roach3` is mounted in the container at `/cockroach/cockroach-data`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker run -d '
       --name=roach3 '
@@ -160,7 +154,6 @@ When SQL and inter-node traffic are separated, some client commands need to be m
 
     `cockroach init` connects to the node's `--advertise-addr`, rather than the node's `--sql-addr`. Replace `roach1:26357` with the node's `--advertise-addr` value. This example runs the `cockroach` command directly on a cluster node, but you can run it from any system that can connect to the Docker host.
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker exec -it roach1 ./cockroach --host=roach1:26357 init --insecure
     ~~~
@@ -173,7 +166,6 @@ When SQL and inter-node traffic are separated, some client commands need to be m
 
     Each node also prints helpful [startup details]({% link "{{ page.version.version }}/cockroach-start.md" %}#standard-output) to its log. For example, the following command runs the `grep` command from within the `roach1` container to display lines in its `/cockroach-data/logs/cockroach.log` log file that contain the string `node starting` and the next 11 lines.
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker exec -it roach1 grep 'node starting' /cockroach-data/logs/cockroach.log -A 11
     ~~~
@@ -201,29 +193,24 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Start the SQL shell in a container or from an external system that can reach the Docker host. Set `--host` to the Docker host's IP address and use any of the ports where nodes are listening for SQL connections, `26257`, `26258`, or `26259`. This example connects the SQL shell within the `roach1` container to `roach2:26258`. You could also connect to `roach3:26259`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker exec -it roach1 ./cockroach sql --host=roach2:26258 --insecure
     ~~~
 
 1. Run some basic [CockroachDB SQL statements]({% link "{{ page.version.version }}/learn-cockroachdb-sql.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -237,19 +224,16 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Exit the SQL shell on `roach1` and open a new shell on `roach2`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker exec -it roach2 ./cockroach --host=roach2:26258 sql --insecure
     ~~~
 
 1. Run the same `SELECT` query as before:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -265,7 +249,6 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Exit the SQL shell on node 2:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~
@@ -280,14 +263,12 @@ The `cockroach workload` command does not support connection or security flags l
 
 1. Load the initial dataset on `roach1:26257`
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker exec -it roach1 ./cockroach workload init movr 'postgresql://root@roach1:26257?sslmode=disable'
     ~~~
 
 1. Run the workload for 5 minutes:
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker exec -it roach1 ./cockroach workload run movr --duration=5m 'postgresql://root@roach1:26257?sslmode=disable'
     ~~~
@@ -339,24 +320,20 @@ The CockroachDB [DB Console]({% link "{{ page.version.version }}/ui-overview.md"
 
 1. Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes]({% link "{{ page.version.version }}/node-shutdown.md" %}#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker stop -t 300 roach1 roach2 roach3
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker rm roach1 roach2 roach3
     ~~~
 
 1. If you do not plan to restart the cluster, you can also remove the Docker volumes and the Docker network:
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker volume rm roach1 roach2 roach3
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ powershell
     docker network rm roachnet
     ~~~

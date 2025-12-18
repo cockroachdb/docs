@@ -1,6 +1,5 @@
 1. Use `SHOW BACKUP ... check_files` with a backup for validation:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SHOW BACKUP "2022/09/19-134123.64" IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}" WITH check_files;
     ~~~

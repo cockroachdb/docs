@@ -4,14 +4,12 @@ Only a [cluster region]({% link "{{ page.version.version }}/multiregion-overview
 
 To follow along with the examples in this section, start a [demo cluster]({% link "{{ page.version.version }}/cockroach-demo.md" %}) with the [`--global` flag]({% link "{{ page.version.version }}/cockroach-demo.md" %}#general) to simulate a multi-region cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach demo --global --nodes 9
 ~~~
 
 To see the regions available to the databases in the cluster, use a [`SHOW REGIONS FROM CLUSTER`]({% link "{{ page.version.version }}/show-regions.md" %}#view-the-regions-in-a-cluster) statement:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW REGIONS FROM CLUSTER;
 ~~~

@@ -45,7 +45,6 @@ To use this pattern, set the [table locality]({% link "{{ page.version.version }
 
 1. Create a [`GLOBAL` table]({% link "{{ page.version.version }}/table-localities.md" %}#global-tables) by issuing the following statement:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE postal_codes (
       id INT PRIMARY KEY,
@@ -55,7 +54,6 @@ To use this pattern, set the [table locality]({% link "{{ page.version.version }
 
     Alternatively, you can set an existing table's locality to `GLOBAL` using [`ALTER TABLE ... SET LOCALITY`]({% link "{{ page.version.version }}/alter-table.md" %}#set-locality):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > ALTER TABLE postal_codes SET LOCALITY GLOBAL;
     ~~~

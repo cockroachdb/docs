@@ -67,12 +67,10 @@ If the name is composed of two or more identifiers, [name resolution]({% link "{
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users; -- uses table `users` in the current database
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM mydb.users; -- uses table `users` in database `mydb`
 ~~~
@@ -93,7 +91,6 @@ earlier.
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH a AS (SELECT * FROM users)
   SELECT * FROM a; -- "a" refers to "WITH a AS .."
@@ -124,7 +121,6 @@ single column and single row containing the function result.
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM sin(3.2)
 ~~~
@@ -145,7 +141,6 @@ a single function application. This is also called a _set-returning function_ (S
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM generate_series(1, 3);
 ~~~
@@ -166,7 +161,6 @@ You access SRFs using `(SRF).x` where `x` is one of the following:
 
 For example (the output of queries against [`information_schema`]({% link "{{ page.version.version }}/information-schema.md" %}) will vary per database):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT (i.keys).* FROM (SELECT information_schema._pg_expandarray(indkey) AS keys FROM pg_index) AS i;
 ~~~
@@ -209,12 +203,10 @@ In the second form, the columns are also renamed.
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT c.x FROM (SELECT COUNT(*) AS x FROM users) AS c;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT c.x FROM (SELECT COUNT(*) FROM users) AS c(x);
 ~~~
@@ -232,7 +224,6 @@ table expression operand.
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM (VALUES('a'),('b'),('c'));
 ~~~
@@ -246,7 +237,6 @@ For example:
 +---------+
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM (VALUES ('a'), ('b'), ('c')) WITH ORDINALITY;
 ~~~
@@ -289,17 +279,14 @@ as a table expression. This is called a _[subquery]({% link "{{ page.version.ver
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT c+2 FROM (SELECT COUNT(*) AS c FROM users);
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM (VALUES(1), (2), (3));
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT firstname || ' ' || lastname FROM (TABLE employees);
 ~~~
@@ -329,7 +316,6 @@ A [`WITH` query]({% link "{{ page.version.version }}/common-table-expressions.md
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS from customer) SELECT "column_name" FROM x;
 ~~~
@@ -350,7 +336,6 @@ immediately creates a matching entry in the `management` table with the
 auto-generated employee ID, without requiring a round trip with the SQL
 client:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO management(manager, reportee)
     VALUES ((SELECT id FROM employee WHERE name = 'Diana'),
@@ -363,7 +348,6 @@ You can use table expressions in the [`SELECT` clause]({% link "{{ page.version.
 [`TABLE` clause]({% link "{{ page.version.version }}/selection-queries.md" %}#table-clause) variants of [selection clauses]({% link "{{ page.version.version }}/selection-queries.md" %}#selection-clauses).
 Thus they can appear everywhere where a selection clause is possible. For example:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > SELECT ... FROM <table expr>, <table expr>, ...
 > TABLE <table expr>

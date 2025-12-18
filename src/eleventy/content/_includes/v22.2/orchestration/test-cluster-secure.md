@@ -4,7 +4,6 @@
 
 1. To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create \
     -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/client-secure-operator.yaml
@@ -12,7 +11,6 @@
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -41,7 +39,6 @@
 
 1. To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create \
     -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
@@ -53,7 +50,6 @@
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -90,7 +86,6 @@ From your local workstation, use our [`client-secure.yaml`](https://github.com/c
 
 1. Download the file:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ curl -OOOOOOOOO \
     https://raw.githubusercontent.com/cockroachdb/helm-charts/master/examples/client-secure.yaml
@@ -103,7 +98,6 @@ From your local workstation, use our [`client-secure.yaml`](https://github.com/c
 
 1. Use the file to launch a pod and keep it running indefinitely:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create -f client-secure.yaml
     ~~~
@@ -114,7 +108,6 @@ From your local workstation, use our [`client-secure.yaml`](https://github.com/c
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \

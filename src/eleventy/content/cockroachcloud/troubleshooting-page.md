@@ -44,7 +44,6 @@ If you have existing certificates in `~/.cockroach-certs` used to connect to Coc
 
 For example, on Linux and Mac, set the `sslrootcert` parameter to `$HOME/.postgresql/root.crt` in the connection string:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach sql --url "postgresql://maxroach@blue-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt"
 ~~~

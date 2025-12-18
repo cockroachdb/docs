@@ -94,7 +94,6 @@ Cockroach Labs measured baseline performance in a 3-node CockroachDB cluster run
 
 Without using `encrypt` or `decrypt`, the following statement generally ran in 60-80 ms:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH
     a
@@ -129,7 +128,6 @@ FROM
 
 Using both `encrypt` and `decrypt`, the following statement generally ran in 80-100 ms:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH
     a
@@ -175,7 +173,6 @@ FROM
 
 With `encrypt` only, the following statement generally ran in 80-100 ms:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH
     a
@@ -226,7 +223,6 @@ The examples in this section operate on the following table.
 The columns that will store the encrypted values must be of type [`BYTES`]({% link "{{ page.version.version }}/bytes.md" %}) as shown below.
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS users (
     user_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -238,7 +234,6 @@ CREATE TABLE IF NOT EXISTS users (
 
 ### Encrypt using the `encrypt` function
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 INSERT
 INTO
@@ -256,7 +251,6 @@ VALUES
 
 ### Encrypt using the `encrypt_iv` function
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 WITH
     iv AS (SELECT gen_random_bytes(16) AS iv)
@@ -278,7 +272,6 @@ FROM
 
 ### Decrypt using the `decrypt` function
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT
     name,
@@ -299,7 +292,6 @@ WHERE
 
 ### Decrypt using the `decrypt_iv` function
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT
     name,

@@ -600,6 +600,7 @@ module.exports = function(eleventyConfig) {
     // Step 1: Process unprocessed ~~~ fenced code blocks
     // These appear as literal text when markdown-it skips them (inside HTML blocks)
     // Match ~~~ with optional language, content, and closing ~~~
+    // Output Jekyll/Rouge-compatible HTML structure for CSS compatibility
     const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*<|\s*$|\n)/g;
     result = result.replace(fencedCodePattern, function(match, lang, code) {
       const language = lang || 'text';
@@ -610,7 +611,8 @@ module.exports = function(eleventyConfig) {
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
-      return `<pre class="highlight language-${language}"><code class="language-${language}" data-lang="${language}">${escapedCode.trim()}</code></pre>\n`;
+      // Match Jekyll/Rouge HTML structure for CSS compatibility
+      return `<div class="language-${language} highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="language-${language}" data-lang="${language}">${escapedCode.trim()}</code></pre></div></div>\n`;
     });
 
     // Step 2: Process markdown inside callouts (bs-callout divs)
@@ -631,22 +633,40 @@ module.exports = function(eleventyConfig) {
       return `${openTag}\n${label}\n<p>${processed}</p>\n${closeTag}`;
     });
 
-    // Step 3: Remove markdown="1" attribute from elements
+    // Step 3: Process inline code backticks that weren't processed by markdown
+    // This happens when content is inside HTML blocks (like filter-content divs)
+    // Convert `code` to <code>code</code>, but not inside <pre>, <code>, or <script> tags
+    // Use a negative lookbehind-like approach by splitting on these tags
+    const processInlineCode = (text) => {
+      // Don't process inside existing code/pre/script blocks
+      const parts = text.split(/(<pre[\s\S]*?<\/pre>|<code[^>]*>[\s\S]*?<\/code>|<script[\s\S]*?<\/script>)/gi);
+      return parts.map((part, i) => {
+        // Odd indices are the preserved blocks
+        if (i % 2 === 1) return part;
+        // Even indices are text to process
+        return part.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+      }).join('');
+    };
+    result = processInlineCode(result);
+
+    // Step 4: Remove markdown="1" attribute from elements
     // The content inside should already be processed by Eleventy's markdown processor
     // for blocks that it could handle, or by Step 1 above for fenced code
     result = result.replace(/\s*markdown=["']1["']/gi, '');
 
-    // Step 4: Fix broken copy-clipboard structure
-    // When copy-clipboard.html is inside a list item, the structure can get mangled
-    // Pattern: SVGs in <p> tags followed by </div> and <pre> in <p> tag
-    // Fix by reconstructing the proper structure
-    const brokenCopyClipboard = /<p>(<svg id="copy-icon"[\s\S]*?<\/svg>\s*<svg id="copy-check"[\s\S]*?<\/svg>)<\/p>\s*<\/div>\s*<p>(<pre class="highlight[^"]*"[\s\S]*?<\/pre>)/g;
-    result = result.replace(brokenCopyClipboard, function(match, svgs, preBlock) {
-      return `<div class="copy-clipboard">\n  ${svgs}\n</div>\n${preBlock}`;
+    // Step 5: Convert Eleventy syntax highlighter output to Jekyll/Rouge structure
+    // This MUST run before the list structure fix (Step 6) because that step looks for the Jekyll/Rouge structure
+    // Eleventy outputs: <pre class="highlight language-X"><code>...</code></pre>
+    // Jekyll/Rouge expects: <div class="language-X highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...</code></pre></div></div>
+    const eleventyCodePattern = /<pre class="highlight language-(\w+)">([\s\S]*?<\/pre>)/g;
+    result = result.replace(eleventyCodePattern, function(match, lang, rest) {
+      return `<div class="language-${lang} highlighter-rouge"><div class="highlight"><pre class="highlight">${rest}</div></div>`;
     });
 
-    // Step 5: Fix <p><pre> nesting (invalid HTML - block in inline)
+    // Step 6: Fix <p><pre> and <p><div class="language-*"> nesting (invalid HTML - block in inline)
+    // Note: Copy-clipboard transforms removed - now handled by client-side JS in customscripts.js
     result = result.replace(/<p>(<pre[\s\S]*?<\/pre>)/g, '$1');
+    result = result.replace(/<p>(<div class="language-[\s\S]*?<\/div>)<\/p>/g, '$1');
 
     return result;
   });

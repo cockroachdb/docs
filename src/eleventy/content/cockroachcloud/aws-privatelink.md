@@ -74,7 +74,6 @@ Your service account must have one of the following roles on the cluster, either
 
 To [add a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
@@ -97,7 +96,6 @@ Next, you can [create an AWS endpoint](#step-3-create-an-aws-endpoint).
 
 To [list private endpoint trusted owners](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners) for a cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
@@ -113,7 +111,6 @@ Replace:
 
 To [get details about a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
@@ -130,7 +127,6 @@ Replace:
 
 To [remove a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#delete-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 curl --request DELETE \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
@@ -204,7 +200,6 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 1. Substitute the values from the previous steps and run the following AWS CLI command:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     aws ec2 create-vpc-endpoint --region {REGION} \
                                   --vpc-id {VPC_ID} \
@@ -253,7 +248,6 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 After the endpoint status changes to **Available** on the Amazon VPC Console **Endpoints** page, run the following AWS CLI command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 aws ec2 modify-vpc-endpoint --region {REGION} \
                               --vpc-endpoint-id {VPC_ENDPOINT_ID} \

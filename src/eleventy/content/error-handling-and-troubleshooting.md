@@ -105,7 +105,6 @@ To decrease the CPU usage of SCRAM password hashing while keeping SCRAM enabled:
 
 1. Set the [`server.user_login.password_hashes.default_cost.scram_sha_256` cluster setting](cluster-settings.html#setting-server-user-login-password-hashes-default-cost-scram-sha-256) to `4096`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING server.user_login.password_hashes.default_cost.scram_sha_256 = 4096;
     ~~~
@@ -124,14 +123,12 @@ As an alternative to the [mitigation steps listed above](#mitigation-steps-while
 
 1. Set the [`server.user_login.password_encryption` cluster setting](cluster-settings.html#setting-server-user-login-password-encryption) to `crdb-bcrypt`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING server.user_login.password_encryption = 'crdb-bcrypt';
     ~~~
 
 1. Ensure the [`server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled` cluster setting](cluster-settings.html#setting-server-user-login-downgrade-scram-stored-passwords-to-bcrypt-enabled) is set to `true`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled = true;
     ~~~

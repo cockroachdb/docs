@@ -5,7 +5,6 @@ When CockroachDB encounters a SQL error, it returns the following information to
 
 For example, the following query (taken from [this example of adding multiple foreign key constraints](foreign-key.html#add-multiple-foreign-key-constraints-to-a-single-column)) results in a SQL error, and returns both an error message and a `SQLSTATE` code as described above.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
 ~~~

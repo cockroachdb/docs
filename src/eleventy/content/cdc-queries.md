@@ -114,7 +114,6 @@ To only emit data from specific columns in a table, you can use `SELECT {columns
 
 As an example, using the `users` table from the [`movr` database]({% link "{{ page.version.version }}/movr.md" %}#the-movr-database), you can create a changefeed that will emit messages including only the `name` and `city` column data:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO "scheme://sink-URI" WITH updated AS SELECT name, city FROM users;
 ~~~
@@ -136,7 +135,6 @@ CREATE CHANGEFEED INTO "scheme://sink-URI" WITH updated AS SELECT name, city FRO
 
 To remove the [delete messages]({% link "{{ page.version.version }}/changefeed-messages.md" %}#delete-messages) from a changefeed stream, use the [`event_op()`](#cdc-query-function-support) function:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED INTO sink AS SELECT * FROM table WHERE NOT event_op() = 'delete';
 ~~~
@@ -147,7 +145,6 @@ Filtering delete messages from your changefeed is helpful for certain outbox tab
 
 Delete changefeed messages will only contain the [primary key]({% link "{{ page.version.version }}/primary-key.md" %}) value and all other columns will emit as `NULL` (see the [Known limitations](#known-limitations)). To emit the deleted values, use the [`envelope=wrapped`]({% link "{{ page.version.version }}/create-changefeed.md" %}#envelope), [`format=json`]({% link "{{ page.version.version }}/create-changefeed.md" %}#format), and [`diff`]({% link "{{ page.version.version }}/create-changefeed.md" %}#diff) options:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'external://cloud' WITH envelope='wrapped', format='json', diff AS SELECT * FROM users WHERE event_op() = 'delete';
 ~~~
@@ -166,14 +163,12 @@ Changefeeds can access the `cdc_prev` hidden column on a table to emit the previ
 
 To emit the previous state of a row, it is necessary to explicitly call `cdc_prev`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'external://sink' AS SELECT rider_id, vehicle_id, cdc_prev FROM movr.rides;
 ~~~
 
 To emit the previous state of a column, you can specify this as a named field from the `cdc_prev` tuple with the following syntax:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'external://sink' AS SELECT owner_id, (cdc_prev).current_location AS previous_location FROM movr.vehicles WHERE (cdc_prev).status = 'in_use';
 ~~~
@@ -202,7 +197,6 @@ In some cases, you may have custom expiration logic on rows in a table. You can 
 
 In the following example, the table uses the [`ttl_expiration_expression`]({% link "{{ page.version.version }}/row-level-ttl.md" %}#syntax-overview) storage parameter to reference the `expired_at` column. To create a changefeed on this table to explicitly emit the previous state of the row for TTL deletions:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'external://sink'
 AS SELECT cdc_prev FROM ttl_test_per_row
@@ -216,7 +210,6 @@ For the `CREATE TABLE` statement and further details on `ttl_expiration_expressi
 
 When the table uses the `ttl_expire_after` storage parameter, you can emit rows that were deleted after expiring from the changefeed with syntax similar to:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO 'external://sink'
 AS SELECT cdc_prev FROM test_table
@@ -238,7 +231,6 @@ This will only emit rows that were deleted **after** expiring. Furthermore, cons
 
 Equally, you can remove the delete messages for expired rows so that they do not emit from your changefeed:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED AS SELECT cdc_prev FROM test_table
 WHERE NOT (event_op() = 'delete'
@@ -249,7 +241,6 @@ AND (cdc_prev).crdb_internal_expiration < statement_timestamp());
 
 When you are working with a [`REGIONAL BY ROW` table]({% link "{{ page.version.version }}/alter-table.md" %}#regional-by-row), you can filter the changefeed on the `crdb_region` column to create a region-specific changefeed:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED INTO sink AS SELECT * FROM table WHERE crdb_region = 'europe-west2';
 ~~~
@@ -264,7 +255,6 @@ If you are running changefeeds from a [multi-region]({% link "{{ page.version.ve
 
 As changefeed messages emit from the database, message formats can vary as tables experience [schema changes]({% link "{{ page.version.version }}/changefeed-messages.md" %}#schema-changes). You can select columns with [typecasting]({% link "{{ page.version.version }}/data-types.md" %}#data-type-conversions-and-casts) to prevent message fields from changing during a changefeed's lifecycle:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO sink AS SELECT id::int, name::varchar, admin::bool FROM users;
 ~~~
@@ -277,7 +267,6 @@ In this example, the query uses the `ride_id` column's [`UUID`]({% link "{{ page
 
 Therefore, the first changefeed created:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO 'scheme://sink-URI-1'
 AS SELECT * FROM movr.vehicle_location_histories
@@ -286,7 +275,6 @@ WHERE left(ride_id::string, 1) IN ('0','1','2','3');
 
 The final changefeed created:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO 'scheme://sink-URI-4'
 AS SELECT * FROM movr.vehicle_location_histories
@@ -301,7 +289,6 @@ For example, you may need to identify what recently changed in a specific row. Y
 
 1. Find the start time. Use the [`cluster_logical_timestamp()`]({% link "{{ page.version.version }}/functions-and-operators.md" %}#system-info-functions) function to calculate the logical time. This will return the logical timestamp for an hour earlier than the statement run time:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SELECT cluster_logical_timestamp() - 3600000000000;
     ~~~
@@ -315,7 +302,6 @@ For example, you may need to identify what recently changed in a specific row. Y
 
 1. Run the changefeed without a sink and pass the start time to the `cursor` option:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000'
     AS SELECT * FROM vehicle_location_histories
@@ -324,7 +310,6 @@ For example, you may need to identify what recently changed in a specific row. Y
 
 1. To find changes within a time period, use `cursor` with the [`end_time`]({% link "{{ page.version.version }}/create-changefeed.md" %}#end-time) option:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', end_time='1663942405825479261.0000000000'
     AS SELECT * FROM vehicle_location_histories
@@ -335,7 +320,6 @@ For example, you may need to identify what recently changed in a specific row. Y
 
 You can determine the age of a row by using the `crdb_internal_mvcc_timestamp` system column and `cdc_prev` to [access the row's previous state](#emit-the-previous-state-of-a-row):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'external://sink'
 AS SELECT crdb_internal_mvcc_timestamp - (cdc_prev).crdb_internal_mvcc_timestamp
@@ -359,7 +343,6 @@ FROM movr.rides;
 
 In the event that an incident downstream has affected some rows, you may need a way to recover or evaluate the specific rows. Create a new changefeed that only watches for the affected row(s). Here, the example uses the row's primary key:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO 'scheme://cloud'
 AS SELECT * FROM movr.vehicle_location_histories
@@ -384,7 +367,6 @@ You can adapt your [changefeed messages]({% link "{{ page.version.version }}/cha
 
 In this example, the query adds a `summary` field to the changefeed message:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO 'external://cloud' AS SELECT *, owner_id::string || ' takes passengers by ' || type || '. They are currently ' || status AS summary FROM vehicles;
 ~~~
@@ -420,7 +402,6 @@ To achieve this, you create changefeeds directly on the tables and transform the
 
 For the previous JSON example:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
 event_schema_timestamp()::int AS event_timestamp,
@@ -438,7 +419,6 @@ This statement does the following:
 
 For the remaining tables, you use the same statement structure to create changefeeds that will send messages to the Kafka endpoint:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
 event_schema_timestamp()::int AS event_timestamp,
@@ -448,7 +428,6 @@ jsonb_build_object('email', email, 'admin', admin) AS data
 FROM users;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
 event_schema_timestamp()::int AS event_timestamp,
@@ -462,14 +441,12 @@ For a different usage of the outbox pattern, you may still want an events table 
 
 For example, when you delete a message in your outbox table after processing it (or with [row-level TTL]({% link "{{ page.version.version }}/row-level-ttl.md" %})). You can filter the [delete messages](#filter-delete-messages) from your changefeed:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT * FROM outbox WHERE event_op() != 'delete';
 ~~~
 
 Similarly, if you have a status column in your outbox table tracking its lifecycle, you can filter out updates as well so that only the initial insert sends a message:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE CHANGEFEED INTO 'scheme://sink-URI' AS SELECT status, cdc_prev FROM outbox WHERE (cdc_prev).status IS NULL;
 ~~~
@@ -482,7 +459,6 @@ You can create CDC queries that include [user-defined functions]({% link "{{ pag
 
 The following [`CREATE FUNCTION`]({% link "{{ page.version.version }}/create-function.md" %}) statement builds the `doubleRevenue()` function at the database level:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE FUNCTION doubleRevenue(r int)
 RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS
@@ -491,7 +467,6 @@ $$ SELECT 2 * r $$;
 
 You can then use this function within a CDC query tagetting a table in the same database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'external://sink' AS SELECT rider_id, doubleRevenue(rides.revenue::int) FROM rides WHERE revenue < 30;
 ~~~

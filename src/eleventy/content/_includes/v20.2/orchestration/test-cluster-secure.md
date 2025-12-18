@@ -1,7 +1,6 @@
 <section class="filter-content" markdown="1" data-scope="operator">
 1. Get a shell into one of the pods and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-2 \
     -- ./cockroach sql \
@@ -27,7 +26,6 @@
 <section class="filter-content" markdown="1" data-scope="manual">
 To use the built-in SQL client, you need to launch a pod that runs indefinitely with the `cockroach` binary inside it, get a shell into the pod, and then start the built-in SQL client.
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create \
     -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
@@ -39,7 +37,6 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -76,7 +73,6 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     1. Download the file:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ curl -OOOOOOOOO \
         https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
@@ -86,7 +82,6 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     1. Use the file to launch a pod and keep it running indefinitely:
 
-        {% include "copy-clipboard.html" %}
         ~~~ shell
         $ kubectl create -f client-secure.yaml
         ~~~
@@ -97,7 +92,6 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \

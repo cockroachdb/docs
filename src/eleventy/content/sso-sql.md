@@ -71,7 +71,6 @@ Follow these steps to configure Cluster SSO.
     - The issuer's **OpenID configuration endpoint**, which is typically published at `https://{ issuer URL }/.well-known/openid-configuration`. The **issuer URL** is the domain portion of the configuration endpoint. From the full endpoint, you can find the issuer URL, and vice versa. For example, the issuer URL for CockroachDB {{ site.data.products.cloud }} is `https://cockroachlabs.cloud` and the configuration endpoint is `https://cockroachlabs.cloud/.well-known/openid-configuration`. The configuration endpoint for Google Cloud is `https://accounts.google.com` and the configuration endpoint is `https://accounts.google.com/.well-known/openid-configuration`. If you omit the `.well-known/openid-configuration` portion, it is appended automatically.
     - The **public signing key** your issuer uses to sign JWTs. Your cluster will reject JWTs that are not signed by this key. Fetch the public signing key from the configuration endpoint. For example:
 
-        {% include "copy-clipboard.html" %}
         ~~~shell
         curl --silent https://accounts.google.com/.well-known/openid-configuration | jq .jwks_uri | xargs curl
         ~~~
@@ -101,14 +100,12 @@ Follow these steps to configure Cluster SSO.
 
 1. Enable JWT SQL authentication for your cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SET CLUSTER SETTING server.jwt_authentication.enabled = true;
     ~~~
 
 1. Add your IdP's issuer URL to your cluster's list of accepted token issuers. If you have already configured [Single Sign-on (SSO) for DB Console]({% link "{{ page.version.version }}/sso-db-console.md" %}#cluster-settings), the issuer URL must match the value of `server.oidc_authentication.provider_url`.
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SET CLUSTER SETTING server.jwt_authentication.issuers.configuration = 'https://cockroachlabs.cloud';
     ~~~
@@ -119,14 +116,12 @@ Follow these steps to configure Cluster SSO.
 
     By extension, if your provider allows you to specify scopes or permissions on the token, we recommend configuring the scopes or permissions to be as restrictive as possible.
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SET CLUSTER SETTING server.jwt_authentication.audience = '984901724939-njig7lkv7k724rbv2hllvr4of8ul7th7.apps.googleusercontent.com';
     ~~~
 
 1. Configure the field in the JWT that contains the email address that corresponds to a SQL user.
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SET CLUSTER SETTING server.jwt_authentication.claim = 'email';
     ~~~
@@ -141,7 +136,6 @@ Follow these steps to configure Cluster SSO.
 
     Replace the full contents of `keys` with the list of keys you found previously.
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SET CLUSTER SETTING server.jwt_authentication.jwks = '{
       "keys": [
@@ -162,7 +156,6 @@ Follow these steps to configure Cluster SSO.
 
 1. Set your Identity Map. Refer to [Identity Map configuration](#identity-map-configuration).
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SET CLUSTER SETTING
       server.identity_map.configuration = 'https://accounts.google.com /^(.*)@cockroachlabs\.com$ \1';
@@ -172,7 +165,6 @@ Follow these steps to configure Cluster SSO.
 
     This will also enable the **Token Generation** button to appear in the DB Console.
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SET CLUSTER SETTING
       server.oidc_authentication.generate_cluster_sso_token.enabled = true;
@@ -180,7 +172,6 @@ Follow these steps to configure Cluster SSO.
 
 1. Configure how the user's identity will be displayed by setting `server.oidc_authentication.generate_cluster_sso_toke.use_token` to either `id_token` or `access_token`, depending on the structure of the JWTs issued by your IdP.
 
-    {% include "copy-clipboard.html" %}
     ~~~sql
     SET CLUSTER SETTING
       server.oidc_authentication.generate_cluster_sso_token.use_token = id_token;
@@ -225,7 +216,6 @@ CockroachDB can automatically create users on their first JWT authentication, el
 
 ### Enable user provisioning
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SET CLUSTER SETTING security.provisioning.jwt.enabled = true;
 ~~~
@@ -241,7 +231,6 @@ SET CLUSTER SETTING security.provisioning.jwt.enabled = true;
 
 You can identify automatically provisioned users by viewing their role options:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW ROLES;
 ~~~
@@ -292,7 +281,6 @@ This example uses [`cockroach sql`]({% link "{{ page.version.version }}/cockroac
 
 1. Use the token in place of a password in your database connection string.
 
-    {% include "copy-clipboard.html" %}
     ~~~shell
     cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:26257?options=--crdb:jwt_auth_enabled=true" --certs-dir={CLUSTER_CERT_DIR}
     ~~~

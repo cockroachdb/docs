@@ -20,7 +20,6 @@ GKE or EKS are not required to run CockroachDB on Kubernetes. A manual GCE or AW
     Since this region can differ from your default `gcloud` region, be sure to include the `--region` flag to run `gcloud` commands against this cluster.
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ gcloud container clusters create cockroachdb --machine-type n2-standard-4 --region {region-name} --num-nodes 1
     ~~~
@@ -37,7 +36,6 @@ GKE or EKS are not required to run CockroachDB on Kubernetes. A manual GCE or AW
 
 3. Get the email address associated with your Google Cloud account:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ gcloud info | grep Account
     ~~~
@@ -52,7 +50,6 @@ GKE or EKS are not required to run CockroachDB on Kubernetes. A manual GCE or AW
 
 4. [Create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the address from the previous step:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create clusterrolebinding $USER-cluster-admin-binding \
     --clusterrole=cluster-admin \
@@ -79,7 +76,6 @@ GKE or EKS are not required to run CockroachDB on Kubernetes. A manual GCE or AW
     To ensure that all 3 nodes can be placed into a different availability zone, you may want to first [confirm that at least 3 zones are available in the region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#availability-zones-describe) for your account.
     {{site.data.alerts.end}}
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ eksctl create cluster \
     --name cockroachdb \

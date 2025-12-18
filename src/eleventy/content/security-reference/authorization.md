@@ -113,7 +113,6 @@ An `admin` user is a member of the `admin` role. Only `admin` users can use [`CR
 
 To assign a user to the `admin` role:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > GRANT admin TO <username>;
 ~~~

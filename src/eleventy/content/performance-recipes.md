@@ -208,13 +208,11 @@ Full table scans often result in poor statement performance.
 
 * The following query returns statements with full table scans in their statement plan:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW FULL TABLE SCANS;
     ~~~
 * The following query against the `crdb_internal.node_statement_statistics` table returns results:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT count(*) as total_full_scans
     FROM crdb_internal.node_statement_statistics
@@ -261,7 +259,6 @@ If the [Overview dashboard]({% link "{{ page.version.version }}/ui-overview-dash
 - In the DB Console, visit the [**Databases** page]({% link "{{ page.version.version }}/ui-databases-page.md" %}) and check databases and tables for [**Index Recommendations**]({% link "{{ page.version.version }}/ui-databases-page.md" %}#index-recommendations) to drop unused indexes.
 - Run a join query against the [`crdb_internal.index_usage_statistics`]({% link "{{ page.version.version }}/crdb-internal.md" %}#index_usage_statistics) and `crdb_internal.table_indexes` tables:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT ti.descriptor_name as table_name, ti.index_name, total_reads, last_read
     FROM crdb_internal.index_usage_statistics AS us

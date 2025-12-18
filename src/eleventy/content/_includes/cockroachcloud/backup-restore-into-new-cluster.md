@@ -23,7 +23,6 @@ To move to a new {% if page.name == "change-plan-between-basic-and-standard.md" 
 1. [Restore]({% link "{{site.current_cloud_version}}/restore.md" %}) the latest backup to the new cluster:
 
     a. Use `SHOW BACKUPS` with your external location to find the backup's subdirectory:
-      {% include "copy-clipboard.html" %}
       ~~~ sql
       SHOW BACKUPS IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
       ~~~
@@ -37,7 +36,6 @@ To move to a new {% if page.name == "change-plan-between-basic-and-standard.md" 
       ~~~
 
     b. Use the subdirectory to specify the backup to restore:
-      {% include "copy-clipboard.html" %}
       ~~~ sql
       RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
       ~~~

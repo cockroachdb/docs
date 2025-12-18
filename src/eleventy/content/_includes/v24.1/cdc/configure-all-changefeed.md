@@ -2,7 +2,6 @@ It is useful to be able to pause all running changefeeds during troubleshooting,
 
 To pause all running changefeeds:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 PAUSE JOBS (WITH x AS (SHOW CHANGEFEED JOBS) SELECT job_id FROM x WHERE status = ('running'));
 ~~~
@@ -11,7 +10,6 @@ This will change the status for each of the running changefeeds to `paused`, whi
 
 To resume all running changefeeds:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 RESUME JOBS (WITH x AS (SHOW CHANGEFEED JOBS) SELECT job_id FROM x WHERE status = ('paused'));
 ~~~

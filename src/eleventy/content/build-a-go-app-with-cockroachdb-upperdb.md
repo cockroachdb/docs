@@ -24,7 +24,6 @@ This tutorial shows you how build a simple Go application with CockroachDB and t
 
 Create a certificate and key for the `maxroach` user by running the following command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -43,7 +42,6 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 - Updates the rows in the `accounts` table within an explicit [transaction]({% link "{{ page.version.version }}/transactions.md" %}).
 - Prints the rows in the `accounts` table to the terminal once more.
 
-{% include "copy-clipboard.html" %}
 ~~~ go
 {% dynamic_include page.version.version, "/app/upperdb-basic-sample/main.go" %}
 ~~~
@@ -80,7 +78,6 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 - Updates the rows in the `accounts` table within an explicit [transaction]({% link "{{ page.version.version }}/transactions.md" %}).
 - Prints the rows in the `accounts` table to the terminal once more.
 
-{% include "copy-clipboard.html" %}
 ~~~ go
 {% dynamic_include page.version.version, "/app/insecure/upperdb-basic-sample/main.go" %}
 ~~~
@@ -99,14 +96,12 @@ To clone a version of the code below that connects to insecure clusters, run the
 
 Change to the directory where you cloned the repo and get the dependencies with `go mod init`:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ go mod init hello-world-go-upperdb
 ~~~
 
 Then run the code:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ go run main.go
 ~~~

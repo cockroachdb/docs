@@ -1,4 +1,3 @@
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CHANGEFEED JOBS;
 ~~~
@@ -12,7 +11,6 @@ SHOW CHANGEFEED JOBS;
 
 To show an individual changefeed:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW CHANGEFEED JOB {job_id};
 ~~~

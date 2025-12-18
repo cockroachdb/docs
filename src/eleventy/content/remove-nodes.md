@@ -101,14 +101,12 @@ Open the DB Console, click **Metrics** on the left, select the **Replication** d
 Run the [`cockroach node decommission`](cockroach-node.html) command against the address of the node to decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach node decommission --self --certs-dir=certs --host=<address of node to decommission>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach node decommission --self --insecure --host=<address of node to decommission>
 ~~~
@@ -184,14 +182,12 @@ You can check that a node is dead and find its internal ID by either running [`c
 Run the [`cockroach node decommission`](cockroach-node.html) command against the address of any live node, specifying the ID of the dead node:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach node decommission <id of the dead node> --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach node decommission <id of the dead node> --insecure --host=<address of any live node>
 ~~~
@@ -240,7 +236,6 @@ Open the DB Console, click **Metrics** on the left, select the **Replication** d
 Run the [`cockroach node decommission`](cockroach-node.html) command against the address of each node to decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach node decommission --self --certs-dir=certs --host=<address of node to decommission>
 ~~~
@@ -251,7 +246,6 @@ $ cockroach node decommission --self --certs-dir=certs --host=<address of anothe
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach node decommission --self --insecure --host=<address of node to decommission>
 ~~~
@@ -335,14 +329,12 @@ Press `ctrl-c` in each terminal with an ongoing decommissioning process that you
 Execute the [`cockroach node recommission`](cockroach-node.html) command against the address of the node to recommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach node recommission --self --certs-dir=certs --host=<address of node to recommission>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach node recommission --self --insecure --host=<address of node to recommission>
 ~~~
@@ -369,14 +361,12 @@ To check the progress of decommissioning nodes, run the [`cockroach node status`
 </div><br>
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach node status --decommission --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include "copy-clipboard.html" %}
 ~~~ shell
 $ cockroach node status --decommission --insecure --host=<address of any live node>
 ~~~

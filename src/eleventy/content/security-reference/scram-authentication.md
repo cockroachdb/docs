@@ -86,7 +86,6 @@ This section details how to use SCRAM authentication rather than cleartext passw
 
 In CockroachDB v22.2.x and above, passwords are encrypted using SCRAM-SHA-256 by default, and the `server.user_login.password_encryption` [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}) defaults to `scram-sha-256`. In CockroachDB v22.1.x and below, the setting defaults to `bcrypt`. When this setting is set to `scram-sha-256`, passwords created with the following SQL statements will be managed and authenticated according to SCRAM-SHA-256.
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SET CLUSTER SETTING server.user_login.password_encryption = 'scram-sha-256';
 ~~~
@@ -99,7 +98,6 @@ Once a SQL user has a SCRAM password hash defined, CockroachDB will automaticall
 
 For example:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE USER hypothetical_user WITH PASSWORD 'hypothetical-plain-text-password-123';
 SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical_user';
@@ -113,7 +111,6 @@ SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical
 
 Note that by default, hashed passwords are displayed in hex format. You can escape the hex format by setting the `bytea_output` session variable.
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SET bytea_output = escape;
 SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical_user';
@@ -143,7 +140,6 @@ In CockroachDB v22.2.x and above, the `server.user_login.upgrade_bcrypt_stored_p
 
 To enable the cluster setting:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled = true;
 ~~~
@@ -154,7 +150,6 @@ It is not possible to automatically convert credentials to SCRAM in bulk, withou
 
 1. Set the following [cluster settings]({% link "{{ page.version.version }}/cluster-settings.md" %}):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING server.user_login.cert_password_method.auto_scram_promotion.enabled = true;
     SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled = true;
@@ -162,7 +157,6 @@ It is not possible to automatically convert credentials to SCRAM in bulk, withou
 
 1. For each [SQL user]({% link "{{ page.version.version }}/create-user.md" %}) in the system, run [`ALTER USER {user} .. WITH PASSWORD`]({% link "{{ page.version.version }}/alter-user.md" %}#change-a-users-password) as shown below. This will cause each user's password to be encoded using SCRAM:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER USER {user} WITH PASSWORD {password};
     ~~~
@@ -213,7 +207,6 @@ Required cluster settings:
 
 Enable SCRAM for new passwords. In CockroachDB v22.2.x and above, this cluster setting defaults to `scram-sha-256`. In CockroachDB v22.1.x and below, it defaults to `bcrypt`.
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SET CLUSTER SETTING server.user_login.password_encryption = 'scram-sha-256';
 ~~~
@@ -222,7 +215,6 @@ SET CLUSTER SETTING server.user_login.password_encryption = 'scram-sha-256';
 
 Enable the CockroachDB cluster to accept pre-computed SCRAM-SHA-256 salted password hashes, rather than accepting a cleartext password and computing the hash itself. In CockroachDB v22.2.x and above, this cluster setting is enabled by default.
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SET CLUSTER SETTING setting server.user_login.store_client_pre_hashed_passwords.enabled = true;
 ~~~
@@ -237,7 +229,6 @@ After this change, users will not be able to sign in with cleartext passwords. A
 1. All stored credentials for client apps must be updated to use SCRAM encoded passwords. This procedure is detailed in [Migrating existing users/roles to SCRAM-SHA-256 authentication](#migrate-existing-users-roles-from-cleartext-passwords-to-scram-sha-256-authentication).
 {{site.data.alerts.end}}
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SET CLUSTER SETTING server.host_based_authentication.configuration TO '
 # TYPE    DATABASE  USER          ADDRESS     METHOD
@@ -272,7 +263,6 @@ In this example, we'll use this [open-source](https://stackoverflow.com/question
 
 For example, with docker.
 
-{% include "copy-clipboard.html" %}
 ~~~shell
 docker run -it python:latest python
 ~~~
@@ -281,7 +271,6 @@ docker run -it python:latest python
 
 In the Python shell, use another tool or the [script in the Appendix](#appendix-python-scram-hashing-script) to create a SCRAM-SCHA-256 salted password hash in the format accepted by CockroachDB (which follows PostgreSQL's format).
 
-{% include "copy-clipboard.html" %}
 ~~~python
 # Either copy-paste the hashing script directly into the shell, or into a file named roach_scram_hasher.py and import by un-commenting the following line
 # from roach_scram_hasher import *
@@ -296,7 +285,6 @@ pg_scram_sha256("password")
 
 In the CockroachDB SQL shell, use the computed hash as the value of `PASSWORD` when [creating a user]({% link "{{ page.version.version }}/create-user.md" %}) or [rotating the password for an existing user]({% link "{{ page.version.version }}/alter-user.md" %}).
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 CREATE USER cool_user WITH PASSWORD 'SCRAM-SHA-256$119680:D1nWfUQfRP2HWbVuK19Ntw==$ulRLI4fp/bvJN/oBC3x6Q8daLnPit2eWLvm2sex9vyc=:XHVeRmT8iboSn0KMbIx3nMRrebR2gIbi+qEMnHfJi+I=';
 ~~~
@@ -310,7 +298,6 @@ Time: 156ms total (execution 156ms / network 0ms)
 
 In this way, the server stores the information needed for SCRAM authentication, despite the cleartext password never having been conveyed to CockroachDB. The 'concern' with cleartext passwords has been cleanly 'separated' from CockroachDB.
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SELECT username, "hashedPassword" FROM system.users WHERE username='cool_user';
 ~~~
@@ -322,7 +309,6 @@ SELECT username, "hashedPassword" FROM system.users WHERE username='cool_user';
 
 Note that by default, hashed passwords are displayed in hex format. You can escape the hex format by setting the `bytea_output` session variable.
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SET bytea_output = escape;
 SELECT username, "hashedPassword" FROM system.users WHERE username='cool_user';

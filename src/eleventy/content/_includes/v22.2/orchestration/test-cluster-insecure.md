@@ -2,7 +2,6 @@
 
     <section class="filter-content" markdown="1" data-scope="manual">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach:{{page.release_info.version}} \
@@ -17,7 +16,6 @@
 
     <section class="filter-content" markdown="1" data-scope="helm">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach:{{page.release_info.version}} \
@@ -32,12 +30,10 @@
 
 1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE TABLE bank.accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -45,14 +41,12 @@
       );
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > INSERT INTO bank.accounts (balance)
       VALUES
     	  (1000.50), (20000), (380), (500), (55000);
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -70,7 +64,6 @@
 
 1. Exit the SQL shell and delete the temporary pod:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~

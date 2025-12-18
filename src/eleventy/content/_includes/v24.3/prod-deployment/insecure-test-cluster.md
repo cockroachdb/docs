@@ -6,21 +6,18 @@ Use the [built-in SQL client]({% link "{{ page.version.version }}/cockroach-sql.
 
 1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of the load balancer:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql --insecure --host=<address of load balancer>
     ~~~
 
 1. Create an `insecurenodetest` database:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE insecurenodetest;
     ~~~
 
 1. View the cluster's databases, which will include `insecurenodetest`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > SHOW DATABASES;
     ~~~

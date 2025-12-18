@@ -40,17 +40,14 @@ You cannot rename a schema if a [table]({% link "{{ page.version.version }}/crea
 
 Suppose that you access the [SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}) as user `root`, and [create a new user]({% link "{{ page.version.version }}/create-user.md" %}) `max` and [a schema]({% link "{{ page.version.version }}/create-schema.md" %}) `org_one` with `max` as the owner:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE USER max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE SCHEMA org_one AUTHORIZATION max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW SCHEMAS;
 ~~~
@@ -69,7 +66,6 @@ SHOW SCHEMAS;
 
 Now, suppose you want to rename the schema:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER SCHEMA org_one RENAME TO org_two;
 ~~~
@@ -83,19 +79,16 @@ Because you are executing the `ALTER SCHEMA` command as a non-owner of the schem
 
 [Drop the schema]({% link "{{ page.version.version }}/drop-schema.md" %}) and create it again, this time with `root` as the owner.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP SCHEMA org_one;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE SCHEMA org_one;
 ~~~
 
 To verify that the owner is now `root`, query the `pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT
   nspname, usename
@@ -115,12 +108,10 @@ WHERE
 
 As its owner, you can rename the schema:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER SCHEMA org_one RENAME TO org_two;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW SCHEMAS;
 ~~~
@@ -141,12 +132,10 @@ SHOW SCHEMAS;
 
 Suppose that you access the [SQL shell]({% link "{{ page.version.version }}/cockroach-sql.md" %}) as user `root`, and [create a new schema]({% link "{{ page.version.version }}/create-schema.md" %}) named `org_one`:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE SCHEMA org_one;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW SCHEMAS;
 ~~~
@@ -165,24 +154,20 @@ SHOW SCHEMAS;
 
 Now, suppose that you want to change the owner of the schema `org_one` to an existing user named `max`. To change the owner of a schema, the current owner must belong to the role of the new owner (in this case, `max`), and the new owner must have `CREATE` privileges on the database.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT max TO root;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 GRANT CREATE ON DATABASE defaultdb TO max;
 ~~~
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 ALTER SCHEMA org_one OWNER TO max;
 ~~~
 
 To verify that the owner is now `max`, query the `pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT
   nspname, usename

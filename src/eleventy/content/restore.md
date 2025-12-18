@@ -316,7 +316,6 @@ If you need to limit the control specific users have over your storage buckets, 
 
 `BACKUP ... INTO` adds a backup to a [backup collection]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %}#backup-collections) location. To view the backup paths in a given collection location, use [`SHOW BACKUPS`]({% link "{{ page.version.version }}/show-backup.md" %}):
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SHOW BACKUPS IN 's3://bucket/path?AUTH=implicit';
 ~~~
@@ -336,7 +335,6 @@ When you want to [restore a specific backup](#restore-a-specific-full-or-increme
 
 To restore from the most recent backup ([full or incremental]({% link "{{ page.version.version }}/take-full-and-incremental-backups.md" %})) in the collection's location, use the `LATEST` syntax:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN 's3://bucket/path?AUTH=implicit';
 ~~~
@@ -353,7 +351,6 @@ If you are restoring an incremental backup, the storage location **must** contai
 
 To restore a specific full or incremental backup, specify that backup's subdirectory in the `RESTORE` statement. To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories). If you are restoring an incremental backup, the URI must point to the storage location that contains the full backup:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM '2023/03/23-213101.37' IN 's3://bucket/path?AUTH=implicit';
 ~~~
@@ -362,7 +359,6 @@ RESTORE FROM '2023/03/23-213101.37' IN 's3://bucket/path?AUTH=implicit';
 
 To restore a full cluster:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE FROM LATEST IN 'external://backup_s3';
 ~~~
@@ -373,7 +369,6 @@ To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subd
 
 To restore a database:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE DATABASE bank FROM LATEST IN 'external://backup_s3';
 ~~~
@@ -388,14 +383,12 @@ To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subd
 
 To restore a single table:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE TABLE bank.customers FROM LATEST IN 'external://backup_s3';
 ~~~
 
 To restore multiple tables:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE TABLE bank.customers, bank.accounts FROM LATEST IN 'external://backup_s3';
 ~~~
@@ -414,7 +407,6 @@ If you ran a backup **without** `revision_history`, it is still possible to use 
 
 First, find the times that are available for a point-in-time-restore by listing the available backup directories in your storage location:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 SHOW BACKUPS IN 'external://backup_s3';
 ~~~
@@ -445,7 +437,6 @@ SHOW BACKUP '2023/01/23-185448.11' IN 'external://backup_s3';
 
 Finally, use the `start_time` and `end_time` detail to define the required time as part of the `AS OF SYSTEM TIME` clause. Run the restore, passing the directory and the timestamp:
 
-{% include "copy-clipboard.html" %}
 ~~~sql
 RESTORE DATABASE movr FROM '2023/01/23-185448.11' IN 'external://backup_s3' AS OF SYSTEM TIME '2023-01-23 18:56:48';
 ~~~
@@ -454,7 +445,6 @@ RESTORE DATABASE movr FROM '2023/01/23-185448.11' IN 'external://backup_s3' AS O
 
 Use the [`DETACHED`](#detached) option to execute the restore [job]({% link "{{ page.version.version }}/show-jobs.md" %}) asynchronously:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > RESTORE FROM LATEST IN 'external://backup_s3'
 WITH DETACHED;
@@ -486,14 +476,12 @@ By default, tables and views are restored to the database they originally belong
 
 1. Create the new database that you'll restore the table or view into:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE newdb;
     ~~~
 
 2. Restore the table into the newly created database with `into_db`:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > RESTORE bank.customers FROM LATEST IN 'external://backup_s3'
     WITH into_db = 'newdb';
@@ -503,7 +491,6 @@ By default, tables and views are restored to the database they originally belong
 
 To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE DATABASE bank FROM LATEST IN 'external://backup_s3'
 WITH new_db_name = 'new_bank';
@@ -525,7 +512,6 @@ system
 
 By default, tables with [foreign key]({% link "{{ page.version.version }}/foreign-key.md" %}) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`]({% link "{{ page.version.version }}/restore.md" %}#skip_missing_foreign_keys) option you can remove the foreign key constraint from the table and then restore it.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 > RESTORE bank.accounts FROM LATEST IN 'external://backup_s3'
 WITH skip_missing_foreign_keys;
@@ -539,14 +525,12 @@ After it's restored into a new database, you can write the restored `users` tabl
 
 1. Create the new database that you'll restore the `system.users` table into:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE newdb;
     ~~~
 
 1. Restore the `system.users` table into the new database:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > RESTORE system.users  FROM LATEST IN 'external://backup_s3'
     WITH into_db = 'newdb';
@@ -554,14 +538,12 @@ After it's restored into a new database, you can write the restored `users` tabl
 
 1. After the restore completes, add the `users` to the existing `system.users` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > INSERT INTO system.users SELECT * FROM newdb.users;
     ~~~
 
 1. Remove the temporary `users` table:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     > DROP TABLE newdb.users;
     ~~~
@@ -575,7 +557,6 @@ To restore an incremental backup that was taken using the [`incremental_location
 - the collection URI of the full backup
 - the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 RESTORE TABLE movr.users FROM LATEST IN 'external://backup_s3' WITH incremental_location = '{incremental_backup_URI}';
 ~~~

@@ -33,7 +33,6 @@ To drop a trigger, a user must have the `DROP` [privilege]({% link "{{ page.vers
 
 Create a sample trigger function:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE FUNCTION update_timestamp() 
 RETURNS TRIGGER AS $$
@@ -46,7 +45,6 @@ $$ LANGUAGE PLpgSQL;
 
 Create a sample trigger:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 CREATE TRIGGER log_update_timestamp
 AFTER UPDATE ON users
@@ -56,7 +54,6 @@ EXECUTE FUNCTION update_timestamp();
 
 Drop the trigger:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 DROP TRIGGER log_update_timestamp ON users;
 ~~~

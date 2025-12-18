@@ -1,6 +1,5 @@
     <section class="filter-content" markdown="1" data-scope="mac">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
     ~~~
@@ -9,7 +8,6 @@
 
     <section class="filter-content" markdown="1" data-scope="linux">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
     ~~~
@@ -18,7 +16,6 @@
 
     <section class="filter-content" markdown="1" data-scope="windows">
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url "postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert=$env:appdata\CockroachCloud\certs\$<cluster-name>-ca.crt"
     ~~~

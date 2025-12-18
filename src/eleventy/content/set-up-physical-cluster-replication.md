@@ -51,7 +51,6 @@ When initializing the [primary cluster](#initialize-the-primary-cluster), you pa
 
 For example, the `cockroach init` command to initialize the primary cluster (according to the [prerequisite deployment guide]({% link "{{ page.version.version }}/deploy-cockroachdb-on-premises.md" %}#step-3-start-nodes)):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach init --certs-dir=certs --host={address of any node on --join list} --virtualized
 ~~~
@@ -64,7 +63,6 @@ Connect to your primary cluster's system virtual cluster using [`cockroach sql`]
 
 1. To connect to the system virtual cluster, pass the `options=-ccluster=system` parameter in the URL:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url \
     "postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
@@ -79,14 +77,12 @@ Connect to your primary cluster's system virtual cluster using [`cockroach sql`]
 
 1. Set the `kv.rangefeed.enabled` cluster setting to `true`. The replication job connects to a long-lived request, a _rangefeed_, which pushes changes as they happen:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 1. Confirm the status of your virtual cluster: {% comment %}Link to SQL ref page here{% endcomment %}
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW VIRTUAL CLUSTERS;
     ~~~
@@ -109,7 +105,6 @@ The standby cluster connects to the primary cluster's system virtual cluster usi
 
 1. From the primary's system virtual cluster SQL shell, create a user and password:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE USER {your username} WITH PASSWORD '{your password}';
     ~~~
@@ -118,7 +113,6 @@ The standby cluster connects to the primary cluster's system virtual cluster usi
 
 1. Grant the [`REPLICATIONSOURCE` privilege]({% link "{{ page.version.version }}/security-reference/authorization.md" %}#supported-privileges) to your user:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     GRANT SYSTEM REPLICATIONSOURCE TO {your username};
     ~~~
@@ -129,7 +123,6 @@ The standby cluster connects to the primary cluster's system virtual cluster usi
 
     For example, to initiate the [`movr`]({% link "{{ page.version.version }}/movr.md" %}) workload:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach workload init movr "postgresql://root@{node_advertise_address}:{node_advertise_port}?options=-ccluster=main&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
@@ -147,14 +140,12 @@ The standby cluster connects to the primary cluster's system virtual cluster usi
 
 1. Run the `movr` workload for a set duration using the same connection string:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach workload run movr --duration=5m "postgresql://root@{node_advertise_address}:{node_advertise_port}?options=-ccluster=main&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
 
 1. To connect to the primary cluster's virtual cluster, use the `options=-ccluster={virtual_cluster_name}` parameter:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url \
     "postgresql://root@{node IP or hostname}:26257?options=-ccluster=main&sslmode=verify-full" \
@@ -165,7 +156,6 @@ The standby cluster connects to the primary cluster's system virtual cluster usi
 
 1. Create a user for your primary cluster's `main` virtual cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE USER {your username} WITH PASSWORD '{your password}';
     ~~~
@@ -180,7 +170,6 @@ Similarly to the primary cluster, you must initialize the standby cluster with t
 
 For example, the `cockroach init` command to initialize the standby cluster (according to the [prerequisite deployment guide]({% link "{{ page.version.version }}/deploy-cockroachdb-on-premises.md" %}#step-3-start-nodes)):
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach init --certs-dir=certs --host={address of any node on --join list} --virtualized-empty
 ~~~
@@ -193,7 +182,6 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
 
 1. To connect to the system virtual cluster, pass the `options=-ccluster=system` parameter in the URL:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach sql --url \
     "postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=system&sslmode=verify-full" \
@@ -202,14 +190,12 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
 
 1. Set the `kv.rangefeed.enabled` cluster setting to `true`. The replication job connects to a long-lived request, a _rangefeed_, which pushes changes as they happen:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 1. Confirm the status of your virtual cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW VIRTUAL CLUSTERS;
     ~~~
@@ -229,14 +215,12 @@ Create a user to run the PCR stream and access the [DB Console]({% link "{{ page
 
 1. Create a user:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE USER {your username} WITH LOGIN PASSWORD {'your password'};
     ~~~
 
 1. To observe the replication activity, your user will need [`admin`]({% link "{{ page.version.version }}/security-reference/authorization.md" %}#admin-role) privileges:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     GRANT SYSTEM REPLICATIONDEST, MANAGEVIRTUALCLUSTER TO {your username};
     ~~~
@@ -255,14 +239,12 @@ At this point, the primary and standby clusters are both running. The next step 
 
 Use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate for any [PCR statements]({% link "{{ page.version.version }}/physical-cluster-replication-overview.md" %}#manage-replication-in-the-sql-shell) that require a connection string. Pass the replication user, IP and port, along with the path to the certificate for the **primary cluster**, into the `encode-uri` command:
 
-{% include "copy-clipboard.html" %}
 ~~~ shell
 cockroach encode-uri {replication user}:{password}@{node IP or hostname}:26257 --ca-cert {path to certs directory}/certs/ca.crt --inline
 ~~~
 
 The connection string output contains the primary cluster's certificate:
 
-{% include "copy-clipboard.html" %}
 ~~~
 postgresql://{replication user}:{password}@{node IP or hostname}:26257/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A
 ~~~
@@ -275,14 +257,12 @@ The system virtual cluster in the standby cluster initializes and controls the r
 
 1. In the SQL shell on the **standby** cluster, create an external connection using the primary cluster's connection string. Prefix the `postgresql://` scheme to the connection string and replace `{source}` with your external connection name:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
     ~~~
 
     If the primary and standby cluster nodes are on different networks, you can route the replication stream through the primary cluster's load balancer. Add `&crdb_route=gateway` to the connection string:
     
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&crdb_route=gateway&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
     ~~~
@@ -293,7 +273,6 @@ The system virtual cluster in the standby cluster initializes and controls the r
 
     Once the external connection has been created, create the replication stream from the standby cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE VIRTUAL CLUSTER main
     FROM REPLICATION OF main
@@ -308,7 +287,6 @@ The system virtual cluster in the standby cluster initializes and controls the r
 
 1. To view all virtual clusters on the standby, run:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW VIRTUAL CLUSTERS;
     ~~~
@@ -327,22 +305,18 @@ The system virtual cluster in the standby cluster initializes and controls the r
 
 1. To manage the replication stream, you can [pause and resume]({% link "{{ page.version.version }}/alter-virtual-cluster.md" %}) the replication stream as well as [show]({% link "{{ page.version.version }}/show-virtual-cluster.md" %}) the current details for the job:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER main PAUSE REPLICATION;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER main RESUME REPLICATION;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~
     id | name | source_tenant_name |              source_cluster_uri                        |         retained_time         |    replicated_time     | replication_lag | failover_time |   status
     ---+------+--------------------+--------------------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
@@ -374,19 +348,16 @@ Before you begin, you will need:
 
 1. Create a user on **both** clusters and grant the `SYSTEM REPLICATION` privilege to the created user on each cluster:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE USER {your username} WITH PASSWORD '{your password}';
     ~~~
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     GRANT SYSTEM REPLICATION TO {your username};
     ~~~
 
 1. View the virtual clusters on **both** clusters:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW VIRTUAL CLUSTERS;
     ~~~
@@ -404,7 +375,6 @@ Before you begin, you will need:
 
 1. If you would like to run a test workload on your existing **primary cluster**, you can use [`cockroach workload`]({% link "{{ page.version.version }}/cockroach-workload.md" %}) like the following:
 
-    {% include "copy-clipboard.html" %}
     ~~~ shell
     cockroach workload init movr 'postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=main&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key'
     ~~~
@@ -413,7 +383,6 @@ Before you begin, you will need:
 
     On the **standby cluster**, run:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     CREATE VIRTUAL CLUSTER main FROM REPLICATION OF system ON 'postgresql://{replication user}:{password}@{node IP or hostname}:26257/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
     ~~~
@@ -425,14 +394,12 @@ Before you begin, you will need:
 
 1. View the virtual clusters on the **standby cluster**:
 
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW VIRTUAL CLUSTERS;
     ~~~
 
     The output shows the newly created `main` virtual cluster and that the replication job is [`initializing`]({% link "{{ page.version.version }}/show-virtual-cluster.md" %}#data-state):
 
-    {% include "copy-clipboard.html" %}
     ~~~
       id |  name  |        data_state        | service_mode
     -----+--------+--------------------------+---------------

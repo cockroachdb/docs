@@ -148,17 +148,14 @@ This feature is disabled by default. To enable it, set the [`sql.sqlcommenter.en
 To test this functionality, you can generate a SQL query with a [Slow Execution](#slow-execution), then view it on the **Insights** page:
 
 1. Enable SQL commenter query tagging:
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING sql.sqlcommenter.enabled=true;
     ~~~
 1. Check the value of cluster setting [`sql.insights.latency_threshold`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold):
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SHOW CLUSTER SETTING sql.insights.latency_threshold;
     ~~~
 1. Execute the following statement, using a `pg_sleep` value greater than the `latency_threshold`:
-    {% include "copy-clipboard.html" %}
     ~~~ sql
     SELECT pg_sleep(2) /*db_driver='test_driver',db_framework='test_framework',db_backend='cockroachdb'*/;
     ~~~
@@ -330,7 +327,6 @@ By default, the function returns index recommendations sourced from all statemen
 
 After running the [query]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) mentioned in the preceding [**Schema Insights** tab](#schema-insights-tab) section, run the following related query more than six times to generate another **Create Index** insight.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT
   name, users.city, rides.city, count(rides.id) AS sum
@@ -348,7 +344,6 @@ LIMIT
 
 Run the `workload_index_recs` function to return the `CREATE INDEX` recommendation associated with two fingerprint IDs:
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT workload_index_recs();
 ~~~
@@ -361,7 +356,6 @@ SELECT workload_index_recs();
 
 To display the query strings corresponding to the fingerprint IDs, run a query that joins the `workload_index_recs` function with the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#statement_statistics) table.
 
-{% include "copy-clipboard.html" %}
 ~~~ sql
 SELECT ss.index_recommendations,
 (ss.statistics->'statistics'->>'lastExecAt')::TIMESTAMPTZ AS lastExecAt, -- Time the statement was last execut

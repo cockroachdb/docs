@@ -4,7 +4,6 @@
 1. Name the role (for example, `ec2-role`) and click **Create role**.
 1. Once the role has finished creating, copy the ARN in the **Summary** section. Click on the **Trust relationships** tab. You'll find a **Trusted entities** policy:
 
-    {% include "copy-clipboard.html" %}
     ~~~json
     {
         "Version": "2012-10-17",
@@ -23,7 +22,6 @@
 1. Navigate to the [IAM console](https://console.aws.amazon.com/iam/) and search for the role (`msk-role`) you created in Step 2 that contains the MSK policy. Select the role, which will take you to its summary page.
 1. Click on the **Trust relationships** tab, and click **Edit trust policy**. Add the ARN of the EC2 IAM role (`ec2-role`) to the JSON policy:
 
-    {% include "copy-clipboard.html" %}
     ~~~json
     {
         "Version": "2012-10-17",
