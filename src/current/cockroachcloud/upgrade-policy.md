@@ -46,7 +46,6 @@ Version | Release Type | Release date | End-of-support (EOS) date
 :------:|:------------:|:------------:|:---------:
 v25.4   | Regular      | 2025-11-03   | 2026-11-03
 v25.2   | Regular      | 2025-05-12   | 2026-05-12
-v24.3   | Regular      | 2024-11-18   | 2025-11-18
 
 The following table describes currently-supported versions on {{ site.data.products.advanced }} clusters:
 
@@ -62,6 +61,17 @@ To review a version's release notes, click its link in the Version column.
 For expected future versions, refer to [Upcoming releases]({% link releases/index.md %}#upcoming-releases).
 
 ### EOS versions
+
+The following table describes versions that have reached their EOS dates on {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters:
+
+Version | Release Type | Release date | End-of-support (EOS) date
+:------:|:------------:|:------------:|:--------:
+v24.3   | Regular      | 2024-11-18   | 2025-11-18
+v24.1   | Regular      | 2024-05-20   | 2025-05-20
+v23.2   | Regular      | 2024-02-05   | 2025-02-05
+v23.1   | Regular      | 2023-05-15   | 2024-05-15
+
+The following table describes versions that have reached their EOS dates on {{ site.data.products.advanced }} clusters:
 
 Version | Release Type | Release date | End-of-support (EOS) date
 :------:|:------------:|:------------:|:--------:
