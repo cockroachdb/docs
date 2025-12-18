@@ -115,7 +115,6 @@ The `span_stats` `JSON` object has the following keys:
 - [Show ranges for a database (with details)](#show-ranges-for-a-database-with-details)
 - [Show ranges for a database (with keys)](#show-ranges-for-a-database-with-keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW DATABASES;
 ~~~
@@ -132,7 +131,6 @@ SHOW DATABASES;
 
 #### Show ranges for a database (without options)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr;
 ~~~
@@ -149,7 +147,6 @@ SHOW RANGES FROM DATABASE movr;
 
 #### Show ranges for a database (with tables, keys, details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr WITH TABLES, KEYS, DETAILS;
 ~~~
@@ -166,7 +163,6 @@ SHOW RANGES FROM DATABASE movr WITH TABLES, KEYS, DETAILS;
 
 #### Show ranges for a database (with tables)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr WITH TABLES;
 ~~~
@@ -183,7 +179,6 @@ SHOW RANGES FROM DATABASE movr WITH TABLES;
 
 #### Show ranges for a database (with indexes)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr WITH INDEXES;
 ~~~
@@ -200,7 +195,6 @@ SHOW RANGES FROM DATABASE movr WITH INDEXES;
 
 #### Show ranges for a database (with details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr WITH DETAILS;
 ~~~
@@ -217,7 +211,6 @@ SHOW RANGES FROM DATABASE movr WITH DETAILS;
 
 #### Show ranges for a database (with keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr WITH KEYS;
 ~~~
@@ -240,7 +233,6 @@ SHOW RANGES FROM DATABASE movr WITH KEYS;
 - [Show ranges for a table (with details)](#show-ranges-for-a-table-with-details)
 - [Show ranges for a table (with keys)](#show-ranges-for-a-table-with-keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW TABLES;
 ~~~
@@ -259,7 +251,6 @@ SHOW TABLES;
 
 #### Show ranges for a table (without options)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM TABLE movr.users;
 ~~~
@@ -276,7 +267,6 @@ SHOW RANGES FROM TABLE movr.users;
 
 #### Show ranges for a table (with indexes, keys, details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM TABLE movr.users with INDEXES, KEYS, DETAILS;
 ~~~
@@ -293,7 +283,6 @@ SHOW RANGES FROM TABLE movr.users with INDEXES, KEYS, DETAILS;
 
 #### Show ranges for a table (with indexes)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM TABLE movr.users WITH INDEXES;
 ~~~
@@ -310,7 +299,6 @@ SHOW RANGES FROM TABLE movr.users WITH INDEXES;
 
 #### Show ranges for a table (with details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM TABLE movr.users WITH DETAILS;
 ~~~
@@ -327,7 +315,6 @@ SHOW RANGES FROM TABLE movr.users WITH DETAILS;
 
 #### Show ranges for a table (with keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM TABLE movr.users WITH KEYS;
 ~~~
@@ -349,7 +336,6 @@ SHOW RANGES FROM TABLE movr.users WITH KEYS;
 - [Show ranges for an index (with details)](#show-ranges-for-an-index-with-details)
 - [Show ranges for an index (with keys)](#show-ranges-for-an-index-with-keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW INDEXES FROM movr.users;
 ~~~
@@ -367,7 +353,6 @@ SHOW INDEXES FROM movr.users;
 
 #### Show ranges for an index (without options)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM INDEX movr.users_pkey;
 ~~~
@@ -384,7 +369,6 @@ SHOW RANGES FROM INDEX movr.users_pkey;
 
 #### Show ranges for an index (with keys, details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS, DETAILS;
 ~~~
@@ -401,7 +385,6 @@ SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS, DETAILS;
 
 #### Show ranges for an index (with details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM INDEX movr.users_pkey WITH DETAILS;
 ~~~
@@ -418,7 +401,6 @@ SHOW RANGES FROM INDEX movr.users_pkey WITH DETAILS;
 
 #### Show ranges for an index (with keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS;
 ~~~

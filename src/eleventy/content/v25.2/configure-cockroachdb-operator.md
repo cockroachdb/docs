@@ -43,7 +43,6 @@ cockroachdb:
 
 Apply the new settings to the cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
 ~~~
@@ -104,7 +103,6 @@ cockroachdb:
 
 Apply the new settings to the cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
 ~~~
@@ -135,7 +133,6 @@ cockroachdb:
 
 Apply the new settings to the cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
 ~~~

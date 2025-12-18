@@ -22,7 +22,7 @@ You can monitor the **Processing Rate** graph to see how many rows per second ar
 <img src="{{ 'images/v24.2/ttl-processing-rate.png' | relative_url }}" alt="TTL processing rate graph" style="border:1px solid #eee;max-width:100%" />
 
 | Metric        | Description                                 |
-|---------------+---------------------------------------------|
+|---------------|---------------------------------------------|
 | rows selected | The number of rows selected for deletion by the TTL job. |
 | rows deleted  | The number of rows deleted by the TTL job.  |
 
@@ -33,7 +33,7 @@ Monitor the **Estimated Rows** graph to see approximately how many rows are on t
 <img src="{{ 'images/v24.2/ttl-estimated-rows.png' | relative_url }}" alt="TTL estimated rows graph" style="border:1px solid #eee;max-width:100%" />
 
 | Metric                             | Description                                                     |
-|------------------------------------+-----------------------------------------------------------------|
+|------------------------------------|-----------------------------------------------------------------|
 | approximate number of rows         | The number of rows in all tables with TTL settings.             |
 | approximate number of expired rows | The number of expired rows across all tables with TTL settings. |
 
@@ -50,7 +50,7 @@ Monitor the **Ranges in Progress** graph to see the number of ranges currently b
 <img src="{{ 'images/v24.2/ttl-ranges-in-progress.png' | relative_url }}" alt="TTL ranges in progress graph" style="border:1px solid #eee;max-width:100%" />
 
 | Metric                           | Description                                                                                                                                             |
-|----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------|
+|----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
 | number of ranges being processed | How many [ranges]({% link "{{ page.version.version }}/architecture/distribution-layer.md" %}#overview) are currently being processed by [TTL jobs]({% link "{{ page.version.version }}/row-level-ttl.md" %}#view-running-ttl-jobs). |
 
 {% dynamic_include page.version.version, "/ui/ui-summary-events.md" %}

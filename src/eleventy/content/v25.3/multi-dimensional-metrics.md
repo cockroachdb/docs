@@ -20,7 +20,6 @@ Child metrics are specific, detailed metrics that are usually related to a highe
 
 The [cluster setting `server.child_metrics.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-enabled) is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 ~~~
@@ -448,17 +447,14 @@ The following cluster settings enable the `database` and `application_name` labe
 
 By default, these cluster settings are disabled. To enable them, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement. Because these labels use aggregate metrics, you must enable the [`server.child_metrics.enabled`](#enable-child-metrics) cluster setting to use them.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.metrics.database_name.enabled = true;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.metrics.application_name.enabled = true;
 ~~~
@@ -492,7 +488,6 @@ This section demonstrates the impact of enabling and disabling the relevant clus
 
 #### 1. All cluster settings disabled
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = false;
 SET CLUSTER SETTING sql.metrics.database_name.enabled = false;
@@ -509,7 +504,6 @@ sql_select_count{node_id="1"} 2030
 
 #### 2. Only child metrics enabled
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 SET CLUSTER SETTING sql.metrics.database_name.enabled = false;
@@ -524,7 +518,6 @@ sql_select_count{node_id="1"} 6568
 
 #### 3. Child metrics and `database_name` label enabled
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 SET CLUSTER SETTING sql.metrics.database_name.enabled = true;
@@ -540,7 +533,6 @@ sql_select_count{node_id="1",database="movr"} 816
 
 #### 4. Child metrics and `application_name` label enabled
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 SET CLUSTER SETTING sql.metrics.database_name.enabled = false;
@@ -556,7 +548,6 @@ sql_select_count{node_id="1",application_name="movr"} 718
 
 #### 5. Child metrics and both `database` and `application_name` label enabled
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 SET CLUSTER SETTING sql.metrics.database_name.enabled = true;
@@ -574,7 +565,6 @@ sql_select_count{node_id="1",database="movr",application_name="movr"} 3962
 
 The [cluster setting `server.child_metrics.include_aggregate.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-include-aggregate-enabled) (default: `true`) reports an aggregate time series for applicable multi-dimensional metrics. When set to `false`, it stops reporting the aggregate time series, preventing double counting when querying those metrics.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 SET CLUSTER SETTING sql.metrics.database_name.enabled = true;
@@ -611,7 +601,6 @@ The [cluster setting `sql.stats.detailed_latency_metrics.enabled`]({% link {{ pa
 
 `sql.stats.detailed_latency_metrics.enabled` is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.stats.detailed_latency_metrics.enabled = true;
 ~~~

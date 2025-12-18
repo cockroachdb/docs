@@ -82,7 +82,6 @@ Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on
 
     The process can take a few minutes, so do not move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     gcloud container clusters create cockroachdb --machine-type n2-standard-4 --region {region-name} --num-nodes 1
     ~~~
@@ -104,7 +103,6 @@ Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on
 
 1. Get the email address associated with your Google Cloud account:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     gcloud info | grep Account
     ~~~
@@ -116,7 +114,6 @@ Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on
 
 1. [Create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the address from the previous step:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl create clusterrolebinding $USER-cluster-admin-binding \
       --clusterrole=cluster-admin \
@@ -140,7 +137,6 @@ Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on
 
     Cluster provisioning usually takes between 10 and 15 minutes. Do not move on to the next step until you see a message like `[✔] EKS cluster "cockroachdb" in "us-east-1" region is ready` and details about your cluster.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     eksctl create cluster \
       --name cockroachdb \
@@ -170,7 +166,6 @@ Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on
 
 1. From your workstation, create the Kubernetes cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     az aks create \
       --resource-group $MY_RESOURCE_GROUP_NAME \
@@ -207,14 +202,12 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 
 1. Check out the CockroachDB Helm repository from GitHub:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     git clone https://github.com/cockroachdb/helm-charts.git
     ~~~
 
 1. Set your environment variables. This step is optional but recommended in order to use the example commands and templates described in the following instructions. Note the default Kubernetes namespace of `cockroach-ns`.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export CRDBOPERATOR=crdb-operator
     export CRDBCLUSTER=cockroachdb
@@ -223,11 +216,9 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 
 1. Install the operator sub-chart:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl create namespace $NAMESPACE
     ~~~
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm install $CRDBOPERATOR ./cockroachdb-parent/charts/operator -n $NAMESPACE
     ~~~
@@ -259,7 +250,6 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 1. Modify the TLS configuration as desired. For a secure deployment, set `cockroachdb.tls.enabled` in the values file to `true`. You can either allow the operator to generate self-signed certificates, provide a custom CA certificate and generate other certificates, or use your own certificates.
     - **All self-signed certificates**: By default, the certificates are created automatically by a self-signer utility, which requires no configuration beyond setting a custom certificate duration if desired. This utility creates self-signed certificates for the nodes and root client which are stored in a secret. You can see these certificates by running `kubectl get secrets`:
         
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         kubectl get secrets
         ~~~
@@ -274,15 +264,12 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
         {{site.data.alerts.end}}
     - **Custom CA certificate**: If you wish to supply your own CA certificates to the deployed nodes but allow automatic generation of client certificates, create a Kubernetes secret with the custom CA certificate. To perform these steps using the `cockroach cert` command:
         
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         mkdir certs
         ~~~
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         mkdir my-safe-directory
         ~~~
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         cockroach cert create-ca --certs-dir=certs --ca-key=my-safe-directory/ca.key
         ~~~
@@ -304,30 +291,24 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
         {{site.data.alerts.end}}
     - **All custom certificates**: Set up your certificates and load them into your Kubernetes cluster as secrets using the following commands:
         
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         mkdir certs
         ~~~
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         mkdir my-safe-directory
         ~~~
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         cockroach cert create-ca --certs-dir=certs --ca-key=my-safe-directory/ca.key
         ~~~
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         cockroach cert create-client root --certs-dir=certs --ca-key=my-safe-directory/ca.key
         ~~~
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         kubectl create secret generic cockroachdb-root --from-file=certs
         ~~~
         ~~~ shell
         secret/cockroachdb-root created
         ~~~
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         cockroach cert create-node --certs-dir=certs --ca-key=my-safe-directory/ca.key localhost 127.0.0.1 my-release-cockroachdb-public my-release-cockroachdb-public.cockroach-ns my-release-cockroachdb-public.cockroach-ns.svc.cluster.local *.my-release-cockroachdb *.my-release-cockroachdb.cockroach-ns *.my-release-cockroachdb.cockroach-ns.svc.cluster.local
         kubectl create secret generic cockroachdb-node --from-file=certs
@@ -450,14 +431,12 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 
 1. Run the following command to install the CockroachDB chart using Helm:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm install $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb -n $NAMESPACE
     ~~~
 
     You can override the default parameters using the `--set key=value[,key=value]` argument while installing the chart:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm install $CRDBCLUSTER  ./cockroachdb-parent/charts/cockroachdb --set clusterDomain=cluster-test.local -n $NAMESPACE
     ~~~
@@ -496,7 +475,6 @@ To use the CockroachDB SQL client, follow these steps to launch a secure pod run
 
 1. Download the secure client Kubernetes application:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -O https://raw.githubusercontent.com/cockroachdb/helm-charts/master/examples/client-secure.yaml
     ~~~
@@ -512,14 +490,12 @@ To use the CockroachDB SQL client, follow these steps to launch a secure pod run
 
 1. Launch a pod using this file and keep it running indefinitely:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl create -f client-secure.yaml
     ~~~
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -576,7 +552,6 @@ To access the cluster's [DB Console]({% link {{ page.version.version }}/ui-overv
 
     Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -598,7 +573,6 @@ To access the cluster's [DB Console]({% link {{ page.version.version }}/ui-overv
 
 1. In a new terminal window, port-forward from your local machine to the `cockroachdb-public` service:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl port-forward service/cockroachdb-public 8080
     ~~~
@@ -639,14 +613,12 @@ The following example uses [cockroach cert commands]({% link {{ page.version.ver
 
 1. Create two directories:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     mkdir certs my-safe-directory
     ~~~
 
 1. Create the CA certificate and key pair:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach cert create-ca \
       --certs-dir=certs \
@@ -655,7 +627,6 @@ The following example uses [cockroach cert commands]({% link {{ page.version.ver
 
 1. Create a client certificate and key pair for the root user:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach cert create-client root \
       --certs-dir=certs \
@@ -664,7 +635,6 @@ The following example uses [cockroach cert commands]({% link {{ page.version.ver
 
 1. Upload the client certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the {{ site.data.products.cockroachdb-operator }}:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl create secret generic cockroachdb.client.root \
       --from-file=tls.key=certs/client.root.key \
@@ -677,7 +647,6 @@ The following example uses [cockroach cert commands]({% link {{ page.version.ver
 
 1. Create the certificate and key pair for your CockroachDB nodes, specifying the namespace you used when deploying the cluster. This example uses the `cockroach-ns` namespace:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach cert create-node localhost \
       127.0.0.1 \
@@ -693,7 +662,6 @@ The following example uses [cockroach cert commands]({% link {{ page.version.ver
 
 1. Upload the node certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the {{ site.data.products.cockroachdb-operator }}:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl create secret generic cockroachdb.node \
       --from-file=tls.key=certs/node.key \
@@ -706,7 +674,6 @@ The following example uses [cockroach cert commands]({% link {{ page.version.ver
 
 1. Check that the secrets were created on the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get secrets
     ~~~

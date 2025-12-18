@@ -48,14 +48,12 @@ Use the following steps to determine which schema objects (if any) have zone con
 
 The examples assume a local multi-region [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --global --nodes 9 --insecure
 ~~~
 
 Next, execute the following statements to set the [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) for the [`movr` database]({% link {{ page.version.version }}/movr.md %}#the-movr-database):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr SET PRIMARY REGION "us-east1";
 ALTER DATABASE movr ADD REGION "us-west1";
@@ -72,7 +70,6 @@ Use the [`SHOW ZONE CONFIGURATION`]({% link {{ page.version.version }}/show-zone
 
 For example, to view the zone configuration for the `movr.rides` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FOR TABLE movr.users;
 ~~~
@@ -105,7 +102,6 @@ If the zone configuration for the target schema object looks good, [move to Step
 
 If the zone configuration does not look right, repair it now using [`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone). You can set the problem-causing field to another value, but often the best thing to do is to discard the changed settings using [`ALTER TABLE ... CONFIGURE ZONE DISCARD`]({% link {{ page.version.version }}/alter-table.md %}#remove-a-replication-zone) so that it returns to inheriting values from its parent object:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE movr.users CONFIGURE ZONE DISCARD;
 ~~~
@@ -138,7 +134,6 @@ Once you have a range ID, you need to map from that ID to the name of a schema o
 
 The following example query uses the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to show, for each range ID, which tables and indexes use that range for their underlying storage. The query assumes the [`movr` schema]({% link {{ page.version.version }}/movr.md %}#the-movr-database) that is loaded by [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}), so you'll need to modify it to work with your schema.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
     WITH movr_tables AS (SHOW RANGES FROM DATABASE movr WITH TABLES),
          movr_indexes AS (SHOW RANGES FROM DATABASE movr WITH INDEXES)

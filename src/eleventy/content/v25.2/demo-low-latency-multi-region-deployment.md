@@ -67,7 +67,6 @@ To determine which nodes are in which regions, you will need to refer to two (2)
 
 Here is the output of `\demo ls` from the SQL shell.
 
-{% include_cached copy-clipboard.html %}
 ~~~
 > \demo ls
 ~~~
@@ -126,7 +125,7 @@ And here is the view on the **Network Latency Page**, which shows which nodes ar
 You can see by referring back and forth between `\demo ls` and the **Network Latency Page** that the cluster has the following region/node/port correspondences, which we can use to determine how to connect MovR from various regions:
 
 | Node ID | Region       | Port on localhost |
-|---------+--------------+-------------------|
+|---------|--------------|-------------------|
 | N2      | europe-west1 |             26263 |
 | N5      | europe-west1 |             26264 |
 | N7      | europe-west1 |             26265 |
@@ -143,14 +142,12 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. In the SQL shell, create the `movr` database:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE IF NOT EXISTS movr;
     ~~~
 
 1. Open a second terminal and run the command below to populate the MovR data set. The options are mostly self-explanatory. We limit the application to 1 thread because using multiple threads quickly overloads this small demo cluster's ability to ingest data. As a result, loading the data takes about 90 seconds on a fast laptop.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
         docker run -it --rm cockroachdb/movr:20.11.1 \
             --app-name "movr-load" \
@@ -185,7 +182,6 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. In the same terminal window, run the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -it --rm cockroachdb/movr:20.11.1 \
         --app-name "movr-us-east" \
@@ -206,7 +202,6 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. Open a third terminal and run the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -it --rm cockroachdb/movr:20.11.1 \
         --app-name "movr-us-west" \
@@ -226,7 +221,6 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. Open a fourth terminal and run the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -it --rm cockroachdb/movr:20.11.1 \
        --app-name "movr-eu-west" \
@@ -283,7 +277,6 @@ The following `ALTER` statements will take some seconds to run, since the cluste
 
 Back in the SQL shell, switch to the `movr` database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 USE movr;
 ~~~

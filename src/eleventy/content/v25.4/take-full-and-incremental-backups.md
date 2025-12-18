@@ -104,7 +104,6 @@ In most cases, **it's recommended to take nightly full backups of your cluster**
 
 To perform a full cluster backup, use the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP INTO '{collectionURI}';
 ~~~
@@ -113,21 +112,18 @@ To restore a backup, use the [`RESTORE`]({% link {{ page.version.version }}/rest
 
 - To restore the latest backup of a table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     RESTORE TABLE bank.customers FROM LATEST IN '{collectionURI}';
     ~~~
 
 - To restore the latest backup of a database:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     RESTORE DATABASE bank FROM LATEST IN '{collectionURI}';
     ~~~
 
 - To restore the latest backup of your full cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     RESTORE FROM LATEST IN '{collectionURI}';
     ~~~
@@ -138,7 +134,6 @@ To restore a backup, use the [`RESTORE`]({% link {{ page.version.version }}/rest
 
 - To restore a backup from a specific subdirectory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     RESTORE DATABASE bank FROM {subdirectory} IN '{collectionURI}';
     ~~~
@@ -171,14 +166,12 @@ If an incremental backup is created outside of the garbage collection period, yo
 
 Periodically run the [`BACKUP`][backup] command to take a full backup of your cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO '{collectionURI}';
 ~~~
 
 Then, create nightly incremental backups based off of the full backups you've already created. To append an incremental backup to the most recent full backup created at the [collection's](#backup-collections) URI, use the `LATEST` syntax:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN '{collectionURI}';
 ~~~
@@ -193,21 +186,18 @@ If it's ever necessary, you can then use the [`RESTORE`][restore] statement to r
 
 To restore from the latest backup in the collection, stored in the default `/incrementals` collection subdirectory, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE FROM LATEST IN '{collectionURI}';
 ~~~
 
 To restore from a specific backup in the collection:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE FROM '{subdirectory}' IN '{collectionURI}';
 ~~~
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE FROM '2023/03/23-213101.37' IN 's3://bucket/path?AUTH=implicit';
 ~~~
@@ -226,7 +216,6 @@ To explicitly control where your incremental backups go, use the [`incremental_l
 
 In the following examples, the `{collectionURI}` specifies the storage location containing the full backup. The `{explicit_incrementalsURI}` is the alternative location that you can store an incremental backup:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP INTO LATEST IN '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH incremental_location = '{explicit_incrementalsURI}';
 ~~~
@@ -263,7 +252,6 @@ You can use [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/cr
 
 Include the `FULL BACKUP ALWAYS` clause for a schedule to take only full backups. For example, to create a schedule for taking full cluster backups:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE SCHEDULE core_schedule_label
     FOR BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -290,7 +278,6 @@ Setting this parameter prevents the cluster or database backup from delaying [GC
 
 Using the `movr` database as an example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW TABLES;
 ~~~
@@ -307,35 +294,30 @@ public      | vehicles                   | table | root  |                  69 |
 
 If the `user_promo_codes` table's data does not need to be included in future backups, you can run the following to exclude the table's row data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE movr.user_promo_codes SET (exclude_data_from_backup = true);
 ~~~
 
 Then back up the `movr` database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP DATABASE movr INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' AS OF SYSTEM TIME '-10s';
 ~~~
 
 Restore the database with a [new name]({% link {{ page.version.version }}/restore.md %}#new-db-name):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE DATABASE movr FROM LATEST IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH new_db_name = new_movr;
 ~~~
 
 Move to the new database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 USE new_movr;
 ~~~
 
 You'll find that the table schema is restored:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE user_promo_codes;
 ~~~
@@ -355,7 +337,6 @@ user_promo_codes | CREATE TABLE public.user_promo_codes (
 
 However, the `user_promo_codes` table has no row data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM user_promo_codes;
 ~~~

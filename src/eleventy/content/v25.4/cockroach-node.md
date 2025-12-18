@@ -223,7 +223,6 @@ To follow along with the examples, start [an insecure cluster]({% link {{ page.v
 
 ### List node IDs
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node ls --insecure
 ~~~
@@ -239,7 +238,6 @@ $ cockroach node ls --insecure
 
 ### Show the status of a single node
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status 1 --host=localhost:26257 --insecure
 ~~~
@@ -253,7 +251,6 @@ $ cockroach node status 1 --host=localhost:26257 --insecure
 
 ### Show the status of all nodes
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --host=localhost:26257 --insecure
 ~~~
@@ -278,7 +275,6 @@ Only nodes that are both `is_live: true` and `is_available: true` can participat
 
 For example, the following indicates a healthy cluster, where a majority of the nodes are up (`is_live: true`) and a quorum can be reached (`is_available: true` for live nodes):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --host=localhost:26257 --insecure
 ~~~
@@ -294,7 +290,6 @@ $ cockroach node status --host=localhost:26257 --insecure
 
 The following indicates an unhealthy cluster, where a majority of nodes are down (`is_live: false`), and thereby quorum cannot be reached (`is_available: false` for all nodes):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --host=localhost:26257 --insecure
 ~~~

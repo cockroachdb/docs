@@ -21,7 +21,6 @@ This tutorial shows you how build a simple Python application with CockroachDB a
 
 Clone the sample code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2
 ~~~
@@ -40,7 +39,6 @@ To [handle transaction retry errors]({% link {{ page.version.version }}/query-be
 
 To install `psycopg2-binary`, run the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install psycopg2-binary
 ~~~
@@ -53,7 +51,6 @@ For other ways to install psycopg2, see the [official documentation](http://init
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -62,7 +59,6 @@ For other ways to install psycopg2, see the [official documentation](http://init
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="{connection-string}"
     ~~~
@@ -75,12 +71,10 @@ For other ways to install psycopg2, see the [official documentation](http://init
 
 1. Run the code:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd hello-world-python-psycopg2
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ python example.py
     ~~~

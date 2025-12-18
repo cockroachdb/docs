@@ -137,7 +137,6 @@ CockroachDB supports a built-in integration with [Datadog](https://www.datadoghq
 
 With [table-based SQL audit logging]({% link {{ page.version.version }}/sql-audit-logging.md %}) you can log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
@@ -148,7 +147,6 @@ Table fingerprints are used to compute an identification string of an entire tab
 
 Example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW EXPERIMENTAL_FINGERPRINTS FROM TABLE t;
 ~~~
@@ -166,7 +164,6 @@ Use session tracing (via [`SHOW TRACE FOR SESSION`]({% link {{ page.version.vers
 
 Example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET tracing = on;
 > SELECT * from t;
@@ -189,7 +186,6 @@ Checks the consistency of [`UNIQUE`]({% link {{ page.version.version }}/unique.m
 This example uses the `users` table from our open-source, fictional peer-to-peer vehicle-sharing application, [MovR]({% link {{ page.version.version }}/movr.md %}).
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  EXPERIMENTAL SCRUB table movr.users;
 ~~~
@@ -226,7 +222,6 @@ With this flag, SQL clients can establish a session over TCP without a TLS hands
 
 Example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --user=jpointsman --insecure
 ~~~
@@ -245,7 +240,6 @@ Changefeeds can deliver messages to [Apache Pulsar](https://pulsar.apache.org/do
 
 A Pulsar sink URI:
 
-{% include_cached copy-clipboard.html %}
 ~~~
 pulsar://localhost:6650
 ~~~

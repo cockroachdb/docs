@@ -12,7 +12,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 {% include {{ page.version.version }}/filter-tabs/perf-bench-tpc-c.md %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
-|----------------------+---------------------------------------------------------+------------+-----------|
+|----------------------|---------------------------------------------------------|------------|-----------|
 | Local                | 3 nodes on your laptop                                  |         10 | 2 GB      |
 | Local (multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
 | Small                | 3 nodes on `c5d.4xlarge` machines                       |       2500 | 200 GB    |
@@ -91,7 +91,6 @@ CockroachDB requires TCP communication on two ports:
 
 1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start \
     --insecure \
@@ -109,7 +108,6 @@ CockroachDB requires TCP communication on two ports:
 
 1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to join the first nodes into a cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach init --insecure --host=<address of any node on --join list>
     ~~~
@@ -122,14 +120,12 @@ You'll be importing a large TPC-C data set. To speed that up, you can tweak some
 
 1. Launch the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=<address of any node>
     ~~~
 
 1. Adjust some [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING rocksdb.ingest_backpressure.l0_file_count_threshold = 100;
     SET CLUSTER SETTING schemachanger.backfiller.max_buffer_size = '5 GiB';
@@ -140,19 +136,16 @@ You'll be importing a large TPC-C data set. To speed that up, you can tweak some
 
 1. Enable the trial license you requested earlier:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING cluster.organization = '<your organization>';
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '<your license key>';
     ~~~
 
 1. Exit the SQL shell:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -167,7 +160,6 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
 1. Import the TPC-C dataset:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload fixtures import tpcc \
     --partitions=5 \
@@ -185,7 +177,6 @@ Next, [partition your database]({% link {{ page.version.version }}/partitioning.
 
 1. Still on the same VM, briefly run TPC-C to let the cluster balance and the leases settle. Bump the file descriptor limits with `ulimit` to the high value shown in the following snippet, since the workload generators create a lot of database connections.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ulimit -n 100000 && cockroach workload run tpcc \
     --partitions=5 \
@@ -209,7 +200,6 @@ Next, [partition your database]({% link {{ page.version.version }}/partitioning.
 
 1. Run TPC-C for 30 minutes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ulimit -n 100000 && cockroach workload run tpcc \
     --partitions=5 \

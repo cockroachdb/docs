@@ -21,7 +21,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-node-postgres
 ~~~
@@ -37,14 +36,12 @@ The project has the following directory structure:
 
 The `dbinit.sql` file initializes the database schema that the application uses:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/main/dbinit.sql %}
 ~~~
 
 The `app.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations:
 
-{% include_cached copy-clipboard.html %}
 ~~~ js
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/main/app.js %}
 ~~~
@@ -55,7 +52,6 @@ All of the database operations are wrapped in a helper function named `retryTxn`
 
 1. Navigate to the `example-app-node-postgres` directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-node-postgres
     ~~~
@@ -66,14 +62,12 @@ All of the database operations are wrapped in a helper function named `retryTxn`
 
 1. Install the app requirements:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ npm install
     ~~~
 
 1. Run the app:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ node app.js
     ~~~

@@ -40,7 +40,6 @@ You configure your application to use [follower reads]({% link {{ page.version.v
 
 1. Create the `postal_codes` table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE postal_codes (
         id INT PRIMARY KEY,
@@ -50,7 +49,6 @@ You configure your application to use [follower reads]({% link {{ page.version.v
 
 1. Insert data into the `postal_codes` table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO postal_codes (ID, code) VALUES (1, '10001'), (2, '10002'), (3, '10003'), (4,'60601'), (5,'60602'), (6,'60603'), (7,'90001'), (8,'90002'), (9,'90003');
     ~~~
@@ -58,7 +56,6 @@ You configure your application to use [follower reads]({% link {{ page.version.v
 1. Decide which type of follower read to perform: exact staleness or  bounded staleness. For more information about when to use each type of read, see [when to use exact staleness reads]({% link {{ page.version.version }}/follower-reads.md %}#when-to-use-exact-staleness-reads) and [when to use bounded staleness reads]({% link {{ page.version.version }}/follower-reads.md %}#when-to-use-bounded-staleness-reads).
     - To use [exact staleness follower reads]({% link {{ page.version.version }}/follower-reads.md %}#exact-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) with the [`follower_read_timestamp()` function]({% link {{ page.version.version }}/functions-and-operators.md %}) whenever reading from the table:
 
-        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > SELECT code FROM postal_codes
             AS OF SYSTEM TIME follower_read_timestamp()
@@ -67,7 +64,6 @@ You configure your application to use [follower reads]({% link {{ page.version.v
 
         You can also set the `AS OF SYSTEM TIME` value for all operations in a read-only transaction:
 
-        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > BEGIN;
 
@@ -87,7 +83,6 @@ You configure your application to use [follower reads]({% link {{ page.version.v
         {{site.data.alerts.end}}
     - To use [bounded staleness follower reads]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) with the [`with_min_timestamp()` or `with_max_staleness()` function]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions) whenever reading from the table. Note that only single-row point reads in single-statement (implicit) transactions are supported.
 
-        {% include_cached copy-clipboard.html %}
         ~~~ sql
         SELECT code FROM postal_codes AS OF SYSTEM TIME with_max_staleness('10s') where id = 5;
         ~~~

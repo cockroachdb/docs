@@ -83,17 +83,14 @@ To create a temporary sequence, add [`TEMP`/`TEMPORARY`]({% link {{ page.version
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET experimental_enable_temp_tables=on;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TEMP SEQUENCE temp_seq START 1 INCREMENT 1;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE temp_seq;
 ~~~
@@ -111,12 +108,10 @@ For example:
 
 In this example, we create a sequence with default settings.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE customer_seq;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE customer_seq;
 ~~~
@@ -132,7 +127,6 @@ In this example, we create a sequence with default settings.
 
 In this example, we [create a table]({% link {{ page.version.version }}/create-table.md %}), using the [`nextval()` function]({% link {{ page.version.version }}/functions-and-operators.md %}#sequence-functions) for a [default value]({% link {{ page.version.version }}/default-value.md %}), with the `customer_seq` sequence as its input:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE customers (
     uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -143,12 +137,10 @@ CREATE TABLE customers (
 
 Inserting into this table with an `INSERT` statement that relies on default values will call `nextval`, which increments the sequence.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers (name) VALUES ('Max'), ('Alice');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers;
 ~~~
@@ -165,7 +157,6 @@ Inserting into this table with an `INSERT` statement that relies on default valu
 
 To view the current value without incrementing the sequence, use:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customer_seq;
 ~~~
@@ -200,7 +191,6 @@ In this example, we're going to change the next value of `customer_seq` using th
 You cannot set a value outside the <code>MAXVALUE</code> or <code>MINVALUE</code> of the sequence.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT setval('customer_seq', 5, false);
 ~~~
@@ -218,12 +208,10 @@ The `setval('seq_name', value, is_called)` function in CockroachDB SQL mimics th
 
 Let's add another record to the table to check that the new record adheres to the new next value.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers (name) VALUES ('Sam');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers;
 ~~~
@@ -241,12 +229,10 @@ Let's add another record to the table to check that the new record adheres to th
 
 In this example, we create a sequence that starts at -1 and descends in increments of 2.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE desc_customer_list START -1 INCREMENT -2;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE desc_customer_list;
 ~~~
@@ -260,7 +246,6 @@ In this example, we create a sequence that starts at -1 and descends in incremen
 
 ### List all sequences
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -280,12 +265,10 @@ In this example, we create a sequence that starts at -1 and descends in incremen
 
 For example, to cache 10 sequence values in memory:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE customer_seq_cached CACHE 10;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE customer_seq_cached;
 ~~~
@@ -303,12 +286,10 @@ For improved performance, use the `PER NODE CACHE` clause to cache sequence valu
 
 For example, to cache 10 sequence values per node:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE SEQUENCE customer_seq_node_cached PER NODE CACHE 10;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE customer_seq_node_cached;
 ~~~

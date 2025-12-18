@@ -57,7 +57,6 @@ See the [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace
 
 To generate the `job-trace` zip file, use your [connection string]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to pull the trace spans:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach debug job-trace 698977774875279361 --url=postgresql://root@localhost:26257?sslmode=disable
 ~~~

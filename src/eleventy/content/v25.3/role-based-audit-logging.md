@@ -67,7 +67,6 @@ For each statement executed, CockroachDB gets the user's role memberships and it
 
 You can check the value of the `sql.log.user_audit` setting by running the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CLUSTER SETTING sql.log.user_audit;
 ~~~
@@ -98,7 +97,6 @@ With the audit settings in this example,
 - Users with the username or role `service_account_role` will not emit audit logs for any statements they issue.
 - All remaining users will emit audit logs for any statements they issue. `ALL` is used twice. The first `ALL` refers to all `USER/ROLE`s. The second `ALL` refers to logging all actions/statements.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.log.user_audit = '
     service_account_role NONE
@@ -114,7 +112,6 @@ With the audit settings in this example,
 - Users with the username or role `another_role` will not emit audit logs for any statements they issue. In principle, you can achieve this by simply omitting `another_role` from the configuration entirely. It is included here as a basis of comparison to the next example - [User with multiple roles](#user-with-multiple-roles).
 - All remaining users will not emit audit logs for any statements they issue.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.log.user_audit = '
     test_role       ALL
@@ -131,7 +128,6 @@ With the audit settings in this example,
 - Users with the username or role `another_role` will emit audit logs for all statements they issue.
 - All remaining users will not emit audit logs for any statements they issue.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.log.user_audit = '
     test_role       NONE
@@ -142,7 +138,6 @@ SET CLUSTER SETTING sql.log.user_audit = '
 
 Grant an existing user, `test_user`, both roles `test_role` and `another_role`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT test_role to test_user;
 GRANT another_role to test_user;

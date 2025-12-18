@@ -40,19 +40,16 @@ All log settings for a `cockroach` command are specified with a YAML payload in 
 
 - Block format, where each parameter is written on a separate line. For example, after creating a file `logs.yaml`, pass the YAML values with either `--log-config-file` or `--log`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node --certs-dir=certs --log-config-file=logs.yaml
     ~~~
 
-    {% include_cached copy-clipboard.html %}
   	~~~ shell
   	$ cockroach start-single-node --certs-dir=certs --log="$(cat logs.yaml)"
   	~~~
 
 - Inline format, where all parameters are specified on one line. For example, to generate an `ops` log file that collects the `OPS` and `HEALTH` channels (overriding the file groups defined for those channels in the [default configuration](#default-logging-configuration)):
 
-    {% include_cached copy-clipboard.html %}
   	~~~ shell
   	$ cockroach start-single-node --certs-dir=certs --log="sinks: {file-groups: {ops: {channels: [OPS, HEALTH]}}}"
   	~~~
@@ -576,7 +573,6 @@ The log output formats [`crdb-v1`]({% link {{ page.version.version }}/log-format
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ yaml
 file-defaults:
   format: crdb-v2
@@ -611,7 +607,6 @@ The existing `timestamp` field with epoch values remains unchanged for backward-
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ yaml
 file-defaults:
   format: json

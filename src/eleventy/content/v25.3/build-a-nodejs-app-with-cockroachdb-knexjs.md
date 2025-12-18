@@ -19,7 +19,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-node-knex
 ~~~
@@ -30,7 +29,6 @@ $ git clone https://github.com/cockroachlabs/example-app-node-knex
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -39,7 +37,6 @@ $ git clone https://github.com/cockroachlabs/example-app-node-knex
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="<connection-string>"
     ~~~
@@ -52,14 +49,12 @@ $ git clone https://github.com/cockroachlabs/example-app-node-knex
 
 1. Install the app requirements:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ npm install
     ~~~
 
 1. Run the app:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ npm start
     ~~~

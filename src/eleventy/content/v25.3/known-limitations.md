@@ -90,7 +90,6 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 Many string operations are not properly overloaded for [collated strings]({% link {{ page.version.version }}/collate.md %}), for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'string1' || 'string2';
 ~~~
@@ -102,7 +101,6 @@ Many string operations are not properly overloaded for [collated strings]({% lin
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ('string1' collate en) || ('string2' collate en);
 ~~~
@@ -200,22 +198,18 @@ See: https://github.com/cockroachdb/cockroach/issues/46414
 
 It is currently not possible to [add a column]({% link {{ page.version.version }}/alter-table.md %}#add-column) to a table when the column uses a [sequence]({% link {{ page.version.version }}/create-sequence.md %}) as the [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}) value, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t (x INT);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE s;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
 ~~~

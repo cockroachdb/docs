@@ -64,7 +64,7 @@ The sample app uses JDBC and the [Data Access Object (DAO)](https://wikipedia.or
 The `main` method of the app performs the following steps which roughly correspond to method calls in the `BasicExample` class.
 
 | Step                                                                                                       | Method                                                                                          |
-|------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------|
+|------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | 1. Insert account data using a `Map` that corresponds to the input to `INSERT` on the backend              | `BasicExampleDAO.updateAccounts(Map balance)`                                                   |
 | 2. Transfer money from one account to another, printing out account balances before and after the transfer | `BasicExampleDAO.transferFunds(UUID from, UUID to, BigDecimal amount)`                                   |
 | 3. Insert random account data using JDBC's bulk insertion support                                          | `BasicExampleDAO.bulkInsertRandomAccountData()`                                                 |

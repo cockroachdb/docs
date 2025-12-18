@@ -38,14 +38,12 @@ You define a cluster region at the node level using the `region` key and the zon
 
 For example, the following command adds `us-east-1` to the list of cluster regions and `us-east-1b` to the list of zones:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach start --locality=region=us-east-1,zone=us-east-1b # ... other required flags go here
 ~~~
 
 To show all of a cluster's regions, execute the following SQL statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM CLUSTER;
 ~~~

@@ -19,14 +19,12 @@ Cockroach determines which encryption algorithm to use based on the size of the 
 
 Generating a key file can be done using the `cockroach` CLI:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen encryption-key -s 128 /path/to/my/aes-128.key
 ~~~
 
 Or the equivalent [openssl](https://www.openssl.org/docs/man1.1.1/man1/openssl.html) CLI command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ openssl rand -out /path/to/my/aes-128.key 48
 ~~~
@@ -50,7 +48,6 @@ The `key` and `old-key` components must **always** be specified. They allow for 
 
 Starting a node for the first time using AES-128 encryption can be done using:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=/path/to/my/aes-128.key,old-key=plain
 ~~~
@@ -90,7 +87,6 @@ Encryption type and keys can be changed at any time by restarting the node. To c
 
 For example, we can switch from AES-128 to AES-256 using:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=/path/to/my/aes-256.key,old-key=/path/to/my/aes-128.key
 ~~~

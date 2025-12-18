@@ -49,7 +49,6 @@ No [privileges]({% link {{ page.version.version }}/security-reference/authorizat
 
 Typically, an application conditionally executes rollbacks, but we can see their behavior by using `ROLLBACK` instead of `COMMIT` directly through SQL:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -62,22 +61,18 @@ Typically, an application conditionally executes rollbacks, but we can see their
 +----------+---------+
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE accounts SET balance = 2500 WHERE name = 'Marciela';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ROLLBACK;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -100,7 +95,6 @@ For examples showing how to use `ROLLBACK TO SAVEPOINT` to rollback a nested tra
 
 When using [advanced client-side transaction retries]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}), use `ROLLBACK TO SAVEPOINT` to handle a transaction that needs to be retried (identified via the `40001` error code or `restart transaction` string in the error message), and then re-execute the statements you want the transaction to contain.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ROLLBACK TO SAVEPOINT cockroach_restart;
 ~~~

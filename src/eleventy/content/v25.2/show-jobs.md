@@ -104,7 +104,6 @@ We recommend monitoring paused jobs to protect historical data from [garbage col
 
 ### Show jobs
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
@@ -119,7 +118,6 @@ We recommend monitoring paused jobs to protect historical data from [garbage col
 
 You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement, and then filtering the values with the `WHERE` clause.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW JOBS) SELECT * FROM x WHERE job_type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;
 ~~~
@@ -133,7 +131,6 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`]({% 
 
 ### Show automatic jobs
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW AUTOMATIC JOBS;
 ~~~
@@ -158,7 +155,6 @@ The job types of automatic jobs are:
 
 You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement, and then filtering the values with the `WHERE` clause.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW AUTOMATIC JOBS) SELECT * FROM x WHERE status = ('succeeded') ORDER BY created DESC;
 ~~~
@@ -192,7 +188,6 @@ Changefeed jobs can be [paused]({% link {{ page.version.version }}/create-and-co
 
 You can filter jobs by using `SHOW CHANGEFEED JOBS` as the data source for a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement, and then filtering the values with a `WHERE` clause. For example, you can filter by the `status` of changefeed jobs:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH x AS (SHOW CHANGEFEED JOBS) SELECT * FROM x WHERE status = ('paused');
 ~~~
@@ -210,7 +205,6 @@ WITH x AS (SHOW CHANGEFEED JOBS) SELECT * FROM x WHERE status = ('paused');
 
 You can show just schema change jobs by using `SHOW JOBS` as the data source for a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement, and then filtering the `job_type` value with the `WHERE` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW JOBS) SELECT * FROM x WHERE job_type = 'SCHEMA CHANGE';
 ~~~
@@ -227,7 +221,6 @@ You can show just schema change jobs by using `SHOW JOBS` as the data source for
 
 To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHOW JOB WHEN COMPLETE`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOB WHEN COMPLETE 27536791415282;
 ~~~
@@ -241,7 +234,6 @@ To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHO
 
  To view jobs for a specific [backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}), use the schedule's `id`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -254,7 +246,6 @@ To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHO
 
 You can also view multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `SHOW JOBS` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~

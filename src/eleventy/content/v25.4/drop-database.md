@@ -40,7 +40,6 @@ For non-interactive sessions (e.g., client applications), `DROP DATABASE` applie
 
 For interactive sessions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), either the `CASCADE` option must be set explicitly or the `--unsafe-updates` flag must be set when starting the shell.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -57,7 +56,6 @@ For interactive sessions from the [built-in SQL client]({% link {{ page.version.
 (6 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr;
 ~~~
@@ -67,12 +65,10 @@ ERROR: rejected (sql_safe_updates = true): DROP DATABASE on current database
 SQLSTATE: 01000
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE defaultdb;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr;
 ~~~
@@ -82,12 +78,10 @@ ERROR: rejected (sql_safe_updates = true): DROP DATABASE on non-empty database w
 SQLSTATE: 01000
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr CASCADE;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -101,7 +95,6 @@ SQLSTATE: 3F000
 
 When a database is not empty, the `RESTRICT` option prevents the database from being dropped:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -118,12 +111,10 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 (6 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE defaultdb;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr RESTRICT;
 ~~~

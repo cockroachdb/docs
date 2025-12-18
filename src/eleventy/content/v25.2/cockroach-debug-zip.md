@@ -141,14 +141,12 @@ Flag | Description
 
 Generate the debug zip file for an insecure cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure --host=200.100.50.25
 ~~~
 
 Generate the debug zip file for a secure cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --host=200.100.50.25
 ~~~
@@ -161,7 +159,6 @@ Secure examples assume you have the appropriate certificates in the default cert
 
 Generate a debug zip file containing only debugging information for a specified time range:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --files-from='2023-10-03 13:30' --files-until='2023-10-03 14:30'
 ~~~
@@ -170,7 +167,6 @@ $ cockroach debug zip ./cockroach-data/logs/debug.zip --files-from='2023-10-03 1
 
 Generate a debug zip file containing only log files:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --include-files=*.log
 ~~~
@@ -187,7 +183,6 @@ server/server.go:1423 ⋮ password of user ‹admin› was set to ‹"s3cr34?!@x
 
 Enable log redaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host=200.100.50.25
 ~~~
@@ -216,7 +211,6 @@ Example of `status.json` without hostname and IP address redaction enabled:
 
 First, [enable the cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING debug.zip.redact_addresses.enabled = true;
 ~~~
@@ -227,7 +221,6 @@ Enabling the `debug.zip.redact_addresses.enabled` cluster setting will not redac
 
 Then, generate `.zip` with log redaction as well as hostname and IP address redaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host=200.100.50.25
 ~~~

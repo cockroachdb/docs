@@ -445,8 +445,14 @@ module.exports = function(eleventyConfig) {
     middleware: [
       // Rewrite /stable/* to serve content from current stable version
       // URL stays as /stable/ but internally serves from /v26.1/
+      // Handle both with and without pathPrefix (/docs)
       (req, res, next) => {
-        if (req.url.startsWith('/stable/')) {
+        // Check for /docs/stable/ (with prefix)
+        if (req.url.startsWith('/docs/stable/')) {
+          req.url = req.url.replace('/docs/stable/', `/docs/${VERSION_CONFIG.stable}/`);
+        }
+        // Check for /stable/ (without prefix, for local dev with empty prefix)
+        else if (req.url.startsWith('/stable/')) {
           req.url = req.url.replace('/stable/', `/${VERSION_CONFIG.stable}/`);
         }
         next();

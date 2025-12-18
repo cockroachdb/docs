@@ -79,7 +79,6 @@ If the cluster is unavailable, these endpoints are also unavailable.
 
 If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connection refused` error:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health
 ~~~
@@ -110,7 +109,6 @@ The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `50
 
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health?ready=1
 ~~~
@@ -160,7 +158,6 @@ Every node of a CockroachDB cluster exports granular time-series metrics at `htt
 
 To access the Prometheus endpoint of a cluster running on `localhost:8080`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/_status/vars
 ~~~
@@ -201,7 +198,7 @@ If you find under-replicated ranges or constraint violations, you will need to [
 The JSON object returned by the critical nodes status endpoint contains the following top-level fields.
 
 | Field                         | Description                                                                                                   |
-|-------------------------------+---------------------------------------------------------------------------------------------------------------|
+|-------------------------------|---------------------------------------------------------------------------------------------------------------|
 | `criticalNodes`               | A list of nodes that are critical. Critical nodes are not safe to terminate because data loss could occur.    |
 | `report.overReplicated`       | A list of ranges that are over-replicated vs. your [zone config settings]({% link {{ page.version.version }}/configure-replication-zones.md %}).  |
 | `report.violatingConstraints` | A list of ranges that are in violation of your [zone config settings]({% link {{ page.version.version }}/configure-replication-zones.md %}).      |
@@ -212,7 +209,7 @@ The JSON object returned by the critical nodes status endpoint contains the foll
 The `criticalNodes` portion of the response contains a (possibly empty) list of objects, each of which has the following fields.
 
 | Field           | Example                 | Description                                                                                                    |
-|-----------------+-------------------------+----------------------------------------------------------------------------------------------------------------|
+|-----------------|-------------------------|----------------------------------------------------------------------------------------------------------------|
 | `nodeId`        | `2`                     | The node ID of the critical node.                                                                              |
 | `address`       | `{...}`                 | An object representing the network address of the node.                                                        |
 | `locality`      | `{...}`                 | An object representing the [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) of the node.                              |
@@ -226,7 +223,7 @@ The `criticalNodes` portion of the response contains a (possibly empty) list of 
 Each report subtype (e.g., `report.unavailable`, `report.violatingConstraints`, etc.) returns a (possibly empty) list of objects describing the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) that report applies to. Each object contains a `rangeDescriptor` and a `config` that describes the range.
 
 | Field                          | Example                                                      | Description                                                                                                                                    |
-|--------------------------------+--------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | `rangeDescriptor.rangeId`      | `"89"`                                                       | The [range ID]({% link {{ page.version.version }}/alter-range.md %}#find-range-id-and-leaseholder-information) this section of the report is referring to.                         |
 | `rangeDescriptor.startKey`     | `"8okSYW1zdGVyZGFtAAE="`                                     | The [start key for the range]({% link {{ page.version.version }}/show-ranges.md %}#start-key).                                                                                     |
 | `rangeDescriptor.endKey`       | `"8okSYW1zdGVyZGFtAAESszMzMzMzQAD/gAD/AP8A/wD/AP8A/yMAAQ=="` | The [end key for the range]({% link {{ page.version.version }}/show-ranges.md %}#end-key).                                                                                         |
@@ -253,14 +250,12 @@ Each report subtype (e.g., `report.unavailable`, `report.violatingConstraints`, 
 
 The following example assumes you are running a newly started, local multi-region [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --global --nodes 9 --insecure
 ~~~
 
 Execute the following statements to set the [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) for the [`movr` database]({% link {{ page.version.version }}/movr.md %}#the-movr-database):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
  ALTER DATABASE movr SET PRIMARY REGION "us-east1";
  ALTER DATABASE movr ADD REGION "us-west1";
@@ -268,7 +263,6 @@ Execute the following statements to set the [database regions]({% link {{ page.v
 ~~~
 
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 curl -X POST http://localhost:8080/_status/critical_nodes
 ~~~
@@ -300,14 +294,12 @@ You may have to wait a few minutes after setting the database regions before get
 
 The following example assumes you are running a newly started, local multi-region [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --global --nodes 9 --insecure
 ~~~
 
 Execute the following statements to set the [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) for the [`movr` database]({% link {{ page.version.version }}/movr.md %}#the-movr-database):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
  ALTER DATABASE movr SET PRIMARY REGION "us-east1";
  ALTER DATABASE movr ADD REGION "us-west1";
@@ -320,7 +312,6 @@ To introduce a violation that you can then query for, you'll [set the table loca
 
 You can use [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) to see what existing [table locality]({% link {{ page.version.version }}/table-localities.md %}) is attached to the `users` table, so you know what to modify.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE TABLE users;
 ~~~
@@ -341,7 +332,6 @@ SHOW CREATE TABLE users;
 
 To create a constraint violation, use the [`ALTER TABLE ... SET LOCALITY`]({% link {{ page.version.version }}/alter-table.md %}#set-the-table-locality-to-regional-by-table) statement to tell the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in the `PRIMARY REGION` (`us-east1`) that they are supposed to be in the `europe-west1` locality:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE users SET LOCALITY REGIONAL BY TABLE IN "europe-west1";
 ~~~
@@ -358,7 +348,6 @@ Use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) st
 In a real life constraint violation scenario, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 curl -X POST http://localhost:8080/_status/critical_nodes
 ~~~
@@ -503,14 +492,12 @@ curl -X POST http://localhost:8080/_status/critical_nodes
 
 The following example assumes you are running a newly started, local multi-region [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --global --nodes 9 --insecure
 ~~~
 
 Execute the following statements to set the [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) for the [`movr` database]({% link {{ page.version.version }}/movr.md %}#the-movr-database):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
  ALTER DATABASE movr SET PRIMARY REGION "us-east1";
  ALTER DATABASE movr ADD REGION "us-west1";
@@ -521,7 +508,6 @@ By default, this multi-region demo cluster will not have any [under-replicated r
 
 To put the cluster into a state where some [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) are under-replicated, issue the following [`ALTER DATABASE ... ALTER LOCALITY ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-database.md %}#alter-locality) statement, which tells it to store 9 copies of each range underlying the `movr` database.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING num_replicas = 9;
 ~~~
@@ -536,7 +522,6 @@ Use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) st
 In a real life under-replication scenario, you may need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 curl -X POST http://localhost:8080/_status/critical_nodes
 ~~~
@@ -742,14 +727,12 @@ curl -X POST http://localhost:8080/_status/critical_nodes
 
 The following example assumes you are running a newly started, local multi-region [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster started using the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --global --nodes 9 --insecure
 ~~~
 
 Execute the following statements to set the [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) for the [`movr` database]({% link {{ page.version.version }}/movr.md %}#the-movr-database):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
  ALTER DATABASE movr SET PRIMARY REGION "us-east1";
  ALTER DATABASE movr ADD REGION "us-west1";
@@ -762,7 +745,6 @@ The status endpoint describes which of your nodes (if any) are critical via the 
 
 To artificially put the nodes in this demo cluster in "critical" status, we can issue the following SQL statement, which uses [`ALTER DATABASE ... ALTER LOCALITY ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-database.md %}#alter-locality) to tell the cluster to store more copies of each range underlying the `movr` database than there are nodes in the cluster.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING num_replicas = 128;
 ~~~
@@ -776,7 +758,6 @@ In a real life critical localities scenario, you may need to [Troubleshoot your 
 {{site.data.alerts.end}}
 
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 curl -X POST http://localhost:8080/_status/critical_nodes
 ~~~
@@ -1004,7 +985,6 @@ Field | Description
 
 For example, to get the status of the stores of nodeID `1`, use the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 curl http://localhost:8080/_status/stores/1
 ~~~
@@ -1041,7 +1021,6 @@ If you have configured [Prometheus]({% link {{ page.version.version }}/monitor-c
 
 Every CockroachDB node exports an alerting rules template at `http://<host>:<http-port>/api/v2/rules/`. These rule definitions are formatted for easy integration with Alertmanager.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/api/v2/rules/
 ~~~
@@ -1066,7 +1045,6 @@ rules/alerts:
 
 To add a rule from the `api/v2/rules/` rules endpoint, create or edit your `alerts.rules.yml` file and copy the rule definition for the event you want to alert on. For example, to add a rule to alert you when unavailable ranges are detected, copy the following from the rules endpoint into your `alerts.rules.yml` file:
 
-{% include_cached copy-clipboard.html %}
 ~~~
 - alert: UnavailableRanges
   expr: (sum by(instance, cluster) (ranges_unavailable)) > 0
@@ -1077,7 +1055,6 @@ To add a rule from the `api/v2/rules/` rules endpoint, create or edit your `aler
 
 If you already followed the steps from [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}), you should already have a `alerts.rules.yml` file. If you are creating a new `alerts.rules.yml` file, be sure that it begins with the following three lines:
 
-{% include_cached copy-clipboard.html %}
 ~~~
 groups:
 - name: rules/alerts.rules
@@ -1086,7 +1063,6 @@ groups:
 
 Place your desired rule(s) underneath the `rules:` header. For example, the following shows an `alerts.rules.yml` file with the unavailable ranges rule defined:
 
-{% include_cached copy-clipboard.html %}
 ~~~
 groups:
 - name: rules/alerts.rules
@@ -1100,7 +1076,6 @@ groups:
 
 Once you have created or edited your `alerts.rules.yml` file, reference it in your `prometheus.yml` configuration file with the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~
 rule_files:
 - "rules/alerts.rules.yml"

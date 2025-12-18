@@ -44,7 +44,6 @@ In this `logs.yaml` example:
    - `flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`. In this example, override to `2.5MiB`.
    - `max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`
 
-{% include_cached copy-clipboard.html %}
 ~~~ yaml
 sinks:
   http-servers:
@@ -68,7 +67,6 @@ sinks:
 {{site.data.alerts.callout_success}}
 If you prefer to keep the `DD-API-KEY` in a file other than the `logs.yaml`, replace the `headers` parameter with the [`file-based-headers` parameter]({% link {{ page.version.version }}/configure-logs.md %}#file-based-headers):
 
-{% include_cached copy-clipboard.html %}
 ~~~ yaml
       file-based-headers: {DD-API-KEY: "path/to/file"} # replace with path of file containing DATADOG API key
 ~~~
@@ -82,14 +80,12 @@ Pass the [`logs.yaml` file]({% link {{ page.version.version }}/configure-logs.md
 
 Enable the [`sql.telemetry.query_sampling.enabled` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-query-sampling-enabled) so that executed queries will emit an event on the telemetry [logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.telemetry.query_sampling.enabled = true;
 ~~~
 
 Set the [`sql.telemetry.query_sampling.mode` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `statement` so that `sampled_query` events are emitted (`sampled_transaction` events will not be emitted):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.telemetry.query_sampling.mode = 'statement';
 ~~~
@@ -117,14 +113,12 @@ The `sql.telemetry.query_sampling.max_event_frequency` cluster setting and the `
 
 Enable the [`sql.telemetry.query_sampling.enabled` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-telemetry-query-sampling-enabled) so that executed queries and transactions will emit an event on the telemetry [logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.telemetry.query_sampling.enabled = true;
 ~~~
 
 Set the [`sql.telemetry.query_sampling.mode` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `transaction` so that `sampled_query` and `sampled_transaction` events are emitted:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.telemetry.query_sampling.mode = 'transaction';
 ~~~

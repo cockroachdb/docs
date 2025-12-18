@@ -49,7 +49,6 @@ Suppose you want to separate the tables and indexes in your cluster such that on
 
 Open the `dbinit.sql` file that you created in the [Create a Database]({% link {{ page.version.version }}/schema-design-database.md %}) example, and add the following statements under the `CREATE DATABASE` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 USE movr;
 
@@ -64,7 +63,6 @@ The first statement sets the `movr` database as the [current database]({% link {
 
 Now, under the `CREATE USER` statements, add `DROP SCHEMA` and `CREATE SCHEMA` statements for each user's user-defined schema:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP SCHEMA IF EXISTS max_schema CASCADE;
 CREATE SCHEMA max_schema AUTHORIZATION max;
@@ -81,7 +79,6 @@ Under the `CREATE SCHEMA` statements for each user-defined schema, add a `GRANT`
 
 The `dbinit.sql` file should now look something link this:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS movr;
 
@@ -104,7 +101,6 @@ GRANT USAGE ON SCHEMA abbey_schema TO max;
 
 To execute the statements in the `dbinit.sql` file as the `root` user, run the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -114,21 +110,18 @@ $ cockroach sql \
 
 Before the new users can connect to the cluster and start creating objects, they each need a [user certificate]({% link {{ page.version.version }}/authentication.md %}#client-authentication). To create a user certificate for `max`, open a new terminal, and run the following [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %}) command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client max --certs-dir={certs-directory} --ca-key={my-safe-directory}/ca.key
 ~~~
 
 Create a user certificate for `abbey` as well:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client abbey --certs-dir={certs-directory} --ca-key={my-safe-directory}/ca.key
 ~~~
 
 As one of the new users, use a [`SHOW SCHEMAS` statement]({% link {{ page.version.version }}/show-schemas.md %}) to show the preloaded and user-defined schemas in the `movr` database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \

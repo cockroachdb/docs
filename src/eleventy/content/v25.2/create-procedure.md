@@ -43,14 +43,12 @@ The following are examples of basic stored procedures. For a more detailed examp
 
 Create a [composite variable]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type):
 
-{% include_cached copy-clipboard.html %}
 ~~~
 CREATE TYPE comp AS (x INT, y STRING);
 ~~~
 
 Create the procedure, declaring the `comp` variable you created:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE proc() LANGUAGE PLpgSQL AS $$
   DECLARE
@@ -61,7 +59,6 @@ CREATE OR REPLACE PROCEDURE proc() LANGUAGE PLpgSQL AS $$
   $$;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL proc();
 ~~~
@@ -75,7 +72,6 @@ CALL
 
 The following example uses a combination of `OUT` and `INOUT` parameters to modify a provided value and output the result. An `OUT` parameter returns a value, while an `INOUT` parameter passes an input value and returns a value.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE double_triple(INOUT double INT, OUT triple INT) AS
   $$
@@ -88,7 +84,6 @@ CREATE OR REPLACE PROCEDURE double_triple(INOUT double INT, OUT triple INT) AS
 
 When calling a procedure, you need to supply placeholder values for any `OUT` parameters. A `NULL` value is commonly used. When [calling a procedure from another routine](#create-a-stored-procedure-that-calls-a-procedure), you should declare variables that will store the results of the `OUT` parameters.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL double_triple(1, NULL);
 ~~~
@@ -107,7 +102,6 @@ The following example defines a procedure that calls the [`double_triple` exampl
 A procedure with `OUT` parameters can only be [called from a PL/pgSQL routine]({% link {{ page.version.version }}/plpgsql.md %}#call-a-procedure). 
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE p(double_input INT) AS
   $$
@@ -121,7 +115,6 @@ CREATE OR REPLACE PROCEDURE p(double_input INT) AS
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL p(1);
 ~~~
@@ -136,7 +129,6 @@ CALL
 
 The following example uses [PL/pgSQL conditional statements]({% link {{ page.version.version }}/plpgsql.md %}#write-conditional-statements):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE proc(a INT, b INT) AS 
   $$
@@ -152,7 +144,6 @@ CREATE OR REPLACE PROCEDURE proc(a INT, b INT) AS
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL proc(1, 2);
 ~~~
@@ -166,7 +157,6 @@ CALL
 
 The following example uses [PL/pgSQL loop statements]({% link {{ page.version.version }}/plpgsql.md %}#write-loops):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE arr_var() AS 
   $$
@@ -184,7 +174,6 @@ CREATE OR REPLACE PROCEDURE arr_var() AS
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL arr_var();
 ~~~

@@ -14,7 +14,6 @@ To enable certificate revocation using your OCSP service:
 1. Ensure that your Certificate Authority sets the OCSP server address in the `authorityInfoAccess` field in the certificate.
 1. [Set the cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
 
-      {% include copy-clipboard.html %}
       ~~~ sql
       > SHOW CLUSTER SETTING security.ocsp.mode;
       ~~~
@@ -29,7 +28,6 @@ To enable certificate revocation using your OCSP service:
       Network Latency: 181µs
       ~~~
 
-      {% include copy-clipboard.html %}
       ~~~ sql
       > SET CLUSTER SETTING security.ocsp.mode = lax;
       ~~~

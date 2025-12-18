@@ -15,7 +15,6 @@ The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ pag
 
 These instructions assume that you are migrating from a {{ site.data.products.public-operator }} cluster that is managed with kubectl via the following yaml files:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.17.0/install/crds.yaml
 kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.17.0/install/operator.yaml
@@ -32,7 +31,6 @@ This migration process can be completed without affecting cluster availability, 
 
 In the root of the [cockroachdb/helm-charts](https://github.com/cockroachdb/helm-charts/tree/master) repository, build the migration helper and add the `./bin` directory to your PATH:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 make bin/migration-helper
 export PATH=$PATH:$(pwd)/bin
@@ -41,32 +39,27 @@ export PATH=$PATH:$(pwd)/bin
 Export environment variables for the existing deployment:
 
 - Set CRDBCLUSTER to the crdbcluster custom resource name in the {{ site.data.products.public-operator }}:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export CRDBCLUSTER="cockroachdb"
     ~~~
 
 - Set NAMESPACE to the namespace where the statefulset is installed:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export NAMESPACE="default"
     ~~~
 
 - Set CLOUD_PROVIDER to the cloud vendor where Kubernetes cluster is residing. All major cloud providers are supported (gcp, aws, azure):
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export CLOUD_PROVIDER=gcp
     ~~~
 
 - Set REGION to the cloud provider's identifier of this region. This region must match the "topology.kubernetes.io/region" label in the Kubernetes nodes for this cluster:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export REGION=us-central1
     ~~~
 
 Back up the crdbcluster resource in case there is a need to revert:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 mkdir -p backup
 kubectl get crdbcluster -o yaml $CRDBCLUSTER > backup/crdbcluster-$CRDBCLUSTER.yaml
@@ -76,14 +69,12 @@ kubectl get crdbcluster -o yaml $CRDBCLUSTER > backup/crdbcluster-$CRDBCLUSTER.y
 
 The {{ site.data.products.cockroachdb-operator }} uses slightly different certificates than the {{ site.data.products.public-operator }}, and mounts them in configmaps and secrets with different names. Use the migration helper utility with the `migrate-certs` option to re-map and generate TLS certificates:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 bin/migration-helper migrate-certs --statefulset-name $STS_NAME --namespace $NAMESPACE
 ~~~
 
 Generate a manifest for each crdbnode and the crdbcluster based on the state of the StatefulSet. The new pods and their associated PVCs must have the same names as the original StatefulSet-managed pods and PVCs. The new {{ site.data.products.cockroachdb-operator }}-managed pods will then use the original PVCs, rather than replicate data into empty nodes.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 mkdir -p manifests
 bin/migration-helper build-manifest helm --statefulset-name $STS_NAME --namespace $NAMESPACE --cloud-provider $CLOUD_PROVIDER --cloud-region $REGION --output-dir ./manifests
@@ -94,13 +85,11 @@ bin/migration-helper build-manifest helm --statefulset-name $STS_NAME --namespac
 The {{ site.data.products.public-operator }} and the {{ site.data.products.cockroachdb-operator }} use custom resource definitions with the same names, so you must remove the {{ site.data.products.public-operator }} before installing the {{ site.data.products.cockroachdb-operator }}. Run the following commands to uninstall the {{ site.data.products.public-operator }}, without deleting its managed resources:
 
 - Ensure that the operator can't accidentally delete managed Kubernetes objects:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl delete clusterrolebinding cockroach-operator-rolebinding
     ~~~
 
 - Delete the {{ site.data.products.public-operator }} custom resource:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl delete crdbcluster $CRDBCLUSTER --cascade=orphan
     ~~~
@@ -108,7 +97,6 @@ The {{ site.data.products.public-operator }} and the {{ site.data.products.cockr
     The `--cascade=orphan` flag tells Kubernetes not to delete the dependent resources (StatefulSets, Services, PVCs, etc.) created by the `CrdbCluster` custom resource. This ensures that only the parent custom resource is deleted, while child resources are left intact in the cluster. This allows the CockroachDB cluster to continue running as a StatefulSet until the migration is complete.
 
 - Delete {{ site.data.products.public-operator }} resources and custom resource definition:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.17.0/install/crds.yaml
     kubectl delete serviceaccount cockroach-operator-sa -n cockroach-operator-system
@@ -122,7 +110,6 @@ The {{ site.data.products.public-operator }} and the {{ site.data.products.cockr
 
 Run `helm upgrade` to install the {{ site.data.products.cockroachdb-operator }} and wait for it to become ready:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 helm upgrade --install crdb-operator ./cockroachdb-parent/charts/operator
 kubectl rollout status deployment/cockroach-operator --timeout=60s
@@ -134,7 +121,6 @@ To migrate seamlessly from the {{ site.data.products.public-operator }} to the {
 
 Create objects with `kubectl` that will eventually be owned by the crdbcluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 kubectl create priorityclass crdb-critical --value 500000000
 kubectl apply -f manifests/rbac.yaml
@@ -142,7 +128,6 @@ kubectl apply -f manifests/rbac.yaml
 
 Install the `crdb-operator` with Helm:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 helm upgrade --install crdb-operator ./cockroachdb-parent/charts/operator
 ~~~
@@ -151,14 +136,12 @@ For each pod in the StatefulSet, perform the following steps:
 
 1. Scale the StatefulSet down by one replica. For example, for a five-node cluster, scale the StatefulSet down to four replicas:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl scale statefulset/$STS_NAME --replicas=4
     ~~~
 
 1. Create the `crdbnode` resource that corresponds to the StatefulSet pod you just scaled down. Each manifest is labeled with the pattern `crdbnode-X.yaml`, where `X` corresponds to a StatefulSet pod named `{STS_NAME}-X`. Note the pod that was scaled down and specify its manifest in a command like the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl apply -f manifests/crdbnode-4.yaml
     ~~~
@@ -168,14 +151,12 @@ For each pod in the StatefulSet, perform the following steps:
 1. Before moving on to the next replica migration, verify that there are no underreplicated ranges:
     1. Set up port forwarding to access the CockroachDB node’s HTTP interface. Note that the DB Console runs on port 8080 by default:
 
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         kubectl port-forward pod/cockroachdb-4 8080:8080
         ~~~
 
     1. Check that there are zero underreplicated ranges. The following command outputs the number of under-replicated ranges on this CockroachDB node:
 
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         curl --insecure -s https://localhost:8080/_status/vars | grep "ranges_underreplicated{" | awk '{print $2}'
         ~~~
@@ -190,14 +171,12 @@ If there are issues with the migration and you need to revert back to the previo
 
 The {{ site.data.products.public-operator }} creates a pod disruption budget that conflicts with a pod disruption budget managed by the {{ site.data.products.cockroachdb-operator }}. Before applying the crdbcluster manifest, delete the existing pod disruption budget:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 kubectl delete poddisruptionbudget $CRDBCLUSTER
 ~~~
 
 Annotate the existing Kubernetes objects so they can managed by the Helm chart:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 kubectl annotate service $CRDBCLUSTER-public meta.helm.sh/release-name="$CRDBCLUSTER"
 kubectl annotate service $CRDBCLUSTER-public meta.helm.sh/release-namespace="$NAMESPACE"
@@ -206,14 +185,12 @@ kubectl label service $CRDBCLUSTER-public app.kubernetes.io/managed-by=Helm --ov
 
 Apply the crdbcluster manifest:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 helm install $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb -f manifests/values.yaml
 ~~~
 
 Once the migration is successful, delete the StatefulSet that was created by the {{ site.data.products.public-operator }}:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 kubectl delete poddisruptionbudget $STS_NAME-budget
 ~~~
@@ -228,14 +205,12 @@ If the migration to the {{ site.data.products.cockroachdb-operator}} fails durin
     
     1. Delete a `crdbnode` manifest in reverse order, starting with `crdbnode-1.yaml`.
     
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         kubectl delete -f manifests/crdbnode-1.yaml
         ~~~
     
     1. Scale the StatefulSet replica count up by one (to 2).
     
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         kubectl scale statefulset $CRDBCLUSTER --replicas=2
         ~~~
@@ -244,7 +219,6 @@ If the migration to the {{ site.data.products.cockroachdb-operator}} fails durin
     
         1. Set up port forwarding to access the CockroachDB node's HTTP interface, replacing `cockroachdb-X` with the node name:
 
-            {% include_cached copy-clipboard.html %}
             ~~~ shell
             kubectl port-forward pod/cockroachdb-X 8080:8080
             ~~~
@@ -253,7 +227,6 @@ If the migration to the {{ site.data.products.cockroachdb-operator}} fails durin
 
         1. Check the `ranges_underreplicated` metric:
 
-            {% include_cached copy-clipboard.html %}
             ~~~ shell
             curl --insecure -s https://localhost:8080/_status/vars | grep "ranges_underreplicated{" | awk ' {print $2}'
             ~~~
@@ -266,7 +239,6 @@ If the migration to the {{ site.data.products.cockroachdb-operator}} fails durin
 
 1. Delete the PriorityClass and RBAC resources created for the CockroachDB operator:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl delete priorityclass crdb-critical
     kubectl delete -f manifests/rbac.yaml
@@ -274,14 +246,12 @@ If the migration to the {{ site.data.products.cockroachdb-operator}} fails durin
 
 1. Uninstall the {{ site.data.products.cockroachdb-operator }}:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm uninstall crdb-operator
     ~~~
 
 1. Clean up {{ site.data.products.cockroachdb-operator }} resources and custom resource definitions:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl delete crds crdbnodes.crdb.cockroachlabs.com
     kubectl delete crds crdbtenants.crdb.cockroachlabs.com
@@ -292,7 +262,6 @@ If the migration to the {{ site.data.products.cockroachdb-operator}} fails durin
 
 1. Restore the {{ site.data.products.public-operator }}:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.17.0/install/crds.yaml
     kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.17.0/install/operator.yaml
@@ -300,21 +269,18 @@ If the migration to the {{ site.data.products.cockroachdb-operator}} fails durin
     
     Wait for the operator pod to be "Running" as shown with the following command:
     
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get pods -n cockroach-operator-system
     ~~~
 
 1. Restore the original `crdbcluster` custom resource:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl apply -f backup/crdbcluster-$CRDBCLUSTER.yaml
     ~~~
 
 1. Confirm that all CockroachDB pods are "Running" or "Ready" as shown with the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get pods
     ~~~

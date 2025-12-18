@@ -22,7 +22,6 @@ The user must be granted the `CONNECT` [privilege]({% link {{ page.version.versi
 
 ### Show databases
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -39,7 +38,6 @@ The user must be granted the `CONNECT` [privilege]({% link {{ page.version.versi
 
 Alternatively, within the built-in SQL shell, you can use the `\l` [shell command]({% link {{ page.version.version }}/cockroach-sql.md %}#commands) to list all databases:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \l
 ~~~
@@ -58,14 +56,12 @@ Alternatively, within the built-in SQL shell, you can use the `\l` [shell comman
 
 You can use [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) to add comments on a database.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMENT ON DATABASE movr IS 'This database holds information about users, vehicles, and rides.';
 ~~~
 
 To view a database's comments:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES WITH COMMENT;
 ~~~

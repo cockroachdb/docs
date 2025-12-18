@@ -34,12 +34,10 @@ The user must have the `DROP` [privilege]({% link {{ page.version.version }}/sec
 
 In this example, other objects do not depend on the sequence being dropped.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE even_numbers INCREMENT 2 START 2;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -51,12 +49,10 @@ In this example, other objects do not depend on the sequence being dropped.
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SEQUENCE even_numbers;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~

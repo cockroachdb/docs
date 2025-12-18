@@ -37,7 +37,6 @@ The basic components of a user-defined function are a name, list of arguments, r
 
 The following is a UDF that returns the sum of two integers:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT a + b';
 ~~~
@@ -53,14 +52,12 @@ Where:
 
 Alternatively, you could define this function as:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
 ~~~
 
 Or as:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION add(a INT, b INT) RETURNS INT LANGUAGE SQL AS $$
   SELECT a + b;
@@ -73,7 +70,6 @@ For more examples of UDF creation, see [`CREATE FUNCTION`]({% link {{ page.versi
 
 To view the definition for the `add()` function:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE FUNCTION add;
 ~~~
@@ -101,7 +97,6 @@ You invoke a UDF like a [built-in function]({% link {{ page.version.version }}/f
 
 To invoke the `add()` function:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT add(3,5) as sum;
 ~~~
@@ -131,7 +126,6 @@ The following example demonstrates how inlining improves a UDF's performance.
 
 1. Create tables `a` and `b`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE a (
       a INT
@@ -144,7 +138,6 @@ The following example demonstrates how inlining improves a UDF's performance.
 
 1. Insert a value (`10`) into 1000 rows in `a` and 1 row in `b`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO a SELECT 10 FROM generate_series(1, 1000);
     INSERT INTO b VALUES (10);
@@ -152,7 +145,6 @@ The following example demonstrates how inlining improves a UDF's performance.
 
 1. Create a `VOLATILE` function `foo_v()` and a `STABLE` function `foo_s()`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE FUNCTION foo_v(x INT) RETURNS INT VOLATILE LANGUAGE SQL AS $$
       SELECT b FROM b WHERE b = x
@@ -167,7 +159,6 @@ The following example demonstrates how inlining improves a UDF's performance.
 
 1. View the query plan when `foo_v()` (the `VOLATILE` function) is used in a selection query to retrieve equal values from table `a`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN ANALYZE SELECT foo_v(a) FROM a WHERE a = 10;
     ~~~
@@ -215,7 +206,6 @@ The following example demonstrates how inlining improves a UDF's performance.
 
 1. View the query plan when using `foo_s()` (the `STABLE` function) instead:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN ANALYZE SELECT foo_s(a) FROM a WHERE a = 10;
     ~~~

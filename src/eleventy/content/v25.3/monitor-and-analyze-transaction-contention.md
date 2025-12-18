@@ -188,21 +188,18 @@ Use two terminals to analyze contention in the sample `insights` workload.
 
 1. In Terminal 1, use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to start a temporary, in-memory CockroachDB cluster of one node. Once the cluster is started, an interactive SQL shell will connect to that cluster. This shell will be used in the analysis process.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach demo --no-example-database --insecure
     ~~~
 
 1. In Terminal 2, use [cockroach workload]({% link {{ page.version.version }}/cockroach-workload.md %}) to load the initial schema on the demo cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach workload init insights 'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
     Then, run the workload for 10 minutes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach workload run insights --concurrency=128 --duration=10m 'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
@@ -233,7 +230,6 @@ Use two terminals to analyze contention in the sample `insights` workload.
 
 When analyzing contention in a workload, you need the time period when it occurred. For this test scenario, get the time period of contention events by finding the `min` and `max` of the `collection_ts` column. Adjust [Query 2](#query-2-frequency-and-duration) and [Query 3](#query-3-blocking-and-waiting-transaction-fingerprint-ids) with this time period clause.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT CONCAT('BETWEEN ''',MIN(collection_ts),''' AND ''', MAX(collection_ts),'''') FROM crdb_internal.transaction_contention_events;
 ~~~
@@ -248,7 +244,6 @@ SELECT CONCAT('BETWEEN ''',MIN(collection_ts),''' AND ''', MAX(collection_ts),''
 
 Find the frequency, total duration, and average duration of contention events per database, schema, table, and index for the test time period. Internal contention events (e.g., to `system` tables) are excluded by omitting the fingerprints with the pattern `'0000000000000000'`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT COUNT(*) as cnt,
   SUM(contention_duration) as duration,                
@@ -279,7 +274,6 @@ To find the top 2 combinations of blocking transaction and waiting transactions 
 - Filtering by `database_name`, `table_name`, and `index_name`.
 - Then, placing the resulting query in a [common table expression (CTE)]({% link {{ page.version.version }}/common-table-expressions.md %}).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 With x AS (
 SELECT COUNT(*) AS cnt, 
@@ -315,7 +309,6 @@ SELECT row_number() OVER (), *
 
 To get the statements associated with the blocking transaction (`\xebdfe9282ddfd5bd`) from `row_number 1`, query the `crdb_internal.transaction_statistics` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT fingerprint_id as blocking_txn_fingerprint_id, app_name, metadata->>'stmtFingerprintIDs' AS blocking_stmt_fingerprint_ids
 FROM crdb_internal.transaction_statistics
@@ -334,7 +327,6 @@ WHERE fingerprint_id = '\xebdfe9282ddfd5bd' LIMIT 1;
 
 To get the SQL associated with the *blocking* statements, query the `crdb_internal.statement_statistics` table using the blocking fingerprint IDs found in [Query 4](#query-4-blocking-statement-fingerprint-ids).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT fingerprint_id as blocking_stmt_fingerprint_id, app_name, metadata->>'query' AS query
 FROM crdb_internal.statement_statistics
@@ -354,7 +346,6 @@ ORDER BY fingerprint_id
 
 To get the SQL associated with the *waiting* statement, again query the `crdb_internal.statement_statistics` table. Filter by the waiting fingerprint IDs found in [Query 3](#query-3-blocking-and-waiting-transaction-fingerprint-ids) (for transaction, use `\x275ef4f9eea20099` and for statement, use `\x883d49b568a3b746`). 
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT fingerprint_id as waiting_stmt_fingerprint_id, app_name, metadata->>'query' AS query
 FROM crdb_internal.statement_statistics

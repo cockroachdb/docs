@@ -144,7 +144,6 @@ Field              | Type                | Description      | Default
 
 Implement a Kafka resource usage limit per changefeed by setting a client ID and Kafka quota. You can set the quota for the client ID in your Kafka server's configuration:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 bin/kafka-configs.sh --bootstrap-server localhost:9092 --alter --add-config 'producer_byte_rate=1024,consumer_byte_rate=2048' --entity-type clients --entity-name client-changefeed-1
 ~~~

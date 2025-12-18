@@ -70,14 +70,12 @@ By default, this command logs messages to `stdout`. If you need to troubleshoot 
 
 Generate the tsdump `gob` file for an insecure CockroachDB cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug tsdump --format=raw --insecure > tsdump.gob
 ~~~
 
 Generate the tsdump `gob` file for a secure CockroachDB cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug tsdump --format=raw --certs-dir=${HOME}/.cockroach-certs/ > tsdump.gob
 ~~~
@@ -90,7 +88,6 @@ Secure examples assume you have the appropriate certificates in the default cert
 
 Generate a tsdump `gob` file for an insecure CockroachDB cluster, and compress using `gzip` in preparation to send to Cockroach Labs for troubleshooting. Your server must have `gzip` installed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug tsdump --format=raw --insecure > tsdump.gob
 gzip tsdump.gob
@@ -98,7 +95,6 @@ gzip tsdump.gob
 
 Generate a tsdump `gob` file for a secure CockroachDB cluster, and compress using `gzip` in preparation to send to Cockroach Labs for troubleshooting. Your server must have `gzip` installed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug tsdump --format=raw --certs-dir=${HOME}/.cockroach-certs/ > tsdump.gob
 gzip tsdump.gob

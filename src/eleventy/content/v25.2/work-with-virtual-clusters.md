@@ -31,7 +31,6 @@ To connect to a specific virtual cluster, add the `GET` URL parameter `options=-
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url \
 "postgresql://root@{node IP or hostname}:26257?options=-ccluster={virtual_cluster_name}&sslmode=verify-full" \
@@ -55,7 +54,6 @@ To connect to the system virtual cluster, pass the `options=-ccluster=system` pa
 
 For example, to connect to the system virtual cluster using the `cockroach sql` command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url \
 "postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \

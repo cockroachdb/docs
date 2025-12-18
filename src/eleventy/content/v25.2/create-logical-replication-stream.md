@@ -33,7 +33,6 @@ B ➔ A | A | User running the command. | `REPLICATIONDEST`
 
 Grant the privilege at the table or [system level]({% link {{ page.version.version }}/grant.md %}#grant-system-level-privileges-on-the-entire-cluster) with the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) statement to a [user or a role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT REPLICATIONSOURCE ON TABLE database.public.tablename TO user/role;
 ~~~
@@ -81,14 +80,12 @@ To start LDR, you must run the `CREATE LOGICAL REPLICATION STREAM` statement fro
 
 #### Single table
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
 ~~~
 
 #### Multiple tables
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE LOGICAL REPLICATION STREAM FROM TABLES ({database.public.table_name},{database.public.table_name},...)  ON 'external://{source_external_connection}' INTO TABLES ({database.public.table_name},{database.public.table_name},...);
 ~~~
@@ -97,14 +94,12 @@ CREATE LOGICAL REPLICATION STREAM FROM TABLES ({database.public.table_name},{dat
 
 If you would like to ignore [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) deletes in a **unidirectional** LDR stream, set the [`ttl_disable_changefeed_replication` storage parameter]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) on the table. On the **source** cluster, alter the table to set the table storage parameter:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE {table_name} SET (ttl_disable_changefeed_replication = 'true');
 ~~~
 
 When you start LDR on the **destination cluster**, include the [`discard = ttl-deletes` option](#discard-ttl-deletes-option) in the statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name} WITH discard = ttl-deletes;
 ~~~

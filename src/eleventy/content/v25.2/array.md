@@ -35,17 +35,14 @@ For the list of supported `ARRAY` functions, see [Functions and Operators]({% li
 
 ### Creating an array column by appending square brackets
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE a (b STRING[]);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO a VALUES (ARRAY['sky', 'road', 'car']);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM a;
 ~~~
@@ -59,17 +56,14 @@ For the list of supported `ARRAY` functions, see [Functions and Operators]({% li
 
 ### Creating an array column by adding the term `ARRAY`
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE c (d INT ARRAY);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO c VALUES (ARRAY[10,20,30]);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM c;
 ~~~
@@ -87,7 +81,6 @@ For the list of supported `ARRAY` functions, see [Functions and Operators]({% li
 Arrays in CockroachDB are 1-indexed.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM c;
 ~~~
@@ -99,7 +92,6 @@ Arrays in CockroachDB are 1-indexed.
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT d[2] FROM c;
 ~~~
@@ -115,7 +107,6 @@ Arrays in CockroachDB are 1-indexed.
 
 You can use the [operators]({% link {{ page.version.version }}/functions-and-operators.md %}#supported-operations) `<@` ("is contained by") and `@>` ("contains") to run containment queries on `ARRAY` columns.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM c WHERE d <@ ARRAY[10,20,30,40,50];
 ~~~
@@ -127,7 +118,6 @@ You can use the [operators]({% link {{ page.version.version }}/functions-and-ope
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM c WHERE d @> ARRAY[10,20];
 ~~~
@@ -145,14 +135,12 @@ You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/fu
 
 1. Create the table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE a (b STRING[]);
     ~~~
 
 1. Insert two new arrays:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO a VALUES (ARRAY['runway', 'houses', 'city', 'clouds']);
     INSERT INTO a VALUES (ARRAY['runway', 'houses', 'city']);
@@ -161,7 +149,6 @@ You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/fu
 
 1. Use the `&&` operator in a `WHERE` clause to a query:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT * FROM a WHERE b && ARRAY['clouds','moon'];
     ~~~
@@ -181,7 +168,6 @@ You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/fu
 
 #### Using the `array_append` function
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM c;
 ~~~
@@ -193,12 +179,10 @@ You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/fu
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE c SET d = array_append(d, 40) WHERE d[3] = 30;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM c;
 ~~~
@@ -212,7 +196,6 @@ You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/fu
 
 #### Using the append (`||`) operator
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM c;
 ~~~
@@ -224,12 +207,10 @@ You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/fu
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE c SET d = d || 50 WHERE d[4] = 40;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM c;
 ~~~
@@ -243,17 +224,14 @@ You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/fu
 
 ### Ordering by an array
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t (a INT ARRAY, b STRING);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t VALUES (ARRAY[3,4],'threefour'),(ARRAY[1,2],'onetwo');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t;
 ~~~
@@ -266,7 +244,6 @@ You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/fu
 (2 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t ORDER BY a;
 ~~~
@@ -283,7 +260,6 @@ You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/fu
 
 [Casting]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) between `ARRAY` values is supported when the data types of the arrays support casting. For example, it is possible to cast from a `BOOL` array to an `INT` array but not from a `BOOL` array to a `TIMESTAMP` array:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ARRAY[true,false,true]::INT[];
 ~~~
@@ -295,7 +271,6 @@ You can use the `&&` (overlaps) [operator]({% link {{ page.version.version }}/fu
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ARRAY[true,false,true]::TIMESTAMP[];
 ~~~
@@ -306,7 +281,6 @@ pq: invalid cast: bool[] -> TIMESTAMP[]
 
 You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ARRAY[1,NULL,3]::string;
 ~~~
@@ -318,7 +292,6 @@ You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ARRAY[(1,'a b'),(2,'c"d')]::string;
 ~~~
@@ -344,21 +317,18 @@ CockroachDB supports implicit casting from string literals to arrays of all data
 
 For example, if you create a table with a column of type `INT[]`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE x (a UUID DEFAULT gen_random_uuid() PRIMARY KEY, b INT[]);
 ~~~
 
 And then insert a string containing a comma-delimited set of integers contained in brackets:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO x(b) VALUES ('{1,2,3}'), (ARRAY[4,5,6]);
 ~~~
 
 CockroachDB implicitly casts the string literal as an `INT[]`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM x;
 ~~~

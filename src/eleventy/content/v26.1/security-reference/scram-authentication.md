@@ -31,7 +31,7 @@ CockroachDB clusters can achieve a SASL-compliant security architecture using th
 As of February 2023, the products listed below do not yet support SCRAM authentication:
 
 | Product                                                                                          | Issue tracker / Forum Link                                                                                  |
-|--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
 | [Looker](https://cloud.google.com/looker) or [Google Data Studio](https://datastudio.google.com) | <https://issuetracker.google.com/issues/203573707>                                                          |
 | [Amazon Quicksight](https://aws.amazon.com/quicksight/)                                          | <https://community.amazonquicksight.com/t/my-quicksight-cannot-connect-to-rds-postgresql-db-via-vpc/4696/4> |
 

@@ -214,7 +214,6 @@ The following examples show the syntax for managing changefeeds and starting cha
 
 ### Create a changefeed connected to a sink
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
   INTO 'scheme://host:port'
@@ -231,7 +230,6 @@ You can connect a changefeed to the following sinks:
 
 You can adapt a changefeed with CDC queries by including `SELECT` and `WHERE` clauses in your `CREATE` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'scheme://host:port'
   WITH updated, resolved
@@ -246,7 +244,6 @@ CDC queries can only run on a single table per changefeed.
 
 You can create a changefeed that will send messages to the SQL client rather than a sink:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
   WITH updated, resolved;
@@ -254,7 +251,6 @@ CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
 
 To create a sinkless changefeed using [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED WITH updated, resolved
   AS SELECT owner_id, status
@@ -270,7 +266,6 @@ CREATE CHANGEFEED WITH updated, resolved
 
 External connections support all changefeed sinks.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE EXTERNAL CONNECTION kafka_sink
   AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256';
@@ -278,7 +273,6 @@ CREATE EXTERNAL CONNECTION kafka_sink
 
 In the changefeed statement, you specify the external connection name:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE table_name INTO 'external://kafka_sink'
   WITH resolved;
@@ -298,7 +292,6 @@ For guidance on how to filter changefeed messages to emit [row-level TTL]({% lin
 
 For changefeed jobs, use [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) to check the status:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CHANGEFEED JOBS;
 ~~~
@@ -307,7 +300,6 @@ Use the following SQL statements to pause, resume, or cancel a changefeed.
 
 #### Pause a changefeed
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 PAUSE JOB job_id;
 ~~~
@@ -316,7 +308,6 @@ For more information, see [`PAUSE JOB`]({% link {{ page.version.version }}/pause
 
 #### Resume a paused changefeed
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESUME JOB job_id;
 ~~~
@@ -325,7 +316,6 @@ For more information, see [`RESUME JOB`]({% link {{ page.version.version }}/resu
 
 #### Cancel a changefeed
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CANCEL JOB job_id;
 ~~~
@@ -346,7 +336,6 @@ In some situations, you may want to start a changefeed where a previously runnin
 
 1. Use [`SHOW CHANGEFEED JOB`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) to find the [high-water timestamp]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#monitor-a-changefeed) for the ended changefeed:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW CHANGEFEED JOB {job_id};
     ~~~
@@ -363,7 +352,6 @@ In some situations, you may want to start a changefeed where a previously runnin
 
 1. Use the `high_water_timestamp` to start the new changefeed:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
       INTO 'scheme//host:port'
@@ -376,7 +364,6 @@ When you use the `cursor` option to start a changefeed, it will not perform an [
 
 To associate the changefeed message files with a [specific storage class]({% link {{ page.version.version }}/use-cloud-storage.md %}#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE table_name
   INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
@@ -389,7 +376,6 @@ CREATE CHANGEFEED FOR TABLE table_name
 
 With the [`key_column`](#key-column) option, you can define the key used in message metadata that determines the partition for the changefeed message at your [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). This option overrides the default [primary key]({% link {{ page.version.version }}/primary-key.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE table_name
   INTO 'external://kafka-sink'

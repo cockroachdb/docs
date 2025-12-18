@@ -105,21 +105,18 @@ In an overload scenario where CockroachDB cannot service all requests, you can i
 
 To increase the priority of subsequent SQL requests, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET default_transaction_quality_of_service=critical;
 ~~~
 
 To decrease the priority of subsequent SQL requests, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET default_transaction_quality_of_service=background;
 ~~~
 
 To reset the priority to the default session setting (in between background and critical), run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET default_transaction_quality_of_service=regular;
 ~~~
@@ -130,7 +127,6 @@ The quality of service for [`COPY`]({% link {{ page.version.version }}/copy.md %
 
 To increase the priority of subsequent `COPY` statements, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET copy_transaction_quality_of_service=critical;
 ~~~
@@ -139,7 +135,6 @@ SET copy_transaction_quality_of_service=critical;
 
 To set the quality of service level for a single [transaction]({% link {{ page.version.version }}/transactions.md %}), set the [`default_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service) and/or [`copy_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#copy-transaction-quality-of-service) session variable for just that transaction using the [`SET LOCAL`]({% link {{ page.version.version }}/set-vars.md %}#set-a-variable-for-the-duration-of-a-single-transaction) statement inside a [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) ... [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) block, as shown in the following example. The valid values are `critical`, `background`, and `regular`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 SET LOCAL default_transaction_quality_of_service = 'regular'; -- Edit transaction QoS to desired level

@@ -11,7 +11,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 {% include {{ page.version.version }}/filter-tabs/perf-bench-tpc-c.md %}
 
 | Workload                 | Cluster size                                                | Warehouses | Data size |
-|--------------------------+-------------------------------------------------------------+------------+-----------|
+|--------------------------|-------------------------------------------------------------|------------|-----------|
 | Local                    | 3 nodes on your laptop                                      | 10         | 2 GB      |
 | Local (multi-region)     | 9 in-memory nodes on your laptop using `cockroach demo`     | 10         | 2 GB      |
 | Small                    | 3 nodes on `c5d.4xlarge` machines                           | 2500       | 200 GB    |
@@ -30,7 +30,6 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 In the terminal, use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to start a simulated multi-region cluster with 9 nodes:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --global --nodes 9 --no-example-database --insecure
 ~~~
@@ -49,7 +48,6 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
 In a second terminal window (call it terminal 2), use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) to load the initial schema and data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach workload init tpcc \
 --warehouses=10 \
@@ -67,7 +65,6 @@ Run the workload for 10 "warehouses" of data for ten minutes. In order to spread
 
 In terminal 2:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 cockroach workload run tpcc \
 --warehouses=10 \
@@ -83,7 +80,6 @@ cockroach workload run tpcc \
 
 In terminal 3:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 cockroach workload run tpcc \
 --warehouses=10 \
@@ -99,7 +95,6 @@ cockroach workload run tpcc \
 
 In terminal 4:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 cockroach workload run tpcc \
 --warehouses=10 \
@@ -165,7 +160,6 @@ You will also see some audit checks and latency statistics for each individual q
 
 When you're done with your test cluster, switch back to terminal 1 where [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) is still running and issue `\q` at the SQL prompt to gracefully shut down the demo cluster.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 \q
 ~~~

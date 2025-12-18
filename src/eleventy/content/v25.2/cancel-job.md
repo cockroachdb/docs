@@ -68,7 +68,6 @@ Parameter | Description
 
 To cancel multiple jobs, nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `job_id`(s) inside the `CANCEL JOBS` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
       WHERE user_name = 'maxroach');
@@ -80,7 +79,6 @@ All jobs created by `maxroach` will be cancelled.
 
 To cancel all jobs by the type of job, use the `CANCEL ALL {job} JOBS` statement. You can cancel all `BACKUP`, `RESTORE`, `CHANGEFEED`, `IMPORT` jobs using this statement, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CANCEL ALL BACKUP JOBS;
 ~~~
@@ -89,7 +87,6 @@ CANCEL ALL BACKUP JOBS;
 
 Canceling an automatic table statistics job is not useful since the system will automatically restart the job immediately. To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
 ~~~
@@ -98,7 +95,6 @@ Canceling an automatic table statistics job is not useful since the system will 
 
  To cancel jobs for a specific [backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}), use the schedule's `id`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -108,7 +104,6 @@ CANCEL JOBS FOR SCHEDULES 1
 
 You can also CANCEL multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `CANCEL JOBS` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~

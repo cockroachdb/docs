@@ -52,14 +52,12 @@ To troubleshoot with a transaction diagnostics bundle, follow these steps:
 
 For this example, set the [`application_name`]({% link {{ page.version.version }}/map-sql-activity-to-app.md %}) to enable filtering:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SET application_name = 'cockroachdb_test';
 ~~~
 
 Run the following explicit transaction, which sleeps for 10 seconds:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 BEGIN; SELECT pg_sleep(10), 'cockroachdb_test' ; COMMIT;
 ~~~
@@ -82,7 +80,6 @@ Note the decimal equivalent of the fingerprint ID in the browser's address bar. 
 
 Create a transaction diagnostics request to be fulfilled the next time the relevant transaction is executed:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.request_transaction_bundle('afdd4059a899442e', 0, '0', '0', false);
 ~~~
@@ -122,7 +119,6 @@ In the DB Console, go to [**Advanced Debug**]({% link {{ page.version.version }}
 
 To fulfill the request, run the explicit transaction again. Note that the constant values in the transaction do not have to exactly match the original run. In the second execution of the transaction, the number of seconds differs from the original `10` and the string differs from the original `'cockroachdb_test'`.
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 BEGIN; SELECT pg_sleep(12), 'cockroachdb_test_2' ; COMMIT;
 ~~~

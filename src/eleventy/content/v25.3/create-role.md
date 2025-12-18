@@ -126,7 +126,6 @@ root       | {}                                              | {admin}   | NULL
 
 The following statement prevents the role from using password authentication and mandates certificate-based client authentication:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE no_password WITH PASSWORD NULL;
 ~~~
@@ -310,7 +309,6 @@ root                       | {}                                              | {
 
 To create a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles) that can bypass [row-level security]({% link {{ page.version.version }}/row-level-security.md %}), execute the following statement to grant the [`BYPASSRLS`]({% link {{ page.version.version }}/security-reference/authorization.md %}#bypassrls) privilege:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE can_bypassrls WITH BYPASSRLS;
 ~~~
@@ -321,7 +319,6 @@ For instructions showing how to alter a role to add or remove the `BYPASSRLS` pr
 
 {% include {{page.version.version}}/sql/role-subject-option.md %}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE maxroach WITH SUBJECT 'CN=myName,OU=myOrgUnit,O=myOrg,L=myLocality,ST=myState,C=myCountry' LOGIN;
 ~~~

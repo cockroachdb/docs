@@ -42,7 +42,6 @@ For more examples of stored procedure creation, see [`CREATE PROCEDURE`]({% link
 
 The following statement renames the [`delete_earliest_histories` example procedure]({% link {{ page.version.version }}/stored-procedures.md %}#create-a-stored-procedure-using-pl-pgsql) to `delete_histories`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER PROCEDURE delete_earliest_histories RENAME TO delete_histories;
 ~~~

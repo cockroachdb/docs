@@ -21,7 +21,6 @@ to update the parameters and potentially the diagram.
 </div>
 -->
 
-{% include_cached copy-clipboard.html %}
 ~~~
 SHOW POLICIES FOR table_name;
 ~~~
@@ -41,7 +40,6 @@ In this example, you will create a table, a role, and some policies to view:
 
 Create the table, enable RLS, and add a role and policies:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE orders (
     user_id TEXT PRIMARY KEY,
@@ -71,7 +69,6 @@ CREATE POLICY archived_orders_policy ON orders
 
 To view the RLS policies applied to the `orders` table, use the `SHOW POLICIES` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW POLICIES FOR orders;
 ~~~
@@ -88,7 +85,6 @@ SHOW POLICIES FOR orders;
 
 Use the following query to view all RLS policies. This example uses the schema and policies from the [Row-Level Security Overview]({% link {{ page.version.version }}/row-level-security.md %}).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM pg_policies;
 ~~~

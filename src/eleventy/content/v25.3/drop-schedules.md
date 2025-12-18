@@ -36,7 +36,6 @@ The following users can drop a schedule:
 
 ### Drop a schedule
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEDULE 589963390487363585;
 ~~~
@@ -49,7 +48,6 @@ DROP SCHEDULES 1
 
 To drop multiple schedules, nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `DROP SCHEDULES` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~

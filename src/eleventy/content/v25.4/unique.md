@@ -45,7 +45,6 @@ Parameter | Description
 
 **Example**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logon (
     login_id  INT PRIMARY KEY,
@@ -72,7 +71,6 @@ Parameter | Description
 
 **Example**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE warehouses (
     warehouse_id    INT        PRIMARY KEY NOT NULL,
@@ -83,7 +81,6 @@ Parameter | Description
 
 ## Usage example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS logon (
     login_id INT PRIMARY KEY,
@@ -93,12 +90,10 @@ Parameter | Description
   );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO logon (login_id, customer_id, sales_id) VALUES (1, 2, 1);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO logon (login_id, customer_id, sales_id) VALUES (2, 2, 1);
 ~~~
@@ -109,17 +104,14 @@ duplicate key value (customer_id,sales_id)=(2,1) violates unique constraint "log
 
 As mentioned in the [details](#details) above, it is possible when using the `UNIQUE` constraint alone to insert `NULL` values in a way that causes rows to appear to have rows with duplicate values.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO logon (login_id, customer_id, sales_id) VALUES (3, 2, NULL);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO logon (login_id, customer_id, sales_id) VALUES (4, 2, NULL);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT customer_id, sales_id FROM logon;
 ~~~

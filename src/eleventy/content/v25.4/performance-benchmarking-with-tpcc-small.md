@@ -12,7 +12,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 {% include {{ page.version.version }}/filter-tabs/perf-bench-tpc-c.md %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
-|----------------------+---------------------------------------------------------+------------+-----------|
+|----------------------|---------------------------------------------------------|------------|-----------|
 | Local                | 3 nodes on your laptop                                  |         10 | 2 GB      |
 | Local (multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
 | Small                | 3 nodes on `c5d.4xlarge` machines                       |       2500 | 200 GB    |
@@ -80,7 +80,6 @@ CockroachDB requires TCP communication on two ports:
 
 1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start \
     --insecure \
@@ -93,7 +92,6 @@ CockroachDB requires TCP communication on two ports:
 
 1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to join the first nodes into a cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach init --insecure --host=<address of any node on --join list>
     ~~~
@@ -108,7 +106,6 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
 1. Import the TPC-C dataset:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload fixtures import tpcc \
     --warehouses=2500 \
@@ -129,7 +126,6 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
 1. Run TPC-C for 30 minutes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run tpcc \
     --warehouses=2500 \

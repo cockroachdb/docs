@@ -84,14 +84,12 @@ The synonym `COVERING` is also supported.
 
 Suppose you have a table with three columns, two of which are indexed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2));
 ~~~
 
 If you filter on the indexed columns but retrieve the unindexed column, this requires reading `col3` from the primary index via an "index join."
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~
@@ -116,12 +114,10 @@ If you filter on the indexed columns but retrieve the unindexed column, this req
 
 However, if you store `col3` in the index as shown in the [index recommendation]({% link {{ page.version.version }}/explain.md %}#default-statement-plans), the index join is no longer necessary. This means your query only needs to read from the secondary index, so it will be more efficient.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2) STORING (col3));
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~

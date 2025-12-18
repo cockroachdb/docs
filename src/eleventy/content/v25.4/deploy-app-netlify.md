@@ -64,7 +64,6 @@ This tutorial modifies the files in the `netlify` and `prisma` directories.
 
 1. Open the project's `.env` file in a text editor set the `DATABASE_URL` environment variable to [the connection string](#connection-string) you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ text
     DATABASE_URL=<connection-string>
     ~~~
@@ -73,14 +72,12 @@ This tutorial modifies the files in the `netlify` and `prisma` directories.
 
 1. Install Prisma:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     npm install prisma --save-dev
     ~~~
 
 1. Run [Prisma Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) to initialize the database with the schema defined in `prisma/prisma.schema`.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     npx prisma migrate dev --name init
     ~~~
@@ -107,7 +104,6 @@ You can deploy web applications directly from GitHub to Netlify. This tutorial u
 
 1. Using the Netlify CLI, start the app server locally to preview your site:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     netlify dev
     ~~~
@@ -129,7 +125,6 @@ You can deploy web applications directly from GitHub to Netlify. This tutorial u
 
 1. Deploy your app with the Netlify CLI:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     netlify deploy
     ~~~
@@ -144,7 +139,6 @@ You can deploy web applications directly from GitHub to Netlify. This tutorial u
 
 1. Navigate to the admin URL for your site:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     netlify open
     ~~~

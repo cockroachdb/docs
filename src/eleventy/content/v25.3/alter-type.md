@@ -44,12 +44,10 @@ on the type.
 
 The following example uses a [user-defined type]({% link {{ page.version.version }}/create-type.md %}).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -65,12 +63,10 @@ The following example uses a [user-defined type]({% link {{ page.version.version
 
 To add a value to the `status` type, use an `ADD VALUE` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status ADD VALUE 'pending';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -86,12 +82,10 @@ To add a value to the `status` type, use an `ADD VALUE` clause:
 
 To rename a value in the `status` type, use a `RENAME VALUE` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status RENAME VALUE 'open' TO 'active';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -107,12 +101,10 @@ To rename a value in the `status` type, use a `RENAME VALUE` clause:
 
 To rename the `status` type, use a `RENAME TO` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status RENAME TO account_status;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -128,12 +120,10 @@ To rename the `status` type, use a `RENAME TO` clause:
 
 To drop a value from the `account_status` type, use a `DROP VALUE` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE account_status DROP VALUE 'inactive';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~

@@ -28,7 +28,7 @@ Additional parameters are documented for the respective [subcommands](#subcomman
 ## Subcommands
 
 | Subcommand                                                                             | Description                                                                     |
-|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------|
+|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
 | [`CONFIGURE ZONE`](#configure-zone)                                                | [Replication Controls]({% link "{{ page.version.version }}/configure-replication-zones.md" %}) for a database. |
 | [`RELOCATE`](#relocate) | Move a lease or replica between stores in an emergency situation.               |
 

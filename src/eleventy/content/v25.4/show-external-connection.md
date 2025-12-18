@@ -40,7 +40,6 @@ Response | Description
 
 ### Show all external connections in the cluster
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW EXTERNAL CONNECTIONS;
 ~~~
@@ -53,7 +52,6 @@ SHOW EXTERNAL CONNECTIONS;
 
 ### Show an external connection
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW EXTERNAL CONNECTION s3_bucket;
 ~~~

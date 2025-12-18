@@ -27,7 +27,6 @@ Before starting the tutorial, do the following:
 
 In a terminal, clone the [sample code's GitHub repo](https://github.com/cockroachlabs/examples-aws-lambda):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/examples-aws-lambda
 ~~~
@@ -80,14 +79,12 @@ Creating a deployment package to deploy the sample function is optional. The `ex
 
 1. In the `node` directory, install the code dependencies:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd node; npm install
     ~~~
 
 1. Compress the project files to a ZIP file in the parent directory for deployment:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     zip -r ../my-deployment-package.zip .
     ~~~
@@ -98,7 +95,6 @@ Creating a deployment package to deploy the sample function is optional. The `ex
 
 1. In the `python` directory, download and install the `psycopg2-binary` Python library:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd python; python3 -m pip install \
       --only-binary :all: \
@@ -113,7 +109,6 @@ Creating a deployment package to deploy the sample function is optional. The `ex
 
 1. Compress the project files to a ZIP file in the parent directory for deployment:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     zip -r ../my-deployment-package.zip my-deployment-package ./init_db.py ./root.crt
     ~~~
@@ -124,7 +119,6 @@ Creating a deployment package to deploy the sample function is optional. The `ex
 
 1. Configure the AWS CLI to authenticate with your AWS account:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     aws configure
     ~~~
@@ -133,14 +127,12 @@ Creating a deployment package to deploy the sample function is optional. The `ex
 
 1. Create an execution role for the Lambda function and attach the `AWSLambdaBasicExecutionRole` policy to the role. The Lambda function needs this role to run.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     aws iam create-role \
       --role-name lambda-ex \
       --assume-role-policy-document '{"Version": "2012-10-17","Statement": [{ "Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"}, "Action": "sts:AssumeRole"}]}'
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     aws iam attach-role-policy \
       --role-name lambda-ex \
@@ -153,7 +145,6 @@ Creating a deployment package to deploy the sample function is optional. The `ex
 
     <section class="filter-content" markdown="1" data-scope="node">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     aws lambda create-function \
       --function-name init-crdb \
@@ -169,7 +160,6 @@ Creating a deployment package to deploy the sample function is optional. The `ex
 
     <section class="filter-content" markdown="1" data-scope="python">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     aws lambda create-function \
       --function-name init-crdb \
@@ -198,7 +188,6 @@ Creating a deployment package to deploy the sample function is optional. The `ex
 
 1. Invoke the function:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     aws lambda invoke \
       --function-name init-crdb out \

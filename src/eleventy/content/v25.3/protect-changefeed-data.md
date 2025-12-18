@@ -31,7 +31,6 @@ This cluster setting is enabled by default to 4 days. To disable expiration of p
 
 `changefeed.protect_timestamp.max_age` is a cluster-wide setting affecting all changefeeds.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING changefeed.protect_timestamp.max_age = '120h';
 ~~~
@@ -48,7 +47,6 @@ The [`gc_protect_expires_after`]({% link {{ page.version.version }}/create-chang
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE db.table INTO 'external://sink' WITH on_error='pause', gc_protect_expires_after='24h';
 ~~~

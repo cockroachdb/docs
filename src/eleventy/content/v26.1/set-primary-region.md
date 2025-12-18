@@ -28,7 +28,7 @@ To remove existing, manually-configured zones from a database (and unblock `SET 
 ## Parameters
 
 | Parameter       | Description                                                                                                                                                       |
-|-----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `database_name` | The database whose primary region to set.                                                                      |
 | `region_name`   | The region to set as the database's primary region.<br>Allowed values include any region present in `SHOW REGIONS FROM CLUSTER`. |
 

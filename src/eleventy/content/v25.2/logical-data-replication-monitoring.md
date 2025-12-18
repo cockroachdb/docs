@@ -30,7 +30,6 @@ When you start an LDR stream, one job is created on each cluster:
 
 In the destination cluster's SQL shell, you can query `SHOW LOGICAL REPLICATION JOBS` to view the LDR jobs running on the cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW LOGICAL REPLICATION JOBS;
 ~~~
@@ -43,7 +42,6 @@ SHOW LOGICAL REPLICATION JOBS;
 
 For additional detail on each LDR job, use the `WITH details` option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW LOGICAL REPLICATION JOBS WITH details;
 ~~~
@@ -120,14 +118,12 @@ To view metrics at the job level, you can use the `label` option when you start 
 
 To use metrics labels, ensure you have enabled the child metrics cluster setting:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 ~~~
 
 When you start LDR, include the `label` option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} 
 ON 'external://{source_external_connection}' 

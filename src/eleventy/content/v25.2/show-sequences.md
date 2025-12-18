@@ -25,12 +25,10 @@ Parameter | Description
 
 ## Example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE sequence_test;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~

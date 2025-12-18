@@ -19,19 +19,16 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 1. Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-typescript-typeorm):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ git clone git@github.com:cockroachlabs/example-app-typescript-typeorm.git
     ~~~
 
 1. Navigate to the repo directory and install the application dependencies:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-typescript-typeorm
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ npm install
     ~~~
@@ -66,7 +63,6 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 1. Set the `DATABASE_URL` environment variable to the connection string provided in the `cockroach` welcome text:
 
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -77,14 +73,12 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 1. Set the `DATABASE_URL` environment variable to a CockroachDB connection string compatible with TypeORM.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export DATABASE_URL="<connection-string>"
     ~~~
 
     TypeORM accepts the following format for CockroachDB {{ site.data.products.standard }} connection strings:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     postgresql://<username>:<password>@<host>:<port>/<database>
     ~~~
@@ -95,7 +89,6 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 Start the application:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm start
 ~~~

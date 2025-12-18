@@ -24,7 +24,6 @@ This tutorial shows you how build a simple Python application with CockroachDB a
 
 Clone the sample code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachdb/example-app-python-psycopg3
 ~~~
@@ -43,7 +42,6 @@ To [handle transaction retry errors]({% link {{ page.version.version }}/query-be
 
 To install `psycopg[binary]`, run the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip3 install "psycopg[binary]"
 ~~~
@@ -56,7 +54,6 @@ For other ways to install Psycopg, see the [official documentation](https://www.
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -65,7 +62,6 @@ For other ways to install Psycopg, see the [official documentation](https://www.
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="{connection-string}"
     ~~~
@@ -78,12 +74,10 @@ For other ways to install Psycopg, see the [official documentation](https://www.
 
 1. Run the code:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-python-psycopg3
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ python3 example.py
     ~~~

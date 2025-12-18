@@ -25,7 +25,6 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 1. Make sure Prometheus installed successfully:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ prometheus --version
     ~~~
@@ -41,7 +40,6 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 1. Download the starter [Prometheus configuration file](https://github.com/cockroachdb/cockroach/blob/master/monitoring/prometheus.yml) for CockroachDB:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o prometheus.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/prometheus.yml
     ~~~
@@ -62,22 +60,18 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 1. Create a `rules` directory and download the [aggregation rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/aggregation.rules.yml) and [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml) for CockroachDB into it:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     mkdir rules
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd rules
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o rules/aggregation.rules.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/aggregation.rules.yml
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o rules/alerts.rules.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/alerts.rules.yml
     ~~~
@@ -86,7 +80,6 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 1. Start the Prometheus server, with the `--config.file` flag pointing to the configuration file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ prometheus --config.file=prometheus.yml
     ~~~
@@ -116,7 +109,6 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Make sure Alertmanager installed successfully:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ alertmanager --version
     ~~~
@@ -130,7 +122,6 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. [Edit the Alertmanager configuration file](https://prometheus.io/docs/alerting/configuration/) that came with the binary, `alertmanager.yml`, to specify the desired receivers for notifications. For example, your configuration may resemble:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ ini
     route:
       group_by: ['alertname']
@@ -146,7 +137,6 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Start the Alertmanager server, with the `--config.file` flag pointing to the configuration file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ alertmanager --config.file=alertmanager.yml
     ~~~
@@ -175,25 +165,21 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 1. Download the starter [Grafana dashboards](https://github.com/cockroachdb/cockroach/tree/master/monitoring/grafana-dashboards/by-cluster) for CockroachDB:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o runtime.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/runtime.json
     # runtime dashboard: node status, including uptime, memory, and cpu.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o storage.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/storage.json
     # storage dashboard: storage availability.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o sql.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/sql.json
     # sql dashboard: sql queries/transactions.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o replication.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/replication.json
     # replicas dashboard: replica information and operations.

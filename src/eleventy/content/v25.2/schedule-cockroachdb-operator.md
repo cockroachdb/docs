@@ -124,7 +124,6 @@ In this example, CockroachDB has not yet been deployed to a running Kubernetes c
 
 1. List the worker nodes on the running Kubernetes cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get nodes
     ~~~
@@ -140,7 +139,6 @@ In this example, CockroachDB has not yet been deployed to a running Kubernetes c
 
 1. Add a `node=crdb` label to three of the running worker nodes.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl label nodes gke-cockroachdb-default-pool-263138a5-kp3v gke-cockroachdb-default-pool-41796213-75c9 gke-cockroachdb-default-pool-ccd74623-dghs node=crdb
     ~~~
@@ -185,14 +183,12 @@ In this example, CockroachDB has not yet been deployed to a running Kubernetes c
 
 1. Apply the settings to the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
     ~~~
 
 1. The CockroachDB pods will be deployed to the 3 labeled nodes. To observe this, run:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get pods -o wide
     ~~~
@@ -259,7 +255,6 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 
 1. List the worker nodes on the running Kubernetes cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get nodes
     ~~~
@@ -275,7 +270,6 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 
 1. Add a taint to a running worker node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl taint nodes gke-cockroachdb-default-pool-4e5ce539-j1h1 test=example:NoExecute
     ~~~
@@ -298,14 +292,12 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 
 1. Apply the new settings to the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
     ~~~
 
 1. The CockroachDB pod running on the tainted node (in this case, cockroachdb-2) will be evicted and started on a different worker node. To observe this:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get pods -o wide
     ~~~

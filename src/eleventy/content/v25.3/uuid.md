@@ -45,17 +45,14 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 #### Create a table with `UUID` in standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE v (token uuid);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO v VALUES ('63616665-6630-3064-6465-616462656562');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM v;
 ~~~
@@ -69,12 +66,10 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 #### Create a table with `UUID` in `BYTE` format
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO v VALUES (b'kafef00ddeadbeed');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM v;
 ~~~
@@ -89,12 +84,10 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 #### Create a table with `UUID` used as URN
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO v VALUES ('urn:uuid:63616665-6630-3064-6465-616462656564');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM v;
 ~~~
@@ -110,12 +103,10 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 #### Express UUIDs in alternate formats
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO v VALUES ('{acde070d-8c4c-4f0d-9d8a-162843c10333}'), ('ACDE070D-8C4C-4f0D-9d8A-162843c10333'), ('acde070d8c4c4f0d9d8a162843c10333'), ('acde-070d-8c4c-4f0d-9d8a-1628-43c1-0333');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM v;
 ~~~

@@ -24,21 +24,18 @@ This example application uses [Gradle](https://gradle.org/) to manage all applic
 
 To install Gradle on macOS, run the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ brew install gradle
 ~~~
 
 To install Gradle on a Debian-based Linux distribution like Ubuntu:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ apt-get install gradle
 ~~~
 
 To install Gradle on a Red Hat-based Linux distribution like Fedora:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dnf install gradle
 ~~~
@@ -55,33 +52,28 @@ To get the application code, download or clone the [`mybatis-cockroach-demo` rep
 
 Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
 
 In the SQL shell, issue the following statements to create the `maxroach` user and `bank` database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER IF NOT EXISTS maxroach;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
 
 Give the `bank` user the necessary permissions:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON DATABASE bank TO maxroach;
 ~~~
 
 Exit the SQL shell:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -90,7 +82,6 @@ Exit the SQL shell:
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
@@ -103,7 +94,6 @@ To run the application:
 
 1. Open and edit the `src/main/resources/application.yml` file so that the `url` field specifies the full [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). To connect to a secure cluster, this connection string must set the `sslmode` connection parameter to `require`, and specify the full path to the client, node, and user certificates in the connection parameters. For example:
 
-      {% include_cached copy-clipboard.html %}
       ~~~ yml
       ...
       datasource:
@@ -112,14 +102,12 @@ To run the application:
       ~~~
 1. Open a terminal, and navigate to the `mybatis-cockroach-demo` project directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd <path>/mybatis-cockroach-demo
     ~~~
 
 1. Run the Gradle script to download the application dependencies, compile the code, and run the application:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./gradlew bootRun
     ~~~
@@ -130,33 +118,28 @@ To run the application:
 
 Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
 ~~~
 
 In the SQL shell, issue the following statements to create the `maxroach` user and `bank` database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER IF NOT EXISTS maxroach;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
 
 Give the `bank` user the necessary permissions:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON DATABASE bank TO maxroach;
 ~~~
 
 Exit the SQL shell:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -175,14 +158,12 @@ To run the application:
       ~~~
 1. Open a terminal, and navigate to the `mybatis-cockroach-demo` project directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd <path>/mybatis-cockroach-demo
     ~~~
 
 1. Run the Gradle script to download the application dependencies, compile the code, and run the application:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./gradlew bootRun
     ~~~
@@ -248,7 +229,6 @@ This section guides you through the different components of the application proj
 
 The main process of the application is defined in `src/main/java/com/example/cockroachdemo/CockroachDemoApplication.java`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/CockroachDemoApplication.java %}
 ~~~
@@ -257,7 +237,6 @@ The `SpringApplication.run` call in the `main` method bootstraps and launches a 
 
 The `BasicExample` class, defined in `src/main/java/com/example/cockroachdemo/BasicExample.java`, is one of the components detected in the component scan:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/BasicExample.java %}
 ~~~
@@ -278,7 +257,6 @@ This sample application implements [batch write operations]({% link {{ page.vers
 
 The class defined in `src/main/java/com/example/cockroachdemo/MyBatisConfiguration.java` configures the application to meet these requirements:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/MyBatisConfiguration.java %}
 ~~~
@@ -291,7 +269,6 @@ Note that a configuration class is not required for MyBatis-Spring-Boot-Starter 
 
 `src/main/resources/application.yml` contains the metadata used to create a connection to the CockroachDB cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/resources/application.yml %}
 ~~~
@@ -308,7 +285,6 @@ MyBatis-Spring-Boot-Starter usually scans the project for interfaces annotated w
 
 `src/main/java/com/example/cockroachdemo/mapper/AccountMapper.java` defines the mapper interface to the `accounts` table using the [MyBatis Java API](https://mybatis.org/mybatis-3/java-api.html):
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/mapper/AccountMapper.java %}
 ~~~
@@ -319,7 +295,6 @@ The `@Mapper` annotation declares the interface a mapper for MyBatis to scan. Th
 
 `src/main/java/com/example/cockroachdemo/batchmapper/BatchAccountMapper.java` defines a mapper interface for [batch writes]({% link {{ page.version.version }}/insert.md %}#performance-best-practices):
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/batchmapper/BatchAccountMapper.java %}
 ~~~
@@ -330,14 +305,12 @@ This interface has a single `INSERT` statement query method, along with a method
 
 `src/main/java/com/example/cockroachdemo/service/AccountService.java` defines the service interface, with a number of methods for reading and writing to the database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/service/AccountService.java %}
 ~~~
 
 `MyBatisAccountService.java` implements the `AccountService` interface, using the mappers defined in [`AccountMapper.java` and `BatchAccountMapper.java`](#mappers), and the models defined in [`Account.java` and `BatchResults.java`](#models):
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/service/MyBatisAccountService.java %}
 ~~~
@@ -352,14 +325,12 @@ For more details on aspect-oriented transaction management in this application, 
 
 Instances of the `Account` class, defined in `src/main/java/com/example/cockroachdemo/model/Account.java`, represent rows in the `accounts` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/model/Account.java %}
 ~~~
 
 Instances of the `BatchResults` class, defined in `src/main/java/com/example/cockroachdemo/model/BatchResults.java`, hold metadata about a batch write operation and its results:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/model/BatchResults.java %}
 ~~~
@@ -370,7 +341,6 @@ MyBatis-Spring supports Spring's [declarative, aspect-oriented transaction manag
 
 Transactions may require retries if they experience deadlock or [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) that cannot be resolved without allowing [serialization]({% link {{ page.version.version }}/demo-serializable.md %}) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) into applications written on CockroachDB. In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class, defined in `src/main/java/com/example/cockroachdemo/RetryableTransactionAspect.java`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/RetryableTransactionAspect.java %}
 ~~~

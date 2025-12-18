@@ -108,7 +108,6 @@ To run any of the `auth-session` subcommands, you must be a member of the [`admi
 
 Log in to the HTTP interface, by generating a new HTTP authentication token for the `web_user` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session login web_user
 ~~~
@@ -124,7 +123,6 @@ $ cockroach auth-session login web_user
 
 Log in to the HTTP interface, by generating a new HTTP authentication token for the `web_user` user and specifying a token expiry of 4 hours and 30 minutes:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session login web_user --expire-after=4h30m
 ~~~
@@ -140,7 +138,6 @@ $ cockroach auth-session login web_user --expire-after=4h30m
 
 Log in to the HTTP interface, by generating a new HTTP authentication token for the `web_user` user, limiting command output to only the generated cookie:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session login web_user --only-cookie
 ~~~
@@ -151,7 +148,6 @@ session=CIGA6t2q0LrxChIQV8QCF3vuYSasR7h4LPSfmg==; Path=/; HttpOnly; Secure
 
 This is useful if you intend to use the cookie with other command line tools. For example, you might output the generated cookie to a local file, and then pass that file to `curl` using its `--cookie` flag:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session login web_user --certs-dir=certs --only-cookie > $HOME/.cockroachdb_api_key
 $ curl --cookie $HOME/.cockroachdb_api_key https://localhost:8080/_status/logfiles/local
@@ -159,7 +155,6 @@ $ curl --cookie $HOME/.cockroachdb_api_key https://localhost:8080/_status/logfil
 
 Of course you can also provide the cookie directly:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --cookie 'session=CIGA8I7/irvxChIQDtZQsMtn3AqpgDko6bldSw==; Path=/; HttpOnly; Secure' https://localhost:8080/_status/logfiles/local
 ~~~
@@ -168,7 +163,6 @@ curl --cookie 'session=CIGA8I7/irvxChIQDtZQsMtn3AqpgDko6bldSw==; Path=/; HttpOnl
 
 Terminate all active sessions for the `web_user` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session logout web_user
 ~~~
@@ -189,7 +183,6 @@ Note that the output may include recently revoked sessions for this user as well
 
 List all authenticated sessions to the HTTP interface, including currently active and recently expired sessions:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session list
 ~~~

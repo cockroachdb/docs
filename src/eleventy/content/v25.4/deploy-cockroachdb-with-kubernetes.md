@@ -83,25 +83,21 @@ To delete the Kubernetes cluster:
 
 - Hosted GKE:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters delete cockroachdb --region {region-name}
     ~~~
 - Hosted EKS:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb
     ~~~
 - Manual GCE:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cluster/kube-down.sh
     ~~~
 - Manual AWS:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cluster/kube-down.sh
     ~~~

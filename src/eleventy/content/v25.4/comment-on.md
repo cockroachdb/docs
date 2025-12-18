@@ -39,14 +39,12 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
 
 To add a comment to a database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON DATABASE movr IS 'This database contains information about users, vehicles, and rides.';
 ~~~
 
 To view database comments, use [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES WITH COMMENT;
 ~~~
@@ -65,14 +63,12 @@ To view database comments, use [`SHOW DATABASES`]({% link {{ page.version.versio
 
 To add a comment to a table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON TABLE vehicles IS 'This table contains information about vehicles registered with MovR.';
 ~~~
 
 To view table comments, use [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr WITH COMMENT;
 ~~~
@@ -91,7 +87,6 @@ To view table comments, use [`SHOW TABLES`]({% link {{ page.version.version }}/s
 
  You can also view comments on a table with [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -121,14 +116,12 @@ To view table comments, use [`SHOW TABLES`]({% link {{ page.version.version }}/s
 
 To add a comment to a column:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON COLUMN users.credit_card IS 'This column contains user payment information.';
 ~~~
 
 To view column comments, use [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users WITH COMMENT;
 ~~~
@@ -148,21 +141,18 @@ To view column comments, use [`SHOW COLUMNS`]({% link {{ page.version.version }}
 
 Suppose we [create an index]({% link {{ page.version.version }}/create-index.md %}) on the `name` column of the `users` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users(name);
 ~~~
 
 To add a comment to the index:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON INDEX users_name_idx IS 'This index improves performance on queries that filter by name.';
 ~~~
 
 To view column comments, use [`SHOW INDEXES ... WITH COMMENT`]({% link {{ page.version.version }}/show-index.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users WITH COMMENT;
 ~~~
@@ -185,14 +175,12 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`]({% link {{ page.v
 
 Issue a SQL statement to [create a type]({% link {{ page.version.version }}/create-type.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TYPE IF NOT EXISTS my_point AS (x FLOAT, y FLOAT, z FLOAT);
 ~~~
 
 To view the type you just created, use [`SHOW TYPES`]({% link {{page.version.version}}/show-types.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW TYPES;
 ~~~
@@ -206,14 +194,12 @@ SHOW TYPES;
 
 To add a comment on the type, use a statement like the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMENT ON TYPE my_point IS '3D point';
 ~~~
 
 To view all comments on types, make a [selection query]({% link {{page.version.version}}/select-clause.md %}) against the `system.comments` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM system.comments;
 ~~~
@@ -229,12 +215,10 @@ SELECT * FROM system.comments;
 
 To remove a comment from a database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON DATABASE movr IS NULL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES WITH COMMENT;
 ~~~
@@ -253,7 +237,6 @@ To remove a comment from a database:
 
 To remove the comment from the type you created in the [preceding example](#add-a-comment-to-a-type), add a `NULL` comment:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMENT ON TYPE my_point IS NULL;
 ~~~

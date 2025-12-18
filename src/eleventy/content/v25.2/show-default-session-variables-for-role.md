@@ -47,7 +47,6 @@ The [user]({% link {{ page.version.version }}/security-reference/authorization.m
 
 When no session variables have been changed from the defaults for a given role, the statement returns no values:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW DEFAULT SESSION VARIABLES FOR ROLE public;
 ~~~
@@ -58,7 +57,6 @@ SHOW DEFAULT SESSION VARIABLES FOR ROLE 0
 
 Another way of confirming zero rows of output:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM [SHOW DEFAULT SESSION VARIABLES FOR ROLE public];
 ~~~
@@ -71,17 +69,14 @@ SELECT * FROM [SHOW DEFAULT SESSION VARIABLES FOR ROLE public];
 
 ### Show changed session variables that apply to a user
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE USER movr_auditor;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER ROLE ALL SET application_name = 'movr';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW DEFAULT SESSION VARIABLES FOR ROLE movr_auditor;
 ~~~
@@ -95,17 +90,14 @@ SHOW DEFAULT SESSION VARIABLES FOR ROLE movr_auditor;
 
 ### Show changed session variables that apply to a user in different databases
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE movr_audit;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER ROLE ALL IN DATABASE movr_audit SET application_name = 'movr_audit';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW DEFAULT SESSION VARIABLES FOR ROLE movr_auditor;
 ~~~
@@ -120,7 +112,6 @@ SHOW DEFAULT SESSION VARIABLES FOR ROLE movr_auditor;
 
 ### Show updated default session variables that apply to all users
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW DEFAULT SESSION VARIABLES FOR ROLE ALL;
 ~~~
@@ -135,7 +126,6 @@ SHOW DEFAULT SESSION VARIABLES FOR ROLE ALL;
 
 ### Get inline help in the SQL shell
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 \h SHOW DEFAULT SESSION VARIABLES FOR ROLE
 ~~~

@@ -17,7 +17,6 @@ The settings described on this page are **not recommended** for use in productio
 
 The [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command below starts a single-node, insecure cluster with [in-memory storage]({% link {{ page.version.version }}/cockroach-start-single-node.md %}#store). Using in-memory storage improves the speed of the cluster for local testing purposes.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach start-single-node --insecure --store=type=mem,size=0.25 --advertise-addr=localhost
 ~~~
@@ -25,7 +24,7 @@ cockroach start-single-node --insecure --store=type=mem,size=0.25 --advertise-ad
 We recommend the following additional [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) and [SQL statements]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) for improved performance during functional unit testing and continuous integration testing. In particular, some of these settings will increase the performance of [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), since repeated [creation]({% link {{ page.version.version }}/create-schema.md %}) and [dropping]({% link {{ page.version.version }}/drop-schema.md %}) of schemas are common in automated testing.
 
 | Setting                                                      | Value     | Description                                                                                                                                                                                                               |
-|--------------------------------------------------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `kv.range_merge.queue_interval`                              | `50ms`    | Frequent [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) or [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}) creates extra ranges, which we want to merge more quickly. In real usage, range merges are rate limited because they require rebalancing. |
 | `jobs.registry.interval.gc`                                  | `30s`     | CockroachDB executes internal queries that scan the [jobs]({% link {{ page.version.version }}/show-jobs.md %}) table. More schema changes create more jobs, which we can delete faster to make internal job queries faster.                                   |
 | `jobs.registry.interval.cancel`                              | `180s`    | Timing of an internal task that queries the [jobs]({% link {{ page.version.version }}/show-jobs.md %}) table. For testing, the default is too fast.                                                                                                           |
@@ -36,7 +35,6 @@ We recommend the following additional [cluster settings]({% link {{ page.version
 
 To change all of the settings described above at once, run the following SQL statements:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms';
 SET CLUSTER SETTING jobs.registry.interval.gc = '30s';
@@ -62,7 +60,6 @@ By default, `cockroach start-single-node` logs cluster activity to a file with t
 
 To customize logging behavior for local clusters, use the [`--log` flag]({% link {{ page.version.version }}/cockroach-start-single-node.md %}#logging):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach start-single-node --insecure --store=type=mem,size=0.25 --advertise-addr=localhost --log="{file-defaults: {dir: /path/to/logs}, sinks: {stderr: {filter: NONE}}}"
 ~~~

@@ -142,7 +142,6 @@ For example, imagine an `employees` table containing sensitive salary informatio
 
 Define the `hr_department` role and `employees` table, add some data, and grant basic table access:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- Create a role needed for the example policies.
 -- Note: In a real scenario, manage roles appropriately.
@@ -190,7 +189,6 @@ GRANT SELECT ON employees TO employee;
 
 Enable row-level security using the [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-row-level-security) statement. Optionally, you may want to ensure that the table owner is also subject to RLS using [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE employees ENABLE ROW LEVEL SECURITY;
 -- Optional: Ensure owner is also subject to policies if needed
@@ -201,7 +199,6 @@ ALTER TABLE employees ENABLE ROW LEVEL SECURITY;
 
 Define RLS policies on the table. The following policy allows HR full access to the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE POLICY hr_access ON employees
     FOR ALL -- Applies to SELECT, INSERT, UPDATE, DELETE
@@ -212,7 +209,6 @@ CREATE POLICY hr_access ON employees
 
 The following policy allows employees to view their own record.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE POLICY self_access ON employees
     AS PERMISSIVE -- Combine with other permissive policies (like manager access)
@@ -223,7 +219,6 @@ CREATE POLICY self_access ON employees
 
 The following policy allows managers to view their direct reports' records. This requires a way to look up the manager's username. In this example, we use the `CURRENT_USER` special form of the [function with the same name]({% link {{ page.version.version }}/functions-and-operators.md %}#special-syntax-forms).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE POLICY manager_access ON employees
     AS PERMISSIVE
@@ -241,7 +236,6 @@ The following statement is executed by user `alice` (the manager), and returns: 
 
 This is expected behavior due to Alice's `manager` role having `self_access` or `manager_access` policies.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET ROLE alice;
 SELECT * FROM employees;
@@ -261,7 +255,6 @@ The following statement is executed by user `bob` (an employee), and returns onl
 
 This is expected behavior due to Bob's `employee` role only having the `self_access` policy.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET ROLE bob;
 SELECT * FROM employees;
@@ -279,7 +272,6 @@ The following statement is executed by user `carol` (a manager), and returns: Ca
 
 This is expected behavior due to Carol's `manager` role having `self_access` or `manager_access` policies.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET ROLE carol;
 SELECT * FROM employees;
@@ -298,7 +290,6 @@ The following statement is executed by a user `edward` belonging to `hr_departme
 
 This is expected behavior due to Edward's `hr_department` role having `hr_access` or `self_access` policies.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET ROLE edward;
 SELECT * FROM employees;
@@ -326,7 +317,6 @@ For example, imagine a SaaS application serving multiple tenants, with all invoi
 
 Create the schema and index for the `tenants` and `invoices` tables. Next, add an index on `tenant_id` for increased lookup performance.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS tenants (
     tenant_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -346,7 +336,6 @@ CREATE INDEX idx_invoices_tenant_id ON invoices(tenant_id);
 
 Populate the schema with data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- Insert the known tenants first to satisfy FK constraints
 INSERT INTO tenants (tenant_id, name) VALUES
@@ -393,7 +382,6 @@ INSERT INTO invoices (tenant_id, customer_name, amount) VALUES
 
 The following statements create an app developer role, and grant it permissions.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE app_dev;
 GRANT SELECT ON tenants TO app_dev;
@@ -410,7 +398,6 @@ Specifically, the [UUID]({% link {{ page.version.version }}/uuid.md %}) followin
 For multi-tenancy to work correctly, this setting **must** be reliably managed by the application layer and passed in the connection string.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET application_name = 'my_cool_app.9607a12c-3c2f-407b-ae3c-af903542395b';
 ~~~
@@ -423,7 +410,6 @@ To enable row-level security for the `invoices` table, issue the following state
 For multi-tenant isolation to work properly in this example, you **must** also `FORCE ROW LEVEL SECURITY` so that the policies also apply to the table owner.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE invoices ENABLE ROW LEVEL SECURITY, FORCE ROW LEVEL SECURITY;
 ~~~
@@ -432,7 +418,6 @@ ALTER TABLE invoices ENABLE ROW LEVEL SECURITY, FORCE ROW LEVEL SECURITY;
 
 The following policy enforces tenant isolation for all operations.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE POLICY tenant_isolation_permissive ON invoices
     AS PERMISSIVE
@@ -473,14 +458,12 @@ To verify that the RLS settings are working as expected, execute the statements 
 
 First, become the `app_dev` role which the policy applies to.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET ROLE app_dev;
 ~~~
 
 Tenant A should see only those columns in `invoices` which have a `tenant_id` column matching its ID.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET application_name = 'my_cool_app.9607a12c-3c2f-407b-ae3c-af903542395b'; 
 SELECT * FROM invoices;
@@ -488,7 +471,6 @@ SELECT * FROM invoices;
 
 Tenant B should see only those columns in `invoices` which have a `tenant_id` column matching its ID.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET application_name = 'my_cool_app.8177c2fc-3b55-47b7-bf84-38bd3a3e9c0a';
 SELECT * FROM invoices;
@@ -496,7 +478,6 @@ SELECT * FROM invoices;
 
 Tenant A should not be able to make changes to the `invoice` table for rows that don't have a `tenant_id` column matching its ID.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET application_name = 'my_cool_app.9607a12c-3c2f-407b-ae3c-af903542395b';
 INSERT INTO invoices (tenant_id, customer_name, amount) VALUES ('8177c2fc-3b55-47b7-bf84-38bd3a3e9c0a'::UUID, 'Customer Three', 123.45);
@@ -510,7 +491,6 @@ ERROR:  new row violates row-level security policy for table "invoices"
 
 Tenant A should be able to modify rows in the `invoice` table that have a `tenant_id` column matching its ID.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET application_name = 'my_cool_app.9607a12c-3c2f-407b-ae3c-af903542395b';
 INSERT INTO invoices (tenant_id, customer_name, amount) VALUES ('9607a12c-3c2f-407b-ae3c-af903542395b'::UUID, 'Customer Three', 678.90);

@@ -40,7 +40,6 @@ reused in the context of `z`.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH r AS (SELECT * FROM rides WHERE revenue > 98)
   SELECT * FROM users AS u, r WHERE r.rider_id = u.id;
@@ -64,7 +63,6 @@ subsequent `SELECT` clause.
 
 This query is equivalent to, but simpler to read than:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users AS u, (SELECT * FROM rides WHERE revenue > 98) AS r
   WHERE r.rider_id = u.id;
@@ -75,7 +73,6 @@ simultaneously with a single `WITH` clause, separated by commas. Later
 subqueries can refer to earlier subqueries by name. For example, the
 following query is equivalent to the two preceding examples:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH r AS (SELECT * FROM rides WHERE revenue > 98),
 	results AS (SELECT * FROM users AS u, r WHERE r.rider_id = u.id)
@@ -89,7 +86,6 @@ by name. The final query refers to the CTE `results`.
 
 You can use a `WITH` clause in a subquery and a `WITH` clause within another `WITH` clause. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH u AS
 	(SELECT * FROM
@@ -101,7 +97,6 @@ When analyzing [table expressions]({% link {{ page.version.version }}/table-expr
 mention a CTE name, CockroachDB will choose the CTE definition that is
 closest to the table expression. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH
   u AS (SELECT * FROM users),
@@ -123,7 +118,6 @@ etc.) as a common table expression, as long as the `WITH` clause containing the 
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH final_code AS
   (INSERT INTO promo_codes(code, description, rules)
@@ -142,7 +136,6 @@ For example:
 
 If the `WITH` clause containing the data-modifying statement is at a lower level, the statement results in an error:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (WITH final_code AS
   (INSERT INTO promo_codes(code, description, rules)
@@ -170,7 +163,6 @@ You can reference multiple CTEs in a single query using a `WITH` operator.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH
     users_ny AS (SELECT name, id FROM users WHERE city='new york'),
@@ -224,7 +216,6 @@ Recursive subqueries must eventually return no results, or the query will run in
 
 The following recursive CTE calculates the factorial of the numbers 0 through 9:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH RECURSIVE cte (n, factorial) AS (
     VALUES (0, 1) -- initial subquery
@@ -254,7 +245,6 @@ The initial subquery (`VALUES (0, 1)`) initializes the working table with the va
 
 If no `WHERE` clause were defined in the example, the recursive subquery would always return results and loop indefinitely, resulting in an error:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH RECURSIVE cte (n, factorial) AS (
     VALUES (0, 1) -- initial subquery
@@ -271,7 +261,6 @@ SQLSTATE: 22003
 
 If you are unsure if your recursive subquery will loop indefinitely, you can limit the results of the CTE with the [`LIMIT`]({% link {{ page.version.version }}/limit-offset.md %}) keyword. For example, if you remove the `WHERE` clause from the factorial example, you can use `LIMIT` to limit the results and avoid the `integer out of range` error:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH RECURSIVE cte (n, factorial) AS (
     VALUES (0, 1) -- initial subquery
@@ -307,14 +296,12 @@ In this example, compare the latencies when scanning an index with and without a
 
 Create a table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE test (n INT);
 ~~~
 
 Populate the table with many random values from 0 to 9:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO test SELECT floor(random() * 10)
 FROM generate_series(1, 1000000);
@@ -322,14 +309,12 @@ FROM generate_series(1, 1000000);
 
 Create an index:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON test (n);
 ~~~
 
 Issue a statement to count the number of distinct values, without using a recursive CTE:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT COUNT(DISTINCT n) FROM test;
 ~~~
@@ -347,7 +332,6 @@ Time: 273ms total (execution 273ms / network 0ms)
 
 This statement has a high latency because it reads every row in the index. You can see this using [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN ANALYZE SELECT COUNT(DISTINCT n) FROM test;
 ~~~
@@ -374,7 +358,6 @@ EXPLAIN ANALYZE SELECT COUNT(DISTINCT n) FROM test;
 
 Instead, use a recursive CTE to perform a loose index scan:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH RECURSIVE temp (i) AS (
     (SELECT n FROM test ORDER BY n ASC LIMIT 1) -- initial subquery
@@ -398,7 +381,6 @@ Time: 13ms total (execution 13ms / network 0ms)
 
 The recursive CTE has a low latency because it performs 10 limited scans of the index, each reading only one row and skipping the rest. You can see this using [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN ANALYZE WITH RECURSIVE temp (i) AS (
     (SELECT n FROM test ORDER BY n ASC LIMIT 1)
@@ -453,7 +435,6 @@ Some recursive CTEs are not not yet optimized. For details, see the [tracking is
 
 If a common table expression is contained in a subquery, the CTE can reference columns defined outside of the subquery. This is called a _correlated common table expression_. For example, in the following query, the expression `(SELECT 1 + x)` references `x` in the outer scope.
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT
     *

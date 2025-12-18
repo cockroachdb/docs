@@ -56,7 +56,6 @@ Before starting the upgrade, review the [release notes]({% link releases/{{ page
 
 To upgrade CockroachDB via HomeBrew:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 brew update
 ~~~
@@ -68,7 +67,6 @@ brew upgrade cockroach
 </div>
 
 {% capture binary_arm_geos_unquarantine %}
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 xattr -d com.apple.quarantine lib/libgeos*
 ~~~

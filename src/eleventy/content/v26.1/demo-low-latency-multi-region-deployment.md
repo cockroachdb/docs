@@ -125,7 +125,7 @@ And here is the view on the **Network Latency Page**, which shows which nodes ar
 You can see by referring back and forth between `\demo ls` and the **Network Latency Page** that the cluster has the following region/node/port correspondences, which we can use to determine how to connect MovR from various regions:
 
 | Node ID | Region       | Port on localhost |
-|---------+--------------+-------------------|
+|---------|--------------|-------------------|
 | N2      | europe-west1 |             26263 |
 | N5      | europe-west1 |             26264 |
 | N7      | europe-west1 |             26265 |

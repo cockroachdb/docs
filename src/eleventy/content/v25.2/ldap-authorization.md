@@ -100,7 +100,6 @@ GRANT ALL ON DATABASE app TO crdb_developers;
 1. On the LDAP server, set up test users with memberships in groups that should be synced to CockroachDB users.
 1. When logged in as an admin to CockroachDB, create the matching test users:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE ROLE username1 LOGIN;
     CREATE ROLE username2 LOGIN;

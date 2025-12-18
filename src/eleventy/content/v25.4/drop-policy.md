@@ -21,7 +21,6 @@ to update the parameters and potentially the diagram.
 </div>
 -->
 
-{% include_cached copy-clipboard.html %}
 ~~~
 DROP POLICY [ IF EXISTS ] policy_name ON table_name [ CASCADE | RESTRICT ];
 ~~~
@@ -41,7 +40,6 @@ DROP POLICY [ IF EXISTS ] policy_name ON table_name [ CASCADE | RESTRICT ];
 
 To drop an existing policy, issue the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP POLICY IF EXISTS your_policy ON orders;
 ~~~

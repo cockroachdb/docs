@@ -22,7 +22,7 @@ While CockroachDB is processing an `ALTER TABLE .. SET LOCALITY` statement that 
 ## Parameters
 
 | Parameter    | Description                                                                                                                                                                                  |
-|--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `table_name` | The table whose [locality](multiregion-overview.html#table-locality) you are configuring.                                                                                                    |
 | `locality`   | The [locality](multiregion-overview.html#table-locality) to apply to this table.  Allowed values: <ul><li>[`REGIONAL BY TABLE`](#regional-by-table) (default)</li><li>[`REGIONAL BY ROW`](#regional-by-row)</li><li>[`GLOBAL`](#global)</li></ul> |
 

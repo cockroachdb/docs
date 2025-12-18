@@ -30,7 +30,6 @@ This section shows how to start a cluster interactively. In production, operator
 
 1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start the `node1` in the foreground:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -77,7 +76,6 @@ This section shows how to start a cluster interactively. In production, operator
 
 1. In new terminal windows, start `node2` and `node3`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -87,7 +85,6 @@ This section shows how to start a cluster interactively. In production, operator
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -101,7 +98,6 @@ This section shows how to start a cluster interactively. In production, operator
 
 1. Use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
@@ -114,7 +110,6 @@ This section shows how to start a cluster interactively. In production, operator
 
     At this point, each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log, and to `STDOUT` in the terminal window where the node was started. For example, the following command retrieves `node1`'s startup details:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ grep 'node starting' node1/logs/cockroach.log -A 11
     ~~~
@@ -142,36 +137,30 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. In a new terminal, run the [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}) command and connect to `node1`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
     To exit the SQL shell at any time, you can use the `\q` command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
 1. Run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -185,7 +174,6 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. In a new terminal window, open a new SQL shell and connect to `node2`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26258
     ~~~
@@ -196,7 +184,6 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Run the same `SELECT` query as before:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -212,7 +199,6 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Exit all SQL shell sessions by issuing the `\q` command in the terminals where they are running:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -223,7 +209,6 @@ CockroachDB also comes with a number of [built-in workloads]({% link {{ page.ver
 
 1. Load the initial dataset:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init movr \
     'postgresql://root@localhost:26257?sslmode=disable'
@@ -239,7 +224,6 @@ CockroachDB also comes with a number of [built-in workloads]({% link {{ page.ver
 
 1. Run the workload for 5 minutes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run movr \
     --duration=5m \
@@ -274,7 +258,6 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
     Get the process IDs of the nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -287,7 +270,6 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
     Gracefully shut down `node3`, specifying its process ID:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4503
     ~~~
@@ -298,7 +280,6 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
 1. Go to the terminal window for `node3` and restart it:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -314,7 +295,6 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 1. In new terminal windows, start two more nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -324,7 +304,6 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -348,7 +327,6 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
     Get the process IDs of the nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -363,7 +341,6 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
     Gracefully shut down each node by sending the `SIGTERM` signal to the `cockroach` process:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4482
     ~~~
@@ -379,7 +356,6 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 1. If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3 node4 node5
     ~~~

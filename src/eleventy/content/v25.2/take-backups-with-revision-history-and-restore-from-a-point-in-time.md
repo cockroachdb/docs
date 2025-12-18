@@ -20,7 +20,6 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 
 ## Create a backup with revision history
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH revision_history;
 ~~~
@@ -39,7 +38,6 @@ Additionally, if you want to restore a specific incremental backup, you can do s
 
 If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM '/2021/12/13-211056.62' IN '{collectionURI}' AS OF SYSTEM TIME '2021-12-13 10:00:00';
 ~~~

@@ -44,7 +44,7 @@ The replication reports are only generated for zones that meet the following cri
 The attributes that must be overridden to trigger each report to run are:
 
 | Report                            | Field(s)                       |
-|-----------------------------------+--------------------------------|
+|-----------------------------------|--------------------------------|
 | `replication_constraint_stats`    | `constraints`                  |
 | `replication_critical_localities` | `constraints`,  `num_replicas` |
 | `replication_stats`               | `constraints`, `num_replicas`  |
@@ -65,7 +65,7 @@ For an example using this table, see [Find out which databases and tables have u
 #### Columns
 
 | Column name             | Data type          | Description                                                                                                                           |
-|-------------------------+--------------------+---------------------------------------------------------------------------------------------------------------------------------------|
+|-------------------------|--------------------|---------------------------------------------------------------------------------------------------------------------------------------|
 | zone_id                 | [`INT8`](int.html) | The ID of the [replication zone](configure-replication-zones.html).                                                                                |
 | subzone_id              | [`INT8`](int.html) | The ID of the subzone (i.e., [partition](partitioning.html)).                                                                         |
 | report_id               | [`INT8`](int.html) | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                            |
@@ -89,7 +89,7 @@ For an example using this table, see [Find out which databases and tables have r
 #### Columns
 
 | Column name    | Data type               | Description                                                                                                                         |
-|----------------+-------------------------+-------------------------------------------------------------------------------------------------------------------------------------|
+|----------------|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | zone_id        | [`INT8`](int.html)      | The ID of the [replication zone](configure-replication-zones.html).                                                                              |
 | subzone_id     | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partitioning.html)).                                                                       |
 | locality       | [`STRING`](string.html) | The name of the critical [locality](configure-replication-zones.html#zone-config-node-locality).                                    |
@@ -109,7 +109,7 @@ For an example using this table, see [Find out which of your tables have a const
 #### Columns
 
 | Column name      | Data type                       | Description                                                                                             |
-|------------------+---------------------------------+---------------------------------------------------------------------------------------------------------|
+|------------------|---------------------------------|---------------------------------------------------------------------------------------------------------|
 | zone_id          | [`INT8`](int.html)              | The ID of the [replication zone](configure-replication-zones.html).                                                  |
 | subzone_id       | [`INT8`](int.html)              | The ID of the subzone (i.e., [partition](partitioning.html)).                                           |
 | type             | [`STRING`](string.html)         | The type of zone configuration that was violated, e.g., `constraint`.                                   |
@@ -127,7 +127,7 @@ Replication reports are run at the interval specified by the `kv.replication_rep
 #### Columns
 
 | Column name | Data type                       | Description                                             |
-|-------------+---------------------------------+---------------------------------------------------------|
+|-------------|---------------------------------|---------------------------------------------------------|
 | id          | [`INT8`](int.html)              | The ID of the report that this report entry is part of. |
 | generated   | [`TIMESTAMPTZ`](timestamp.html) | When the report was generated.                          |
 
@@ -143,7 +143,7 @@ SHOW COLUMNS FROM crdb_internal.zones;
 ~~~
 
 | column_name         | data_type               | description                                                                                                                     |
-|---------------------+-------------------------+---------------------------------------------------------------------------------------------------------------------------------|
+|---------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------|
 | zone_id             | [`INT8`](int.html)      | The ID of the [replication zone](configure-replication-zones.html).                                                                          |
 | subzone_id          | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partitioning.html)).                                                                   |
 | target              | [`STRING`](string.html) | The "object" that the constraint is being applied to, e.g., `PARTITION us_west OF INDEX movr.public.users@users_pkey`.             |

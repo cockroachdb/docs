@@ -105,17 +105,14 @@ We do not recommend deploying insecure web applications on public networks.
     `gcloud` is included with the [Google Cloud SDK](https://cloud.google.com/sdk) installation.
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     gcloud init
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     gcloud auth login
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     gcloud auth application-default login
     ~~~
@@ -141,7 +138,6 @@ You now have a private connection string for each of the cluster's regions. You 
 
 1. Build the container image locally.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker build -t gcr.io/<gcp_project>/movr-app:v1 .
     ~~~
@@ -150,7 +146,6 @@ You now have a private connection string for each of the cluster's regions. You 
 
 1. Push the container image to the Google Cloud project's container registry.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker push gcr.io/<gcp_project>/movr-app:v1
     ~~~

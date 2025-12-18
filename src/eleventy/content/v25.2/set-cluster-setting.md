@@ -44,14 +44,12 @@ To use the `SET CLUSTER SETTING` statement, a user must have one of the followin
 
 To configure a cluster so that new sessions automatically try to run queries [in a distributed fashion](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.defaults.distsql = 1;
 ~~~
 
 To disable distributed execution for all new sessions:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.defaults.distsql = 0;
 ~~~
@@ -62,12 +60,10 @@ To disable distributed execution for all new sessions:
 
 To opt out of [automatic diagnostic reporting]({% link {{ page.version.version }}/diagnostics-reporting.md %}) of usage data to Cockroach Labs:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING diagnostics.reporting.enabled = false;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING diagnostics.reporting.enabled;
 ~~~
@@ -83,12 +79,10 @@ To opt out of [automatic diagnostic reporting]({% link {{ page.version.version }
 
 {{site.data.alerts.callout_success}}You can use <a href="reset-cluster-setting.html"><code>RESET CLUSTER SETTING</code></a> to reset a cluster setting as well.{{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.enabled = false;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~
@@ -100,12 +94,10 @@ To opt out of [automatic diagnostic reporting]({% link {{ page.version.version }
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.enabled = DEFAULT;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~

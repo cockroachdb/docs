@@ -20,7 +20,6 @@ To follow along with the example below, you will need the following prerequisite
   {% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
 - [Python 3](https://www.python.org)
 - The storage tank GeoJSON data:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o tanks.geojson https://geodata.vermont.gov/datasets/986155613c5743239e7b1980b45bbf36_162.geojson
     ~~~
@@ -29,7 +28,6 @@ To follow along with the example below, you will need the following prerequisite
 
 Convert the GeoJSON data to CSV using the following `ogr2ogr` command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ogr2ogr -f CSV tanks.csv -lco GEOMETRY=AS_WKT tanks.geojson
 ~~~
@@ -42,7 +40,6 @@ Each node in the CockroachDB cluster needs to have access to the files being imp
 
 For local testing, you can [start a local file server]({% link {{ page.version.version }}/use-a-local-file-server.md %}).  The following command will start a local file server listening on port 3000:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 python3 -m http.server 3000
 ~~~
@@ -51,12 +48,10 @@ python3 -m http.server 3000
 
 Create a database to hold the storage tank data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS tanks;
 USE tanks;
@@ -68,14 +63,12 @@ To import the CSV data, you need to create a table with the necessary columns an
 
 Convert the GeoJSON data to SQL using the following `ogr2ogr` command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ogr2ogr -f PGDUMP tanks.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF tanks.geojson
 ~~~
 
 Create a CockroachDB table that corresponds to the DDL statements in `tanks.sql`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE underground_storage_tank (
   wkb_geometry GEOMETRY(POINT) NULL,
@@ -102,7 +95,6 @@ CREATE TABLE underground_storage_tank (
 
 Since the file is being served from a local server and is formatted as CSV, you can import the data using the following [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 IMPORT INTO underground_storage_tank CSV DATA ('http://localhost:3000/tanks.csv') WITH skip = '1';
 ~~~

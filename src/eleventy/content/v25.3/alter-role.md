@@ -67,7 +67,6 @@ ALTER ROLE carl WITH LOGIN PASSWORD 'An0ther$tr0nGpassW0rD' VALID UNTIL '2021-10
 
 The following statement prevents the user from using password authentication and mandates certificate-based [client authentication]({% link {{ page.version.version }}/authentication.md %}#client-authentication):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER ROLE carl WITH PASSWORD NULL;
 ~~~
@@ -124,14 +123,12 @@ ALTER ROLE carl WITH MODIFYCLUSTERSETTING;
 
 To allow a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles) to bypass [row-level security]({% link {{ page.version.version }}/row-level-security.md %}), execute the following statement to grant the [`BYPASSRLS`]({% link {{ page.version.version }}/security-reference/authorization.md %}#bypassrls) privilege:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER ROLE carl WITH BYPASSRLS;
 ~~~
 
 To disable the role's ability to bypass RLS, execute the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER ROLE carl WITH NOBYPASSRLS;
 ~~~
@@ -272,7 +269,6 @@ SHOW timezone;
 
 To set a default value for all users for any [session variable]({% link {{ page.version.version }}/set-vars.md %}) that applies during login, issue a statement like the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER ROLE ALL SET sql.spatial.experimental_box2d_comparison_operators.enabled = "on";
 ~~~
@@ -291,7 +287,6 @@ The `root` user is exempt from session variable settings changes. This is a fail
 
 {% include {{page.version.version}}/sql/role-subject-option.md %}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER ROLE max WITH SUBJECT 'CN=myName2,OU=myOrgUnit2,O=myOrg2,L=myLocality2,ST=myState2,C=myCountry2' LOGIN;
 ~~~

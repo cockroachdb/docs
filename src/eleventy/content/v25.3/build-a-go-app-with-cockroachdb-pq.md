@@ -19,7 +19,6 @@ This tutorial shows you how build a simple Go application with CockroachDB and t
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/hello-world-go-pq
 ~~~
@@ -28,7 +27,6 @@ $ git clone https://github.com/cockroachlabs/hello-world-go-pq
 
 1. Navigate to the `hello-world-go-pq` directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd hello-world-go-pq
     ~~~
@@ -37,7 +35,6 @@ $ git clone https://github.com/cockroachlabs/hello-world-go-pq
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -46,7 +43,6 @@ $ git clone https://github.com/cockroachlabs/hello-world-go-pq
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export DATABASE_URL="{connection-string}"
     ~~~
@@ -66,14 +62,12 @@ You can now run the code sample (`main.go`) provided in this tutorial to do the 
 
 1. Initialize the module:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ go mod init basic-sample && go mod tidy
     ~~~
 
 1. Run the code:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ go run main.go
     ~~~

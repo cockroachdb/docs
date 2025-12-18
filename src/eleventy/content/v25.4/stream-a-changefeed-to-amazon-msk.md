@@ -67,7 +67,6 @@ In this step, you'll prepare the client to connect to the MSK cluster, create a 
 1. On the **Modify IAM role** page, select the role you created for the MSK cluster (`msk-role`) that contains the policy created in [Step 2](#step-2-create-an-iam-policy-and-role-to-access-the-msk-cluster). Click **Update IAM role**.
 1. Open a terminal and connect to your Kafka client. Check that the `client.properties` file in your Kafka installation contains the correct SASL and security configuration, like the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     security.protocol=SASL_SSL
     sasl.mechanism=AWS_MSK_IAM
@@ -78,14 +77,12 @@ In this step, you'll prepare the client to connect to the MSK cluster, create a 
     If you need further detail on setting up the Kafka client, refer to the [AWS setup guide](https://docs.aws.amazon.com/msk/latest/developerguide/create-topic.html).
 1. Move to the directory of your Kafka installation:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. To create a topic, run the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ~/kafka_2.12-2.8.1/bin/kafka-topics.sh --bootstrap-server {msk_endpoint} --command-config client.properties --create --topic {users} --partitions {1} --replication-factor {3}
     ~~~
@@ -125,14 +122,12 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
     External connections define a name for an external connection while passing the provider URI and query parameters:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION msk AS 'kafka://b-1.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9098/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-1&sasl_aws_iam_role_arn=arn:aws:iam::{account ID}:role/{msk-role}&sasl_aws_iam_session_name={user-specified session name}';
     ~~~
 
 1. Use the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement to start the changefeed using either the external connection (`external://`) or full `kafka://` URI:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.users INTO `external://msk` WITH resolved;
     ~~~
@@ -148,14 +143,12 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
 1. Return to the terminal that is running the Kafka client. Move to the Kafka installation directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. Run the following command to start a consumer. Set `--topic` to the topic you created:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ~/kafka_2.12-2.8.1/bin/kafka-console-consumer.sh --bootstrap-server {msk_endpoint} --consumer.config client.properties --topic users --from-beginning
     ~~~
@@ -196,7 +189,6 @@ In this step, you'll store the SCRAM credentials in [AWS Secrets Manager](https:
 1. For **Secret type**, select **Other type of secret**.
 1. In the **Key/value pairs** box, enter the user and password in **Plaintext** in the same format as the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     {
       "username": "your_username",
@@ -217,7 +209,6 @@ In this step, you'll configure the Kafka client for SASL/SCRAM authentication an
 
 1. Open a terminal window and connect to your Kafka client. Check that your `client.properties` file contains the correct SASL/SCRAM, security configuration, and your SASL username and password, like the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     security.protocol=SASL_SSL
     sasl.mechanism=SCRAM-SHA-512
@@ -228,21 +219,18 @@ In this step, you'll configure the Kafka client for SASL/SCRAM authentication an
 
 1. Create an environment variable for your broker endpoints:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export brokers=b-3.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9096,b-1.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9096,b-2.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9096
     ~~~
 
 1. Move to the directory of your Kafka installation:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. To allow the user to interact with Kafka, grant them permission with the Kafka ACL. Replace `your_username` in the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./kafka-acls.sh --bootstrap-server $brokers --add --allow-principal User:{your_username} --operation All --cluster --command-config client.properties
     ~~~
@@ -251,7 +239,6 @@ In this step, you'll configure the Kafka client for SASL/SCRAM authentication an
 
 1. Create a topic:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./kafka-topics.sh --create --bootstrap-server $brokers --replication-factor {3} --partitions {1} --topic {users} --command-config client.properties
     ~~~
@@ -289,14 +276,12 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
     External connections define a name for an external connection while passing the provider URI and query parameters:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION msk AS 'kafka://b-3.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9096?tls_enabled=true&sasl_enabled=true&sasl_user={your_username}&sasl_password={your_password}-secret&sasl_mechanism=SCRAM-SHA-512';
     ~~~
 
 1. Use the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement to start the changefeed using either the external connection (`external://`) or full `kafka://` URI:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.users INTO `external://msk` WITH resolved;
     ~~~
@@ -312,14 +297,12 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
 1. Return to the terminal that is running the Kafka client. Move to the Kafka installation directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. Run the following command to start a consumer. Set `--topic` to the topic you created in [Step 3](#step-3-set-up-the-scram-authentication-on-the-client):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./kafka-console-consumer.sh --bootstrap-server $brokers --consumer.config client.properties --topic users --from-beginning
     ~~~

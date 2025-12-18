@@ -12,7 +12,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 {% dynamic_include page.version.version, "/filter-tabs/perf-bench-tpc-c.md" %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
-|----------------------+---------------------------------------------------------+------------+-----------|
+|----------------------|---------------------------------------------------------|------------|-----------|
 | Local                | 3 nodes on your laptop                                  |         10 | 2 GB      |
 | Local (multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
 | Small                | 3 nodes on `c5d.4xlarge` machines                       |       2500 | 200 GB    |

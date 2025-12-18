@@ -15,7 +15,6 @@ The `LTREE` [data type]({% link {{ page.version.version }}/data-types.md %}) sto
 
 Each label in an `LTREE` label path represents a level in the hierarchy, beginning from the root (`Animals` in the following example):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT 'Animals.Mammals.Carnivora'::LTREE;
 ~~~
@@ -86,7 +85,6 @@ You can [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-con
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT 'Animals.Mammals.Carnivora'::LTREE::STRING;
 ~~~
@@ -103,7 +101,6 @@ SELECT 'Animals.Mammals.Carnivora'::LTREE::STRING;
 
 Create a table to store an organizational hierarchy:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE org_structure (
     id INT PRIMARY KEY,
@@ -115,7 +112,6 @@ CREATE TABLE org_structure (
 
 Insert some hierarchical data (labels that represent a media production company):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO org_structure (id, path, name) VALUES
     (1, 'Studio', 'Production Studio'),
@@ -132,7 +128,6 @@ INSERT INTO org_structure (id, path, name) VALUES
 
 Find all entries that come before `Studio.ShowB` using lexicographic ordering. The `<` operator returns entries where the path is lexicographically less than `Studio.ShowB`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT name, path FROM org_structure
 WHERE path < 'Studio.ShowB'
@@ -154,7 +149,6 @@ ORDER BY path;
 
 Find all entries under `Show A` using the `<@` (is descendant of) operator:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT name, path FROM org_structure
 WHERE path <@ 'Studio.ShowA'
@@ -173,7 +167,6 @@ ORDER BY path;
 
 Find all ancestors of `Episode 1` in `Show A` using the `@>` (is ancestor of) operator:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT name, path FROM org_structure
 WHERE path @> 'Studio.ShowA.Season1.Episode1'
@@ -194,7 +187,6 @@ ORDER BY path;
 
 Count the depth level of each entry using `nlevel()`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT name, path, nlevel(path) AS depth
 FROM org_structure
@@ -217,7 +209,6 @@ ORDER BY path;
 
 Extract a subpath using `subpath()`, with an offset of 1:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT subpath('Studio.ShowA.Season1.Episode1'::LTREE, 1) AS subpath;
 ~~~
@@ -230,7 +221,6 @@ SELECT subpath('Studio.ShowA.Season1.Episode1'::LTREE, 1) AS subpath;
 
 Extract the same subpath, but only show 2 labels:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT subpath('Studio.ShowA.Season1.Episode1'::LTREE, 1, 2) AS subpath;
 ~~~
@@ -243,7 +233,6 @@ SELECT subpath('Studio.ShowA.Season1.Episode1'::LTREE, 1, 2) AS subpath;
 
 Find the longest common ancestor of several `LTREE` values using `lca()`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT lca(
     'Studio.ShowA.Season1.Episode1'::LTREE,
@@ -262,7 +251,6 @@ SELECT lca(
 
 Build paths dynamically by concatenating two `LTREE` values using the `||` operator:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT 'Animals.Mammals'::LTREE || 'Carnivora.Felidae'::LTREE AS full_path;
 ~~~

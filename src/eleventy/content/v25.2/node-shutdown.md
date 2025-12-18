@@ -177,7 +177,6 @@ Increase `server.shutdown.initial_wait` so that your load balancer is able to ma
 
 For example, [HAProxy]({% link {{ page.version.version }}/cockroach-gen.md %}#generate-an-haproxy-config-file) uses the default settings `inter 2000 fall 3` when checking server health. This means that HAProxy considers a node to be down (and temporarily removes the server from the pool) after 3 unsuccessful health checks being run at intervals of 2000 milliseconds. To ensure HAProxy can run 3 consecutive checks before timeout, set `server.shutdown.initial_wait` to `8s` or greater:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.shutdown.initial_wait = '8s';
 ~~~
@@ -252,14 +251,12 @@ Before temporarily stopping nodes for planned maintenance (e.g., upgrading syste
 During this window, the cluster has reduced ability to tolerate another node failure. Be aware that increasing this value therefore reduces fault tolerance.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.time_until_store_dead = '15m0s';
 ~~~
 
 After completing the maintenance work and [restarting the nodes]({% link {{ page.version.version }}/cockroach-start.md %}), you would then change the setting back to its default:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESET CLUSTER SETTING server.time_until_store_dead;
 ~~~
@@ -392,7 +389,6 @@ During node shutdown, progress messages are generated in the [`OPS` logging chan
 <section class="filter-content" markdown="1" data-scope="decommission">
 Node decommission progress is reported in [`node_decommissioning`]({% link {{ page.version.version }}/eventlog.md %}#node_decommissioning) and [`node_decommissioned`]({% link {{ page.version.version }}/eventlog.md %}#node_decommissioned) events:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 grep 'decommission' node1/logs/cockroach.log
 ~~~
@@ -407,7 +403,6 @@ I220211 02:16:39.656225 21514 1@util/log/event_log.go:32 ⋮ [-] 1681 ={"Timesta
 
 Node drain progress is reported in unstructured log messages:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 grep 'drain' node1/logs/cockroach.log
 ~~~
@@ -429,7 +424,6 @@ I220202 20:51:24.984089 1 1@cli/start.go:868 ⋮ [n1] 332  server drained and sh
 <section class="filter-content" markdown="1" data-scope="drain">
 Draining status is reflected in the [`cockroach node status --decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) output:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach node status --decommission --certs-dir=certs --host={address of any live node}
 ~~~
@@ -449,7 +443,6 @@ cockroach node status --decommission --certs-dir=certs --host={address of any li
 <section class="filter-content" markdown="1" data-scope="decommission">
 Draining and decommissioning statuses are reflected in the [`cockroach node status --decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) output:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach node status --decommission --certs-dir=certs --host={address of any live node}
 ~~~
@@ -508,7 +501,6 @@ To drain and shut down a node that was started in the foreground with [`cockroac
 
 1. Filter the logs for draining progress messages. [By default]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration), the `OPS` logs output to a `cockroach.log` file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     grep 'drain' node1/logs/cockroach.log
     ~~~
@@ -531,7 +523,6 @@ To drain and shut down a node that was started in the foreground with [`cockroac
 
     Re-run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command that you used to start the node initially. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start \
     --certs-dir=certs \
@@ -565,7 +556,6 @@ You can use [`cockroach node drain`]({% link {{ page.version.version }}/cockroac
 
 1. Run the `cockroach node drain` command, specifying the ID of the node to drain (and optionally a custom [drain timeout](#drain-timeout) to allow draining more time to complete). You can optionally pass the `--shutdown` flag to [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags) to automatically terminate the `cockroach` process after draining completes.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach node drain 1 --host={address of any live node} --drain-wait=15m --certs-dir=certs
     ~~~
@@ -580,7 +570,6 @@ You can use [`cockroach node drain`]({% link {{ page.version.version }}/cockroac
 
 1. Filter the logs for shutdown progress messages. [By default]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration), the `OPS` logs output to a `cockroach.log` file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     grep 'drain' node1/logs/cockroach.log
     ~~~
@@ -628,12 +617,10 @@ This example assumes you will decommission node IDs `4` and `5` of a 5-node clus
 
 Run the [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}) command for each node to be removed, specifying the ID of the node to drain. Optionally, pass the `--shutdown` flag of [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags) to automatically terminate the `cockroach` process after draining completes.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach node drain 4 --host={address of any live node} --certs-dir=certs
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach node drain 5 --host={address of any live node} --certs-dir=certs
 ~~~
@@ -652,7 +639,6 @@ Manually draining before decommissioning nodes is optional, but prevents possibl
 
 Run the [`cockroach node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) command with the IDs of the nodes to decommission:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node decommission 4 5 --certs-dir=certs --host={address of any live node}
 ~~~
@@ -693,7 +679,6 @@ Do **not** terminate the node process, delete the storage volume, or remove the 
 
 Check the status of the decommissioned nodes:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --decommission --certs-dir=certs --host={address of any live node}
 ~~~
@@ -735,7 +720,6 @@ However, if the dead node is restarted, the cluster will rebalance replicas and 
 
 Check the status of your nodes:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --decommission --certs-dir=certs --host={address of any live node}
 ~~~
@@ -758,7 +742,6 @@ Alternatively, open the **Cluster Overview** page of the DB Console and check th
 
 Run the [`cockroach node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) command against the address of any live node, specifying the ID of the dead node:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node decommission 1 --certs-dir=certs --host={address of any live node}
 ~~~
@@ -776,7 +759,6 @@ No more data reported on target nodes. Please verify cluster health before remov
 
 Check the status of the decommissioned node:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --decommission --certs-dir=certs --host={address of any live node}
 ~~~
@@ -809,7 +791,6 @@ Press `ctrl-c` in each terminal with an ongoing decommissioning process that you
 
 Run the [`cockroach node recommission`]({% link {{ page.version.version }}/cockroach-node.md %}) command with the ID of the node to recommission:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node recommission 1 --certs-dir=certs --host={address of any live node}
 ~~~

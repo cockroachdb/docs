@@ -23,7 +23,6 @@ The role must have the [`SELECT`]({% link {{ page.version.version }}/select-clau
 
 ## Example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ROLES;
 ~~~

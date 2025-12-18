@@ -68,7 +68,6 @@ The [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}
 
 The following statement sets up a scheduled changefeed named `users_rides_nightly` that will send changefeed messages in `CSV` format 1 minute past midnight every night. As soon as the statement is run, the first changefeed run will execute immediately:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE SCHEDULE users_rides_nightly FOR CHANGEFEED users, rides INTO 'external://kafka-sink' WITH format=csv RECURRING '1 0 * * *' WITH SCHEDULE OPTIONS first_run=now, on_execution_failure=retry, on_previous_running=skip;
 ~~~
@@ -97,7 +96,6 @@ For guidance on syntax and more example use cases, see [Change Data Capture Quer
 
 This scheduled changefeed filters for the usage of promotion codes in the [`movr`]({% link {{ page.version.version }}/movr.md %}) database and sends the changefeed messages on a daily basis:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE SCHEDULE promo_code FOR CHANGEFEED INTO 'external://kafka-sink' AS SELECT user_id, usage_count FROM movr.user_promo_codes WHERE usage_count > 1 RECURRING '@daily' WITH SCHEDULE OPTIONS first_run=now, on_execution_failure=reschedule, on_previous_running=skip;
 ~~~
@@ -106,56 +104,48 @@ CREATE SCHEDULE promo_code FOR CHANGEFEED INTO 'external://kafka-sink' AS SELECT
 
 To [show]({% link {{ page.version.version }}/show-schedules.md %}) all scheduled changefeeds:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW SCHEDULES FOR CHANGEFEED;
 ~~~
 
 To view the details of only running scheduled changefeeds:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RUNNING SCHEDULES FOR CHANGEFEED;
 ~~~
 
 To view the details of only paused scheduled changefeeds:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW PAUSED SCHEDULES FOR CHANGEFEED;
 ~~~
 
 To view the details of a specific scheduled changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW SCHEDULE {schedule ID};
 ~~~
 
 To [pause]({% link {{ page.version.version }}/pause-schedules.md %}) a scheduled changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 PAUSE SCHEDULE {schedule ID};
 ~~~
 
 To [resume]({% link {{ page.version.version }}/resume-schedules.md %}) a scheduled changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESUME SCHEDULE {schedule ID};
 ~~~
 
 To [delete]({% link {{ page.version.version }}/drop-schedules.md %}) a scheduled changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP SCHEDULE {schedule ID};
 ~~~
 
 To see the full [`CREATE SCHEDULE` statement]({% link {{ page.version.version }}/show-create-schedule.md %}) for the scheduled changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE SCHEDULE {schedule ID};
 ~~~

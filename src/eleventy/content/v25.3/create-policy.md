@@ -22,7 +22,6 @@ to update the parameters and potentially the diagram.
 
 -->
 
-{% include_cached copy-clipboard.html %}
 ~~~
 CREATE POLICY [ IF NOT EXISTS ] policy_name ON table_name
     [ AS ( PERMISSIVE | RESTRICTIVE ) ]
@@ -76,12 +75,10 @@ Additional considerations include:
 
 In this example, you will allow users to see or modify only their own rows in an `orders` table.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE orders (user_id TEXT PRIMARY KEY, order_details TEXT);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- Assume 'orders' table has a 'user_id' column matching logged-in user names.
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;

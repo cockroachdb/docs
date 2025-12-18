@@ -26,7 +26,6 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
 1. If you need to add worker nodes, resize your cluster by specifying the desired number of worker nodes in each zone. Using Google Kubernetes Engine as an example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     gcloud container clusters resize {cluster-name} --region {region-name} --num-nodes 2
     ~~~
@@ -47,14 +46,12 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
 1. Apply the new settings to the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
     ~~~
 
 1. Verify that the new pods were successfully started:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get pods -n $NAMESPACE
     ~~~
@@ -93,14 +90,12 @@ Do not scale down to fewer than 3 nodes. This is considered an anti-pattern on C
 
 1. Apply the new settings to the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
     ~~~
 
 1. Verify that the pods were successfully removed:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get pods
     ~~~
@@ -118,7 +113,6 @@ If cluster capacity is limited, replacement pods may remain in the `Pending` sta
 The following prerequisites are necessary for the {{ site.data.products.cockroachdb-operator }} to be able to decommission a CockroachDB node:
 
 - The `--enable-k8s-node-/controller=true` flag must be enabled in the operator's `.yaml` values file, for example:
-    {% include_cached copy-clipboard.html %}
     {% raw %}
     ~~~ yaml
     containers:
@@ -137,19 +131,16 @@ To mark a node for decommissioning, follow these steps:
 
 1. Annotate the Kubernetes node with `crdb.cockroachlabs.com/decommission="true"`. The decommissioning process begins immediately after this annotation is applied. Using `kubectl`, for example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl annotate node {example-node-name} crdb.cockroachlabs.com/decommission="true"
     ~~~
 
 1. Monitor the cluster:
     - Confirm the decommissioned node's cordoned status:
-      {% include_cached copy-clipboard.html %}
       ~~~ shell
       kubectl describe node {example-node-name}
       ~~~
     - Monitor operator events and logs for decommission start and completion messages:
-      {% include_cached copy-clipboard.html %}
       ~~~ shell
       kubectl logs pod {operator-pod-name}
       ~~~

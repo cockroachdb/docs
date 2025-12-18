@@ -23,7 +23,6 @@ You must have one of the following to run `SHOW LOGICAL REPLICATION JOBS`:
 
 Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT SYSTEM VIEWJOB TO user;
 ~~~
@@ -54,7 +53,6 @@ Option | Description
 
 In the destination cluster's SQL shell, you can query `SHOW LOGICAL REPLICATION JOBS` to view the LDR jobs running on the cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW LOGICAL REPLICATION JOBS;
 ~~~
@@ -67,7 +65,6 @@ SHOW LOGICAL REPLICATION JOBS;
 
 For additional detail on each LDR job, use the `WITH details` option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW LOGICAL REPLICATION JOBS WITH details;
 ~~~

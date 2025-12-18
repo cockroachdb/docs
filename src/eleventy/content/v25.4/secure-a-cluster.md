@@ -23,7 +23,6 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
 
 1. Create two directories:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
@@ -35,7 +34,6 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
 
 1. Create the CA (Certificate Authority) certificate and key pair:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -44,7 +42,6 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
 
 1. Create the certificate and key pair for your nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost \
@@ -57,7 +54,6 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
 
 1. Create a client certificate and key pair for the `root` user:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -69,7 +65,6 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
 
 1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start the first node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -100,7 +95,6 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
 
 1. In separate terminal windows, start two more nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -110,7 +104,6 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -124,7 +117,6 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
 
 1. Use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=localhost:26257
     ~~~
@@ -137,7 +129,6 @@ You can use either [`cockroach cert`]({% link {{ page.version.version }}/cockroa
 
     At this point, each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log. For example, the following command retrieves node 1's startup details:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ grep 'node starting' node1/logs/cockroach.log -A 11
     ~~~
@@ -165,29 +156,24 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Run the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) command against node 1:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
 1. Run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -201,12 +187,10 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Now exit the SQL shell on node 1 and open a new shell on node 2:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs --host=localhost:26258
     ~~~
@@ -217,7 +201,6 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Run the same `SELECT` query as before:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -233,14 +216,12 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Now [create a user with a password]({% link {{ page.version.version }}/create-user.md %}#create-a-user-with-a-password), which you will need to [access the DB Console](#step-5-access-the-db-console):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER max WITH PASSWORD 'roach';
     ~~~
 
 1. Exit the SQL shell on node 2:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -251,7 +232,6 @@ CockroachDB also comes with a number of [built-in workloads]({% link {{ page.ver
 
 1. Load the initial dataset:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init movr \
     'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
@@ -267,7 +247,6 @@ CockroachDB also comes with a number of [built-in workloads]({% link {{ page.ver
 
 1. Run the workload for 5 minutes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run movr \
     --duration=5m \
@@ -282,21 +261,18 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
     Run the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) command against node 1:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
 1.  Assign `max` to the `admin` role (you only need to do this once):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT admin TO max;
     ~~~
 
 1. Exit the SQL shell:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -329,7 +305,6 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
     Get the process IDs of the nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -342,7 +317,6 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
     Gracefully shut down node 3, specifying its process ID:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4503
     ~~~
@@ -353,7 +327,6 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
 1. Restart node 3:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -369,7 +342,6 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 1. In separate terminal windows, start 2 more nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -379,7 +351,6 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -403,7 +374,6 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
     Get the process IDs of the nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -418,17 +388,14 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
     Gracefully shut down each node, specifying its process ID:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4482
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4497
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4503
     ~~~
@@ -437,12 +404,10 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     For `node4` and `node5`, the shutdown process will take longer (about a minute each) and will eventually force the nodes to stop. Because only two of the five nodes are now running, the cluster has lost quorum and is no longer operational.
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4510
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4622
     ~~~
@@ -451,7 +416,6 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 1. If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the certificate directories:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3 node4 node5 certs my-safe-directory
     ~~~

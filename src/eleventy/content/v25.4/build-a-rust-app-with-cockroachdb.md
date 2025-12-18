@@ -20,7 +20,6 @@ You must have Rust and Cargo installed. For instructions on installing Rust and 
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachdb/example-app-rust-postgres
 ~~~
@@ -37,7 +36,6 @@ The project has the following structure:
 
 The `Cargo.toml` file is the configuration file for the example, and sets the dependencies for the project.
 
-{% include_cached copy-clipboard.html %}
 ~~~ toml
 {% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/Cargo.toml %}
 ~~~
@@ -50,14 +48,12 @@ The `execute_txn` function wraps database operations in the context of an explic
 CockroachDB may require the [client to retry a transaction]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) in case of read/write [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ rust
 {% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/src/main.rs || BEGIN execute_txn || END execute_txn %}
 ~~~
 
 The `transfer_funds` function calls `execute_txn` to perform the actual transfer of funds from one account to the other.
 
-{% include_cached copy-clipboard.html %}
 ~~~ rust
 {% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/src/main.rs || BEGIN transfer_funds || END transfer_funds %}
 ~~~
@@ -66,7 +62,6 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
 1. In a terminal go to the `example-app-rust-postgres` directory.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd example-app-rust-postgres
     ~~~
@@ -75,7 +70,6 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -99,7 +93,6 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
     1. Set the `DATABASE_URL` environment variable to the modified connection string.
 
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ export DATABASE_URL="{connection-string}"
         ~~~
@@ -112,7 +105,6 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
 1. Run the code to create a table and insert some rows:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cargo run
     ~~~

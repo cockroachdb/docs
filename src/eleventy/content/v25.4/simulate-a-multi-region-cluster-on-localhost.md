@@ -29,27 +29,22 @@ root@127.0.0.1:26257/defaultdb>
 
 You can run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE bank;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bank.accounts VALUES (1, 1000.50);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -85,7 +80,6 @@ You may also find the following pages useful:
 
 When you're done with your demo cluster, you can wipe the cluster by typing the command shown below at the SQL prompt. Note that because this is a temporary, in-memory cluster, this will wipe any data you have added to the cluster. For more information, see the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) documentation.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 \quit
 ~~~

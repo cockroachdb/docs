@@ -52,7 +52,6 @@ Flag | Description
 
 ### List all collected files
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug list-files
 ~~~
@@ -63,14 +62,12 @@ The files listed include logs, heap profiles, goroutine dumps, and CPU profiles.
 
 ### List all collected log files
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug list-files --include-files=*.log
 ~~~
 
 ### List all collected files (TSV format)
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug list-files --format=tsv
 ~~~

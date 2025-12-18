@@ -80,7 +80,6 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 1. Save [the connection string](#connection-string) you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console to the `DATABASE_URL` environment variable in an `.env` file in your project:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     echo "DATABASE_URL=<connection-string>" >> .env
     ~~~
@@ -89,7 +88,6 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 1. Run [Prisma Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) to initialize the database with the schema defined in `prisma/prisma.schema`.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     prisma migrate dev --name init
     ~~~
@@ -108,7 +106,6 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 1. (Optional) Run the app server locally to preview your site:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     npm run dev
     ~~~
@@ -121,7 +118,6 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 1. Run the `vercel` command to start deploying the app:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     vercel deploy --confirm
     ~~~

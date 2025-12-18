@@ -50,7 +50,6 @@ Parameter      | Description
 
 ### List table statistics
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATISTICS FOR TABLE rides;
 ~~~
@@ -85,7 +84,6 @@ CockroachDB generates forecasted statistics when the following conditions are me
 
 The following example shows 3 historical statistics collections and the subsequent forecast:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATISTICS FOR TABLE rides WITH FORECAST;
 ~~~

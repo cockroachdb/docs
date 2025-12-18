@@ -56,12 +56,10 @@ A column is in the primary key if the value of the `index_name` column is `{tb
 
 ### Show indexes for a table
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -84,7 +82,6 @@ In this example, the columns where the value of the `index_name` column is `us
 
 ### Show indexes for a database
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM DATABASE movr;
 ~~~

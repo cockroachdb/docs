@@ -155,7 +155,6 @@ Each of these examples use the `bank` database and the `customers` table; `custo
 
 This example uses the `delimiter` option to define the ASCII character that delimits columns in your rows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -164,7 +163,6 @@ This example uses the `delimiter` option to define the ASCII character that deli
 
 This examples uses the `nullas` option to define the string that represents `NULL` values:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -181,7 +179,6 @@ This examples uses the `nullas` option to define the string that represents `NUL
 
 ### Export using a `SELECT` statement
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -192,7 +189,6 @@ For more information, see [selection queries]({% link {{ page.version.version }}
 
 ### Non-distributed export using the SQL client
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
@@ -203,7 +199,6 @@ For more information about the SQL client, see [`cockroach sql`]({% link {{ page
 
 `gzip` compression is supported for both `PARQUET` and `CSV` file formats:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -219,7 +214,6 @@ export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
 
 `PARQUET` data also supports `snappy` compression:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO PARQUET
   's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -237,7 +231,6 @@ export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
 
 To associate your export objects with a [specific storage class]({% link {{ page.version.version }}/use-cloud-storage.md %}#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
@@ -260,7 +253,6 @@ Using `EXPORT` with [`userfile`]({% link {{ page.version.version }}/use-userfile
 
 The following example exports the `customers` table from the `bank` database into a local CSV file:
 
-{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --url 'postgres://{username}:{password}@{host}:26257?sslmode=verify-full&sslrootcert={path/to/certs_dir}/cc-ca.crt' \
@@ -285,7 +277,6 @@ EXPORT INTO CSV
 
 View running exports by using [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATEMENTS;
 ~~~
@@ -294,7 +285,6 @@ View running exports by using [`SHOW STATEMENTS`]({% link {{ page.version.versio
 
 Use [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}) to get a running export's `query_id`, which can be used to [cancel the export]({% link {{ page.version.version }}/cancel-query.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~

@@ -56,7 +56,6 @@ PL/pgSQL blocks can be nested. An optional label can be placed above each block.
 
 When you create a function or procedure, you can enclose the entire PL/pgSQL block in dollar quotes (`$$`). Dollar quotes are not required, but are easier to use than single quotes, which require that you escape other single quotes that are within the function or procedure body.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE PROCEDURE name(parameters)
   LANGUAGE PLpgSQL
@@ -135,7 +134,6 @@ For example, given a table `t` with `INT` column `col`:
 
 The following [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}) inserts a specified value `x` into the table, and the `INTO` clause assigns the [returned value]({% link {{ page.version.version }}/insert.md %}#insert-and-return-values) to `i`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE p(x INT) AS $$
 	DECLARE
@@ -149,7 +147,6 @@ $$ LANGUAGE PLpgSQL;
 
 When the procedure is called, it inserts the specified integer into a new row in the table, and prints a [`NOTICE`](#report-messages-and-handle-exceptions) message that contains the inserted value:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL p(2);
 ~~~
@@ -161,7 +158,6 @@ CALL
 
 The following [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}) uses the `max` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) to find the maximum `col` value in table `t`, and assigns the result to `i`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION f() RETURNS INT AS $$
 	DECLARE
@@ -175,7 +171,6 @@ $$ LANGUAGE PLpgSQL;
 
 When the function is invoked, it displays the maximum value that was inserted into the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT f();
 ~~~
@@ -269,7 +264,6 @@ FOR variable_name IN [ REVERSE ] minimum .. maximum [ BY step ]
 
 In the following example, the `FOR` loop iterates from `1` to `10` in steps of `2`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE p() LANGUAGE PLPGSQL AS $$
   BEGIN
@@ -280,7 +274,6 @@ CREATE OR REPLACE PROCEDURE p() LANGUAGE PLPGSQL AS $$
   END $$;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL p();
 ~~~
@@ -355,7 +348,6 @@ Add a `RETURN` statement in a scalar-returning function to return the result of 
 
 The following example uses `RETURN` to return the square of the input argument.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION square(x INT) RETURNS INT AS $$
 BEGIN
@@ -372,7 +364,6 @@ Use `RETURN NEXT` within a set-returning function to append a row to the result 
 
 In the following example, `RETURN NEXT` returns a new row during each loop iteration.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION get_numbers() RETURNS TABLE (n INT) AS $$
 DECLARE
@@ -391,7 +382,6 @@ Use `RETURN QUERY` within a set-returning function to append the results of a SQ
 
 In the following example, `RETURN QUERY` returns all qualifying rows from the `SELECT` query.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION get_even_numbers() RETURNS SETOF INT AS $$
 BEGIN
@@ -453,7 +443,6 @@ Cursors that are specified as parameters, rather than declared as variables, can
 
 For example, using the [`movr` dataset]({% link {{ page.version.version }}/movr.md %}) loaded by [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE get_rides(rides_cursor REFCURSOR) AS $$
   BEGIN
@@ -470,7 +459,6 @@ FETCH rows FROM cursor_name;
 
 The [`CALL`]({% link {{ page.version.version }}/call.md %}) and `FETCH` statements have to be issued within the same transaction, or the cursor will not be found:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
   CALL get_rides('rides');
@@ -511,7 +499,6 @@ RAISE level 'message' [, expressions ]
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE raise_time() AS $$
   BEGIN
@@ -521,7 +508,6 @@ CREATE OR REPLACE PROCEDURE raise_time() AS $$
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~
 CALL raise_time();
 ~~~
@@ -614,7 +600,6 @@ BEGIN
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE PROCEDURE p() LANGUAGE PLpgSQL AS
   $$
@@ -628,7 +613,6 @@ CREATE PROCEDURE p() LANGUAGE PLpgSQL AS
   $$;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL p();
 ~~~
@@ -652,7 +636,6 @@ BEGIN
 
 A PL/pgSQL routine that calls a procedure should [declare a variable](#declare-a-variable) that will store the result of each of that procedure's `OUT` parameters. For example, given the procedure:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE output_one(OUT value INT) AS
   $$
@@ -664,7 +647,6 @@ CREATE OR REPLACE PROCEDURE output_one(OUT value INT) AS
 
 To call `output_one` within another procedure:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE output() AS
   $$

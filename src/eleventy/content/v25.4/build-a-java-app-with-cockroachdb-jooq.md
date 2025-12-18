@@ -28,14 +28,12 @@ This tutorial uses the [Maven build tool](https://gradle.org/) to manage applica
 
 To install Maven on Mac, run the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ brew install maven
 ~~~
 
 To install Maven on a Debian-based Linux distribution like Ubuntu:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ apt-get install maven
 ~~~
@@ -48,12 +46,10 @@ Download the free trial of jOOQ Professional or Enterprise edition from [jOOQ's 
 
 To install jOOQ to your machine's local Maven repository, run the `maven-install.sh` script included in the jOOQ install folder:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ chmod +x maven-install.sh
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./maven-install.sh
 ~~~
@@ -70,7 +66,6 @@ Create a certificate and key for the `maxroach` user by running the following co
 
 The [`--also-generate-pkcs8-key` flag]({% link {{ page.version.version }}/cockroach-cert.md %}#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
@@ -92,24 +87,20 @@ To run it:
 1. Open `jooq-basic-sample/src/main/java/com/cockroachlabs/Sample.java`, and edit the connection string passed to `DriverManager.getConnection()` in the `Sample` class's `main()` method so that the certificate paths are fully and correctly specified.
 1. Compile and run the code using Maven:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd jooq-basic-sample
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mvn compile
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mvn exec:java -Dexec.mainClass=com.cockroachlabs.Sample
     ~~~
 
 Here are the contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/jooq-basic-sample/Sample.java), the Java file containing the main `Sample` class:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/jooq-basic-sample/Sample.java %}
 ~~~
@@ -144,14 +135,12 @@ APP: getAccountBalance(2) --> 350
 
 To verify that the account balances were updated successfully, start the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id, balance FROM accounts;
 ~~~
@@ -189,24 +178,20 @@ To run it:
 1. Download and unzip [jooq-basic-sample.zip](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/insecure/jooq-basic-sample/jooq-basic-sample.zip).
 1. Compile and run the code using Maven:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd jooq-basic-sample
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mvn compile
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mvn exec:java -Dexec.mainClass=com.cockroachlabs.Sample
     ~~~
 
 Here are the contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/jooq-basic-sample/Sample.java), the Java file containing the main `Sample` class:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/insecure/jooq-basic-sample/Sample.java %}
 ~~~
@@ -241,14 +226,12 @@ APP: getAccountBalance(2) --> 350
 
 To verify that the account balances were updated successfully, start the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id, balance FROM accounts;
 ~~~

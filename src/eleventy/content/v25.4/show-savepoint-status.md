@@ -30,7 +30,6 @@ Field | Description
 
 1. Open a [transaction]({% link {{ page.version.version }}/transactions.md %}) using [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}), and create a [nested transaction]({% link {{ page.version.version }}/transactions.md %}#nested-transactions) using a [savepoint]({% link {{ page.version.version }}/savepoint.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     SAVEPOINT foo;
@@ -38,7 +37,6 @@ Field | Description
 
 1. Use the `SHOW SAVEPOINT STATUS` statement to list the active savepoints in the current nested transaction.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW SAVEPOINT STATUS;
     ~~~
@@ -54,7 +52,6 @@ Field | Description
 
 1. Commit this nested transaction by issuing the [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %}) statement, then clear the connection for the next transaction by issuing a [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) statement:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > RELEASE SAVEPOINT foo;
     COMMIT;

@@ -26,7 +26,7 @@ ALTER DATABASE {database_name} PLACEMENT {placement_policy}
 ## Parameters
 
 | Parameter          | Description                                                                                                                           |
-|--------------------+---------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------|
 | `database_name`    | The database whose replica placement you want to constrain to its [home region](set-locality.html#crdb_region).                       |
 | `placement_policy` | The replica placement policy that will be used for [regional tables](regional-tables.html). For more information, see the list below. |
 

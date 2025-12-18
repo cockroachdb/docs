@@ -336,7 +336,7 @@ For more information, see the following sections.
 The `crdb_internal.cluster_locks` table has the following columns that describe each lock:
 
 | Column            | Type                          | Description                                                                                                                                                                   |
-|-------------------+-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `range_id`        | [`INT`]({% link "{{ page.version.version }}/int.md" %})             | The ID of the [range]({% link "{{ page.version.version }}/architecture/overview.md" %}#architecture-range) that stores the key the lock is being acquired on.                                                       |
 | `table_id`        | [`INT`]({% link "{{ page.version.version }}/int.md" %})             | The ID of the [table]({% link "{{ page.version.version }}/create-table.md" %}) that includes the key the lock is being acquired on.                                                                                 |
 | `database_name`   | [`STRING`]({% link "{{ page.version.version }}/string.md" %})       | The name of the [database]({% link "{{ page.version.version }}/create-database.md" %}) that includes the key the lock is being acquired on.                                                                         |

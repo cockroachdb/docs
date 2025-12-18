@@ -47,7 +47,6 @@ For the list of supported `VECTOR` functions, refer to [Functions and Operators]
 
 Create a table with a `VECTOR` column, specifying `3` dimensions:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE items (
     category STRING,
@@ -58,7 +57,6 @@ CREATE TABLE items (
 
 Insert some sample data into the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO items (category, vector) VALUES
 	('electronics', '[1.0, 0.0, 0.0]'),
@@ -74,7 +72,6 @@ INSERT INTO items (category, vector) VALUES
 
 Use the [`<->` operator](#syntax) to sort values with the `electronics` category by their similarity to `[1.0, 0.0, 0.0]`, based on geographic distance.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT category, vector FROM items WHERE category = 'electronics' ORDER BY vector <-> '[1.0, 0.0, 0.0]' LIMIT 5;
 ~~~

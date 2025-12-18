@@ -26,7 +26,6 @@ For secure clusters, you can avoid getting the warning message by using a certif
 1. The cockroach process reads certificates only when the process starts.
 
    - In a manually-deployed cluster, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
-      {% include_cached copy-clipboard.html %}
       ~~~ shell
       pkill -SIGHUP -x cockroach
       ~~~
@@ -134,7 +133,6 @@ To enable certificate revocation:
 1. Ensure that your Certificate Authority sets the OCSP server address in the `authorityInfoAccess` field in the certificate.
 1. [Set the cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
 
-      {% include_cached copy-clipboard.html %}
       ~~~ sql
       > SHOW CLUSTER SETTING security.ocsp.mode;
       ~~~
@@ -149,7 +147,6 @@ To enable certificate revocation:
       Network Latency: 181µs
       ~~~
 
-      {% include_cached copy-clipboard.html %}
       ~~~ sql
       > SET CLUSTER SETTING security.ocsp.mode = lax;
       ~~~

@@ -831,7 +831,7 @@ Now let's look at some `INSERT` statements to see how the different key matching
 Inserting values into the table using the `MATCH SIMPLE` algorithm (described [above](#composite-foreign-key-matching)) gives the following results:
 
 | Statement                                         | Can insert? | Throws error? | Notes                         |
-|---------------------------------------------------+-------------+---------------+-------------------------------|
+|---------------------------------------------------|-------------|---------------|-------------------------------|
 | `INSERT INTO simple_test VALUES (1,1,1)`          | Yes         | No            | References `parent (1,1,1)`.  |
 | `INSERT INTO simple_test VALUES (NULL,NULL,NULL)` | Yes         | No            | Does not reference `parent`.  |
 | `INSERT INTO simple_test VALUES (1,NULL,NULL)`    | Yes         | No            | Does not reference `parent`.  |
@@ -848,7 +848,7 @@ Inserting values into the table using the `MATCH SIMPLE` algorithm (described [a
 Inserting values into the table using the `MATCH FULL` algorithm (described [above](#composite-foreign-key-matching)) gives the following results:
 
 | Statement                                       | Can insert? | Throws error? | Notes                                               |
-|-------------------------------------------------+-------------+---------------+-----------------------------------------------------|
+|-------------------------------------------------|-------------|---------------|-----------------------------------------------------|
 | `INSERT INTO full_test VALUES (1,1,1)`          | Yes         | No            | References `parent(1,1,1)`.                         |
 | `INSERT INTO full_test VALUES (NULL,NULL,NULL)` | Yes         | No            | Does not reference `parent`.                        |
 | `INSERT INTO full_test VALUES (1,NULL,NULL)`    | No          | Yes           | Can't mix null and non-null values in `MATCH FULL`. |

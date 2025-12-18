@@ -36,7 +36,6 @@ You can also add the `DEFAULT` value constraint to an existing table through [`A
 
 ## Example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE inventories (
     product_id        INT,
@@ -46,17 +45,14 @@ You can also add the `DEFAULT` value constraint to an existing table through [`A
   );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories (product_id, warehouse_id) VALUES (1,20);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (2,30, NULL);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM inventories;
 ~~~

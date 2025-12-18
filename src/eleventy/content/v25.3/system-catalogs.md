@@ -20,7 +20,6 @@ Tables in the system catalogs have varying levels of stability. Not all system c
 
 To see all of the system catalogs for the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database), you can use a [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~

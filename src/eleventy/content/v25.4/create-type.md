@@ -40,14 +40,12 @@ Parameter | Description
 
 Use the statements below to create an [`ENUM`]({% link {{ page.version.version }}/enum.md %}) data type.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE IF NOT EXISTS status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
 To see all user-defined data types, use [`SHOW TYPES`]({% link {{ page.version.version }}/show-types.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TYPES;
 ~~~
@@ -61,7 +59,6 @@ To see all user-defined data types, use [`SHOW TYPES`]({% link {{ page.version.v
 
 To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.version }}/enum.md %}) data type, use [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -74,7 +71,6 @@ To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.ve
 ~~~
 
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -83,12 +79,10 @@ To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.ve
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts(balance,status) VALUES (500.50,'open'), (0.00,'closed'), (1.25,'inactive');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -102,7 +96,6 @@ To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.ve
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE accounts;
 ~~~
@@ -119,7 +112,6 @@ To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.ve
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE status='open';
 ~~~
@@ -135,12 +127,10 @@ To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.ve
 
 Use the statements below to create a composite data type:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TYPE IF NOT EXISTS my_point AS (x INT, y INT);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS points (
     id UUID DEFAULT gen_random_uuid(), p my_point,
@@ -153,12 +143,10 @@ CREATE TABLE IF NOT EXISTS points (
 
 Insert 10,000 randomly generated values of type `mypoint`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO points (p) SELECT (floor(random()*10000),floor(random()*10000))::MY_POINT FROM generate_series(1,10000);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM points ORDER BY ((p).x) ASC LIMIT 25;
 ~~~

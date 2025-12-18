@@ -32,7 +32,6 @@ The use case examples in the following sections emit to a Kafka sink. Review the
 
 Each example uses the following table schema:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE public.products (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -54,7 +53,6 @@ The values that the `envelope` option accepts are compatible with different [cha
 
 You can include both the previous and updated states of a row in the message envelope to support use cases like auditing or applying change-based logic in downstream systems. Use the [`diff`](#diff-option) option with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) to include the previous state of the row:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH diff;
 ~~~
@@ -109,7 +107,6 @@ For an insert into the table, the `"before"` field contains `null`:
 
 {% include_cached new-in.html version="v25.2" %} You may want to route change events in a table based on the operation type (insert, update, delete), which can be useful for correctly applying or handling changes in a downstream system or replication pipeline. Use the [`envelope=enriched`](#enriched) option with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) to include the [`"op"`](#op) field in the envelope:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka:9092' WITH envelope=enriched;
 ~~~
@@ -155,7 +152,6 @@ It is important to consider that adding the schema of the event payload can incr
 
 Use the [`envelope=enriched, enriched_properties=schema`](#enriched-properties-option) options with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) to include the `"schema"` top-level field and the [schema fields and types](#schema):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka:9092' WITH envelope=enriched, enriched_properties=schema;
 ~~~
@@ -253,7 +249,6 @@ CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka:9092' WITH envelope=
 
 Use the [`envelope=enriched, enriched_properties=source`](#enriched-properties-option) options with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) to include the [`"source"`](#source) top-level field that contains metadata for the origin cluster and the changefeed job:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH envelope=enriched, enriched_properties=source;
 ~~~
@@ -302,7 +297,6 @@ It is important to consider that a full-fidelity envelope increases the size of 
 
 Use the [`mvcc_timestamp`](#mvcc-timestamp-option), [`envelope=enriched, enriched_properties='source,schema'`](#enriched-properties-option), [`diff`](#diff-option), [`updated`](#updated-option), and [`key_in_value`](#key-in-value-option) (for Kafka) options with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) to create a full-fidelity envelope:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH envelope=enriched, enriched_properties='source,schema', diff, mvcc_timestamp, updated, key_in_value;
 ~~~
@@ -519,7 +513,6 @@ CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH key_in_value, 
 
 To add the operation type and the processing timestamp of the change event to the envelope, use `envelope=enriched`:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka' WITH envelope=enriched;
 ~~~
@@ -529,7 +522,6 @@ CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka' WITH envelope=enric
 
 To order messages when using `envelope=enriched`, you must also use `enriched_properties='source'` with the `updated` option in order to include the [`"ts_hlc"` and `"ts_ns"`](#source) commit timestamps in the `"source"` field:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH envelope=enriched,enriched_properties=source, updated;
 ~~~
@@ -570,7 +562,6 @@ CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH envelope
 
 To add the origin of the change data and the schema of the payload, use the `envelope=enriched` and `enriched_properties='source,schema'`:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka' WITH envelope=enriched, enriched_properties='source,schema';
 ~~~

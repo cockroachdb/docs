@@ -41,12 +41,10 @@ Parameter | Description
 
 Suppose you create a new view that you want to rename:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE VIEW money_rides (id, revenue) AS SELECT id, revenue FROM rides WHERE revenue > 50;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
 ~~~
@@ -58,7 +56,6 @@ WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER VIEW money_rides RENAME TO expensive_rides;
 ~~~
@@ -66,7 +63,6 @@ ALTER VIEW money_rides RENAME TO expensive_rides;
 RENAME VIEW
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
 ~~~
@@ -86,7 +82,6 @@ Suppose you want to add the `expensive_rides` view to a schema called `cockroach
 
 By default, [unqualified views]({% link {{ page.version.version }}/sql-name-resolution.md %}#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE public.expensive_rides;
 ~~~
@@ -100,19 +95,16 @@ SHOW CREATE public.expensive_rides;
 
 If the new schema does not already exist, [create it]({% link {{ page.version.version }}/create-schema.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 Then, change the view's schema:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER VIEW expensive_rides SET SCHEMA cockroach_labs;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE public.expensive_rides;
 ~~~
@@ -122,7 +114,6 @@ ERROR: relation "public.expensive_rides" does not exist
 SQLSTATE: 42P01
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE cockroach_labs.expensive_rides;
 ~~~

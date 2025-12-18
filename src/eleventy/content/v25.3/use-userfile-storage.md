@@ -23,7 +23,6 @@ Once a userfile is uploaded, you can run [`IMPORT INTO`](#import-from-userfile).
 A userfile uses storage space in the cluster, and is replicated with the rest of the cluster's data. We recommend using [`cockroach userfile upload`]({% link {{ page.version.version }}/cockroach-userfile-upload.md %}) for quick uploads from your client (about 15MB or smaller).
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-data.csv --certs-dir=certs
 ~~~
@@ -36,7 +35,6 @@ For more information, see [`cockroach userfile upload`]({% link {{ page.version.
 
 ## List files
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile list '*.csv' --certs-dir=certs
 ~~~
@@ -50,7 +48,6 @@ For more information, see [`cockroach userfile list`]({% link {{ page.version.ve
 
 ## Get files
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile get test-data.csv --certs-dir=certs
 ~~~
@@ -59,7 +56,6 @@ For more information, see [`cockroach userfile get`]({% link {{ page.version.ver
 
 ## Delete files
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile delete test-data.csv --certs-dir=certs
 ~~~

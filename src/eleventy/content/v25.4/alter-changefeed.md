@@ -80,7 +80,6 @@ For more information on enabling changefeeds, see [Create and Configure Changefe
 
 1. Create the changefeed. This example changefeed will emit change messages to a cloud storage sink on two watched tables. The emitted messages will include the [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved), [`updated`]({% link {{ page.version.version }}/create-changefeed.md %}#updated), and [`schema_change_policy`]({% link {{ page.version.version }}/create-changefeed.md %}#schema-change-policy) options:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.users, movr.vehicles INTO 's3://{BUCKET_NAME}?AWS_ACCESS_KEY_ID={ACCESS_KEY_ID}&AWS_SECRET_ACCESS_KEY={SECRET_ACCESS_KEY}'
         WITH resolved, updated, schema_change_policy = backfill;
@@ -95,7 +94,6 @@ For more information on enabling changefeeds, see [Create and Configure Changefe
 
 1. Use [`SHOW CHANGEFEED JOB`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) with the job_ID to view the details of a changefeed:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW CHANGEFEED JOB 745448689649516545;
     ~~~
@@ -109,21 +107,18 @@ For more information on enabling changefeeds, see [Create and Configure Changefe
 
     To output a list of all changefeeds on the cluster, run the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW CHANGEFEED JOBS;
     ~~~
 
 1. In preparation for modifying the created changefeed, use [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     PAUSE JOB 745448689649516545;
     ~~~
 
 1. With the changefeed paused, run the `ALTER CHANGEFEED` statement with `ADD`, `DROP`, `SET`, or `UNSET` to change the target tables or options:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER CHANGEFEED 745448689649516545 DROP movr.vehicles UNSET resolved SET diff;
     ~~~
@@ -141,7 +136,6 @@ For more information on enabling changefeeds, see [Create and Configure Changefe
 
 1. Resume the changefeed job with `RESUME JOB`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     RESUME JOB 745448689649516545;
     ~~~
@@ -150,7 +144,6 @@ For more information on enabling changefeeds, see [Create and Configure Changefe
 
 The following statement adds the `vehicles` and `rides` tables as new table targets to the changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
  ALTER CHANGEFEED {job_ID} ADD movr.rides, movr.vehicles;
 ~~~
@@ -161,7 +154,6 @@ To add a table that has [column families]({% link {{ page.version.version }}/col
 
 The following statement removes the `rides` table from the changefeed's table targets:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
  ALTER CHANGEFEED {job_ID} DROP movr.rides;
 ~~~
@@ -170,7 +162,6 @@ The following statement removes the `rides` table from the changefeed's table ta
 
 Use `SET` to add a new option(s) to a changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER CHANGEFEED {job_ID} SET resolved='10s', envelope=key_only;
 ~~~
@@ -179,7 +170,6 @@ ALTER CHANGEFEED {job_ID} SET resolved='10s', envelope=key_only;
 
 <a name="sink-example"></a>Use the `sink` option to change the sink URI to which the changefeed emits messages:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER CHANGEFEED {job_ID}
     SET sink = 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={ACCESS_KEY_ID}&AWS_SECRET_ACCESS_KEY={SECRET_ACCESS_KEY}'
@@ -194,7 +184,6 @@ To change the [sink type]({% link {{ page.version.version }}/changefeed-sinks.md
 
 To remove options from a changefeed, use `UNSET`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER CHANGEFEED {job_ID} UNSET resolved, diff;
 ~~~
@@ -205,14 +194,12 @@ To add a table with [column families]({% link {{ page.version.version }}/column-
 
 - Use the `FAMILY` keyword to define specific families:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER CHANGEFEED {job_ID} ADD database.table FAMILY f1, database.table FAMILY f2;
     ~~~
 
 - Or, set the [`split_column_families`]({% link {{ page.version.version }}/create-changefeed.md %}#split-column-families) option:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER CHANGEFEED {job_ID} ADD database.table SET split_column_families;
     ~~~
@@ -221,7 +208,6 @@ To remove a table with column families as a target from the changefeed, you must
 
 - If you used `FAMILY` to add the table to the changefeed, use `FAMILY` when removing it:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER CHANGEFEED {job_ID} DROP database.table FAMILY f1, database.table FAMILY f2;
     ~~~
@@ -230,7 +216,6 @@ To remove a table with column families as a target from the changefeed, you must
 
 - Or, if you originally added the whole table and its column families with `split_column_families`, then remove it without using the `FAMILY` keyword:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER CHANGEFEED {job_ID} DROP database.table;
     ~~~

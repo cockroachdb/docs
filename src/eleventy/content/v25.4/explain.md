@@ -88,7 +88,6 @@ The following examples use the [`movr` example dataset]({% link {{ page.version.
 
 By default, `EXPLAIN` includes the least detail about the statement plan but can be useful to find out which indexes and index key ranges are used by a query. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -156,14 +155,12 @@ The output also describes a set of properties, some global to the query, some sp
 
 Suppose you create the recommended index:
 
-{% include_cached copy-clipboard.html %}
 ~~~
 CREATE INDEX ON rides (revenue) STORING (vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time);
 ~~~
 
 The next `EXPLAIN` call demonstrates that the estimated row count is 10% of the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -182,7 +179,6 @@ EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 
 If you then limit the number of returned rows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC limit 10;
 ~~~
@@ -207,7 +203,6 @@ The limit is reflected both in the estimated row count and a `limit` property:
 
 If you run `EXPLAIN` on a [join]({% link {{ page.version.version }}/joins.md %}) query, the output will display which type of join will be executed. For example, the following `EXPLAIN` output shows that the query will perform a [hash join]({% link {{ page.version.version }}/joins.md %}#hash-joins):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM rides AS r
 JOIN users AS u ON r.rider_id = u.id;
@@ -246,7 +241,6 @@ Time: 2ms total (execution 2ms / network 0ms)
 
 The following output shows that the query will perform a cross join:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM rides AS r
 JOIN users AS u ON r.city = 'new york';
@@ -280,7 +274,6 @@ Time: 2ms total (execution 2ms / network 0ms)
 
 `EXPLAIN` output for [`INSERT`]({% link {{ page.version.version }}/insert.md %}) queries is similar to the output for standard `SELECT` queries. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN INSERT INTO users(id, city, name) VALUES ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee');
 ~~~
@@ -305,14 +298,12 @@ The output for this `INSERT` lists the primary operation (in this case, `insert`
 
 For more complex types of `INSERT` queries, `EXPLAIN` output can include more information. For example, suppose that you create a `UNIQUE` index on the `users` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE UNIQUE INDEX ON users(city, id, name);
 ~~~
 
 To display the `EXPLAIN` output for an [`INSERT ... ON CONFLICT` statement]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause), which inserts some data that might conflict with the `UNIQUE` constraint imposed on the `name`, `city`, and `id` columns, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN INSERT INTO users(id, city, name) VALUES ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee') ON CONFLICT DO NOTHING;
 ~~~
@@ -356,7 +347,6 @@ Because the `INSERT` includes an `ON CONFLICT` clause, the query requires more t
 
 If you alter a table to split a range as described in [Split a table]({% link {{ page.version.version }}/alter-table.md %}#split-a-table), the `EXPLAIN` command returns the target table and index names and a `NULL` expiry timestamp:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN ALTER TABLE users SPLIT AT VALUES ('chicago'), ('new york'), ('seattle');
 ~~~
@@ -378,7 +368,6 @@ EXPLAIN ALTER TABLE users SPLIT AT VALUES ('chicago'), ('new york'), ('seattle')
 
 If you alter a table to split a range as described in [Set the expiration on a split enforcement]({% link {{ page.version.version }}/alter-table.md %}#set-the-expiration-on-a-split-enforcement), the `EXPLAIN` command returns the target table and index names and the expiry timestamp:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN ALTER TABLE vehicles SPLIT AT VALUES ('chicago'), ('new york'), ('seattle') WITH EXPIRATION '2022-08-10 23:30:00+00:00';
 ~~~
@@ -407,7 +396,6 @@ The `VERBOSE` option includes:
 - SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level.
 - Detail about which columns are being used by each level, as well as properties of the result set on that level.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (VERBOSE) SELECT * FROM rides AS r
 JOIN users AS u ON r.rider_id = u.id
@@ -456,7 +444,6 @@ The `TYPES` option includes:
 - The SQL expressions that were involved in each processing stage, and the columns used by each level.
 - All information that is included with the [`VERBOSE`](#verbose-option) option.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (TYPES) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -495,7 +482,6 @@ The `REDACT` option causes constants, literal values, parameter values, and pers
 
 You can also use `REDACT` with the [`OPT`](#opt-option) option and its suboptions.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (REDACT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -533,7 +519,6 @@ In the preceding output, the `revenue` comparison value is redacted as `‹×›
 
 To display the statement plan tree generated by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}), use the `OPT` option . For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -557,7 +542,6 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 To include cost details used by the optimizer in planning the query, use the `OPT, VERBOSE` option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT, VERBOSE) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -613,7 +597,6 @@ Time: 4ms total (execution 3ms / network 1ms)
 
 To include cost and type details, use the `OPT, TYPES` option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT, TYPES) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -671,7 +654,6 @@ Time: 4ms total (execution 3ms / network 1ms)
 
 To include all details used by the optimizer, including statistics, use the `OPT, ENV` option.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT, ENV) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -820,7 +802,6 @@ The `REDACT` suboption causes constants, literal values, parameter values, and p
 
 You can also use the `REDACT` option in combination with the [`VERBOSE`](#opt-verbose-option), [`TYPES`](#opt-types-option), and [`MEMO`](#opt-memo-option) suboptions.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT, REDACT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -843,7 +824,6 @@ In the preceding output, the `revenue` comparison value is redacted as `‹×›
 
 To view details about the [vectorized execution plan]({% link {{ page.version.version }}/vectorized-execution.md %}#how-vectorized-execution-works) for the query, use the `VEC` option.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (VEC) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -871,7 +851,6 @@ To view a physical statement plan that provides high level information about how
 
 For example, the following `EXPLAIN (DISTSQL)` statement generates a physical plan for a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
@@ -890,7 +869,6 @@ To view the [DistSQL plan diagram]({% link {{ page.version.version }}/explain-an
 
 To include the data types of the input columns in the physical plan, use `EXPLAIN(DISTSQL, TYPES)`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (DISTSQL, TYPES) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
@@ -909,14 +887,12 @@ Open the URL. You should see the following:
 
 You can use `EXPLAIN` to understand which indexes and key ranges queries use, which can help you ensure a query isn't performing a full table scan.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 ~~~
 
 Because column `v` is not indexed, queries filtering on it alone scan the entire table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -943,12 +919,10 @@ You can disable statement plans that perform full table scans with the `disallow
 
 When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET disallow_full_table_scans=on;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -961,12 +935,10 @@ HINT: try overriding the `disallow_full_table_scans` cluster/session setting
 
 If there were an index on `v`, CockroachDB would be able to avoid scanning the entire table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX v ON kv (v);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -997,7 +969,6 @@ CockroachDB has support for ordering transactions by controlling concurrent acce
 
 Suppose you have a table of key-value pairs:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS kv (k INT PRIMARY KEY, v INT);
 UPSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
@@ -1005,7 +976,6 @@ UPSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
 
 You can use `EXPLAIN` to determine whether the following `UPDATE` is using `SELECT FOR UPDATE` locking.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN UPDATE kv SET v = 100 WHERE k = 1;
 ~~~

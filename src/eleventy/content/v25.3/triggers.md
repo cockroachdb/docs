@@ -36,7 +36,6 @@ A trigger activates when one or more SQL statements is issued on a table. The st
 
 To specify more than one statement, use the `OR` clause. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TRIGGER check_value
   BEFORE INSERT OR UPDATE ON users
@@ -57,7 +56,6 @@ The `FOR EACH ROW` clause must be included after the table name. This specifies 
 
 An optional `WHEN` boolean condition can then be added. This further controls whether the trigger activates on an affected row, and is typically applied to the `OLD` or `NEW` [trigger variables](#trigger-variables). For example, the following trigger only activates if the row's `address` value was changed by the `UPDATE`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TRIGGER audit_address_change
   AFTER UPDATE ON users
@@ -98,7 +96,6 @@ A trigger executes a [function]({% link {{ page.version.version }}/user-defined-
 - The function for an [`AFTER`](#trigger-conditions) trigger typically returns `NULL` by convention, because its return value will be ignored.
 - The function must be defined before creating the trigger.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION function_name()
   RETURNS TRIGGER AS $$
@@ -136,14 +133,12 @@ In the following example, a trigger is used to log data changes to an "audit log
 
 1. Run [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) to start a temporary, in-memory cluster with the [`movr`]({% link {{ page.version.version }}/movr.md %}) sample dataset preloaded:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	cockroach demo
 	~~~
 
 1. Create a table that stores audit records. Each record includes the table that was affected, the SQL operation that was performed on the table, the old and new table rows, and the timestamp when the change was made:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TABLE audit_log (
 	    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -157,7 +152,6 @@ In the following example, a trigger is used to log data changes to an "audit log
 
 1. Create a [trigger function]({% link {{ page.version.version }}/create-function.md %}#create-a-trigger-function) that inserts the corresponding values into the `audit_log` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION audit_changes()
 	RETURNS TRIGGER AS $$
@@ -179,7 +173,6 @@ In the following example, a trigger is used to log data changes to an "audit log
 
 1. Create a trigger that executes the `audit_changes` function after an `INSERT`, `UPDATE`, or `DELETE` is issued on the `users` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TRIGGER audit_trigger
 	AFTER INSERT OR UPDATE OR DELETE ON users
@@ -192,7 +185,6 @@ In the following example, a trigger is used to log data changes to an "audit log
 
 1. Test the trigger by inserting, updating, and deleting a row in the `users` table of the `movr` database:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	INSERT INTO users (id, city, name) VALUES (uuid_generate_v4(), 'new york', 'Max Roach');
 	UPDATE users SET address = '541 Greene Avenue' WHERE name = 'Max Roach';
@@ -203,7 +195,6 @@ In the following example, a trigger is used to log data changes to an "audit log
 
 1. View the results in the `audit_log` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SELECT * FROM audit_log ORDER BY changed_at;
 	~~~
@@ -225,7 +216,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Create the following two sample tables. `products` contains a list of products, and `orders` contains a list of orders on those products:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TABLE products (
 		product_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -233,7 +223,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 	);
 	~~~
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TABLE orders (
 	    order_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -247,7 +236,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Create a `product_sales_summary` table that stores summary records. Each record includes the total number of orders and the total value of sales for each product:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TABLE product_sales_summary (
 	    product_id UUID PRIMARY KEY,
@@ -259,7 +247,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Create a [trigger function]({% link {{ page.version.version }}/create-function.md %}#create-a-trigger-function) that updates existing summary records, or inserts a new summary record, to reflect each order that is placed:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION update_product_sales_summary()
 	RETURNS TRIGGER AS $$
@@ -285,7 +272,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Create a trigger that executes the `update_product_sales_summary` function after an `INSERT` is issued on the `orders` table (i.e., an order is placed):
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TRIGGER trg_update_product_sales_summary
 	AFTER INSERT ON orders
@@ -297,12 +283,10 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Set up the example scenario by inserting two sample product names and creating a function to randomly generate orders on those product names:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	INSERT INTO products (product_name) VALUES ('Product A'), ('Product B');
 	~~~
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION generate_orders(num_orders INT)
 	RETURNS VOID AS $$
@@ -336,14 +320,12 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Run the example function, generating 100 orders:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SELECT generate_orders(100);
 	~~~
 
 1. View some of the orders that were generated:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SELECT * FROM orders limit 5;
 	~~~
@@ -360,7 +342,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. View the aggregated results on the summary table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SELECT * FROM product_sales_summary;
 	~~~
@@ -379,7 +360,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a sample table of employees and their wages:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TABLE employees (
 	    employee_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -391,7 +371,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a [trigger function]({% link {{ page.version.version }}/create-function.md %}#create-a-trigger-function) that checks whether a new wage is below the minimum:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION ensure_minimum_wage()
 	RETURNS TRIGGER AS $$
@@ -409,7 +388,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a trigger that executes the `ensure_minimum_wage` function before an `INSERT` or `UPDATE` is issued on the `employees` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TRIGGER trg_ensure_minimum_wage
 	BEFORE INSERT OR UPDATE ON employees
@@ -419,7 +397,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a trigger function that adds an initial starting bonus of `5` to each new wage:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION give_bonus()
 	RETURNS TRIGGER AS $$
@@ -433,7 +410,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a trigger that executes the `give_bonus` function before an `INSERT` or `UPDATE` is issued on the `employees` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TRIGGER trg_give_bonus
 	BEFORE INSERT OR UPDATE ON employees
@@ -445,7 +421,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a trigger function that prints an employee's final wage with the bonus applied.
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION print_final_wage()
 	RETURNS TRIGGER AS $$
@@ -458,7 +433,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a trigger that executes the `print_final_wage` function after an `INSERT` or `UPDATE` is issued on the `employees` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TRIGGER trg_print_final_wage
 	AFTER INSERT OR UPDATE ON employees
@@ -470,7 +444,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Test the triggers by adding a new employee with a wage of `20`:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	INSERT INTO employees (name, wage) VALUES ('John Doe', 20);
 	~~~
@@ -491,7 +464,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Add a new employee with a wage of `10`:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	INSERT INTO employees (name, wage) VALUES ('Jane Doe', 10);
 	~~~

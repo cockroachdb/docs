@@ -27,12 +27,10 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 
 {{site.data.alerts.callout_success}}You can use <a href="{% link {{ page.version.version }}/set-cluster-setting.md %}"><code>SET CLUSTER SETTING .. TO DEFAULT</code></a> to reset a cluster setting as well.{{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.enabled = false;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~
@@ -44,12 +42,10 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESET CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~

@@ -89,7 +89,6 @@ These examples assume you are running [an insecure cluster]({% link {{ page.vers
 
 List statement diagnostics bundles and/or activation requests:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach statement-diag list --insecure
 ~~~
@@ -122,7 +121,6 @@ $ cockroach statement-diag delete --all --insecure
 
 List statement diagnostics bundles and/or activation requests:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach statement-diag list --insecure
 ~~~

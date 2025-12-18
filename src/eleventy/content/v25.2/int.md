@@ -14,7 +14,7 @@ For instructions showing how to auto-generate integer values (e.g., to auto-numb
 ## Names and Aliases
 
 | Name   | Allowed Width | Aliases                                          | Range                                        |
-|--------+---------------+--------------------------------------------------+----------------------------------------------|
+|--------|---------------|--------------------------------------------------|----------------------------------------------|
 | `INT`  | 64-bit        | `INTEGER`<br />`INT8`<br />`INT64`<br />`BIGINT` | -9223372036854775807 to +9223372036854775807 |
 | `INT2` | 16-bit        | `SMALLINT`                                       | -32768 to +32767                             |
 | `INT4` | 32-bit        | None                                             | -2147483648 to +2147483647                   |
@@ -55,12 +55,10 @@ If your application requires arbitrary precision numbers, use the [`DECIMAL`]({%
 
 ## Examples
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ints (a INT PRIMARY KEY, b SMALLINT);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM ints;
 ~~~
@@ -73,12 +71,10 @@ If your application requires arbitrary precision numbers, use the [`DECIMAL`]({%
 (2 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO ints VALUES (1, 32);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM ints;
 ~~~

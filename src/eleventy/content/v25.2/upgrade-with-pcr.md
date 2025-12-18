@@ -27,7 +27,6 @@ To upgrade your primary and standby clusters:
 
 1. [Connect]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#connect-to-the-system-virtual-cluster) to the standby cluster's system VC:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url \
     "postgresql://root@{standby node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
@@ -36,7 +35,6 @@ To upgrade your primary and standby clusters:
 
 1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the standby cluster's system VC:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING version '{VERSION}';
     ~~~
@@ -47,7 +45,6 @@ To upgrade your primary and standby clusters:
 
 1. Confirm that finalization is complete on the standby cluster's system VC:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW CLUSTER SETTING version;
     ~~~
@@ -56,7 +53,6 @@ To upgrade your primary and standby clusters:
 
 1. [Connect]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#connect-to-the-system-virtual-cluster) to the primary cluster's system VC:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url \
     "postgresql://root@{primary node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
@@ -65,7 +61,6 @@ To upgrade your primary and standby clusters:
 
 1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary cluster's system VC:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING version '{VERSION}';
     ~~~
@@ -76,14 +71,12 @@ To upgrade your primary and standby clusters:
 
 1. Confirm that finalization is complete on the primary cluster's system VC:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW CLUSTER SETTING version;
     ~~~
 
 1. [Connect]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#connect-to-the-system-virtual-cluster) to the primary cluster's app VC:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url \
     "postgresql://root@{primary node IP or hostname}:26257?options=-ccluster={app_virtual_cluster_name}&sslmode=verify-full" \
@@ -92,7 +85,6 @@ To upgrade your primary and standby clusters:
 
 1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary cluster's app VC: 
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING version '{VERSION}';
     ~~~
@@ -101,7 +93,6 @@ To upgrade your primary and standby clusters:
 
 1. Confirm that finalization is complete on the primary cluster's app VC:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW CLUSTER SETTING version;
     ~~~
@@ -113,21 +104,18 @@ If you have a _reader virtual cluster (reader VC)_, you must drop and recreate i
 1. After upgrading the app VC on your primary cluster, wait for the replicated time to pass the time at which the upgrade completed.
 1. On the standby cluster, stop the reader VC service:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER <readervc-name> STOP SERVICE;
     ~~~
 
 1. Drop the reader VC:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     DROP VIRTUAL CLUSTER <readervc-name>;
     ~~~
 
 1. On the standby cluster, re-create the reader VC:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER dest-system SET REPLICATION READ VIRTUAL CLUSTER;
     ~~~

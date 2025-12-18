@@ -176,7 +176,7 @@ If you find under-replicated ranges or constraint violations, you will need to [
 The JSON object returned by the critical nodes status endpoint contains the following top-level fields.
 
 | Field                         | Description                                                                                                   |
-|-------------------------------+---------------------------------------------------------------------------------------------------------------|
+|-------------------------------|---------------------------------------------------------------------------------------------------------------|
 | `criticalNodes`               | A list of nodes that are critical. Critical nodes are not safe to terminate because data loss could occur.    |
 | `report.overReplicated`       | A list of ranges that are over-replicated vs. your [zone config settings]({% link "{{ page.version.version }}/configure-replication-zones.md" %}).  |
 | `report.violatingConstraints` | A list of ranges that are in violation of your [zone config settings]({% link "{{ page.version.version }}/configure-replication-zones.md" %}).      |
@@ -187,7 +187,7 @@ The JSON object returned by the critical nodes status endpoint contains the foll
 The `criticalNodes` portion of the response contains a (possibly empty) list of objects, each of which has the following fields.
 
 | Field           | Example                 | Description                                                                                                    |
-|-----------------+-------------------------+----------------------------------------------------------------------------------------------------------------|
+|-----------------|-------------------------|----------------------------------------------------------------------------------------------------------------|
 | `nodeId`        | `2`                     | The node ID of the critical node.                                                                              |
 | `address`       | `{...}`                 | An object representing the network address of the node.                                                        |
 | `locality`      | `{...}`                 | An object representing the [locality]({% link "{{ page.version.version }}/cockroach-start.md" %}#locality) of the node.                              |
@@ -201,7 +201,7 @@ The `criticalNodes` portion of the response contains a (possibly empty) list of 
 Each report subtype (e.g., `report.unavailable`, `report.violatingConstraints`, etc.) returns a (possibly empty) list of objects describing the [ranges]({% link "{{ page.version.version }}/architecture/overview.md" %}#architecture-range) that report applies to. Each object contains a `rangeDescriptor` and a `config` that describes the range.
 
 | Field                          | Example                                                      | Description                                                                                                                                    |
-|--------------------------------+--------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | `rangeDescriptor.rangeId`      | `"89"`                                                       | The [range ID]({% link "{{ page.version.version }}/alter-range.md" %}#find-range-id-and-leaseholder-information) this section of the report is referring to.                         |
 | `rangeDescriptor.startKey`     | `"8okSYW1zdGVyZGFtAAE="`                                     | The [start key for the range]({% link "{{ page.version.version }}/show-ranges.md" %}#start-key).                                                                                     |
 | `rangeDescriptor.endKey`       | `"8okSYW1zdGVyZGFtAAESszMzMzMzQAD/gAD/AP8A/wD/AP8A/yMAAQ=="` | The [end key for the range]({% link "{{ page.version.version }}/show-ranges.md" %}#end-key).                                                                                         |

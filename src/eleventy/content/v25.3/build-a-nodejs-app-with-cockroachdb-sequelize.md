@@ -19,7 +19,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 Clone the sample code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-node-sequelize
 ~~~
@@ -34,7 +33,6 @@ To start the app:
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -43,7 +41,6 @@ To start the app:
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="<connection-string>"
     ~~~
@@ -56,19 +53,16 @@ To start the app:
 
 1. Install the app dependencies:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-node-sequelize
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ npm install
     ~~~
 
 1. Run the code:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ node app.js
     ~~~

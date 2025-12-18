@@ -54,12 +54,10 @@ Parameter | Description
 
 ### Create statistics on a single column
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS revenue_stats ON revenue FROM rides;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATISTICS FOR TABLE rides;
 ~~~
@@ -88,12 +86,10 @@ Statistics are automatically collected for **all columns**, making the `revenue_
 
 ### Create statistics on multiple columns
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS city_revenue_stats ON city, revenue FROM rides;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATISTICS FOR TABLE rides;
 ~~~
@@ -125,14 +121,12 @@ Multi-column statistics are automatically collected for **all columns that prefi
 
 The `CREATE STATISTICS` statement shown below automatically figures out which columns to get statistics on.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS users_stats FROM users;
 ~~~
 
 This statement creates statistics identical to the statistics that CockroachDB creates automatically.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATISTICS FOR TABLE users;
 ~~~
@@ -159,7 +153,6 @@ This statement creates statistics identical to the statistics that CockroachDB c
 
 To create statistics as of a given time (in this example, 1 minute ago to avoid interfering with the production workload), run a statement like the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS vehicle_stats_1 FROM vehicles AS OF SYSTEM TIME '-1m';
 ~~~
@@ -178,7 +171,6 @@ To view statistics jobs, there are two options:
 
 1. Use  [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) to see all statistics jobs that were created by user queries (i.e., someone entering `CREATE STATISTICS` at the SQL prompt or via application code):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > WITH x AS (SHOW JOBS) SELECT * FROM x WHERE job_type LIKE '%CREATE STATS%';
     ~~~
@@ -196,7 +188,6 @@ To view statistics jobs, there are two options:
 
 1. Use `SHOW AUTOMATIC JOBS` to see statistics jobs that were created by [automatically generated statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > WITH x AS (SHOW AUTOMATIC JOBS) SELECT * FROM x WHERE job_type LIKE '%CREATE STATS%';
     ~~~

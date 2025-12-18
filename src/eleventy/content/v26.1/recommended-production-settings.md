@@ -183,7 +183,7 @@ These results were achieved using the ["bank" workload]({% link "{{ page.version
 Results:
 
 | Value                 | Result          |
-|-----------------------+-----------------|
+|-----------------------|-----------------|
 | vCPU per Node         | 16              |
 | Logical Data per Node | 4.32 TiB        |
 | RAM per Node          | 32 GiB          |

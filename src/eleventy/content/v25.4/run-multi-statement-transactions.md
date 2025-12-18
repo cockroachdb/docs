@@ -30,7 +30,6 @@ Make sure you have already:
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 DELETE FROM customers WHERE id = 1;

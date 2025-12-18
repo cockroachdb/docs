@@ -76,17 +76,14 @@ For privileges required by specific statements, see the documentation for the re
 
 ### Grant privileges on databases
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE USER IF NOT EXISTS max WITH PASSWORD 'roach';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON DATABASE movr TO max WITH GRANT OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -103,12 +100,10 @@ SHOW GRANTS ON DATABASE movr;
 
 ### Grant privileges on specific tables in a database
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT DELETE ON TABLE rides TO max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE rides;
 ~~~
@@ -126,12 +121,10 @@ SHOW GRANTS ON TABLE rides;
 
 To grant all the privileges on existing tables to a user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON * TO max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE movr.public.*;
 ~~~
@@ -162,21 +155,18 @@ SHOW GRANTS ON TABLE movr.public.*;
 
 To ensure that anytime a new table is created, all the privileges on that table are granted to a user, use [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DEFAULT PRIVILEGES FOR ALL ROLES GRANT ALL ON TABLES TO max;
 ~~~
 
 To check that this is working as expected, [create a table]({% link {{ page.version.version }}/create-table.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS usertable(x INT);
 ~~~
 
 Then, check that the all privileges on the newly created table are granted to the user you specified using [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE usertable;
 ~~~
@@ -198,19 +188,16 @@ SHOW GRANTS ON TABLE usertable;
 
 For example, the following statement allows the user `max` (created in a [previous example](#grant-privileges-on-databases)) to use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement by assigning the `MODIFYCLUSTERSETTING` system privilege:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT SYSTEM MODIFYCLUSTERSETTING TO max;
 ~~~
 
 ### Make a table readable to every user in the system
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT SELECT ON TABLE vehicles TO public;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE vehicles;
 ~~~
@@ -227,17 +214,14 @@ SHOW GRANTS ON TABLE vehicles;
 
 ### Grant privileges on schemas
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON SCHEMA cockroach_labs TO max WITH GRANT OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -255,17 +239,14 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 
 To grant privileges on [user-defined types]({% link {{ page.version.version }}/create-type.md %}), use the following statements.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TYPE IF NOT EXISTS status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON TYPE status TO max WITH GRANT OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TYPE status;
 ~~~
@@ -282,7 +263,6 @@ SHOW GRANTS ON TYPE status;
 
 ### Grant the privilege to manage the replication zones for a database or table
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ZONECONFIG ON TABLE rides TO max;
 ~~~
@@ -291,22 +271,18 @@ The user `max` can then use the [`CONFIGURE ZONE`]({% link {{ page.version.versi
 
 ### Grant role membership
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE IF NOT EXISTS developer WITH CREATEDB;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE USER IF NOT EXISTS abbey WITH PASSWORD 'lincoln';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT developer TO abbey;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -320,12 +296,10 @@ SHOW GRANTS ON ROLE developer;
 
 ### Grant the admin option
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT developer TO abbey WITH ADMIN OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -339,12 +313,10 @@ SHOW GRANTS ON ROLE developer;
 
 ### Grant privileges with the option to grant to others
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT UPDATE ON TABLE rides TO max WITH GRANT OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE rides;
 ~~~

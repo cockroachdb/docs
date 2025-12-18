@@ -43,14 +43,12 @@ These examples assume the presence of the [MovR data set]({% link {{ page.versio
 
 ### Use a cursor
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 DECLARE rides_cursor CURSOR FOR SELECT * FROM movr.rides;
 ~~~
 
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 FETCH FORWARD 5 FROM rides_cursor;
 ~~~
@@ -66,12 +64,10 @@ FETCH FORWARD 5 FROM rides_cursor;
 (5 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CLOSE rides_cursor;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 ~~~
@@ -101,7 +97,6 @@ The following example uses a holdable cursor to return vehicles that are availab
 <section class="filter-content" markdown="1" data-scope="explicit">
 Start a transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 ~~~
@@ -109,7 +104,6 @@ BEGIN;
 
 Declare a cursor using `WITH HOLD` to keep it open after the transaction commits:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DECLARE available_vehicles_cursor CURSOR WITH HOLD FOR
   SELECT id, type, city, status FROM vehicles WHERE status = 'available';
@@ -117,7 +111,6 @@ DECLARE available_vehicles_cursor CURSOR WITH HOLD FOR
 
 Fetch the first two rows from the cursor:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 FETCH 2 FROM available_vehicles_cursor;
 ~~~
@@ -132,7 +125,6 @@ FETCH 2 FROM available_vehicles_cursor;
 <section class="filter-content" markdown="1" data-scope="explicit">
 Commit the transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 ~~~
@@ -140,7 +132,6 @@ COMMIT;
 
 Continue fetching rows from the cursor:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 FETCH 2 FROM available_vehicles_cursor;
 ~~~
@@ -154,14 +145,12 @@ FETCH 2 FROM available_vehicles_cursor;
 
 Close the cursor:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CLOSE available_vehicles_cursor;
 ~~~
 
 ### View all open cursors
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM pg_cursors;
 ~~~

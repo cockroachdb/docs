@@ -146,7 +146,6 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 **Example**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
@@ -175,7 +174,6 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 **Example**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE packages (
     customer INT,
@@ -197,14 +195,12 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Create the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
     ~~~
 
 1. Create the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE IF NOT EXISTS orders (
         id INT PRIMARY KEY,
@@ -216,12 +212,10 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Insert a record into each table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers VALUES (1001, 'a@co.tld'), (1234, 'info@cockroachlabs.com');
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders VALUES (1, 1002, 29.99);
     ~~~
@@ -233,12 +227,10 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Insert a record into the referencing table and try to update the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders VALUES (1, 1001, 29.99);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers SET id = 1002 WHERE id = 1001;
     ~~~
@@ -250,12 +242,10 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Update the `id`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers SET id = 1111 WHERE id = 1234;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers;
     ~~~
@@ -270,7 +260,6 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Try to delete a referenced row:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM customers WHERE id = 1001;
     ~~~
@@ -282,12 +271,10 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Delete the row:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM customers WHERE id = 1111;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers;
     ~~~
@@ -304,7 +291,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Create the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers_2 (
         id INT PRIMARY KEY
@@ -313,7 +299,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Create the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE orders_2 (
         id INT PRIMARY KEY,
@@ -323,26 +308,22 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Insert a few records into the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers_2 VALUES (1), (2), (3);
     ~~~
 
 1. Insert some records into the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders_2 VALUES (100,1), (101,2), (102,3), (103,1);
     ~~~
 
 1. Update an `id` in the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers_2 SET id = 23 WHERE id = 1;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers_2;
     ~~~
@@ -356,7 +337,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
     (3 rows)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_2;
     ~~~
@@ -377,12 +357,10 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Delete `id = 23` from `customers_2`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM customers_2 WHERE id = 23;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers_2;
     ~~~
@@ -397,7 +375,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Check to make sure the rows in `orders_2` where `customers_id = 23` were also deleted:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_2;
     ~~~
@@ -416,7 +393,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Create the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers_3 (
         id INT PRIMARY KEY
@@ -425,7 +401,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Create the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE orders_3 (
         id INT PRIMARY KEY,
@@ -435,19 +410,16 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Insert a few records into the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers_3 VALUES (1), (2), (3);
     ~~~
 
 1. Insert some records into the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders_3 VALUES (100,1), (101,2), (102,3), (103,1);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_3;
     ~~~
@@ -463,12 +435,10 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Update an `id` in the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers_3 SET id = 23 WHERE id = 1;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers_3;
     ~~~
@@ -481,7 +451,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
     (3 rows)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_3;
     ~~~
@@ -501,12 +470,10 @@ In this example, we'll create a table with a foreign key constraint with the [fo
     
 1. Delete `id = 2` from `customers_3`:
 
-      {% include_cached copy-clipboard.html %}
       ~~~ sql
       > DELETE FROM customers_3 WHERE id = 2;
       ~~~
 
-      {% include_cached copy-clipboard.html %}
       ~~~ sql
       > SELECT * FROM customers_3;
       ~~~
@@ -520,7 +487,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Check to make sure the row in `orders_3` where `customers_id = 2` was updated to `NULL`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_3;
     ~~~
@@ -540,7 +506,6 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Create the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers_4 (
         id INT PRIMARY KEY
@@ -549,7 +514,6 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Create the referencing table with the `DEFAULT` value for `customer_id` set to `9999`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE orders_4 (
         id INT PRIMARY KEY,
@@ -559,19 +523,16 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Insert a few records into the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers_4 VALUES (1), (2), (3), (9999);
     ~~~
 
 1. Insert some records into the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders_4 VALUES (100,1), (101,2), (102,3), (103,1);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_4;
     ~~~
@@ -588,12 +549,10 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Update an `id` in the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers_4 SET id = 23 WHERE id = 1;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers_4;
     ~~~
@@ -608,7 +567,6 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
     (4 rows)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_4;
     ~~~
@@ -629,12 +587,10 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Delete `id = 2` from `customers_4`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM customers_4 WHERE id = 2;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers_4;
     ~~~
@@ -649,7 +605,6 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Check to make sure the corresponding `customer_id` value to `id = 101`, was updated to the `DEFAULT` value (i.e., `9999`) in `orders_4`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_4;
     ~~~
@@ -668,7 +623,6 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Create a new `customers_5` table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers_5 (
         id INT PRIMARY KEY
@@ -677,14 +631,12 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Insert some values:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers_5 VALUES (1), (2), (3), (4);
     ~~~
 
 1. Create a new `orders_5` table that references the `customers_5` table, but with no default value specified for the `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE orders_5 (
         id INT PRIMARY KEY,
@@ -694,24 +646,20 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Insert some values:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders_5 VALUES (200,1), (201,2), (202,3), (203,4);
     ~~~
 
 1. Delete and update the values in the `customers_5` table to set the referenced values in `orders_5` to `NULL`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM customers_5 WHERE id = 3;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers_5 SET id = 0 WHERE id = 1;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_5;
     ~~~
@@ -731,7 +679,6 @@ You can add more than one foreign key constraint to a single column.
 
 1. Create the following tables:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers (
         id INT PRIMARY KEY,
@@ -740,7 +687,6 @@ You can add more than one foreign key constraint to a single column.
     );
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE orders (
         id INT PRIMARY KEY,
@@ -751,7 +697,6 @@ You can add more than one foreign key constraint to a single column.
 
 1. Create a table with a column that references columns in both the `customers` and `orders` tables:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE shipments (
         tracking_number UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -767,17 +712,14 @@ You can add more than one foreign key constraint to a single column.
 
 1. Insert a record into each table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers VALUES (1001, 'Alexa', 'a@co.tld'), (1234, 'Evan', 'info@cockroachlabs.com');
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders VALUES (1, 1001, 25), (2, 1234, 15), (3, 2000, 5);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO shipments (carrier, status, customer_id) VALUES ('USPS', 'Out for delivery', 1001);
     ~~~
@@ -786,7 +728,6 @@ You can add more than one foreign key constraint to a single column.
 
     For instance, the following statement fulfills just one of the foreign key constraints and returns an error:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
     ~~~
@@ -799,12 +740,10 @@ You can add more than one foreign key constraint to a single column.
 
 1. Add multiple foreign key constraints on the same column, that reference the same column:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE shipments ADD CONSTRAINT fk_customers_2 FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW CONSTRAINTS FROM shipments;
     ~~~
@@ -823,7 +762,6 @@ You can add more than one foreign key constraint to a single column.
 
 1. In the event of a `DELETE` or `UPDATE` to the referenced column (`customers(id)`), the action for the first foreign key specified takes precedence. In this case, that will be the default [action](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`) on the first foreign key constraint (`fk_customers`). This means that `DELETE`s on referenced columns will fail, even though the second foreign key constraint (`fk_customer_2`) is defined with the `ON DELETE CASCADE` action.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM orders WHERE customer_id = 1001;
     ~~~
@@ -840,14 +778,12 @@ The examples in this section show how composite foreign key matching works for b
 
 1. Create a `parent` tables with a composite key:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE parent (x INT, y INT,  z INT, UNIQUE (x, y, z));
     ~~~
 
 1. Createa `full_test` table with a foreign key on `parent` that uses the `MATCH FULL` algorithm:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE full_test (
         x INT,
@@ -859,7 +795,6 @@ The examples in this section show how composite foreign key matching works for b
 
 1. Create a `simple_test` table with a foreign key on `parent` that uses the `MATCH SIMPLE` algorithm (the default):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE simple_test (
         x INT,
@@ -871,7 +806,6 @@ The examples in this section show how composite foreign key matching works for b
 
 1. Populate `parent` with some values:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT
         INTO parent
@@ -898,7 +832,7 @@ Now let's look at some `INSERT` statements to see how the different key matching
 Inserting values into the table using the `MATCH SIMPLE` algorithm (described [above](#composite-foreign-key-matching)) gives the following results:
 
 | Statement                                         | Can insert? | Throws error? | Notes                         |
-|---------------------------------------------------+-------------+---------------+-------------------------------|
+|---------------------------------------------------|-------------|---------------|-------------------------------|
 | `INSERT INTO simple_test VALUES (1,1,1)`          | Yes         | No            | References `parent (1,1,1)`.  |
 | `INSERT INTO simple_test VALUES (NULL,NULL,NULL)` | Yes         | No            | Does not reference `parent`.  |
 | `INSERT INTO simple_test VALUES (1,NULL,NULL)`    | Yes         | No            | Does not reference `parent`.  |
@@ -915,7 +849,7 @@ Inserting values into the table using the `MATCH SIMPLE` algorithm (described [a
 Inserting values into the table using the `MATCH FULL` algorithm (described [above](#composite-foreign-key-matching)) gives the following results:
 
 | Statement                                       | Can insert? | Throws error? | Notes                                               |
-|-------------------------------------------------+-------------+---------------+-----------------------------------------------------|
+|-------------------------------------------------|-------------|---------------|-----------------------------------------------------|
 | `INSERT INTO full_test VALUES (1,1,1)`          | Yes         | No            | References `parent(1,1,1)`.                         |
 | `INSERT INTO full_test VALUES (NULL,NULL,NULL)` | Yes         | No            | Does not reference `parent`.                        |
 | `INSERT INTO full_test VALUES (1,NULL,NULL)`    | No          | Yes           | Can't mix null and non-null values in `MATCH FULL`. |

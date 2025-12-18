@@ -27,7 +27,6 @@ If you haven't already, [review the full range of topology patterns]({% link {{ 
 
 1. Start each node on a separate VM, setting the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag to the node's region and AZ combination. For example, the following command starts a node in the east1 availability zone of the us-east region:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --locality=region=us-east,zone=east1 \

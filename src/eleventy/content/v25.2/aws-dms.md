@@ -27,12 +27,10 @@ Complete the following items before starting the DMS migration:
 
 - Set the following [session variables]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) using [`ALTER ROLE ... SET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER ROLE {username} SET copy_from_retries_enabled = true;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER ROLE {username} SET copy_from_atomic_enabled = false;
     ~~~
@@ -169,7 +167,6 @@ When specifying a range of tables to migrate, the following aspects of the sourc
 
 1. To improve full-load performance, consider defining a *parallel load* setting for selected columns. A parallel load splits the full-load task into multiple threads. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ json
     "parallel-load": {
        "type": "ranges",
@@ -264,7 +261,6 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
 - When using **Truncate** or **Do nothing** as a target table preparation mode, you cannot include tables with any hidden columns. You can verify which tables contain hidden columns by executing the following SQL query:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
     ~~~
@@ -289,7 +285,6 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
 - Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated. If problems are found, explanatory messages will be returned in the `cockroach sql` shell.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > WITH
         invalid_columns

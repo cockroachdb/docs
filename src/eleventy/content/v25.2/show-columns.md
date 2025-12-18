@@ -43,7 +43,6 @@ Field | Description
 
 ### Show columns in a table
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -61,7 +60,6 @@ Field | Description
 
 Alternatively, within the built-in SQL shell, you can use the `\d <table>` [shell command]({% link {{ page.version.version }}/cockroach-sql.md %}#commands):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \d users
 ~~~
@@ -81,12 +79,10 @@ Alternatively, within the built-in SQL shell, you can use the `\d <table>` [shel
 
 You can use [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) to add comments on a column.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON COLUMN users.credit_card IS 'This column contains user payment information.';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users WITH COMMENT;
 ~~~

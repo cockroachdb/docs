@@ -25,7 +25,7 @@ The `WITH (storage parameter)` [statement]({% link {{ page.version.version }}/sq
 ## Command parameters
 
 | Parameter           | Description          |
-|---------------------+----------------------|
+|---------------------|----------------------|
 | `table`             | The table to which you are setting the parameter.  |
 | `index`             | The index to which you are setting the parameter.  |
 | `parameter_name`    | The name of the storage parameter. See [Storage parameters](#storage-parameters) for a list of available parameters. |
@@ -48,7 +48,6 @@ The user must be a member of the [`admin`]({% link {{ page.version.version }}/se
 
 ### Create a table with row-level TTL enabled
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE ttl_test (
   id UUID PRIMARY KEY default gen_random_uuid(),
@@ -57,7 +56,6 @@ CREATE TABLE ttl_test (
 ) WITH (ttl_expire_after = '3 months');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE TABLE ttl_test;
 ~~~

@@ -168,7 +168,6 @@ If you observe nodes frequently restarting, confirm that the crashes are caused 
 
 - Monitor `dmesg` to determine if a node crashed because it ran out of memory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo dmesg | grep -iC 3 "cockroach"
     ~~~

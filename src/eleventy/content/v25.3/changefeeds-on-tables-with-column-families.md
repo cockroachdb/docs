@@ -96,66 +96,56 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. As the `root` user, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure
     ~~~
 
 1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 1. In a separate terminal window, set up your HTTP server. Clone the test repository:
 
-    {% include_cached copy-clipboard.html %}
     ~~~shell
     git clone https://github.com/cockroachlabs/cdc-webhook-sink-test-server.git
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~shell
     cd cdc-webhook-sink-test-server/go-https-server
     ~~~
 
 1. Next make the script executable and then run the server (passing a specific port if preferred, otherwise it will default to `:3000`):
 
-    {% include_cached copy-clipboard.html %}
     ~~~shell
     chmod +x ./server.sh
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~shell
     ./server.sh <port>
     ~~~
 
 1. Back in your SQL shell, create a database called `cdc_demo`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE cdc_demo;
     ~~~
 
 1. Set the database as the default:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     USE cdc_demo;
     ~~~
 
 1. Create a table with two column families:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE office_dogs (
         id INT PRIMARY KEY,
@@ -168,14 +158,12 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
 1. Insert some data into the table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO office_dogs (id, name, dog_owner) VALUES (1, 'Petee', 'Lauren'), (2, 'Max', 'Taylor'), (3, 'Patch', 'Sammy'), (4, 'Roach', 'Ashley');
     ~~~
 
 1. Create a second table that also defines column families:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE office_plants (
          id INT PRIMARY KEY,
@@ -189,14 +177,12 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
 1. Insert some data into `office_plants`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO office_plants (id, plant_name, office_floor, safe_for_dogs) VALUES (1, 'Sansevieria', 11, false), (2, 'Monstera', 11, false), (3, 'Peperomia', 10, true), (4, 'Jade', 9, true);
     ~~~
 
 1. Create a changefeed on the `office_dogs` table targeting one of the column families. Use the `FAMILY` keyword in the `CREATE` statement:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true';
     ~~~
@@ -216,7 +202,6 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
     Alternatively, create a changefeed using the `FAMILY` keyword across two tables:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_plants FAMILY dog_friendly INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true';
     ~~~
@@ -244,7 +229,6 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
 1. To create a changefeed that emits messages for all column families in a table, use the [`split_column_families`]({% link {{ page.version.version }}/create-changefeed.md %}#split-column-families) option:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE office_dogs INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true' with split_column_families;
     ~~~
@@ -270,7 +254,6 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
 1. Update one of the values in the table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     UPDATE office_dogs SET name = 'Izzy' WHERE id = 4;
     ~~~
@@ -291,42 +274,36 @@ In this example, you'll set up a sinkless changefeed on two tables that have [co
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
 1. As the `root` user, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
     ~~~
 
 1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 1. Create a database called `cdc_demo`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE cdc_demo;
     ~~~
 
 1. Set the database as the default:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     USE cdc_demo;
     ~~~
 
 1. Create a table with two column families:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE office_dogs (
           id INT PRIMARY KEY,
@@ -339,14 +316,12 @@ In this example, you'll set up a sinkless changefeed on two tables that have [co
 
 1. Insert some data into the table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO office_dogs (id, name, dog_owner) VALUES (1, 'Petee', 'Lauren'), (2, 'Max', 'Taylor'), (3, 'Patch', 'Sammy'), (4, 'Roach', 'Ashley');
     ~~~
 
 1. Create another table that also defines two column families:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE office_plants (
          id INT PRIMARY KEY,
@@ -360,14 +335,12 @@ In this example, you'll set up a sinkless changefeed on two tables that have [co
 
 1. Insert some data into `office_plants`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO office_plants (id, plant_name, office_floor, safe_for_dogs) VALUES (1, 'Sansevieria', 11, false), (2, 'Monstera', 11, false), (3, 'Peperomia', 10, true), (4, 'Jade', 9, true);
     ~~~
 
 1. Create a changefeed on the `office_dogs` table targeting one of the column families. Use the `FAMILY` keyword in the statement:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee;
     ~~~
@@ -388,7 +361,6 @@ In this example, you'll set up a sinkless changefeed on two tables that have [co
 
     Alternatively, create a changefeed using the `FAMILY` keyword across two tables:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_plants FAMILY dog_friendly;
     ~~~
@@ -417,14 +389,12 @@ In this example, you'll set up a sinkless changefeed on two tables that have [co
 
 1. To create a changefeed that emits messages for all column families in a table, use the [`split_column_families`]({% link {{ page.version.version }}/changefeed-for.md %}#split-column-families) option:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE office_dogs WITH split_column_families;
     ~~~
 
     In your other terminal window, insert some more values:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure -e "INSERT INTO cdc_demo.office_dogs (id, name, dog_owner) VALUES (5, 'Daisy', 'Cameron'), (6, 'Sage', 'Blair'), (7, 'Bella', 'Ellis');"
     ~~~
@@ -451,7 +421,6 @@ In this example, you'll set up a sinkless changefeed on two tables that have [co
 
 1. In your other terminal window, update one of the values in the table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure -e "UPDATE cdc_demo.office_dogs SET name = 'Izzy' WHERE id = 4;"
     ~~~

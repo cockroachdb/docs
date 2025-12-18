@@ -33,7 +33,7 @@ Failure to consider either of these aspects can result in unexpected impacts on 
 The multi-region patterns described in the following table are almost always table-specific. For example, you might use [Regional Tables]({% link "{{ page.version.version }}/regional-tables.md" %}) for frequently updated tables that are tied to a specific region, and [Global Tables]({% link "{{ page.version.version }}/global-tables.md" %}) for reference tables that are not tied to a specific region, and that are read frequently but updated infrequently.
 
 | Pattern                                                  | Latency                                                                                                    |
-|----------------------------------------------------------+------------------------------------------------------------------------------------------------------------|
+|----------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
 | [Regional Tables]({% link "{{ page.version.version }}/regional-tables.md" %})                  | Low latency for single-region writes and multi-region stale reads.                                         |
 | [Global Tables]({% link "{{ page.version.version }}/global-tables.md" %})                      | Low-latency multi-region reads from all regions, at the expense of higher latency cross-region writes.     |
 | [Follower Reads]({% link "{{ page.version.version }}/topology-follower-reads.md" %})           | Fast regional (historical) reads, slower cross-region writes.                                              |

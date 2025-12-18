@@ -37,7 +37,6 @@ To set all future transactions to run at `READ COMMITTED` isolation, use one of 
 
 - The [`SET SESSION CHARACTERISTICS`]({% link {{ page.version.version }}/set-vars.md %}#special-syntax-cases) statement, which applies to the current session:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED;
 	~~~
@@ -46,35 +45,30 @@ To set all future transactions to run at `READ COMMITTED` isolation, use one of 
 
   	At the session level:
 
-  	{% include_cached copy-clipboard.html %}
   	~~~ sql
   	SET default_transaction_isolation = 'read committed';
   	~~~
 
     At the [database level]({% link {{ page.version.version }}/alter-database.md %}#set-session-variable):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER DATABASE db SET default_transaction_isolation = 'read committed';
     ~~~
 
     At the [role level]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER ROLE foo SET default_transaction_isolation = 'read committed';
     ~~~
 
 - The `default_transaction_isolation` session variable as a [connection parameter]({% link {{ page.version.version }}/connection-parameters.md %}#supported-options-parameters) with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	cockroach sql --url='postgresql://{username}@{host}:{port}/{database}?options=-c default_transaction_isolation=read\ committed'
 	~~~
 
 To view the default isolation level of the session:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW default_transaction_isolation;
 ~~~
@@ -91,14 +85,12 @@ To begin a transaction as a `READ COMMITTED` transaction, use one of the followi
 
 - The [`BEGIN TRANSACTION ISOLATION LEVEL`]({% link {{ page.version.version }}/begin-transaction.md %}#parameters) statement:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
 	~~~
 
 - The [`SET TRANSACTION ISOLATION LEVEL`]({% link {{ page.version.version }}/set-transaction.md %}#parameters) statement, at the beginning of the transaction:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	BEGIN;
 	  SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
@@ -106,7 +98,6 @@ To begin a transaction as a `READ COMMITTED` transaction, use one of the followi
 
 - The [`transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#transaction-isolation) session variable, at the beginning of the transaction: 
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	BEGIN;
 	  SET transaction_isolation = 'read committed';
@@ -114,7 +105,6 @@ To begin a transaction as a `READ COMMITTED` transaction, use one of the followi
 
 To view the isolation level of a transaction, run `SHOW` within the open transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW transaction_isolation;
 ~~~
@@ -193,19 +183,16 @@ For details on how this is implemented, see [Read snapshots]({% link {{ page.ver
   <div class="grid-item">
   In a terminal window (Session 1), create a table and insert some values:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   CREATE TABLE kv (k INT PRIMARY KEY, v INT);
   ~~~
   
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   INSERT INTO kv VALUES (1, 2);
   ~~~
   
   Begin a `READ COMMITTED` transaction and read a table row:
   
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
     SELECT * FROM kv WHERE v = 2;
@@ -221,14 +208,12 @@ For details on how this is implemented, see [Read snapshots]({% link {{ page.ver
   <div class="grid-item">
   In a new terminal window (Session 2), begin another `READ COMMITTED` transaction:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
   ~~~
   
   Update the table row, insert a new row, and commit the transaction:
   
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   UPDATE kv SET k = 2 WHERE v = 2;
     INSERT INTO kv VALUES (3, 2);
@@ -239,7 +224,6 @@ For details on how this is implemented, see [Read snapshots]({% link {{ page.ver
   <div class="grid-item">
   In Session 1, issue the read again:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   SELECT * FROM kv WHERE v = 2;
   ~~~
@@ -274,19 +258,16 @@ Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETR
   <div class="grid-item">
   In a terminal window (Session 1), create a table and insert some values:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   CREATE TABLE kv (k INT PRIMARY KEY, v INT);
   ~~~
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   INSERT INTO kv VALUES (1, 2);
   ~~~
   
   Begin a `READ COMMITTED` transaction and read a table row:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
     SELECT * FROM kv WHERE k = 1;
@@ -302,14 +283,12 @@ Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETR
   <div class="grid-item">
   In a new terminal window (Session 2), begin another `READ COMMITTED` transaction:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
   ~~~
   
   Update the table row and commit the transaction:
   
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   UPDATE kv SET v = 3 WHERE k = 1;
     COMMIT;
@@ -319,7 +298,6 @@ Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETR
   <div class="grid-item">
   In Session 1, update the table row again and commit the transaction:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   UPDATE kv SET v = 4 WHERE k = 1;
     COMMIT;
@@ -327,7 +305,6 @@ Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETR
   
   Read the table row and see that it reflects the update from Session 1:
   
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   SELECT * FROM kv WHERE k = 1;
   ~~~
@@ -342,7 +319,6 @@ Under `SERIALIZABLE` isolation, transaction `A` would have aborted with a [`RETR
 
 The update in Session 2 appears to be "lost" because its result is overwritten by a concurrent transaction. It is **not** lost at the database level, and can be found using [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) and a timestamp earlier than the commit in Session 1:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM kv AS OF SYSTEM TIME '2023-11-09 21:22:10' WHERE k = 1;
 ~~~
@@ -425,14 +401,12 @@ The following examples demonstrate how to:
 
 1. Enable `READ COMMITTED` transactions:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SET CLUSTER SETTING sql.txn.read_committed_isolation.enabled = 'true';
 	~~~
 
 1. Create the `doctors` table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE doctors (
       id INT PRIMARY KEY,
@@ -442,7 +416,6 @@ The following examples demonstrate how to:
 
 1. Create the `schedules` table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE schedules (
       day DATE,
@@ -454,7 +427,6 @@ The following examples demonstrate how to:
 
 1. Add two doctors to the `doctors` table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO doctors VALUES
       (1, 'Abe'),
@@ -463,7 +435,6 @@ The following examples demonstrate how to:
 
 1. Insert one week's worth of data into the `schedules` table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO schedules VALUES
       ('2023-12-01', 1, true),
@@ -486,14 +457,12 @@ The following examples demonstrate how to:
 
 Before proceeding, reset the [example scenario](#before-you-begin):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE schedules SET on_call = true WHERE on_call = false;
 ~~~
 
 Confirm that at least one doctor is on call each day of the week:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT day, count(*) AS on_call FROM schedules
   WHERE on_call = true
@@ -520,14 +489,12 @@ Doctor 1, Abe, starts to request leave for `2023-12-05` using the hospital's sch
 
 Start a transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ~~~
 
 Check to make sure that another doctor is on call for `2023-12-05`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05';
@@ -546,14 +513,12 @@ Around the same time, Doctor 2, Betty, starts to request leave for the same day 
 
 In a new terminal (Session 2), open the SQL shell on your [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster. Start a transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ~~~
 
 Check to make sure that another doctor is on call for `2023-12-05`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05';
@@ -570,7 +535,6 @@ SELECT * FROM schedules
   <div class="grid-item">
 In Session 1, the previous read confirmed that another doctor is available on `2023-12-05`. Update the schedule to put Abe on leave:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE schedules SET on_call = false
   WHERE day = '2023-12-05'
@@ -579,7 +543,6 @@ UPDATE schedules SET on_call = false
 
 Read the rows for `2023-12-05`. Session 1 sees that only Abe is on leave once its transaction commits:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05';
@@ -596,7 +559,6 @@ SELECT * FROM schedules
   <div class="grid-item">
 In Session 2, the previous read confirmed that another doctor is available on `2023-12-05`. Update the schedule to put Betty on leave:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE schedules SET on_call = false
   WHERE day = '2023-12-05'
@@ -605,7 +567,6 @@ UPDATE schedules SET on_call = false
 
 Read the rows for `2023-12-05`. Session 2 sees that only Betty is on leave once its transaction commits:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05';
@@ -622,7 +583,6 @@ SELECT * FROM schedules
   <div class="grid-item">
 In Session 1, commit the transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 ~~~
@@ -633,7 +593,6 @@ COMMIT;
   <div class="grid-item">
 In Session 2, read the rows for `2023-12-05` again:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05';
@@ -652,7 +611,6 @@ If the transaction in Session 2 commits and updates the `on_call` value for Bett
 
 Instead, the transaction should rollback so that the write skew anomaly does not commit:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ROLLBACK;
 ~~~
@@ -663,14 +621,12 @@ ROLLBACK;
 
 Before proceeding, reset the [example scenario](#before-you-begin):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE schedules SET on_call = true WHERE on_call = false;
 ~~~
 
 Confirm that at least one doctor is on call each day of the week:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT day, count(*) AS on_call FROM schedules
   WHERE on_call = true
@@ -697,7 +653,6 @@ Doctor 1, Abe, starts to request leave for `2023-12-05` using the hospital's sch
 
 Start a transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ~~~
@@ -708,7 +663,6 @@ Check to make sure that another doctor is on call for `2023-12-05`. Use [`FOR UP
   Include an `ORDER BY` clause to force locking to occur in a specific order. This prevents potential deadlock with another locking read on the same rows, which can cause the transaction to abort.
   {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05'
@@ -729,14 +683,12 @@ Around the same time, Doctor 2, Betty, starts to request leave for the same day 
 
 In a new terminal (Session 2), open the SQL shell on your [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster. Start a transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ~~~
 
 Check to make sure that another doctor is on call for `2023-12-05`. Use `FOR UPDATE` to lock the rows so that only the current transaction can update them:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05'
@@ -750,7 +702,6 @@ However, because Session 1 has already acquired an [exclusive lock](#locking-rea
   <div class="grid-item">
 In Session 1, the previous read confirmed that another doctor is available on `2023-12-05`. Update the schedule to put Abe on leave:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE schedules SET on_call = false
   WHERE day = '2023-12-05'
@@ -759,7 +710,6 @@ UPDATE schedules SET on_call = false
 
 Commit the transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 ~~~
@@ -777,7 +727,6 @@ Once the transaction in Session 1 commits, it releases its exclusive lock. Sessi
 
 Rollback the transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ROLLBACK;
 ~~~
@@ -788,14 +737,12 @@ ROLLBACK;
 
 Before proceeding, reset the [example scenario](#before-you-begin):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE schedules SET on_call = true WHERE on_call = false;
 ~~~
 
 Confirm that at least one doctor is on call each day of the week:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT day, count(*) AS on_call FROM schedules
   WHERE on_call = true
@@ -822,14 +769,12 @@ Doctor 1, Abe, starts to request leave for `2023-12-05` using the hospital's sch
 
 Start a transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ~~~
 
 Check to make sure that another doctor is on call for `2023-12-05`. Use [`FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}) to lock the rows so that they cannot be updated by another transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05'
@@ -849,14 +794,12 @@ Around the same time, Doctor 2, Betty, starts to request leave for the same day 
 
 In a new terminal (Session 2), open the SQL shell on your [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster. Start a transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ~~~
 
 Check to make sure that another doctor is on call for `2023-12-05`. Use `FOR SHARE` to lock the rows so that they cannot be updated by another transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05'
@@ -875,7 +818,6 @@ SELECT * FROM schedules
 
 Shared locks are [typically used](#when-to-use-locking-reads) when a transaction needs to read the latest version of a row, but does not need to update the row. With the rows locked by both Sessions 1 and 2, a third Session 3 is blocked from updating the rows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE schedules SET on_call = false
   WHERE day = '2023-12-05'
@@ -888,14 +830,12 @@ Once both Sessions 1 and 2 commit or rollback their transactions, Session 3 can 
 UPDATE 1
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 ~~~
 
 Read the rows for `2023-12-05` and confirm that Betty is still on call:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM schedules
   WHERE day = '2023-12-05';

@@ -22,7 +22,7 @@ docs_area: reference.sql
 ## Parameters
 
 | Parameter       | Description                                                                                                                                                       |
-|-----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `database_name` | The database from which you are dropping a [region](multiregion-overview.html#database-regions).                                                                      |
 | `region_name`   | The [region](multiregion-overview.html#database-regions) being dropped from this database.  Allowed values include any region present in `SHOW REGIONS FROM DATABASE database_name`.<br>You can only drop the primary region from a multi-region database if it's the last remaining region. |
 

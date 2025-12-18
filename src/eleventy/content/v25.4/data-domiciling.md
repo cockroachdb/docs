@@ -47,7 +47,6 @@ For the purposes of this example, the data domiciling requirement is to configur
 
 Use the following [`cockroach demo`](cockroach-demo.html) command to start the cluster. This particular combination of flags results in a demo cluster of 9 nodes, with 3 nodes in each region. It sets the appropriate [node localities](cockroach-start.html#locality) and also simulates the network latency that would occur between nodes in these localities. For more information about each flag, see the [`cockroach demo`](cockroach-demo.html#flags) documentation, especially for [`--global`](cockroach-demo.html#global-flag).
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo --global --nodes 9
 ~~~
@@ -105,7 +104,6 @@ You now have a cluster running across 9 nodes, with 3 nodes each in the followin
 
 You can verify this using the [`SHOW REGIONS`]({% link {{ page.version.version }}/show-regions.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS;
 ~~~
@@ -123,7 +121,6 @@ SHOW REGIONS;
 
 Execute the following statements to set the [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions). This information is necessary so that CockroachDB can later move data around to optimize access to particular data from particular regions.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr PRIMARY REGION "europe-west1";
 ALTER DATABASE movr ADD REGION "us-east1";
@@ -146,7 +143,6 @@ This is because [non-voting replicas](architecture/replication-layer.html#non-vo
 
 In order to check the critical nodes status endpoint you first need to get an authentication cookie. To get an authentication cookie, run the [`cockroach auth-session login`]({% link {{ page.version.version }}/cockroach-auth-session.md %}#log-in-to-the-http-interface) command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach auth-session login demo --certs-dir=/Users/rloveland/.cockroach-demo
 ~~~
@@ -169,7 +165,6 @@ It should return output like the following:
 
 Using the output above, we can craft a `curl` invocation to call the critical nodes status endpoint:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 curl -X POST --cookie 'session=CIGA9sfJ5Yy0DBIQ4mlvKAxivkm9bq0or4h3AQ==; Path=/; HttpOnly' http://localhost:8080/_status/critical_nodes
 ~~~
@@ -314,7 +309,6 @@ Based on this output, you can see that several replicas are out of compliance fo
 
 To get more information about the ranges that are out of compliance, you can use a [`SHOW RANGES`](show-ranges.html) SQL statement like the one below.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM [SHOW RANGES FROM DATABASE movr] WHERE range_id = 93;
 ~~~
@@ -339,14 +333,12 @@ To ensure that data on EU-based users, vehicles, etc. from [`REGIONAL BY ROW` ta
 
 To use this statement, you must set the `enable_super_regions` [session setting]({% link {{ page.version.version }}/set-vars.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER ROLE ALL SET enable_super_regions = on;
 ~~~
 
 Next, use the [`ALTER DATABASE ... ADD SUPER REGION`]({% link {{ page.version.version }}/alter-database.md %}#add-super-region) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ADD SUPER REGION "europe" VALUES "europe-west1";
 ~~~
@@ -367,14 +359,12 @@ To ensure that data on EU-based users, vehicles, etc. from [`REGIONAL BY ROW` ta
 
 To use this statement, you must set the `enable_multiregion_placement_policy` [session setting]({% link {{ page.version.version }}/set-vars.md %}) or the `sql.defaults.multiregion_placement_policy.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET enable_multiregion_placement_policy=on;
 ~~~
 
 Next, use the [`ALTER DATABASE ... PLACEMENT RESTRICTED`]({% link {{ page.version.version }}/alter-database.md %}#placement) statement to disable non-voting replicas for regional tables:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr PLACEMENT RESTRICTED;
 ~~~
@@ -395,7 +385,6 @@ The restricted replica placement settings should start to apply immediately.
 
 Now that you have restricted the placement of non-voting replicas for all [regional tables](regional-tables.html), you can check the [critical nodes status endpoint](monitoring-and-alerting.html#critical-nodes-endpoint) to see the effects. In a few seconds, you should see that the `violatingConstraints` key in the JSON response shows that there are no longer any replicas violating their constraints:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 curl -X POST http://localhost:8080/_status/critical_nodes
 ~~~

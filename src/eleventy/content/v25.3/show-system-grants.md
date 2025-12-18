@@ -44,7 +44,6 @@ Field            | Description
 
 To list all system grants for all users and roles:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SYSTEM GRANTS;
 ~~~
@@ -64,17 +63,14 @@ To list all system grants for all users and roles:
 
 To list all system grants for a specific user or role:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SYSTEM ALL TO max WITH GRANT OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SYSTEM GRANTS FOR max;
 ~~~

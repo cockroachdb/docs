@@ -71,7 +71,6 @@ For example, suppose that you want to delete all rows in the [`tpcc`]({% link {{
 
 In Python using the psycopg2 driver, the script would look similar to the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -104,7 +103,6 @@ conn.close()
 
 A simple JDBC application that bulk deletes rows in batches of 5000 would look like this:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 package com.cockroachlabs.bulkdelete;
 
@@ -170,7 +168,6 @@ public class App {
 
 A simple C# Npgsql application that bulk deletes rows in batches of 5000 would look like this:
 
-{% include_cached copy-clipboard.html %}
 ~~~ csharp
 using System;
 using System.Data;
@@ -272,7 +269,6 @@ Choose the language for the example code.
 
 In Python, the script would look similar to the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -322,7 +318,6 @@ if __name__ == "__main__":
 
 In Java, the code would look similar to:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 public static void deleteDataNonindexed(Connection conn) {
     boolean cont = true;
@@ -390,7 +385,6 @@ The `KeyFields` class encapsulates the compound primary key for the `history` ta
 
 In C# the code would look similar to:
 
-{% include_cached copy-clipboard.html %}
 ~~~ csharp
 public class KeyFields {
     public Int32 hwid;
@@ -481,7 +475,6 @@ To delete all of the rows in a table, use a [`TRUNCATE` statement]({% link {{ pa
 
 For example, to delete all rows in the [`tpcc`]({% link {{ page.version.version }}/cockroach-workload.md %}#tpcc-workload) `new_order` table, execute the following SQL statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 TRUNCATE new_order;
 ~~~
@@ -502,7 +495,6 @@ Choose the language for the example code.
 
 For example, in Python, using the `psycopg2` client driver:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -522,7 +514,6 @@ with conn:
 
 In Java, the code would look similar to this:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 public static void truncateTable (Connection conn) {
     try {
@@ -541,7 +532,6 @@ public static void truncateTable (Connection conn) {
 
 In C# the code would look similar to this:
 
-{% include_cached copy-clipboard.html %}
 ~~~ csharp
 static void TruncateTable(string connString)
 {

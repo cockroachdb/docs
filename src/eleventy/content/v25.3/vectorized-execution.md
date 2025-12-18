@@ -50,7 +50,6 @@ By default, the memory limit allocated per disk-spilling operation is `64MiB`. T
 
 To increase the limit, change the cluster setting:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.distsql.temp_storage.workmem = '100MiB';
 ~~~

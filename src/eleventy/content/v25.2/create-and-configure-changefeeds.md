@@ -29,7 +29,6 @@ Changefeeds connect to a long-lived request called a _rangefeed_, which pushes c
 
 **Rangefeeds must be enabled for a changefeed to work.** To [enable the cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
@@ -74,7 +73,6 @@ You can [create](#create), [pause](#pause), [resume](#resume), and [cancel](#can
 
 To create a changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO '{scheme}://{sink_host}:{port}?{query_parameters}';
 ~~~
@@ -99,7 +97,6 @@ For more information, refer to [`SHOW CHANGEFEED JOB`]({% link {{ page.version.v
 
 To pause a changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 PAUSE JOB job_id;
 ~~~
@@ -110,7 +107,6 @@ For more information, refer to [`PAUSE JOB`]({% link {{ page.version.version }}/
 
 To resume a paused changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESUME JOB job_id;
 ~~~
@@ -121,7 +117,6 @@ For more information, refer to [`RESUME JOB`]({% link {{ page.version.version }}
 
 To cancel a changefeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CANCEL JOB job_id;
 ~~~
@@ -144,7 +139,6 @@ For more information, refer to [`CANCEL JOB`]({% link {{ page.version.version }}
 
 When you create a changefeed **without** specifying a sink (a sinkless changefeed), CockroachDB sends the changefeed events to the SQL client indefinitely until the underlying connection is closed or the changefeed is canceled:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE table_name, table_name2;
 ~~~

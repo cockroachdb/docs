@@ -14,7 +14,6 @@ This page shows you how to identify and, if necessary, cancel SQL queries that a
 
 Use the [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}) statement to list details about currently active SQL queries, including each query's `start` timestamp:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE application_name != '$ cockroach sql';
@@ -31,7 +30,6 @@ Use the [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.m
 
 You can also filter for queries that have been running for a certain amount of time. For example, to find queries that have been running for more than 3 hours, you would run the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE start < (now() - INTERVAL '3 hours');
@@ -41,7 +39,6 @@ You can also filter for queries that have been running for a certain amount of t
 
 Once you've identified a long-running query via [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}), note the `query_id` and use it with the [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '15f92c0dd24bec200000000000000003';
 ~~~
@@ -53,7 +50,6 @@ When a query is successfully cancelled, CockroachDB sends a `query execution can
 
 You can cancel all queries from a particular application by using a subquery.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CANCEL QUERIES (WITH x AS (SHOW CLUSTER QUERIES) SELECT query_id FROM x
       WHERE application_name = 'test_app');

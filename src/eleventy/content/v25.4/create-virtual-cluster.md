@@ -22,7 +22,6 @@ The following [privileges]({% link {{ page.version.version }}/security-reference
 
 Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement to grant the necessary privileges to users, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
 ~~~
@@ -53,7 +52,6 @@ Option | Description
 
 When you [initiate a PCR stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication) from the standby cluster, it is necessary to pass a connection string to the system virtual cluster on the primary cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~
 'postgresql://{replication user}:{password}@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt'
 ~~~
@@ -83,7 +81,6 @@ _Capabilities_ control what a virtual cluster can do. When you start a PCR strea
 
 To start a PCR stream to the standby of the primary's virtual cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connection string to primary}';
 ~~~
@@ -98,14 +95,12 @@ While **physical cluster replication (PCR)** is generally available, using the `
 
 Use the `READ VIRTUAL CLUSTER` option to set up a PCR stream that also creates a read-only virtual cluster on the standby cluster. You can create a PCR job as per the [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) guide and then add the option to the `CREATE VIRTUAL CLUSTER` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connection string to primary}' WITH READ VIRTUAL CLUSTER;
 ~~~
 
 View the newly created virtual clusters:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW VIRTUAL CLUSTERS;
 ~~~
@@ -126,7 +121,6 @@ You'll find:
 
 To read table data from the standby cluster, connect to the `readonly` virtual cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=main-readonly&sslmode=verify-full"` --certs-dir=certs
 ~~~

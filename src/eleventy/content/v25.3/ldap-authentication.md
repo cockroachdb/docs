@@ -70,7 +70,6 @@ Set the authentication method for all users and databases to `ldap` and include 
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.host_based_authentication.configuration = '
 host    all    all    all    ldap    ldapserver=ldap.example.com 
@@ -90,14 +89,12 @@ If, for LDAPS, you are using a certificate signed by a custom Certificate Author
 
 **Set the custom CA certificate:**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.ldap_authentication.domain.custom_ca = '<PEM_ENCODED_CA_CERT>';
 ~~~
 
 **Configure a client certificate for mTLS if required:**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.ldap_authentication.client.tls_certificate = '<PEM_ENCODED_CERT>';
 SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KEY>';
@@ -128,7 +125,6 @@ If you choose to manage CockroachDB role memberships and privileges directly, yo
 
 **To enable automatic user provisioning:**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING security.provisioning.ldap.enabled = true;
 ~~~
@@ -139,7 +135,6 @@ Alternatively, you can manage users by directly creating them before LDAP authen
 
 To create a single user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE username LOGIN;
 ~~~
@@ -149,7 +144,6 @@ To create users in bulk:
 1. Export usernames from the directory server.
 1. Produce a `.sql` file with a [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}) statement per user, each on a separate line.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE ROLE username1 LOGIN;
     CREATE ROLE username2 LOGIN;
@@ -160,14 +154,12 @@ To create users in bulk:
 
 1. Run the SQL statements in the [file]({% link {{ page.version.version }}/cockroach-sql.md %}#general):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     cockroach sql --file=create_users.sql --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
     ~~~
 
 To update users on an ongoing basis, you could script the required [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}), or [`GRANT`]({% link {{ page.version.version }}/grant.md %}) commands to be [executed]({% link {{ page.version.version }}/cockroach-sql.md %}#general) as needed. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 cockroach sql --execute="DROP ROLE username1" --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
 ~~~
@@ -178,7 +170,6 @@ cockroach sql --execute="DROP ROLE username1" --host=<servername> --port=<port> 
 
 To connect using LDAP credentials, use your LDAP password: 
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Method 1: Password in environment variable
 export PGPASSWORD='ldap_password'
@@ -204,7 +195,6 @@ When automatic user provisioning is enabled, you can identify and manage auto-pr
 
 Auto-provisioned users can be identified by their `PROVISIONSRC` role option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- View all auto-provisioned users (users with PROVISIONSRC role option)
 SELECT * FROM [SHOW USERS] AS u 
@@ -214,7 +204,6 @@ WHERE EXISTS (
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- View all manually created users (users without PROVISIONSRC role option)
 SELECT * FROM [SHOW USERS] AS u 
@@ -242,7 +231,6 @@ WHERE NOT EXISTS (
 
 **To identify potentially dormant auto-provisioned users:**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
   SELECT u.username, u.estimated_last_login_time FROM [SHOW USERS]
   AS u
@@ -262,7 +250,6 @@ Auto-provisioned users who have been removed or deactivated in Active Directory 
 
 **Step 1: Export auto-provisioned users from CockroachDB**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- Export list of auto-provisioned usernames for comparison with Active Directory
 SELECT u.username FROM [SHOW USERS] AS u 
@@ -295,7 +282,6 @@ foreach ($user in $cockroachUsers) {
 
 Before dropping users confirmed to no longer exist in Active Directory, check for any privileges that were granted directly to the user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- Check for direct grants to the user (privileges inherited through roles won't block DROP USER)  
 SHOW GRANTS FOR username;
@@ -303,7 +289,6 @@ SHOW GRANTS FOR username;
 
 If any direct grants exist, revoke them before dropping the user. For users confirmed to no longer exist in Active Directory:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- Remove users that no longer exist in Active Directory
 DROP USER username1, username2, username3;
@@ -334,7 +319,6 @@ ERROR: user "provisioned_user" with PROVISIONSRC cannot change password
 
 Enable [`SESSION` logging]({% link {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~

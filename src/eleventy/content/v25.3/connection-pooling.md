@@ -184,7 +184,6 @@ The connection pool size should be 40.
 
 The maximum lifetime of a connection is set to 300000 milliseconds, or 5 minutes.
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 HikariConfig config = new HikariConfig();
 config.setJdbcUrl("jdbc:postgresql://localhost:26257/bank");

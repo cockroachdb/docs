@@ -124,7 +124,6 @@ You can also visit the [**Jobs** page]({% link {{ page.version.version }}/ui-job
 
 To schedule full backups of clusters, databases, or tables, use the `FULL BACKUP ALWAYS` clause, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE core_schedule_label
   FOR BACKUP INTO 's3://test/schedule-test-core?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
@@ -143,7 +142,6 @@ To schedule full backups of clusters, databases, or tables, use the `FULL BACKUP
 
 This example creates a schedule for a cluster backup with revision history that's taken every day at midnight:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE schedule_label
   FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
@@ -165,7 +163,6 @@ Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, Cockroa
 
 This example creates a schedule for a backup of the database `movr` with revision history that's taken every day 1 minute past midnight (`00:00:01`):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE schedule_database
   FOR BACKUP DATABASE movr INTO 's3://test/schedule-database?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
@@ -191,7 +188,6 @@ Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, Cockroa
 
 This example creates a schedule for a backup of the table `movr.vehicles` with revision history that's taken every hour:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE schedule_table
   FOR BACKUP TABLE movr.vehicles INTO 's3://test/schedule-table?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
@@ -213,7 +209,6 @@ Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, Cockroa
 
 This example creates a schedule for a backup of the table `movr.vehicles` with revision history that's taken every hour, with its first run scheduled for `2020-09-15 00:00:00.00` (UTC):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE scheduled_first_run
   FOR BACKUP TABLE movr.vehicles INTO 's3://test/schedule-table?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
@@ -236,7 +231,6 @@ Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, Cockroa
 
 This example creates a schedule for a cluster backup with the `on_previous_running` option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE schedule_option
   FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'

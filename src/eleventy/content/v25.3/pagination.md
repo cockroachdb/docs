@@ -17,7 +17,6 @@ Keyset pagination (also known as the "seek method") is used to fetch a subset of
 
 The general pattern for keyset pagination queries is:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM t AS OF SYSTEM TIME ${time}
   WHERE key > ${value}
@@ -35,7 +34,6 @@ You will need to write a [`CREATE TABLE`]({% link {{ page.version.version }}/cre
 
 For example, to import the data from `employees.csv` into an `employees` table, issue the following statement to create the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE employees (
   emp_no INT PRIMARY KEY,
@@ -49,7 +47,6 @@ CREATE TABLE employees (
 
 Next, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) to import the data into the new table:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)
      CSV DATA (
@@ -66,7 +63,6 @@ IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_d
 
 To get the first page of results using keyset pagination, run the statement below.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 10000 ORDER BY emp_no LIMIT 25;
 ~~~
@@ -94,7 +90,6 @@ We use [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-tim
 
 To get the second page of results, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 10025 ORDER BY emp_no LIMIT 25;
 ~~~
@@ -114,7 +109,6 @@ Time: 2ms total (execution 1ms / network 1ms)
 
 To get an arbitrary page of results showing employees whose IDs (`emp_no`) are in a much higher range, run the following query. Note that it takes about the same amount of time to run as the previous queries.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 300025 ORDER BY emp_no LIMIT 25;
 ~~~
@@ -135,7 +129,6 @@ Time: 2ms total (execution 1ms / network 0ms)
 
 Compare the execution speed of the previous keyset pagination queries with the query below that uses `LIMIT` / `OFFSET` to get the same page of results:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM employees AS OF SYSTEM TIME '-1m' LIMIT 25 OFFSET 200024;
 ~~~
@@ -155,7 +148,6 @@ Time: 158ms total (execution 156ms / network 1ms)
 
 The query using `LIMIT`/`OFFSET` for pagination is almost 100 times slower. To see why, let's use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM employees LIMIT 25 OFFSET 200024;
 ~~~
@@ -184,7 +176,6 @@ The culprit is this: because we used `LIMIT`/`OFFSET`, we are performing a limit
 
 Meanwhile, the keyset pagination queries are looking at a much smaller range of table spans, which is much faster (see `spans: [/300026 - ]` and `limit: 25` below). Because [there is an index on every column in the `WHERE` clause]({% link {{ page.version.version }}/indexes.md %}#best-practices), these queries are doing an index lookup to jump to the start of the page of results, and then getting an additional 25 rows from there. This is much faster.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM employees WHERE emp_no > 300025 ORDER BY emp_no LIMIT 25;
 ~~~

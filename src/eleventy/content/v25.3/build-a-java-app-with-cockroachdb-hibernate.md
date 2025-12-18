@@ -27,7 +27,6 @@ For another use of Hibernate with CockroachDB, see our [`examples-orms`](https:/
 
 Clone the `example-app-java-hibernate` repo to your machine:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/example-app-java-hibernate/
 ~~~
@@ -52,7 +51,6 @@ It does all of the above using the practices we recommend for using Hibernate (a
 <a name="code-contents"></a>
 The contents of `Sample.java`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
 ~~~
@@ -63,7 +61,6 @@ The contents of `Sample.java`:
 
 Open `src/main/resources/hibernate.cfg.xml`, and set the `hibernate.connection.url`, `hibernate.connection.username`, and `hibernate.connection.password` properties, using the connection information that you obtained from the {{ site.data.products.cloud }} Console:
 
-{% include_cached copy-clipboard.html %}
 ~~~ xml
 <property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/defaultdb?sslmode=verify-full</property>
 <property name="hibernate.connection.username">{username}</property>
@@ -76,12 +73,10 @@ Open `src/main/resources/hibernate.cfg.xml`, and set the `hibernate.connection.u
 
 Compile and run the code using `gradlew`, which will also download the dependencies:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd example-app-java-hibernate
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./gradlew run
 ~~~

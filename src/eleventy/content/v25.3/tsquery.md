@@ -29,7 +29,6 @@ You can optionally add the following to each lexeme:
 
 To be usable in [full-text search]({% link {{ page.version.version }}/full-text-search.md %}), the lexemes **must be normalized**. You can do this by using the `to_tsquery()`, `plainto_tsquery()`, or `phraseto_tsquery()` [built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) to convert a string input to `TSQUERY`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT to_tsquery('These & lexemes & are & not & normalized & lexemes.');
 ~~~

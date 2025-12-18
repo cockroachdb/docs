@@ -47,7 +47,6 @@ $ cockroach userfile get --help
 
 To get the file named test-data.csv from the default user-scoped storage location for the current user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile get test-data.csv --certs-dir=certs
 ~~~
@@ -56,7 +55,6 @@ $ cockroach userfile get test-data.csv --certs-dir=certs
 
 To get a file named test-data.csv from a local directory:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile get test-data.csv /Users/maxroach/Desktop/test-data.csv --certs-dir=certs
 ~~~
@@ -65,7 +63,6 @@ $ cockroach userfile get test-data.csv /Users/maxroach/Desktop/test-data.csv --c
 
 If you [uploaded a file to a non-default userfile URI]({% link {{ page.version.version }}/cockroach-userfile-upload.md %}#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`), use the same URI to fetch it:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach userfile get userfile://testdb.public.uploads/test-data.csv --certs-dir=certs
 ~~~
@@ -74,7 +71,6 @@ cockroach userfile get userfile://testdb.public.uploads/test-data.csv --certs-di
 
 To get all files that match a pattern, use *:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile get '*.csv' --certs-dir=certs
 ~~~

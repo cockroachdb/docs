@@ -37,28 +37,24 @@ Connect to the running cluster from the [SQL client]({% link {{ page.version.ver
 
 1. [Create]({% link {{ page.version.version }}/create-database.md %}) the `tutorial` database:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE tutorial;
     ~~~
 
 1. Switch to the `tutorial` database:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     USE tutorial;
     ~~~
 
 1. In a separate terminal, download the spatial data set:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o bookstores-and-roads.sql https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql
     ~~~
 
 1. Pipe the data set directly into [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}), specifying the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) of your local cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url {"CONNECTION STRING"} < bookstores-and-roads.sql
     ~~~
@@ -69,7 +65,6 @@ Connect to the running cluster from the [SQL client]({% link {{ page.version.ver
 
 CockroachDB's support for GeoServer is still in development. To use CockroachDB with GeoServer, you will need to enable the use of certain experimental box2d comparison operators by changing the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.spatial.experimental_box2d_comparison_operators.enabled = ON;
 ~~~
@@ -88,14 +83,12 @@ The easiest place to create the GeoServer data directory is in your user's home 
 
 1. In the UNIX shell, run the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     mkdir -p $HOME/geoserver
     ~~~
 
 1. Start GeoServer by running the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     geoserver $HOME/geoserver
     ~~~

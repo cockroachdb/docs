@@ -91,7 +91,6 @@ This section shows how to create tables with `JSONB` columns and use operators a
 
 ### Create a table with a `JSONB` column
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -100,7 +99,6 @@ CREATE TABLE users (
   );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW COLUMNS FROM users;
 ~~~
@@ -114,14 +112,12 @@ SHOW COLUMNS FROM users;
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
     ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM users;
 ~~~
@@ -138,7 +134,6 @@ SELECT * FROM users;
 
 To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()` function. For example, retrieve data from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT profile_id, last_updated, jsonb_pretty(user_profile) FROM users;
 ~~~
@@ -165,7 +160,6 @@ SELECT profile_id, last_updated, jsonb_pretty(user_profile) FROM users;
 
 To retrieve a specific field from `JSONB` data, use the `->` operator. For example, to retrieve a field from the table you created in [Create a table with a `JSONB` column](#create-a-table-with-a-jsonb-column), run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile->'first_name',user_profile->'location' FROM users;
 ~~~
@@ -179,7 +173,6 @@ SELECT user_profile->'first_name',user_profile->'location' FROM users;
 
 You can also use a [subscripted expression]({% link {{ page.version.version }}/scalar-expressions.md %}#subscripted-expressions) for an equivalent result:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT (user_profile)['first_name'],(user_profile)['location'] FROM users;
 ~~~
@@ -193,7 +186,6 @@ SELECT (user_profile)['first_name'],(user_profile)['location'] FROM users;
 
 Use the `->>` operator to return `JSONB` fields as `STRING` values:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile->>'first_name', user_profile->>'location' FROM users;
 ~~~
@@ -206,7 +198,6 @@ SELECT user_profile->>'first_name', user_profile->>'location' FROM users;
 
 Use the `@>` operator to filter the values in a field in a `JSONB` column:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE user_profile @> '{"location":"NYC"}';
 ~~~
@@ -218,7 +209,6 @@ SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE use
 
 Use the `#>>` operator with a path to return all first names:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile#>>'{first_name}' as "first name" from users;
 ~~~
@@ -233,7 +223,6 @@ SELECT user_profile#>>'{first_name}' as "first name" from users;
 
 ### Retrieve the distinct keys from a `JSONB` field
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT DISTINCT jsonb_object_keys(user_profile) AS keys FROM users;
 ~~~
@@ -252,7 +241,6 @@ SELECT DISTINCT jsonb_object_keys(user_profile) AS keys FROM users;
 
 ### Retrieve key-value pairs from a `JSONB` field
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_each(user_profile) AS pairs FROM users;
 ~~~
@@ -277,14 +265,12 @@ To organize your `JSONB` field values, use the `GROUP BY` and `ORDER BY` clauses
 
 For this example, we will add a few more records to the existing table. This will help us see clearly how the data is grouped.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Kim", "location": "Seoul", "online": false, "friends": 600}'),
     ('{"first_name": "Parvati", "last_name": "Patil", "location": "London", "online": false, "friends": 500}');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS location FROM users;
 ~~~
@@ -300,7 +286,6 @@ SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS l
 
 Group and order the data.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile->>'first_name' first_name, count(*) total FROM users group by user_profile->>'first_name' order by total;
 ~~~
@@ -319,7 +304,6 @@ The `->>` operator returns `STRING` and uses string comparison rules to order th
 
 To map a `JSONB` array field into rows, use the `jsonb_array_elements` function:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE commodity (id varchar(10), data jsonb);
 INSERT INTO commodity (id, data) values ('silver', '{"prices" : [ { "05/01/2022" : 100.5 } , { "06/01/2022" : 101.5 } ]}');
@@ -336,7 +320,6 @@ SELECT * FROM commodity;
 
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id as commodity, jsonb_array_elements(commodity.data->'prices') AS "price" FROM commodity;
 ~~~
@@ -355,7 +338,6 @@ SELECT id as commodity, jsonb_array_elements(commodity.data->'prices') AS "price
 
 To display the commodity prices for May, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id AS commodity, data->'prices'->0->'05/01/2022' AS "May prices" from commodity;
 ~~~
@@ -372,7 +354,6 @@ SELECT id AS commodity, data->'prices'->0->'05/01/2022' AS "May prices" from com
 
 To update a field value, use the `jsonb_set` function. For example, to update the price of `silver` on `06/01/2022` to `90.5`, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE commodity SET data = jsonb_set(data, '{prices, 1, "06/01/2022"}', '90.5') where id = 'silver';
 UPDATE 1
@@ -414,7 +395,6 @@ You can cast numeric `JSONB` values to the following numeric data types:
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT '100'::JSONB::INT;
 ~~~
@@ -426,7 +406,6 @@ SELECT '100'::JSONB::INT;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT '100000'::JSONB::FLOAT;
 ~~~
@@ -438,7 +417,6 @@ SELECT '100000'::JSONB::FLOAT;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT '100.50'::JSONB::DECIMAL;
 ~~~
@@ -452,7 +430,6 @@ SELECT '100.50'::JSONB::DECIMAL;
 
 You can use the [`parse_timestamp` function]({% link {{ page.version.version }}/functions-and-operators.md %}) to parse strings in `TIMESTAMP` format.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT parse_timestamp ('2022-05-28T10:53:25.160Z');
 ~~~
@@ -466,7 +443,6 @@ SELECT parse_timestamp ('2022-05-28T10:53:25.160Z');
 
 You can use the `parse_timestamp` function to retrieve string representations of timestamp data within `JSONB` columns in `TIMESTAMP` format.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE events (
   raw JSONB,

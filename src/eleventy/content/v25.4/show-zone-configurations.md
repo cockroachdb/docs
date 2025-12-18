@@ -53,7 +53,6 @@ You can also use [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-c
 
 To control replication for a specific index,  use the [`ALTER INDEX ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-index.md %}#configure-zone) statement to define the relevant values (other values will be inherited from the parent zone):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
 ~~~
@@ -62,7 +61,6 @@ To control replication for a specific index,  use the [`ALTER INDEX ... CONFIGUR
 CONFIGURE ZONE 1
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
 ~~~

@@ -23,14 +23,12 @@ You can qualify the `<name>` of an enumerated type with a [database and schema n
 
 To show all `ENUM` types in the database, including all `ENUMS` created implicitly for [multi-region databases]({% link {{ page.version.version }}/multiregion-overview.md %}), use [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
 
 To modify an `ENUM` type, use [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE <name> ADD VALUE '<value>';
 ~~~
@@ -39,7 +37,6 @@ where `<value>` is a string literal to add to the existing list of type values. 
 
 To drop the type, use [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TYPE <name>;
 ~~~
@@ -54,12 +51,10 @@ To drop the type, use [`DROP TYPE`]({% link {{ page.version.version }}/drop-type
 
 ## Example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -71,7 +66,6 @@ To drop the type, use [`DROP TYPE`]({% link {{ page.version.version }}/drop-type
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -80,12 +74,10 @@ To drop the type, use [`DROP TYPE`]({% link {{ page.version.version }}/drop-type
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts(balance,status) VALUES (500.50,'open'), (0.00,'closed'), (1.25,'inactive');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -99,7 +91,6 @@ To drop the type, use [`DROP TYPE`]({% link {{ page.version.version }}/drop-type
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE accounts;
 ~~~
@@ -123,7 +114,6 @@ To drop the type, use [`DROP TYPE`]({% link {{ page.version.version }}/drop-type
 
 Values can be cast explicitly or implicitly. For example, the following [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statements are equivalent:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE status::STRING='open';
 ~~~
@@ -135,7 +125,6 @@ Values can be cast explicitly or implicitly. For example, the following [`SELECT
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE status='open';
 ~~~
@@ -151,12 +140,10 @@ Values can be cast explicitly or implicitly. For example, the following [`SELECT
 
 To compare two enumerated types, you must explicitly cast both types as `STRING`s. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE inaccessible AS ENUM ('closed', 'inactive');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE notifications (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -165,12 +152,10 @@ To compare two enumerated types, you must explicitly cast both types as `STRING`
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO notifications(status, message) VALUES ('closed', 'This account has been closed.'),('inactive', 'This account is on hold.');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
     accounts.id, notifications.message
@@ -182,7 +167,6 @@ ERROR: unsupported comparison operator: <status> = <inaccessible>
 SQLSTATE: 22023
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
     accounts.id, notifications.message
@@ -194,7 +178,6 @@ ERROR: unsupported comparison operator: <string> = <inaccessible>
 SQLSTATE: 22023
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
     accounts.id, notifications.message

@@ -26,7 +26,7 @@ To reset a storage parameter on an existing index, you must drop and [recreate t
 ## Command parameters
 
 | Parameter           | Description          |
-|---------------------+----------------------|
+|---------------------|----------------------|
 | `table`             | The table to which you are setting the parameter.                                                                                         |
 | `parameter_name`    | The name of the storage parameter you are changing. See [Storage parameters](#storage-parameters) for a list of available parameters. |
 

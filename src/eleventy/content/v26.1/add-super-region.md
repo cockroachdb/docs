@@ -26,7 +26,7 @@ docs_area: reference.sql
 ## Parameters
 
 | Parameter       | Description                                                                                              |
-|-----------------+----------------------------------------------------------------------------------------------------------|
+|-----------------|----------------------------------------------------------------------------------------------------------|
 | `database_name` | The database to which you are adding a [super region](multiregion-overview.html#super-regions).          |
 | `name`          | The name of the [super region](multiregion-overview.html#super-regions) being added to this database.    |
 | `name_list`     | The super region consists of this set of [database regions](multiregion-overview.html#database-regions). |

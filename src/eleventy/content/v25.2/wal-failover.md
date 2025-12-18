@@ -73,7 +73,6 @@ You must also [configure logs]({% link {{ page.version.version }}/configure-logs
 
 Replicate the shell commands below on each node using your preferred deployment model. Be sure to edit the values of the flags passed to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) as needed for your environment.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ export COCKROACH_LOG_MAX_SYNC_DURATION=40s
 $ export COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT=40s
@@ -129,7 +128,6 @@ To enable WAL failover on a single data store cluster with a side disk, you need
 
 To find out the path to the side disk, `ssh` to one of the nodes in the cluster and use the `lsblk` command to see the path to the `data2` volume. The output should look like the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 NAME    MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
 loop0     7:0    0  63.9M  1 loop /snap/core20/2182
@@ -146,7 +144,6 @@ nvme0n2 259:1    0   375G  0 disk /mnt/data2
 
 The preceding output shows that the path to `data2` volume is `/mnt/data2`. For each node, create the directory `/mnt/data2/cockroach` on the side disk volume where the WAL failover data can be written. `/mnt/data1` will be used as the single store for the cluster.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 mkdir /mnt/data2/cockroach
 ~~~
@@ -167,7 +164,6 @@ You must also [configure logs]({% link {{ page.version.version }}/configure-logs
 
 Replicate the shell commands below on each node using your preferred deployment model. Be sure to edit the values of the flags passed to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) as needed for your environment.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ export COCKROACH_LOG_MAX_SYNC_DURATION=40s
 $ export COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT=40s
@@ -192,7 +188,6 @@ Trigger WAL failover on a node by slowing down the read bytes per second (`rbps`
 
 Run the `lsblk` command, and look for `MAJ:MIN` values for `/mnt/data1` in `lsblk` output. In this case it is `259:0`; you will use this for the disk stall/unstall scripts.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 roachprod ssh $CLUSTER:1 lsblk
 NAME    MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
@@ -214,7 +209,6 @@ Create scripts for stalling and unstalling the disk on this node. The script wil
 
 Create a shell script that will invoke the commands to stall and unstall alternately. Call this script `wal-flip.sh` with the content shown below:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 # wal-flip.sh
 # We are alternatively running stall and unstall at increasing periods of 5s up to 40s
@@ -250,7 +244,6 @@ done
 
 Next, make the script file executable:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 chmod 777 wal-flip.sh
 ~~~
@@ -265,7 +258,6 @@ Before triggering a WAL failover, open the [DB Console]({% link {{ page.version.
 
 Trigger WAL failover by introducing a transient disk stall that is shorter in duration than the value of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables). To do so, run the `wal-flip.sh` script that you created in [Step 1](#1-set-up-a-node-with-scripts-to-trigger-wal-failover).
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 wal-flip.sh
 ~~~
@@ -296,7 +288,6 @@ Trigger WAL failover by introducing a transient disk stall that is `100s` in dur
 
 Create a file named `long-stall.sh` with the following content, which will cause long disk stalls:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 while (true)
 do
@@ -315,14 +306,12 @@ done
 
 Make the script file executable:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 chmod 777 wal-flip.sh
 ~~~
 
 Cause a long stall:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 long-stall.sh
 ~~~
@@ -419,7 +408,6 @@ If you are restarting an entire cluster or just one node in a cluster:
 
 If you want to disable WAL failover on a running cluster, set the value of the [`storage.wal_failover.unhealthy_op_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-wal-failover-unhealthy-op-threshold) cluster setting to a value greater than the [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) cluster setting as follows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING storage.wal_failover.unhealthy_op_threshold = '${duration greater than storage.max_sync_duration}'
 ~~~
@@ -432,7 +420,6 @@ To enable WAL failover at runtime on a [multi-store cluster](#multi-store-config
 
 Next, make sure the value of the [`storage.wal_failover.unhealthy_op_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-wal-failover-unhealthy-op-threshold) cluster setting is a duration less than the [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) cluster setting:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING storage.wal_failover.unhealthy_op_threshold = '${value less than storage.max_sync_duration}'
 ~~~
@@ -455,7 +442,6 @@ Yes.
 
 Yes. To change [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration), issue a statement like the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING storage.max_sync_duration = '${desired_duration}';
 ~~~

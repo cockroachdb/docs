@@ -37,7 +37,6 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
 
 1. To write data from Kafka to CockroachDB, use the Confluent JDBC Sink Connector. First use the following `dockerfile` to create a custom image with the [JDBC driver](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc):
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     FROM quay.io/debezium/connect:latest
     ENV KAFKA_CONNECT_JDBC_DIR=$KAFKA_CONNECT_PLUGINS_DIR/kafka-connect-jdbc
@@ -58,7 +57,6 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
 
 1. Create the JSON configuration file that you will use to add data from your [source database](https://debezium.io/documentation/reference/stable/connectors/index.html) to a Kafka topic. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {
       "name": "pg-source",
@@ -85,7 +83,6 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
 
 1. Create the JSON configuration file that you will use to create the sink. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {
       "name": "pg-sink",

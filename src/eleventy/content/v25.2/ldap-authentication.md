@@ -69,7 +69,6 @@ Set the authentication method for all users and databases to `ldap` and include 
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.host_based_authentication.configuration = '
 host    all    all    all    ldap    ldapserver=ldap.example.com 
@@ -89,14 +88,12 @@ If, for LDAPS, you are using a certificate signed by a custom Certificate Author
 
 Set the custom CA certificate:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.ldap_authentication.domain_ca = '<PEM_ENCODED_CA_CERT>';
 ~~~
 
 Configure a client certificate for mTLS if required:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.ldap_authentication.client.tls_certificate = '<PEM_ENCODED_CERT>';
 SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KEY>';
@@ -116,7 +113,6 @@ SQL usernames must comply with CockroachDB's [username requirements]({% link {{ 
 
 To create a single user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE username LOGIN;
 ~~~
@@ -126,7 +122,6 @@ To create users in bulk:
 1. Export usernames from the directory server.
 1. Produce a `.sql` file with a [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}) statement per user, each on a separate line.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE ROLE username1 LOGIN;
     CREATE ROLE username2 LOGIN;
@@ -137,14 +132,12 @@ To create users in bulk:
 
 1. Run the SQL statements in the [file]({% link {{ page.version.version }}/cockroach-sql.md %}#general):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     cockroach sql --file=create_users.sql --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
     ~~~
 
 To update users on an ongoing basis, you could script the required [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}), or [`GRANT`]({% link {{ page.version.version }}/grant.md %}) commands to be [executed]({% link {{ page.version.version }}/cockroach-sql.md %}#general) as needed. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 cockroach sql --execute="DROP ROLE username1" --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
 ~~~
@@ -155,7 +148,6 @@ cockroach sql --execute="DROP ROLE username1" --host=<servername> --port=<port> 
 
 To connect using LDAP credentials, use your LDAP password: 
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Method 1: Password in environment variable
 export PGPASSWORD='ldap_password'
@@ -177,7 +169,6 @@ Authorization (role-based access control) is not applied when logging in to DB C
 
 Enable [`SESSION` logging]({% link {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~

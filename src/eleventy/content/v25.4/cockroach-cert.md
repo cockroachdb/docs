@@ -183,12 +183,10 @@ Flag | Description
 
 1. Create two directories:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir my-safe-directory
     ~~~
@@ -197,14 +195,12 @@ Flag | Description
 
 1. Generate the CA certificate and key:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -218,7 +214,6 @@ Flag | Description
 
 1. Generate the certificate and key for the first node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node1.example.com \
@@ -228,7 +223,6 @@ Flag | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -242,13 +236,11 @@ Flag | Description
 
 1. Upload certificates to the first node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<node1 address> "mkdir certs"
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
@@ -259,7 +251,6 @@ Flag | Description
 
 1. Delete the local copy of the first node's certificate and key:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm certs/node.crt certs/node.key
     ~~~
@@ -268,7 +259,6 @@ Flag | Description
 
 1. Create the certificate and key for the second node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node2.example.com \
@@ -277,7 +267,6 @@ Flag | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -291,13 +280,11 @@ Flag | Description
 
 1. Upload certificates to the second node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<node2 address> "mkdir certs"
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
@@ -310,7 +297,6 @@ Flag | Description
 
 ### Create the certificate and key pair for a client
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client \
 maxroach \
@@ -318,7 +304,6 @@ maxroach \
 --ca-key=my-safe-directory/ca.key
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ls -l certs
 ~~~
@@ -334,7 +319,6 @@ total 40
 
 ### List certificates and keys
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert list \
 --certs-dir=certs

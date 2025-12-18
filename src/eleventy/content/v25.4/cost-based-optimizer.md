@@ -79,7 +79,6 @@ Automatic statistics collection is enabled by default. To disable automatic stat
 
 1. Set the `sql.stats.automatic_collection.enabled` cluster setting to `false`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
     ~~~
@@ -88,7 +87,6 @@ Automatic statistics collection is enabled by default. To disable automatic stat
 
 1. Delete the automatically generated statistics:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM system.table_statistics WHERE true;
     ~~~
@@ -211,7 +209,6 @@ CockroachDB does not support:
 
 If you are an advanced user and need to disable histogram collection for troubleshooting or performance tuning reasons, change the [`sql.stats.histogram_collection.enabled` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) by running [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) as follows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.stats.histogram_collection.enabled = false;
 ~~~
@@ -288,7 +285,6 @@ The following statements can use the plan cache: [`SELECT`]({% link {{ page.vers
 
 The plan cache is enabled by default. To disable it, execute the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.query_cache.enabled = false;
 ~~~
@@ -332,21 +328,18 @@ In some cases, generic query plans are less efficient than custom plans. For thi
 
 Set `plan_cache_mode` to `auto` at the session level:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET plan_cache_mode = auto
 ~~~
 
 At the [database level]({% link {{ page.version.version }}/alter-database.md %}#set-session-variable):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE db SET plan_cache_mode = auto;
 ~~~
 
 At the [role level]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER ROLE db_user SET plan_cache_mode = auto;
 ~~~
@@ -365,7 +358,6 @@ Because this process leads to an exponential increase in the number of possible 
 
 To change this setting, which is controlled by the `reorder_joins_limit` [session variable]({% link {{ page.version.version }}/set-vars.md %}), run the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET reorder_joins_limit = 0;
 ~~~
@@ -386,7 +378,6 @@ The cost-based optimizer explores multiple join orderings to find the lowest-cos
 
 - To limit the size of the subtree that can be reordered, set the `reorder_joins_limit` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to a lower value, for example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET reorder_joins_limit = 2;
     ~~~

@@ -43,7 +43,6 @@ To upgrade from one patch release to another within the same major version, perf
 
 1. Apply the new settings to the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
     ~~~
@@ -54,7 +53,6 @@ To upgrade from one patch release to another within the same major version, perf
 
 1. Verify that all pods have been upgraded:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -81,7 +79,6 @@ To perform a major upgrade:
 
 1. Apply the new settings to the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
     ~~~
@@ -92,7 +89,6 @@ To perform a major upgrade:
 
 1. Verify that all pods have been upgraded:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -121,7 +117,6 @@ To roll back to the previous major version before an upgrade is finalized:
 
 1. Apply the new settings to the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
     ~~~
@@ -132,7 +127,6 @@ To roll back to the previous major version before an upgrade is finalized:
 
 1. Verify that all pods have been rolled back:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'

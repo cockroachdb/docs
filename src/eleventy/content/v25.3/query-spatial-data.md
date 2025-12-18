@@ -79,7 +79,6 @@ The syntax for adding an [index]({% link {{ page.version.version }}/spatial-inde
 
 For example, to add an index to the `geom` column of the [sample `tornadoes` table]({% link {{ page.version.version }}/migrate-from-shapefiles.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX tornado_geom_idx ON tornadoes USING GIST (geom);
 ~~~
@@ -112,7 +111,6 @@ CockroachDB can work with the tutorial up to Chapter 22, with the following exce
 
 - [Start a local insecure cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) and connect to that cluster from a [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure --host=localhost --port=26257
     ~~~
@@ -123,14 +121,12 @@ CockroachDB can work with the tutorial up to Chapter 22, with the following exce
 
 Clone the data set:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/otan-cockroach/otan-scripts
 ~~~
 
 Load the SQL files into your CockroachDB cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cat otan-scripts/geospatial_sql/*.sql | cockroach sql --insecure --host=localhost --port=26257
 ~~~
@@ -141,7 +137,6 @@ The command above will take a few minutes to run.
 
 When the cluster is finished loading the data, open a SQL shell and start working through the [Introduction to PostGIS](https://postgis.net/workshops/postgis-intro/) tutorial:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure --host=localhost --port=26257
 ~~~
@@ -156,7 +151,6 @@ This page has instructions for querying spatial data imported into CockroachDB. 
 
 - [Start a local insecure cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) and connect to that cluster from a [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure --host=localhost --port=26257
     ~~~
@@ -179,7 +173,6 @@ According to the wiki page linked above, there were 152 tornadoes confirmed betw
 
 We can try to verify this number against the NWS's tornado data set with the following query:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT COUNT(*) FROM "1950-2018-torn-initpoint" WHERE yr = 1999 AND mo = 5 AND dy >= 02 AND dy <= 08;
 ~~~
@@ -195,7 +188,6 @@ It might be interesting to look into why these numbers are different!
 
 Next, let's get a list of starting points for all of the tornadoes in the outbreak that started in Oklahoma:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_AsText(geom) FROM "1950-2018-torn-initpoint" WHERE yr = 1999 AND st = 'OK' AND mo = 5 AND dy > 02 AND dy <= 08;
 ~~~

@@ -39,7 +39,6 @@ To find the minimum required privileges for a SQL statement, refer to the [SQL r
 
 A user with the `VIEWACTIVITY` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) can generate a bundle for any statement. To grant this privilege, issue the following SQL commands. Replace `{user}` with the user's ID.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER USER {user} WITH VIEWACTIVITY;
 GRANT SYSTEM VIEWSYSTEMTABLE TO {user};
@@ -207,7 +206,6 @@ Use `EXPLAIN ANALYZE` without an option, or equivalently with the `PLAN` option,
 
 For example, the following `EXPLAIN ANALYZE` statement executes a simple query against the [MovR database]({% link {{ page.version.version }}/movr.md %}) and then displays the physical statement plan with execution statistics:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN ANALYZE SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
@@ -260,7 +258,6 @@ EXPLAIN ANALYZE SELECT city, AVG(revenue) FROM rides GROUP BY city;
 
 If you perform a join, the estimated max memory allocation is also reported for the join. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles.id and rides.city = vehicles.city limit 100;
 ~~~
@@ -335,7 +332,6 @@ EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles
 
 Use the `VERBOSE` suboption of `PLAN` to execute a query and display the physical statement plan with additional execution statistics.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
@@ -399,7 +395,6 @@ EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 
 Use `EXPLAIN ANALYZE (DISTSQL)` to execute a query, display the physical statement plan with execution statistics, and generate a link to a graphical DistSQL statement plan.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
@@ -458,7 +453,6 @@ To view the [DistSQL plan diagram](#distsql-plan-diagram), open the URL followin
 
 Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files with information about the query and the database objects referenced in the query. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN ANALYZE (DEBUG) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
@@ -479,7 +473,6 @@ To download the ZIP file containing the statement diagnostics, run the `\stateme
 
 Use the [`REDACT` option](#redact-option) to execute a query and cause constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the physical statement plan or statement bundle.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN ANALYZE (REDACT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~

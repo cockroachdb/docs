@@ -141,7 +141,7 @@ This can be useful in applications that abstract database access using an applic
 Just as [`COMMIT`]({% link "{{ page.version.version }}/commit-transaction.md" %}) and [`ROLLBACK`]({% link "{{ page.version.version }}/rollback-transaction.md" %}) are used to commit and discard entire transactions, respectively, [`RELEASE SAVEPOINT`]({% link "{{ page.version.version }}/release-savepoint.md" %}) and [`ROLLBACK TO SAVEPOINT`]({% link "{{ page.version.version }}/rollback-transaction.md" %}#rollback-a-nested-transaction) are used to commit and discard nested transactions.  This relationship is shown in the following table:
 
 | Statement                                                                          | Effect                                                |
-|------------------------------------------------------------------------------------+-------------------------------------------------------|
+|------------------------------------------------------------------------------------|-------------------------------------------------------|
 | [`COMMIT`]({% link "{{ page.version.version }}/commit-transaction.md" %})                                                | Commit an entire transaction.                         |
 | [`ROLLBACK`]({% link "{{ page.version.version }}/rollback-transaction.md" %})                                            | Discard an entire transaction.                        |
 | [`RELEASE SAVEPOINT`]({% link "{{ page.version.version }}/release-savepoint.md" %})                                      | Commit (really, forget) the named nested transaction. |

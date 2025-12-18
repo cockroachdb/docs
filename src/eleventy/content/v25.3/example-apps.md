@@ -22,7 +22,7 @@ Note that tools with [**community-level** support]({% link {{ page.version.versi
 ## JavaScript/TypeScript
 
 | Driver/ORM Framework                                    | Support level  | Example apps                                            |
-|---------------------------------------------------------+----------------+--------------------------------------------------------|
+|---------------------------------------------------------|----------------|--------------------------------------------------------|
 | [node-postgres](https://www.npmjs.com/package/pg)       | Full           | [AWS Lambda]({% link {{ page.version.version }}/deploy-lambda-function.md %})<br>[Simple CRUD]({% link {{ page.version.version }}/build-a-nodejs-app-with-cockroachdb.md %})
 | [Sequelize](https://www.npmjs.com/package/sequelize)    | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-nodejs-app-with-cockroachdb-sequelize.md %})
 | [Knex.js](https://knexjs.org/)                          | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-nodejs-app-with-cockroachdb-knexjs.md %})
@@ -32,7 +32,7 @@ Note that tools with [**community-level** support]({% link {{ page.version.versi
 ## Python
 
 | Driver/ORM Framework                                            | Support level  | Example apps                                            |
-|-----------------------------------------------------------------+----------------+--------------------------------------------------------|
+|-----------------------------------------------------------------|----------------|--------------------------------------------------------|
 | [psycopg2](https://www.psycopg.org/docs/install.html) | Full  | [Simple CRUD]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb.md %})<br>[AWS Lambda]({% link {{ page.version.version }}/deploy-lambda-function.md %})
 | [psycopg3](https://www.psycopg.org/psycopg3/docs/)           | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb-psycopg3.md %})
 | [asyncpg](https://magicstack.github.io/asyncpg/current/index.html) | Partial  | [Simple CRUD]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb-asyncpg.md %})
@@ -42,7 +42,7 @@ Note that tools with [**community-level** support]({% link {{ page.version.versi
 ## Go
 
 | Driver/ORM Framework                             | Support level  | Example apps                                            |
-|--------------------------------------------------+----------------+--------------------------------------------------------|
+|--------------------------------------------------|----------------|--------------------------------------------------------|
 | [pgx](https://github.com/jackc/pgx/releases)     | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb.md %})
 | [GORM](https://github.com/jinzhu/gorm/releases)  | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb-gorm.md %})
 | [pq](https://github.com/lib/pq)                  | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb-pq.md %})
@@ -51,7 +51,7 @@ Note that tools with [**community-level** support]({% link {{ page.version.versi
 ## Java
 
 | Driver/ORM Framework                       | Support level  | Example apps                                            |
-|--------------------------------------------+----------------+--------------------------------------------------------|
+|--------------------------------------------|----------------|--------------------------------------------------------|
 | [JDBC](https://jdbc.postgresql.org/)       | Full           | [Quickstart]({% link cockroachcloud/quickstart.md %})<br>[Simple CRUD]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %})<br>[Roach Data (Spring Boot App)](build-a-spring-app-with-cockroachdb-jdbc.html)
 | [Hibernate](https://hibernate.org/orm/)    | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb-hibernate.md %})<br>[Roach Data (Spring Boot App)](build-a-spring-app-with-cockroachdb-jpa.html)
 | [jOOQ](https://www.jooq.org/)              | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb-jooq.md %})
@@ -59,20 +59,20 @@ Note that tools with [**community-level** support]({% link {{ page.version.versi
 ## Ruby
 
 | Driver/ORM Framework                                      | Support level  | Example apps                                            |
-|-----------------------------------------------------------+----------------+--------------------------------------------------------|
+|-----------------------------------------------------------|----------------|--------------------------------------------------------|
 | [pg](https://rubygems.org/gems/pg)                        | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-ruby-app-with-cockroachdb.md %})
 | [Active Record](https://rubygems.org/gems/activerecord)    | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-ruby-app-with-cockroachdb-activerecord.md %})
 
 ## C# 
 
 | Driver/ORM Framework                                      | Support level  | Example apps                                           |
-|-----------------------------------------------------------+----------------+--------------------------------------------------------|
+|-----------------------------------------------------------|----------------|--------------------------------------------------------|
 | [Npgsql](https://www.npgsql.org/)                         | Full           | [Simple CRUD]({% link {{ page.version.version }}/build-a-csharp-app-with-cockroachdb.md %})
 
 ## Rust
 
 | Driver/ORM Framework                           | Support level  | Example apps                                           |
-|------------------------------------------------+----------------+--------------------------------------------------------|
+|------------------------------------------------|----------------|--------------------------------------------------------|
 | [Rust-Postgres](https://github.com/sfackler/rust-postgres) | Partial      | [Simple CRUD]({% link {{ page.version.version }}/build-a-rust-app-with-cockroachdb.md %})
 
 ## See also

@@ -47,7 +47,6 @@ The following examples use the [`startrek` demo database schema]({% link {{ page
 
 To follow along, run [`cockroach demo startrek`]({% link {{ page.version.version }}/cockroach-demo.md %}) to start a temporary, in-memory cluster with the `startrek` schema and dataset preloaded:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo startrek
 ~~~
@@ -56,7 +55,6 @@ $ cockroach demo startrek
 
 The sample `startrek` database contains two tables, `episodes` and `quotes`. The table also contains a foreign key constraint, between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT startrek.episodes.season, count(*)
   FROM startrek.quotes
@@ -76,7 +74,6 @@ The sample `startrek` database contains two tables, `episodes` and `quotes`. The
 
 Alternatively, to make it much easier to run this complex query, you could create a view:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW startrek.quotes_per_season (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
@@ -88,7 +85,6 @@ Alternatively, to make it much easier to run this complex query, you could creat
 
 The view is then represented as a virtual table alongside other tables in the database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM startrek;
 ~~~
@@ -104,7 +100,6 @@ The view is then represented as a virtual table alongside other tables in the da
 
 Executing the query is as easy as `SELECT`ing from the view, as you would from a standard table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM startrek.quotes_per_season;
 ~~~
@@ -122,7 +117,6 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 
  You can create a new view, or replace an existing view, with `CREATE OR REPLACE VIEW`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE OR REPLACE VIEW startrek.quotes_per_season (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
@@ -133,7 +127,6 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
   ORDER BY startrek.episodes.season;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM startrek.quotes_per_season;
 ~~~
@@ -155,7 +148,6 @@ The following example builds a view over a table and two UDFs.
 
 Create and populate a table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE xy (x INT, y INT);
 INSERT INTO xy VALUES (1, 2), (3, 4), (5, 6);
@@ -163,14 +155,12 @@ INSERT INTO xy VALUES (1, 2), (3, 4), (5, 6);
 
 Define a scalar and a set-returning UDF:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION f_scalar() RETURNS INT LANGUAGE SQL AS $$
     SELECT count(*) FROM xy;
   $$;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION f_setof() RETURNS SETOF xy LANGUAGE SQL AS $$
     SELECT * FROM xy;
@@ -179,7 +169,6 @@ CREATE FUNCTION f_setof() RETURNS SETOF xy LANGUAGE SQL AS $$
 
 Create a view that references both functions:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE VIEW v_xy AS
 SELECT x, y, f_scalar() AS total_rows
@@ -188,7 +177,6 @@ FROM f_setof();
 
 Query the view:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM v_xy ORDER BY x;
 ~~~
@@ -204,7 +192,6 @@ SELECT * FROM v_xy ORDER BY x;
 
 Because the view depends on `f_scalar` and `f_setof`, attempting to rename either function returns an error:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER FUNCTION f_scalar RENAME TO f_scalar_renamed;
 ~~~

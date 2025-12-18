@@ -78,7 +78,6 @@ To create the most efficient indexes, we recommend reviewing:
 
 Single-column indexes sort the values of a single column.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name);
 ~~~
@@ -89,7 +88,6 @@ Because each query can only use one index, single-column indexes are not typical
 
 Multiple-column indexes sort columns in the order you list them.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name, city);
 ~~~
@@ -100,14 +98,12 @@ To create the most useful multiple-column indexes, we recommend reviewing our [b
 
 Unique indexes do not allow duplicate values among their columns.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE UNIQUE INDEX ON users (name, id);
 ~~~
 
 This also applies the [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}) at the table level, similar to [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}). The preceding example is equivalent to:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT users_name_id_key UNIQUE (name, id);
 ~~~
@@ -118,14 +114,12 @@ Primary key columns that are not specified within a unique index are automatical
 
 You can create [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}) on schemaless data in a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON promo_codes USING GIN (rules);
 ~~~
 
 The following syntax is equivalent:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX ON promo_codes (rules);
 ~~~
@@ -134,14 +128,12 @@ The following syntax is equivalent:
 
 You can create [trigram indexes]({% link {{ page.version.version }}/trigram-indexes.md %}) on `STRING` columns by specifying the `gin_trgm_ops` or `gist_trgm_ops` opclass:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE INDEX ON rides USING GIN (vehicle_city gin_trgm_ops);
 ~~~
 
 The following syntax is equivalent:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE INVERTED INDEX ON rides(vehicle_city gin_trgm_ops);
 ~~~
@@ -156,7 +148,6 @@ You can create [spatial indexes]({% link {{ page.version.version }}/spatial-inde
 
 To create a spatial index on a `GEOMETRY` column:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geom_idx_1 ON some_spatial_table USING GIST(geom);
 ~~~
@@ -165,7 +156,6 @@ Unlike GIN indexes, spatial indexes do not support an alternate `CREATE INVERTED
 
 For advanced users, there are a number of [spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#create-a-spatial-index-that-uses-all-of-the-tuning-parameters) that can be passed in using the syntax `WITH (var1=val1, var2=val2)` as follows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geom_idx_2
   ON some_spatial_table USING GIST(geom)
@@ -182,7 +172,6 @@ Most users should not change the default spatial index settings. There is a risk
 
 To create a vector index on a `VECTOR` column named `embedding`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE VECTOR INDEX ON items (embedding);
 ~~~
@@ -191,7 +180,6 @@ CREATE VECTOR INDEX ON items (embedding);
 
 Storing a column improves the performance of queries that retrieve (but do not filter) its values.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (city) STORING (name);
 ~~~
@@ -206,7 +194,6 @@ However, to use stored columns, queries must filter another column in the same i
 
 To sort columns in descending order, you must explicitly set the option when creating the index. (Ascending order is the default.)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (city DESC, name);
 ~~~
@@ -217,7 +204,6 @@ How a column is ordered in the index will affect the ordering of the index keys,
 
 Normally, CockroachDB selects the index that it calculates will scan the fewest rows. However, you can override that selection and specify the name of the index you want to use. To find the name, use [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %}).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -237,7 +223,6 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name FROM users@users_name_idx WHERE city='new york';
 ~~~

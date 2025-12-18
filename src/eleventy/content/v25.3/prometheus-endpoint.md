@@ -21,7 +21,6 @@ Even if you rely on external tools for storing and visualizing your cluster's ti
 
 To access the `_status/vars` Prometheus endpoint of a cluster running on `localhost:8080`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/_status/vars
 ~~~
@@ -83,7 +82,6 @@ The `metrics` Prometheus endpoint is commonly used and is the default in Prometh
 
 To access the `metrics` Prometheus endpoint of a cluster running on `localhost:8080`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/metrics
 ~~~

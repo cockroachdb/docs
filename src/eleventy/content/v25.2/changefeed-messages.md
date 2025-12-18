@@ -52,7 +52,6 @@ As an example, you run the following sequence of SQL statements to create a chan
 
 1. Create a table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE employees (
         id INT PRIMARY KEY,
@@ -63,14 +62,12 @@ As an example, you run the following sequence of SQL statements to create a chan
 
 1. Create a changefeed targeting the `employees` table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees INTO 'external://sink' WITH updated;
     ~~~
 
 1. Insert and update values in `employees`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO employees VALUES (1, 'Terry', 'new york city');
     INSERT INTO employees VALUES (2, 'Alex', 'los angeles');
@@ -119,7 +116,6 @@ In some cases, you may want to specify another column in a table as the key by u
 
 To confirm that messages may emit the same row to different partitions when an arbitrary column is used, you must include the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE employees INTO 'external://kafka-sink'
     WITH key_column='office', unordered;
@@ -194,14 +190,12 @@ There are three different ways to configure resolved timestamp messages:
 - If you do not specify the `resolved` option at all, then the changefeed coordinator node will not send resolved timestamp messages.
 - If you include `WITH resolved` in your changefeed creation statement **without** specifying a value, the coordinator node will emit resolved timestamps as the changefeed job checkpoints and the high-water mark advances. Note that new Kafka partitions may not receive resolved messages right away.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE ... WITH resolved;
     ~~~
 
 - If you specify a duration like `WITH resolved={duration}`, the coordinator node will use the duration as the minimum amount of time that the changefeed's high-water mark (overall resolved timestamp) must advance by before another resolved timestamp is emitted. The changefeed will only emit a resolved timestamp message if the timestamp has advanced (and by at least the optional duration, if set). For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE ... WITH resolved=30s;
     ~~~
@@ -212,7 +206,6 @@ The changefeed job's coordinating node will emit resolved timestamp messages onc
 
 The `min_checkpoint_frequency` option controls how often nodes flush their progress to the coordinating node. If you need resolved timestamp messages to emit from the changefeed more frequently than the `30s` default, then you must set `min_checkpoint_frequency` to at least the desired resolved timestamp frequency. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE ... WITH resolved=10s, min_checkpoint_frequency=10s;
 ~~~
@@ -281,20 +274,17 @@ When schema changes with column backfill (e.g., adding a column with a default, 
 
 The following example demonstrates the messages you will receive after creating a changefeed and then applying a schema change to the watched table:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE office_dogs (
      id INT PRIMARY KEY,
      name STRING);
 ~~~
-{% include_cached copy-clipboard.html %}
 ~~~sql
 INSERT INTO office_dogs VALUES
    (1, 'Petee H'),
    (2, 'Carl'),
    (3, 'Ernie');
 ~~~
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE office_dogs INTO 'external://cloud';
 ~~~
@@ -309,7 +299,6 @@ You receive each of the rows at the sink:
 
 For example, add a column to the watched table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
 ~~~
@@ -365,7 +354,6 @@ When you create a changefeed, use change data capture queries to define the chan
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH updated AS SELECT column, column FROM table;
 ~~~
@@ -384,7 +372,6 @@ The `headers_json_column_name` option is supported with changefeeds emitting to 
 
 For example, define a table that updates compliance events. This schema includes a `kafka_meta` column of type `JSONB`, used to store a trace ID and other metadata for the Kafka header:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE compliance_events (
     event_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -398,7 +385,6 @@ CREATE TABLE compliance_events (
 
 Insert example rows into the table, populating the `kafka_meta` column with the `JSONB` data. The changefeed will emit this column as Kafka headers alongside the row changes:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO compliance_events (
     user_id, event_type, details, kafka_meta
@@ -412,7 +398,6 @@ INSERT INTO compliance_events (
 
 Create a changefeed that emits messages from the `compliance_events` table to Kafka and specify the `kafka_meta` column using the `headers_json_column_name` option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE compliance_events INTO 'kafka://localhost:9092' WITH headers_json_column_name = 'kafka_meta';
 ~~~
@@ -531,17 +516,14 @@ To distinguish between JSON `NULL` values and SQL `NULL` values in changefeed me
 
 For example, the following `test` table has a primary key column and a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column. The `INSERT` adds `NULL` values in each column. A changefeed without the option enabled will not distinguish between the SQL and JSON `NULL` values. With the `encode_json_value_null_as_object` option enabled, the changefeed emits the JSON `NULL` as `{"__crdb_json_null__": true}`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE test (id INT PRIMARY KEY, data JSONB);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO test VALUES (1, NULL), (2, 'null'::JSONB);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE test INTO 'external://sink';
 ~~~
@@ -553,7 +535,6 @@ Without the option enabled, it is not possible to distinguish the SQL and JSON `
 {"after": {"data": null, "id": 2}, "key": [2]}
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE test INTO 'external://sink' WITH encode_json_value_null_as_object;
 ~~~

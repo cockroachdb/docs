@@ -46,7 +46,6 @@ Special syntax cases supported for compatibility:
 
 ### Showing the value of a single session variable
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASE;
 ~~~
@@ -60,7 +59,6 @@ Special syntax cases supported for compatibility:
 
 ### Showing the value of all session variables
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ALL;
 ~~~

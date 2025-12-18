@@ -53,7 +53,6 @@ Field | Description
 
 ### List active sessions across the cluster
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SESSIONS;
 ~~~
@@ -79,7 +78,6 @@ Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 
 ### List active sessions on the local node
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW LOCAL SESSIONS;
 ~~~
@@ -102,7 +100,6 @@ You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
 
 #### Show sessions associated with a specific user
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER SESSIONS) SELECT * FROM x WHERE user_name = 'mroach';
 ~~~
@@ -122,7 +119,6 @@ You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
 
 To exclude sessions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), filter for sessions that do not show `cockroach` as the `application_name`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER SESSIONS) SELECT * FROM x
       WHERE application_name != 'cockroach';
@@ -160,7 +156,6 @@ For example, let's say you run `SHOW SESSIONS` and notice that the following ses
 
 Since the `oldest_query_start` timestamp is the same as the `session_start` timestamp, you are concerned that the `SELECT` query shown in `active_queries` has been running for too long and may be consuming too many resources. So you use the [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}) statement to get more information about the query, filtering based on details you already have:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE client_address = '192.168.0.72:56194'
@@ -178,14 +173,12 @@ Since the `oldest_query_start` timestamp is the same as the `session_start` time
 
 Using the `start` field, you confirm that the query has been running since the start of the session and decide that is too long. So to cancel the query, and stop it from consuming resources, you note the `query_id` and use it with the [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
 Alternatively, if you know that you want to cancel the query based on the details in `SHOW SESSIONS`, you could execute a single [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement with a nested `SELECT` statement that returns the `query_id`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY (WITH x as (SHOW CLUSTER STATEMENTS) SELECT query_id FROM x
       WHERE client_address = '192.168.0.72:56194'

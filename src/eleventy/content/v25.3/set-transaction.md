@@ -39,12 +39,10 @@ You can set the transaction isolation level to [`SERIALIZABLE`]({% link {{ page.
 
 If not specified, transactions use the value of the current session's [`default_transaction_isolation`]({% link {{ page.version.version }}/session-variables.md %}#default-transaction-isolation) variable.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ~~~
@@ -55,37 +53,30 @@ SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 This example assumes you're using <a href="transaction-retry-error-reference.html#client-side-retry-handling">client-side retry handling</a>.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET TRANSACTION PRIORITY HIGH;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SAVEPOINT cockroach_restart;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMIT;
 ~~~

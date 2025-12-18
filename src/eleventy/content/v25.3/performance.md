@@ -25,7 +25,7 @@ CockroachDB achieves this performance in [`SERIALIZABLE` isolation]({% link {{ p
 <img src="{{ 'images/v24.2/tpcc140k.png' | relative_url }}" alt="TPC-C 140,000" style="border:1px solid #eee;max-width:100%" />
 
 | Metric                                          | CockroachDB 19.2 | CockroachDB 21.1 |
-|-------------------------------------------------+------------------+------------------|
+|-------------------------------------------------|------------------|------------------|
 | Max warehouses with max efficiency (warehouses) |          100,000 |          140,000 |
 | Max throughput (tpmC)                           |        1,245,462 |        1,684,437 |
 | Efficiency (%)                                  |            98.81 |            95.45 |
@@ -42,7 +42,7 @@ CockroachDB has **no theoretical scaling limit** and, in practice, can achieve n
 This chart shows that adding nodes increases throughput linearly while holding p50 and p99 latency constant. The concurrency for each scale was chosen to optimize throughput while maintaining an acceptable latency and can be observed in the following table.
 
 | Number of nodes | Workers | Concurrency |
-|-----------------+---------+-------------|
+|-----------------|---------|-------------|
 |              16 |       2 |         512 |
 |              32 |       4 |         512 |
 |              64 |       4 |        1024 |

@@ -36,7 +36,6 @@ Reverse replication requirement | A | Original source connection string user. | 
 
 For example, the user `maxroach` will run the following statement to start LDR on the destination cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE LOGICALLY REPLICATED TABLE B.table FROM TABLE A.table ON 'A_connection_string/user=samroach' WITH BIDIRECTIONAL ON 'B_connection_string/user=maxroach;
 ~~~
@@ -49,7 +48,6 @@ To start LDR successfully with this statement:
 
 Grant the privilege at the table or [system level]({% link {{ page.version.version }}/grant.md %}#grant-system-level-privileges-on-the-entire-cluster) with the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) statement to a [user or a role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT REPLICATIONSOURCE ON TABLE database.public.tablename TO user/role;
 ~~~
@@ -88,7 +86,6 @@ Option | Description
 
 From the destination cluster of the LDR stream, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH unidirectional;
 ~~~
@@ -107,7 +104,6 @@ Include the following:
 
 Both clusters will act as a source and destination in bidirectional LDR setups. To start the LDR jobs, you must run this statement from the destination cluster that does not contain the tables:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH bidirectional ON 'external://destination';
 ~~~

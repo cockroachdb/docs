@@ -24,7 +24,6 @@ To follow along with the example below, you will need the following prerequisite
     {% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
 - [Python 3](https://www.python.org)
 - The tornado data:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o 1950-2018-torn-initpoint.zip http://web.archive.org/web/20201018170120/https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip && unzip 1950-2018-torn-initpoint.zip
     ~~~
@@ -33,14 +32,12 @@ To follow along with the example below, you will need the following prerequisite
 
 Navigate to the folder containing the data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cd 1950-2018-torn-initpoint/
 ~~~
 
 Convert the Shapefile data to CSV using the following `ogr2ogr` command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ogr2ogr -f CSV tornadoes.CSV -lco GEOMETRY=AS_WKT 1950-2018-torn-initpoint.shp
 ~~~
@@ -53,7 +50,6 @@ Each node in the CockroachDB cluster needs to have access to the files being imp
 
 For local testing, you can [start a local file server]({% link {{ page.version.version }}/use-a-local-file-server.md %}).  The following command will start a local file server listening on port 3000:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 python3 -m http.server 3000
 ~~~
@@ -62,12 +58,10 @@ python3 -m http.server 3000
 
 Create a database to hold the bus-stop data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE tornadoes;
 USE tornadoes;
@@ -79,14 +73,12 @@ To import the CSV data, you need to create a table with the necessary columns an
 
 Convert the Shapefile data to SQL using the following `ogr2ogr` command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ogr2ogr -f PGDUMP tornadoes.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF 1950-2018-torn-initpoint.shp
 ~~~
 
 Create a CockroachDB table that corresponds to the DDL statements in `tornadoes.sql`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE tornadoes (
     wkb_geometry GEOMETRY(POINT) NULL,
@@ -119,7 +111,6 @@ CREATE TABLE tornadoes (
 
 Since the file is being served from a local server and is formatted as CSV, you can import the data using the following [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 IMPORT INTO tornadoes CSV DATA ('http://localhost:3000/tornadoes.csv') WITH skip = '1';
 ~~~

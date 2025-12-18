@@ -53,7 +53,6 @@ See [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-stor
 
 To add a new KMS key to the most recent backup:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER BACKUP LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}'
@@ -62,7 +61,6 @@ ALTER BACKUP LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET
 
 To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER BACKUP '2022/03/23-213101.37' IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}'
@@ -77,7 +75,6 @@ To list backup directories at a collection's URI, see [`SHOW BACKUP`]({% link {{
 
 To add a new KMS key to the most recent backup:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER BACKUP LATEST IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     ADD NEW_KMS = 'azure-kms:///{new key}/{new key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
@@ -86,7 +83,6 @@ ALTER BACKUP LATEST IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOU
 
 To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER BACKUP '2023/03/14-203808.29' IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     ADD NEW_KMS = 'azure-kms:///{new key}/{new key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
@@ -99,7 +95,6 @@ To list backup directories at a collection's URI, see [`SHOW BACKUP`]({% link {{
 
 To add a new KMS key to the most recent backup:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER BACKUP LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     ADD NEW_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{new key}?AUTH=specified&CREDENTIALS={encoded key}'
@@ -108,7 +103,6 @@ ALTER BACKUP LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED K
 
 To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER BACKUP '2022/03/23-213101.37' IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     ADD NEW_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{new key}?AUTH=specified&CREDENTIALS={encoded key}'

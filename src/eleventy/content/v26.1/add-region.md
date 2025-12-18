@@ -26,7 +26,7 @@ In order to add a region with `ADD REGION`, you must first set a primary databas
 ## Parameters
 
 | Parameter       | Description                                                                                                                                                       |
-|-----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `database_name` | The database to which you are adding a [region](multiregion-overview.html#database-regions).                                                                      |
 | `region_name`   | The [region](multiregion-overview.html#database-regions) being added to this database.  Allowed values include any region present in `SHOW REGIONS FROM CLUSTER`. |
 

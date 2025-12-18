@@ -152,7 +152,6 @@ Each function accepts two required and two optional arguments as follows:
 
 To follow the examples on this page, create and populate the following table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE stats (data JSONB);
 
@@ -202,7 +201,6 @@ Access `JSONB` content by passing a [JSONPath expression](#jsonpath-expression) 
 
 To return the entire `JSONB` value, query the root accessor (`$`):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$') FROM stats;
 ~~~
@@ -219,7 +217,6 @@ To return a specific field in the `JSONB` value, query its corresponding key acc
 
 The following query returns the `season` value from the root object:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.season') FROM stats;
 ~~~
@@ -232,7 +229,6 @@ SELECT jsonb_path_query(data, '$.season') FROM stats;
 
 To access nested keys, append key accessors to their parent keys. The following query returns the `stats` value for each element in the `players` array, using the [array accessor](#access-jsonb-array-elements):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[*].stats') FROM stats;
 ~~~
@@ -247,7 +243,6 @@ SELECT jsonb_path_query(data, '$.players[*].stats') FROM stats;
 
 Descending one more level, the following query returns the `ppg` value within the `stats` array for each player:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[*].stats.ppg') FROM stats;
 ~~~
@@ -266,7 +261,6 @@ Access `JSONB` array elements through their index value (`JSONB` arrays are 0-in
 
 The following query returns the `name` value of the first element in the `players` array (i.e., the first player's name):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[0].name') FROM stats;
 ~~~
@@ -279,7 +273,6 @@ SELECT jsonb_path_query(data, '$.players[0].name') FROM stats;
 
 The following query returns the last player's name, using the `last` keyword:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[last].name') FROM stats;
 ~~~
@@ -292,7 +285,6 @@ SELECT jsonb_path_query(data, '$.players[last].name') FROM stats;
 
 The following query returns the array elements in the range 0-1:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[0 to 1]') FROM stats;
 ~~~
@@ -306,7 +298,6 @@ SELECT jsonb_path_query(data, '$.players[0 to 1]') FROM stats;
 
 Use a comma-separated list to return the union of mulitple array accessors:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[1 to 2, 0]') FROM stats;
 ~~~
@@ -325,7 +316,6 @@ You can use [JSONPath methods](#methods) to access or transform data in the path
 
 The following query returns the type of each value in the `players` array, using the `type()` method:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[*].type()') FROM stats;
 ~~~
@@ -340,7 +330,6 @@ SELECT jsonb_path_query(data, '$.players[*].type()') FROM stats;
 
 The following query returns the number of objects in the `players` array, using the `size()` method:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players.size()') FROM stats;
 ~~~
@@ -353,7 +342,6 @@ SELECT jsonb_path_query(data, '$.players.size()') FROM stats;
 
 The following query rounds down the `ppg` statistic for each player, using the `floor()` method:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[*].stats.ppg.floor()') FROM stats;
 ~~~
@@ -374,22 +362,18 @@ A JSONPath expression can be a *predicate check expression* that returns a Boole
 
 Each of the following check expressions evaluates to true:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[2].name == "Luka Doncic"') FROM stats;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[2].name starts with "L"') FROM stats;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[2].stats.ppg > 30') FROM stats;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '(($.players[2].team != "Lakers") && ($.players[1].stats.ppg > 25))') FROM stats;
 ~~~
@@ -420,7 +404,6 @@ $.items[*] ? (@.price > 100).name;
 
 The following query returns all players who averaged more than 25 points per game:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[*] ? (@.stats.ppg > 25)') FROM stats;
 ~~~
@@ -434,7 +417,6 @@ SELECT jsonb_path_query(data, '$.players[*] ? (@.stats.ppg > 25)') FROM stats;
 
 The following modification to the query returns only the player names:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[*] ? (@.stats.ppg > 25).name') FROM stats;
 ~~~
@@ -448,7 +430,6 @@ SELECT jsonb_path_query(data, '$.players[*] ? (@.stats.ppg > 25).name') FROM sta
 
 You can sequence multiple filters in a query. The following query adds a filter on the `rpg` statistic to the preceding filter:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[*] ? (@.stats.ppg > 25) ? (@.stats.rpg >= 9).name') FROM stats;
 ~~~
@@ -461,7 +442,6 @@ SELECT jsonb_path_query(data, '$.players[*] ? (@.stats.ppg > 25) ? (@.stats.rpg 
 
 To have a filter return a Boolean value, use the `jsonb_path_exists` [function](#jsonpath-functions). The following query evaluates whether any player averaged more than 25 points per game:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_exists(data, '$.players[*] ? (@.stats.ppg > 25)') FROM stats;
 ~~~
@@ -476,12 +456,10 @@ SELECT jsonb_path_exists(data, '$.players[*] ? (@.stats.ppg > 25)') FROM stats;
 
 The following two queries use the `starts with` and `like_regex` operators to return the same result:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[*] ? (@.team starts with "L")') FROM stats;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[*] ? (@.team like_regex "^L.*")') FROM stats;
 ~~~
@@ -498,7 +476,6 @@ Define a variable in a JSONPath expression by prefixing it with `$`. Then specif
 
 The following query filters players whose `ppg` is greater than the value of the `min` variable:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, '$.players[*] ? (@.stats.ppg > $min)', '{"min": 25}') FROM stats;
 ~~~
@@ -514,7 +491,6 @@ SELECT jsonb_path_query(data, '$.players[*] ? (@.stats.ppg > $min)', '{"min": 25
 
 JSONPath expressions can include arithmetic:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query('{}', '1+1');
 ~~~
@@ -533,7 +509,6 @@ Use the `jsonb_path_query_first` [function](#jsonpath-functions) to return the f
 
 The following query returns the first `name` in the `players` array:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query_first(data, '$.players[*].name') FROM stats;
 ~~~
@@ -550,7 +525,6 @@ Use the `jsonb_path_query_array` [function](#jsonpath-functions) to return all q
 
 The following query returns all `team` values in a single array.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query_array(data, '$.players[*].team') FROM stats;
 ~~~
@@ -568,7 +542,6 @@ By default, JSONPath expressions are evaluated in `lax` mode, which tolerates st
 - When the path contains keys that are missing in the `JSONB` structure, `NULL` or `false` values are returned, [depending on the function](#jsonpath-functions), rather than an error.
 - Values are automatically wrapped into arrays or unwrapped from arrays. For example, the following query works without an array accessor because it unwraps the `players` array:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT jsonb_path_query(data, '$.players.stats') FROM stats;
     ~~~
@@ -583,7 +556,6 @@ By default, JSONPath expressions are evaluated in `lax` mode, which tolerates st
 
 To enforce strict access rules, specify `strict` at the start of the path expression. The following query throws an error because it requires an explicit [array accessor](#access-jsonb-array-elements) for `players` (e.g., `players[*]`):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, 'strict $.players.stats') FROM stats;
 ~~~
@@ -595,7 +567,6 @@ SQLSTATE: 2203A
 
 However, setting `silent` to `true` in a [JSONPath function](#jsonpath-functions) suppresses any errors:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query(data, 'strict $.players.stats', '{}', true) FROM stats;
 ~~~
@@ -611,7 +582,6 @@ A JSONPath expression is normally evaluated left to right, while respecting oper
 
 For example, multiplication takes precedence over addition:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query('{}', '1 + 2 * 3');
 ~~~
@@ -624,7 +594,6 @@ SELECT jsonb_path_query('{}', '1 + 2 * 3');
 
 Use parentheses to override the default order:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_path_query('{}', '(1 + 2) * 3');
 ~~~

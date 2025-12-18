@@ -34,12 +34,10 @@ Parameter | Description
 
 ### Drop a schema
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA org_one;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -56,12 +54,10 @@ Parameter | Description
 (6 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEMA org_one;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -81,12 +77,10 @@ Parameter | Description
 
 To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA org_two;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -103,7 +97,6 @@ To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 (6 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE org_two.users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -113,7 +106,6 @@ To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM org_two;
 ~~~
@@ -125,7 +117,6 @@ To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEMA org_two;
 ~~~
@@ -135,12 +126,10 @@ ERROR: schema "org_two" is not empty and CASCADE was not specified
 SQLSTATE: 2BP01
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEMA org_two CASCADE;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~

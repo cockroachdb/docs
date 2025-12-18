@@ -25,7 +25,7 @@ The `WITH (storage parameter)` [statement]({% link "{{ page.version.version }}/s
 ## Command parameters
 
 | Parameter           | Description          |
-|---------------------+----------------------|
+|---------------------|----------------------|
 | `table`             | The table to which you are setting the parameter.  |
 | `index`             | The index to which you are setting the parameter.  |
 | `parameter_name`    | The name of the storage parameter. See [Storage parameters](#storage-parameters) for a list of available parameters. |

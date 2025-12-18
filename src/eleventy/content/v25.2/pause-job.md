@@ -75,7 +75,6 @@ See the following pages for details on metrics:
 
 ### Pause a single job
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
@@ -86,7 +85,6 @@ See the following pages for details on metrics:
   27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 27536791415282;
 ~~~
@@ -95,7 +93,6 @@ See the following pages for details on metrics:
 
 To pause multiple jobs, nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `job_id`(s) inside the `PAUSE JOBS` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
       WHERE user_name = 'maxroach');
@@ -107,14 +104,12 @@ All jobs created by `maxroach` will be paused.
 
 To pause all jobs by the type of job, use the `PAUSE ALL {job} JOBS` statement. You can pause all `BACKUP`, `RESTORE`, `CHANGEFEED`, `IMPORT` jobs using this statement, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 PAUSE ALL BACKUP JOBS;
 ~~~
 
 ### Pause automatic table statistics jobs
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW AUTOMATIC JOBS;
 ~~~
@@ -126,14 +121,12 @@ PAUSE ALL BACKUP JOBS;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 438235476849557505;
 ~~~
 
 To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
 ~~~
@@ -142,7 +135,6 @@ To permanently disable automatic table statistics jobs, disable the `sql.stats.a
 
  To pause jobs for a specific [backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}), use the schedule's `id`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -153,7 +145,6 @@ PAUSE JOBS FOR SCHEDULES 1
 
 You can also pause multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~

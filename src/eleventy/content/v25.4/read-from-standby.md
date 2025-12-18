@@ -35,7 +35,6 @@ Prior to setting up read from standby, ensure that:
 
 To start a PCR stream that allows read access to the standby cluster, use the [`CREATE VIRTUAL CLUSTER ... REPLICATION`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) statement with the `READ VIRTUAL CLUSTER` option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connection string to primary}' WITH READ VIRTUAL CLUSTER;
 ~~~
@@ -44,7 +43,6 @@ CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connectio
 
 To add read from standby capabilities to an existing PCR stream, use the [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER VIRTUAL CLUSTER main SET REPLICATION READ VIRTUAL CLUSTER;
 ~~~
@@ -57,7 +55,6 @@ The standby cluster's app VC must have a status of `replicating` before you can 
 
 To confirm that your reader virtual cluster is active:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW VIRTUAL CLUSTERS;
 ~~~
@@ -80,7 +77,6 @@ The reader VC cannot serve reads until after the PCR initial scan is complete. A
 
 Once you have created a reader virtual cluster on the standby cluster, you can connect to it and run [read (`SELECT`) queries]({% link {{ page.version.version }}/selection-queries.md %}). For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT COUNT(*) FROM customers;
 SELECT region, SUM(amount) FROM orders GROUP BY region;

@@ -499,7 +499,6 @@ Suppose you want to make the database `movr` a multi-region database.
 
 To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`](#set-primary-region) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr SET PRIMARY REGION "us-east1";
 ~~~
@@ -517,7 +516,6 @@ Given a cluster with multiple regions, any databases in that cluster that have n
 
 To add more regions to a database that already has at least one region:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ADD region "us-west1";
 ~~~
@@ -526,7 +524,6 @@ ALTER DATABASE movr ADD region "us-west1";
 ALTER DATABASE ADD REGION
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ADD region "europe-west1";
 ~~~
@@ -537,7 +534,6 @@ ALTER DATABASE ADD REGION
 
 To view the regions associated with a multi-region database, use a [`SHOW REGIONS FROM DATABASE`]({% link {{ page.version.version }}/show-regions.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE movr;
 ~~~
@@ -555,7 +551,6 @@ SHOW REGIONS FROM DATABASE movr;
 
 To set an existing [database region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) (that is not already the [primary region](#set-the-primary-region)) as the [secondary region]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions), use the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr SET SECONDARY REGION "us-west1";
 ~~~
@@ -574,7 +569,6 @@ Now, the `"us-west1"` region will act as the primary region if the original prim
 
 To unset an existing [database region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) as the [secondary region]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions) on a multi-region database, use the [`DROP SECONDARY REGION`](#drop-secondary-region) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr DROP SECONDARY REGION;
 ~~~
@@ -591,7 +585,6 @@ This statement does not drop the region from the database. To drop a region, use
 
 To change the primary region to another region in the database, use a [`SET PRIMARY REGION`](#set-primary-region) statement.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr SET PRIMARY REGION "europe-west1";
 ~~~
@@ -606,7 +599,6 @@ You can only change an existing primary region to a region that has already been
 
 To [drop a region](#drop-region) from a multi-region database, use a [`DROP REGION`](#drop-region) statement.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr DROP REGION "us-east1";
 ~~~
@@ -645,7 +637,6 @@ You cannot drop a region from a multi-region database if:
 
 To add a super region to a multi-region database, use the `ALTER DATABASE ... ADD SUPER REGION` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ADD SUPER REGION "usa" VALUES "us-east1", "us-west1";
 ~~~
@@ -660,7 +651,6 @@ This example assumes you have already added a `"usa"` super region as shown in t
 
 To remove a region from a super region, use the `ALTER DATABASE ... ALTER SUPER REGION` statement and list only the regions that should remain in the super region:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ALTER SUPER REGION "usa" VALUES "us-east1";
 ~~~
@@ -679,7 +669,6 @@ To add a region to a super region, alter the super region as shown above to be a
 
 To drop a super region from a multi-region database, use a [`DROP SUPER REGION`](#drop-super-region) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr DROP SUPER REGION "usa";
 ~~~
@@ -692,7 +681,6 @@ Note that you cannot [drop a region](#drop-region) that is part of a super regio
 
 For example, using the super region that was added in [`ADD SUPER REGION`](#add-a-super-region-to-a-database):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr DROP REGION "us-west1";
 ~~~
@@ -717,7 +705,6 @@ HINT: you must first drop super region usa before you can drop the region us-wes
 
 #### Edit a replication zone
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 4;
 ~~~
@@ -730,7 +717,6 @@ When you discard a zone configuration, the objects it was applied to will then i
 You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or partitions if the [multi-region abstractions]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %}#replication-zone-patterns-and-multi-region-sql-abstractions) created the zone configuration.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr CONFIGURE ZONE DISCARD;
 ~~~
@@ -762,14 +748,12 @@ The setup described in this section will be used in the following examples.
 
 Start a [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster as follows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --global --nodes=9
 ~~~
 
 This gives us a (preloaded) [MovR]({% link {{ page.version.version }}/movr.md %}) database on a cluster with the following [regions]({% link {{ page.version.version }}/multiregion-overview.md %}#cluster-regions), which can be viewed with [`SHOW REGIONS`]({% link {{ page.version.version }}/show-regions.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS;
 ~~~
@@ -790,17 +774,14 @@ Next, modify the database to use the [multi-region abstractions]({% link {{ page
 1. Set the primary region using [`SET PRIMARY REGION`](#set-primary-region).
 1. Add the other two regions using [`ADD REGION`](#add-region).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr SET PRIMARY REGION "us-east1";
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ADD REGION "us-west1";
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ADD REGION "europe-west1";
 ~~~
@@ -811,7 +792,6 @@ In this example we will configure a multi-region [MovR]({% link {{ page.version.
 
 Setting the [primary region](#set-primary-region) to `us-east1` [during the setup steps](#use-zone-config-extensions) added `us-east1` to `lease_preferences`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM DATABASE movr;
 ~~~
@@ -833,14 +813,12 @@ SHOW ZONE CONFIGURATION FROM DATABASE movr;
 
 We will now use `ALTER DATABASE ... ALTER LOCALITY` to overwrite the `lease_preferences` field to add `us-west1` to the list of regions:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING lease_preferences = '[[+region=us-east1], [+region=us-west1]]';
 ~~~
 
 To view the updated zone configs, enter the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW ZONE CONFIGURATION FROM DATABASE movr;
 ~~~
@@ -870,7 +848,6 @@ In this example, [Zone Config Extensions]({% link {{ page.version.version }}/zon
 
 For this example, you need to start a [`cockroach demo` cluster]({% link {{ page.version.version }}/cockroach-demo.md %}) using the following command, which [defines the available cluster localities using the `--demo-locality` flag]({% link {{ page.version.version }}/cockroach-demo.md %}#demo-locality):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --nodes=9 --demo-locality=region=us-east1:region=us-east1:region=us-central1:region=us-west1:region=europe-west1:region=europe-west1:region=europe-central1:region=europe-east1:region=europe-east1
 ~~~
@@ -881,7 +858,6 @@ Next, enter the following statements at the SQL prompt. These statements will:
 - Set the `movr` database to [survive region failures]({% link {{ page.version.version }}/multiregion-survival-goals.md %}#survive-region-failures).
 - Add the remaining regions defined at cluster start time to the multi-region `movr` database (for a total of 6).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr SET PRIMARY REGION "us-east1";
 ALTER DATABASE movr ADD REGION "us-central1";
@@ -897,7 +873,6 @@ Now that the multi-region cluster is configured, we will use the following [`ALT
 - [Replicas]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) in the `us-east1` region are only stored on nodes in the US.
 - Replicas in the `europe-central1` region are only stored on nodes in the EU.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING
     num_replicas = 7,
@@ -907,7 +882,6 @@ ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING
     lease_preferences = '[[+region=us-east1], [+region=us-central1]]';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "europe-central1" CONFIGURE ZONE USING
     num_replicas = 7,
@@ -928,7 +902,6 @@ To minimize the cross-region write latency, [configure replication zones]({% lin
 
 For this example, you need to start a [`cockroach demo` cluster]({% link {{ page.version.version }}/cockroach-demo.md %}) using the following command, which [defines the available cluster localities using the `--demo-locality` flag]({% link {{ page.version.version }}/cockroach-demo.md %}#demo-locality):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --nodes=5 --demo-locality=region=us-east1:region=us-west1:region=us-central1:region=europe-west1:region=asia-northeast1
 ~~~
@@ -939,7 +912,6 @@ Next, enter the following statements at the SQL prompt. These statements will:
 - Set the `movr` database to [survive region failures]({% link {{ page.version.version }}/multiregion-survival-goals.md %}#survive-region-failures).
 - Add the remaining regions defined at cluster start time to the multi-region `movr` database (for a total of 5).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr SET PRIMARY REGION "us-west1";
 ALTER DATABASE movr ADD REGION "us-central1";
@@ -951,7 +923,6 @@ ALTER DATABASE movr SURVIVE REGION FAILURE;
 
 By default, all tables in the `movr` database are [`REGIONAL` tables]({% link {{ page.version.version }}/regional-tables.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW TABLES;
 ~~~
@@ -973,7 +944,6 @@ Now that the multi-region cluster is configured, we will use the following [`ALT
 - The 3 US regions have voting replicas (that is, replicas that participate in [Raft quorum]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
 - The 2 additional regions (Europe and Japan) are left with only [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas) that can be used to serve [follower reads]({% link {{ page.version.version }}/follower-reads.md %}).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ALTER LOCALITY REGIONAL CONFIGURE ZONE USING voter_constraints = '{+region=us-west1: 2, +region=us-central1: 2, +region=us-east1: 1}';
 ~~~
@@ -988,14 +958,12 @@ This functionality is already provided by the built-in [Secondary regions]({% li
 
 1. Set the database to have a `REGION` survival goal using [`ALTER DATABASE ... SURVIVE REGION FAILURE`]({% link {{ page.version.version }}/alter-database.md %}#survive-zone-region-failure):
 
-     {% include_cached copy-clipboard.html %}
      ~~~ sql
      ALTER DATABASE movr SURVIVE REGION FAILURE;
      ~~~
 
 1. Apply the `REGIONAL BY ROW` locality to the `movr.rides` table using the following statement:
 
-     {% include_cached copy-clipboard.html %}
      ~~~ sql
      ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
       CASE WHEN city = 'amsterdam' THEN 'europe-west1'
@@ -1015,7 +983,6 @@ This functionality is already provided by the built-in [Secondary regions]({% li
 
 1. View the [zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) for the `movr.rides` table using [`SHOW ZONE CONFIGURATION`]({% link {{ page.version.version }}/show-zone-configurations.md %}):
 
-     {% include_cached copy-clipboard.html %}
      ~~~ sql
      SHOW ZONE CONFIGURATION FROM TABLE movr.rides;
      ~~~
@@ -1039,14 +1006,12 @@ This functionality is already provided by the built-in [Secondary regions]({% li
  
 1. Update the configuration to keep additional voting replicas and leaseholders in `us-west1`. We do this because we would like to configure `us-west1` to be the failover region for `us-east1`. The following SQL statement accomplishes this by configuring `us-east1` to keep additional voting replicas and leaseholders in `us-west1`. This means that if `us-east1` fails, it will fail over to `us-west1`.
 
-     {% include_cached copy-clipboard.html %}
      ~~~ sql
      ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING voter_constraints = '{+region=us-east1: 2, +region=us-west1: 2}', lease_preferences = '[[+region=us-east1], [+region=us-west1]]';
      ~~~
 
 1. View the [zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) for the `movr.rides` table using [`SHOW ZONE CONFIGURATION`]({% link {{ page.version.version }}/show-zone-configurations.md %}):
 
-     {% include_cached copy-clipboard.html %}
      ~~~ sql
      SHOW ZONE CONFIGURATION FROM TABLE movr.rides;
      ~~~
@@ -1078,7 +1043,6 @@ To remove the zone config changes made in this example, [reset the Zone Config E
 
 To reset the Zone Config Extension configuration applied to a region to the default settings, enter the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ALTER LOCALITY CONFIGURE ZONE USING DEFAULT;
 ~~~
@@ -1091,7 +1055,6 @@ This will not reset any configuration created by the [multi-region abstractions]
 
 To discard the Zone Config Extension settings from a region, enter the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ALTER LOCALITY CONFIGURE ZONE DISCARD;
 ~~~
@@ -1116,14 +1079,12 @@ The process for troubleshooting Zone Config Extensions is the same as troublesho
 
 Suppose that the current owner of the `movr` database is `root` and you want to change the owner to a new user named `max`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE movr OWNER TO max;
 ~~~
 
 To verify that the owner is now `max`, query the `pg_catalog.pg_database` and `pg_catalog.pg_roles` tables:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT rolname FROM pg_catalog.pg_database d JOIN pg_catalog.pg_roles r ON d.datdba = r.oid WHERE datname = 'movr';
 ~~~
@@ -1147,7 +1108,6 @@ To follow along with the examples below:
 
 1. Start a [demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}) with the [`--global` flag]({% link {{ page.version.version }}/cockroach-demo.md %}#general) to simulate a multi-region cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach demo --global --nodes 9
     ~~~
@@ -1158,14 +1118,12 @@ To follow along with the examples below:
 
     1. To use the session variable:
 
-        {% include_cached copy-clipboard.html %}
         ~~~ sql
         SET enable_multiregion_placement_policy = on;
         ~~~
 
     1. To use the cluster setting:
 
-        {% include_cached copy-clipboard.html %}
         ~~~ sql
         SET CLUSTER SETTING sql.defaults.multiregion_placement_policy.enabled = on;
         ~~~
@@ -1176,7 +1134,6 @@ To follow along with the examples below:
 
 If you know at database creation time that you'd like to set the database's replica placement policy to ["restricted"](#parameters-restricted), you can do so in a [`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %}) statement as shown below:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE movr2 PRIMARY REGION "us-east1" REGIONS "us-west1", "europe-west1" PLACEMENT RESTRICTED;
 ~~~
@@ -1189,7 +1146,6 @@ CREATE DATABASE
 
 When you set the database's placement policy to [`RESTRICTED`](#parameters-restricted), you are saying that you want the underlying data to be restricted to the table or partition's [home region]({% link {{ page.version.version }}/multiregion-overview.md %}#table-localities).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr PLACEMENT RESTRICTED;
 ~~~
@@ -1202,7 +1158,6 @@ ALTER DATABASE PLACEMENT
 
 If previously you set the replica placement policy to [`RESTRICTED`](#set-the-replica-placement-policy-to-restricted), you can set it back to [the default](#parameters-default) by issuing the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr PLACEMENT DEFAULT;
 ~~~
@@ -1215,12 +1170,10 @@ ALTER DATABASE PLACEMENT
 
 #### Rename a database
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE db1;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -1236,12 +1189,10 @@ ALTER DATABASE PLACEMENT
 (5 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE db1 RENAME TO db2;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -1263,7 +1214,6 @@ ALTER DATABASE PLACEMENT
 
 To change the survival goal of a multi-region database to survive zone failures, use the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE {db} SURVIVE ZONE FAILURE;
 ~~~
@@ -1282,7 +1232,6 @@ For more information about the zone survival goal, see [Surviving zone failures]
 
 To change the survival goal of a multi-region database to survive region failures, use the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE {db} SURVIVE REGION FAILURE;
 ~~~

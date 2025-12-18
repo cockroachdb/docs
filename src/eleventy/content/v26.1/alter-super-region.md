@@ -26,7 +26,7 @@ The `ALTER DATABASE .. ALTER SUPER REGION` [statement](sql-statements.html) alte
 ## Parameters
 
 | Parameter       | Description                                                                                                          |
-|-----------------+----------------------------------------------------------------------------------------------------------------------|
+|-----------------|----------------------------------------------------------------------------------------------------------------------|
 | `database_name` | The database with the [super region](multiregion-overview.html#super-regions) you are altering.                      |
 | `name`          | The name of the [super region](multiregion-overview.html#super-regions) being altered.                               |
 | `name_list`     | The altered super region will consist of this set of [database regions](multiregion-overview.html#database-regions). |

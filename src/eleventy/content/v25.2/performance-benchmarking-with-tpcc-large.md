@@ -12,7 +12,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 {% include {{ page.version.version }}/filter-tabs/perf-bench-tpc-c.md %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
-|----------------------+---------------------------------------------------------+------------+-----------|
+|----------------------|---------------------------------------------------------|------------|-----------|
 | Local                | 3 nodes on your laptop                                  |         10 | 2 GB      |
 | Local (multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
 | Small                | 3 nodes on `c5d.4xlarge` machines                       |       2500 | 200 GB    |
@@ -91,7 +91,6 @@ CockroachDB requires TCP communication on two ports:
 
 1. Start CockroachDB using the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start \
     --insecure \
@@ -109,7 +108,6 @@ CockroachDB requires TCP communication on two ports:
 
 1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to join the first nodes into a cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach init --insecure --host=<address of any node on --join list>
     ~~~
@@ -122,14 +120,12 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
 
 1. Launch the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=<address of any node>
     ~~~
 
 1. Adjust some [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING kv.dist_sender.concurrency_limit = 2016;
     SET CLUSTER SETTING kv.snapshot_rebalance.max_rate = '256 MiB';
@@ -141,26 +137,22 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
 
 1. Change the default [GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) to the following value:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER RANGE default CONFIGURE ZONE USING gc.ttlseconds = 600;
     ~~~
 
 1. Enable the trial license you requested earlier:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING cluster.organization = '<your organization>';
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '<your license key>';
     ~~~
 
 1. Exit the SQL shell:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -175,7 +167,6 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
 1. Import the TPC-C dataset:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload fixtures import tpcc \
     --partitions=81 \
@@ -211,34 +202,28 @@ Before running the benchmark, it's important to allocate partitions to workload 
 
 1. Upload the `addrs` file to the 5 VMs with the `workload` binary:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 1 address>:.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 2 address>:.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 3 address>:.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 4 address>:.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 5 address>:.
     ~~~
 
 1. SSH to each VM with `workload` and allocate partitions:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc --partitions=81 \
     --warehouses=140000 \
@@ -249,7 +234,6 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions 81 \
@@ -261,7 +245,6 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions=81 \
@@ -273,7 +256,6 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions=81 \
@@ -285,7 +267,6 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions=81 \
@@ -305,7 +286,6 @@ Once the allocations finish, run TPC-C for 30 minutes on each VM with `workload`
 It is critical to run the benchmark from the workload nodes in parallel, so start them as simultaneously as possible.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -317,7 +297,6 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -329,7 +308,6 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -341,7 +319,6 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -353,7 +330,6 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partition=81 \
@@ -369,27 +345,22 @@ $(cat addrs)
 
 1. Collect the result files from each VM with `workload`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 1 address>:workload1.histogram.ndjson .
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 2 address>:workload2.histogram.ndjson .
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 3 address>:workload3.histogram.ndjson .
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 4 address>:workload4.histogram.ndjson .
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 5 address>:workload5.histogram.ndjson .
     ~~~
@@ -400,22 +371,18 @@ $(cat addrs)
     The following commands assume you're uploading to the VM with the `workload1.histogram.ndjson` file.
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload2.histogram.ndjson <username>@<workload instance 2 address>:.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload3.histogram.ndjson <username>@<workload instance 3 address>:.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload4.histogram.ndjson <username>@<workload instance 4 address>:.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload5.histogram.ndjson <username>@<workload instance 5 address>:.
     ~~~
@@ -424,7 +391,6 @@ $(cat addrs)
 
 1. Run the `workload debug tpcc-merge-results` command to synthesize the results:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach workload debug tpcc-merge-results \
     --warehouses=140000 \

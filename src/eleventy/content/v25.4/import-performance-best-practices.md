@@ -56,7 +56,6 @@ However, in **large** imports (that is, datasets larger than 100 GiB in total si
 
 When recreating the secondary indexes, execute the [`CREATE INDEX`](create-index.html) statements one at a time for best performance. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX idx1 ON table1;
 CREATE INDEX idx2 ON table1;
@@ -83,12 +82,10 @@ For these formats, we recommend splitting your data into at least as many files 
 
 For example, if you have a 3-node cluster, split your data into at least 3 files, create your table schema, and [import into that table]({% link {{ page.version.version }}/import-into.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE customers (id UUID PRIMARY KEY, name TEXT, INDEX name_idx(name));
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 IMPORT INTO customers (id, name)
     CSV DATA (
@@ -109,14 +106,12 @@ Cockroach Labs recommends keeping the files to a maximum file size of 4 GB unles
 
 For maximum performance each split file should be sorted within and across all files, meaning that if you were to sort the rows in each file there would be no overlapping data in any other file. For example, suppose your table has an alphabetic string primary key and you were importing the data into a 3 node cluster.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE contacts (email STRING PRIMARY KEY, first_name TEXT, last_name TEXT);
 ~~~
 
 You should split the files so that the first file contains rows where the [primary key]({% link {{ page.version.version }}/primary-key.md %}) begins with the letters "a" to "i," the second file "j" to "r," and the third file "s" to "z". No file should contain duplicate rows, and within each file the data is sorted alphabetically by the primary key.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM contacts ORDER BY email;
 ~~~

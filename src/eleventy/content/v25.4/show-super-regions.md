@@ -27,7 +27,7 @@ To view the super regions in a database, the user must have one of the following
 ## Parameters
 
 | Parameter                     | Description                                                                                   |
-|-------------------------------+-----------------------------------------------------------------------------------------------|
+|-------------------------------|-----------------------------------------------------------------------------------------------|
 | `FROM DATABASE database_name` | Show all [super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) for the specified database. |
 
 ## Response
@@ -35,7 +35,7 @@ To view the super regions in a database, the user must have one of the following
 `SHOW SUPER REGIONS FROM DATABASE` returns the following fields for each super region:
 
 | Field               | Description                                                 |
-|---------------------+-------------------------------------------------------------|
+|---------------------|-------------------------------------------------------------|
 | `database_name`     | The database name this super region is associated with.     |
 | `super_region_name` | The name of a super region associated with the database.    |
 | `regions`           | The list of database regions that make up the super region. |
@@ -70,7 +70,6 @@ The examples in this section use the following setup.
 
 `SHOW SUPER REGIONS FROM DATABASE` returns the [super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) for the specified database.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW SUPER REGIONS FROM DATABASE movr;
 ~~~

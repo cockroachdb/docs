@@ -97,7 +97,6 @@ If you make this change then run `kubectl create -f` on your YAML file, Kubernet
 
 If you want your new `StorageClass` to be the default for all volumes in your cluster, you have to run a couple of commands to inform Kubernetes of what you want. First, get the names of your `StorageClass`es. Then remove the current default and add yours as the new default.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl get storageclasses
 ~~~
@@ -108,7 +107,6 @@ ssd                  kubernetes.io/gce-pd
 standard (default)   kubernetes.io/gce-pd
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 ~~~
@@ -117,7 +115,6 @@ $ kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storagec
 storageclass "standard" patched
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl patch storageclass ssd -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ~~~
@@ -176,7 +173,6 @@ Resource requests allow you to reserve a certain amount of CPU or memory for you
 
 To determine how many resources are usable on your Kubernetes nodes, you can run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl describe nodes
 ~~~
@@ -278,7 +274,6 @@ The pods would then be restricted to only use the resource they have reserved an
 
 Note that even if you do not manually set resource requests yourself, you're likely unknowingly using them anyways. In many installations of Kubernetes, a [`LimitRange`](https://kubernetes.io/docs/tasks/administer-cluster/cpu-default-namespace/) is preconfigured for the `default` namespace that applies a default CPU request of `100m`, or one-tenth of a CPU. You can see this configuration by running
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl describe limitranges
 ~~~
@@ -297,7 +292,6 @@ Experimentally, this does not appear to have a noticeable effect on CockroachDB'
 
 As discovered in the above section on [Resource Requests and Limits](#resource-requests-and-limits), there will always be pods other than just CockroachDB running in your Kubernetes cluster, even if you do not create any other pods of your own. You can see them at any time by running:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl get pods --all-namespaces
 ~~~
@@ -323,7 +317,6 @@ kube-system   l7-default-backend-6497bcdb4d-2kbh4              1/1       Running
 
 These ["cluster add-ons"](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons) provide a variety of basic services like managing DNS entries for services within the cluster, powering the Kubernetes dashboard UI, or collecting logs or metrics from all the pods running in the cluster. If you do not like having them take up space in your cluster, you can prevent some of them from running by configuring your Kubernetes cluster appropriately. For example, on GKE, you can create a cluster with the minimal set of addons by running:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gcloud container clusters create <your-cluster-name> --no-enable-cloud-logging --no-enable-cloud-monitoring --addons=""
 ~~~

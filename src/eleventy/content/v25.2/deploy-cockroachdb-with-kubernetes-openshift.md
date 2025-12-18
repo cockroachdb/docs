@@ -28,7 +28,6 @@ This article assumes you have already installed the OpenShift Container Platform
 	`oc` runs `kubectl` commands on OpenShift clusters, using the same syntax.
 	{{site.data.alerts.end}}
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc create namespace cockroachdb
 	~~~
@@ -39,7 +38,6 @@ This article assumes you have already installed the OpenShift Container Platform
 
 1.	Set `cockroachdb` as the default namespace:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc config set-context --current --namespace=cockroachdb
 	~~~
@@ -50,7 +48,6 @@ This article assumes you have already installed the OpenShift Container Platform
 
 	Validate that this was successful:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc config view --minify | grep namespace:
 	~~~
@@ -75,7 +72,6 @@ This article assumes you have already installed the OpenShift Container Platform
 
 1. Confirm that the operator is running:
 
-	  {% include_cached copy-clipboard.html %}
 	  ~~~ shell
 	  $ oc get pods
 	  ~~~
@@ -105,7 +101,6 @@ This article assumes you have already installed the OpenShift Container Platform
 
 1. You can also use the command line to view the pods:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc get pods
 	~~~
@@ -130,7 +125,6 @@ This can be defined with the following YAML, which mounts the operator's generat
 Note that OpenShift may display the image SHA instead of the tag. In this case, you should use the SHA for `spec.containers.image`.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ yaml
 apiVersion: v1
 kind: Pod
@@ -176,7 +170,6 @@ spec:
 
 1. Click **Create**. Return to the **Pods** page and check that the client pod `crdb-client-secure` is running. This is also visible on the command-line:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc get pods
 	~~~
@@ -194,7 +187,6 @@ spec:
 
 1. Start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) from the client pod:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc exec -it crdb-client-secure -- ./cockroach sql --certs-dir=/cockroach/cockroach-certs/ --host=crdb-tls-example-public
 	~~~
@@ -225,12 +217,10 @@ spec:
 	You can also access the client pod by selecting it on the **Pods** page and clicking **Terminal**.
 	{{site.data.alerts.end}}
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc exec -it crdb-client-secure sh
 	~~~
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	# cd /cockroach/cockroach-certs
 	# ls
@@ -243,12 +233,10 @@ spec:
 
 1. Check the name of the `public` service to use with the `--host` flag:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc get services
 	~~~
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	NAME                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)              AGE
 	crdb-tls-example          ClusterIP   None             <none>        26257/TCP,8080/TCP   14m
@@ -263,28 +251,24 @@ To access the CockroachDB cluster's [DB Console]({% link {{ page.version.version
 
 	Start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) from the client pod:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc exec -it crdb-client-secure -- ./cockroach sql --certs-dir=/cockroach/cockroach-certs/ --host=crdb-tls-example-public
 	~~~
 
 1.  Assign `roach` to the `admin` role (you only need to do this once):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT admin TO roach;
     ~~~
 
 1. Exit the SQL shell and pod:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
 1. In a new terminal window, port-forward from your local machine to the `crdb-tls-example-public` service:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc port-forward service/crdb-tls-example-public 8080
 	~~~
@@ -303,14 +287,12 @@ To run a sample [CockroachDB workload]({% link {{ page.version.version }}/cockro
 
 1. Use the secure client pod to load the `movr` schema on one of the CockroachDB pods:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc exec -it crdb-client-secure -- ./cockroach workload init movr 'postgresql://root@crdb-tls-example-0.crdb-tls-example.cockroachdb:26257?sslcert=%2Fcockroach%2Fcockroach-certs%2Fclient.root.crt&sslkey=%2Fcockroach%2Fcockroach-certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=%2Fcockroach%2Fcockroach-certs%2Fca.crt'
 	~~~
 
 1. Initialize and run the workload for 3 minutes:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	oc exec -it crdb-client-secure -- ./cockroach workload run movr --duration=3m --tolerate-errors --max-rate=20 --concurrency=1 --display-every=10s 'postgresql://root@crdb-tls-example-0.crdb-tls-example.cockroachdb:26257?sslcert=%2Fcockroach%2Fcockroach-certs%2Fclient.root.crt&sslkey=%2Fcockroach%2Fcockroach-certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=%2Fcockroach%2Fcockroach-certs%2Fca.crt'
 	~~~

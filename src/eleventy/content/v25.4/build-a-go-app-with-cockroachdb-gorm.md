@@ -23,7 +23,6 @@ For another use of GORM with CockroachDB, see our [`examples-orms`](https://gith
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-go-gorm
 ~~~
@@ -37,7 +36,6 @@ The project has the following directory structure:
 
 The `main.go` file defines an `Account` struct that maps to a new `accounts` table. The file also contains some read and write database operations that are executed in the `main` method of the program.
 
-{% include_cached copy-clipboard.html %}
 ~~~ go
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-gorm/master/main.go %}
 ~~~
@@ -50,7 +48,6 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
 1. Navigate to the `example-app-go-gorm` directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-go-gorm
     ~~~
@@ -59,7 +56,6 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -68,7 +64,6 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export DATABASE_URL="{connection-string}"
     ~~~
@@ -79,19 +74,16 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
 1. Initialize the module:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-go-gorm
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ go mod init basic-sample && go mod tidy
     ~~~
 
 1. Run the code:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ go run main.go
     ~~~

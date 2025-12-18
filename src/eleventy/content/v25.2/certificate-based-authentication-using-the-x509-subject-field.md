@@ -52,14 +52,12 @@ At cluster startup, you'll need to pass the [`cockroach start`]({% link {{ page.
 
 The argument to each flag is a string with a comma separated list of distinguished name (DN) mappings in `{attribute-type}={attribute-value}` format in accordance with [RFC4514](https://www.rfc-editor.org/rfc/rfc4514). When each of these flags are set, the argument needs to be an exact match with the DN subject in the client certificate provided. By exact match, we mean that the order of attributes in the argument must match the order of attributes in the DN subject in the certificate.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach start --certs-dir=/path/to/certs --node-cert-distinguished-name="O=Acme Inc,OU=movr-prod,UID=node" --root-cert-distinguished-name="O=Acme Inc,OU=movr-prod,UID=root" # other startup flags, etc.
 ~~~
 
 The DN mappings in the certificates you create should match what you pass in at cluster start time. One way to create a certificate matching the `node` user in the example above is:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 openssl req -new -key /path/to/certs/client.node.key -out client.node.csr -batch -subj '/O=Acme Inc/OU=movr-prod/UID=node'
 ~~~
@@ -70,14 +68,12 @@ A similar command can be used to generate a certificate for the `root` user.
 
 {% include {{page.version.version}}/sql/role-subject-option.md %}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE maxroach WITH SUBJECT 'CN=myName,OU=myOrgUnit,O=myOrg,L=myLocality,ST=myState,C=myCountry' LOGIN;
 ~~~
 
 Alternatively, you can update existing users with [`ALTER ROLE ... SUBJECT`]({% link {{ page.version.version }}/alter-role.md %}#set-the-subject-role-option-for-certificate-based-authentication).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER ROLE maxroach WITH SUBJECT 'CN=myName2,OU=myOrgUnit2,O=myOrg2,L=myLocality2,ST=myState2,C=myCountry2' LOGIN;
 ~~~
@@ -91,7 +87,6 @@ SQLSTATE: 22023
 
 If you do not have an [enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses), the following error is signaled:
 
-{% include_cached copy-clipboard.html %}
 ~~~
 ERROR: use of SUBJECT role option requires an enterprise license. see https://cockroachlabs.com/pricing for details on how to enable enterprise features
 SQLSTATE: XXC02
@@ -101,7 +96,6 @@ SQLSTATE: XXC02
 
 Once the cluster is started, enable the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-security-client-cert-subject-required-enabled):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING security.client_cert.subject_required.enabled = true;
 ~~~

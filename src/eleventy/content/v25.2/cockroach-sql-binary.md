@@ -52,17 +52,14 @@ $ cockroach-sql <flags>
 
 Execute SQL from the command line:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach-sql -e="<sql statement>;<sql statement>" -e="<sql-statement>" <flags>
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ echo "<sql statement>;<sql statement>" | cockroach-sql <flags>
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach-sql <flags> -f file-containing-statements.sql
 ~~~

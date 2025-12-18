@@ -340,7 +340,6 @@ The check is done by keeping track of all the reads using a dedicated `RefreshRe
 
 Transactional writes are pipelined when being replicated and when being written to disk, dramatically reducing the latency of transactions that perform multiple writes. For example, consider the following transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- CREATE TABLE kv (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), key VARCHAR, value VARCHAR);
 > BEGIN;
@@ -442,7 +441,6 @@ Buffered writes work by temporarily storing a transaction's writes on the [gatew
 
 Buffered writes are off by default. To turn them on for the [current session]({% link {{ page.version.version }}/session-variables.md %}), issue the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET kv_transaction_buffered_writes_enabled = on;
 ~~~

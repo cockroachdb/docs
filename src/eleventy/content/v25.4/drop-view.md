@@ -33,7 +33,6 @@ The user must have the `DROP` [privilege]({% link {{ page.version.version }}/sec
 
 In this example, other views do not depend on the view being dropped.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~
@@ -46,7 +45,6 @@ In this example, other views do not depend on the view being dropped.
 (2 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP VIEW bank.user_emails;
 ~~~
@@ -55,7 +53,6 @@ In this example, other views do not depend on the view being dropped.
 DROP VIEW
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~
@@ -73,7 +70,6 @@ In this example, another view depends on the view being dropped. Therefore, it's
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent views without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~
@@ -86,7 +82,6 @@ In this example, another view depends on the view being dropped. Therefore, it's
 (2 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP VIEW bank.user_accounts;
 ~~~
@@ -96,7 +91,6 @@ ERROR: cannot drop relation "user_accounts" because view "user_emails" depends o
 SQLSTATE: 2BP01
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > DROP VIEW bank.user_accounts CASCADE;
 ~~~
@@ -105,7 +99,6 @@ SQLSTATE: 2BP01
 DROP VIEW
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~

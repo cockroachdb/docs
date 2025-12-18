@@ -25,7 +25,6 @@ You can optionally add the following to each lexeme:
 
 To be usable in [full-text search]({% link {{ page.version.version }}/full-text-search.md %}), the lexemes **must be normalized**. You can do this by using the `to_tsvector()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#full-text-search-functions) to convert a string input to `TSVECTOR`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT to_tsvector('These lexemes are not normalized lexemes.');
 ~~~

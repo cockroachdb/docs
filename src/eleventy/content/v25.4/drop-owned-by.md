@@ -37,21 +37,18 @@ The following examples assume a [local cluster is running]({% link {{ page.versi
 
 From a Terminal window, open a SQL shell as the `root` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure --host localhost --port 26257
 ~~~
 
 Next, create the user `maxroach`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE USER IF NOT EXISTS maxroach;
 ~~~
 
 From a second Terminal window, open a SQL shell as the newly created user `maxroach`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure --host localhost --port 26257 --user maxroach
 ~~~
@@ -60,14 +57,12 @@ cockroach sql --insecure --host localhost --port 26257 --user maxroach
 
 From the `maxroach` user's SQL shell, create a table called `max_kv`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS max_kv (k INT, v INT);
 ~~~
 
 To verify that this table is owned by `maxroach`, use [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS FOR maxroach;
 ~~~
@@ -81,14 +76,12 @@ SHOW GRANTS FOR maxroach;
 
 To drop all of the objects owned by the user `maxroach`, switch to the `root` user's SQL shell and use `DROP OWNED BY`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP OWNED BY maxroach;
 ~~~
 
 In this case, `maxroach` only owns the `max_kv` table, so this will drop that table from the database completely. To confirm that the table has been dropped, run [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW TABLES;
 ~~~
@@ -99,7 +92,6 @@ SHOW TABLES 0
 
 From the `root` user's SQL shell, use [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}) to further confirm that the `maxroach` user has no remaining object grants:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS FOR maxroach;
 ~~~
@@ -112,21 +104,18 @@ SHOW GRANTS 0
 
 From the `root` user's SQL shell, create a table called `root_kv`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS root_kv (k INT, v INT);
 ~~~
 
 Next, grant all privileges on that table to user `maxroach` using [`GRANT ALL`]({% link {{ page.version.version }}/grant.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL on root_kv TO maxroach;
 ~~~
 
 Next, confirm that the user `maxroach` has all privileges on the table using [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS FOR maxroach;
 ~~~
@@ -140,7 +129,6 @@ SHOW GRANTS FOR maxroach;
 
 Next, switch to the `maxroach` user's SQL shell, and insert some data into the table. It should succeed:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO root_kv(k) select i from generate_series(1,10) as i;
 ~~~
@@ -151,14 +139,12 @@ INSERT 0 10
 
 Next, switch to the `root` user's SQL shell and use `DROP OWNED BY` to remove all grants on objects to the user `maxroach`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP OWNED BY maxroach;
 ~~~
 
 Next, confirm that the user `maxroach` has no grants on any objects using [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS FOR maxroach;
 ~~~
@@ -169,7 +155,6 @@ SHOW GRANTS 0
 
 Finally, switch back to the `maxroach` user's SQL shell and try to insert data into the `root_kv` table. This should signal an error:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO root_kv(k) select i from generate_series(1,10) as i;
 ~~~

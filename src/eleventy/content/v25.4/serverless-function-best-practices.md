@@ -33,7 +33,6 @@ Select either node.js or Python to continue.
 
 The following node.js code implements this pattern:
 
-{% include_cached copy-clipboard.html %}
 ~~~ js
 const { Pool } = require('pg')
 
@@ -69,7 +68,6 @@ exports.handler = async (context) => {
 
 The following Python code implements this pattern:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 from psycopg2.pool import SimpleConnectionPool
 

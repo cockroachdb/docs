@@ -28,7 +28,6 @@ When a query uses a vector index, CockroachDB explores a subset of partitions ba
 
 To enable the use of vector indexes, set the `feature.vector_index.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-feature-vector-index-enabled):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING feature.vector_index.enabled = true;
 ~~~
@@ -39,7 +38,6 @@ To enable the creation of vector indexes on non-empty tables, also disable the `
 Adding a vector index to a non-empty table can temporarily disrupt workloads that perform continuous writes.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET sql_safe_updates = false;
 ~~~
@@ -48,14 +46,12 @@ SET sql_safe_updates = false;
 
 To create a vector index, use the [`CREATE VECTOR INDEX`]({% link {{ page.version.version }}/create-index.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE VECTOR INDEX ON {table} (column});
 ~~~
 
 You can also specify a vector index during table creation. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE items (
     department_id INT,
@@ -69,7 +65,6 @@ CREATE TABLE items (
 
 You can create a vector index with one or more *prefix columns* to pre-filter the search space. This is especially useful for tables containing millions of vectors or more. 
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE items (
     department_id INT,
@@ -81,21 +76,18 @@ CREATE TABLE items (
 
 A vector index is only used if each prefix column is constrained to a specific value in the query. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WHERE department_id = 100 AND category_id = 200
 ~~~
 
 You can filter on multiple prefix values using `IN`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WHERE (department_id, category_id) IN ((100, 200), (300, 400))
 ~~~
 
 The following example will not use the vector index:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WHERE department_id = 100 AND category_id >= 200
 ~~~
@@ -112,7 +104,6 @@ When you create a vector index, you can specify an *operator class* (opclass) th
 
 If not specified, `vector_l2_ops` is used by default. To accelerate cosine or inner-product searches, specify the corresponding opclass when you create the vector index. For an example, to build a cosine-optimized index:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE items (
     department_id INT,
@@ -150,7 +141,6 @@ Set the following storage parameters when you create a vector index:
 
 For example, the following statement creates a vector index with a custom partition size:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE VECTOR INDEX ON items (category, embedding) WITH (min_partition_size=16, max_partition_size=128);
 ~~~
@@ -159,7 +149,6 @@ Set the [`vector_search_beam_size` session setting]({% link {{ page.version.vers
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET vector_search_beam_size = 16;
 ~~~
@@ -208,7 +197,6 @@ In the following example, a vector index with a prefix column is used to optimiz
 
 - Create a virtual `python3` environment and install `psycopg[binary]`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     python3 -m venv ~/venv
     source ~/venv/bin/activate
@@ -217,7 +205,6 @@ In the following example, a vector index with a prefix column is used to optimiz
 
 - Download the Python script and sample data:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -O https://vector-examples.s3.us-east-2.amazonaws.com/fast_insert.py
     curl -O https://vector-examples.s3.us-east-2.amazonaws.com/clip_embeddings_with_customers.csv
@@ -229,7 +216,6 @@ In the following example, a vector index with a prefix column is used to optimiz
 
 1. Start a single-node cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start-single-node \
     --insecure \
@@ -239,21 +225,18 @@ In the following example, a vector index with a prefix column is used to optimiz
 
 1. In a separate terminal, open a SQL shell on the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure
     ~~~
 
 1. [Enable vector indexes](#enable-vector-indexes) on the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING feature.vector_index.enabled = true;
     ~~~
 
 1. Create an `items` table that includes a `VECTOR` column called `embedding`, along with a vector index that uses `customer_id` as the prefix column:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE items (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -266,7 +249,6 @@ In the following example, a vector index with a prefix column is used to optimiz
 
 1. In another terminal, run the Python script to insert the `clip_embeddings_with_customers.csv` data into the `items` table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     python fast_insert.py
     ~~~
@@ -275,7 +257,6 @@ In the following example, a vector index with a prefix column is used to optimiz
 
 1. When the script is finished executing, verify that `items` is populated:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW TABLES;
     ~~~
@@ -288,7 +269,6 @@ In the following example, a vector index with a prefix column is used to optimiz
 
 1. Perform a vector search using the `<->` L2 distance [operator](#comparisons). Include the `WHERE` clause to query only the vectors associated with a given `customer_id`, thus narrowing the vector search space:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT id, name, embedding
     FROM items
@@ -310,7 +290,6 @@ In the following example, a vector index with a prefix column is used to optimiz
 
 1. Use `EXPLAIN` to show how the vector index pre-filtered the vector search space:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN SELECT id, name, embedding
     FROM items

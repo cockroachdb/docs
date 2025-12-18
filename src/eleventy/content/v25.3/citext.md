@@ -17,7 +17,6 @@ Equality operators (`=`, `!=`, `<>`) and ordering operators (`<`, `>`, etc.) tre
 
 To declare a `CITEXT` column, use the type name directly in your `CREATE TABLE` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE logins (
     name CITEXT PRIMARY KEY,
@@ -33,7 +32,6 @@ As with `STRING`, `CITEXT` values should be kept below 64 KB for best performanc
 
 Create and populate a table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE logins (
   username CITEXT,
@@ -41,7 +39,6 @@ CREATE TABLE logins (
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO logins VALUES
 ('Roach', 'Roach@example.com'),
@@ -50,7 +47,6 @@ INSERT INTO logins VALUES
 
 Because `CITEXT` comparisons are case-insensitive, an equality predicate matches regardless of letter case:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM logins WHERE username = 'roach';
 ~~~
@@ -64,7 +60,6 @@ SELECT * FROM logins WHERE username = 'roach';
 
 An ordering comparison is also case-insensitive with `CITEXT`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT username FROM logins WHERE username < 'Xavi';
 ~~~
@@ -79,7 +74,6 @@ SELECT username FROM logins WHERE username < 'Xavi';
 
 For case-sensitive comparisons on `CITEXT` values, cast to `STRING` explicitly. In the default Unicode ordering, an uppercase value is considered less than the lowercase value in the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT username FROM logins WHERE username::STRING < 'Xavi';
 ~~~

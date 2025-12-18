@@ -26,7 +26,7 @@ docs_area: reference.sql
 ## Parameters
 
 | Parameter       | Description                                                                                               |
-|-----------------+-----------------------------------------------------------------------------------------------------------|
+|-----------------|-----------------------------------------------------------------------------------------------------------|
 | `database_name` | The database from which you are dropping a [super region](multiregion-overview.html#super-regions).       |
 | `name`          | The name of the [super region](multiregion-overview.html#super-regions) being dropped from this database. |
 

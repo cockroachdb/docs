@@ -46,14 +46,12 @@ Create an empty file with the `.sql` file extension at the end of the filename. 
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ touch dbinit.sql
 ~~~
 
 Open `dbinit.sql` in a text editor, and, at the top of the file, add a `CREATE DATABASE` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS movr;
 ~~~
@@ -62,7 +60,6 @@ This statement will create a database named `movr`, if one does not already exis
 
 To execute the statement in the `dbinit.sql` file as the `root` user, run the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -72,7 +69,6 @@ $ cockroach sql \
 
 To view the database in the cluster, execute a [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %}) statement from the command line:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \

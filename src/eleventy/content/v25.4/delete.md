@@ -87,14 +87,12 @@ Index selection can impact [performance]({% link {{ page.version.version }}/perf
 
 The syntax to force a specific index for a delete is:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM table@my_idx;
 ~~~
 
 This is equivalent to the longer expression:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM table@{FORCE_INDEX=my_idx};
 ~~~
@@ -127,7 +125,6 @@ Using columns with the [Primary Key]({% link {{ page.version.version }}/primary-
 
 In this example, `code` is our primary key and we want to delete the row where the code equals "about_stuff_city". Because we're positive no other rows have that value in the `code` column, there's no risk of accidentally removing another row.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM promo_codes WHERE code = 'about_stuff_city';
 ~~~
@@ -139,7 +136,6 @@ DELETE 1
 
 Deleting rows using non-unique columns removes _every_ row that returns `TRUE` for the `WHERE` clause's `a_expr`. This can easily result in deleting data you didn't intend to.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM promo_codes WHERE creation_time > '2019-01-30 00:00:00+00:00';
 ~~~
@@ -155,7 +151,6 @@ You can delete rows based on a table [join]({% link {{ page.version.version }}/j
 
 The following example deletes all codes from `promo_codes` that are present in `user_promo_codes`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM promo_codes USING user_promo_codes WHERE user_promo_codes.code = promo_codes.code;
 ~~~
@@ -175,7 +170,6 @@ By specifying `*`, you retrieve all columns of the delete rows.
 
 To retrieve specific columns, name them in the `RETURNING` clause.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM promo_codes WHERE creation_time > '2019-01-29 00:00:00+00:00' RETURNING code, rules;
 ~~~
@@ -195,7 +189,6 @@ DELETE FROM promo_codes WHERE creation_time > '2019-01-29 00:00:00+00:00' RETURN
 
 When `RETURNING` specific columns, you can change their labels using `AS`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM promo_codes WHERE creation_time > '2019-01-28 00:00:00+00:00' RETURNING code, rules AS discount;
 ~~~
@@ -211,7 +204,6 @@ DELETE FROM promo_codes WHERE creation_time > '2019-01-28 00:00:00+00:00' RETURN
 
 To sort and return deleted rows, use a statement like the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH a AS (DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *)
   SELECT * FROM a ORDER BY expiration_time;
@@ -232,14 +224,12 @@ WITH a AS (DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00
 
 Suppose you create a multi-column index on the `users` table with the `name` and `city` columns.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON users (name, city);
 ~~~
 
 Now suppose you want to delete the two users named "Jon Snow". You can use the [`EXPLAIN (OPT)`]({% link {{ page.version.version }}/explain.md %}#opt-option) command to see how the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) decides to perform the delete:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT) DELETE FROM users WHERE name='Jon Snow';
 ~~~
@@ -270,7 +260,6 @@ The output of the `EXPLAIN` statement shows that the optimizer scans the newly-c
 
 Now suppose that instead you want to perform a delete, but using the `id` column instead.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT) DELETE FROM users WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
 ~~~
@@ -309,7 +298,6 @@ The optimizer still scans the newly-created `users_name_city_idx` index when per
 
 If you provide an index hint (i.e., force the index selection) to use the primary index on the column instead, the CockroachDB will scan the users table using the primary index, on `city`, and `id`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT) DELETE FROM users@users_pkey WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
 ~~~

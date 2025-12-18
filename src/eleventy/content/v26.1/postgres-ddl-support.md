@@ -58,7 +58,7 @@ The basic form without options is supported in CockroachDB 2.1. For more informa
 Supported options:
 
 | `WITH` Option       | Supported in 2.1? | Notes                                                                                                              |
-|---------------------+-------------------+--------------------------------------------------------------------------------------------------------------------|
+|---------------------|-------------------|--------------------------------------------------------------------------------------------------------------------|
 | `OWNER`             | No                | See [#30875](https://github.com/cockroachdb/cockroach/issues/30875).                                               |
 | `TEMPLATE`          | Yes/Ignored       | Fixed "template0", no template actually used. See [#10151](https://github.com/cockroachdb/cockroach/issues/10151). |
 | `IS_TEMPLATE`       | No                | See [#10151](https://github.com/cockroachdb/cockroach/issues/10151).                                               |
@@ -202,7 +202,7 @@ Sequences are **not** the preferred way to create row IDs in CockroachDB. For be
 {{site.data.alerts.end}}
 
 | Qualifier                    | Supported? | Notes                                                                                                                                              |
-|------------------------------+------------+----------------------------------------------------------------------------------------------------------------------------------------------------|
+|------------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
 | `TEMPORARY` / `TEMP`         | No         | See [#5807](https://github.com/cockroachdb/cockroach/issues/5807).                                                                                 |
 | `AS <type>`                  | No         | Sequences always have type [`INT8`/`BIGINT`](int.html). For more information, see [#25110](https://github.com/cockroachdb/cockroach/issues/25110). |
 | `INCREMENT [ BY ] ...`       | Yes        |                                                                                                                                                    |
@@ -243,7 +243,7 @@ Some options are supported. For details, see the table below.
 For more information, see [`ALTER SEQUENCE`](alter-sequence.html).
 
 | Qualifier                    | Supported? | Notes                                                                                                                                              |
-|------------------------------+------------+----------------------------------------------------------------------------------------------------------------------------------------------------|
+|------------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
 | `AS <type>`                  | No         | Sequences always have type [`INT8`/`BIGINT`](int.html). For more information, see [#25110](https://github.com/cockroachdb/cockroach/issues/25110). |
 | `INCREMENT [BY] ...`         | Yes        |                                                                                                                                                    |
 | `[NO] MINVALUE/MAXVALUE ...` | Yes        |                                                                                                                                                    |
@@ -406,7 +406,7 @@ CREATE ... TABLE ... table_name OF type_name
 The basic form is supported, with the restrictions described below. For more information, see [`CREATE TABLE`](create-table.html).
 
 | Qualifier               | Supported | Notes                                                                                       |
-|-------------------------+-----------+---------------------------------------------------------------------------------------------|
+|-------------------------|-----------|---------------------------------------------------------------------------------------------|
 | `GLOBAL` / `LOCAL`      | No        | See [#5807](https://github.com/cockroachdb/cockroach/issues/5807).                          |
 | `TEMPORARY` / `TEMP`    | No        | See [#5807](https://github.com/cockroachdb/cockroach/issues/5807).                          |
 | `UNLOGGED`              | No        |                                                                                             |
@@ -435,7 +435,7 @@ For each data type listed below:
 The list of data types is taken from the [Postgres documentation](https://www.postgresql.org/docs/10/static/datatype.html).
 
 | Name                                      | Aliases              | Supported   | Notes                                                                                                                      |
-|-------------------------------------------+----------------------+-------------+----------------------------------------------------------------------------------------------------------------------------|
+|-------------------------------------------|----------------------|-------------|----------------------------------------------------------------------------------------------------------------------------|
 | `bigint`                                  | `int8`               | Yes         | See [the `INT` documentation](int.html)                                                                                    |
 | `bigserial`                               | `serial8`            | Yes         | Not generated unless [session option enabled](https://github.com/cockroachdb/cockroach/pull/28575).                        |
 | `bit [(n)]`                               |                      | No          | Planned for support in 2.2.                                                                                                |
@@ -507,7 +507,7 @@ From the [Postgres `CREATE TABLE` documentation][pg_create_table]:
 Most options are supported, with the restrictions described below. For more information, see [`CREATE TABLE`](create-table.html).
 
 | Qualifier                                               | Supported      | Notes                                                                                                                          |
-|---------------------------------------------------------+----------------+--------------------------------------------------------------------------------------------------------------------------------|
+|---------------------------------------------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------|
 | `NULL` / `NOT NULL`                                     | Yes            | See [`NOT NULL` constraint](not-null.html).                                                                                    |
 | `CHECK`                                                 | Yes            | See [`CHECK` constraint](check.html).                                                                                          |
 | `NO INHERIT on CHECK`                                   | No             |                                                                                                                                |
@@ -553,7 +553,7 @@ exclude_element in an EXCLUDE constraint is:
 Some options are supported, with the restrictions described below. For more information, see [`CREATE TABLE`](create-table.html).
 
 | Qualifier                                | Supported? | Notes                                                                                       |
-|------------------------------------------+------------+---------------------------------------------------------------------------------------------|
+|------------------------------------------|------------|---------------------------------------------------------------------------------------------|
 | `CHECK`                                  | Yes        | See [`CHECK` constraint](check.html).                                                       |
 | `CHECK ... NO INHERIT`                   | No         |                                                                                             |
 | `UNIQUE`                                 | Yes        | See [`UNIQUE` constraint](unique.html).                                                     |
@@ -596,7 +596,7 @@ CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } | UNLOGGED ] TABLE [ IF NOT EXI
 Only the basic form without options is supported, with the restrictions described below. For more information, see [`CREATE TABLE AS`](create-table-as.html).
 
 | Qualifier             | Supported | Notes                                                                                       |
-|-----------------------+-----------+---------------------------------------------------------------------------------------------|
+|-----------------------|-----------|---------------------------------------------------------------------------------------------|
 | `GLOBAL` / `LOCAL`    | No        | See [#5807](https://github.com/cockroachdb/cockroach/issues/5807).                          |
 | `TEMPORARY` / `TEMP`  | No        | See [#5807](https://github.com/cockroachdb/cockroach/issues/5807).                          |
 | `UNLOGGED`            | No        |                                                                                             |
@@ -634,7 +634,7 @@ ALTER TABLE [ IF EXISTS ] name
 Some options are supported, with the restrictions described below. For more information, see [`ALTER TABLE`](alter-table.html).
 
 | Statement form                 | Supported? | Notes                                                                                                                                                               |
-|--------------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `ALTER TABLE name ...`         | Yes        | See [`ALTER TABLE` - Table actions](#alter-table-table-actions).                                                                                                    |
 | `ALTER TABLE ONLY name`        | No         | Table inheritance is not yet supported.                                                                                                                             |
 | `ALTER TABLE name *`           | No         | Table inheritance is not yet supported.                                                                                                                             |
@@ -710,7 +710,7 @@ and table_constraint_using_index is:
 Some options are supported, with the restrictions described below. For more information, see [`ALTER TABLE`](alter-table.html) and [`ALTER COLUMN`](alter-column.html).
 
 | Table action                               | Supported?  | Notes                                                                                                                                                                    |
-|--------------------------------------------+-------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `ADD COLUMN`                               | Yes         | See [`ADD COLUMN`](add-column.html).                                                                                                                                     |
 | `DROP COLUMN`                              | Yes         | See [`DROP COLUMN`](drop-column.html).                                                                                                                                   |
 | `ALTER COLUMN [SET DATA] TYPE`             | Partial     | Only conversions that do not require column rewrites are supported, e.g., `INT2 -> INT4`, `CHAR(10) -> CHAR(100)`.                                                        |

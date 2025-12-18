@@ -22,19 +22,16 @@ Before you begin, do the following:
 
 1. Extract the Flyway TAR file that you downloaded, and change directories to the extracted `flyway-x.x.x` folder. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ tar -xvf flyway-commandline-6.4.2-macosx-x64.tar.gz
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd flyway-6.4.2
     ~~~
 
 1. Edit the `flyway-x.x.x/conf/flyway.conf` configuration file to specify the correct [connection parameters]({% link {{ page.version.version }}/connection-parameters.md %}) for your running, secure cluster. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ conf
     ...
     flyway.url=jdbc:postgresql://localhost:26257/bank?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.max.key&sslcert=certs/client.max.crt
@@ -53,14 +50,12 @@ Flyway executes SQL statements defined in `.sql` files located in the `flyway-x.
 
 1. Create a `.sql` file with a name that follows the [Flyway naming conventions](https://flywaydb.org/documentation/migrations#naming). For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch sql/V1__Add_accounts_table.sql
     ~~~
 
 1. Edit the `.sql` file, adding a [`CREATE TABLE IF NOT EXISTS`]({% link {{ page.version.version }}/create-table.md %}) statement for the table that you want to create, and a simple [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statement to initialize the table with some data. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     /* Create accounts table */
     CREATE TABLE IF NOT EXISTS accounts (
@@ -76,7 +71,6 @@ Flyway executes SQL statements defined in `.sql` files located in the `flyway-x.
 
 To execute the migration, run the following command from the top of the `flyway-x.x.x` directory:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./flyway migrate
 ~~~
@@ -100,7 +94,6 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. Create a second `.sql` schema migration file, and name the file following the [Flyway naming conventions](https://flywaydb.org/documentation/migrations#naming), to specify a new migration version. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch sql/V2__Alter_accounts_pk.sql
     ~~~
@@ -109,7 +102,6 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. Edit the `V2__Alter_accounts_pk.sql` migration file, adding some SQL statements that will add a new column to the `accounts` table, and alter the table's primary key. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     /* Add new UUID-typed column */
     ALTER TABLE accounts ADD COLUMN unique_id UUID NOT NULL DEFAULT gen_random_uuid();
@@ -120,7 +112,6 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. Execute the migration by running the `flyway migrate` command from the top of the `flyway-x.x.x` directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./flyway migrate
     ~~~

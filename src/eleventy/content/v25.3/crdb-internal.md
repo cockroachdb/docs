@@ -92,7 +92,6 @@ Table name | Description| Use in production
 
 To list the `crdb_internal` tables for the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database), use the following [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM crdb_internal;
 ~~~
@@ -124,7 +123,6 @@ To get detailed information about objects, processes, or metrics related to your
 
 For example, to return the `crdb_internal` table for the index usage statistics of the [`movr`]({% link {{ page.version.version }}/movr.md %}) database, you can use the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.crdb_internal.index_usage_statistics;
 ~~~
@@ -159,7 +157,6 @@ Column | Type | Description
 
 #### View all indexes that have experienced contention
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM movr.crdb_internal.cluster_contended_indexes;
 ~~~
@@ -183,7 +180,6 @@ Column | Type | Description
 
 #### View all keys that have experienced contention
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT table_name, index_name, key, num_contention_events FROM movr.crdb_internal.cluster_contended_keys where database_name = 'movr';
 ~~~
@@ -223,7 +219,6 @@ Column | Type | Description
 
 #### View all tables that have experienced contention
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.crdb_internal.cluster_contended_tables;
 ~~~
@@ -248,7 +243,6 @@ Column | Type | Description
 
 #### View all contention events
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.cluster_contention_events;
 ~~~
@@ -275,7 +269,6 @@ To view the [tables]({% link {{ page.version.version }}/create-table.md %}) and 
 {% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH c AS (SELECT DISTINCT ON (table_id, index_id) table_id, index_id, num_contention_events AS events, cumulative_contention_time AS time FROM crdb_internal.cluster_contention_events) SELECT i.descriptor_name, i.index_name, c.events, c.time FROM crdb_internal.table_indexes AS i JOIN c ON i.descriptor_id = c.table_id AND i.index_id = c.index_id ORDER BY c.time DESC LIMIT 10;
 ~~~
@@ -315,7 +308,7 @@ For more information, see the following sections.
 The `crdb_internal.cluster_locks` table has the following columns that describe each lock:
 
 | Column            | Type                          | Description                                                                                                                                                                   |
-|-------------------+-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `range_id`        | [`INT`]({% link {{ page.version.version }}/int.md %})             | The ID of the [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) that stores the key the lock is being acquired on.                                                       |
 | `table_id`        | [`INT`]({% link {{ page.version.version }}/int.md %})             | The ID of the [table]({% link {{ page.version.version }}/create-table.md %}) that includes the key the lock is being acquired on.                                                                                 |
 | `database_name`   | [`STRING`]({% link {{ page.version.version }}/string.md %})       | The name of the [database]({% link {{ page.version.version }}/create-database.md %}) that includes the key the lock is being acquired on.                                                                         |
@@ -355,7 +348,6 @@ In this example, we'll use the [`SELECT FOR UPDATE`]({% link {{ page.version.ver
 
 Now that we have two transactions both trying to update the `kv` table, let's query the data in `crdb_internal.cluster_locks`. We should see two locks:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT database_name, table_name, txn_id, ts, lock_key_pretty, lock_strength, granted, contended FROM crdb_internal.cluster_locks WHERE table_name = 'kv';
 ~~~
@@ -377,7 +369,6 @@ Further, both transactions show the `contended` column as `true`, since these tr
 
 The following more complex query shows additional information about lockholders, sessions, and waiting queries. This may be useful on a busy cluster for figuring out which transactions from which clients are trying to grab locks. Note that joining with `cluster_queries` will only show queries currently in progress.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     sessions.session_id,
@@ -424,21 +415,18 @@ In this example you will run a workload on the cluster with multiple concurrent 
 
 1. Initialize the workload:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach workload init bank 'postgresql://root@localhost:26257/bank?sslmode=disable'
     ~~~
 
 1. Run it at a high concurrency setting:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach workload run bank --concurrency=128 --duration=3m 'postgresql://root@localhost:26257/bank?sslmode=disable'
     ~~~
 
 1. While the workload is running, issue the following query to view a subset of the locks being requested:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT
         database_name,
@@ -476,7 +464,6 @@ As in the [basic example](#cluster-locks-basic-example), you can see that some t
 
 The following more complex query shows additional information about lockholders, sessions, and waiting queries. This may be useful on a busy cluster for figuring out which transactions from which clients are trying to grab locks. Note that joining with `cluster_queries` will only show queries currently in progress.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     sessions.session_id,
@@ -533,7 +520,6 @@ Run the query below to display a list of pairs of [transactions]({% link {{ page
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     lh.database_name,
@@ -580,7 +566,6 @@ Run the query below to display a list of [sessions]({% link {{ page.version.vers
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     l.database_name,
@@ -626,7 +611,6 @@ Run the query below to show a list of lock counts being held by different [sessi
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     l.database_name,
@@ -669,7 +653,6 @@ Run the query below to show a list of [keys]({% link {{ page.version.version }}/
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     l.database_name,
@@ -725,7 +708,6 @@ Column | Type | Description
 
 #### View all active queries for the `movr` application
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.cluster_queries where application_name = 'movr';
 ~~~
@@ -755,7 +737,6 @@ Column | Type | Description
 
 #### View all open SQL sessions for the `movr` application
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.cluster_sessions where application_name = 'movr';
 ~~~
@@ -782,7 +763,6 @@ Column | Type | Description
 
 #### View all active transactions for the `movr` application
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.cluster_transactions where application_name = 'movr';
 ~~~
@@ -806,7 +786,6 @@ Column | Type | Description
 
 You can reset the index usages statistics by invoking the function `crdb_internal.reset_index_usage_stats()`. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT crdb_internal.reset_index_usage_stats();
 ~~~
@@ -822,7 +801,6 @@ SELECT crdb_internal.reset_index_usage_stats();
 
 To view index usage statistics by table and index name, join with `table_indexes`:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT  ti.descriptor_name as table_name, ti.index_name, total_reads
 FROM  crdb_internal.index_usage_statistics AS us
@@ -850,7 +828,6 @@ ORDER BY total_reads desc;
 
 To determine if there are indexes that have become stale and are no longer needed, show which indexes haven't been used during the past week with the following query:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT  ti.descriptor_name as table_name, ti.index_name, total_reads
 FROM  crdb_internal.index_usage_statistics AS us
@@ -864,7 +841,6 @@ ORDER BY total_reads desc;
 
 View which indexes are no longer used with the following query:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT  ti.descriptor_name as table_name, ti.index_name, total_reads
 FROM crdb_internal.index_usage_statistics AS us
@@ -893,13 +869,11 @@ Column | Type | Description
 The value is in hexadecimal format. The following examples show how to use this value to query `statement_statistics`:
 
 1. Add the escape character `\x` at the start of the `fingerprint_id`:
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT * FROM crdb_internal.statement_statistics WHERE fingerprint_id='\x97ffc170783445fd';
 ~~~
 
 1. Encode the `fingerprint_id` as `hex`:
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT * FROM crdb_internal.statement_statistics WHERE encode(fingerprint_id, 'hex')='97ffc170783445fd';
 ~~~
@@ -959,7 +933,6 @@ Field | Type | Description
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
 the first 60 characters of query text, statement statistics, and sampled plan for DDL and DML statements for the [`movr`]({% link {{ page.version.version }}/movr.md %}) demo database:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT substring(metadata ->> 'query',1,60) AS statement_text,
    metadata ->> 'stmtTyp' AS statement_type,
@@ -1103,7 +1076,6 @@ Historical plans are stored in plan gists in `statistics->'statistics'->'planGis
 
 Suppose you wanted to compare plans of the following query:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
   name, count(rides.id) AS sum
@@ -1121,7 +1093,6 @@ LIMIT
 
 To decode plan gists, use the `crdb_internal.decode_plan_gist` function, as shown in the following query. The example shows the performance impact of adding an [index on the `start_time` column in the `rides` table]({% link {{ page.version.version }}/apply-statement-performance-rules.md %}#rule-2-use-the-right-index). The first row of the output shows the improved performance (reduced number of rows read and latency) after the index was added. The second row shows the query, which performs a full scan on the `rides` table, before the index was added.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 substring(metadata ->> 'query',1,60) AS statement_text,
@@ -1196,7 +1167,6 @@ The following example shows how to join the `transaction_contention_events` tabl
 
 1. Display contention table removing in-progress transactions.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT
       collection_ts,
@@ -1220,7 +1190,6 @@ The following example shows how to join the `transaction_contention_events` tabl
 
 1. Display counts for each blocking and waiting transaction fingerprint pair.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT
       encode(hce.blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
@@ -1247,7 +1216,6 @@ The following example shows how to join the `transaction_contention_events` tabl
 
 1. Join to show blocking statements text.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT DISTINCT
       hce.blocking_statement,
@@ -1304,7 +1272,6 @@ Column | Type | Description
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
 the statistics for transactions on the [`movr`]({% link {{ page.version.version }}/movr.md %}) demo database:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT
    metadata -> 'stmtFingerprintIDs' AS statement_fingerprint_id,
