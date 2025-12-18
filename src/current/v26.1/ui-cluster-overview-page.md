@@ -86,7 +86,7 @@ Uptime | Amount of time the node has been running.
 Replicas | Number of replicas on the node or in the locality.
 Capacity Usage | Percentage of usable disk space occupied by CockroachDB data on the node or in the locality. See [Capacity metrics](#capacity-metrics).
 Memory Usage | Memory used by CockroachDB as a percentage of the total memory on the node or in the locality.
-vCPUs | Number of vCPUs on the machine.
+vCPUs | Number of virtual CPUs available to the node, measured using cgroups to reflect the compute resources reserved in Kubernetes and other virtualized environments.
 Version | Build tag of the CockroachDB version installed on the node.
 
 ### Decommissioned nodes
