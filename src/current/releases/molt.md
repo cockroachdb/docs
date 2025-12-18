@@ -54,7 +54,7 @@ Cockroach Labs recommends using the latest available version of each tool. See [
     - `checkpoint_proposed_going_backwards_errors` -> `checkpoint_proposed_going_backwards_errors_total`
     - Oracle LogMiner metrics are now prefixed with `oraclelogminer_` (including `oraclecheckpoint` metrics)
 
-    For the rest of the metric name and description changes, run `curl http://localhost:{port}/debug/varz` while running `replicator` with the `--metricsAddr` flag set.
+    For the rest of the metric name and description changes, run `curl http://localhost:{port}/_/varz` while running `replicator` with the `--metricsAddr` flag set.
 - `RAW16` stored `UUID`s on Oracle can now be replicated into CockroachDB `UUID` columns when doing Oracle Log Miner source replication.
 - Fixed a bug where Oracle timestamp parsing could use the wrong DST offset, resulting in incorrect UTC times for certain dates.
 - Fixed observability for redo log parsing buckets so that the correct buckets and minimum durations are shown. Previously, the default for Prometheus buckets were too large, leading to incorrect redo log parsing time.
