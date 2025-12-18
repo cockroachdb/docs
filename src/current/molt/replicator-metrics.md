@@ -115,9 +115,17 @@ Monitor the following metrics to track the overall health of the [replication pi
     - Description: End-to-end replication lag per mutation from source commit to target apply. Measures the difference between current wall time and the mutation's [MVCC timestamp]({% link {{ site.current_cloud_version }}/architecture/storage-layer.md %}#mvcc).
     - Interpretation: Higher values mean that older mutations are being applied, and indicate end-to-end pipeline delays. Compare across tables to find bottlenecks.
 </section>
+<section class="filter-content" markdown="1" data-scope="postgres oracle">
 - `target_apply_queue_utilization_percent`
     - Description: Percentage of target apply queue capacity utilization.
-    - Interpretation: Values approaching 100 percent indicate severe backpressure throughout the pipeline, and potential data processing delays.
+	- Interpretation: Values above 90 percent indicate severe backpressure throughout the pipeline, and potential data processing delays. Increase [`--targetApplyQueueSize`]({% link molt/replicator-flags.md %}#target-apply-queue-size) or investigate target database performance.
+</section>
+<section class="filter-content" markdown="1" data-scope="mysql cockroachdb">
+- `target_apply_queue_utilization_percent`
+    - Description: Percentage of target apply queue capacity utilization.
+	- Interpretation: Values above 90 percent indicate severe backpressure throughout the pipeline, and potential data processing delays. Investigate target database performance.
+</section>
+
 
 <section class="filter-content" markdown="1" data-scope="postgres mysql cockroachdb">
 ### Replication lag
@@ -174,7 +182,7 @@ To visualize the following metrics, import the [Oracle Grafana dashboard](https:
 
 - `oraclelogminer_scn_interval_size`
 	- Description: Size of the interval from the start SCN to the current Oracle SCN.
-	- Interpretation: Values larger than the [`--scnWindowSize`]({% link molt/replicator-flags.md %}#scn) flag value indicate replication lag, or that replication is idle.
+	- Interpretation: Values larger than the [`--scnWindowSize`]({% link molt/replicator-flags.md %}#scn-window-size) flag value indicate replication lag, or that replication is idle.
 - `oraclelogminer_time_per_window_seconds`
 	- Description: Amount of time taken to fully process an SCN interval.
 	- Interpretation: Large values indicate Oracle slowdown, blocked replication loop, or slow processing.
@@ -272,9 +280,6 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 - `target_apply_queue_size`
 	- Description: Number of transactions waiting in the target apply queue.
 	- Interpretation: High values indicate target apply cannot keep up with incoming transactions.
-- `target_apply_queue_utilization_percent`
-	- Description: Percentage of apply queue capacity utilization.
-	- Interpretation: Values above 90 percent indicate severe backpressure. Increase [`--targetApplyQueueSize`]({% link molt/replicator-flags.md %}#target-apply-queue-size) or investigate target database performance.
 - `apply_duration_seconds`
 	- Description: Amount of time taken to successfully apply mutations to a table.
 	- Interpretation: High values indicate target database performance issues or contention.
