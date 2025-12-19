@@ -2,13 +2,13 @@
 
 #### Schema Conversion Tool
 
-The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) (SCT) automates target schema creation. It requires a free [CockroachDB {{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}).
+The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) (SCT) converts source table definitions to CockroachDB-compatible syntax. It requires a free [CockroachDB {{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}).
 
-1. Upload a source `.sql` file to convert the syntax and identify [unimplemented features and syntax incompatibilities]({% link molt/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities) in the schema.
+1. Upload a source `.sql` file to convert the syntax and identify [unimplemented features and syntax incompatibilities]({% link molt/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities) in the table definitions.
 
-1. Import the converted schema to a CockroachDB cluster:
-	- When migrating to CockroachDB {{ site.data.products.cloud }}, the Schema Conversion Tool automatically [applies the converted schema to a new {{ site.data.products.cloud }} database]({% link cockroachcloud/migrations-page.md %}#migrate-the-schema).
-	- When migrating to a {{ site.data.products.core }} CockroachDB cluster, [export a converted schema file]({% link cockroachcloud/migrations-page.md %}#export-the-schema) and pipe the [data definition language (DDL)]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements) directly into [`cockroach sql`]({% link {{ site.current_cloud_version }}/cockroach-sql.md %}).
+1. Import the converted table definitions to a CockroachDB cluster:
+	- When migrating to CockroachDB {{ site.data.products.cloud }}, the Schema Conversion Tool automatically [applies the converted table definitions to a new {{ site.data.products.cloud }} database]({% link cockroachcloud/migrations-page.md %}#migrate-the-schema).
+	- When migrating to a {{ site.data.products.core }} CockroachDB cluster, [export a converted DDL file]({% link cockroachcloud/migrations-page.md %}#export-the-schema) and pipe the [data definition language (DDL)]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements) directly into [`cockroach sql`]({% link {{ site.current_cloud_version }}/cockroach-sql.md %}).
 
 <section class="filter-content" markdown="1" data-scope="mysql">
 Syntax that cannot automatically be converted will be displayed in the [**Summary Report**]({% link cockroachcloud/migrations-page.md %}?filters=mysql#summary-report). These may include the following:
@@ -28,7 +28,7 @@ Identifiers are case-sensitive in MySQL and [case-insensitive in CockroachDB]({%
 The MySQL [`AUTO_INCREMENT`](https://dev.mysql.com/doc/refman/8.0/en/example-auto-increment.html) attribute, which creates sequential column values, is not supported in CockroachDB. When [using the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql#convert-a-schema), columns with `AUTO_INCREMENT` can be converted to use [sequences]({% link {{ site.current_cloud_version }}/create-sequence.md %}), `UUID` values with [`gen_random_uuid()`]({% link {{ site.current_cloud_version }}/functions-and-operators.md %}#id-generation-functions), or unique `INT8` values using [`unique_rowid()`]({% link {{ site.current_cloud_version }}/functions-and-operators.md %}#id-generation-functions). Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, refer to [Unique ID best practices]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
 
 {{site.data.alerts.callout_info}}
-Changing a column type during schema conversion will cause [MOLT Verify]({% link molt/molt-verify.md %}) to identify a type mismatch during data validation. This is expected behavior.
+Changing a column type during table definition conversion will cause [MOLT Verify]({% link molt/molt-verify.md %}) to identify a type mismatch during data validation. This is expected behavior.
 {{site.data.alerts.end}}
 
 ##### `ENUM` type
