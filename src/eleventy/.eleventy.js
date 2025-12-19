@@ -91,6 +91,10 @@ liquidEngine.registerTag('include', {
   }
 });
 
+// Base path for URL generation (used by link tags)
+// Check for undefined explicitly since empty string is a valid value for local dev
+const moduleBasePath = process.env.DOCS_BASE_PATH !== undefined ? process.env.DOCS_BASE_PATH : '/docs';
+
 // link tag - replaces {% link path/to/file.md %}
 liquidEngine.registerTag('link', {
   parse: function(tagToken) {
@@ -122,7 +126,8 @@ liquidEngine.registerTag('link', {
     // Remove trailing /index
     url = url.replace(/\/index$/, '/');
 
-    return url;
+    // Apply base path
+    return `${moduleBasePath}${url}`;
   }
 });
 
@@ -320,14 +325,19 @@ module.exports = function(eleventyConfig) {
     }
   });
 
-  // link tag
+  // link tag - generates URLs with base path
+  // Get basePath early for use in link tag (same logic as relative_url filter)
+  const linkBasePath = process.env.DOCS_BASE_PATH !== undefined ? process.env.DOCS_BASE_PATH : '/docs';
+
   customLiquid.registerTag('link', {
     parse: function(tagToken) { this.args = tagToken.args; },
     render: async function(ctx) {
       let url = resolveVarsInCtx(this.args.trim(), ctx);
       url = url.replace(/^["']|["']$/g, '').replace(/\.md$/, '').replace(/\.html$/, '');
       if (!url.startsWith('/')) url = '/' + url;
-      return url.replace(/\/index$/, '/');
+      url = url.replace(/\/index$/, '/');
+      // Apply base path (like relative_url filter)
+      return `${linkBasePath}${url}`;
     }
   });
 
