@@ -20,6 +20,10 @@ For ease of use, keep both `molt` and `replicator` in your current working direc
 
 To display the current version of each binary, run `molt --version` and `replicator --version`.
 
+{{site.data.alerts.callout_info}}
+`molt` is bundled with the latest `replicator` version available at the time of the MOLT release. This means that the MOLT download always contains the latest released version of [MOLT Replicator]({% link molt/molt-replicator.md %}). To verify that the `molt` and `replicator` versions match, run `molt --version` and `replicator --version`.
+{{site.data.alerts.end}}
+
 For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). {% if page.name != "molt.md" %}For release details, refer to the [MOLT changelog]({% link releases/molt.md %}).{% endif %}
 
 {% if page.name == "molt-fetch.md" or page.name == "molt.md" %}

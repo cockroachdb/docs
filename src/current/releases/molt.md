@@ -10,7 +10,7 @@ This page has details about each release of the following [MOLT (Migrate Off Leg
 - `molt`: [MOLT Fetch]({% link molt/molt-fetch.md %}) and [MOLT Verify]({% link molt/molt-verify.md %})
 - `replicator`: [MOLT Replicator]({% link molt/molt-replicator.md %})
 
-Cockroach Labs recommends using the latest available version of each tool. See [Installation](#installation).
+Cockroach Labs recommends using the latest available version of each tool. Refer to [Installation](#installation).
 
 ## Installation
 
@@ -90,7 +90,7 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 - Fixed a bug in `escape-password` where passwords that start with a hyphen were not handled correctly. Users must now pass the `--password` flag when running `escape-password`. For example, `molt escape-password --password 'a$52&'`.
 - Added support for assume role authentication during [data export]({% link molt/molt-fetch.md %}#data-export-phase) with MOLT Fetch.
 - Added support to `replicator` for retrying unique constraint violations on the target database, which can be temporary in some cases.
-- Added exponential backoff to `replicator` for retryable errors when applying mutations to the target database. This reduces load on the target database and prevents exhausting retries prematurely. The new [replication flags]({% link molt/molt-replicator.md %}#flags) `--retryInitialBackoff`, `--retryMaxBackoff`, and `--retryMultiplier` control backoff behavior. The new `--maxRetries` flag configures the maximum number of retries. To retain the previous "immediate retry" behavior, set `--retryMaxBackoff 1ns --retryInitialBackoff 1ns --retryMultiplier 1`.
+- Added exponential backoff to `replicator` for retryable errors when applying mutations to the target database. This reduces load on the target database and prevents exhausting retries prematurely. The new [replication flags]({% link molt/replicator-flags.md %}) `--retryInitialBackoff`, `--retryMaxBackoff`, and `--retryMultiplier` control backoff behavior. The new `--maxRetries` flag configures the maximum number of retries. To retain the previous "immediate retry" behavior, set `--retryMaxBackoff 1ns --retryInitialBackoff 1ns --retryMultiplier 1`.
 - Added support to `replicator` for the `source_lag_seconds`, `target_lag_seconds`, `apply_mutation_age_seconds`, and `source_commit_to_apply_lag_seconds` metrics for replication from PostgreSQL and MySQL, and introduced histogram metrics `source_lag_seconds_histogram` and `target_lag_seconds_histogram` for replication from CockroachDB. 
 
 	`source_lag_seconds` measures the delay before data is ready to be processed by `replicator`, while `target_lag_seconds` measures the "end-to-end" delay until `replicator` has written data to the target. A steady increase in `source_lag_seconds` may indicate `replicator` cannot keep up with the source workload, while a steady increase in `target_lag_seconds` may indicate `replicator` cannot keep up with the source workload or that writes on the target database are bottlenecked.
@@ -199,7 +199,7 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 - MySQL columns of type `BIGINT UNSIGNED` or `SERIAL` are now auto-mapped to [`DECIMAL`]({% link {{ site.current_cloud_version }}/decimal.md %}) type in CockroachDB. MySQL regular `BIGINT` types are mapped to [`INT`]({% link {{ site.current_cloud_version }}/int.md %}) type in CockroachDB.
 - The `pglogical` replication workflow was modified in order to enforce safer and simpler defaults for the [`data-load`]({% link molt/molt-fetch.md %}#fetch-mode), `data-load-and-replication`, and `replication-only` workflows for PostgreSQL sources. Fetch now ensures that the publication is created before the slot, and that `replication-only` defaults to using publications and slots created either in previous Fetch runs or manually.
 - Fixed scan iterator query ordering for `BINARY` and `TEXT` (of same collation) PKs so that they lead to the correct queries and ordering.
-- For a MySQL source in `replication-only` mode, the [`--stagingSchema` replicator flag]({% link molt/molt-replicator.md %}#flags) can now be used to resume streaming replication after being interrupted. Otherwise, the [`--defaultGTIDSet` replicator flag]({% link molt/molt-replicator.md %}#mylogical-replication-flags) is used to start initial replication after a previous Fetch run in [`data-load`]({% link molt/molt-fetch.md %}#fetch-mode) mode, or as an override to the current replication stream.
+- For a MySQL source in `replication-only` mode, the [`--stagingSchema` replicator flag]({% link molt/replicator-flags.md %}#staging-schema) can now be used to resume streaming replication after being interrupted. Otherwise, the [`--defaultGTIDSet` replicator flag]({% link molt/replicator-flags.md %}#default-gtid-set) is used to start initial replication after a previous Fetch run in [`data-load`]({% link molt/molt-fetch.md %}#fetch-mode) mode, or as an override to the current replication stream.
 
 ### October 29, 2024
 
