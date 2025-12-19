@@ -1688,6 +1688,12 @@
         ]
       },
       {
+        "title": "Docs MCP Server",
+        "urls": [
+          "/${VERSION}/docs-mcp-integration.html"
+        ]
+      },
+      {
         "title": "Logging",
         "items": [
           {

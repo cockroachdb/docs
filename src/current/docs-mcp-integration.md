@@ -1,11 +1,11 @@
 ---
-title: CockroachDB Docs MCP
+title: CockroachDB Docs MCP Server
 summary: Connect to CockroachDB documentation directly from your IDE or AI assistant
 toc: true
 docs_area: reference
 ---
 
-The CockroachDB Docs MCP ([Model Context Protocol](https://modelcontextprotocol.io/introduction)) server enables AI assistants like Claude Desktop, Cursor, and VS Code to access CockroachDB documentation directly. This allows you to get instant, context-aware answers about CockroachDB without leaving your development environment.
+The CockroachDB Docs MCP Server ([Model Context Protocol](https://modelcontextprotocol.io/introduction)) enables AI assistants like Claude Desktop, Cursor, and VS Code to access CockroachDB documentation directly. This integration allows you to get instant, context-aware answers about CockroachDB without leaving your development environment.
 
 ## Setup
 
@@ -111,9 +111,9 @@ Generic configuration format:
 
 Consult your client's documentation for specific configuration instructions.
 
-## What you can do
+## Capabilities
 
-Once connected, you can ask your AI assistant questions about CockroachDB and get answers directly from the official documentation. Here are some example queries:
+Once connected, your AI assistant can answer questions about CockroachDB directly from the official documentation. Example queries include:
 
 ### Multi-Region Configuration
 - "How do I set up a multi-region CockroachDB cluster?"
@@ -169,7 +169,7 @@ If the configuration doesn't seem to take effect:
 
 ## Feedback and Support
 
-For issues or feedback about the CockroachDB Docs MCP server:
+For issues or feedback about the CockroachDB Docs MCP Server:
 - Report documentation issues on [GitHub](https://github.com/cockroachdb/docs/issues)
 - For MCP-specific problems, check [Kapa AI support](https://docs.kapa.ai)
 - Join the [CockroachDB Community Slack](https://www.cockroachlabs.com/join-community/) for help
