@@ -65,7 +65,7 @@ api.configureSource("molt.migration_schema", {
 });
 ~~~
 
-Pass the userscript to MOLT Replicator with the `--userscript` [flag](#replication-flags):
+Pass the userscript to MOLT Replicator with the `--userscript` [flag](#replicator-flags):
 
 ~~~
 --userscript table_filter.ts
@@ -109,7 +109,7 @@ api.configureSource("molt.public", {
 });
 ~~~
 
-Pass the userscript to MOLT Replicator with the `--userscript` [flag](#replication-flags):
+Pass the userscript to MOLT Replicator with the `--userscript` [flag](#replicator-flags):
 
 ~~~
 --userscript table_filter.ts
