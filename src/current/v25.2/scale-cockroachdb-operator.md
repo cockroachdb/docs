@@ -104,3 +104,54 @@ Do not scale down to fewer than 3 nodes. This is considered an anti-pattern on C
     ~~~ shell
     kubectl get pods
     ~~~
+
+## Decommission nodes
+
+When a Kubernetes node is scheduled for removal or maintenance, the {{ site.data.products.cockroachdb-operator }} can be instructed to decommission the CockroachDB nodes scheduled on this Kubernetes node. Decommissioning safely moves data and workloads away before the node goes offline.
+
+{{site.data.alerts.callout_info}}
+Once annotated, the Kubernetes node is cordoned so no further pods are scheduled on the node and the decommissioning process for the CockroachDB pods scheduled on this Kubernetes node begins immediately.
+
+If cluster resources are constrained, replacement pods may remain in the Pending state until the Kubernetes scheduler identifies suitable nodes.
+{{site.data.alerts.end}}
+
+The following prerequisites are necessary for the {{ site.data.products.cockroachdb-operator }} to be able to decommission a CockroachDB node:
+
+- The `--enable-k8s-node-/controller=true` flag must be enabled in the operator's `.yaml` values file, for example:
+    {% include_cached copy-clipboard.html %}
+    {% raw %}
+    ~~~ yaml
+    containers:
+        - name: cockroach-operator
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+          args:
+            - "-enable-k8s-node-controller=true"
+    ~~~
+    {% endraw %}
+- At least one replica of the operator must not be on the target node.
+- There must be no under-replicated ranges on the CockroachDB cluster.
+
+To mark a node for decommissioning, follow these steps:
+
+1. Identify the name of the Kubernetes node that is to be removed.
+
+1. Annotate the Kubernetes node with `crdb.cockroachlabs.com/decommission="true"`. The decommissioning process begins immediately after this annotation is applied. Using `kubectl`, for example:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl annotate node {example-node-name} crdb.cockroachlabs.com/decommission="true"
+    ~~~
+
+1. Monitor the cluster:
+    - Confirm the decommissioned node's cordoned status:
+      {% include_cached copy-clipboard.html %}
+      ~~~ shell
+      kubectl describe node {example-node-name}
+      ~~~
+    - Monitor operator events and logs for decommission start and completion messages:
+      {% include_cached copy-clipboard.html %}
+      ~~~ shell
+      kubectl logs pod {operator-pod-name}
+      ~~~
+
+If the replacement pods remain in a `Pending` state, this typically means there is not enough available capacity in the cluster for these pods to be scheduled.
