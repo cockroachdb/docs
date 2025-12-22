@@ -1052,7 +1052,7 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
     Therefore, in order to upgrade to v21.2, you must be on a production release of v21.1.
 
-    1. If you are upgrading to v21.2 from a production release earlier than v21.1, or from a testing release (alpha/beta), first [upgrade to a production release of v21.1](../v21.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to v21.2 from a production release earlier than v21.1, or from a testing release (alpha/beta), first upgrade to a production release of v21.1. Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to v21.2.
 
