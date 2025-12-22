@@ -1,1 +1,0 @@
-**4 GiB of RAM per vCPU**
