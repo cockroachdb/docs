@@ -9,5 +9,5 @@ docs_area:
 {{site.data.alerts.callout_danger}}
 `INTERLEAVE IN PARENT` was permanently removed from CockroachDB in v21.2.
 
-For details, see the [v21.1 interleaving deprecation notice](../v21.1/interleave-in-parent.html#deprecation).
+For details about the deprecation process, see the archived documentation.
 {{site.data.alerts.end}}
