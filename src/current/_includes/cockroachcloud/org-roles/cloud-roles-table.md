@@ -2,7 +2,7 @@ The following table describes the high level permissions given by each Cockroach
 
 <div class="roles-table" markdown="1">
 
-|  | [Org. Member]({% link cockroachcloud/authorization.md %}#organization-member) | [Org. Admin]({% link cockroachcloud/authorization.md %}#organization-admin) | [Billing Coord.]({% link cockroachcloud/authorization.md %}#billing-coordinator) | [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator) | [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) | [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) | [Cluster Developer]({% link cockroachcloud/authorization.md %}#cluster-developer) | [Cluster Monitor]({% link cockroachcloud/authorization.md %}#cluster-monitor)<sup id="fnref1"><a href="#fn1">1</a></sup> | [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer)<sup id="fnref1"><a href="#fn1">1</a></sup> | [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) | [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover) |
+|  | [Org. Member]({% link cockroachcloud/authorization.md %}#organization-member) | [Org. Admin]({% link cockroachcloud/authorization.md %}#organization-admin) | [Billing Coord.]({% link cockroachcloud/authorization.md %}#billing-coordinator) | [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator) | [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) | [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) | [Cluster Developer]({% link cockroachcloud/authorization.md %}#cluster-developer) | [Cluster Monitor]({% link cockroachcloud/authorization.md %}#cluster-monitor) | [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer) | [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) | [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover) |
 |---|-------------|-------------|------------------|------------------|-------------------|----------------|--------------------|------------------|----------------|----------------|----------------|
 | **User/Access Management** |  |  |  |  |  |  |  |  |  |
 | Assign and revoke roles | — | ✓ | — | — | — | ✓ | — | — | — | — | — |
@@ -43,7 +43,6 @@ The following table describes the high level permissions given by each Cockroach
 | Manage CockroachDB [Self-Hosted cluster licenses]({% link {{ site.current_cloud_version }}/licensing-faqs.md %}#obtain-a-license) | — | ✓ | — | — | — | — | — | — | — | — | — |
 
 </div>
-<a id="fn1"><sup>1</sup></a>**This feature is in [limited access]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %})** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
 
 Some roles can be assigned to users at specific levels of scope to provide more granular permission control:
 
