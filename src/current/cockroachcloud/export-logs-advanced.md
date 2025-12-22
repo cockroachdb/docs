@@ -78,7 +78,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
 	~~~shell
 	curl --request GET \
 	  --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-	  --header 'Authorization: Bearer {secret_key}' | jq .account_id
+	  --header "Authorization: Bearer {secret_key}" | jq .account_id
 	~~~
 
     Refer to [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating the `{secret_key}`.
@@ -252,7 +252,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq '("crl-logging-user-" + (.id | split("-"))[4] + "@" + .account_id + ".iam.gserviceaccount.com")'
+      --header "Authorization: Bearer {secret_key}" | jq '("crl-logging-user-" + (.id | split("-"))[4] + "@" + .account_id + ".iam.gserviceaccount.com")'
     ~~~
 
     Where:
@@ -508,6 +508,12 @@ To enable log export for your CockroachDB {{ site.data.products.advanced }} clus
 {{site.data.alerts.callout_info}}
 Once log export has been enabled, logs generated going forward are sent to the specified cloud sink. Logs are not back-filled to the specified cloud sink.
 {{site.data.alerts.end}}
+
+## Send logs over a private cloud connection
+
+You can send logs to Amazon CloudWatch from private egress endpoints on your CockroachDB {{ site.data.products.cloud }} clusters to ensure they are sent over private connections within the cloud service.
+
+To learn more, read the [egress private endpoints documentation]({% link cockroachcloud/egress-private-endpoints.md %}).
 
 ## Monitor the status of a log export configuration
 
