@@ -31,6 +31,8 @@ The **Overview** section also displays the SQL statement fingerprint statistics 
 |**Execution Count** | The total number of executions. It is calculated as the sum of first attempts and retries. |
 |**Contention Time** | The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). |
 |**SQL CPU Time** | The amount of SQL CPU time spent executing the statement. The SQL CPU time represents the time spent and work done within SQL execution operators. It does not include SQL planning time or KV execution time. |
+|**KV CPU Time** | The average KV CPU time spent executing the statement within the specified time interval. This represents [KV]({{ link_prefix }}architecture/overview.html#layers) work that is on the critical path of serving the query. It excludes time spent on asynchronous replication and in the [storage layer]({{ link_prefix }}architecture/storage-layer.html). |
+|**Admission Wait Time** | Average time spent waiting in [admission control]({{ link_prefix }}admission-control.html) queues within the specified time interval. |
 |**Client Wait Time** | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements). |
 
 The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
@@ -59,7 +61,9 @@ Charts following the execution attributes display statement fingerprint statisti
 |**Rows Processed** | The total number of rows read and written. |
 |**Execution Retries** | The number of [retries]({{ link_prefix }}transactions.html#transaction-retries). |
 |**Execution Count** | The total number of executions. It is calculated as the sum of first attempts and retries. |
+|**Admission Wait Time** | The time spent waiting in admission control queues. The gray bar indicates mean admission wait time. The blue bar indicates one standard deviation from the mean. |
 |**Contention Time** | The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). |
+|**KV CPU Time** | The KV CPU time spent executing within the specified time interval. This can be thought of as KV work that is on the critical path of serving the query. It does not include any asynchronous replication related work. The gray bar indicates mean KV CPU time. The blue bar indicates one standard deviation from the mean. |
 |**SQL CPU Time** | The amount of SQL CPU time spent executing the statement. The SQL CPU time represents the time spent and work done within SQL execution operators. It does not include SQL planning time or KV execution time. |
 |**Client Wait Time** | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements). |
 

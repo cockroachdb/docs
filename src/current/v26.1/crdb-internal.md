@@ -958,6 +958,7 @@ The `NumericStat` type tracks two running values: the running mean `mean` and th
 Field | Type | Description
 ------------|-----|------------
 `execution_statistics -> cnt` | `INT64` | The number of times execution statistics were recorded.
+<code>execution_statistics -> admissionWaitTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in nanoseconds) spent waiting in [admission control]({% link {{ page.version.version }}/admission-control.md %}) queues.
 <code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) the statement spent contending for resources before being executed.
 <code>execution_statistics -> cpuSQLNanos -> [mean&#124;sqDiff]</code> | `NumericStat` | The amount of CPU time spent executing the statement in  nanoseconds. The CPU time represents the time spent and work done within SQL execution operators. <br><br>The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 <code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage (in bytes) that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
@@ -970,6 +971,7 @@ Field | Type | Description
 `statistics -> firstAttemptCnt` | `INT8` | The total number of times a first attempt was executed (either the one time in explicitly committed statements, or the first time in implicitly committed statements with implicit retries).
 <code>statistics -> idleLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
 `statistics -> indexes` | Array of `String` | The list of indexes used by the statement. Each index has the format `{tableID}@{indexID}`.
+<code>statistics -> kvCPUTimeNanos -> [mean&#124;sqDiff]</code> | `NumericStat` | The KV CPU time (in nanoseconds) spent executing the query. This represents [KV]({% link {{ page.version.version }}/architecture/overview.md %}#layers) work that is on the critical path of serving the query. It excludes time spent on asynchronous replication and in the [storage layer]({{ link_prefix }}architecture/storage-layer.html).
 `statistics -> lastErrorCode` | `String` | The [PostgreSQL Error Code](https://www.postgresql.org/docs/current/errcodes-appendix.html) from the last failed execution of the statement fingerprint.
 `statistics -> lastExecAt` | `TIMESTAMP` | The last timestamp the statement was executed.
 `statistics -> maxRetries` | `INT8` | The maximum observed number of automatic retries in the aggregation period.
