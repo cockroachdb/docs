@@ -1,1 +1,0 @@
-Use dedicated volumes for the CockroachDB [store](cockroach-start.html#store). Do not share the store volume with any other I/O activity.
