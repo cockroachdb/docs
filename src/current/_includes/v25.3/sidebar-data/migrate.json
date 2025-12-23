@@ -74,6 +74,12 @@
               ]
             },
             {
+              "title": "Installation",
+              "urls": [
+                "/molt/molt-replicator-installation.html"
+              ]
+            },
+            {
               "title": "Flags",
               "urls": [
                 "/molt/replicator-flags.html"
@@ -83,6 +89,18 @@
               "title": "Metrics",
               "urls": [
                 "/molt/replicator-metrics.html"
+              ]
+            },
+            {
+              "title": "Best Practices",
+              "urls": [
+                "/molt/molt-replicator-best-practices.html"
+              ]
+            },
+            {
+              "title": "Troubleshooting",
+              "urls": [
+                "/molt/molt-replicator-troubleshooting.html"
               ]
             }
           ]

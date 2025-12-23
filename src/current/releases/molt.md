@@ -101,7 +101,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 
 - MOLT Fetch now supports [sharding]({% link molt/molt-fetch.md %}#table-sharding) of primary keys of any data type on PostgreSQL 11+ sources. This can be enabled with the [`--use-stats-based-sharding`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) flag.
 - Added the [`--ignore-replication-check`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) flag to allow data loads with planned downtime and no replication setup. The `--pglogical-ignore-wal-check` flag has been removed.
-- Added the `--enableParallelApplies` [replication flag]({% link molt/molt-replicator.md %}#flags) to enable parallel application of independent table groups during replication. By default, applies are synchronous. When enabled, this increases throughput at the cost of increased target pool and memory usage.
+- Added the `--enableParallelApplies` [replication flag]({% link molt/replicator-flags.md %}) to enable parallel application of independent table groups during replication. By default, applies are synchronous. When enabled, this increases throughput at the cost of increased target pool and memory usage.
 - Improved cleanup logic for scheduled tasks to ensure progress reporting and prevent indefinite hangs.
 - Added parallelism gating to ensure the parallelism setting is smaller than the `targetMaxPoolSize`. This helps prevent a potential indefinite hang.
 - Added new metrics that track start and end times for progress reports (`core_progress_reports_started_count` and `core_progress_reports_ended_count`) and error reports (`core_error_reports_started_count` and `core_error_reports_ended_count`). These provide visibility into the core sequencer progress and help identify hangs in the applier and progress tracking pipeline.
@@ -169,7 +169,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 - MOLT Fetch failback to CockroachDB is now disallowed.
 - MOLT Verify can now compare tables that are named differently on the source and target schemas.
 - The `molt` logging date format is now period-delimited for Windows compatibility.
-- During replication, an index is now created on all tables by default, improving replication performance. Because index creation can cause the replication process to initialize more slowly, this behavior can be disabled using the `--stageDisableCreateTableReaderIndex` [replication flag]({% link molt/molt-replicator.md %}#flags).
+- During replication, an index is now created on all tables by default, improving replication performance. Because index creation can cause the replication process to initialize more slowly, this behavior can be disabled using the `--stageDisableCreateTableReaderIndex` [replication flag]({% link molt/replicator-flags.md %}#stage-disable-create-table-reader-index).
 - Added a failback metric that tracks the time to write a source commit to the staging schema for a given mutation.
 - Added a failback metric that tracks the time to write a source commit to the target database for a given mutation.
 
@@ -187,7 +187,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 - Added an [`--import-region`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) flag that is used to set the `AWS_REGION` query parameter explicitly in the [`s3` URL]({% link molt/molt-fetch.md %}#bucket-path).
 - Fixed the [`truncate-if-exists`]({% link molt/molt-fetch.md %}#target-table-handling) schema mode for cases where there are uppercase table or schema names.
 - Fixed an issue with unsigned `BIGINT` values overflowing in replication.
-- Added a `--schemaRefresh` [replication flag]({% link molt/molt-replicator.md %}#flags) that is used to configure the schema watcher refresh delay in the replication phase. Previously, the refresh delay was set to a constant value of 1 minute. Set the flag as follows: `--replicator-flags "--schemaRefresh {value}"`.
+- Added a `--schemaRefresh` [replication flag]({% link molt/replicator-flags.md %}#schema-refresh) that is used to configure the schema watcher refresh delay in the replication phase. Previously, the refresh delay was set to a constant value of 1 minute. Set the flag as follows: `--replicator-flags "--schemaRefresh {value}"`.
 
 ### December 13, 2024
 

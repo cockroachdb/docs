@@ -772,17 +772,17 @@ Use the `cdc_cursor` value as the checkpoint for MySQL or Oracle replication wit
 
 You can also use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes from the source database to CockroachDB.
 
-## Common workflows
+## Common uses
 
 ### Bulk data load
+
+When migrating data to CockroachDB in a bulk load (without utilizing [continuous replication]({% link molt/migration-considerations-replication.md %}) to minimize system downtime), run the `molt fetch` command with the required flags, as shown below:
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>
     <button class="filter-button" data-scope="mysql">MySQL</button>
     <button class="filter-button" data-scope="oracle">Oracle</button>
 </div>
-
-To perform a bulk data load migration from your source database to CockroachDB, run the `molt fetch` command with the required flags.
 
 Specify the source and target database connections. For connection string formats, refer to [Source and target databases](#source-and-target-databases).
 
@@ -884,17 +884,22 @@ molt fetch \
 --ignore-replication-check
 ~~~
 
-For detailed steps, refer to [Bulk load migration]({% link molt/migrate-bulk-load.md %}).
+For detailed walkthroughs of migrations that use `molt fetch` in this way, refer to the [Classic Bulk Load]({% link molt/migrate-bulk-load.md %}) and [Phased Bulk Load]({% link molt/migrate-bulk-load.md %}) migration approaches.
 
-### Load before replication
+For detailed walkthroughs of migrations that use `molt fetch` in this way, refer to these common migration approaches:
+
+- [Classic Bulk Load Migration]({% link molt/migration-approach-classic-bulk-load.md %})
+- [Phased Bulk Load Migration]({% link molt/migration-approach-phased-bulk-load.md %})
+
+### Initial bulk load (before replication)
+
+In a migration that utilizes [continuous replication]({% link  molt/migration-considerations-replication.md %}), perform an initial data load before [setting up ongoing replication with MOLT Replicator]({% link molt/molt-replicator.md %}#forward-replication-after-initial-load). Run the `molt fetch` command without `--ignore-replication-check`, as shown below:
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>
     <button class="filter-button" data-scope="mysql">MySQL</button>
     <button class="filter-button" data-scope="oracle">Oracle</button>
 </div>
-
-To perform an initial data load before setting up ongoing replication with [MOLT Replicator]({% link molt/molt-replicator.md %}), run the `molt fetch` command without `--ignore-replication-check`. This captures replication checkpoints during the data load.
 
 The workflow is the same as [Bulk data load](#bulk-data-load), except:
 
@@ -948,6 +953,12 @@ The output will include a `cdc_cursor` value at the end of the fetch task:
 <section class="filter-content" markdown="1" data-scope="mysql oracle">
 Use this `cdc_cursor` value when starting MOLT Replicator to ensure replication begins from the correct position. For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-replicate.md %}).
 </section>
+
+For detailed walkthroughs of migrations that use `molt fetch` in this way, refer to these common migration approaches:
+
+- [Delta Migration]({% link molt/migration-approach-delta.md %})
+- [Streaming Migration]({% link molt/migration-approach-streaming.md %})
+- [Active-Active Migration]({% link molt/migration-approach-active-active.md %})
 
 ## See also
 

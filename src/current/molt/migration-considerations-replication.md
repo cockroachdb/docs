@@ -88,7 +88,7 @@ When you run MOLT Fetch without `--ignore-replication-check`, it emits a checkpo
 
 MOLT Fetch supports both `IMPORT INTO` (default, for highest throughput with offline tables) and `COPY FROM` (for online tables) loading methods. Because a hybrid approach will likely aim to have less downtime, you may need to use `COPY FROM` if your tables remain online. In this case, use the `--use-copy` flag. Learn more about Fetch's [data load modes]({% link molt/molt-fetch.md %}#data-load-mode).
 
-MOLT Replicator replicates full tables by default. If you choose to combine continuous replication with a [phased migration]({% link molt/migration-considerations-phases.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/molt-replicator.md %}#flags) to select rows to replicate.
+MOLT Replicator replicates full tables by default. If you choose to combine continuous replication with a [phased migration]({% link molt/migration-considerations-phases.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/replicator-flags.md %}#userscript) to select rows to replicate.
 
 MOLT Replicator can be stopped after cutover, or it can remain online to continue streaming changes indefinitely.
 
