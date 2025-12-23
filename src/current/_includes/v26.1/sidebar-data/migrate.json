@@ -54,8 +54,43 @@
         },
         {
           "title": "Fetch",
-          "urls": [
-            "/molt/molt-fetch.html"
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/molt-fetch.html"
+              ]
+            },
+            {
+              "title": "Installation",
+              "urls": [
+                "/molt/molt-fetch-installation.html"
+              ]
+            },
+            {
+              "title": "Commands and Flags",
+              "urls": [
+                "/molt/molt-fetch-commands-and-flags.html"
+              ]
+            },
+            {
+              "title": "Monitoring",
+              "urls": [
+                "/molt/molt-fetch-monitoring.html"
+              ]
+            },
+            {
+              "title": "Best Practices",
+              "urls": [
+                "/molt/molt-fetch-best-practices.html"
+              ]
+            },
+            {
+              "title": "Troubleshooting",
+              "urls": [
+                "/molt/molt-fetch-troubleshooting.html"
+              ]
+            }
           ]
         },
         {

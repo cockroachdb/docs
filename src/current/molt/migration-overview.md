@@ -102,7 +102,7 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 
 - Multiple migration flows via `IMPORT INTO` or `COPY FROM`.
 - Data movement via [cloud storage, local file servers, or direct copy]({% link molt/molt-fetch.md %}#data-path).
-- [Concurrent data export]({% link molt/molt-fetch.md %}#best-practices) from multiple source tables and shards.
+- [Concurrent data export]({% link molt/molt-fetch-best-practices.md %}) from multiple source tables and shards.
 - [Schema transformation rules]({% link molt/molt-fetch.md %}#transformations).
 - After exporting data with `IMPORT INTO`, safe [continuation]({% link molt/molt-fetch.md %}#fetch-continuation) to retry failed or interrupted tasks from specific checkpoints.
 
