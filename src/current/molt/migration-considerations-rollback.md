@@ -77,7 +77,7 @@ Ensure your source database supports the change data capture requirements for th
 
 [MOLT Replicator]({% link molt/molt-replicator.md %}) uses change data to stream changes from one database to another. It's used for both [forward replication]({% link molt/migration-considerations-replication.md %}) and [failback replication](#failback-replication).
 
-To use MOLT Replicator in failback mode, run the [`replicator start`]({% link molt/molt-replicator.md %}#commands) command with its various [flags]({% link molt/molt-replicator.md %}#start-failback-flags).
+To use MOLT Replicator in failback mode, run the [`replicator start`]({% link molt/molt-replicator.md %}#commands) command with its various [flags]({% link molt/replicator-flags.md %}).
 
 When enabling failback replication, the original source database becomes the replication target, and the original target CockroachDB cluster becomes the replication source. Use the `--sourceConn` flag to indicate the CockroachDB cluster, and use the `--targetConn` flag to indicate the PostgreSQL, MySQL, or Oracle database from which data is being migrated.
 

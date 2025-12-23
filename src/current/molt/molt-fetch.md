@@ -270,12 +270,16 @@ For example, if you are migrating to CockroachDB {{ site.data.products.cloud }},
 
 By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-databases) database to CockroachDB. Use the following flags to move a subset of data.
 
-`--schema-filter` specifies a range of schema objects to move to CockroachDB, formatted as a POSIX regex string. For example, to move every table in the source database's `public` schema:
+`--schema-filter` specifies a range of schema objects to move to CockroachDB, formatted as a POSIX regex string. For example, to move every table in the source database's `migration_schema` schema:
 
 {% include_cached copy-clipboard.html %}
 ~~~
---schema-filter 'public'
+--schema-filter 'migration_schema'
 ~~~
+
+{{site.data.alerts.callout_info}}
+`--schema-filter` does not apply to MySQL sources because MySQL tables belong directly to the database specified in the connection string, not to a separate schema.
+{{site.data.alerts.end}}
 
 `--table-filter` and `--table-exclusion-filter` specify tables to include and exclude from the migration, respectively, formatted as POSIX regex strings. For example, to move every source table that has "user" in the table name and exclude every source table that has "temp" in the table name:
 
@@ -293,14 +297,14 @@ Use `--filter-path` to specify the path to a JSON file that defines row-level fi
 --filter-path 'data-filter.json'
 ~~~
 
-The JSON file should contain one or more entries in `filters`, each with a `resource_specifier` (`schema` and `table`) and a SQL expression `expr`. For example, the following example exports only rows from `public.t1` where `v > 100`:
+The JSON file should contain one or more entries in `filters`, each with a `resource_specifier` (`schema` and `table`) and a SQL expression `expr`. For example, the following example exports only rows from `migration_schema.t1` where `v > 100`:
 
 ~~~ json
 {
   "filters": [
     {
       "resource_specifier": {
-        "schema": "public",
+        "schema": "migration_schema",
         "table": "t1"
       },
       "expr": "v > 100"
@@ -332,18 +336,18 @@ If the expression references columns that are not indexed, MOLT Fetch will emit 
 {% comment %}
 #### `--filter-path` userscript for replication
 
-To use `--filter-path` with replication, create and save a TypeScript userscript (e.g., `filter-script.ts`). The following script ensures that only rows where `v > 100` are replicated to `defaultdb.public.t1`:
+To use `--filter-path` with replication, create and save a TypeScript userscript (e.g., `filter-script.ts`). The following script ensures that only rows where `v > 100` are replicated to `defaultdb.migration_schema.t1`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
 import * as api from "replicator@v1";
 function disp(doc, meta) {
     if (Number(doc.v) > 100) {
-        return { "defaultdb.public.t1" : [ doc ] };
+        return { "defaultdb.migration_schema.t1" : [ doc ] };
     }
 }
 // Always put target schema.
-api.configureSource("defaultdb.public", {
+api.configureSource("defaultdb.migration_schema", {
     deletesTo: disp,
     dispatch: disp,
 });
@@ -386,7 +390,7 @@ When using the `drop-on-target-and-recreate` option, MOLT Fetch creates a new Co
 
 #### Mismatch handling
 
-If either [`none`](#target-table-handling) or [`truncate-if-exists`](#target-table-handling) is set, `molt fetch` loads data into the existing tables on the target CockroachDB database. If the target schema mismatches the source schema, `molt fetch` will exit early in certain cases, and will need to be re-run from the beginning. For details, refer to [Fetch exits early due to mismatches](#fetch-exits-early-due-to-mismatches).
+If either [`none`](#target-table-handling) or [`truncate-if-exists`](#target-table-handling) is set, `molt fetch` loads data into the existing tables on the target CockroachDB database. If the target schema mismatches the source schema, `molt fetch` will exit early in certain cases, and will need to be re-run from the beginning. For details, refer to [Fetch exits early due to mismatches]({% link molt/molt-fetch-troubleshooting.md %}#fetch-exits-early-due-to-mismatches).
 
 {{site.data.alerts.callout_info}}
 This does not apply when [`drop-on-target-and-recreate`](#target-table-handling) is specified, since this option automatically creates a compatible CockroachDB schema.
@@ -394,7 +398,7 @@ This does not apply when [`drop-on-target-and-recreate`](#target-table-handling)
 
 #### Skip primary key matching
 
-`--skip-pk-check` removes the [requirement that source and target tables share matching primary keys](#fetch-exits-early-due-to-mismatches) for data load. When this flag is set:
+`--skip-pk-check` removes the [requirement that source and target tables share matching primary keys]({% link molt/molt-fetch-troubleshooting.md %}#fetch-exits-early-due-to-mismatches) for data load. When this flag is set:
 
 - The data load proceeds even if the source or target table lacks a primary key, or if their primary key columns do not match.
 - [Table sharding](#table-sharding) is disabled. Each table is exported in a single batch within one shard, bypassing `--export-concurrency` and `--row-batch-size`. As a result, memory usage and execution time may increase due to full table scans.
@@ -524,11 +528,12 @@ The following JSON example defines two type mappings:
 
 ### Transformations
 
-You can define transformation rules to be performed on the target schema during the fetch task. These can be used to:
+You can define transformation rules to be performed on the target database during the fetch task. These can be used to:
 
-- Map [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) to a target schema.
+- Map [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) from source to target.
 - Map [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) to a single target table.
-- Rename tables on the target schema.
+- Rename tables on the target database.
+- Rename database schemas.
 
 Transformation rules are defined in the JSON file indicated by the `--transformations-file` flag. For example:
 
@@ -537,7 +542,9 @@ Transformation rules are defined in the JSON file indicated by the `--transforma
 --transformations-file 'transformation-rules.json'
 ~~~
 
-The following JSON example defines two transformation rules:
+#### Transformation rules example
+
+The following JSON example defines three transformation rules: rule `1` [maps computed columns](#column-exclusions-and-computed-columns), rule `2` [renames tables](#table-renaming), and rule `3` [renames schemas](#schema-renaming).
 
 ~~~ json
 {
@@ -562,32 +569,99 @@ The following JSON example defines two transformation rules:
       "table_rename_opts": {
         "value": "charges"
       }
+    },
+    {
+      "id": 3,
+      "resource_specifier": {
+        "schema": "previous_schema"
+      },
+      "schema_rename_opts": {
+        "value": "new_schema"
+      }
     }
   ]
 }
 ~~~
 
-- `resource_specifier` configures the following options for transformation rules:
-	- `schema` specifies the schemas to be affected by the transformation rule, formatted as a POSIX regex string.
-	- `table` specifies the tables to be affected by the transformation rule, formatted as a POSIX regex string.
-- `column_exclusion_opts` configures the following options for column exclusions and computed columns:
-	- `column` specifies source columns to exclude from being mapped to regular columns on the target schema. It is formatted as a POSIX regex string.
-	- `add_computed_def`, when set to `true`, specifies that each matching `column` should be mapped to a [computed column]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on the target schema. Instead of being moved from the source, the column data is generated on the target using [`ALTER TABLE ... ADD COLUMN`]({% link {{ site.current_cloud_version }}/alter-table.md %}#add-column) and the computed column definition from the source schema. This assumes that all matching columns are computed columns on the source.
+#### Column exclusions and computed columns
+
+- `resource_specifier`: Identifies which schemas and tables to transform.
+	- `schema`: POSIX regex matching source schemas.
+	- `table`: POSIX regex matching source tables.
+- `column_exclusion_opts`: Exclude columns or map them as computed columns.
+	- `column`: POSIX regex matching source columns to exclude.
+	- `add_computed_def`: When `true`, map matching columns as [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on target tables using [`ALTER TABLE ... ADD COLUMN`]({% link {{ site.current_cloud_version }}/alter-table.md %}#add-column) and the source column definition. All matching columns must be computed columns on the source.
 		{{site.data.alerts.callout_danger}}
-		Columns that match the `column` regex will **not** be moved to CockroachDB if `add_computed_def` is omitted or set to `false` (default), or if a matching column is a non-computed column.
+		Columns matching `column` are **not** moved to CockroachDB if `add_computed_def` is `false` (default) or if matching columns are not computed columns.
 		{{site.data.alerts.end}}
-- `table_rename_opts` configures the following option for table renaming:
-	- `value` specifies the table name to which the matching `resource_specifier` is mapped. If only one source table matches `resource_specifier`, it is renamed to `table_rename_opts.value` on the target. If more than one table matches `resource_specifier` (i.e., an n-to-1 mapping), the fetch task assumes that all matching tables are [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same schema, and moves their data to a table named `table_rename_opts.value` on the target. Otherwise, the task will error. 
-		
-		Additionally, in an n-to-1 mapping situation: 
 
-		- Specify [`--use-copy`](#data-load-mode) or [`--direct-copy`](#direct-copy) for data movement. This is because the data from the source tables is loaded concurrently into the target table.
-		- Create the target table schema manually, and do **not** use [`--table-handling drop-on-target-and-recreate`](#target-table-handling) for target table handling.
+[Example rule `1`](#transformation-rules-example) maps all source `age` columns to [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on CockroachDB. This assumes that all matching `age` columns are defined as computed columns on the source:
 
-The preceding JSON example therefore defines two rules:
+~~~ json
+{
+  "id": 1,
+  "resource_specifier": {
+    "schema": ".*",
+    "table": ".*"
+  },
+  "column_exclusion_opts": {
+    "add_computed_def": true,
+    "column": "^age$"
+  }
+},
+~~~
 
-- Rule `1` maps all source `age` columns on the source database to [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) on CockroachDB. This assumes that all matching `age` columns are defined as computed columns on the source.
-- Rule `2` maps all table names with prefix `charges_part` from the source database to a single `charges` table on CockroachDB (i.e., an n-to-1 mapping). This assumes that all matching `charges_part.*` tables have the same schema.
+#### Table renaming
+
+- `resource_specifier`: Identifies which schemas and tables to transform.
+	- `schema`: POSIX regex matching source schemas.
+	- `table`: POSIX regex matching source tables.
+- `table_rename_opts`: Rename tables on the target.
+	- `value`: Target table name. For a single matching source table, renames it to this value. For multiple matches (n-to-1), consolidates matching [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same table definition into a single table with this name.
+
+		For n-to-1 mappings:
+
+		- Use [`--use-copy`](#data-load-mode) or [`--direct-copy`](#direct-copy) for data movement.
+		- Manually create the target table. Do not use [`--table-handling drop-on-target-and-recreate`](#target-table-handling).
+
+[Example rule `2`](#transformation-rules-example) maps all table names with prefix `charges_part` to a single `charges` table on CockroachDB (an n-to-1 mapping). This assumes that all matching `charges_part.*` tables have the same table definition:
+
+~~~ json
+{
+  "id": 2,
+  "resource_specifier": {
+    "schema": "public",
+    "table": "charges_part.*"
+  },
+  "table_rename_opts": {
+    "value": "charges"
+  }
+},
+~~~
+
+#### Schema renaming
+
+- `resource_specifier`: Identifies which schemas and tables to transform.
+	- `schema`: POSIX regex matching source schemas.
+	- `table`: POSIX regex matching source tables.
+- `schema_rename_opts`: Rename database schemas on the target.
+	- `value`: Target schema name. For example, `previous_schema.table1` becomes `new_schema.table1`.
+
+[Example rule `3`](#transformation-rules-example) renames the database schema `previous_schema` to `new_schema` on CockroachDB:
+
+~~~ json
+{
+  "id": 3,
+  "resource_specifier": {
+    "schema": "previous_schema"
+  },
+  "schema_rename_opts": {
+    "value": "new_schema"
+  }
+}
+~~~
+
+#### General notes
 
 Each rule is applied in the order it is defined. If two rules overlap, the later rule will override the earlier rule.
 
@@ -680,10 +754,18 @@ Continuation Tokens.
 
 ### CDC cursor
 
-A change data capture (CDC) cursor is written to the output as `cdc_cursor` at the beginning and end of the fetch task. For example:
+A change data capture (CDC) cursor is written to the output as `cdc_cursor` at the beginning and end of the fetch task.
+
+For MySQL:
 
 ~~~ json
 {"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"cdc_cursor":"b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
+~~~
+
+For Oracle:
+
+~~~ json
+{"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":3,"tables":["migration_schema.employees"],"cdc_cursor":"backfillFromSCN=26685444,scn=26685786","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
 ~~~
 
 Use the `cdc_cursor` value as the checkpoint for MySQL or Oracle replication with [MOLT Replicator]({% link molt/molt-replicator.md %}#replication-checkpoints).
@@ -694,15 +776,34 @@ You can also use the `cdc_cursor` value with an external change data capture (CD
 
 ### Bulk data load
 
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
+
 To perform a bulk data load migration from your source database to CockroachDB, run the `molt fetch` command with the required flags.
 
-Specify the source and target database connections. For connection string formats, refer to [Source and target databases](#source-and-target-databases):
+Specify the source and target database connections. For connection string formats, refer to [Source and target databases](#source-and-target-databases).
 
+<section class="filter-content" markdown="1" data-scope="postgres mysql">
 {% include_cached copy-clipboard.html %}
 ~~~
 --source $SOURCE
 --target $TARGET
 ~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+For Oracle Multitenant (CDB/PDB) sources, also include `--source-cdb` to specify the container database (CDB) connection string.
+
+{% include_cached copy-clipboard.html %}
+~~~
+--source $SOURCE
+--source-cdb $SOURCE_CDB
+--target $TARGET
+~~~
+</section>
 
 Specify how to move data to CockroachDB. Use [cloud storage](#bucket-path) for intermediate file storage:
 
@@ -726,13 +827,34 @@ Alternatively, use [direct copy](#direct-copy) to move data directly without int
 --direct-copy
 ~~~
 
-Optionally, filter which schemas and tables to migrate. By default, all schemas and tables are migrated. For details, refer to [Schema and table selection](#schema-and-table-selection):
+Optionally, filter the source data to migrate. By default, all schemas and tables are migrated. For details, refer to [Schema and table selection](#schema-and-table-selection).
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+{% include_cached copy-clipboard.html %}
+~~~
+--schema-filter 'migration_schema'
+--table-filter '.*user.*'
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+For Oracle sources, `--schema-filter` is case-insensitive. You can use either lowercase or uppercase:
 
 {% include_cached copy-clipboard.html %}
 ~~~
---schema-filter 'public'
+--schema-filter 'migration_schema'
 --table-filter '.*user.*'
 ~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+For MySQL sources, omit `--schema-filter` because MySQL tables belong directly to the database specified in the connection string, not to a separate schema. If needed, use `--table-filter` to select specific tables:
+
+{% include_cached copy-clipboard.html %}
+~~~
+--table-filter '.*user.*'
+~~~
+</section>
 
 Specify how to handle target tables. By default, `--table-handling` is set to `none`, which loads data without changing existing data in the tables. For details, refer to [Target table handling](#target-table-handling):
 
@@ -766,15 +888,37 @@ For detailed steps, refer to [Bulk load migration]({% link molt/migrate-bulk-loa
 
 ### Load before replication
 
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
+
 To perform an initial data load before setting up ongoing replication with [MOLT Replicator]({% link molt/molt-replicator.md %}), run the `molt fetch` command without `--ignore-replication-check`. This captures replication checkpoints during the data load.
 
 The workflow is the same as [Bulk data load](#bulk-data-load), except:
 
 - Exclude `--ignore-replication-check`. MOLT Fetch will query and record replication checkpoints.
+<section class="filter-content" markdown="1" data-scope="postgres">
+- You must include `--pglogical-replication-slot-name` and `--pglogical-publication-and-slot-drop-and-recreate` to automatically create the publication and replication slot during the data load.
+</section>
 - After the data load completes, check the [CDC cursor](#cdc-cursor) in the output for the checkpoint value to use with MOLT Replicator.
 
 At minimum, the `molt fetch` command should include the source, target, and data path flags:
 
+<section class="filter-content" markdown="1" data-scope="postgres">
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt fetch \
+--source $SOURCE \
+--target $TARGET \
+--bucket-path 's3://bucket/path' \
+--pglogical-replication-slot-name molt_slot \
+--pglogical-publication-and-slot-drop-and-recreate
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 molt fetch \
@@ -782,6 +926,18 @@ molt fetch \
 --target $TARGET \
 --bucket-path 's3://bucket/path'
 ~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt fetch \
+--source $SOURCE \
+--source-cdb $SOURCE_CDB \
+--target $TARGET \
+--bucket-path 's3://bucket/path'
+~~~
+</section>
 
 The output will include a `cdc_cursor` value at the end of the fetch task:
 
@@ -789,7 +945,9 @@ The output will include a `cdc_cursor` value at the end of the fetch task:
 {"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"cdc_cursor":"b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
 ~~~
 
+<section class="filter-content" markdown="1" data-scope="mysql oracle">
 Use this `cdc_cursor` value when starting MOLT Replicator to ensure replication begins from the correct position. For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-replicate.md %}).
+</section>
 
 ## See also
 
