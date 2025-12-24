@@ -45,7 +45,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
 ~~~
 
-Depending on the MOLT Fetch [data load mode](#data-load-mode) you will use, grant the necessary privileges to run either [`IMPORT INTO`](#import-into-privileges) or [`COPY FROM`](#copy-from-privileges) on the target tables:
+Depending on the MOLT Fetch [data load mode]({% link molt/molt-fetch.md %}#import-into-vs-copy-from) you will use, grant the necessary privileges to run either [`IMPORT INTO`](#import-into-privileges) or [`COPY FROM`](#copy-from-privileges) on the target tables:
 
 #### `IMPORT INTO` privileges
 

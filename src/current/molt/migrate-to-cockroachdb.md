@@ -5,14 +5,14 @@ toc: true
 docs_area: migrate
 ---
 
-MOLT Fetch supports various migration flows using [MOLT Fetch modes]({% link molt/molt-fetch.md %}#fetch-mode).
+MOLT Fetch supports various migration flows using [MOLT Fetch modes]({% link molt/molt-fetch.md %}#define-fetch-mode).
 
 {% include molt/crdb-to-crdb-migration.md %}
 
 |                            Migration flow                           |             Mode             |                                         Description                                         |                                                 Best for                                                |
 |---------------------------------------------------------------------|------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| [Bulk load]({% link molt/migrate-bulk-load.md %})                   | `--mode data-load`           | Perform a one-time bulk load of source data into CockroachDB.                               | Testing, migrations with [planned downtime]({% link molt/migration-strategy.md %}#approach-to-downtime) |
-| [Load and replicate]({% link molt/migrate-load-replicate.md %})     | MOLT Fetch + MOLT Replicator | Load source data using MOLT Fetch, then replicate subsequent changes using MOLT Replicator. | [Minimal downtime]({% link molt/migration-strategy.md %}#approach-to-downtime) migrations               |
+| [Bulk load]({% link molt/migrate-bulk-load.md %})                   | `--mode data-load`           | Perform a one-time bulk load of source data into CockroachDB.                               | Testing, migrations with [planned downtime]({% link molt/migration-considerations.md %}#permissible-downtime) |
+| [Load and replicate]({% link molt/migrate-load-replicate.md %})     | MOLT Fetch + MOLT Replicator | Load source data using MOLT Fetch, then replicate subsequent changes using MOLT Replicator. | [Minimal downtime]({% link molt/migration-considerations.md %}#permissible-downtime) migrations               |
 | [Resume replication]({% link molt/migrate-resume-replication.md %}) | `--mode replication-only`    | Resume replication from a checkpoint after interruption.                                    | Resuming interrupted migrations, post-load sync                                                         |
 | [Failback]({% link molt/migrate-failback.md %})                     | `--mode failback`            | Replicate changes from CockroachDB back to the source database.                             | [Rollback]({% link molt/migrate-failback.md %}) scenarios                                               |
 
