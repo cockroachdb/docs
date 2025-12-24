@@ -101,10 +101,10 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 [MOLT Fetch]({% link molt/molt-fetch.md %}) performs the initial data load to CockroachDB. It supports:
 
 - Multiple migration flows via `IMPORT INTO` or `COPY FROM`.
-- Data movement via [cloud storage, local file servers, or direct copy]({% link molt/molt-fetch.md %}#data-path).
-- [Concurrent data export]({% link molt/molt-fetch.md %}#best-practices) from multiple source tables and shards.
-- [Schema transformation rules]({% link molt/molt-fetch.md %}#transformations).
-- After exporting data with `IMPORT INTO`, safe [continuation]({% link molt/molt-fetch.md %}#fetch-continuation) to retry failed or interrupted tasks from specific checkpoints.
+- Data movement via [cloud storage, local file servers, or direct copy]({% link molt/molt-fetch.md %}#define-intermediate-storage).
+- [Concurrent data export]({% link molt/molt-fetch-best-practices.md %}) from multiple source tables and shards.
+- [Schema transformation rules]({% link molt/molt-fetch.md %}#define-transformations).
+- After exporting data with `IMPORT INTO`, safe [continuation]({% link molt/molt-fetch.md %}#continue-molt-fetch-after-interruption) to retry failed or interrupted tasks from specific checkpoints.
 
 ### Replicator
 
@@ -113,7 +113,7 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 - Continuous replication from source databases to CockroachDB.
 - [Multiple consistency modes]({% link molt/molt-replicator.md %}#consistency-modes) for balancing throughput and transactional guarantees.
 - Failback replication from CockroachDB back to source databases.
-- [Performance tuning]({% link molt/molt-replicator.md %}#optimize-performance) for high-throughput workloads.
+- [Performance tuning]({% link molt/molt-replicator-best-practices.md %}#optimize-performance) for high-throughput workloads.
 
 ### Verify
 

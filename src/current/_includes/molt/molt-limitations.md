@@ -12,7 +12,7 @@
 - Oracle advises against `LONG RAW` columns and [recommends converting them to `BLOB`](https://www.orafaq.com/wiki/LONG_RAW#History). `LONG RAW` can only store binary values up to 2GB, and only one `LONG RAW` column per table is supported.
 </section>
 
-- Only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded with [`--export-concurrency`]({% link molt/molt-fetch.md %}#best-practices).
+- Only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded with [`--export-concurrency`]({% link molt/molt-fetch-best-practices.md %}#configure-the-source-database-and-connection).
 
 {% if page.name != "migrate-bulk-load.md" %}
 #### Replicator limitations
@@ -37,5 +37,5 @@
 
 - Running DDL on the source or target while replication is in progress can cause replication failures.
 - `TRUNCATE` operations on the source are not captured. Only `INSERT`, `UPDATE`, `UPSERT`, and `DELETE` events are replicated.
-- Changes to virtual columns are not replicated automatically. To migrate these columns, you must define them explicitly with [transformation rules]({% link molt/molt-fetch.md %}#transformations).
+- Changes to virtual columns are not replicated automatically. To migrate these columns, you must define them explicitly with [transformation rules]({% link molt/molt-fetch.md %}#define-transformations).
 {% endif %}
