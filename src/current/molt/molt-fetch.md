@@ -7,43 +7,55 @@ docs_area: migrate
 
 MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link molt/migration-overview.md %}).
 
-MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage, Amazon S3, or Azure Blob Storage), a local file server, or local memory. Once the data is exported, MOLT Fetch loads the data into a target CockroachDB database. For details, refer to [Migration phases](#migration-phases).
+MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage, Amazon S3, or Azure Blob Storage), a local file server, or local memory. Once the data is exported, MOLT Fetch loads the data into a target CockroachDB database.
 
 <!-- ## Terminology
 
-- *Shard*: A portion of a table's data exported concurrently during the data export phase. Tables are divided into shards to enable parallel processing. For details, refer to [Table sharding](#table-sharding).
-- *Continuation token*: An identifier that marks the progress of a fetch task. Used to resume data loading from the point of interruption if a fetch task fails. For details, refer to [Fetch continuation](#fetch-continuation).
-- *Intermediate files*: Temporary data files written to cloud storage or a local file server during the data export phase. These files are used to stage exported data before importing it into CockroachDB during the data import phase. For details, refer to [Data path](#data-path). -->
+- *Shard*: A portion of a table's data exported concurrently during the data export phase. Tables are divided into shards to enable parallel processing. For details, refer to [Table sharding](#shard-tables-for-concurrent-export).
+- *Continuation token*: An identifier that marks the progress of a fetch task. Used to resume data loading from the point of interruption if a fetch task fails. For details, refer to [Fetch continuation](#continue-molt-fetch-after-interruption).
+- *Intermediate files*: Temporary data files written to cloud storage or a local file server during the data export phase. These files are used to stage exported data before importing it into CockroachDB during the data import phase. For details, refer to [Data path](#define-intermediate-storage). -->
 
-## Migration phases
+## How it works
 
-MOLT Fetch operates in distinct phases to move data from source databases to CockroachDB. For details on available modes, refer to [Fetch mode](#fetch-mode).
+MOLT Fetch operates in two distinct phases to move data from the source databases to CockroachDB. The [data export phase](#data-export-phase) moves data to intermediate storage (either cloud storage or a local file server). The [data import phase](#data-import-phase) moves data from that intermediate storage to the CockroachDB cluster. For details on available modes, refer to [Define fetch mode](#define-fetch-mode).
+
+<div style="text-align: center;">
+<img src="{{ 'images/molt/molt-fetch-flow-draft.jpg' | relative_url }}" alt="MOLT Fetch flow draft" style="max-width:100%" />
+</div>
 
 ### Data export phase
 
-MOLT Fetch connects to the source database and exports table data to intermediate storage. Data is written to [cloud storage](#bucket-path) (Amazon S3, Google Cloud Storage, Azure Blob Storage), a [local file server](#local-path), or [directly to CockroachDB memory](#direct-copy). Multiple tables and table shards can be exported simultaneously using [`--table-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) and [`--export-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags), with large tables divided into shards for parallel processing. For details, refer to:
+In this first phase, MOLT Fetch connects to the source database and exports table data to intermediate storage.
 
-- [Fetch mode](#fetch-mode)
-- [Table sharding](#table-sharding)
+- [**Selective data movement**](#select-data-to-migrate): By default, MOLT Fetch moves all data from the --source database to CockroachDB. If instead you want to move a subset of the available data, use the [`--schema-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#schema-filter), [`--table-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#table-filter), and [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#schema-filter) flags.
+
+- [**Table sharding for concurrent export**](#shard-tables-for-concurrent-export): Multiple tables and **table shards** can be exported simultaneously using [`--table-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#table-concurrency) and [`--export-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#export-concurrency), with large tables divided into shards for parallel processing.
+
+- [**Load into intermediate storage**](#define-intermediate-storage): Define whether data is written to cloud storage (Amazon S3, Google Cloud Storage, Azure Blob Storage), a local file server, or directly to CockroachDB memory. Intermediate storage enables [continuation after a MOLT Fetch failure](#continue-molt-fetch-after-interruption) by storing **continuation tokens**.
 
 ### Data import phase  
 
-MOLT Fetch loads the exported data into the target CockroachDB database. The process uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) (faster, tables offline during import) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) (slower, tables remain queryable) to move data. Data files are imported in configurable batches using [`--import-batch-size`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags), and target tables can be automatically created, truncated, or left unchanged based on [`--table-handling`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) settings. For details, refer to:
+MOLT Fetch loads the exported data from intermediate storage to the target CockroachDB database. 
 
-- [Data movement](#data-load-mode)
-- [Target table handling](#target-table-handling)
+- [**`IMPORT INTO` vs. `COPY FROM`**](#import-into-vs-copy-from): This phase uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) (faster, tables offline during import) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) (slower, tables remain queryable) to move data.
 
-## Usage
+- [**Target table handling**](#handle-target-tables): Target tables can be automatically created, truncated, or left unchanged based on [`--table-handling`]({% link molt/molt-fetch-commands-and-flags.md %}#table-handling) settings.
 
-The following sections describe how to use the `molt fetch` [flags]({% link molt/molt-fetch-commands-and-flags.md %}).
+- [**Schema/table transformations**](#define-transformations): Use JSON to map computed columns from source to target, map partitioned tables to a single target table, rename tables on the target database, or rename database schemas.
 
-### Source and target databases
+Refer to [the MOLT Fetch flags]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) to learn how to use any flag for the `molt fetch` command.
+
+## Run MOLT Fetch
+
+The following section describes how to use the [`molt fetch`]({% link molt/molt-fetch-commands-and-flags.md %}#commands) command and how to set its main [flags]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags).
+
+### Specify source and target databases
 
 {{site.data.alerts.callout_success}}
 Follow the recommendations in [Connection security]({% link molt/molt-fetch-best-practices.md %}#connection-security).
 {{site.data.alerts.end}}
 
-`--source` specifies the connection string of the source database.
+[`--source`]({% link molt/molt-fetch-commands-and-flags.md %}#source) specifies the connection string of the source database.
 
 PostgreSQL or CockroachDB connection string:
 
@@ -66,7 +78,7 @@ Oracle connection string:
 --source 'oracle://{username}:{password}@{host}:{port}/{service_name}'
 ~~~
 
-For Oracle Multitenant databases, `--source-cdb` specifies the container database (CDB) connection. `--source` specifies the pluggable database (PDB):
+For Oracle Multitenant databases, [`--source-cdb`]({% link molt/molt-fetch-commands-and-flags.md %}#source-cdb) specifies the container database (CDB) connection. [`--source`]({% link molt/molt-fetch-commands-and-flags.md %}#source) specifies the pluggable database (PDB):
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -74,16 +86,16 @@ For Oracle Multitenant databases, `--source-cdb` specifies the container databas
 --source-cdb 'oracle://{username}:{password}@{host}:{port}/{cdb_service_name}'
 ~~~
 
-`--target` specifies the [CockroachDB connection string]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url):
+[`--target`]({% link molt/molt-fetch-commands-and-flags.md %}#target) specifies the [CockroachDB connection string]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url):
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --target 'postgresql://{username}:{password}@{host}:{port}/{database}'
 ~~~
 
-### Fetch mode
+### Define fetch mode
 
-`--mode` specifies the MOLT Fetch behavior.
+[`--mode`]({% link molt/molt-fetch-commands-and-flags.md %}#mode) specifies the MOLT Fetch behavior.
 
 `data-load` (default) instructs MOLT Fetch to load the source data into CockroachDB:
 
@@ -106,171 +118,13 @@ For Oracle Multitenant databases, `--source-cdb` specifies the container databas
 --mode import-only
 ~~~
 
-### Data load mode
+### Select data to migrate
 
-MOLT Fetch can use either [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to load data into CockroachDB.
+By default, MOLT Fetch moves all data from the [`--source`]({% link molt/molt-fetch-commands-and-flags.md %}#source) database to CockroachDB. Use the following flags to move a subset of data.
 
-By default, MOLT Fetch uses `IMPORT INTO`:
+#### Schema and table selection
 
-- `IMPORT INTO` achieves the highest throughput, but [requires taking the CockroachDB tables **offline**]({% link {{site.current_cloud_version}}/import-into.md %}#considerations) to achieve its import speed. Tables are taken back online once an [import job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs) completes successfully. See [Best practices]({% link molt/molt-fetch-best-practices.md %}).
-- `IMPORT INTO` supports compression using the `--compression` flag, which reduces the amount of storage used.
-
-`--use-copy` configures MOLT Fetch to use `COPY FROM`:
-
-- `COPY FROM` enables your tables to remain online and accessible. However, it is slower than using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}).
-- `COPY FROM` does not support compression.
-
-{{site.data.alerts.callout_info}}
-`COPY FROM` is also used for [direct copy](#direct-copy).
-{{site.data.alerts.end}}
-
-### Table sharding
-
-During the [data export phase](#data-export-phase), MOLT Fetch can divide large tables into multiple shards for concurrent export.
-
-To control the number of shards created per table, use the `--export-concurrency` flag. For example:
-
-{% include_cached copy-clipboard.html %}
-~~~
---export-concurrency=4
-~~~
-
-{{site.data.alerts.callout_success}}
-For performance considerations with concurrency settings, refer to [Best practices]({% link molt/molt-fetch-best-practices.md %}).
-{{site.data.alerts.end}}
-
-Two sharding mechanisms are available:
-
-- **Range-based sharding (default):** Tables are divided based on numerical ranges found in primary key values. Only tables with [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) primary keys can use range-based sharding. Tables with other primary key data types export as a single shard.
-
-- **Stats-based sharding (PostgreSQL only):** Enable with [`--use-stats-based-sharding`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) for PostgreSQL 11+ sources. Tables are divided by analyzing the [`pg_stats`](https://www.postgresql.org/docs/current/view-pg-stats.htm) view to create more evenly distributed shards, up to a maximum of 200 shards. Primary keys of any data type are supported.
-
-Stats-based sharding requires that the user has `SELECT` permissions on source tables and on each table's `pg_stats` view. The latter permission is automatically granted to users that can read the table.
-
-To optimize stats-based sharding, run [`ANALYZE`](https://www.postgresql.org/docs/current/sql-analyze.html) on source tables before migration to ensure that table statistics are up-to-date and shards are evenly distributed. This requires `MAINTAIN` or `OWNER` permissions on the table. You can analyze specific primary key columns or the entire table. For example:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ANALYZE table_name(PK1, PK2, PK3);
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ANALYZE table_name;
-~~~
-
-Large tables may take time to analyze, but `ANALYZE` can run in the background. You can run `ANALYZE` with `MAINTAIN` or `OWNER` privileges during migration preparation, then perform the actual migration with standard `SELECT` privileges. 
-
-{{site.data.alerts.callout_info}}
-Migration without running `ANALYZE` will still work, but shard distribution may be less even.
-{{site.data.alerts.end}}
-
-When using `--use-stats-based-sharding`, monitor the log output for each table you want to migrate.
-
-If stats-based sharding is successful on a table, MOLT logs the following `INFO` message:
-
-~~~
-Stats based sharding enabled for table {table_name}
-~~~
-
-If stats-based sharding fails on a table, MOLT logs the following `WARNING` message and defaults to range-based sharding:
-
-~~~
-Warning: failed to shard table {table_name} using stats based sharding: {reason_for_failure}, falling back to non stats based sharding
-~~~
-
-The number of shards is dependent on the number of distinct values in the first primary key column of the table to be migrated. If this is different from the number of shards requested with `--export-concurrency`, MOLT logs the following `WARNING` and continues with the migration:
-
-~~~
-number of shards formed: {num_shards_formed} is not equal to number of shards requested: {num_shards_requested} for table {table_name}
-~~~
-
-Because stats-based sharding analyzes the entire table, running `--use-stats-based-sharding` with [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) (refer to [Selective data movement](#selective-data-movement)) will cause imbalanced shards to form.
-
-### Data path
-
-MOLT Fetch can move the source data to CockroachDB via [cloud storage](#bucket-path), a [local file server](#local-path), or [directly](#direct-copy) without an intermediate store.
-
-#### Bucket path
-
-{{site.data.alerts.callout_success}}
-Only the path specified in `--bucket-path` is used. Query parameters, such as credentials, are ignored. To authenticate cloud storage, follow the steps in [Secure cloud storage]({% link molt/molt-fetch-best-practices.md %}#cloud-storage-security).
-{{site.data.alerts.end}}
-
-`--bucket-path` instructs MOLT Fetch to write intermediate files to a path within [Google Cloud Storage](https://cloud.google.com/storage/docs/buckets), [Amazon S3](https://aws.amazon.com/s3/), or [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) to which you have the necessary permissions. Use additional [flags]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags), shown in the following examples, to specify authentication or region parameters as required for bucket access.
-
-Connect to a Google Cloud Storage bucket with [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}#google-cloud-storage-implicit) and [assume role]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}#set-up-google-cloud-storage-assume-role):
-
-{% include_cached copy-clipboard.html %}
-~~~
---bucket-path 'gs://migration/data/cockroach'
---assume-role 'user-test@cluster-ephemeral.iam.gserviceaccount.com'
---use-implicit-auth
-~~~
-
-Connect to an Amazon S3 bucket and explicitly specify the `ap_south-1` region: 
-
-{% include_cached copy-clipboard.html %}
-~~~
---bucket-path 's3://migration/data/cockroach'
---import-region 'ap-south-1'
-~~~
-
-{{site.data.alerts.callout_info}}
-When `--import-region` is set, `IMPORT INTO` must be used for [data movement](#data-load-mode).
-{{site.data.alerts.end}}
-
-Connect to an Azure Blob Storage container with [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}?filters=azure#azure-blob-storage-implicit-authentication):
-
-{% include_cached copy-clipboard.html %}
-~~~
---bucket-path 'azure-blob://migration/data/cockroach'
---use-implicit-auth
-~~~
-
-#### Local path
-
-`--local-path` instructs MOLT Fetch to write intermediate files to a path within a [local file server]({% link {{site.current_cloud_version}}/use-a-local-file-server.md %}). `local-path-listen-addr` specifies the address of the local file server. For example:
-
-{% include_cached copy-clipboard.html %}
-~~~
---local-path /migration/data/cockroach
---local-path-listen-addr 'localhost:3000'
-~~~
-
-In some cases, CockroachDB will not be able to use the local address specified by `--local-path-listen-addr`. This will depend on where CockroachDB is deployed, the runtime OS, and the source dialect.
-
-For example, if you are migrating to CockroachDB {{ site.data.products.cloud }}, such that the {{ site.data.products.cloud }} cluster is in a different physical location than the machine running `molt fetch`, then CockroachDB cannot reach an address such as `localhost:3000`. In these situations, use `--local-path-crdb-access-addr` to specify an address for the local file server that is **publicly accessible**. For example:
-
-{% include_cached copy-clipboard.html %}
-~~~
---local-path /migration/data/cockroach
---local-path-listen-addr 'localhost:3000'
---local-path-crdb-access-addr '44.55.66.77:3000'
-~~~
-
-{{site.data.alerts.callout_success}}
-[Cloud storage](#bucket-path) is often preferable to a local file server, which can require considerable disk space.
-{{site.data.alerts.end}}
-
-#### Direct copy
-
-`--direct-copy` specifies that MOLT Fetch should use `COPY FROM` to move the source data directly to CockroachDB without an intermediate store:
-
-- Because the data is held in memory, the machine must have sufficient RAM for the data currently in flight: 
-
-	~~~
-	average size of each row * --row-batch-size * --export-concurrency * --table-concurrency
-	~~~
-
-- Direct copy does not support compression or [continuation](#fetch-continuation).
-- The [`--use-copy`](#data-load-mode) flag is redundant with `--direct-copy`.
-
-### Schema and table selection
-
-By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-databases) database to CockroachDB. Use the following flags to move a subset of data.
-
-`--schema-filter` specifies a range of schema objects to move to CockroachDB, formatted as a POSIX regex string. For example, to move every table in the source database's `migration_schema` schema:
+[`--schema-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#schema-filter) specifies a range of schema objects to move to CockroachDB, formatted as a POSIX regex string. For example, to move every table in the source database's `migration_schema` schema:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -278,19 +132,19 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 ~~~
 
 {{site.data.alerts.callout_info}}
-`--schema-filter` does not apply to MySQL sources because MySQL tables belong directly to the database specified in the connection string, not to a separate schema.
+[`--schema-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#schema-filter) does not apply to MySQL sources because MySQL tables belong directly to the database specified in the connection string, not to a separate schema.
 {{site.data.alerts.end}}
 
-`--table-filter` and `--table-exclusion-filter` specify tables to include and exclude from the migration, respectively, formatted as POSIX regex strings. For example, to move every source table that has "user" in the table name and exclude every source table that has "temp" in the table name:
+[`--table-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#table-filter) and [`--table-exclusion-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#table-exclusion-filter) specify tables to include and exclude from the migration, respectively, formatted as POSIX regex strings. For example, to move every source table that has "user" in the table name and exclude every source table that has "temp" in the table name:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --table-filter '.*user.*' --table-exclusion-filter '.*temp.*'
 ~~~
 
-### Selective data movement
+#### Row-level filtering
 
-Use `--filter-path` to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table. To apply row-level filters during replication, use [MOLT Replicator]({% link molt/molt-replicator.md %}) with userscripts.
+Use [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#filter-path) to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table. To apply row-level filters during replication, use [MOLT Replicator]({% link molt/molt-replicator.md %}) with userscripts.
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -330,7 +184,7 @@ The JSON file should contain one or more entries in `filters`, each with a `reso
 ~~~
 
 {{site.data.alerts.callout_info}}
-If the expression references columns that are not indexed, MOLT Fetch will emit a warning like: `filter expression ‘v > 100' contains column ‘v' which is not indexed. This may lead to performance issues.`
+If the expression references columns that are not indexed, MOLT Fetch will emit a warning like: `filter expression 'v > 100' contains column 'v' which is not indexed. This may lead to performance issues.`
 {{site.data.alerts.end}}
 
 {% comment %}
@@ -356,14 +210,174 @@ api.configureSource("defaultdb.migration_schema", {
 Apply the userscript with the `--userscript` replication flag:
 
 {% include_cached copy-clipboard.html %}
-~~~ 
+~~~
 --userscript 'filter-script.ts'
 ~~~
 {% endcomment %}
 
-### Target table handling
+### Shard tables for concurrent export
 
-`--table-handling` defines how MOLT Fetch loads data on the CockroachDB tables that [match the selection](#schema-and-table-selection).
+During the [data export phase](#data-export-phase), MOLT Fetch can divide large tables into multiple shards for concurrent export.
+
+To control the number of shards created per table, use the [`--export-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#export-concurrency) flag. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~
+--export-concurrency=4
+~~~
+
+{{site.data.alerts.callout_success}}
+For performance considerations with concurrency settings, refer to [Best practices]({% link molt/molt-fetch-best-practices.md %}).
+{{site.data.alerts.end}}
+
+Two sharding mechanisms are available:
+
+- **Range-based sharding (default):** Tables are divided based on numerical ranges found in primary key values. Only tables with [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) primary keys can use range-based sharding. Tables with other primary key data types export as a single shard.
+
+- **Stats-based sharding (PostgreSQL only):** Enable with [`--use-stats-based-sharding`]({% link molt/molt-fetch-commands-and-flags.md %}#use-stats-based-sharding) for PostgreSQL 11+ sources. Tables are divided by analyzing the [`pg_stats`](https://www.postgresql.org/docs/current/view-pg-stats.htm) view to create more evenly distributed shards, up to a maximum of 200 shards. Primary keys of any data type are supported.
+
+Stats-based sharding requires that the user has `SELECT` permissions on source tables and on each table's `pg_stats` view. The latter permission is automatically granted to users that can read the table.
+
+To optimize stats-based sharding, run [`ANALYZE`](https://www.postgresql.org/docs/current/sql-analyze.html) on source tables before migration to ensure that table statistics are up-to-date and shards are evenly distributed. This requires `MAINTAIN` or `OWNER` permissions on the table. You can analyze specific primary key columns or the entire table. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ANALYZE table_name(PK1, PK2, PK3);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ANALYZE table_name;
+~~~
+
+Large tables may take time to analyze, but `ANALYZE` can run in the background. You can run `ANALYZE` with `MAINTAIN` or `OWNER` privileges during migration preparation, then perform the actual migration with standard `SELECT` privileges. 
+
+{{site.data.alerts.callout_info}}
+Migration without running `ANALYZE` will still work, but shard distribution may be less even.
+{{site.data.alerts.end}}
+
+When using [`--use-stats-based-sharding`]({% link molt/molt-fetch-commands-and-flags.md %}#use-stats-based-sharding), monitor the log output for each table you want to migrate.
+
+If stats-based sharding is successful on a table, MOLT logs the following `INFO` message:
+
+~~~
+Stats based sharding enabled for table {table_name}
+~~~
+
+If stats-based sharding fails on a table, MOLT logs the following `WARNING` message and defaults to range-based sharding:
+
+~~~
+Warning: failed to shard table {table_name} using stats based sharding: {reason_for_failure}, falling back to non stats based sharding
+~~~
+
+The number of shards is dependent on the number of distinct values in the first primary key column of the table to be migrated. If this is different from the number of shards requested with [`--export-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#export-concurrency), MOLT logs the following `WARNING` and continues with the migration:
+
+~~~
+number of shards formed: {num_shards_formed} is not equal to number of shards requested: {num_shards_requested} for table {table_name}
+~~~
+
+Because stats-based sharding analyzes the entire table, running [`--use-stats-based-sharding`]({% link molt/molt-fetch-commands-and-flags.md %}#use-stats-based-sharding) with [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#filter-path) (refer to [Selective data movement](#select-data-to-migrate)) will cause imbalanced shards to form.
+
+### Define intermediate storage
+
+MOLT Fetch can move the source data to CockroachDB via [cloud storage](#bucket-path), a [local file server](#local-path), or [directly](#direct-copy) without an intermediate store.
+
+#### Bucket path
+
+{{site.data.alerts.callout_success}}
+Only the path specified in [`--bucket-path`]({% link molt/molt-fetch-commands-and-flags.md %}#bucket-path) is used. Query parameters, such as credentials, are ignored. To authenticate cloud storage, follow the steps in [Secure cloud storage]({% link molt/molt-fetch-best-practices.md %}#cloud-storage-security).
+{{site.data.alerts.end}}
+
+[`--bucket-path`]({% link molt/molt-fetch-commands-and-flags.md %}#bucket-path) instructs MOLT Fetch to write intermediate files to a path within [Google Cloud Storage](https://cloud.google.com/storage/docs/buckets), [Amazon S3](https://aws.amazon.com/s3/), or [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) to which you have the necessary permissions. Use additional [flags]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags), shown in the following examples, to specify authentication or region parameters as required for bucket access.
+
+Connect to a Google Cloud Storage bucket with [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}#google-cloud-storage-implicit) and [assume role]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}#set-up-google-cloud-storage-assume-role):
+
+{% include_cached copy-clipboard.html %}
+~~~
+--bucket-path 'gs://migration/data/cockroach'
+--assume-role 'user-test@cluster-ephemeral.iam.gserviceaccount.com'
+--use-implicit-auth
+~~~
+
+Connect to an Amazon S3 bucket and explicitly specify the `ap_south-1` region: 
+
+{% include_cached copy-clipboard.html %}
+~~~
+--bucket-path 's3://migration/data/cockroach'
+--import-region 'ap-south-1'
+~~~
+
+{{site.data.alerts.callout_info}}
+When [`--import-region`]({% link molt/molt-fetch-commands-and-flags.md %}#import-region) is set, `IMPORT INTO` must be used for [data movement](#import-into-vs-copy-from).
+{{site.data.alerts.end}}
+
+Connect to an Azure Blob Storage container with [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}?filters=azure#azure-blob-storage-implicit-authentication):
+
+{% include_cached copy-clipboard.html %}
+~~~
+--bucket-path 'azure-blob://migration/data/cockroach'
+--use-implicit-auth
+~~~
+
+#### Local path
+
+[`--local-path`]({% link molt/molt-fetch-commands-and-flags.md %}#local-path) instructs MOLT Fetch to write intermediate files to a path within a [local file server]({% link {{site.current_cloud_version}}/use-a-local-file-server.md %}). [`--local-path-listen-addr`]({% link molt/molt-fetch-commands-and-flags.md %}#local-path-listen-addr) specifies the address of the local file server. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~
+--local-path /migration/data/cockroach
+--local-path-listen-addr 'localhost:3000'
+~~~
+
+In some cases, CockroachDB will not be able to use the local address specified by [`--local-path-listen-addr`]({% link molt/molt-fetch-commands-and-flags.md %}#local-path-listen-addr). This will depend on where CockroachDB is deployed, the runtime OS, and the source dialect.
+
+For example, if you are migrating to CockroachDB {{ site.data.products.cloud }}, such that the {{ site.data.products.cloud }} cluster is in a different physical location than the machine running `molt fetch`, then CockroachDB cannot reach an address such as `localhost:3000`. In these situations, use [`--local-path-crdb-access-addr`]({% link molt/molt-fetch-commands-and-flags.md %}#local-path-crdb-access-addr) to specify an address for the local file server that is **publicly accessible**. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~
+--local-path /migration/data/cockroach
+--local-path-listen-addr 'localhost:3000'
+--local-path-crdb-access-addr '44.55.66.77:3000'
+~~~
+
+{{site.data.alerts.callout_success}}
+[Cloud storage](#bucket-path) is often preferable to a local file server, which can require considerable disk space.
+{{site.data.alerts.end}}
+
+#### Direct copy
+
+[`--direct-copy`]({% link molt/molt-fetch-commands-and-flags.md %}#direct-copy) specifies that MOLT Fetch should use `COPY FROM` to move the source data directly to CockroachDB without an intermediate store:
+
+- Because the data is held in memory, the machine must have sufficient RAM for the data currently in flight:
+
+	~~~
+	average size of each row * --row-batch-size * --export-concurrency * --table-concurrency
+	~~~
+
+- Direct copy does not support compression or [continuation](#continue-molt-fetch-after-interruption).
+- The [`--use-copy`](#import-into-vs-copy-from) flag is redundant with [`--direct-copy`]({% link molt/molt-fetch-commands-and-flags.md %}#direct-copy).
+
+### `IMPORT INTO` vs. `COPY FROM`
+
+MOLT Fetch can use either [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to load data into CockroachDB.
+
+By default, MOLT Fetch uses `IMPORT INTO`:
+
+- `IMPORT INTO` achieves the highest throughput, but [requires taking the CockroachDB tables **offline**]({% link {{site.current_cloud_version}}/import-into.md %}#considerations) to achieve its import speed. Tables are taken back online once an [import job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs) completes successfully. See [Best practices]({% link molt/molt-fetch-best-practices.md %}).
+- `IMPORT INTO` supports compression using the [`--compression`]({% link molt/molt-fetch-commands-and-flags.md %}#compression) flag, which reduces the amount of storage used.
+
+[`--use-copy`]({% link molt/molt-fetch-commands-and-flags.md %}#use-copy) configures MOLT Fetch to use `COPY FROM`:
+
+- `COPY FROM` enables your tables to remain online and accessible. However, it is slower than using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}).
+- `COPY FROM` does not support compression.
+
+{{site.data.alerts.callout_info}}
+`COPY FROM` is also used for [direct copy](#direct-copy).
+{{site.data.alerts.end}}
+
+### Handle target tables
+
+[`--table-handling`]({% link molt/molt-fetch-commands-and-flags.md %}#table-handling) defines how MOLT Fetch loads data on the CockroachDB tables that [match the selection](#schema-and-table-selection).
 
 To load the data without changing the existing data in the tables, use `none`:
 
@@ -390,21 +404,21 @@ When using the `drop-on-target-and-recreate` option, MOLT Fetch creates a new Co
 
 #### Mismatch handling
 
-If either [`none`](#target-table-handling) or [`truncate-if-exists`](#target-table-handling) is set, `molt fetch` loads data into the existing tables on the target CockroachDB database. If the target schema mismatches the source schema, `molt fetch` will exit early in certain cases, and will need to be re-run from the beginning. For details, refer to [Fetch exits early due to mismatches]({% link molt/molt-fetch-troubleshooting.md %}#fetch-exits-early-due-to-mismatches).
+If either [`none`](#handle-target-tables) or [`truncate-if-exists`](#handle-target-tables) is set, `molt fetch` loads data into the existing tables on the target CockroachDB database. If the target schema mismatches the source schema, `molt fetch` will exit early in certain cases, and will need to be re-run from the beginning. For details, refer to [Fetch exits early due to mismatches]({% link molt/molt-fetch-troubleshooting.md %}#fetch-exits-early-due-to-mismatches).
 
 {{site.data.alerts.callout_info}}
-This does not apply when [`drop-on-target-and-recreate`](#target-table-handling) is specified, since this option automatically creates a compatible CockroachDB schema.
+This does not apply when [`drop-on-target-and-recreate`](#handle-target-tables) is specified, since this option automatically creates a compatible CockroachDB schema.
 {{site.data.alerts.end}}
 
 #### Skip primary key matching
 
-`--skip-pk-check` removes the [requirement that source and target tables share matching primary keys]({% link molt/molt-fetch-troubleshooting.md %}#fetch-exits-early-due-to-mismatches) for data load. When this flag is set:
+[`--skip-pk-check`]({% link molt/molt-fetch-commands-and-flags.md %}#skip-pk-check) removes the [requirement that source and target tables share matching primary keys]({% link molt/molt-fetch-troubleshooting.md %}#fetch-exits-early-due-to-mismatches) for data load. When this flag is set:
 
 - The data load proceeds even if the source or target table lacks a primary key, or if their primary key columns do not match.
-- [Table sharding](#table-sharding) is disabled. Each table is exported in a single batch within one shard, bypassing `--export-concurrency` and `--row-batch-size`. As a result, memory usage and execution time may increase due to full table scans.
+- [Table sharding](#shard-tables-for-concurrent-export) is disabled. Each table is exported in a single batch within one shard, bypassing [`--export-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#export-concurrency) and [`--row-batch-size`]({% link molt/molt-fetch-commands-and-flags.md %}#row-batch-size). As a result, memory usage and execution time may increase due to full table scans.
 - If the source table contains duplicate rows but the target has [`PRIMARY KEY`]({% link {{ site.current_cloud_version }}/primary-key.md %}) or [`UNIQUE`]({% link {{ site.current_cloud_version }}/unique.md %}) constraints, duplicate rows are deduplicated during import.
 
-When `--skip-pk-check` is set, all tables are treated as if they lack a primary key, and are thus exported in a single unsharded batch. To avoid performance issues, use this flag with `--table-filter` to target only tables **without** a primary key.
+When [`--skip-pk-check`]({% link molt/molt-fetch-commands-and-flags.md %}#skip-pk-check) is set, all tables are treated as if they lack a primary key, and are thus exported in a single unsharded batch. To avoid performance issues, use this flag with [`--table-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#table-filter) to target only tables **without** a primary key.
 
 For example:
 
@@ -416,7 +430,7 @@ molt fetch \
   --skip-pk-check
 ~~~
 
-Example log output when `--skip-pk-check` is enabled:
+Example log output when [`--skip-pk-check`]({% link molt/molt-fetch-commands-and-flags.md %}#skip-pk-check) is enabled:
 
 ~~~json
 {"level":"info","message":"sharding is skipped for table public.nopktbl - flag skip-pk-check is specified and thus no PK for source table is specified"}
@@ -424,65 +438,9 @@ Example log output when `--skip-pk-check` is enabled:
 
 #### Type mapping
 
-If [`drop-on-target-and-recreate`](#target-table-handling) is set, MOLT Fetch automatically creates a CockroachDB schema that is compatible with the source data. The column types are determined as follows:
+If [`drop-on-target-and-recreate`](#handle-target-tables) is set, MOLT Fetch automatically creates a CockroachDB schema that is compatible with the source data. The column types are determined by [MOLT's default type mappings]({% link molt/molt-type-mapping.md %}).
 
-- PostgreSQL types are mapped to existing CockroachDB [types]({% link {{site.current_cloud_version}}/data-types.md %}) that have the same [`OID`]({% link {{site.current_cloud_version}}/oid.md %}).
-- The following MySQL types are mapped to corresponding CockroachDB types:
-
-	|                      MySQL type                     |                                      CockroachDB type                                     |                            Notes                             |
-	|-----------------------------------------------------|-------------------------------------------------------------------------------------------|--------------------------------------------------------------|
-	| `CHAR`, `CHARACTER`, `VARCHAR`, `NCHAR`, `NVARCHAR` | [`VARCHAR`]({% link {{site.current_cloud_version}}/string.md %})                          | Varying-length string; raises warning if BYTE semantics used |
-	| `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT`        | [`STRING`]({% link {{site.current_cloud_version}}/string.md %})                           | Unlimited-length string                                      |
-	| `GEOMETRY`                                          | [`GEOMETRY`]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#geometry) | Spatial type (PostGIS-style)                                 |
-	| `LINESTRING`                                        | [`LINESTRING`]({% link {{site.current_cloud_version}}/linestring.md %})                   | Spatial type (PostGIS-style)                                 |
-	| `POINT`                                             | [`POINT`]({% link {{site.current_cloud_version}}/point.md %})                             | Spatial type (PostGIS-style)                                 |
-	| `POLYGON`                                           | [`POLYGON`]({% link {{site.current_cloud_version}}/polygon.md %})                         | Spatial type (PostGIS-style)                                 |
-	| `MULTIPOINT`                                        | [`MULTIPOINT`]({% link {{site.current_cloud_version}}/multipoint.md %})                   | Spatial type (PostGIS-style)                                 |
-	| `MULTILINESTRING`                                   | [`MULTILINESTRING`]({% link {{site.current_cloud_version}}/multilinestring.md %})         | Spatial type (PostGIS-style)                                 |
-	| `MULTIPOLYGON`                                      | [`MULTIPOLYGON`]({% link {{site.current_cloud_version}}/multipolygon.md %})               | Spatial type (PostGIS-style)                                 |
-	| `GEOMETRYCOLLECTION`, `GEOMCOLLECTION`              | [`GEOMETRYCOLLECTION`]({% link {{site.current_cloud_version}}/geometrycollection.md %})   | Spatial type (PostGIS-style)                                 |
-	| `JSON`                                              | [`JSONB`]({% link {{site.current_cloud_version}}/jsonb.md %})                             | CRDB's native JSON format                                    |
-	| `TINYINT`, `INT1`                                   | [`INT2`]({% link {{site.current_cloud_version}}/int.md %})                                | 2-byte integer                                               |
-	| `BLOB`                                              | [`BYTES`]({% link {{site.current_cloud_version}}/bytes.md %})                             | Binary data                                                  |
-	| `SMALLINT`, `INT2`                                  | [`INT2`]({% link {{site.current_cloud_version}}/int.md %})                                | 2-byte integer                                               |
-	| `MEDIUMINT`, `INT`, `INTEGER`, `INT4`               | [`INT4`]({% link {{site.current_cloud_version}}/int.md %})                                | 4-byte integer                                               |
-	| `BIGINT`, `INT8`                                    | [`INT`]({% link {{site.current_cloud_version}}/int.md %})                                 | 8-byte integer                                               |
-	| `FLOAT`                                             | [`FLOAT4`]({% link {{site.current_cloud_version}}/float.md %})                            | 32-bit float                                                 |
-	| `DOUBLE`                                            | [`FLOAT`]({% link {{site.current_cloud_version}}/float.md %})                             | 64-bit float                                                 |
-	| `DECIMAL`, `NUMERIC`, `REAL`                        | [`DECIMAL`]({% link {{site.current_cloud_version}}/decimal.md %})                         | Validates scale ≤ precision; warns if precision > 19         |
-	| `BINARY`, `VARBINARY`                               | [`BYTES`]({% link {{site.current_cloud_version}}/bytes.md %})                             | Binary data                                                  |
-	| `DATETIME`                                          | [`TIMESTAMP`]({% link {{site.current_cloud_version}}/timestamp.md %})                     | Date and time (no time zone)                                 |
-	| `TIMESTAMP`                                         | [`TIMESTAMPTZ`]({% link {{site.current_cloud_version}}/timestamp.md %})                   | Date and time with time zone                                 |
-	| `TIME`                                              | [`TIME`]({% link {{site.current_cloud_version}}/time.md %})                               | Time of day (no date)                                        |
-	| `BIT`                                               | [`VARBIT`]({% link {{site.current_cloud_version}}/bit.md %})                              | Variable-length bit array                                    |
-	| `DATE`                                              | [`DATE`]({% link {{site.current_cloud_version}}/date.md %})                               | Date only (no time)                                          |
-	| `TINYBLOB`, `MEDIUMBLOB`, `LONGBLOB`                | [`BYTES`]({% link {{site.current_cloud_version}}/bytes.md %})                             | Binary data                                                  |
-	| `BOOL`, `BOOLEAN`                                   | [`BOOL`]({% link {{site.current_cloud_version}}/bool.md %})                               | Boolean                                                      |
-
-- The following Oracle types are mapped to CockroachDB types:
-
-    |             Oracle type(s)            |                                                                 CockroachDB type                                                                 |                                  Notes                                  |
-    |---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
-    | `NCHAR`, `CHAR`, `CHARACTER`          | [`CHAR`]({% link {{site.current_cloud_version}}/string.md %})(n) or [`CHAR`]({% link {{site.current_cloud_version}}/string.md %})                | Fixed-length character; falls back to unbounded if length not specified |
-    | `VARCHAR`, `VARCHAR2`, `NVARCHAR2`    | [`VARCHAR`]({% link {{site.current_cloud_version}}/string.md %})(n) or [`VARCHAR`]({% link {{site.current_cloud_version}}/string.md %})          | Varying-length string; raises warning if BYTE semantics used            |
-    | `STRING`                              | [`STRING`]({% link {{site.current_cloud_version}}/string.md %})                                                                                  | Unlimited-length string                                                 |
-    | `SMALLINT`                            | [`INT2`]({% link {{site.current_cloud_version}}/int.md %})                                                                                       | 2-byte integer                                                          |
-    | `INTEGER`, `INT`, `SIMPLE_INTEGER`    | [`INT4`]({% link {{site.current_cloud_version}}/int.md %})                                                                                       | 4-byte integer                                                          |
-    | `LONG`                                | [`INT8`]({% link {{site.current_cloud_version}}/int.md %})                                                                                       | 8-byte integer                                                          |
-    | `FLOAT`, `BINARY_FLOAT`, `REAL`       | [`FLOAT4`]({% link {{site.current_cloud_version}}/float.md %})                                                                                   | 32-bit float                                                            |
-    | `DOUBLE`, `BINARY_DOUBLE`             | [`FLOAT8`]({% link {{site.current_cloud_version}}/float.md %})                                                                                   | 64-bit float                                                            |
-    | `DEC`, `NUMBER`, `DECIMAL`, `NUMERIC` | [`DECIMAL`]({% link {{site.current_cloud_version}}/decimal.md %})(p, s) or [`DECIMAL`]({% link {{site.current_cloud_version}}/decimal.md %})     | Validates scale ≤ precision; warns if precision > 19                    |
-    | `DATE`                                | [`DATE`]({% link {{site.current_cloud_version}}/date.md %})                                                                                      | Date only (no time)                                                     |
-    | `BLOB`, `RAW`, `LONG RAW`             | [`BYTES`]({% link {{site.current_cloud_version}}/bytes.md %})                                                                                    | Binary data                                                             |
-    | `JSON`                                | [`JSONB`]({% link {{site.current_cloud_version}}/jsonb.md %})                                                                                    | CRDB's native JSON format                                               |
-    | `CLOB`, `NCLOB`                       | [`STRING`]({% link {{site.current_cloud_version}}/string.md %})                                                                                  | Treated as large text                                                   |
-    | `BOOLEAN`                             | [`BOOL`]({% link {{site.current_cloud_version}}/bool.md %})                                                                                      | Boolean                                                                 |
-    | `TIMESTAMP`                           | [`TIMESTAMP`]({% link {{site.current_cloud_version}}/timestamp.md %}) or [`TIMESTAMPTZ`]({% link {{site.current_cloud_version}}/timestamp.md %}) | If `WITH TIME ZONE` → `TIMESTAMPTZ`, else `TIMESTAMP`                   |
-    | `ROWID`, `UROWID`                     | [`STRING`]({% link {{site.current_cloud_version}}/string.md %})                                                                                  | Treated as opaque identifier                                            |
-    | `SDO_GEOMETRY`                        | [`GEOMETRY`]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#geometry)                                                        | Spatial type (PostGIS-style)                                            |
-    | `XMLTYPE`                             | [`STRING`]({% link {{site.current_cloud_version}}/string.md %})                                                                                  | Stored as text                                                          |
-
-- To override the default mappings for automatic schema creation, you can map source to target CockroachDB types explicitly. These are defined in the JSON file indicated by the `--type-map-file` flag. The allowable custom mappings are valid CockroachDB aliases, casts, and the following mappings specific to MOLT Fetch and [Verify]({% link molt/molt-verify.md %}):
+- To override the default mappings for automatic schema creation, you can map source to target CockroachDB types explicitly. These are defined in the JSON file indicated by the [`--type-map-file`]({% link molt/molt-fetch-commands-and-flags.md %}#type-map-file) flag. The allowable custom mappings are valid CockroachDB aliases, casts, and the following mappings specific to MOLT Fetch and [Verify]({% link molt/molt-verify.md %}):
 
 	- [`TIMESTAMP`]({% link {{site.current_cloud_version}}/timestamp.md %}) <> [`TIMESTAMPTZ`]({% link {{site.current_cloud_version}}/timestamp.md %})
 	- [`VARCHAR`]({% link {{site.current_cloud_version}}/string.md %}) <> [`UUID`]({% link {{site.current_cloud_version}}/uuid.md %})
@@ -492,7 +450,7 @@ If [`drop-on-target-and-recreate`](#target-table-handling) is set, MOLT Fetch au
 	- [`JSONB`]({% link {{site.current_cloud_version}}/jsonb.md %}) <> [`TEXT`]({% link {{site.current_cloud_version}}/string.md %})
 	- [`INET`]({% link {{site.current_cloud_version}}/inet.md %}) <> [`TEXT`]({% link {{site.current_cloud_version}}/string.md %})
 
-`--type-map-file` specifies the path to the JSON file containing the explicit type mappings. For example:
+[`--type-map-file`]({% link molt/molt-fetch-commands-and-flags.md %}#type-map-file) specifies the path to the JSON file containing the explicit type mappings. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -526,7 +484,7 @@ The following JSON example defines two type mappings:
 - `source_type` specifies the source type to be mapped.
 - `crdb_type` specifies the target CockroachDB [type]({% link {{ site.current_cloud_version }}/data-types.md %}) to be mapped.
 
-### Transformations
+### Define transformations
 
 You can define transformation rules to be performed on the target database during the fetch task. These can be used to:
 
@@ -535,7 +493,7 @@ You can define transformation rules to be performed on the target database durin
 - Rename tables on the target database.
 - Rename database schemas.
 
-Transformation rules are defined in the JSON file indicated by the `--transformations-file` flag. For example:
+Transformation rules are defined in the JSON file indicated by the [`--transformations-file`]({% link molt/molt-fetch-commands-and-flags.md %}#transformations-file) flag. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -621,8 +579,8 @@ The following JSON example defines three transformation rules: rule `1` [maps co
 
 		For n-to-1 mappings:
 
-		- Use [`--use-copy`](#data-load-mode) or [`--direct-copy`](#direct-copy) for data movement.
-		- Manually create the target table. Do not use [`--table-handling drop-on-target-and-recreate`](#target-table-handling).
+		- Use [`--use-copy`](#import-into-vs-copy-from) or [`--direct-copy`](#direct-copy) for data movement.
+		- Manually create the target table. Do not use [`--table-handling drop-on-target-and-recreate`](#handle-target-tables).
 
 [Example rule `2`](#transformation-rules-example) maps all table names with prefix `charges_part` to a single `charges` table on CockroachDB (an n-to-1 mapping). This assumes that all matching `charges_part.*` tables have the same table definition:
 
@@ -667,7 +625,7 @@ Each rule is applied in the order it is defined. If two rules overlap, the later
 
 To verify that the logging shows that the computed columns are being created:
 
-When running `molt fetch`, set `--logging debug` and look for `ALTER TABLE ... ADD COLUMN` statements with the `STORED` or `VIRTUAL` keywords in the log output:
+When running `molt fetch`, set [`--logging`]({% link molt/molt-fetch-commands-and-flags.md %}#logging) `debug` and look for `ALTER TABLE ... ADD COLUMN` statements with the `STORED` or `VIRTUAL` keywords in the log output:
 
 ~~~ json
 {"level":"debug","time":"2024-07-22T12:01:51-04:00","message":"running: ALTER TABLE IF EXISTS public.computed ADD COLUMN computed_col INT8 NOT NULL AS ((col1 + col2)) STORED"}
@@ -689,7 +647,7 @@ SHOW CREATE TABLE computed;
              | )
 ~~~
 
-### Fetch continuation
+## Continue MOLT Fetch after interruption
 
 If MOLT Fetch fails while loading data into CockroachDB from intermediate files, it exits with an error message, fetch ID, and [continuation token](#list-active-continuation-tokens) for each table that failed to load on the target database. You can use this information to continue the task from the *continuation point* where it was interrupted.
 
@@ -702,14 +660,14 @@ Continuation is only possible under the following conditions:
 Only one fetch ID and set of continuation tokens, each token corresponding to a table, are active at any time. See [List active continuation tokens](#list-active-continuation-tokens).
 {{site.data.alerts.end}}
 
-To retry all data starting from the continuation point, reissue the `molt fetch` command and include the `--fetch-id`.
+To retry all data starting from the continuation point, reissue the `molt fetch` command and include the [`--fetch-id`]({% link molt/molt-fetch-commands-and-flags.md %}#fetch-id).
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 ~~~
 
-To retry a specific table that failed, include both `--fetch-id` and `--continuation-token`. The latter flag specifies a token string that corresponds to a specific table on the source database. A continuation token is written in the `molt fetch` output for each failed table. If the fetch task encounters a subsequent error, it generates a new token for each failed table. See [List active continuation tokens](#list-active-continuation-tokens).
+To retry a specific table that failed, include both [`--fetch-id`]({% link molt/molt-fetch-commands-and-flags.md %}#fetch-id) and [`--continuation-token`]({% link molt/molt-fetch-commands-and-flags.md %}#continuation-token). The latter flag specifies a token string that corresponds to a specific table on the source database. A continuation token is written in the `molt fetch` output for each failed table. If the fetch task encounters a subsequent error, it generates a new token for each failed table. See [List active continuation tokens](#list-active-continuation-tokens).
 
 {{site.data.alerts.callout_info}}
 This will retry only the table that corresponds to the continuation token. If the fetch task succeeds, there may still be source data that is not yet loaded into CockroachDB.
@@ -721,7 +679,7 @@ This will retry only the table that corresponds to the continuation token. If th
 --continuation-token 011762e5-6f70-43f8-8e15-58b4de10a007
 ~~~
 
-To retry all data starting from a specific file, include both `--fetch-id` and `--continuation-file-name`. The latter flag specifies the filename of an intermediate file in [cloud or local storage](#data-path). All filenames are prepended with `part_` and have the `.csv.gz` or `.csv` extension, depending on compression type (gzip by default). For example: 
+To retry all data starting from a specific file, include both [`--fetch-id`]({% link molt/molt-fetch-commands-and-flags.md %}#fetch-id) and [`--continuation-file-name`]({% link molt/molt-fetch-commands-and-flags.md %}#continuation-file-name). The latter flag specifies the filename of an intermediate file in [cloud or local storage](#define-intermediate-storage). All filenames are prepended with `part_` and have the `.csv.gz` or `.csv` extension, depending on compression type (gzip by default). For example: 
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -733,9 +691,9 @@ To retry all data starting from a specific file, include both `--fetch-id` and `
 Continuation is not possible when using [direct copy](#direct-copy).
 {{site.data.alerts.end}}
 
-#### List active continuation tokens
+### List active continuation tokens
 
-To view all active continuation tokens, issue a `molt fetch tokens list` command along with `--conn-string`, which specifies the [connection string]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url) for the target CockroachDB database. For example:
+To view all active continuation tokens, issue a `molt fetch tokens list` command along with [`--conn-string`]({% link molt/molt-fetch-commands-and-flags.md %}#conn-string), which specifies the [connection string]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url) for the target CockroachDB database. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -752,9 +710,9 @@ molt fetch tokens list \
 Continuation Tokens.
 ~~~
 
-### CDC cursor
+## Enable replication
 
-A change data capture (CDC) cursor is written to the output as `cdc_cursor` at the beginning and end of the fetch task.
+A change data capture (CDC) cursor is written to the MOLT Fetch output as `cdc_cursor` at the beginning and end of the fetch task.
 
 For MySQL:
 
@@ -784,7 +742,7 @@ When migrating data to CockroachDB in a bulk load (without utilizing [continuous
     <button class="filter-button" data-scope="oracle">Oracle</button>
 </div>
 
-Specify the source and target database connections. For connection string formats, refer to [Source and target databases](#source-and-target-databases).
+Specify the source and target database connections. For connection string formats, refer to [Source and target databases](#specify-source-and-target-databases).
 
 <section class="filter-content" markdown="1" data-scope="postgres mysql">
 {% include_cached copy-clipboard.html %}
@@ -795,7 +753,7 @@ Specify the source and target database connections. For connection string format
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-For Oracle Multitenant (CDB/PDB) sources, also include `--source-cdb` to specify the container database (CDB) connection string.
+For Oracle Multitenant (CDB/PDB) sources, also include [`--source-cdb`]({% link molt/molt-fetch-commands-and-flags.md %}#source-cdb) to specify the container database (CDB) connection string.
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -838,7 +796,7 @@ Optionally, filter the source data to migrate. By default, all schemas and table
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-For Oracle sources, `--schema-filter` is case-insensitive. You can use either lowercase or uppercase:
+For Oracle sources, [`--schema-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#schema-filter) is case-insensitive. You can use either lowercase or uppercase:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -848,7 +806,7 @@ For Oracle sources, `--schema-filter` is case-insensitive. You can use either lo
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-For MySQL sources, omit `--schema-filter` because MySQL tables belong directly to the database specified in the connection string, not to a separate schema. If needed, use `--table-filter` to select specific tables:
+For MySQL sources, omit [`--schema-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#schema-filter) because MySQL tables belong directly to the database specified in the connection string, not to a separate schema. If needed, use [`--table-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#table-filter) to select specific tables:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -856,14 +814,14 @@ For MySQL sources, omit `--schema-filter` because MySQL tables belong directly t
 ~~~
 </section>
 
-Specify how to handle target tables. By default, `--table-handling` is set to `none`, which loads data without changing existing data in the tables. For details, refer to [Target table handling](#target-table-handling):
+Specify how to handle target tables. By default, [`--table-handling`]({% link molt/molt-fetch-commands-and-flags.md %}#table-handling) is set to `none`, which loads data without changing existing data in the tables. For details, refer to [Target table handling](#handle-target-tables):
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --table-handling truncate-if-exists
 ~~~
 
-When performing a bulk load without subsequent replication, use `--ignore-replication-check` to skip querying for replication checkpoints (such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle). This is appropriate when:
+When performing a bulk load without subsequent replication, use [`--ignore-replication-check`]({% link molt/molt-fetch-commands-and-flags.md %}#ignore-replication-check) to skip querying for replication checkpoints (such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle). This is appropriate when:
 
 - Performing a one-time data migration with no plan to replicate ongoing changes.
 - Exporting data from a read replica where replication checkpoints are unavailable.
@@ -873,7 +831,7 @@ When performing a bulk load without subsequent replication, use `--ignore-replic
 --ignore-replication-check
 ~~~
 
-At minimum, the `molt fetch` command should include the source, target, data path, and `--ignore-replication-check` flags:
+At minimum, the `molt fetch` command should include the source, target, data path, and [`--ignore-replication-check`]({% link molt/molt-fetch-commands-and-flags.md %}#ignore-replication-check) flags:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -893,7 +851,7 @@ For detailed walkthroughs of migrations that use `molt fetch` in this way, refer
 
 ### Initial bulk load (before replication)
 
-In a migration that utilizes [continuous replication]({% link  molt/migration-considerations-replication.md %}), perform an initial data load before [setting up ongoing replication with MOLT Replicator]({% link molt/molt-replicator.md %}#forward-replication-after-initial-load). Run the `molt fetch` command without `--ignore-replication-check`, as shown below:
+In a migration that utilizes [continuous replication]({% link  molt/migration-considerations-replication.md %}), perform an initial data load before [setting up ongoing replication with MOLT Replicator]({% link molt/molt-replicator.md %}#forward-replication-after-initial-load). Run the `molt fetch` command without [`--ignore-replication-check`]({% link molt/molt-fetch-commands-and-flags.md %}#ignore-replication-check), as shown below:
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>
@@ -903,11 +861,11 @@ In a migration that utilizes [continuous replication]({% link  molt/migration-co
 
 The workflow is the same as [Bulk data load](#bulk-data-load), except:
 
-- Exclude `--ignore-replication-check`. MOLT Fetch will query and record replication checkpoints.
+- Exclude [`--ignore-replication-check`]({% link molt/molt-fetch-commands-and-flags.md %}#ignore-replication-check). MOLT Fetch will query and record replication checkpoints.
 <section class="filter-content" markdown="1" data-scope="postgres">
 - You must include `--pglogical-replication-slot-name` and `--pglogical-publication-and-slot-drop-and-recreate` to automatically create the publication and replication slot during the data load.
 </section>
-- After the data load completes, check the [CDC cursor](#cdc-cursor) in the output for the checkpoint value to use with MOLT Replicator.
+- After the data load completes, check the [CDC cursor](#enable-replication) in the output for the checkpoint value to use with MOLT Replicator.
 
 At minimum, the `molt fetch` command should include the source, target, and data path flags:
 
@@ -964,7 +922,7 @@ For detailed walkthroughs of migrations that use `molt fetch` in this way, refer
 
 - [MOLT Fetch Installation]({% link molt/molt-fetch-installation.md %})
 - [MOLT Fetch Commands and Flags]({% link molt/molt-fetch-commands-and-flags.md %})
-- [MOLT Fetch Monitoring]({% link molt/molt-fetch-monitoring.md %})
+- [MOLT Fetch Metrics]({% link molt/molt-fetch-monitoring.md %})
 - [MOLT Fetch Best Practices]({% link molt/molt-fetch-best-practices.md %})
 - [MOLT Fetch Troubleshooting]({% link molt/molt-fetch-troubleshooting.md %})
 - [Migration Overview]({% link molt/migration-overview.md %})

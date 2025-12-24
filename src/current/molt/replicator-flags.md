@@ -18,7 +18,7 @@ MOLT Replicator provides the following commands:
 | `make-jwt`       | Generate JWT tokens for authorizing changefeed connections in failback scenarios. Supports signing tokens with RSA or EC keys, or generating claims for external JWT providers. For details, refer to [JWT authentication]({% link molt/molt-replicator-best-practices.md %}#jwt-authentication). |
 | `version`        | Display version information and Go module dependencies with checksums. For details, refer to [Supply chain security]({% link molt/molt-replicator-best-practices.md %}#supply-chain-security).                                                                                                    |
 
-For command-specific flags and examples, refer to MOLT Replicator [Usage]({% link molt/molt-replicator.md %}#usage) and [Common uses]({% link molt/molt-replicator.md %}#common-uses).
+For command-specific flags and examples, refer to MOLT Replicator's [How it works]({% link molt/molt-replicator.md %}#how-it-works) and [Common uses]({% link molt/molt-replicator.md %}#common-uses) documentation.
 
 ## Flags
 

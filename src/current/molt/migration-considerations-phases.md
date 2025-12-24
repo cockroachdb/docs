@@ -73,7 +73,7 @@ Phased migrations require the ability to route specific tenants, services, or re
 
 Phased and unphased migrations are both supported natively by MOLT.
 
-By default, [MOLT Fetch]({% link molt/molt-fetch.md %}) moves all data from the source database to CockroachDB. However, you can use the `--schema-filter`, `--table-filter`, and `--filter-path` flags to selective migrate data from the source to the target. Learn more about [schema and table selection]({% link molt/molt-fetch.md %}#schema-and-table-selection) and [selective data movement]({% link molt/molt-fetch.md %}#selective-data-movement), both of which can enable a phased migration.
+By default, [MOLT Fetch]({% link molt/molt-fetch.md %}) moves all data from the source database to CockroachDB. However, you can use the [`--schema-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#schema-filter), [`--table-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#table-filter), and [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#filter-path) flags to selective migrate data from the source to the target. Learn more about [schema and table selection]({% link molt/molt-fetch.md %}#schema-and-table-selection) and [selective data movement]({% link molt/molt-fetch.md %}#select-data-to-migrate), both of which can enable a phased migration.
 
 Similarly, you can use [MOLT Verify]({% link molt/molt-verify.md %})'s `--schema-filter` and `--table-filter` flags to run validation checks on subsets of the data in your source and target databases. In a phased migration, you will likely want to verify data at the end of each migration phase, rather than at the end of the entire migration.
 

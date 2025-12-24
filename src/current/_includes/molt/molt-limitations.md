@@ -37,5 +37,5 @@
 
 - Running DDL on the source or target while replication is in progress can cause replication failures.
 - `TRUNCATE` operations on the source are not captured. Only `INSERT`, `UPDATE`, `UPSERT`, and `DELETE` events are replicated.
-- Changes to virtual columns are not replicated automatically. To migrate these columns, you must define them explicitly with [transformation rules]({% link molt/molt-fetch.md %}#transformations).
+- Changes to virtual columns are not replicated automatically. To migrate these columns, you must define them explicitly with [transformation rules]({% link molt/molt-fetch.md %}#define-transformations).
 {% endif %}

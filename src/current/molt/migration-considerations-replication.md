@@ -66,9 +66,9 @@ The MOLT toolkit provides two complementary tools for data migration: [MOLT Fetc
 
 Use MOLT Fetch to export and load data to CockroachDB.
 
-For pure bulk migrations, set the `--ignore-replication-check` flag to skip gathering replication checkpoints. This simplifies the workflow when you don't need to track change positions for subsequent replication.
+For pure bulk migrations, set the [`--ignore-replication-check`]({% link molt/molt-fetch-commands-and-flags.md %}#ignore-replication-check) flag to skip gathering replication checkpoints. This simplifies the workflow when you don't need to track change positions for subsequent replication.
 
-MOLT Fetch supports both `IMPORT INTO` (default, for highest throughput with offline tables) and `COPY FROM` (for online tables) loading methods. Because a pure bulk load approach will likely involve substantial application downtime, you may benefit from using `IMPORT INTO`. In this case, do not use the `--use-copy` flag. Learn more about Fetch's [data load modes]({% link molt/molt-fetch.md %}#data-load-mode).
+MOLT Fetch supports both `IMPORT INTO` (default, for highest throughput with offline tables) and `COPY FROM` (for online tables) loading methods. Because a pure bulk load approach will likely involve substantial application downtime, you may benefit from using `IMPORT INTO`. In this case, do not use the [`--use-copy`]({% link molt/molt-fetch-commands-and-flags.md %}#use-copy) flag. Learn more about Fetch's [data load modes]({% link molt/molt-fetch.md %}#import-into-vs-copy-from).
 
 A migration that does not utilize continuous replication would not need to use MOLT Replicator.
 
@@ -84,9 +84,9 @@ molt fetch \
 
 Use MOLT Fetch to export and load the inital dataset to CockroachDB. Then start MOLT Replicator to begin streaming changes from the source database to CockroachDB.
 
-When you run MOLT Fetch without `--ignore-replication-check`, it emits a checkpoint value that marks the point in time when the bulk load snapshot was taken. After MOLT Fetch completes, the checkpoint is stored in the target database. MOLT Replicator then uses this checkpoint to begin streaming changes from exactly that point, ensuring no data is missed between the bulk load and continuous replication. Learn more about [replication checkpoints]({% link molt/molt-replicator.md %}#replication-checkpoints).
+When you run MOLT Fetch without [`--ignore-replication-check`]({% link molt/molt-fetch-commands-and-flags.md %}#ignore-replication-check), it emits a checkpoint value that marks the point in time when the bulk load snapshot was taken. After MOLT Fetch completes, the checkpoint is stored in the target database. MOLT Replicator then uses this checkpoint to begin streaming changes from exactly that point, ensuring no data is missed between the bulk load and continuous replication. Learn more about [replication checkpoints]({% link molt/molt-replicator.md %}#replication-checkpoints).
 
-MOLT Fetch supports both `IMPORT INTO` (default, for highest throughput with offline tables) and `COPY FROM` (for online tables) loading methods. Because a hybrid approach will likely aim to have less downtime, you may need to use `COPY FROM` if your tables remain online. In this case, use the `--use-copy` flag. Learn more about Fetch's [data load modes]({% link molt/molt-fetch.md %}#data-load-mode).
+MOLT Fetch supports both `IMPORT INTO` (default, for highest throughput with offline tables) and `COPY FROM` (for online tables) loading methods. Because a hybrid approach will likely aim to have less downtime, you may need to use `COPY FROM` if your tables remain online. In this case, use the [`--use-copy`]({% link molt/molt-fetch-commands-and-flags.md %}#use-copy) flag. Learn more about Fetch's [data load modes]({% link molt/molt-fetch.md %}#import-into-vs-copy-from).
 
 MOLT Replicator replicates full tables by default. If you choose to combine continuous replication with a [phased migration]({% link molt/migration-considerations-phases.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/replicator-flags.md %}#userscript) to select rows to replicate.
 

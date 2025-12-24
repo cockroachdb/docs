@@ -97,7 +97,7 @@ Based on the error budget you [defined in your migration plan](#develop-a-migrat
 
 It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries).
 
-MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch.md %}#data-load-mode) for loading data into CockroachDB:
+MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch.md %}#import-into-vs-copy-from) for loading data into CockroachDB:
 
 - Use `IMPORT INTO` for maximum throughput when the target tables can be offline. For a bulk data migration, most users should use `IMPORT INTO` because the tables will be offline anyway, and `IMPORT INTO` can [perform the data import much faster]({% link {{ site.current_cloud_version }}/import-performance-best-practices.md %}) than `COPY FROM`.
 - Use `COPY FROM` (or `--direct-copy`) when the target must remain queryable during load.

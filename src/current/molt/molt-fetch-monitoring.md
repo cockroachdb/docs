@@ -1,5 +1,5 @@
 ---
-title: MOLT Fetch Monitoring
+title: MOLT Fetch Metrics
 summary: Learn how to monitor MOLT Fetch during data migration using Prometheus metrics.
 toc: true
 docs_area: migrate
@@ -7,7 +7,7 @@ docs_area: migrate
 
 ## Metrics
 
-By default, MOLT Fetch exports [Prometheus](https://prometheus.io/) metrics at `127.0.0.1:3030/metrics`. You can configure this endpoint with the `--metrics-listen-addr` [flag]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags).
+By default, MOLT Fetch exports [Prometheus](https://prometheus.io/) metrics at `127.0.0.1:3030/metrics`. You can configure this endpoint with the [`--metrics-listen-addr`]({% link molt/molt-fetch-commands-and-flags.md %}#metrics-listen-addr) flag.
 
 Cockroach Labs recommends monitoring the following metrics:
 

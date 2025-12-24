@@ -13,8 +13,8 @@ MOLT Replicator consumes change data from PostgreSQL [logical replication](https
 
 - *Checkpoint*: The position in the source database's transaction log from which replication begins or resumes: LSN (PostgreSQL), GTID (MySQL), or SCN (Oracle).
 - *Staging database*: A CockroachDB database used by Replicator to store replication metadata, checkpoints, and buffered mutations. Specified with [`--stagingSchema`]({% link molt/replicator-flags.md %}#staging-schema) and automatically created with [`--stagingCreateSchema`]({% link molt/replicator-flags.md %}#staging-create-schema). For details, refer to [Staging database](#staging-database).
-- *Forward replication*: Replicate changes from a source database (PostgreSQL, MySQL, or Oracle) to CockroachDB during a migration. For usage details, refer to [Forward replication with initial load](#forward-replication-after-initial-load).
-- *Failback*: Replicate changes from CockroachDB back to the source database. Used for migration rollback or to maintain data consistency on the source during migration. For usage details, refer to [Failback to source database](#failback-replication).
+- *Forward replication*: Replicate changes from a source database (PostgreSQL, MySQL, or Oracle) to CockroachDB during a migration. For usage details, refer to [Forward replication (after initial load)](#forward-replication-after-initial-load).
+- *Failback*: Replicate changes from CockroachDB back to the source database. Used for migration rollback or to maintain data consistency on the source during migration. For usage details, refer to [Failback replication](#failback-replication).
 
 ## How it works
 
@@ -27,22 +27,6 @@ MOLT Replicator supports forward replication from PostgreSQL, MySQL, and Oracle,
 - Oracle source ([`oraclelogminer`]({% link molt/replicator-flags.md %}#commands)): MOLT Replicator uses [Oracle LogMiner](https://docs.oracle.com/en/database/oracle/oracle-database/21/sutil/oracle-logminer-utility.html) to capture change data from Oracle redo logs. Both Oracle Multitenant (CDB/PDB) and single-tenant Oracle architectures are supported. Replicator periodically queries LogMiner-populated views and processes transactional data in ascending SCN windows for reliable throughput while maintaining consistency.
 
 - Failback from CockroachDB ([`start`]({% link molt/replicator-flags.md %}#commands)): MOLT Replicator acts as an HTTP webhook sink for a single CockroachDB changefeed. Replicator receives mutations from source cluster nodes, can optionally buffer them in a CockroachDB staging cluster, and then applies time-ordered transactional batches to the target database. Mutations are applied as [`UPSERT`]({% link {{ site.current_cloud_version }}/upsert.md %}) or [`DELETE`]({% link {{ site.current_cloud_version }}/delete.md %}) statements while respecting [foreign-key]({% link {{ site.current_cloud_version }}/foreign-key.md %}) and table dependencies.
-
-### Consistency modes
-
-MOLT Replicator supports three consistency modes for balancing throughput and transactional guarantees:
-
-1. *Consistent* (failback mode only, default for CockroachDB sources): Preserves per-row order and source transaction atomicity. Concurrent transactions are controlled by [`--parallelism`]({% link molt/replicator-flags.md %}#parallelism).
-
-1. *BestEffort* (failback mode only): Relaxes atomicity across tables that do not have foreign key constraints between them (maintains coherence within FK-connected groups). Enable with [`--bestEffortOnly`]({% link molt/replicator-flags.md %}#best-effort-only) or allow auto-entry via [`--bestEffortWindow`]({% link molt/replicator-flags.md %}#best-effort-window) set to a positive duration (such as `1s`).
-
-	{{site.data.alerts.callout_info}}
-	For independent tables (with no foreign key constraints), BestEffort mode applies changes immediately as they arrive, without waiting for the resolved timestamp. This provides higher throughput for tables that have no relationships with other tables.
-	{{site.data.alerts.end}}
-
-1. *Immediate* (default for PostgreSQL, MySQL, and Oracle sources): Applies updates as they arrive to Replicator with no buffering or waiting for resolved timestamps. For CockroachDB sources, provides highest throughput but requires no foreign keys on the target schema.
-
-## Usage
 
 ### Replicator commands
 
@@ -148,14 +132,14 @@ For PostgreSQL, use [`--slotName`]({% link molt/replicator-flags.md %}#slot-name
 --slotName molt_slot
 ~~~
 
-For MySQL, set [`--defaultGTIDSet`]({% link molt/replicator-flags.md %}#default-gtid-set) to the [`cdc_cursor` value]({% link molt/molt-fetch.md %}#cdc-cursor) from the MOLT Fetch output:
+For MySQL, set [`--defaultGTIDSet`]({% link molt/replicator-flags.md %}#default-gtid-set) to the [`cdc_cursor` value]({% link molt/molt-fetch.md %}#enable-replication) from the MOLT Fetch output:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --defaultGTIDSet '4c658ae6-e8ad-11ef-8449-0242ac140006:1-29'
 ~~~
 
-For Oracle, set [`--scn`]({% link molt/replicator-flags.md %}#scn) and [`--backfillFromSCN`]({% link molt/replicator-flags.md %}#backfill-from-scn) to the [`cdc_cursor` values]({% link molt/molt-fetch.md %}#cdc-cursor) from the MOLT Fetch output:
+For Oracle, set [`--scn`]({% link molt/replicator-flags.md %}#scn) and [`--backfillFromSCN`]({% link molt/replicator-flags.md %}#backfill-from-scn) to the [`cdc_cursor` values]({% link molt/molt-fetch.md %}#enable-replication) from the MOLT Fetch output:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -179,6 +163,20 @@ The staging database is used to:
 - Buffer mutations before applying them to the target in transaction order.
 - Maintain consistency for time-ordered transactional batches while respecting table dependencies.
 - Provide restart capabilities after failures.
+
+### Consistency modes
+
+MOLT Replicator supports three consistency modes for balancing throughput and transactional guarantees:
+
+1. *Consistent* (failback mode only, default for CockroachDB sources): Preserves per-row order and source transaction atomicity. Concurrent transactions are controlled by [`--parallelism`]({% link molt/replicator-flags.md %}#parallelism).
+
+1. *BestEffort* (failback mode only): Relaxes atomicity across tables that do not have foreign key constraints between them (maintains coherence within FK-connected groups). Enable with [`--bestEffortOnly`]({% link molt/replicator-flags.md %}#best-effort-only) or allow auto-entry via [`--bestEffortWindow`]({% link molt/replicator-flags.md %}#best-effort-window) set to a positive duration (such as `1s`).
+
+	{{site.data.alerts.callout_info}}
+	For independent tables (with no foreign key constraints), BestEffort mode applies changes immediately as they arrive, without waiting for the resolved timestamp. This provides higher throughput for tables that have no relationships with other tables.
+	{{site.data.alerts.end}}
+
+1. *Immediate* (default for PostgreSQL, MySQL, and Oracle sources): Applies updates as they arrive to Replicator with no buffering or waiting for resolved timestamps. For CockroachDB sources, provides highest throughput but requires no foreign keys on the target schema.
 
 ### Monitoring
 
@@ -228,7 +226,7 @@ In a migration that utilizes [continuous replication]({% link  molt/migration-co
 </div>
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-To start replication after an [initial data load with MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch), use the `pglogical` command:
+To start replication after an initial data load with MOLT Fetch, use the `pglogical` command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -237,7 +235,7 @@ replicator pglogical
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-To start replication after an [initial data load with MOLT Fetch]({% link molt/migrate-load-replicate.md %}?filters=mysql#start-fetch), use the `mylogical` command:
+To start replication after an initial data load with MOLT Fetch, use the `mylogical` command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -246,7 +244,7 @@ replicator mylogical
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-To start replication after an [initial data load with MOLT Fetch]({% link molt/migrate-load-replicate.md %}?filters=oracle#start-fetch), use the `oraclelogminer` command:
+To start replication after an initial data load with MOLT Fetch, use the `oraclelogminer` command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

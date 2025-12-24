@@ -99,7 +99,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 
 `molt` 1.3.1 is [available](#installation).
 
-- MOLT Fetch now supports [sharding]({% link molt/molt-fetch.md %}#table-sharding) of primary keys of any data type on PostgreSQL 11+ sources. This can be enabled with the [`--use-stats-based-sharding`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) flag.
+- MOLT Fetch now supports [sharding]({% link molt/molt-fetch.md %}#shard-tables-for-concurrent-export) of primary keys of any data type on PostgreSQL 11+ sources. This can be enabled with the [`--use-stats-based-sharding`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) flag.
 - Added the [`--ignore-replication-check`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) flag to allow data loads with planned downtime and no replication setup. The `--pglogical-ignore-wal-check` flag has been removed.
 - Added the `--enableParallelApplies` [replication flag]({% link molt/replicator-flags.md %}) to enable parallel application of independent table groups during replication. By default, applies are synchronous. When enabled, this increases throughput at the cost of increased target pool and memory usage.
 - Improved cleanup logic for scheduled tasks to ensure progress reporting and prevent indefinite hangs.
@@ -185,7 +185,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 `molt` 1.2.2 is [available](#installation).
 
 - Added an [`--import-region`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) flag that is used to set the `AWS_REGION` query parameter explicitly in the [`s3` URL]({% link molt/molt-fetch.md %}#bucket-path).
-- Fixed the [`truncate-if-exists`]({% link molt/molt-fetch.md %}#target-table-handling) schema mode for cases where there are uppercase table or schema names.
+- Fixed the [`truncate-if-exists`]({% link molt/molt-fetch.md %}#handle-target-tables) schema mode for cases where there are uppercase table or schema names.
 - Fixed an issue with unsigned `BIGINT` values overflowing in replication.
 - Added a `--schemaRefresh` [replication flag]({% link molt/replicator-flags.md %}#schema-refresh) that is used to configure the schema watcher refresh delay in the replication phase. Previously, the refresh delay was set to a constant value of 1 minute. Set the flag as follows: `--replicator-flags "--schemaRefresh {value}"`.
 
@@ -197,9 +197,9 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 - MySQL 5.7 and later are now supported with MOLT Fetch replication modes.
 - Fetch replication mode now defaults to a less verbose `INFO` logging level. To specify `DEBUG` logging, pass in the `--replicator-flags '-v'` setting, or `--replicator-flags '-vv'` for trace logging.
 - MySQL columns of type `BIGINT UNSIGNED` or `SERIAL` are now auto-mapped to [`DECIMAL`]({% link {{ site.current_cloud_version }}/decimal.md %}) type in CockroachDB. MySQL regular `BIGINT` types are mapped to [`INT`]({% link {{ site.current_cloud_version }}/int.md %}) type in CockroachDB.
-- The `pglogical` replication workflow was modified in order to enforce safer and simpler defaults for the [`data-load`]({% link molt/molt-fetch.md %}#fetch-mode), `data-load-and-replication`, and `replication-only` workflows for PostgreSQL sources. Fetch now ensures that the publication is created before the slot, and that `replication-only` defaults to using publications and slots created either in previous Fetch runs or manually.
+- The `pglogical` replication workflow was modified in order to enforce safer and simpler defaults for the [`data-load`]({% link molt/molt-fetch.md %}#define-fetch-mode), `data-load-and-replication`, and `replication-only` workflows for PostgreSQL sources. Fetch now ensures that the publication is created before the slot, and that `replication-only` defaults to using publications and slots created either in previous Fetch runs or manually.
 - Fixed scan iterator query ordering for `BINARY` and `TEXT` (of same collation) PKs so that they lead to the correct queries and ordering.
-- For a MySQL source in `replication-only` mode, the [`--stagingSchema` replicator flag]({% link molt/replicator-flags.md %}#staging-schema) can now be used to resume streaming replication after being interrupted. Otherwise, the [`--defaultGTIDSet` replicator flag]({% link molt/replicator-flags.md %}#default-gtid-set) is used to start initial replication after a previous Fetch run in [`data-load`]({% link molt/molt-fetch.md %}#fetch-mode) mode, or as an override to the current replication stream.
+- For a MySQL source in `replication-only` mode, the [`--stagingSchema` replicator flag]({% link molt/replicator-flags.md %}#staging-schema) can now be used to resume streaming replication after being interrupted. Otherwise, the [`--defaultGTIDSet` replicator flag]({% link molt/replicator-flags.md %}#default-gtid-set) is used to start initial replication after a previous Fetch run in [`data-load`]({% link molt/molt-fetch.md %}#define-fetch-mode) mode, or as an override to the current replication stream.
 
 ### October 29, 2024
 
@@ -207,11 +207,11 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 
 - Added `failback` mode to MOLT Fetch, which allows the user to replicate changes on CockroachDB back to the initial source database. Failback is supported for MySQL and PostgreSQL databases.
 - The [`--pprof-list-addr` flag]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags), which specifies the address of the `pprof` endpoint, is now configurable. The default value is `'127.0.0.1:3031'`.
-- [Fetch modes]({% link molt/molt-fetch.md %}#fetch-mode) involving replication now state that MySQL 8.0 and later are supported for replication between MySQL and CockroachDB.
-- [Partitioned tables]({% link molt/molt-fetch.md %}#transformations) can now be moved to CockroachDB using [`IMPORT INTO`]({% link {{ site.current_cloud_version }}/import-into.md %}).
+- [Fetch modes]({% link molt/molt-fetch.md %}#define-fetch-mode) involving replication now state that MySQL 8.0 and later are supported for replication between MySQL and CockroachDB.
+- [Partitioned tables]({% link molt/molt-fetch.md %}#define-transformations) can now be moved to CockroachDB using [`IMPORT INTO`]({% link {{ site.current_cloud_version }}/import-into.md %}).
 - Improved logging for the [Fetch]({% link molt/molt-fetch.md %}) schema check phases under the `trace` logging level, which is set with [`--logging trace`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags).
 - Added a [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) for monitoring MOLT tasks. 
-- Fetch now logs the name of the staging database in the target CockroachDB cluster used to store metadata for [replication modes]({% link molt/molt-fetch.md %}#fetch-mode).
+- Fetch now logs the name of the staging database in the target CockroachDB cluster used to store metadata for [replication modes]({% link molt/molt-fetch.md %}#define-fetch-mode).
 - String [primary keys]({% link {{ site.current_cloud_version }}/primary-key.md %}) that use `C` [collations]({% link {{ site.current_cloud_version }}/collate.md %}) on PostgreSQL can now be compared to the default `en_US.utf8` on CockroachDB.
 - MOLT is now distributed under the [Cockroach Labs Product License Agreement](https://www.cockroachlabs.com/cockroach-labs-product-license-agreement/), which is bundled with the binary.
 
@@ -219,7 +219,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 
 `molt` 1.1.7 is [available](#installation).
 
-- When a [Fetch transformation rule]({% link molt/molt-fetch.md %}#transformations) is used to rename a table or map partitioned tables, a script in the format `partitionTableScript.{timestamp}.ts` is now automatically generated to ensure that [replication]({% link molt/molt-fetch.md %}#fetch-mode) works properly if enabled.
+- When a [Fetch transformation rule]({% link molt/molt-fetch.md %}#define-transformations) is used to rename a table or map partitioned tables, a script in the format `partitionTableScript.{timestamp}.ts` is now automatically generated to ensure that [replication]({% link molt/molt-fetch.md %}#define-fetch-mode) works properly if enabled.
 
 ### August 19, 2024
 
@@ -232,8 +232,8 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 `molt` 1.1.5 is [available](#installation).
 
 - **Deprecated** the `--ongoing-replication` flag in favor of `--mode data-load-and-replication`, using the new `--mode` flag. Users should replace all instances of `--ongoing-replication` with `--mode data-load-and-replication`.
-- Fetch can now be run in an export-only mode by specifying [`--mode export-only`]({% link molt/molt-fetch.md %}#fetch-mode). This will export all the data in `csv` or `csv.gz` format to the specified cloud or local store.
-- Fetch can now be run in an import-only mode by specifying [`--mode import-only`]({% link molt/molt-fetch.md %}#fetch-mode). This will load all data in the specified cloud or local store into the target CockroachDB database, effectively skipping the export data phase.
+- Fetch can now be run in an export-only mode by specifying [`--mode export-only`]({% link molt/molt-fetch.md %}#define-fetch-mode). This will export all the data in `csv` or `csv.gz` format to the specified cloud or local store.
+- Fetch can now be run in an import-only mode by specifying [`--mode import-only`]({% link molt/molt-fetch.md %}#define-fetch-mode). This will load all data in the specified cloud or local store into the target CockroachDB database, effectively skipping the export data phase.
 - Strings for the `--mode` flag are now word-separated by hyphens instead of underscores. For example, `replication-only` instead of `replication_only`.
 
 ### August 8, 2024
@@ -241,7 +241,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 `molt` 1.1.4 is [available](#installation).
 
 - Added a replication-only mode for Fetch that allows the user to run ongoing replication without schema creation or initial data load. This requires users to set `--mode replication_only` and `--replicator-flags` to specify the `defaultGTIDSet` ([MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical)) or `slotName` ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical)).
-- Partitioned tables can now be mapped to renamed tables on the target database, using the Fetch [transformations framework]({% link molt/molt-fetch.md %}#transformations).
+- Partitioned tables can now be mapped to renamed tables on the target database, using the Fetch [transformations framework]({% link molt/molt-fetch.md %}#define-transformations).
 - Added a new `--metrics-scrape-interval` flag to allow users to specify their Prometheus scrape interval and apply a sleep at the end to allow for the final metrics to be scraped.
 - Previously, there was a mismatch between the errors logged in log lines and those recorded in the exceptions table when an `IMPORT INTO` or `COPY FROM` operation failed due to a non-PostgreSQL error. Now, all errors will lead to an exceptions table entry that allows the user to continue progress from a certain table's file.
 - Fixed a bug that will allow Fetch to properly determine a GTID if there are multiple `source_uuids`.
@@ -260,7 +260,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 
 - Fetch users can now specify columns to exclude from table migrations in order to migrate a subset of their data. This is supported in the schema creation, export, import, and direct copy phases.
 - Fetch now automatically maps a partitioned table from a PostgreSQL source to the target CockroachDB schema.
-- Fetch now supports column exclusions and computed column mappings via a new [transformations framework]({% link molt/molt-fetch.md %}#transformations). 
+- Fetch now supports column exclusions and computed column mappings via a new [transformations framework]({% link molt/molt-fetch.md %}#define-transformations). 
 - The new Fetch [`--transformations-file`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) flag specifies a JSON file for schema/table/column transformations, which has validation utilities built in.
 
 ### July 10, 2024

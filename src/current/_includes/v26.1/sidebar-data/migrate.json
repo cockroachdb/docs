@@ -54,15 +54,26 @@
       "items": [
         {
           "title": "Schema Conversion Tool",
-          "urls": [
-            "/cockroachcloud/migrations-page.html"
+          "items": [
+            {
+              "title": "Guide",
+              "urls": [
+                "/cockroachcloud/migrations-page.html"
+              ]
+            },
+            {
+              "title": "Type Mapping",
+              "urls": [
+                "/molt/molt-type-mapping.html"
+              ]
+            }
           ]
         },
         {
           "title": "Fetch",
           "items": [
             {
-              "title": "Oveview",
+              "title": "Guide",
               "urls": [
                 "/molt/molt-fetch.html"
               ]
@@ -80,7 +91,7 @@
               ]
             },
             {
-              "title": "Monitoring",
+              "title": "Metrics",
               "urls": [
                 "/molt/molt-fetch-monitoring.html"
               ]

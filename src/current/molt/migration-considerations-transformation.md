@@ -64,10 +64,10 @@ While not a part of the transformation process itself, the [MOLT Schema Conversi
 
 [MOLT Fetch]({% link molt/molt-fetch.md %}) supports transformations during a bulk data load:
 
-- **Row filtering**: `--filter-path` specifies a JSON file with table-to-SQL-predicate mappings evaluated in the source dialect before export. Ensure filtered columns are indexed for performance.
-- **Schema shaping**: `--transformations-file` defines table renames, n→1 merges (consolidate partitioned tables), and column exclusions. For n→1 merges, use `--use-copy` or `--direct-copy` and pre-create the target table.
-- **Type alignment**: `--type-map-file` specifies explicit type mappings when auto-creating target tables.
-- **Table lifecycle**: `--table-handling` controls whether to truncate, drop-and-recreate, or assume tables exist.
+- **Row filtering**: [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#filter-path) specifies a JSON file with table-to-SQL-predicate mappings evaluated in the source dialect before export. Ensure filtered columns are indexed for performance.
+- **Schema shaping**: [`--transformations-file`]({% link molt/molt-fetch-commands-and-flags.md %}#transformations-file) defines table renames, n→1 merges (consolidate partitioned tables), and column exclusions. For n→1 merges, use [`--use-copy`]({% link molt/molt-fetch-commands-and-flags.md %}#use-copy) or [`--direct-copy`]({% link molt/molt-fetch-commands-and-flags.md %}#direct-copy) and pre-create the target table.
+- **Type alignment**: [`--type-map-file`]({% link molt/molt-fetch-commands-and-flags.md %}#type-map-file) specifies explicit type mappings when auto-creating target tables.
+- **Table lifecycle**: [`--table-handling`]({% link molt/molt-fetch-commands-and-flags.md %}#table-handling) controls whether to truncate, drop-and-recreate, or assume tables exist.
 
 ### MOLT Replicator
 

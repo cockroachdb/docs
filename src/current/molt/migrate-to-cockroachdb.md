@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-MOLT Fetch supports various migration flows using [MOLT Fetch modes]({% link molt/molt-fetch.md %}#fetch-mode).
+MOLT Fetch supports various migration flows using [MOLT Fetch modes]({% link molt/molt-fetch.md %}#define-fetch-mode).
 
 {% include molt/crdb-to-crdb-migration.md %}
 

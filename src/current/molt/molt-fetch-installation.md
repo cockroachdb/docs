@@ -17,7 +17,7 @@ The following source databases are supported:
 
 ### Database configuration
 
-Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`drop-on-target-and-recreate`]({% link molt/molt-fetch.md %}#target-table-handling) option. If you are creating the target schema manually, review the behaviors in [Mismatch handling]({% link molt/molt-fetch.md %}#mismatch-handling).
+Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`drop-on-target-and-recreate`]({% link molt/molt-fetch.md %}#handle-target-tables) option. If you are creating the target schema manually, review the behaviors in [Mismatch handling]({% link molt/molt-fetch.md %}#mismatch-handling).
 
 {{site.data.alerts.callout_info}}
 MOLT Fetch does not support migrating sequences. If your source database contains sequences, refer to the [guidance on indexing with sequential keys]({% link {{site.current_cloud_version}}/sql-faqs.md %}#how-do-i-generate-unique-slowly-increasing-sequential-numbers-in-cockroachdb). If a sequential key is necessary in your CockroachDB table, you must create it manually. After using MOLT Fetch to load the data onto the target, but before cutover, make sure to update each sequence's current value using [`setval()`]({% link {{site.current_cloud_version}}/functions-and-operators.md %}#sequence-functions) so that new inserts continue from the correct point.
