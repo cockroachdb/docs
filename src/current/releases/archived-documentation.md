@@ -25,8 +25,22 @@ The table below contains links to archived documentation for versions of Cockroa
     <tr><th>Version</th><th>Downloads</th></tr>
   </thead>
   <tbody>
+    <tr><td><strong>v22.2</strong></td>
+        <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-docs-v22.2-offline.zip" class="download-link">ZIP</a></td></tr>
+    <tr><td><strong>v22.1</strong></td>
+        <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-docs-v22.1-offline.zip" class="download-link">ZIP</a></td></tr>
+    <tr><td><strong>v21.2</strong></td>
+        <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-docs-v21.2-offline.zip" class="download-link">ZIP</a></td></tr>
+    <tr><td><strong>v21.1</strong></td>
+        <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-docs-v21.1-offline.zip" class="download-link">ZIP</a></td></tr>
+    <tr><td><strong>v20.2</strong></td>
+        <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-docs-v20.2-offline.zip" class="download-link">ZIP</a></td></tr>
+    <tr><td><strong>v20.1</strong></td>
+        <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-docs-v20.1-offline.zip" class="download-link">ZIP</a></td></tr>
     <tr><td><strong>v19.2</strong></td>
         <td><a href="https://storage.googleapis.com/crdbdocs-archive/archive_19.2.zip" class="download-link">ZIP</a></td></tr>
+    <tr><td><strong>v2.1</strong></td>
+        <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-v2.1-documentation.zip" class="download-link">ZIP</a></td></tr>
   </tbody>
 </table>
 
