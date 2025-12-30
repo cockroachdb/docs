@@ -483,6 +483,10 @@ sql.routine.select.count
 sql.routine.select.started.count
 sql.routine.update.count
 sql.routine.update.started.count
+sql.select.started.count
+sql.insert.started.count
+sql.update.started.count
+sql.delete.started.count
 admission.wait_durations.kv
 admission.wait_durations.kv-stores
 storage.wal.fsync.latency
