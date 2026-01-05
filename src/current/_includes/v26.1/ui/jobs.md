@@ -28,7 +28,7 @@ Column | Description
 ----------|------------
 Description | SQL statement that created the job.
 Status | Current [job status](#job-status) or completion progress.
-Job ID | Unique job ID. This value is used to [pause]({{ link_prefix }}pause-job.html), [resume]({{ link_prefix }}resume-job.html), or [cancel]({{ link_prefix }}cancel-job.html) jobs.
+Job ID | Unique job ID. This value is used to [pause]({{ link_prefix }}pause-job.html), [resume]({{ link_prefix }}resume-job.html), or [cancel]({{ link_prefix }}cancel-job.html) jobs. For [`INSPECT`]({{ link_prefix }}inspect.html) jobs, you can use the Job ID with [`SHOW INSPECT ERRORS FOR JOB {id}`]({{ link_prefix }}show-inspect-errors.html).
 User Name | User that created the job.
 Creation Time (UTC) | Date and time the job was created.
 Last Modified Time (UTC) | Date and time the job was last modified.
