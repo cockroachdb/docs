@@ -1,1 +1,0 @@
-You must also set `acks` to `ALL` in your [server-side Kafka configuration](https://kafka.apache.org/documentation/#producerconfigs_acks) for this to provide high durability delivery.
