@@ -1,16 +1,36 @@
 require 'json'
 require 'liquid'
+require 'yaml'
 
 module SidebarHTMLTest
   class Generator < Jekyll::Generator
     def generate(site)
       @site = site
 
+      # Read htmltest configuration to get ignored directories
+      htmltest_config = YAML.load_file('.htmltest.yml') rescue {}
+      ignored_dirs = htmltest_config['IgnoreDirs'] || []
+
+      # Extract version numbers from ignored directories
+      ignored_versions = ignored_dirs.map do |dir|
+        match = dir.match(/\^?docs\/?(v\d+\.\d+)/)
+        match[1] if match
+      end.compact
+
       Dir[File.join(site.config['includes_dir'], 'sidebar-data-v*.json')].each do |f|
         next unless !!site.config['cockroachcloud'] == f.include?('cockroachcloud')
+
+        # Extract version from filename
+        version = f.match(/sidebar-data-(v\d+\.\d+)/)[1]
+
+        # Skip if this version is in the ignored list
+        if ignored_versions.include?(version)
+          Jekyll.logger.info "SidebarHTMLTest:", "Skipping ignored version #{version}"
+          next
+        end
+
         partial = site.liquid_renderer.file(f).parse(File.read(f))
         json = partial.render!(site.site_payload, {registers: {site: site}})
-        version = f.match(/sidebar-data-(v\d+\.\d+)/)[1]
         render_sidebar(json, version)
       end
     end

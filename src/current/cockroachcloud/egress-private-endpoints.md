@@ -131,6 +131,28 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 }'
 ~~~
 
+#### Amazon CloudWatch logs export endpoint
+
+Log export to Amazon CloudWatch requires that you create a private service endpoint for each CockroachDB {{ site.data.products.cloud }} region, populating `target_service_identifier` with the domain name of a CloudWatch instance in that region. Since CloudWatch is an AWS-managed service, logs are scoped to the AWS account where the endpoint is created. The access keys on the export dictate which CloudWatch account receives the logs.
+
+To export logs from multiple {{ site.data.products.cloud }} clusters across different regions to a single CloudWatch instance, [configure custom DNS](#configure-custom-dns) so that each `target_service_identifier` value resolves to the same target CloudWatch endpoint. In this situation, the `logexport` [endpoint]({% link cockroachcloud/export-logs-advanced.md %}#the-logexport-endpoint) automatically sets the `region` field to the region of the CloudWatch instance. 
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
+-X POST \
+-H "Authorization: Bearer {secret_key}" \
+-H 'Content-Type: application/json' \
+-d '{
+  "cluster_id": "{cluster_id}",
+  "region": "us-east-1",
+  "target_service_identifier": "com.amazonaws.us-east-1.log",
+  "target_service_type": "PRIVATE_SERVICE"
+}'
+~~~
+
+For more information about log export to Amazon CloudWatch, read the [log export documentation]({% link cockroachcloud/export-logs.md %}).
+
 #### MSK cluster endpoint
 
 {% include_cached copy-clipboard.html %}

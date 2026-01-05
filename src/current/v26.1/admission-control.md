@@ -66,14 +66,14 @@ The pacing of catchup writes is controlled at the replication layer to avoid ove
 
 At a high level, replication admission control works by:
 
-- Pacing regular SQL writes at the rate of replica quorum. ()
+- Pacing regular SQL writes at the rate of replica quorum.
 - Pacing background (elastic) replication at the rate of the slowest replica.
 
 This has the following effects:
 
-1. Does not overload slow/restarted nodes with replication flows. ()
+1. Does not overload slow/restarted nodes with replication flows.
 2. Isolates performance between regular and elastic traffic.
-3. Paces regular writes at quorum speed. ()
+3. Paces regular writes at quorum speed.
 4. Paces elastic writes at the slowest replica's speed.
 
 For example, prior to CockroachDB v25.1, when a leader and follower replica were disconnected from each other due to a node going away and coming back, once the follower came back the leader would slam the follower with any Raft entries it had missed. In v25.1 and later, the leader paces the entries it sends to the follower. The result is that baseline cluster QPS (queries per second) and latency should not change substantially during perturbations such as [node restarts]({% link {{ page.version.version }}/eventlog.md %}#node_restart).
