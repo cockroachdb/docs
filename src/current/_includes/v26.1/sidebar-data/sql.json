@@ -485,6 +485,12 @@
               ]
             },
             {
+              "title": "<code>INSPECT</code>",
+              "urls": [
+                "/${VERSION}/inspect.html"
+              ]
+            },
+            {
               "title": "<code>JOIN</code>",
               "urls": [
                 "/${VERSION}/joins.html"
@@ -698,6 +704,12 @@
               "title": "<code>SHOW INDEX</code>",
               "urls": [
                 "/${VERSION}/show-index.html"
+              ]
+            },
+            {
+              "title": "<code>SHOW INSPECT ERRORS</code>",
+              "urls": [
+                "/${VERSION}/show-inspect-errors.html"
               ]
             },
             {
