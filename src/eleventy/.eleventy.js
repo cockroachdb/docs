@@ -414,7 +414,23 @@ module.exports = function(eleventyConfig) {
         // Also add site_baseurl as a direct variable for testing
         const fullContext = { ...parentContext, include: params, ...params, site: siteCopy, site_baseurl: siteCopy.baseurl };
         try {
-          emitter.write(await customLiquid.parseAndRender(content, fullContext));
+          let rendered = await customLiquid.parseAndRender(content, fullContext);
+
+          // Convert fenced code blocks (~~~) to HTML before outputting
+          // This prevents markdown from misinterpreting them when the include is indented
+          const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*$|\n|<)/g;
+          rendered = rendered.replace(fencedCodePattern, function(match, lang, code) {
+            const language = lang || 'text';
+            const escapedCode = code
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;');
+            return `<div class="language-${language} highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="language-${language}" data-lang="${language}">${escapedCode}</code></pre></div></div>`;
+          });
+
+          // Wrap output with blank lines to prevent markdown from interfering
+          // when the include is used inside list items
+          emitter.write('\n\n' + rendered.trim() + '\n\n');
         } catch (err) { emitter.write(`<!-- include error: ${err.message} -->`); }
       } else {
         if (!filePath.includes('copy-clipboard')) console.warn(`include: Not found: ${fullPath}`);
@@ -466,7 +482,23 @@ module.exports = function(eleventyConfig) {
         const content = fs.readFileSync(fullPath, 'utf8');
         const fullContext = { ...ctx.getAll(), include: params, ...params };
         try {
-          emitter.write(await customLiquid.parseAndRender(content, fullContext));
+          let rendered = await customLiquid.parseAndRender(content, fullContext);
+
+          // Convert fenced code blocks (~~~) to HTML before outputting
+          // This prevents markdown from misinterpreting them when the include is indented
+          const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*$|\n|<)/g;
+          rendered = rendered.replace(fencedCodePattern, function(match, lang, code) {
+            const language = lang || 'text';
+            const escapedCode = code
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;');
+            return `<div class="language-${language} highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="language-${language}" data-lang="${language}">${escapedCode}</code></pre></div></div>`;
+          });
+
+          // Wrap output with blank lines to prevent markdown from interfering
+          // when the include is used inside list items
+          emitter.write('\n\n' + rendered.trim() + '\n\n');
         } catch (err) { emitter.write(`<!-- include_cached error: ${err.message} -->`); }
       } else {
         if (!filePath.includes('copy-clipboard')) console.warn(`include_cached: Not found: ${fullPath}`);
