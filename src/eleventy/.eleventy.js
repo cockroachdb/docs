@@ -1011,13 +1011,78 @@ module.exports = function(eleventyConfig) {
     };
     result = processInlineCode(result);
 
-    // Step 4: Remove markdown="1" attribute from elements
+    // Step 4: Convert unprocessed markdown tables to HTML tables
+    // This handles tables inside HTML blocks (like filter-content sections)
+    // that markdown-it didn't process
+    // We look for the pattern: text with pipe, then separator line with dashes and pipes
+    const convertMarkdownTables = (html) => {
+      const lines = html.split('\n');
+      let i = 0;
+      const output = [];
+
+      while (i < lines.length) {
+        const line = lines[i];
+        const nextLine = lines[i + 1] || '';
+
+        // Check if this looks like a table header followed by separator
+        if (line.includes('|') && nextLine.match(/^[\s|-]+\|[\s|-]+$/)) {
+          // Found a table - collect all rows
+          const headerRow = line;
+          const separatorRow = nextLine;
+          const bodyRows = [];
+
+          let j = i + 2;
+          while (j < lines.length && lines[j].includes('|') && !lines[j].match(/^[\s|-]+\|[\s|-]+$/)) {
+            bodyRows.push(lines[j]);
+            j++;
+          }
+
+          // Only convert if we have at least one body row
+          if (bodyRows.length > 0) {
+            // Helper to clean cell content (remove stray p tags)
+            const cleanCell = (cell) => cell.trim().replace(/^<p>|<\/p>$/g, '').trim();
+
+            // Parse header cells
+            const headers = headerRow.split('|').map(cleanCell).filter(cell => cell);
+
+            // Build HTML table
+            let table = '<table>\n<thead>\n<tr>\n';
+            headers.forEach(header => {
+              table += `<th>${header}</th>\n`;
+            });
+            table += '</tr>\n</thead>\n<tbody>\n';
+
+            bodyRows.forEach(row => {
+              const cells = row.split('|').map(cleanCell).filter(cell => cell);
+              table += '<tr>\n';
+              cells.forEach(cell => {
+                table += `<td>${cell}</td>\n`;
+              });
+              table += '</tr>\n';
+            });
+
+            table += '</tbody>\n</table>';
+            output.push(table);
+            i = j;
+            continue;
+          }
+        }
+
+        output.push(line);
+        i++;
+      }
+
+      return output.join('\n');
+    };
+    result = convertMarkdownTables(result);
+
+    // Step 5: Remove markdown="1" attribute from elements
     // The content inside should already be processed by Eleventy's markdown processor
     // for blocks that it could handle, or by Step 1 above for fenced code
     result = result.replace(/\s*markdown=["']1["']/gi, '');
 
-    // Step 5: Convert Eleventy syntax highlighter output to Jekyll/Rouge structure
-    // This MUST run before the list structure fix (Step 6) because that step looks for the Jekyll/Rouge structure
+    // Step 6: Convert Eleventy syntax highlighter output to Jekyll/Rouge structure
+    // This MUST run before the list structure fix (Step 7) because that step looks for the Jekyll/Rouge structure
     // Eleventy outputs: <pre class="highlight language-X"><code>...</code></pre>
     // Jekyll/Rouge expects: <div class="language-X highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...</code></pre></div></div>
     const eleventyCodePattern = /<pre class="highlight language-(\w+)">([\s\S]*?<\/pre>)/g;
@@ -1025,12 +1090,12 @@ module.exports = function(eleventyConfig) {
       return `<div class="language-${lang} highlighter-rouge"><div class="highlight"><pre class="highlight">${rest}</div></div>`;
     });
 
-    // Step 6: Fix <p><pre> and <p><div class="language-*"> nesting (invalid HTML - block in inline)
+    // Step 7: Fix <p><pre> and <p><div class="language-*"> nesting (invalid HTML - block in inline)
     // Note: Copy-clipboard transforms removed - now handled by client-side JS in customscripts.js
     result = result.replace(/<p>(<pre[\s\S]*?<\/pre>)/g, '$1');
     result = result.replace(/<p>(<div class="language-[\s\S]*?<\/div>)<\/p>/g, '$1');
 
-    // Step 7: Strip leading prompt characters from shell and SQL code blocks
+    // Step 8: Strip leading prompt characters from shell and SQL code blocks
     // The CSS adds these back via ::before pseudo-element (making them unselectable)
     // This preserves the Jekyll/Rouge behavior where prompts were unselectable
     // Pattern: <code class="language-shell" data-lang="shell">$ command...
