@@ -16,6 +16,7 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
 1. Open Cursor Settings (⌘+,)
 2. Navigate to **Models** → **Model Context Protocol**
 3. Add the following configuration:
+
     ```json
     {
       "mcpServers": {
@@ -26,6 +27,7 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
       }
     }
     ```
+
 4. Restart Cursor to apply the configuration
 5. You can now ask questions about CockroachDB documentation directly in Cursor
 
@@ -35,6 +37,7 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
 2. Open VS Code Settings (⌘+,)
 3. Search for "Claude MCP"
 4. Add the following to your MCP configuration:
+
     ```json
     {
       "claude.mcpServers": {
@@ -45,6 +48,7 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
       }
     }
     ```
+
 5. Reload VS Code window (⌘+R)
 6. The CockroachDB documentation is now available through Claude in VS Code
 
@@ -53,6 +57,7 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
 1. Open Claude Code settings
 2. Navigate to MCP Servers configuration
 3. Add the CockroachDB Docs server:
+
     ```json
     {
       "mcpServers": {
@@ -63,6 +68,7 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
       }
     }
     ```
+
 4. Restart Claude Code
 5. CockroachDB documentation is now accessible in your Claude Code environment
 
@@ -80,6 +86,7 @@ MCP support for ChatGPT Desktop is coming soon. Check back for updates.
    - **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
 2. Add the CockroachDB Docs MCP server to your configuration:
+
     ```json
     {
       "mcpServers": {
@@ -90,6 +97,7 @@ MCP support for ChatGPT Desktop is coming soon. Check back for updates.
       }
     }
     ```
+
 3. Save the file and restart Claude Desktop
 4. You can now query CockroachDB documentation directly in Claude Desktop
 
@@ -99,7 +107,8 @@ For other MCP-compatible clients, use the following server configuration:
 
 **Server URL**: `https://cockroachdb.mcp.kapa.ai`
 
-Generic configuration format:
+**Generic configuration format**:
+
 ```json
 {
   "servers": [{
@@ -176,6 +185,7 @@ If the configuration doesn't seem to take effect:
 ## Feedback and Support
 
 For issues or feedback about the CockroachDB Docs MCP Server:
+
 - Report documentation issues on [GitHub](https://github.com/cockroachdb/docs/issues)
 - For MCP-specific problems, check [Kapa AI support](https://docs.kapa.ai)
 - Join the [CockroachDB Community Slack](https://www.cockroachlabs.com/join-community/) for help
