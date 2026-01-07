@@ -148,20 +148,26 @@ Once connected, your AI assistant can answer questions about CockroachDB directl
 ## Troubleshooting
 
 ### Connection Issues
+
 If your AI assistant cannot connect to the CockroachDB documentation:
+
 1. Verify your internet connection
 2. Check that the MCP server URL is correctly configured: `https://cockroachdb.mcp.kapa.ai`
 3. Restart your AI assistant application
 4. Ensure you have the latest version of your AI assistant
 
 ### No Results
+
 If queries return no results:
+
 1. Try rephrasing your question to be more specific
 2. Include "CockroachDB" in your query for better context
 3. Check the [CockroachDB documentation](https://www.cockroachlabs.com/docs/) directly to verify the information exists
 
 ### Configuration Not Working
+
 If the configuration doesn't seem to take effect:
+
 1. Ensure the configuration file is saved in the correct location
 2. Check for JSON syntax errors in your configuration
 3. Fully quit and restart your application (not just reload)
