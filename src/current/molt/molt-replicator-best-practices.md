@@ -5,6 +5,8 @@ toc: true
 docs_area: migrate
 ---
 
+This page describes best practices for using [MOLT Replicator]({% link molt/molt-replicator.md %}) to ensure reliable, secure, and performant data migration to CockroachDB.
+
 ## Test and validate
 
 To verify that your connections and configuration work properly, run MOLT Replicator in a staging environment before replicating any data in production. Use a test or development environment that closely resembles production.

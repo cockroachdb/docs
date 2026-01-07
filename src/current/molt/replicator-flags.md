@@ -1,9 +1,11 @@
 ---
-title: Replicator Flags
+title: MOLT Replicator Commands and Flags
 summary: Flag reference for MOLT Replicator
 toc: false
 docs_area: migrate
 ---
+
+This page lists the [MOLT Replicator]({% link molt/molt-replicator.md %}) commands and the flags that you can use to configure a MOLT Replicator command execution.
 
 ## Commands
 

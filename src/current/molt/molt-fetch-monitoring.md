@@ -5,6 +5,8 @@ toc: true
 docs_area: migrate
 ---
 
+This page lists the [MOLT Fetch]({% link molt/molt-fetch.md %}) metrics that you can use to observe the progress of a MOLT Fetch command execution.
+
 ## Metrics
 
 By default, MOLT Fetch exports [Prometheus](https://prometheus.io/) metrics at `127.0.0.1:3030/metrics`. You can configure this endpoint with the [`--metrics-listen-addr`]({% link molt/molt-fetch-commands-and-flags.md %}#metrics-listen-addr) flag.
