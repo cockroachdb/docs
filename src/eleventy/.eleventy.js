@@ -1113,6 +1113,103 @@ module.exports = function(eleventyConfig) {
   });
 
   // ---------------------------------------------------------------------------
+  // Build-time Warnings: Detect potential markdown rendering issues
+  // ---------------------------------------------------------------------------
+  const migrationIssues = {
+    unprocessedTables: [],
+    unprocessedCodeBlocks: [],
+    unprocessedInlineCode: [],
+    markdownInHtmlBlocks: []
+  };
+
+  eleventyConfig.addTransform("migration-warnings", function(content) {
+    if (!this.page.outputPath || !this.page.outputPath.endsWith('.html')) {
+      return content;
+    }
+
+    const inputPath = this.page.inputPath || 'unknown';
+    const issues = [];
+
+    // Check for unprocessed markdown tables (pipe syntax not in <table> tags)
+    // Pattern: text | text followed by separator line with dashes
+    const tablePattern = /(?:^|\n)([^<\n]*\|[^<\n]*)\n\s*([-|:\s]+)\n/g;
+    let tableMatch;
+    while ((tableMatch = tablePattern.exec(content)) !== null) {
+      // Verify it looks like a table separator (contains dashes and pipes)
+      if (tableMatch[2].includes('-') && tableMatch[2].includes('|')) {
+        // Check if this is inside a <table> already
+        const before = content.substring(0, tableMatch.index);
+        const tableTagsBefore = (before.match(/<table/gi) || []).length;
+        const tableCloseBefore = (before.match(/<\/table/gi) || []).length;
+        if (tableTagsBefore <= tableCloseBefore) {
+          // Not inside a table tag - this is unprocessed
+          issues.push('unprocessed-table');
+          migrationIssues.unprocessedTables.push(inputPath);
+          break; // Only report once per file
+        }
+      }
+    }
+
+    // Check for unprocessed fenced code blocks (~~~ or ``` appearing as text)
+    // These should have been converted to <pre><code> blocks
+    const codeBlockPattern = /(?:^|\n)(~~~|```)\s*\w*\s*\n/;
+    if (codeBlockPattern.test(content)) {
+      issues.push('unprocessed-code-block');
+      migrationIssues.unprocessedCodeBlocks.push(inputPath);
+    }
+
+    // Check for pages that had markdown="1" (we strip it, so check source)
+    // This is informational - helps track pages that need verification
+    if (this.page.rawInput && this.page.rawInput.includes('markdown="1"')) {
+      migrationIssues.markdownInHtmlBlocks.push(inputPath);
+    }
+
+    // Log warnings for this page
+    if (issues.length > 0) {
+      console.warn(`\n⚠️  Migration warning: ${inputPath}`);
+      issues.forEach(issue => {
+        console.warn(`   - ${issue}`);
+      });
+    }
+
+    return content;
+  });
+
+  // Summary report at build end
+  eleventyConfig.on('eleventy.after', async () => {
+    const totalIssues =
+      migrationIssues.unprocessedTables.length +
+      migrationIssues.unprocessedCodeBlocks.length;
+
+    if (totalIssues > 0 || migrationIssues.markdownInHtmlBlocks.length > 0) {
+      console.log('\n' + '='.repeat(70));
+      console.log('MIGRATION REPORT');
+      console.log('='.repeat(70));
+
+      if (migrationIssues.unprocessedTables.length > 0) {
+        console.log(`\n❌ Unprocessed tables: ${migrationIssues.unprocessedTables.length} files`);
+        migrationIssues.unprocessedTables.slice(0, 10).forEach(f => console.log(`   ${f}`));
+        if (migrationIssues.unprocessedTables.length > 10) {
+          console.log(`   ... and ${migrationIssues.unprocessedTables.length - 10} more`);
+        }
+      }
+
+      if (migrationIssues.unprocessedCodeBlocks.length > 0) {
+        console.log(`\n❌ Unprocessed code blocks: ${migrationIssues.unprocessedCodeBlocks.length} files`);
+        migrationIssues.unprocessedCodeBlocks.slice(0, 10).forEach(f => console.log(`   ${f}`));
+        if (migrationIssues.unprocessedCodeBlocks.length > 10) {
+          console.log(`   ... and ${migrationIssues.unprocessedCodeBlocks.length - 10} more`);
+        }
+      }
+
+      console.log(`\nℹ️  Pages using markdown="1": ${migrationIssues.markdownInHtmlBlocks.length}`);
+      console.log('   (These pages should be verified for correct rendering)');
+
+      console.log('\n' + '='.repeat(70) + '\n');
+    }
+  });
+
+  // ---------------------------------------------------------------------------
   // Directory Configuration
   // ---------------------------------------------------------------------------
 
