@@ -27,7 +27,7 @@ class CrossVersionLinkLinter:
         'include_cached': r'{%\s*include_cached\s+(v\d+\.\d+)/[^%]*%}',
         'include': r'{%\s*include\s+(v\d+\.\d+)/[^%]*%}',
         'image_ref': r"{{\s*'images/(v\d+\.\d+)/[^']*'\s*\|\s*relative_url\s*}}",
-        'markdown_relative': r'\[[^\]]+\]\(\.\./+(v\d+\.\d+)/[^\)]+\)',
+        'markdown_relative': r'\[[^\]]+\]\((?:\.\./)+(v\d+\.\d+)/[^\)]+\)',
         'markdown_absolute': r'\[[^\]]+\]\(/docs/(v\d+\.\d+)/[^\)]+\)',
         'html_link': r'<a[^>]*href=["\']/?(?:docs/)?(v\d+\.\d+)/[^"\']+["\'][^>]*>',
     }
@@ -35,7 +35,7 @@ class CrossVersionLinkLinter:
     # Patterns that are allowed (using dynamic version variables)
     ALLOWED_PATTERNS = [
         r'page\.version\.version',
-        r'site\.versions\.',
+        r'site\.versions(?:\.|\[)',
         r'include\.version',
         r'page\.release_info',
     ]
@@ -95,17 +95,17 @@ class CrossVersionLinkLinter:
             return re.sub(r'v\d+\.\d+', '{{ page.version.version }}', original)
         elif pattern_type == 'image_ref':
             # Fix image references to use dynamic version
-            return re.sub(r'/(v\d+\.\d+)/', '/{{ page.version.version }}/', original)
+            return re.sub(r'(images/)(v\d+\.\d+)(/)', r'\1{{ page.version.version }}\3', original)
         elif pattern_type in ['markdown_relative', 'markdown_absolute']:
             # For markdown links, suggest using Jekyll link syntax
             link_match = re.search(r'\[([^\]]+)\]\([^\)]+\)', original)
             if link_match:
                 link_text = link_match.group(1)
-                # Extract the page name from the path
-                page_match = re.search(r'([\w-]+)\.(?:md|html)', original)
-                if page_match:
-                    page_name = page_match.group(1)
-                    return f'[{link_text}]({{% link {{{{ page.version.version }}}}/{page_name}.md %}})'
+                # Extract the full path after the version token
+                path_match = re.search(r'v\d+\.\d+/([^\)]+)', original)
+                if path_match:
+                    page_path = path_match.group(1)  # e.g. 'admin/restore.md'
+                    return f'[{link_text}]({{% link {{{{ page.version.version }}}}/{page_path} %}})'
             return "Use {% link {{ page.version.version }}/page.md %} syntax"
         else:
             return "Use appropriate version variable or relative path within same version"

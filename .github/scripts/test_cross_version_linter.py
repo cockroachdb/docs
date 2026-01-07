@@ -300,6 +300,60 @@ Here's the backup UI:
         comment = self.linter.format_violations_for_github()
         self.assertIn('✅ **Cross-Version Link Check Passed**', comment)
 
+    def test_markdown_links_multi_level_parent(self):
+        """Test detection of markdown links with multiple ../ levels."""
+        content = "[Multi](../../v23.1/restore.md)"
+        violations = self.linter.find_violations(Path('src/current/v26.1/test.md'), content)
+        self.assertEqual(len(violations), 1)
+        self.assertEqual(violations[0]['target_version'], 'v23.1')
+
+    def test_markdown_links_three_level_parent(self):
+        """Test detection of markdown links with three ../ levels."""
+        content = "[Deep](../../../v22.2/backup.md)"
+        violations = self.linter.find_violations(Path('src/current/v26.1/deep/nested/test.md'), content)
+        self.assertEqual(len(violations), 1)
+        self.assertEqual(violations[0]['target_version'], 'v22.2')
+
+    def test_site_versions_bracket_notation_allowed(self):
+        """Test that site.versions bracket notation is not flagged."""
+        content = '{% link {{ site.versions["stable"] }}/backup.md %}'
+        violations = self.linter.find_violations(Path('src/current/v26.1/test.md'), content)
+        self.assertEqual(len(violations), 0)
+
+    def test_site_versions_dot_notation_allowed(self):
+        """Test that site.versions dot notation is not flagged."""
+        content = '{% link {{ site.versions.stable }}/backup.md %}'
+        violations = self.linter.find_violations(Path('src/current/v26.1/test.md'), content)
+        self.assertEqual(len(violations), 0)
+
+    def test_image_ref_fix_generation(self):
+        """Test that image_ref fix generation works correctly."""
+        original = "{{ 'images/v22.2/diagram.png' | relative_url }}"
+        fix = self.linter.generate_fix('image_ref', original, 'v26.1')
+        self.assertIn('images/{{ page.version.version }}/', fix)
+        self.assertNotIn('v22.2', fix)
+
+    def test_markdown_fix_nested_paths(self):
+        """Test that markdown fix preserves nested directory paths."""
+        original = "[Restore](../v23.1/admin/restore.md)"
+        fix = self.linter.generate_fix('markdown_relative', original, 'v26.1')
+        self.assertIn('admin/restore.md', fix)
+        self.assertIn('{{ page.version.version }}', fix)
+
+    def test_markdown_fix_complex_filename(self):
+        """Test that markdown fix handles filenames with dots."""
+        original = "[Guide](../v23.1/backup-and-restore.overview.md)"
+        fix = self.linter.generate_fix('markdown_relative', original, 'v26.1')
+        self.assertIn('backup-and-restore.overview.md', fix)
+        self.assertIn('{{ page.version.version }}', fix)
+
+    def test_markdown_fix_deeply_nested_path(self):
+        """Test that markdown fix handles deeply nested paths."""
+        original = "[Config](/docs/v20.1/cockroachcloud/production/settings.md)"
+        fix = self.linter.generate_fix('markdown_absolute', original, 'v26.1')
+        self.assertIn('cockroachcloud/production/settings.md', fix)
+        self.assertIn('{{ page.version.version }}', fix)
+
 
 class TestIntegration(unittest.TestCase):
     """Integration tests for the linter."""
