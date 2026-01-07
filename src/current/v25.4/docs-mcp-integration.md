@@ -187,11 +187,8 @@ If the configuration doesn't seem to take effect:
 For issues or feedback about the CockroachDB Docs MCP Server:
 
 - Report documentation issues on [GitHub](https://github.com/cockroachdb/docs/issues)
-- For MCP-specific problems, check [Kapa AI support](https://docs.kapa.ai)
 - Join the [CockroachDB Community Slack](https://www.cockroachlabs.com/join-community/) for help
 
 ## See Also
 
-- [CockroachDB Documentation](https://www.cockroachlabs.com/docs/)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
-- [Kapa AI Documentation](https://docs.kapa.ai)
