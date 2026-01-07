@@ -17,6 +17,7 @@ Privilege | Levels | Description
 `EXTERNALCONNECTION` | System | Grants the ability to connect to external systems such as object stores, key management systems, Kafka feeds, or external file systems. Often used in conjunction with the `BACKUP`, `RESTORE`, and `CHANGEFEED` privilege.
 `EXTERNALIOIMPLICITACCESS` | System | Grants the ability to interact with external resources that require implicit access.
 `INSERT` | Table, Sequence | Grants the ability to insert objects at the table or sequence level.
+<a id="inspect"></a> `INSPECT` | System | Grants the ability to run the [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) statement and view results with [`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}).
 <a id="modifyclustersetting"></a>`MODIFYCLUSTERSETTING` | System | Grants the ability to modify [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}).
 `MODIFYSQLCLUSTERSETTING` | System | Grants the ability to modify SQL [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) (cluster settings prefixed with `sql.`).
 `NOSQLLOGIN` | System | Prevents roles from connecting to the SQL interface of a cluster.

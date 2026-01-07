@@ -52,6 +52,8 @@ Statement | Usage
 [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %}) | Remove a user-defined, [enumerated data type]({% link {{ page.version.version }}/enum.md %}).
 [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})| Remove a view.
 [`REFRESH`]({% link {{ page.version.version }}/refresh.md %}) | Refresh the stored query results of a [materialized view]({% link {{ page.version.version }}/views.md %}#materialized-views).
+[`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) | Run data consistency validation checks against tables or databases. [XXX](XXX): CONFIRM THIS SHOULD GO HERE?
+[`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}) | View issues detected by `INSPECT` data consistency validation jobs. [XXX](XXX): CONFIRM THIS SHOULD GO HERE?
 [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %}) | View details about columns in a table.
 [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %}) | List constraints on a table.
 [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}) | View the `CREATE` statement for a database, function, sequence, table, or view.
