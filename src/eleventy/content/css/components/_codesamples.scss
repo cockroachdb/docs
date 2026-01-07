@@ -6,15 +6,16 @@
   user-select: none;          /* Likely future */
 }
 
-/* Works in conjunction with /js/customscripts.js to make shell terminals prompts ($) totally unselectable */
-/* Position the prompt inside the code area using the code element's ::before */
+/* Works in conjunction with the build transform (Step 7 in .eleventy.js)
+   to make shell terminal prompts ($) totally unselectable.
+   The transform strips $ from code content, CSS adds it back via ::before. */
 .language-shell code::before {
 	color: $cl_syntax_aqua;
     content: "$ ";
     user-select: none;
 }
 
-/* Works in conjunction with /js/customscripts.js to make SQL terminals prompts (>) totally unselectable */
+/* Works in conjunction with build transform for SQL prompts (>) */
 .language-sql code::before {
 	color: $cl_syntax_aqua;
     content: "> ";

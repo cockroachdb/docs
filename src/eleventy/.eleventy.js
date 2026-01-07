@@ -304,6 +304,9 @@ module.exports = function(eleventyConfig) {
         if (fs.existsSync(fullPath)) {
           let content = fs.readFileSync(fullPath, 'utf8');
 
+          // Debug: log all dynamic_include calls
+          console.log(`DEBUG dynamic_include: ${includePath} (${content.length} bytes)`);
+
           // Render the content through Liquid with current context
           // Use this.liquid to reference the engine that owns this tag
           try {
@@ -382,7 +385,15 @@ module.exports = function(eleventyConfig) {
       const fullPath = pathModule.join(__dirname, 'content', '_includes', filePath);
       if (fs.existsSync(fullPath)) {
         const content = fs.readFileSync(fullPath, 'utf8');
-        const fullContext = { ...ctx.getAll(), include: params, ...params };
+        const parentContext = ctx.getAll();
+        // Deep clone site to ensure LiquidJS can access properties
+        const siteCopy = parentContext.site ? JSON.parse(JSON.stringify(parentContext.site)) : { baseurl: '/docs' };
+        // Also add site_baseurl as a direct variable for testing
+        const fullContext = { ...parentContext, include: params, ...params, site: siteCopy, site_baseurl: siteCopy.baseurl };
+        // Debug: check site.baseurl in filter-tabs
+        if (filePath.includes('filter-tabs')) {
+          console.log(`DEBUG include ${filePath}: site.baseurl=${fullContext.site?.baseurl}`);
+        }
         try {
           emitter.write(await customLiquid.parseAndRender(content, fullContext));
         } catch (err) { emitter.write(`<!-- include error: ${err.message} -->`); }
@@ -890,6 +901,10 @@ module.exports = function(eleventyConfig) {
     const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*<|\s*$|\n)/g;
     result = result.replace(fencedCodePattern, function(match, lang, code) {
       const language = lang || 'text';
+      // Debug: log matches for yaml blocks
+      if (lang === 'yaml') {
+        console.log(`DEBUG fenced yaml block: code length=${code.length}, first 50 chars="${code.substring(0,50).replace(/\n/g, '\\n')}"`);
+      }
       // First, convert any <a> tags back to plain URLs (markdown linkify may have processed them)
       let plainCode = code.replace(/<a[^>]*href="([^"]*)"[^>]*>[^<]*<\/a>/gi, '$1');
       // Then escape HTML entities in the code
@@ -953,6 +968,20 @@ module.exports = function(eleventyConfig) {
     // Note: Copy-clipboard transforms removed - now handled by client-side JS in customscripts.js
     result = result.replace(/<p>(<pre[\s\S]*?<\/pre>)/g, '$1');
     result = result.replace(/<p>(<div class="language-[\s\S]*?<\/div>)<\/p>/g, '$1');
+
+    // Step 7: Strip leading prompt characters from shell and SQL code blocks
+    // The CSS adds these back via ::before pseudo-element (making them unselectable)
+    // This preserves the Jekyll/Rouge behavior where prompts were unselectable
+    // Pattern: <code class="language-shell" data-lang="shell">$ command...
+    result = result.replace(
+      /(<code class="language-shell"[^>]*>)\$ /g,
+      '$1'
+    );
+    // SQL: strip leading "> " - Prism wraps it in <span class="token operator">></span>
+    result = result.replace(
+      /(<code class="language-sql"[^>]*>)<span class="token operator">><\/span> /g,
+      '$1'
+    );
 
     return result;
   });

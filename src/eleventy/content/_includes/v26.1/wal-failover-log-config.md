@@ -1,4 +1,4 @@
-~~~ yaml
+~~~yaml
 file-defaults:
  buffered-writes: false
  auditable: false

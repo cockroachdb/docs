@@ -246,7 +246,7 @@ Therefore, if you enable WAL failover and log to local disks, you must also upda
 1. When `buffering` is enabled, `buffered-writes` must be explicitly disabled as shown in the following example. This is necessary because `buffered-writes` does not provide true asynchronous disk access, but rather a small buffer. If the small buffer fills up, it can cause internal routines performing logging operations to hang. This will in turn cause internal routines doing other important work to hang, potentially affecting cluster stability.
 1. The recommended logging configuration for using file-based logging with WAL failover is as follows:
 
-    {% dynamic_include page.version.version, "/wal-failover-log-config.md" %}
+{% dynamic_include page.version.version, "/wal-failover-log-config.md" %}
 
 As an alternative to logging to local disks, you can configure [remote log sinks]({% link "{{page.version.version}}/logging-use-cases.md" %}#network-logging) that are not correlated with the availability of your cluster's local disks. However, this will make troubleshooting using [`cockroach debug zip`]({% link "{{ page.version.version}}/cockroach-debug-zip.md" %}) more difficult, since the output of that command will not include the (remotely stored) log files.
 
