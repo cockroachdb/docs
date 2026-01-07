@@ -5,6 +5,8 @@ toc: true
 docs_area: migrate
 ---
 
+This page describes common issues that can occur while using [MOLT Fetch]({% link molt/molt-fetch.md %}) and suggests ways to troubleshoot those issues.
+
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>
     <button class="filter-button" data-scope="mysql">MySQL</button>

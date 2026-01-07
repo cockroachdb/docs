@@ -9,6 +9,8 @@ MOLT Fetch moves data from a source database into CockroachDB as part of a [data
 
 MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage, Amazon S3, or Azure Blob Storage), a local file server, or local memory. Once the data is exported, MOLT Fetch loads the data into a target CockroachDB database.
 
+You can use MOLT Fetch to migrate data from a PostgreSQL, MySQL, or Oracle source database. Read more about [MOLT Fetch prerequisites]({% link molt/molt-fetch-installation.md %}#prerequisites).
+
 <!-- ## Terminology
 
 - *Shard*: A portion of a table's data exported concurrently during the data export phase. Tables are divided into shards to enable parallel processing. For details, refer to [Table sharding](#shard-tables-for-concurrent-export).
@@ -29,9 +31,9 @@ In this first phase, MOLT Fetch connects to the source database and exports tabl
 
 - [**Selective data movement**](#select-data-to-migrate): By default, MOLT Fetch moves all data from the --source database to CockroachDB. If instead you want to move a subset of the available data, use the [`--schema-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#schema-filter), [`--table-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#table-filter), and [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#schema-filter) flags.
 
-- [**Table sharding for concurrent export**](#shard-tables-for-concurrent-export): Multiple tables and **table shards** can be exported simultaneously using [`--table-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#table-concurrency) and [`--export-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#export-concurrency), with large tables divided into shards for parallel processing.
+- [**Table sharding for concurrent export**](#shard-tables-for-concurrent-export): Multiple tables and _table shards_ can be exported simultaneously using [`--table-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#table-concurrency) and [`--export-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#export-concurrency), with large tables divided into shards for parallel processing.
 
-- [**Load into intermediate storage**](#define-intermediate-storage): Define whether data is written to cloud storage (Amazon S3, Google Cloud Storage, Azure Blob Storage), a local file server, or directly to CockroachDB memory. Intermediate storage enables [continuation after a MOLT Fetch failure](#continue-molt-fetch-after-interruption) by storing **continuation tokens**.
+- [**Load into intermediate storage**](#define-intermediate-storage): Define whether data is written to cloud storage (Amazon S3, Google Cloud Storage, Azure Blob Storage), a local file server, or directly to CockroachDB memory. Intermediate storage enables [continuation after a MOLT Fetch failure](#continue-molt-fetch-after-interruption) by storing _continuation tokens_.
 
 ### Data import phase  
 

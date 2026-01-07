@@ -5,6 +5,8 @@ toc: true
 docs_area: migrate
 ---
 
+This page describes best practices for using [MOLT Fetch]({% link molt/molt-fetch.md %}) to ensure reliable, secure, and performant data migration to CockroachDB.
+
 ## Test and validate
 
 To verify that your connections and configuration work properly, run MOLT Fetch in a staging environment before migrating any data in production. Use a test or development environment that closely resembles production.

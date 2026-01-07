@@ -7,7 +7,7 @@ docs_area: migrate
 
 MOLT Replicator continuously replicates changes from a source database to CockroachDB as part of a [database migration]({% link molt/migration-overview.md %}). It supports migrations from a source database to CockroachDB with minimal downtime, and enables backfill from CockroachDB to your source database for failback scenarios to preserve a rollback option during a migration window.
 
-MOLT Replicator consumes change data from PostgreSQL [logical replication](https://www.postgresql.org/docs/current/logical-replication.html) streams, MySQL [GTID-based replication](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html), Oracle [LogMiner](https://docs.oracle.com/en/database/oracle/oracle-database/21/sutil/oracle-logminer-utility.html), and [CockroachDB changefeeds]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) (for failback). For details, refer to [How it works](#how-it-works).
+MOLT Replicator consumes change data from PostgreSQL [logical replication](https://www.postgresql.org/docs/current/logical-replication.html) streams, MySQL [GTID-based replication](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html), Oracle [LogMiner](https://docs.oracle.com/en/database/oracle/oracle-database/21/sutil/oracle-logminer-utility.html), and [CockroachDB changefeeds]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) (for failback). Read more about [MOLT Replicator prerequisites]({% link molt/molt-replicator-installation.md %}#prerequisites).
 
 ## Terminology
 
