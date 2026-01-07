@@ -7,7 +7,7 @@ Enable `schema_locked` on the watched table with the [`ALTER TABLE`]({% link {{ 
 ALTER TABLE watched_table SET (schema_locked = true);
 ~~~
 
-CockroachDB attempts to automatically unset `schema_locked` before performing a schema change and reapply it when done. However, certain schema changes (such as `ALTER TABLE ... SET LOCALITY`) cannot automatically unset it. For these cases, you must manually unlock the table with `schema_locked = false`, complete the schema change, and then lock the table again with `schema_locked = true`. The changefeed will run as normal while `schema_locked` is unset, but it will not benefit from the performance optimization.
+CockroachDB automatically unsets `schema_locked` before performing metadata-only operations (such as renaming columns, constraints, or tables) and reapplies it when done. However, you must explicitly unset `schema_locked` for operations that require backfilling or data restructuring. For the full list of operations, refer to [Table parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#storage-parameter-schema-locked). For these cases, you must manually unlock the table with `schema_locked = false`, complete the schema change, and then lock the table again with `schema_locked = true`. The changefeed will run normally while `schema_locked` is unset, but it will not benefit from the performance optimization.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
