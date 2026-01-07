@@ -34,7 +34,6 @@ Example 2:
 
 {%- if ns == ps -%}
 {%- assign ul = ns | minus: 1 -%}
-<!-- DEBUG: site.baseurl={{ site.baseurl }} site_baseurl={{ site_baseurl }} include.page_folder={{ include.page_folder }} -->
 <div class="filters clearfix">
 {%- for x in (0..ul) -%}
 {%- if page_filenames[x] contains "http://" or page_filenames[x] contains "https://" -%}

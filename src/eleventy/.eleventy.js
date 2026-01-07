@@ -184,7 +184,20 @@ liquidEngine.registerTag('dynamic_include', {
         // Render the content through Liquid with current context
         try {
           const engine = this.liquid || liquidEngine;
-          const rendered = await engine.parseAndRender(content, ctx.getAll());
+          let rendered = await engine.parseAndRender(content, ctx.getAll());
+
+          // Convert fenced code blocks (~~~) to HTML before outputting
+          // This prevents markdown from misinterpreting them when the tag is indented
+          const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*$|\n|<)/g;
+          rendered = rendered.replace(fencedCodePattern, function(match, lang, code) {
+            const language = lang || 'text';
+            const escapedCode = code
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;');
+            return `<div class="language-${language} highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="language-${language}" data-lang="${language}">${escapedCode}</code></pre></div></div>`;
+          });
+
           emitter.write(rendered);
         } catch (liquidError) {
           console.error(`dynamic_include (module) LIQUID ERROR in ${includePath}: ${liquidError.message}`);
@@ -304,14 +317,24 @@ module.exports = function(eleventyConfig) {
         if (fs.existsSync(fullPath)) {
           let content = fs.readFileSync(fullPath, 'utf8');
 
-          // Debug: log all dynamic_include calls
-          console.log(`DEBUG dynamic_include: ${includePath} (${content.length} bytes)`);
-
           // Render the content through Liquid with current context
           // Use this.liquid to reference the engine that owns this tag
           try {
             const engine = this.liquid || customLiquid;
-            const rendered = await engine.parseAndRender(content, ctx.getAll());
+            let rendered = await engine.parseAndRender(content, ctx.getAll());
+
+            // Convert fenced code blocks (~~~) to HTML before outputting
+            // This prevents markdown from misinterpreting them when the tag is indented
+            const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*$|\n|<)/g;
+            rendered = rendered.replace(fencedCodePattern, function(match, lang, code) {
+              const language = lang || 'text';
+              const escapedCode = code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+              return `<div class="language-${language} highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="language-${language}" data-lang="${language}">${escapedCode}</code></pre></div></div>`;
+            });
+
             emitter.write(rendered);
           } catch (liquidError) {
             console.error(`dynamic_include LIQUID ERROR in ${includePath}: ${liquidError.message}`);
@@ -390,10 +413,6 @@ module.exports = function(eleventyConfig) {
         const siteCopy = parentContext.site ? JSON.parse(JSON.stringify(parentContext.site)) : { baseurl: '/docs' };
         // Also add site_baseurl as a direct variable for testing
         const fullContext = { ...parentContext, include: params, ...params, site: siteCopy, site_baseurl: siteCopy.baseurl };
-        // Debug: check site.baseurl in filter-tabs
-        if (filePath.includes('filter-tabs')) {
-          console.log(`DEBUG include ${filePath}: site.baseurl=${fullContext.site?.baseurl}`);
-        }
         try {
           emitter.write(await customLiquid.parseAndRender(content, fullContext));
         } catch (err) { emitter.write(`<!-- include error: ${err.message} -->`); }
@@ -826,7 +845,21 @@ module.exports = function(eleventyConfig) {
           return `<!-- Liquid error in ${includePath}: ${liquidError.message} -->`;
         }
 
-        return rendered;
+        // Convert fenced code blocks (~~~) to HTML before outputting
+        // This prevents markdown from misinterpreting them when the tag is indented
+        const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*$|\n|<)/g;
+        rendered = rendered.replace(fencedCodePattern, function(match, lang, code) {
+          const language = lang || 'text';
+          const escapedCode = code
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+          return `<div class="language-${language} highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="language-${language}" data-lang="${language}">${escapedCode}</code></pre></div></div>`;
+        });
+
+        // Wrap output with blank lines to prevent markdown from interfering
+        // when the shortcode is used inside list items
+        return '\n\n' + rendered.trim() + '\n\n';
       } else {
         console.warn(`dynamic_include: File not found: ${fullPath}`);
         return `<!-- Include not found: ${includePath} -->`;
@@ -901,10 +934,6 @@ module.exports = function(eleventyConfig) {
     const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*<|\s*$|\n)/g;
     result = result.replace(fencedCodePattern, function(match, lang, code) {
       const language = lang || 'text';
-      // Debug: log matches for yaml blocks
-      if (lang === 'yaml') {
-        console.log(`DEBUG fenced yaml block: code length=${code.length}, first 50 chars="${code.substring(0,50).replace(/\n/g, '\\n')}"`);
-      }
       // First, convert any <a> tags back to plain URLs (markdown linkify may have processed them)
       let plainCode = code.replace(/<a[^>]*href="([^"]*)"[^>]*>[^<]*<\/a>/gi, '$1');
       // Then escape HTML entities in the code
