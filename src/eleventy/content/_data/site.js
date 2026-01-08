@@ -61,6 +61,9 @@ module.exports = function() {
     }
   }
 
+  // Define the stable/current versions
+  const stableVersion = "v26.1";
+
   // Return the site object with Jekyll-compatible structure
   return {
     title: "CockroachDB Docs",
@@ -68,9 +71,12 @@ module.exports = function() {
     baseurl: process.env.DOCS_BASE_PATH !== undefined ? process.env.DOCS_BASE_PATH : '/docs',
     // Version aliases map - used by sidebar.js.html for isVersionDirectory
     versions: {
-      stable: "v26.1",
+      stable: stableVersion,
       dev: null,
     },
+    // Current version for unversioned pages (like /molt/) that link to versioned docs
+    // Used in templates as {{ site.current_cloud_version }}
+    current_cloud_version: stableVersion,
     // The key part: data namespace for Jekyll compatibility
     data: data
   };
