@@ -24,6 +24,11 @@ The standby cluster's reader VC has its own system tables and [cluster settings]
 In the event of failover, the reader VC is destroyed.
 
 ## Use the read from standby feature
+
+{{ site.data.alerts.callout_info }}
+The read from standby feature allows you to utilize your standby cluster to increase efficiency when you are already using PCR. However, PCR's primary use case is disaster recovery, not workload isolation. If you need a workload isolation solution but do not need disaster recovery, deploy a single cluster and use [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) instead.
+{{ site.data.alerts.end }}
+
 ### Before you begin
 
 Prior to setting up read from standby, ensure that:
@@ -89,8 +94,8 @@ SELECT region, SUM(amount) FROM orders GROUP BY region;
 The results of queries on the standby cluster reflect the state of the primary cluster as of a historical time that approaches the [replicated time]({% link {{ page.version.version }}/show-virtual-cluster.md %}#show-replication-status).
 
 {{ site.data.alerts.callout_info }}
-Only use the read from standby feature for ad-hoc analytics queries. To run read replicas, or to leverage `AS OF SYSTEM TIME` for read-only workloads, use [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) instead. Write operations are not permitted on the standby cluster. 
-{{ site.data.alerts.end }}
+Write operations are not permitted on the standby cluster.
+{{ site.data.alerts.end }} 
 
 ## See also
 - [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %})
