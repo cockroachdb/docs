@@ -9,36 +9,42 @@
       ]
     },
     {
-      "title": "Migration Strategy",
-      "urls": [
-        "/molt/migration-strategy.html"
-      ]
-    },
-    {
-      "title": "Migration Flows",
+      "title": "Migration Considerations",
       "items": [
         {
-          "title": "Bulk Load",
+          "title": "Overview",
           "urls": [
-            "/molt/migrate-bulk-load.html"
+            "/molt/migration-considerations.html"
           ]
         },
         {
-          "title": "Load and Replicate Separately",
+          "title": "Migration Granularity",
           "urls": [
-            "/molt/migrate-load-replicate.html"
+            "/molt/migration-considerations-phases.html"
           ]
         },
         {
-          "title": "Resume Replication",
+          "title": "Continuous Replication",
           "urls": [
-            "/molt/migrate-resume-replication.html"
+            "/molt/migration-considerations-replication.html"
           ]
         },
         {
-          "title": "Failback",
+          "title": "Data Transformation Strategy",
           "urls": [
-            "/molt/migrate-failback.html"
+            "/molt/migration-considerations-transformation.html"
+          ]
+        },
+        {
+          "title": "Validation Strategy",
+          "urls": [
+            "/molt/migration-considerations-validation.html"
+          ]
+        },
+        {
+          "title": "Rollback Plan",
+          "urls": [
+            "/molt/migration-considerations-rollback.html"
           ]
         }
       ]
@@ -48,14 +54,60 @@
       "items": [
         {
           "title": "Schema Conversion Tool",
-          "urls": [
-            "/cockroachcloud/migrations-page.html"
+          "items": [
+            {
+              "title": "Guide",
+              "urls": [
+                "/cockroachcloud/migrations-page.html"
+              ]
+            },
+            {
+              "title": "Type Mapping",
+              "urls": [
+                "/molt/molt-type-mapping.html"
+              ]
+            }
           ]
         },
         {
           "title": "Fetch",
-          "urls": [
-            "/molt/molt-fetch.html"
+          "items": [
+            {
+              "title": "Guide",
+              "urls": [
+                "/molt/molt-fetch.html"
+              ]
+            },
+            {
+              "title": "Installation",
+              "urls": [
+                "/molt/molt-fetch-installation.html"
+              ]
+            },
+            {
+              "title": "Commands and Flags",
+              "urls": [
+                "/molt/molt-fetch-commands-and-flags.html"
+              ]
+            },
+            {
+              "title": "Metrics",
+              "urls": [
+                "/molt/molt-fetch-monitoring.html"
+              ]
+            },
+            {
+              "title": "Best Practices",
+              "urls": [
+                "/molt/molt-fetch-best-practices.html"
+              ]
+            },
+            {
+              "title": "Troubleshooting",
+              "urls": [
+                "/molt/molt-fetch-troubleshooting.html"
+              ]
+            }
           ]
         },
         {
@@ -68,7 +120,13 @@
               ]
             },
             {
-              "title": "Flags",
+              "title": "Installation",
+              "urls": [
+                "/molt/molt-replicator-installation.html"
+              ]
+            },
+            {
+              "title": "Commands and Flags",
               "urls": [
                 "/molt/replicator-flags.html"
               ]
@@ -78,6 +136,18 @@
               "urls": [
                 "/molt/replicator-metrics.html"
               ]
+            },
+            {
+              "title": "Best Practices",
+              "urls": [
+                "/molt/molt-replicator-best-practices.html"
+              ]
+            },
+            {
+              "title": "Troubleshooting",
+              "urls": [
+                "/molt/molt-replicator-troubleshooting.html"
+              ]
             }
           ]
         },
@@ -85,6 +155,41 @@
           "title": "Verify",
           "urls": [
             "/molt/molt-verify.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Common Migration Approaches",
+      "items": [
+        {
+          "title": "Classic Bulk Load Migration",
+          "urls": [
+            "/molt/migration-approach-classic-bulk-load.html"
+          ]
+        },
+        {
+          "title": "Phased Bulk Load Migration",
+          "urls": [
+            "/molt/migration-approach-phased-bulk-load.html"
+          ]
+        },
+        {
+          "title": "Delta Migration",
+          "urls": [
+            "/molt/migration-approach-delta.html"
+          ]
+        },
+        {
+          "title": "Streaming Migration",
+          "urls": [
+            "/molt/migration-approach-streaming.html"
+          ]
+        },
+        {
+          "title": "Active-Active Migration",
+          "urls": [
+            "/molt/migration-approach-active-active.html"
           ]
         }
       ]

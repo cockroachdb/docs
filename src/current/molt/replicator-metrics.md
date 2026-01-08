@@ -1,5 +1,5 @@
 ---
-title: Replicator Metrics
+title: MOLT Replicator Metrics
 summary: Learn how to monitor stages of the MOLT Replicator pipeline.
 toc: true
 docs_area: migrate
