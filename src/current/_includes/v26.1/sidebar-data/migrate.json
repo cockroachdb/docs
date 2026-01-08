@@ -78,40 +78,40 @@
               "urls": [
                 "/molt/replicator-metrics.html"
               ]
-            }
-          ]
-        },
-        {
-          "title": "User Scripts",
-          "items": [
-            {
-              "title": "Guide",
-              "urls": [
-                "/molt/user-script-guide.html"
-              ]
             },
             {
-              "title": "Quickstart",
-              "urls": [
-                "/molt/user-script-quickstart.html"
-              ]
-            },
-            {
-              "title": "API",
-              "urls": [
-                "/molt/user-script-api.html"
-              ]
-            },
-            {
-              "title": "Cookbooks",
-              "urls": [
-                "/molt/user-script-cookbooks.html"
-              ]
-            },
-            {
-              "title": "Metrics",
-              "urls": [
-                "/molt/user-script-metrics.html"
+              "title": "Userscripts",
+              "items": [
+                {
+                  "title": "Guide",
+                  "urls": [
+                    "/molt/userscript-guide.html"
+                  ]
+                },
+                {
+                  "title": "Quickstart",
+                  "urls": [
+                    "/molt/userscript-quickstart.html"
+                  ]
+                },
+                {
+                  "title": "API",
+                  "urls": [
+                    "/molt/userscript-api.html"
+                  ]
+                },
+                {
+                  "title": "Cookbooks",
+                  "urls": [
+                    "/molt/userscript-cookbook.html"
+                  ]
+                },
+                {
+                  "title": "Metrics",
+                  "urls": [
+                    "/molt/userscript-metrics.html"
+                  ]
+                }
               ]
             }
           ]
