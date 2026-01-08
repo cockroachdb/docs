@@ -1,5 +1,7 @@
 # Build output
 _site/
+_test_site/
+_test_output/
 
 # Dependencies
 node_modules/

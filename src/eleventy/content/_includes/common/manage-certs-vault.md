@@ -617,7 +617,7 @@ To start the cluster, execute the pre-provisioned start script.
 gcloud beta compute ssh --command './start_roach.sh' "${node1name}"
 gcloud beta compute ssh --command './start_roach.sh' "${node2name}"
 gcloud beta compute ssh --command './start_roach.sh' "${node3name}"
-````
+```
 
 #### Reset the nodes
 
