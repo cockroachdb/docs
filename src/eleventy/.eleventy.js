@@ -715,7 +715,13 @@ module.exports = function(eleventyConfig) {
   });
 
   // scssify filter - SCSS compilation using dart-sass (with caching)
+  // Note: Cache is cleared at start of each build via 'eleventy.before' event
   const scssifyCache = new Map();
+
+  // Clear SCSS cache at start of each build (prevents stale cache in watch mode)
+  eleventyConfig.on('eleventy.before', async () => {
+    scssifyCache.clear();
+  });
 
   eleventyConfig.addFilter("scssify", function(content) {
     if (!content) return '';
@@ -1242,12 +1248,22 @@ module.exports = function(eleventyConfig) {
   // ---------------------------------------------------------------------------
   // Build-time Warnings: Detect potential markdown rendering issues
   // ---------------------------------------------------------------------------
+  // Note: This object is reset at the start of each build via 'eleventy.before' event
+  // to prevent memory growth in watch mode
   const migrationIssues = {
     unprocessedTables: [],
     unprocessedCodeBlocks: [],
     unprocessedInlineCode: [],
     markdownInHtmlBlocks: []
   };
+
+  // Reset migration issues at start of each build (prevents memory growth in watch mode)
+  eleventyConfig.on('eleventy.before', async () => {
+    migrationIssues.unprocessedTables = [];
+    migrationIssues.unprocessedCodeBlocks = [];
+    migrationIssues.unprocessedInlineCode = [];
+    migrationIssues.markdownInHtmlBlocks = [];
+  });
 
   eleventyConfig.addTransform("migration-warnings", function(content) {
     if (!this.page.outputPath || !this.page.outputPath.endsWith('.html')) {
