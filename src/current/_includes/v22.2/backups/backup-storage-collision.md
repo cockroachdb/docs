@@ -1,1 +1,0 @@
-You will encounter an error if you run multiple [backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) to the same storage URI. Each collection's URI must be unique.
