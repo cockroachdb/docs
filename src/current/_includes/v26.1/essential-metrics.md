@@ -171,7 +171,7 @@ The **Usage** column explains why each metric is important to visualize and how 
         <tr>
             <td><div id="{{ metric_link }}" class="anchored"><code>{{ metric.name }}</code></div>
             {% comment %} For self-hosted, add labeled_name if exists. advanced does not yet support metrics endpoint. {% endcomment %}
-            <br>{% if include.deployment == 'self-hosted' %}{% if metric.labeled_name %}<code>metrics</code> endpoint:<br><code>{{ metric.labeled_name }}</code>{% endif %}{% endif %}
+            <br>{% if include.deployment == 'self-hosted' %}{% if metric.labeled_name %}[<code>metrics</code> endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics):<br><code>{{ metric.labeled_name }}</code>{% endif %}{% endif %}
             </td>
             <td>
                 {% if match1 %}{% comment %}Match1:{% endcomment %}<code>{{ match1.datadog_id }}</code>
@@ -227,7 +227,7 @@ The **Usage** column explains why each metric is important to visualize and how 
         <tr>
             <td><div id="{{ metric_link }}" class="anchored"><code>{{ metric.name }}</code></div>
             {% comment %} For self-hosted, add labeled_name if exists. advanced does not yet support metrics endpoint. {% endcomment %}
-            <br>{% if include.deployment == 'self-hosted' %}{% if metric.labeled_name %}<code>metrics</code> endpoint:<br><code>{{ metric.labeled_name }}</code>{% endif %}{% endif %}
+            <br>{% if include.deployment == 'self-hosted' %}{% if metric.labeled_name %}[<code>metrics</code> endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics):<br><code>{{ metric.labeled_name }}</code>{% endif %}{% endif %}
             </td>
             <td><code>{{ metric.name }}</code>
             </td>
@@ -272,7 +272,7 @@ The **Usage** column explains why each metric is important to visualize and how 
         <tr>
             <td><div id="{{ metric_link }}" class="anchored"><code>{{ metric.name }}</code></div>
             {% comment %} For self-hosted, add labeled_name if exists. advanced does not yet support metrics endpoint. {% endcomment %}
-            <br>{% if include.deployment == 'self-hosted' %}{% if metric.labeled_name %}<code>metrics</code> endpoint:<br><code>{{ metric.labeled_name }}</code>{% endif %}{% endif %}
+            <br>{% if include.deployment == 'self-hosted' %}{% if metric.labeled_name %}[<code>metrics</code> endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics):<br><code>{{ metric.labeled_name }}</code>{% endif %}{% endif %}
             </td>
             <td><code>{{ metric.name }}</code>
             </td>
@@ -315,7 +315,7 @@ The **Usage** column explains why each metric is important to visualize and how 
         <tr>
             <td><div id="{{ metric_link }}" class="anchored"><code>{{ metric.metric_id }}</code></div>
             {% comment %} For self-hosted, add labeled_name if exists. advanced does not yet support metrics endpoint {% endcomment %}
-            <br>{% if include.deployment == 'self-hosted' %}{% if metric.labeled_name %}<code>metrics</code> endpoint:<br><code>{{ metric.labeled_name }}</code>{% endif %}{% endif %}
+            <br>{% if include.deployment == 'self-hosted' %}{% if metric.labeled_name %}[<code>metrics</code> endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics):<br><code>{{ metric.labeled_name }}</code>{% endif %}{% endif %}
             </td>
             <td><code>{{ metric.metric_id }}</code>
             </td>
