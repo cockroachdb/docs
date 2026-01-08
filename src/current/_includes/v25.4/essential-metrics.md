@@ -88,7 +88,7 @@ The **Usage** column explains why each metric is important to visualize and how 
       
       {% assign layer = layers | where_exp: "l", "l.name == layer_name" %}      
       {% assign category = layer[0].categories | where_exp: "c", "c.name == category_name" %}
-      {% assign essential_metrics = category[0].metrics | where: "essential", true %}     
+      {% assign essential_metrics = category[0].metrics | where_exp: "m", "m.essential == true or m.visibility == 'ESSENTIAL'" %}
       {% if essential_metrics.size > 0 %}
         {% comment %}DEBUG: 1 {{ layer_name }} 2 {{ layer[0].name }} 3 {{ category[0].name }} {{ essential_metrics.size }}{% endcomment %}
         {% assign essential_metrics_total = essential_metrics_total | plus: essential_metrics.size %}
@@ -132,7 +132,7 @@ The **Usage** column explains why each metric is important to visualize and how 
         
         {% assign layer = layers | where_exp: "l", "l.name == layer_name" %}
         {% assign category = layer[0].categories | where_exp: "c", "c.name == category_name" %}
-        {% assign essential_metrics = category[0].metrics | where: "essential", true %}     
+        {% assign essential_metrics = category[0].metrics | where_exp: "m", "m.essential == true or m.visibility == 'ESSENTIAL'" %}     
         {% comment %}DEBUG: 1 {{ layer_name }} 2 {{ layer[0].name }} 3 {{ category[0].name }}{% endcomment %} 
 
         {% for metric in essential_metrics %}
@@ -203,8 +203,7 @@ The **Usage** column explains why each metric is important to visualize and how 
     {% if category_name == "SQL" %}
       {% assign layer = layers | where_exp: "l", "l.name == 'APPLICATION'" %}
       {% assign category = layer[0].categories | where_exp: "c", "c.name == category_name" %}
-      {% assign essential_metrics = category[0].metrics | where: "essential", true %}
-
+      {% assign essential_metrics = category[0].metrics | where_exp: "m", "m.essential == true or m.visibility == 'ESSENTIAL'" %}
     {% if include.deployment == 'self-hosted' %}
 ## Table Statistics
 
