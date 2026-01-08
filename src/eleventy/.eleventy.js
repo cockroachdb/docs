@@ -5,6 +5,8 @@ const path = require('path');
 const sass = require('sass');
 const { Liquid } = require('liquidjs');
 const { versionsPlugin, VERSION_CONFIG } = require('./lib/plugins/versions');
+// Note: md-in-html plugin is disabled - see lib/plugins/md-in-html.js for explanation
+// markdown="1" processing is now done in the jekyll-compat transform below
 
 // Create a Liquid engine instance for processing dynamic includes
 // Configure to handle both .md and .html files in includes
@@ -186,10 +188,11 @@ liquidEngine.registerTag('dynamic_include', {
           const engine = this.liquid || liquidEngine;
           let rendered = await engine.parseAndRender(content, ctx.getAll());
 
-          // Convert fenced code blocks (~~~) to HTML before outputting
+          // Convert fenced code blocks (~~~ or ```) to HTML before outputting
           // This prevents markdown from misinterpreting them when the tag is indented
-          const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*$|\n|<)/g;
-          rendered = rendered.replace(fencedCodePattern, function(match, lang, code) {
+          // Also handle indented code fences
+          const fencedCodePattern = /^([ \t]*)(~~~|```)\s*(\w*)\s*\n([\s\S]*?)\n\1\2(?=\s*$|\n|<)/gm;
+          rendered = rendered.replace(fencedCodePattern, function(match, indent, delimiter, lang, code) {
             const language = lang || 'text';
             const escapedCode = code
               .replace(/&/g, '&amp;')
@@ -323,10 +326,11 @@ module.exports = function(eleventyConfig) {
             const engine = this.liquid || customLiquid;
             let rendered = await engine.parseAndRender(content, ctx.getAll());
 
-            // Convert fenced code blocks (~~~) to HTML before outputting
+            // Convert fenced code blocks (~~~ or ```) to HTML before outputting
             // This prevents markdown from misinterpreting them when the tag is indented
-            const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*$|\n|<)/g;
-            rendered = rendered.replace(fencedCodePattern, function(match, lang, code) {
+            // Also handle indented code fences
+            const fencedCodePattern = /^([ \t]*)(~~~|```)\s*(\w*)\s*\n([\s\S]*?)\n\1\2(?=\s*$|\n|<)/gm;
+            rendered = rendered.replace(fencedCodePattern, function(match, indent, delimiter, lang, code) {
               const language = lang || 'text';
               const escapedCode = code
                 .replace(/&/g, '&amp;')
@@ -409,17 +413,18 @@ module.exports = function(eleventyConfig) {
       if (fs.existsSync(fullPath)) {
         const content = fs.readFileSync(fullPath, 'utf8');
         const parentContext = ctx.getAll();
-        // Deep clone site to ensure LiquidJS can access properties
-        const siteCopy = parentContext.site ? JSON.parse(JSON.stringify(parentContext.site)) : { baseurl: '/docs' };
+        // Use site directly - no need to clone since we don't modify it
+        const site = parentContext.site || { baseurl: '/docs' };
         // Also add site_baseurl as a direct variable for testing
-        const fullContext = { ...parentContext, include: params, ...params, site: siteCopy, site_baseurl: siteCopy.baseurl };
+        const fullContext = { ...parentContext, include: params, ...params, site: site, site_baseurl: site.baseurl };
         try {
           let rendered = await customLiquid.parseAndRender(content, fullContext);
 
-          // Convert fenced code blocks (~~~) to HTML before outputting
+          // Convert fenced code blocks (~~~ or ```) to HTML before outputting
           // This prevents markdown from misinterpreting them when the include is indented
-          const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*$|\n|<)/g;
-          rendered = rendered.replace(fencedCodePattern, function(match, lang, code) {
+          // Also handle indented code fences
+          const fencedCodePattern = /^([ \t]*)(~~~|```)\s*(\w*)\s*\n([\s\S]*?)\n\1\2(?=\s*$|\n|<)/gm;
+          rendered = rendered.replace(fencedCodePattern, function(match, indent, delimiter, lang, code) {
             const language = lang || 'text';
             const escapedCode = code
               .replace(/&/g, '&amp;')
@@ -431,7 +436,9 @@ module.exports = function(eleventyConfig) {
           // Wrap output with blank lines to prevent markdown from interfering
           // when the include is used inside list items
           emitter.write('\n\n' + rendered.trim() + '\n\n');
-        } catch (err) { emitter.write(`<!-- include error: ${err.message} -->`); }
+        } catch (err) {
+          emitter.write(`<!-- include error: ${err.message} -->`);
+        }
       } else {
         if (!filePath.includes('copy-clipboard')) console.warn(`include: Not found: ${fullPath}`);
         emitter.write(`<!-- include: not found: ${filePath} -->`);
@@ -484,10 +491,11 @@ module.exports = function(eleventyConfig) {
         try {
           let rendered = await customLiquid.parseAndRender(content, fullContext);
 
-          // Convert fenced code blocks (~~~) to HTML before outputting
+          // Convert fenced code blocks (~~~ or ```) to HTML before outputting
           // This prevents markdown from misinterpreting them when the include is indented
-          const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*$|\n|<)/g;
-          rendered = rendered.replace(fencedCodePattern, function(match, lang, code) {
+          // Also handle indented code fences
+          const fencedCodePattern = /^([ \t]*)(~~~|```)\s*(\w*)\s*\n([\s\S]*?)\n\1\2(?=\s*$|\n|<)/gm;
+          rendered = rendered.replace(fencedCodePattern, function(match, indent, delimiter, lang, code) {
             const language = lang || 'text';
             const escapedCode = code
               .replace(/&/g, '&amp;')
@@ -667,6 +675,8 @@ module.exports = function(eleventyConfig) {
     level: [2, 3, 4, 5],
     slugify: (s) => s.toLowerCase().replace(/[^\w]+/g, '-')
   });
+  // NOTE: mdInHtmlPlugin disabled - markdown-it splits HTML elements across tokens,
+  // so we process markdown="1" content in the jekyll-compat transform instead
 
   // Disable indented code blocks (match Redcarpet config)
   md.disable('code');
@@ -877,10 +887,11 @@ module.exports = function(eleventyConfig) {
           return `<!-- Liquid error in ${includePath}: ${liquidError.message} -->`;
         }
 
-        // Convert fenced code blocks (~~~) to HTML before outputting
+        // Convert fenced code blocks (~~~ or ```) to HTML before outputting
         // This prevents markdown from misinterpreting them when the tag is indented
-        const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*$|\n|<)/g;
-        rendered = rendered.replace(fencedCodePattern, function(match, lang, code) {
+        // Also handle indented code fences
+        const fencedCodePattern = /^([ \t]*)(~~~|```)\s*(\w*)\s*\n([\s\S]*?)\n\1\2(?=\s*$|\n|<)/gm;
+        rendered = rendered.replace(fencedCodePattern, function(match, indent, delimiter, lang, code) {
           const language = lang || 'text';
           const escapedCode = code
             .replace(/&/g, '&amp;')
@@ -952,6 +963,7 @@ module.exports = function(eleventyConfig) {
   // ---------------------------------------------------------------------------
   // Transform: Jekyll Compatibility (markdown in HTML, fenced code blocks, callouts)
   // ---------------------------------------------------------------------------
+
   eleventyConfig.addTransform("jekyll-compat", function(content) {
     if (!this.page.outputPath || !this.page.outputPath.endsWith('.html')) {
       return content;
@@ -959,12 +971,111 @@ module.exports = function(eleventyConfig) {
 
     let result = content;
 
-    // Step 1: Process unprocessed ~~~ fenced code blocks
+    // Step 0: Process markdown inside elements with markdown="1" attribute
+    // markdown-it can't handle these because it splits HTML elements across tokens
+    // We process them here using regex-based markdown conversion
+    const markdownAttrPattern = /<(\w+)([^>]*?)\s+markdown=["']1["']([^>]*)>([\s\S]*?)<\/\1>/gi;
+    result = result.replace(markdownAttrPattern, function(match, tagName, attrsBefore, attrsAfter, innerContent) {
+      // Process the inner content as markdown
+      let processed = innerContent;
+
+      // Convert fenced code blocks first (before other processing might interfere)
+      // Handle both ~~~ and ``` delimiters using backreference
+      // Also handle indented code fences (e.g., inside list items)
+      const fencedPattern = /^([ \t]*)(~~~|```)\s*(\w*)\s*\n([\s\S]*?)\n\1\2(?=\s*$|\n|<)/gm;
+      processed = processed.replace(fencedPattern, function(m, indent, delimiter, lang, code) {
+        const language = lang || 'text';
+        const escapedCode = code
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        return `<div class="language-${language} highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="language-${language}" data-lang="${language}">${escapedCode.trim()}</code></pre></div></div>`;
+      });
+
+      // Also handle code fences that got wrapped in <p> tags by markdown-it
+      // This happens when markdown-it processes \\ line breaks into <br> before we can convert fences
+      // Pattern: <p>~~~lang\ncode with <br>\n~~~</p>
+      const wrappedFencePattern = /<p>(~~~|```)\s*(\w*)\s*\n([\s\S]*?)\n\1<\/p>/gi;
+      processed = processed.replace(wrappedFencePattern, function(m, delimiter, lang, code) {
+        const language = lang || 'text';
+        // Convert <br> back to newlines in code content
+        let cleanCode = code.replace(/<br\s*\/?>/gi, '');
+        // Remove any other HTML that snuck in
+        cleanCode = cleanCode.replace(/<\/?p>/gi, '');
+        const escapedCode = cleanCode
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        return `<div class="language-${language} highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="language-${language}" data-lang="${language}">${escapedCode.trim()}</code></pre></div></div>`;
+      });
+
+      // Convert ordered lists: 1. item becomes <ol><li>item</li></ol>
+      // Handle consecutive numbered items
+      const orderedListPattern = /(?:^|\n)((?:\d+\.\s+[^\n]+(?:\n(?!\d+\.)[^\n]+)*\n?)+)/g;
+      processed = processed.replace(orderedListPattern, function(m, listContent) {
+        const items = listContent.split(/\n(?=\d+\.\s)/);
+        const lis = items.map(item => {
+          const text = item.replace(/^\d+\.\s+/, '').trim();
+          if (text) return `<li>${text}</li>`;
+          return '';
+        }).filter(li => li).join('\n');
+        return `\n<ol>\n${lis}\n</ol>\n`;
+      });
+
+      // Convert unordered lists: - item or * item becomes <ul><li>item</li></ul>
+      const unorderedListPattern = /(?:^|\n)((?:[-*]\s+[^\n]+\n?)+)/g;
+      processed = processed.replace(unorderedListPattern, function(m, listContent) {
+        const items = listContent.split(/\n(?=[-*]\s)/);
+        const lis = items.map(item => {
+          const text = item.replace(/^[-*]\s+/, '').trim();
+          if (text) return `<li>${text}</li>`;
+          return '';
+        }).filter(li => li).join('\n');
+        return `\n<ul>\n${lis}\n</ul>\n`;
+      });
+
+      // Convert markdown links [text](url) to HTML
+      processed = processed.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+      // Convert **bold** to <strong>
+      processed = processed.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+      // Convert *italic* to <em> (but not inside URLs)
+      processed = processed.replace(/(?<![:/])\*([^*]+)\*(?![\/.])/g, '<em>$1</em>');
+
+      // Convert `code` to <code>
+      processed = processed.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      // Convert paragraphs (text separated by blank lines)
+      // Split by double newlines and wrap non-HTML blocks in <p>
+      const paragraphs = processed.split(/\n\n+/);
+      processed = paragraphs.map(p => {
+        p = p.trim();
+        if (!p) return '';
+        // Don't wrap if already has block-level HTML
+        if (p.match(/^<(div|p|ol|ul|li|table|pre|h[1-6]|blockquote)/i)) {
+          return p;
+        }
+        // Don't wrap if it's just whitespace
+        if (!p.replace(/<[^>]+>/g, '').trim()) {
+          return p;
+        }
+        return `<p>${p}</p>`;
+      }).join('\n\n');
+
+      // Reconstruct the element without the markdown attribute
+      return `<${tagName}${attrsBefore}${attrsAfter}>${processed}</${tagName}>`;
+    });
+
+
+    // Step 1: Process unprocessed fenced code blocks (~~~ or ```)
+
     // These appear as literal text when markdown-it skips them (inside HTML blocks)
-    // Match ~~~ with optional language, content, and closing ~~~
+    // Match ~~~ or ``` with optional language, content, and matching closing delimiter
+    // Also handle indented code fences (e.g., inside list items)
     // Output Jekyll/Rouge-compatible HTML structure for CSS compatibility
-    const fencedCodePattern = /~~~\s*(\w*)\s*\n([\s\S]*?)\n~~~(?=\s*<|\s*$|\n)/g;
-    result = result.replace(fencedCodePattern, function(match, lang, code) {
+    const fencedCodePattern = /^([ \t]*)(~~~|```)\s*(\w*)\s*\n([\s\S]*?)\n\1\2(?=\s*<|\s*$|\n)/gm;
+    result = result.replace(fencedCodePattern, function(match, indent, delimiter, lang, code) {
       const language = lang || 'text';
       // First, convert any <a> tags back to plain URLs (markdown linkify may have processed them)
       let plainCode = code.replace(/<a[^>]*href="([^"]*)"[^>]*>[^<]*<\/a>/gi, '$1');
@@ -977,7 +1088,9 @@ module.exports = function(eleventyConfig) {
       return `<div class="language-${language} highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="language-${language}" data-lang="${language}">${escapedCode.trim()}</code></pre></div></div>\n`;
     });
 
+
     // Step 2: Process markdown inside callouts (bs-callout divs)
+
     // The callout HTML contains raw markdown that needs processing
     const calloutPattern = /(<div class="bs-callout[^"]*">)(<div class="bs-callout__label">[^<]*<\/div>)\s*([\s\S]*?)(<\/div>)(?=\s*(?:<\/li>|<\/ol>|<\/ul>|<h|<p|<div|$))/gi;
     result = result.replace(calloutPattern, function(match, openTag, label, innerContent, closeTag) {
@@ -995,7 +1108,9 @@ module.exports = function(eleventyConfig) {
       return `${openTag}\n${label}\n<p>${processed}</p>\n${closeTag}`;
     });
 
+
     // Step 3: Process inline code backticks that weren't processed by markdown
+
     // This happens when content is inside HTML blocks (like filter-content divs)
     // Convert `code` to <code>code</code>, but not inside <pre>, <code>, or <script> tags
     // Use a negative lookbehind-like approach by splitting on these tags
@@ -1011,7 +1126,9 @@ module.exports = function(eleventyConfig) {
     };
     result = processInlineCode(result);
 
+
     // Step 4: Convert unprocessed markdown tables to HTML tables
+
     // This handles tables inside HTML blocks (like filter-content sections)
     // that markdown-it didn't process
     // We look for the pattern: text with pipe, then separator line with dashes and pipes
@@ -1076,12 +1193,16 @@ module.exports = function(eleventyConfig) {
     };
     result = convertMarkdownTables(result);
 
+
     // Step 5: Remove markdown="1" attribute from elements
+
     // The content inside should already be processed by Eleventy's markdown processor
     // for blocks that it could handle, or by Step 1 above for fenced code
     result = result.replace(/\s*markdown=["']1["']/gi, '');
 
+
     // Step 6: Convert Eleventy syntax highlighter output to Jekyll/Rouge structure
+
     // This MUST run before the list structure fix (Step 7) because that step looks for the Jekyll/Rouge structure
     // Eleventy outputs: <pre class="highlight language-X"><code>...</code></pre>
     // Jekyll/Rouge expects: <div class="language-X highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...</code></pre></div></div>
@@ -1090,12 +1211,16 @@ module.exports = function(eleventyConfig) {
       return `<div class="language-${lang} highlighter-rouge"><div class="highlight"><pre class="highlight">${rest}</div></div>`;
     });
 
+
     // Step 7: Fix <p><pre> and <p><div class="language-*"> nesting (invalid HTML - block in inline)
+
     // Note: Copy-clipboard transforms removed - now handled by client-side JS in customscripts.js
     result = result.replace(/<p>(<pre[\s\S]*?<\/pre>)/g, '$1');
     result = result.replace(/<p>(<div class="language-[\s\S]*?<\/div>)<\/p>/g, '$1');
 
+
     // Step 8: Strip leading prompt characters from shell and SQL code blocks
+
     // The CSS adds these back via ::before pseudo-element (making them unselectable)
     // This preserves the Jekyll/Rouge behavior where prompts were unselectable
     // Pattern: <code class="language-shell" data-lang="shell">$ command...
@@ -1108,6 +1233,8 @@ module.exports = function(eleventyConfig) {
       /(<code class="language-sql"[^>]*>)<span class="token operator">><\/span> /g,
       '$1'
     );
+
+
 
     return result;
   });
@@ -1152,7 +1279,8 @@ module.exports = function(eleventyConfig) {
 
     // Check for unprocessed fenced code blocks (~~~ or ``` appearing as text)
     // These should have been converted to <pre><code> blocks
-    const codeBlockPattern = /(?:^|\n)(~~~|```)\s*\w*\s*\n/;
+    // Also detect indented code fences that weren't processed
+    const codeBlockPattern = /^[ \t]*(~~~|```)\s*\w*\s*$/m;
     if (codeBlockPattern.test(content)) {
       issues.push('unprocessed-code-block');
       migrationIssues.unprocessedCodeBlocks.push(inputPath);
