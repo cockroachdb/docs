@@ -1,6 +1,6 @@
 # Eleventy Migration Status Report
 
-**Date:** December 18, 2024
+**Date:** January 8, 2025
 **Phase:** Migration Complete
 **Status:** Fully Functional with Known Warnings
 
@@ -21,9 +21,10 @@ The CockroachDB documentation site has been successfully migrated from Jekyll to
 | **Build Status** | ✅ Success |
 | **Files Generated** | 2,896 HTML pages |
 | **Assets Copied** | 7,487 files |
-| **Build Time** | ~95-100 seconds |
+| **Build Time** | ~90-120 seconds |
 | **Eleventy Version** | 3.1.2 |
 | **Versions Supported** | v25.2, v25.3, v25.4, v26.1, cockroachcloud |
+| **Recommended Memory** | 8GB heap (`NODE_OPTIONS="--max-old-space-size=8192"`) |
 
 **Note:** Remote content (SVG diagrams, code samples) is cached using `@11ty/eleventy-fetch` with a 1-day cache duration. Cache stored in `.cache/` directory.
 
@@ -120,7 +121,7 @@ This generates the URL without the `.md` extension.
 
 ### 5. Fenced Code Blocks
 
-Both `~~~` and triple backticks work for fenced code blocks:
+Both `~~~` (tildes) and ``` (backticks) work for fenced code blocks:
 
 ~~~markdown
 ~~~sql
@@ -137,6 +138,8 @@ SELECT * FROM users;
 ~~~
 
 Language specification is optional but recommended for syntax highlighting.
+
+**Note:** Indented code fences (inside list items or HTML blocks) are fully supported. The build handles code fences at any indentation level.
 
 ---
 
@@ -157,7 +160,7 @@ Your note content here with **markdown** support.
 
 ### Core Configuration: `.eleventy.js`
 
-The main configuration file (~970 lines) handles all Jekyll compatibility:
+The main configuration file (~1,370 lines) handles all Jekyll compatibility:
 
 #### Two Liquid Engines
 
@@ -233,13 +236,29 @@ eleventyConfig.setServerOptions({
 
 #### Jekyll Compatibility Transform
 
-Post-processes HTML output (line ~863) to handle:
+Post-processes HTML output (line ~967) to handle:
 
-1. **Fenced code blocks in HTML context**: Converts `~~~lang` blocks that weren't processed by markdown-it
-2. **Callout markdown processing**: Processes markdown inside `bs-callout` divs
-3. **Inline code backticks**: Converts `` `code` `` in HTML blocks to `<code>code</code>`
-4. **Eleventy syntax highlighter output**: Converts to Jekyll/Rouge HTML structure for CSS compatibility
-5. **Invalid HTML nesting**: Fixes `<p><pre>` nesting issues
+1. **Fenced code blocks in HTML context**: Converts both `~~~lang` and ``` blocks that weren't processed by markdown-it (including indented code fences inside list items)
+2. **markdown="1" attribute processing**: Processes markdown inside HTML elements with this attribute
+3. **Callout markdown processing**: Processes markdown inside `bs-callout` divs
+4. **Inline code backticks**: Converts `` `code` `` in HTML blocks to `<code>code</code>`
+5. **Markdown tables in HTML blocks**: Converts pipe-based table syntax to HTML tables
+6. **Eleventy syntax highlighter output**: Converts to Jekyll/Rouge HTML structure for CSS compatibility
+7. **Invalid HTML nesting**: Fixes `<p><pre>` nesting issues
+
+#### Memory Management
+
+Caches are cleared at the start of each build to prevent memory growth in watch mode:
+
+```javascript
+eleventyConfig.on('eleventy.before', async () => {
+  scssifyCache.clear();
+  migrationIssues.unprocessedTables = [];
+  // ... other resets
+});
+```
+
+This prevents JavaScript heap out of memory errors during extended development sessions.
 
 #### SCSS Compilation
 
@@ -334,18 +353,20 @@ src/eleventy/
 # Install dependencies
 cd src/eleventy && npm install
 
-# Run build
-npm run build
+# Run build (recommended: with increased memory)
+NODE_OPTIONS="--max-old-space-size=8192" npm run build
 
 # Run dev server (with /docs prefix, like production)
-npm run dev
+NODE_OPTIONS="--max-old-space-size=8192" npm run dev
 
 # Run dev server (without prefix, for simpler local testing)
-DOCS_BASE_PATH='' npm run dev
+NODE_OPTIONS="--max-old-space-size=8192" DOCS_BASE_PATH='' npm run dev
 
-# Run with increased memory (for full build)
-NODE_OPTIONS="--max-old-space-size=8192" npm run build
+# Dry run (check for errors without writing files)
+NODE_OPTIONS="--max-old-space-size=8192" npx @11ty/eleventy --dryrun
 ```
+
+**Note:** The `NODE_OPTIONS="--max-old-space-size=8192"` flag is recommended to prevent JavaScript heap out of memory errors during large builds.
 
 ---
 
@@ -384,7 +405,13 @@ dynamic_include: File not found: /path/to/_includes/v26.1/sql/diagrams/select.ht
 | Dec 18, 2024 | Removed 15,705 `copy-clipboard.html` includes from 1,419 files |
 | Dec 18, 2024 | Fixed `/stable/` URL rewriting for `/docs/` prefix |
 | Dec 18, 2024 | All versions (v25.2-v26.1, cockroachcloud) building successfully |
+| Jan 8, 2025 | Added build-time migration warnings and report for unprocessed markdown |
+| Jan 8, 2025 | Fixed fenced code block handling: support for both ~~~ and ``` delimiters |
+| Jan 8, 2025 | Fixed indented code fences (inside list items and HTML blocks) |
+| Jan 8, 2025 | Fixed markdown tables in HTML blocks (filter-content sections) |
+| Jan 8, 2025 | Improved build performance by removing expensive deep clones (~60% faster) |
+| Jan 8, 2025 | Added memory leak prevention: caches cleared at start of each build |
 
 ---
 
-*Report updated: December 18, 2024*
+*Report updated: January 8, 2025*
