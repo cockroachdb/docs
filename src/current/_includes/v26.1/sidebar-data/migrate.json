@@ -82,6 +82,41 @@
           ]
         },
         {
+          "title": "User Scripts",
+          "items": [
+            {
+              "title": "Guide",
+              "urls": [
+                "/molt/user-script-guide.html"
+              ]
+            },
+            {
+              "title": "Quickstart",
+              "urls": [
+                "/molt/user-script-quickstart.html"
+              ]
+            },
+            {
+              "title": "API",
+              "urls": [
+                "/molt/user-script-api.html"
+              ]
+            },
+            {
+              "title": "Cookbooks",
+              "urls": [
+                "/molt/user-script-cookbooks.html"
+              ]
+            },
+            {
+              "title": "Metrics",
+              "urls": [
+                "/molt/user-script-metrics.html"
+              ]
+            }
+          ]
+        },
+        {
           "title": "Verify",
           "urls": [
             "/molt/molt-verify.html"
