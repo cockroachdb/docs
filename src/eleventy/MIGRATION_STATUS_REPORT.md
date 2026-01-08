@@ -394,6 +394,37 @@ dynamic_include: File not found: /path/to/_includes/v26.1/sql/diagrams/select.ht
 
 ---
 
+## Pending Improvements
+
+### Hardcoded `/docs/` Base Path in Links
+
+~40 files contain hardcoded `/docs/` in markdown links instead of using `{{ site.baseurl }}`. These links work correctly in production but break when running locally with `DOCS_BASE_PATH=''`.
+
+**Pattern to fix:**
+```markdown
+<!-- Current (hardcoded) -->
+[Install CockroachDB](/docs/{{ page.version.version }}/install-cockroachdb.html)
+
+<!-- Should be -->
+[Install CockroachDB]({{ site.baseurl }}/{{ page.version.version }}/install-cockroachdb.html)
+```
+
+**Affected files (sample):**
+- `content/_includes/v*/orchestration/start-cockroachdb-helm-*.md` (~20 files)
+- `content/_includes/releases/whats-new-intro.md`
+- `content/v*/movr-flask-*.md` (multiple versions)
+- `content/advisories/*.md`
+- `content/cockroachcloud/export-logs.md`
+
+**To find all occurrences:**
+```bash
+grep -r '\](/docs/' content/ --include='*.md' | wc -l
+```
+
+**Priority:** Low (only affects local dev with empty base path, not production)
+
+---
+
 ## Migration Changelog
 
 | Date | Change |
