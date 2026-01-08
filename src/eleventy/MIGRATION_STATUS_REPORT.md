@@ -347,6 +347,98 @@ src/eleventy/
 
 ---
 
+## Migration Scripts
+
+Scripts in `lib/scripts/` automate content migration from Jekyll to Eleventy.
+
+### migrate-content.sh
+
+Copies content from Jekyll source (`src/current/`) to Eleventy structure (`src/eleventy/content/`).
+
+```bash
+npm run migrate:content
+```
+
+**What it copies:**
+- `_data/`, `_includes/`, `_layouts/` directories
+- Versioned content directories (`v*/`)
+- Other content: `cockroachcloud/`, `releases/`, `molt/`, `advisories/`
+- Static assets: `images/`, `js/`, `css/`, `fonts/`
+- Root-level `.md` and `.html` files
+
+### migrate-links.js
+
+Converts Jekyll `{% link %}` tags to Eleventy format by adding quotes.
+
+```bash
+# Preview changes
+node lib/scripts/migrate-links.js --dry-run
+
+# Apply changes
+node lib/scripts/migrate-links.js
+```
+
+**Conversion:**
+```liquid
+{% link {{ page.version.version }}/path/file.md %}
+→ {% link "{{ page.version.version }}/path/file.md" %}
+```
+
+### migrate-includes.js
+
+Converts Jekyll include syntax to Eleventy format.
+
+```bash
+# Preview changes
+node lib/scripts/migrate-includes.js --dry-run
+
+# Apply changes
+node lib/scripts/migrate-includes.js
+```
+
+**Conversions:**
+```liquid
+{% include file.html %}           → {% include "file.html" %}
+{% include_cached file.html %}    → {% include "file.html" %}
+{% include file.html param=value %} → {% include "file.html", param: value %}
+{% include {{ var }}/file.md %}   → {% dynamic_include var, "/file.md" %}
+{{ include.param }}               → {{ param }}
+```
+
+### migrate-remote-includes.js
+
+Converts Jekyll remote_include syntax to Eleventy format by adding quotes.
+
+```bash
+# Preview changes
+node lib/scripts/migrate-remote-includes.js --dry-run
+
+# Apply changes
+node lib/scripts/migrate-remote-includes.js
+```
+
+**Conversion:**
+```liquid
+{% remote_include URL %}
+→ {% remote_include "URL" %}
+```
+
+### Manual Steps (Not Automated)
+
+**Remove copy-clipboard includes:**
+```bash
+# Remove all copy-clipboard.html includes from a directory
+find content/vXX.X -name "*.md" -exec sed -i '' '/{% include.*copy-clipboard.html %}/d' {} \;
+```
+
+**Fix markdown table separators (if needed):**
+```bash
+# Convert + separators to | in tables
+find content/vXX.X -name "*.md" -exec sed -i '' 's/|----+----/|----|----/g' {} \;
+```
+
+---
+
 ## Commands Reference
 
 ```bash
