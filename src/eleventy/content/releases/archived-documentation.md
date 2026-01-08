@@ -33,4 +33,4 @@ The table below contains links to archived documentation for versions of Cockroa
 </div>
 
 ## Looking for current documentation?
-Visit our [current documentation](/docs/stable/) for the latest CockroachDB versions.
+Visit our [current documentation]({{ site.baseurl }}/stable/) for the latest CockroachDB versions.
