@@ -26,7 +26,7 @@ In the event of failover, the reader VC is destroyed.
 ## Use the read from standby feature
 
 {{ site.data.alerts.callout_info }}
-The read from standby feature allows you to utilize your standby cluster to increase efficiency when you are already using PCR. However, PCR's primary use case is disaster recovery, not workload isolation. If you need a workload isolation solution but do not need disaster recovery, deploy a single cluster and use [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) instead.
+The read from standby feature allows you to increase PCR standby cluster hardware utilization during replication. However, PCR's primary use case is disaster recovery, not workload isolation. If you need a workload isolation solution but do not need disaster recovery, deploy a single cluster and use [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) instead.
 {{ site.data.alerts.end }}
 
 ### Before you begin
