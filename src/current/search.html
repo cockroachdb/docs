@@ -6,10 +6,72 @@ contribute: false
 docs_area: search
 ---
 
+<style>
+  /* Ask AI Button Styling (following Kapa-Algolia integration guide) */
+  .ask-ai-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 16px;
+    background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%);
+    border: 1px solid #e0d6ff;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 4px rgba(105, 51, 255, 0.1);
+  }
+  
+  .ask-ai-button {
+    background: #6933FF !important;
+    border: none !important;
+    color: white !important;
+    padding: 12px 24px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    border-radius: 6px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .ask-ai-button:hover {
+    background: #5829CC !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(105, 51, 255, 0.3);
+  }
+  
+  .ask-ai-button:active {
+    transform: translateY(0);
+  }
+  
+  .ask-ai-button i {
+    font-size: 18px;
+  }
+  
+  /* Smooth animation for button appearance */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .ask-ai-container {
+    animation: fadeInUp 0.3s ease-out;
+  }
+</style>
+
 <div id="search-refinements"></div>
 <div id="search-stats"></div>
 <div id="search-hits"></div>
 <div id="search-pages"></div>
+
+<!-- Algolia Search Integration -->
 <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.14.3/dist/algoliasearch-lite.umd.js" integrity="sha256-dyJcbGuYfdzNfifkHxYVd/rzeR6SLLcDFYEidcybldM=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.50.1/dist/instantsearch.production.min.js" integrity="sha256-xtz5Q60cdtw/7BDkzWiTgCXLvwLrUqlKqegFqvNHiNM=" crossorigin="anonymous"></script>
 <script>
@@ -20,21 +82,16 @@ docs_area: search
   };
 
   const queryString = (function() {
-    // This function is anonymous, is executed immediately and
-    // the return value is assigned to QueryString!
     const query_string = {};
     const query = window.location.search.substring(1);
     const vars = query.split("&");
     for (var i = 0; i < vars.length; i++) {
       const pair = vars[i].split("=");
-      // If first entry with this name
       if (typeof query_string[pair[0]] === "undefined") {
         query_string[pair[0]] = decodeURIComponent(pair[1]);
-        // If second entry with this name
       } else if (typeof query_string[pair[0]] === "string") {
         const arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
         query_string[pair[0]] = arr;
-        // If third or later entry with this name
       } else {
         query_string[pair[0]].push(decodeURIComponent(pair[1]));
       }
@@ -42,6 +99,9 @@ docs_area: search
     return htmlEncode((query_string.query || "").replace(/\+/g, " "));
   })();
 
+  /* =========================================
+     ALGOLIA SEARCH IMPLEMENTATION (ACTIVE)
+     ========================================= */
   const router = instantsearch.routers.history({
     windowTitle({ category, query }) {
       const queryTitle = query ? `Results for "${query}"` : "Search";
@@ -89,7 +149,6 @@ docs_area: search
 
     routeToState(routeState) {
       return {
-        // eslint-disable-next-line camelcase
         "{{site.algolia.index_name}}": {
           query: routeState.query,
           page: routeState.page
@@ -98,7 +157,7 @@ docs_area: search
     }
   };
 
-  $("#search-input").val(queryString);
+  // ALGOLIA SEARCH CLIENT
   const searchClient = algoliasearch(
     "{{site.algolia.application_id}}",
     "{{site.algolia.search_api_key}}"
@@ -113,6 +172,9 @@ docs_area: search
     searchClient
   });
 
+  /* =========================================
+     ALGOLIA SEARCH WIDGETS
+     ========================================= */
   const addToResultsIfPresent = (match) => {
     if(match && match.matchLevel && match.matchLevel !== 'none' && match.value) {
       return (match.value || '') + '<br>';
@@ -127,13 +189,30 @@ docs_area: search
     return addToResultsIfPresent(title) + addToResultsIfPresent(tags);
   }
 
-  // Create the render function
+  // Create the render function with Ask AI button (following Kapa integration guide)
   const renderHits = (renderOptions, isFirstRender) => {
     const { hits, widgetParams } = renderOptions;
-    var div = $("<div/>");
     let results = "";
+    
+    // Add Ask AI button following the Kapa-Algolia integration pattern
+    // Only show when there's a query (matching the guide's behavior)
+    if (queryString && queryString.trim()) {
+      results = `
+        <div class="ask-ai-container" style="margin-bottom: 20px;">
+          <button 
+            type="button" 
+            class="ask-ai-button btn btn-primary"
+            onclick="handleAskAI()"
+            style="background: #6933FF; border-color: #6933FF; padding: 10px 20px; font-size: 16px; border-radius: 6px;"
+          >
+            <i class="fas fa-robot"></i> Ask AI about "${htmlEncode(queryString)}"
+          </button>
+        </div>
+      `;
+    }
+    
     if (hits.length) {
-      results = hits
+      results += hits
         .map(
           hit =>
             `<div class="search-item">
@@ -145,17 +224,33 @@ docs_area: search
         </div>`
         )
         .join("");
+    } else if (queryString) {
+      results += "<p>No results found. Try clicking the 'Ask AI' button above for assistance.</p>";
     } else {
-      results = "<p>No results.</p>";
+      results += "<p>Enter a search query to see results.</p>";
     }
     widgetParams.container.innerHTML = results;
   };
+  
+  // Handle Ask AI button click (following Kapa guide pattern)
+  function handleAskAI() {
+    if (window.Kapa && window.Kapa.open) {
+      // Pass query and submit: true as per the integration guide
+      window.Kapa.open({ 
+        query: queryString.replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"'),
+        submit: true  // This auto-submits the query in the widget
+      });
+    } else {
+      console.error('Kapa widget not available');
+      alert('AI Assistant is not available at the moment. Please try again later.');
+    }
+  }
 
   // Create the custom widget
   const customHits = instantsearch.connectors.connectHits(renderHits);
 
   search.addWidgets([
-  instantsearch.widgets.refinementList({
+    instantsearch.widgets.refinementList({
       container: document.querySelector("#search-refinements"),
       attribute: 'version',
       operator: 'or',
@@ -178,7 +273,7 @@ docs_area: search
           } else {
             count += `no result`;
           }
-          return `${count} found for ‘${queryString}’`;
+          return `${count} found for '${queryString}'`;
         }
       }
     }),
@@ -200,4 +295,7 @@ docs_area: search
 
   // Starting the search
   search.start();
+  
+  // Make handleAskAI globally available
+  window.handleAskAI = handleAskAI;
 </script>
