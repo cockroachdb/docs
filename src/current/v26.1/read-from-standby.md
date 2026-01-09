@@ -9,13 +9,13 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-In addition to providing [failover]({% link {{ page.version.version }}/failover-replication.md %}) capabilities for [disaster recovery]({% link {{ page.version.version }}/disaster-recovery-overview.md %}), [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to direct read-only queries to your standby cluster. This process offloads traffic such as application reads, analytics queries, and ad-hoc reporting from the primary cluster.
+In addition to providing [failover]({% link {{ page.version.version }}/failover-replication.md %}) capabilities for [disaster recovery]({% link {{ page.version.version }}/disaster-recovery-overview.md %}), [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to direct read-only queries to your standby cluster. This process offloads ad-hoc analytics query traffic from the primary cluster.
 
 Use this page to understand how the _read from standby_ feature works and how to utilize it.
 
 ## How the read from standby feature works
 
-PCR utilizes [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) to separate a cluster's control plane from its data plane. A cluster always has one control plane, called a _system virtual cluster (system VC)_, and at least one data plane, called an _App Virtual Cluster (app VC)_. The standby cluster's system VC manages the PCR job and other cluster metadata, and is not used for application queries. All data tables, system tables, and cluster settings in the standby cluster's app VC are identical to the primary cluster's app VC. The standby cluster's app VC itself remains offline during replication.
+PCR utilizes [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) to separate a cluster's control plane from its data plane. A cluster always has one control plane, called a _system virtual cluster (system VC)_, and at least one data plane, called an _application virtual cluster (app VC)_. The standby cluster's system VC manages the PCR job and other cluster metadata, and is not used for application queries. All data tables, system tables, and cluster settings in the standby cluster's app VC are identical to the primary cluster's app VC. The standby cluster's app VC itself remains offline during replication.
 
 When using read from standby, applications can read from the standby cluster, but they do not connect directly to the standby cluster's app VC. Instead, PCR introduces a _reader virtual cluster (reader VC)_. The reader VC ensures a clean, isolated environment specifically for serving read queries without interfering with replication or system metadata. It reads continuously from the standby cluster's app VC using internal pointers, providing access to the replicated data while keeping the app VC offline. The reader VC itself only stores a small amount of metadata and no user data, so it is not expected to take up additional storage space.
 
@@ -24,6 +24,11 @@ The standby cluster's reader VC has its own system tables and [cluster settings]
 In the event of failover, the reader VC is destroyed.
 
 ## Use the read from standby feature
+
+{{ site.data.alerts.callout_info }}
+The read from standby feature allows you to increase PCR standby cluster hardware utilization during replication. However, PCR's primary use case is disaster recovery, not workload isolation. If you need a workload isolation solution but do not need disaster recovery, deploy a single cluster and use [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) instead.
+{{ site.data.alerts.end }}
+
 ### Before you begin
 
 Prior to setting up read from standby, ensure that:
@@ -90,7 +95,7 @@ The results of queries on the standby cluster reflect the state of the primary c
 
 {{ site.data.alerts.callout_info }}
 Write operations are not permitted on the standby cluster.
-{{ site.data.alerts.end }}
+{{ site.data.alerts.end }} 
 
 ## See also
 - [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %})
