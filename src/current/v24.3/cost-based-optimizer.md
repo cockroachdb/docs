@@ -99,7 +99,7 @@ Partial statistics have the following constraints:
 
 - Partial statistics can only be collected if [full statistics](#full-statistics) already exist for the table.
 - Partial statistics created with `USING EXTREMES` and no `ON` clause are collected on all single-column prefixes of non-inverted indexes. Indexes that are [partial]({% link {{ page.version.version }}/partial-indexes.md %}), [hash-sharded]({% link {{ page.version.version }}/hash-sharded-indexes.md %}), or implicitly partitioned (such as in [`REGIONAL BY ROW` tables]({% link {{ page.version.version }}/regional-tables.md %}#regional-by-row-tables)) are excluded.
-- For [manual collection with specific columns]({% link {{ page.version.version }}/create-statistics.md %}#enable-create-stats-using-extremes), an index must exist with a prefix matching those columns. If no matching index exists or if full statistics were not previously collected on the specified column, the statement returns an error.
+- For [manual collection with specific columns]({% link {{ page.version.version }}/create-statistics.md %}#create-partial-statistics-using-extremes), an index must exist with a prefix matching those columns. If no matching index exists or if full statistics were not previously collected on the specified column, the statement returns an error.
 
 {% include_cached new-in.html version="v24.3" %} The optimizer uses partial statistics for query planning when the [`optimizer_use_merged_partial_statistics`]({% link {{ page.version.version }}/session-variables.md %}#optimizer-use-merged-partial-statistics) session variable is enabled. It merges partial statistics with existing full statistics to produce more accurate cardinality estimates.
 

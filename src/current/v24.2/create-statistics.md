@@ -168,7 +168,7 @@ For more information about how the `AS OF SYSTEM TIME` clause works, including s
 
 ### Create partial statistics using extremes
 
-To create [partial statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#partial-statistics) that collect statistics on the highest and lowest index values:
+To create partial statistics that collect statistics on the highest and lowest index values:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
