@@ -78,6 +78,11 @@ var pageConfig = {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="{{ 'js/searchInputRendering.js' | relative_url }}"></script>
+<!-- Algolia client for autocomplete -->
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.14.3/dist/algoliasearch-lite.umd.min.js"></script>
+<!-- Algolia Autocomplete with Kapa Integration -->
+<script src="{{ 'js/algoliaAutocomplete.js' | relative_url }}"></script>
 
 {%- comment -%} Add the Brand Website segment source and fire a page impression. {%- endcomment -%}
 <script>
@@ -153,6 +158,11 @@ var pageConfig = {
   data-modal-disclaimer="This AI bot is experimental. Don't rely on it for production workloads. Always consult the official CockroachDB documentation. Interactions with this AI bot may be monitored or recorded, and your use of the AI bot is subject to the Cockroach Labs' [Terms of Use](https://www.cockroachlabs.com/website-terms-of-use/) and [Privacy policy](https://www.cockroachlabs.com/privacy/)."
   data-modal-y-offset="12vh"
   data-modal-z-index="1000"
+  data-mcp-enabled="true"
+  data-mcp-server-url="https://cockroachdb.mcp.kapa.ai"
+  data-search-mode-enabled="true"
+  data-search-source-ids-include="142a5371-2b4f-4d42-91aa-9c18142991d5"
+  data-modal-open-on-command-k="true"
 ></script>
 
 <style>
