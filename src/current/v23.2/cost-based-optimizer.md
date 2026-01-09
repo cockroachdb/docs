@@ -23,10 +23,9 @@ The most important factor in determining the quality of a plan is cardinality (i
 
 The cost-based optimizer can often find more performant query plans if it has access to statistical data on the contents of your tables. This data needs to be generated from scratch for new tables, and [refreshed periodically](#control-statistics-refresh-rate) for existing tables.
 
-The optimizer can use three types of statistics to plan queries:
+The optimizer can use two types of statistics to plan queries:
 
 - [Full statistics](#full-statistics)
-- [Partial statistics](#partial-statistics)
 - [Forecasted statistics](#forecasted-statistics)
 
 For best query performance, most users should leave automatic statistics enabled with the default settings. Advanced users can follow the steps provided in this section for performance tuning and troubleshooting.
@@ -34,6 +33,10 @@ For best query performance, most users should leave automatic statistics enabled
 ### Full statistics
 
 By default, CockroachDB automatically generates full statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}) and during [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). Full statistics for a table are automatically refreshed when approximately 20% of its rows are updated.
+
+{{site.data.alerts.callout_success}}
+You can manually collect *partial statistics* on a subset of table data without scanning the full table. Refer to [Create partial statistics using extremes]({% link {{ page.version.version }}/create-statistics.md %}#create-partial-statistics-using-extremes).
+{{site.data.alerts.end}}
 
 A [background job]({% link {{ page.version.version }}/create-statistics.md %}#view-statistics-jobs) automatically determines which columns to get statistics on. Specifically, the optimizer chooses:
 
@@ -71,23 +74,11 @@ On the other hand, if a table has 1,500,000,000 rows, then 20% of that, or 300,0
 
 In such cases, we recommend that you use the [`sql_stats_automatic_collection_enabled` storage parameter](#enable-and-disable-automatic-statistics-collection-for-tables), which lets you configure automatic statistics collection on a per-table basis.
 
-### Partial statistics
-
-*Partial statistics* are collected on a subset of table data without scanning the full table. Partial statistics can improve query performance in large tables where only a portion is regularly updated or queried.
-
-You can manually collect partial statistics on the highest and lowest index values using [`CREATE STATISTICS ... USING EXTREMES`]({% link {{ page.version.version }}/create-statistics.md %}#create-partial-statistics-using-extremes).
-
-Partial statistics have the following constraints:
-
-- Partial statistics can only be collected if [full statistics](#full-statistics) already exist for the table.
-- Partial statistics created with `USING EXTREMES` and no `ON` clause are collected on all single-column prefixes of non-inverted indexes. Indexes that are [partial]({% link {{ page.version.version }}/partial-indexes.md %}), [hash-sharded]({% link {{ page.version.version }}/hash-sharded-indexes.md %}), or implicitly partitioned (such as in [`REGIONAL BY ROW` tables]({% link {{ page.version.version }}/regional-tables.md %}#regional-by-row-tables)) are excluded.
-- For [manual collection with specific columns]({% link {{ page.version.version }}/create-statistics.md %}#enable-create-stats-using-extremes), an index must exist with a prefix matching those columns. If no matching index exists or if full statistics were not previously collected on the specified column, the statement returns an error.
-
 ### Toggle automatic statistics collection
 
 #### Enable and disable automatic statistics collection for clusters
 
-Automatic statistics collection is enabled by default. To disable automatic [full](#full-statistics) and [partial](#partial-statistics) statistics collection, follow these steps:
+Automatic statistics collection is enabled by default. To disable automatic statistics collection, follow these steps:
 
 1. Set the `sql.stats.automatic_collection.enabled` cluster setting to `false`:
 
