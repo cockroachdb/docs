@@ -1,1 +1,0 @@
-**Expected values for a healthy cluster**: On SSDs ([strongly recommended](recommended-production-settings.html#storage)), this should be between 1 and 100 milliseconds. On HDDs, this should be no more than 1 second.
