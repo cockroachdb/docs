@@ -130,9 +130,9 @@ For examples, refer to:
 
 ### Detect when row-level security is applied to a query
 
-The [`row_security`]({% link {{ page.version.version }}/set-vars.md %}#row-security) [session variable]({% link {{ page.version.version }}/session-variables.md %}#row-security) controls whether queries in the current [session]({% link {{ page.version.version }}/show-sessions.md %}) should silently honor RLS policies or signal an error when those policies would filter out rows.
+The [`row_security` session variable]({% link {{ page.version.version }}/session-variables.md %}#row-security) controls whether queries in the current [session]({% link {{ page.version.version }}/show-sessions.md %}) should silently honor RLS policies or signal an error when those policies would filter out rows.
 
-The variable defaults to `on`, which applies policies as normal. Setting it to `off` lets non-[admin]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) users detect when an RLS policy would alter their results by returning an error instead of silently filtering rows. [Admin users and table owners]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security) remain exempt from RLS by default regardless of this setting. To force table owners to be subject to RLS, you must use [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
+The variable defaults to `on`, which applies policies as normal. Setting it to `off` lets non-[admin]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) users detect when an RLS policy would alter their results by returning an error instead of silently filtering rows. Admin users and table owners remain exempt from RLS by default regardless of this setting. To force table owners to be subject to RLS, you must use [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
 
 The following example shows how this session setting works:
 
