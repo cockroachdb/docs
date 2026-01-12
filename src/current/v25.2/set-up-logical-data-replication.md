@@ -320,6 +320,10 @@ SHOW LOGICAL REPLICATION JOBS;
 
 If you're setting up bidirectional LDR, both clusters will have a history retention job and an LDR job running.
 
+{{site.data.alerts.callout_info}}
+You cannot pause an LDR job for longer than 24 hours. LDR jobs paused for longer than 24 hours fail and cannot be recovered.
+{{site.data.alerts.end}}
+
 ### DB Console
 
 You can access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and monitor the status and metrics for the created LDR jobs. Depending on which cluster you would like to view, follow the instructions for either the source or destination.
