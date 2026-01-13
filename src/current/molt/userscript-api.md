@@ -5,13 +5,36 @@ toc: true
 docs_area: migrate
 ---
 
+Userscripts allow you to define how rows are transformed, filtered, and routed before [MOLT Replicator]({% link molt/molt-replicator.md %}) writes them to the target database.
+
 The userscript API provides configuration functions (`configureTargetSchema`, `configureTargetTables`), and lifecycle handlers (`onRowUpsert`, `onRowDelete`, `onWrite`) that allow you to define custom logic for specific tables and schemas.
 
-## Common typescript definitions
+The [userscript cookbook]({% link molt/userscript-cookbook.md %}) includes example scenarios that further demonstrate how to use this API.
 
+## Userscript functions list
+
+- [`configureTargetSchema(targetSchemaName, handlers)`](#configure-target-schema)
+  - [`onRowUpsert(row, metadata)`](#configure-target-schema-on-row-upsert)
+  - [`onRowDelete(row, metadata)`](#configure-target-schema-on-row-delete)
+- [`configureTargetTables(tableNames, configuration)`](#configure-target-tables)
+  - [`onRowUpsert(row, metadata)`](#configure-target-tables-on-row-upsert)
+  - [`onRowDelete(keys, metadata)`](#configure-target-tables-on-row-delete)
+  - [`onWrite(rows, metadata)`](#configure-target-tables-on-write)
+      - `getTX()`
+          - `getTX().query(sql, ...params)`
+          - `getTX().exec(sql, ...params)`
+          - `getTX().columns()`
+          - `getTX().schema()`
+          - `getTX().table()`
+      - `write(rows)`
+- `console`
+
+## Common TypeScript definitions
+
+These TypeScript definitions are referenced throughout the API and describe the object structures you will deal with when writing userscript handler functions.
+
+{% include_cached copy-clipboard.html %}
 ~~~ ts
-type RowHandlerFn = (row: Row, metadata: Metadata) => Row | Record<string, Row[]> | null
-
 // RowValue represents any value that can appear in a database column:
 // - string: text or numbers (numbers are always stored as strings)
 // - boolean: true/false values
@@ -23,60 +46,71 @@ type RowValue = string | boolean | null | Row | Array<RowValue>
 
 // Row represents a database row: column names mapped to their values.
 type Row = { [column: string]: RowValue }
-type Metadata = Row & {schema: string, table: string};
 
+// Metadata includes the row's schema name and table name. 
+type Metadata = Row & {schema: string, table: string};
 ~~~
 
-<!-- | Function | Description | 
-|---|---|
-| <a id="configure-target-schema"></a> `configureTargetSchema(targetSchemaName, handlers)` | test2 | -->
+<!-- As shown above, the `RowHandlerFn` type receives a source `Row` and `Metadata` (the `Metadata` type includes the row's `schema` name and `table` name).
 
----
+The `RowHandlerFn` type returns either:
+
+- A modified row
+- A table-to-rows mapping (for fan-out)
+- `null` (to skip writing or deleting)
+
+The `RowHandlerFn` type forms the basis of the `configureTargetSchema` lifecycle handlers, defined below. -->
+
+## Userscript functions reference
+
 <a id="configure-target-schema"></a> 
 
-## `configureTargetSchema(targetSchemaName, handlers)` 
+### `configureTargetSchema(targetSchemaName, handlers)` 
 
 `configureTargetSchema` registers schema-level handlers that run before staging and table-level processing. Use this to transform, filter, or reroute rows broadly across a target database schema.
 
-TypeScript Signature:
+#### TypeScript Signature
 
+{% include_cached copy-clipboard.html %}
 ~~~ ts
 declare function configureTargetSchema(targetSchemaName: string, handlers: {
   onRowUpsert: RowHandlerFn
   onRowDelete: RowHandlerFn
 }): void
+
+type RowHandlerFn = (row: Row, metadata: Metadata) => Row | Record<string, Row[]> | null
 ~~~
+
+`Row` and `Metadata` are defined in [Common TypeScript definitions](#common-typescript-definitions).
 
 <a id="configure-target-schema-on-row-upsert"></a> 
 
-### `onRowUpsert(row, metadata)`
+#### `onRowUpsert(row, metadata)`
 
-Called when a row is inserted or updated on the source database. Return one of the following types of values depending on your needs:
+`onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetSchema` function, it's called before staging and table-level processing. It returns a value of one of the following types:
 
--  A **Row** to write to the default target database table it was destined for
-- `{ [table: string]: Row[] }` to fan-out or reroute any number of Rows to multiple tables.
-- `null` to skip writing this source data row modification to the target database
+-  A modified `Row` to write to the default target database table.
+- `{ [table: string]: Row[] }`, to fan-out or reroute any number of `Rows` to multiple tables.
+- `null`, to skip writing this source data row modification to the target database.
 
-TypeScript Signature:
+##### TypeScript Signature
 
+{% include_cached copy-clipboard.html %}
 ~~~ ts
 declare function onRowUpsert(row: Row, metadata: Metadata): Row | Record<string, Row[]> | null
 ~~~
+`Row` and `Metadata` are defined in [Common TypeScript definitions](#common-typescript-definitions).
 
-Example
+##### Example
 
+The example below demonstrates how to use `configureTargetSchema` with `onRowUpsert` to transform and filter data during replication. 
+
+This function is called during upserts. It uppercases the value in the `status` field of the `orders` table, and it prevents the replication of non-target tables (that is, tables other than `orders` and `customers`).
+
+{% include_cached copy-clipboard.html %}
 ~~~ ts
 import * as api from "replicator@v2";
 
-/**
- * This example demonstrates how to use configureTargetSchema() with onRowUpsert
- * and onRowDelete to transform and filter data during replication.
- *
- * What it does:
- * - Transform column values before writing (e.g., normalize data)
- * - Filter out upserts for tables other tables
- * - Apply different logic for upserts vs deletes
- */
 api.configureTargetSchema("target_db.target_schema", {
   onRowUpsert: (row, metadata) => {
     // Transform a column before writing
@@ -103,31 +137,70 @@ api.configureTargetSchema("target_db.target_schema", {
 
 <a id="configure-target-schema-on-row-delete"></a> 
 
-### `onRowDelete(row, metadata)`
+#### `onRowDelete(row, metadata)`
 
-Called when a row is deleted on the source database. Return one of the following types of values depending on your needs:
+`onRowDelete` is called when a row is deleted on the source database. It returns a value of one of the following types:
 
-- A **Row** deletion to write to the default target database table it was destined for.
-- `{ [table: string]: Row[] }` to fan-out or reroute any number of Row deletions to multiple tables.
-- `null` to skip writing this source data row deletion to the target database.
+- A `Row` deletion to write to the default target database table.
+- `{ [table: string]: Row[] }`, to fan-out or reroute any number of `Row` deletions to multiple tables.
+- `null`, to skip writing this source data row deletion to the target database. This row will not be deleted on the target.
 
-Note: depending on the database source type, the row argument passed to onRowDelete may include the data columns for the deleted row, or may just include the primary key values.
+{{site.data.alerts.callout_info}}
+Depending on the database source type, the `row` argument passed to `onRowDelete` may include the data columns for the deleted row, or may just include the primary key values.
+{{site.data.alerts.end}}
 
-TypeScript Signature:
+##### TypeScript Signature
 
+{% include_cached copy-clipboard.html %}
 ~~~ ts
 declare function onRowDelete(row: Row, metadata: Metadata): Row | Record<string, Row[]> | null
 ~~~
+`Row` and `Metadata` are defined in [Common TypeScript definitions](#common-typescript-definitions).
+
+##### Example
+
+The example below demonstrates how to use `configureTargetSchema` with `onRowDelete` to transform and filter data during replication.
+
+This function is called during deletions. The source primary key `(pk1, pk2)` differs from the target primary key `(id1, id2)` in name and in value. The function adds 100 to the values in the source primary key, and maps them to the target primary key fields for proper delete matching.
+ 
+~~~ ts
+import * as api from "replicator@v2";
+api.configureTargetSchema("target_db.target_schema", {
+  onRowUpsert: (row, metadata) => {
+    // Pass upserts through unchanged by default, accept all tables
+    return row;
+  },
+
+  onRowDelete: (row, metadata) => {
+    // Map source PK columns (pk1, pk2) to target PK columns (id1, id2)
+    // and add 100 to each value for proper delete matching
+    if (metadata.table === "items") {
+      const transformedRow = {
+        id1: (parseInt(row.pk1 as string) + 100).toString(),
+        id2: (parseInt(row.pk2 as string) + 100).toString(),
+      };
+      return transformedRow;
+    }
+
+    // All other tables/rows are passed through unchanged
+    return row;
+  },
+});
+~~~
+
 ---
 
 <a id="configure-target-tables"></a> 
 
-## `configureTargetTables(tableNames, configuration)`
+### `configureTargetTables(tableNames, configuration)`
 
-`configureTargetTables` registers table-level handlers that run when rows are staged and ready to be written to the target database. You can use this to define transformations, filters, or column-level behavior specific to certain tables. Table-level configuration gives you finer control than schema-level handlers, allowing you to perform transactional logic on the target database and use extra built-in features like ignoring source columns that don’t exist in the target table.
+`configureTargetTables` registers table-level handlers that run after rows are staged and are ready to be written to the target database. You can use this function to define transformations, filters, or column-level behaviors that are specific to certain tables. 
 
-TypeScript Definitions:
+Table-level configuration provides finer control than schema-level handlers, allowing you to perform transactional logic on tables in the target database.
 
+#### TypeScript signature
+
+{% include_cached copy-clipboard.html %}
 ~~~ ts
 declare function configureTargetTables(tables: string[], configuration: {
   onRowUpsert: onRowUpsertFn
@@ -152,37 +225,34 @@ type RowOp = ({
 }
 ~~~
 
+`Row` and `Metadata` are defined in [Common TypeScript definitions](#common-typescript-definitions).
+
 <a id="configure-target-tables-on-row-upsert"></a> 
 
-### `onRowUpsert(row, metadata)`
+#### `onRowUpsert(row, metadata)`
 
-Called when a row is inserted or updated on the source database, and when it is finally read from the staging database and being prepared to be written to the target database.
+`onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetTables` function, it's called after rows are staged and are ready to be written to the target database. It returns a value of one of the following types:
 
-Possible return values:
+-  A modified `Row` to write to the default target database table.
+- `null`, to skip writing this source data row modification to the target database.
 
-- Return a new or modified Row to write it to the target table.
-- Return null to discard the Row (it will not be written to the target table).
+##### TypeScript signature
 
-TypeScript Signature:
-
+{% include_cached copy-clipboard.html %}
 ~~~ ts
 declare function onRowUpsert(row: Row, meta: Metadata) => Row | null
 ~~~
 
-Example
+##### Example
 
+This example demonstrates how to use `configureTargetTables` to transform data during upserts, on a per-table basis.
+
+This implementation adds a `replicated_at` column to the row, and it sets its value to the current time. It also adds a `status_description` column to the row, deriving its value from the value in the existing `status_code` field.
+
+{% include_cached copy-clipboard.html %}
 ~~~ ts
 import * as api from "replicator@v2";
 
-/**
- * This example demonstrates how to use configureTargetTables() to enrich
- * and transform data during replication on a per-table basis.
- *
- * Use cases:
- * - Add computed or metadata columns during replication
- * - Transform data values based on business logic
- * - Enrich records with additional information
- */
 api.configureTargetTables(["orders"], {
   onRowUpsert: (row, metadata) => {
     // Add a timestamp when the row was replicated
@@ -211,43 +281,34 @@ api.configureTargetTables(["orders"], {
 });
 ~~~
 
-What this does:
-
-Rounds and normalizes the amount column before writing.
-Passes delete keys through unchanged.
-
 <a id="configure-target-tables-on-row-delete"></a> 
 
-### `onRowDelete(keys, metadata)`
+#### `onRowDelete(keys, metadata)`
 
-Called when a row is deleted on the source database, and when its deletion is finally read from the staging database and being prepared to be written to the target database. Instead of the row being passed to `onRowDelete`, the primary key values of the Row being deleted will be passed instead in a list of strings. Can be used to transform deletes from the source database to accommodate a different target table schema.
+`onRowDelete` is called when a row is deleted on the source database. Because it's a handler for the `configureTargetTables` function, it's called after rows are staged and are ready to be written to the target database. Unlike `configureTargetSchema`'s `onRowDelete` handler, which receives a whole `row` as an input, this function receives only that row's primary keys as a list of strings called `keyVals`.
 
-Possible return values:
+It returns a value of one of the following types:
 
-- Return a list of primary key values to perform the delete on the target table for that primary key
-- Return `null` to discard the Row deletion (it will not be deleted from the target table).
+- A list of primary key values, defining the row on the target table to delete.
+- `null`, to skip writing this source data row deletion to the target database. This row will not be deleted on the target.
 
-TypeScript Signature:
+##### TypeScript signature
 
+{% include_cached copy-clipboard.html %}
 ~~~ ts
 declare function onRowDelete(keyVals: string[], meta: Metadata) => string[] | null;
 ~~~
 
-Example
+##### Example
 
-~~~
+This example demonstrates how to use `configureTargetTables` with `onRowDelete` to conditionally filter or transform delete operations.
+
+This implementation skips deleting any row in the `EU` region, or whose `orderId` is greater than or equal to 1000.
+
+{% include_cached copy-clipboard.html %}
+~~~ ts
 import * as api from "replicator@v2";
 
-/**
- * This example demonstrates how to use configureTargetTables() with onRowDelete
- * to conditionally filter or transform delete operations.
- *
- * What it does:
- * - Conditionally skip deletes based on primary key values (>= 1000 or EU)
- *
- * Note: The keys parameter is an array of primary key values in the order
- * they are defined in the table's PRIMARY KEY constraint.
- */
 api.configureTargetTables(["orders"], {
   onRowUpsert: (row, metadata) => {
     // Pass upserts through unchanged
@@ -276,5 +337,19 @@ api.configureTargetTables(["orders"], {
   },
 });
 ~~~
+
+<a id="configure-target-tables-on-write"></a> 
+
+#### `onWrite(rows, metadata)`
+
+This handler is called after `onRowUpsert` or `onRowDelete` for each of the passed-in rows. The onWrite handler lets you override MOLT Replicator’s default behavior when rows are written to the target database. It is called right before the final commit, after all schema-level and table-level processing has completed. A commit will be scheduled once `onWrite` returns.
+
+##### `getTX()`
+###### `getTX().query(sql, ...params)`
+###### `getTX().exec(sql, ...params)`
+###### `getTX().columns()`
+###### `getTX().schema()`
+###### `getTX().table()`
+##### `write(rows)`
 
 ## See also

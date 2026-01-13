@@ -299,6 +299,14 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 	- Description: Number of rows that experienced a compare-and-set (CAS) conflict and were successfully resolved.
     - Interpretation: Compare with `apply_conflicts_total` to verify conflict resolution is working. Should be close to or equal to conflicts.
 
+## Userscript metrics
+
+[Userscripts]({% link molt/userscript-guide.md %}) define schema and table transformations that Replicator applies at multiple points in the replication pipeline. Replicator exposes Prometheus [metrics]({% link molt/userscript-metrics.md %}) that provide insight into userscript activity, performance, and stability.
+
+{% include molt/userscript-metrics.md %}
+
+[Read more about userscript metrics]({% link molt/userscript-metrics.md %}).
+
 ## See also
 
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
