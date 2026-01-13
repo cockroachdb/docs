@@ -240,7 +240,7 @@ All possible `SESSIONS` event types are detailed in the [reference documentation
 
 ### SENSITIVE_ACCESS
 
-The [`SENSITIVE_ACCESS`]({% link {{ page.version.version }}/logging.md %}#sensitive_access) channel logs SQL audit events. These include all queries run against [audited tables]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit), when enabled, and queries executed by users with the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) role. It also logs when a user overrides or is denied access by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/crdb-internal.md %}#access-control), generating a record of emergency access to system internals.
+The [`SENSITIVE_ACCESS`]({% link {{ page.version.version }}/logging.md %}#sensitive_access) channel logs SQL audit events. These include all queries run against [audited tables]({% link {{ page.version.version }}/alter-table.md %}#experimental_audit), when enabled, and queries executed by users with the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) role. It also logs when a user overrides or is denied access by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/crdb-internal.md %}#access-control), creating an audit log of access to system internals.
 
 #### Example: Audit events
 
@@ -277,11 +277,9 @@ All possible `SENSITIVE_ACCESS` event types are detailed in the [reference docum
 
 #### Example: Unsafe internals
 
-{{site.data.alerts.callout_danger}}
-In a future major release, the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals) will default to `off`. To [assess potential downstream impacts](#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
-{{site.data.alerts.end}}
+The [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals) defaults to `off`, restricting access to the `system` and `crdb_internal` namespaces. Queries to these namespaces will fail unless access is manually enabled.
 
-CockroachDB emits log events to the `SENSITIVE_ACCESS` channel when a user overrides or is denied access to [unsafe internals]({% link {{ page.version.version }}/crdb-internal.md %}#access-control), creating a log of emergency access to system internals.
+CockroachDB emits log events to the `SENSITIVE_ACCESS` channel when a user overrides or is denied access to [unsafe internals]({% link {{ page.version.version }}/crdb-internal.md %}#access-control), creating an audit log of access to system internals.
 
 The following events may be logged to the `SENSITIVE_ACCESS` channel, depending on whether the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals) is enabled:
 
@@ -314,22 +312,25 @@ W250930 19:51:01.128927 464484 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,cli
 
 ##### Unsafe internals disabled
 
-To assess potential downstream impacts, disable `allow_unsafe_internals` in a test or staging environment. Monitoring tools or scripts that rely on these internals may be affected. `unsafe_internals_denied` events identify which tools or scripts attempted to access these internals.
+By default, `allow_unsafe_internals` is disabled. Monitoring tools or scripts that rely on these internals may be affected. `unsafe_internals_denied` events identify which tools or scripts attempted to access these internals.
 
-This example shows how to identify users denied access to unsafe internal tables.
+This example shows how denied access to unsafe internal tables is logged.
 
-This command disables access to unsafe internals for the user `can_not_access_unsafe_internals`:
+Since `allow_unsafe_internals` defaults to `off`, users cannot access unsafe internals unless explicitly enabled. When a user without access attempts to access an unsafe internal object, the event is logged.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER ROLE can_not_access_unsafe_internals SET allow_unsafe_internals = off;
-~~~
-
-When the user `can_not_access_unsafe_internals` connects to a session and attempts to access an unsafe internal object, the event is logged:
+For example, when the user `can_not_access_unsafe_internals` (who has the default `off` setting) connects to a session and attempts to access an unsafe internal object:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT count(*) FROM crdb_internal.active_range_feeds;
+~~~
+
+The following error message appears:
+
+~~~
+ERROR: Access to crdb_internal and system is restricted.
+SQLSTATE: 42501
+HINT: These interfaces are unsupported in production. To proceed, set the session variable allow_unsafe_internals = true (not recommended), or contact Cockroach Labs for a supported alternative.
 ~~~
 
 This `unsafe_internals_denied` event indicates that access to the internal table `crdb_internal.active_range_feeds` was denied for the user `can_not_access_unsafe_internals`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:

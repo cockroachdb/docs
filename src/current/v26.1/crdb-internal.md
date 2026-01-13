@@ -9,14 +9,7 @@ The `crdb_internal` [system catalog]({% link {{ page.version.version }}/system-c
 
 ## Access control
 
-CockroachDB treats most objects in the `crdb_internal` schema, as well as tables and built-in functions in the `system` database, as *unsafe internals*. Access to these objects is controlled by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals). This variable defaults to `on`. Set it to `off` to prevent unintentional access unless explicitly advised by Cockroach Labs.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET allow_unsafe_internals = off;
-~~~
-
-With `allow_unsafe_internals` set to `off`, you should access only [`information_schema` tables]({% link {{ page.version.version }}/information-schema.md %}).
+CockroachDB treats most objects in the `crdb_internal` schema, as well as tables and built-in functions in the `system` database, as *unsafe internals*. Access to these objects is controlled by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals). This variable defaults to `off`, restricting access to the `system` and `crdb_internal` namespaces. Queries to these namespaces will fail unless access is manually enabled. With `allow_unsafe_internals` set to `off`, you should access only [`information_schema` tables]({% link {{ page.version.version }}/information-schema.md %}).
 
 {{site.data.alerts.callout_info}}
 If you need information not available through production-supported [`information_schema` tables]({% link {{ page.version.version }}/information-schema.md %}), contact your account team or contact [Cockroach Labs support](https://support.cockroachlabs.com).
@@ -31,11 +24,7 @@ SET allow_unsafe_internals = on;
 
 Some `SHOW commands`, such as [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %}), and CockroachDB tools, such as the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}), rely on internal queries that access restricted data. These commands and tools are designed to bypass the `allow_unsafe_internals` setting and continue to function even when direct access is disabled.
 
-CockroachDB emits log events to the [`SENSITIVE_ACCESS` channel]({% link {{ page.version.version }}/logging-use-cases.md %}#example-unsafe-internals) when a user overrides or is denied access to unsafe internals, creating a record of emergency access to system internals. Monitor these logs to ensure that neither workloads nor you and your users are unintentionally accessing unsafe internals.
-
-{{site.data.alerts.callout_danger}}
-In a future major release, the `allow_unsafe_internals` session variable will default to `off`. To prepare for this change and [assess potential downstream impacts]({% link {{ page.version.version }}/logging-use-cases.md %}#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
-{{site.data.alerts.end}}
+CockroachDB emits log events to the [`SENSITIVE_ACCESS` channel]({% link {{ page.version.version }}/logging-use-cases.md %}#example-unsafe-internals) when a user overrides or is denied access to unsafe internals, creating an audit record of access to system internals. Monitor these logs to ensure that neither workloads nor you and your users are unintentionally accessing unsafe internals.
 
 <a id="data-exposed-by-crdb_internal"></a>
 
