@@ -66,7 +66,7 @@ Kubernetes deployments use external persistent volumes that are often replicated
 
 The following deployment requirements and best practices apply to multi-region deployments with the {{ site.data.products.cockroachdb-operator }}:
 
-- Plan to deploy one operator node per region. Each operator handles CockroachDB node management in its own region with no cross-region coordination, so you must factor this into your upgrade and maintenance strategy to ensure availability.
+- Plan an operator deployment in each region. Each operator handles CockroachDB node management in its own region, so you must factor that there are multiple operator deployments into your upgrade and maintenance strategy to ensure availability.
 - VPC peering and CoreDNS are needed to resolve services and discovery across regions. Refer to the documentation for your cloud solution to configure your cross-region network accordingly.
 - Make sure that region is part of your [locality](#localities) configuration and nodes are tagged consistently with their deployment region. For deployments with a cloud service provider this is handled automatically, but must be applied manually for bare metal deployments.
 - A single certificate authority (CA) across all regions is required. One namespace per region is recommended to simplify certificate management.
