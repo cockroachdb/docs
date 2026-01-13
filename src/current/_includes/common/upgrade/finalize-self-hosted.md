@@ -13,7 +13,7 @@ To finalize a major-version upgrade:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SET CLUSTER SETTING version '{VERSION}';
+    SET CLUSTER SETTING version = '{VERSION}';
     ~~~
 
     A series of migration jobs runs to enable certain types of features and changes in the new major version that cannot be rolled back. These include changes to system schemas, indexes, and descriptors, and enabling certain types of improvements and new features. Until the upgrade is finalized, these features and functions will not be available and the command `SHOW CLUSTER SETTING version` will return the previous version.

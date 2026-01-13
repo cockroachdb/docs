@@ -145,7 +145,7 @@ Users with the [Organization Admin]({% link cockroachcloud/authorization.md %}#o
 #### Restore an Advanced cluster
 
 {{site.data.alerts.callout_info}}
-Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore operation fails if the destination cluster contains any databases/schemas/tables.
+Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore job fails if the destination cluster contains any databases/schemas/tables.
 {{site.data.alerts.end}}
 
 To restore a cluster:
@@ -239,7 +239,7 @@ For each restore job, the tab will display:
 - **Backup taken on**: The date the backup was originally taken.
 - **Status**: The status of the restore job `Preparing`, `Running`, `Succeeded`, `Failed`.
 - **Restore start**: The date the restore job was initiated.
-- **Restore end**: The date the restore job ened (whether successful or unsuccessful).
+- **Restore end**: The date the restore job ended (whether successful or unsuccessful).
 - **Job ID**: The job ID of the restore job.
 
 ## Cloud API

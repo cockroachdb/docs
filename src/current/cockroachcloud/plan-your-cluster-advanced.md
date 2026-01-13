@@ -12,6 +12,17 @@ This page describes how to plan your CockroachDB {{ site.data.products.advanced 
 
 Before making any changes to your cluster's configuration, review these requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters. We recommend that you test configuration changes carefully before applying them to production clusters.
 
+## {{ site.data.products.advanced}} cluster architecture
+
+The following diagram shows the internal architecture and network flow of a CockroachDB {{ site.data.products.advanced }} cluster:
+
+<img src="{{ 'images/cockroachcloud/advanced-architecture.png' | relative_url }}" alt="Diagram showing the architecture of Advanced plan Cloud deployments" style="border:1px solid #eee;max-width:100%" />
+
+CockroachDB {{ site.data.products.cloud }} operations are split into logical layers for **control** and **data**:
+
+- Control operations manage the CockroachDB cluster as a whole. These requests are handled by the **CockroachDB Cloud control plane** which communicates directly with cluster nodes as needed. These connections include access to the {{ site.data.products.cloud }} Console, DB Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}), [observability features]({% link cockroachcloud/metrics.md %}), and other cluster management tools.
+- Data operations involve connections between data applications and your underlying CockroachDB nodes, including SQL queries and responses. Each region has a network load balancer (NLB) that handles and distributes requests across CockroachDB nodes within the region. {{ site.data.products.advanced }} clusters can utilize [private connectivity]({% link cockroachcloud/private-clusters.md %}) across the cloud to limit the amount of network traffic that is sent over the public Internet.
+
 ## Cluster topology
 
 ### Single-region clusters
@@ -40,7 +51,11 @@ If your cluster's workload is subject to [compliance]({% link cockroachcloud/com
 
 A cluster's number of nodes and node capacity together determine the node's total compute and storage capacity.
 
-When considering your cluster's scale, we recommend that you start by planning the compute requirements per node. If a workload requires more than 16 vCPUs per node, consider adding more nodes. For example, if a 3-node cluster with 8 vCPUs per node is not adequate for your workload, consider scaling up to 16 vCPUs before adding a fourth node. For most production applications, we recommend at minimum 8 vCPUs per node.
+When considering your cluster's scale, we recommend that you start by planning the compute requirements per node. If a workload requires more than 16 vCPUs per node, consider adding more nodes. For example, if a 3-node cluster with 8 vCPUs per node is not adequate for your workload, consider scaling up to 16 vCPUs before adding a fourth node. For most production applications, we recommend at minimum 8 vCPUs per node.  
+
+{{site.data.alerts.callout_danger}}
+Cockroach Labs does not provide support for clusters with only 2 vCPUs per node.
+{{site.data.alerts.end}}
 
 We recommend you avoid adding or removing nodes from a cluster when its load is expected to be high. Adding or removing nodes incurs a non-trivial amount of load on the cluster and can take more than half an hour per region. Changing the cluster configuration during times of heavy traffic may negatively impact application performance, and changes may take longer to be applied.
 

@@ -1,0 +1,1 @@
+- The `security_invoker` attribute for views is not supported. Views always use the view definer's privileges when checking permissions. [#138918](https://github.com/cockroachdb/cockroach/issues/138918)

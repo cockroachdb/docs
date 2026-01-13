@@ -1,6 +1,6 @@
 To restore a managed backup successfully in CockroachDB {{ site.data.products.cloud }}, you must have the appropriate [permissions]({% link cockroachcloud/authorization.md %}) on both the source and destination clusters:
 
-- You must have either the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role on the **destination cluster**, or at the [organization level]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model). Without one of these roles, the restore operation will fail.
+- You must have either the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role on the **destination cluster**, or at the [organization level]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model). Without one of these roles, the restore job will fail.
 - You must also have either the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role on the **source cluster** (the cluster from which the backup was taken), or at the [organization level]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model). If you do not have the required permissions on the source cluster, the restore will fail.
 
 {{site.data.alerts.callout_info}}

@@ -349,7 +349,7 @@ For usage, see [Synopsis](#synopsis).
 
 ### `RESET {session variable}`
 
-`ALTER DATABASE ... RESET {session variable}` resets a [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for a database to its default value for the client session.
+`ALTER DATABASE ... RESET {session variable}` clears a database-level override of a [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) so that future sessions use the default value.
 
 {% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
 
@@ -399,6 +399,10 @@ In CockroachDB, the following are aliases for `ALTER DATABASE ... SET {session v
 - `ALTER ROLE ALL IN DATABASE ... SET {session variable}`
 
 For more information, refer to [`ALTER ROLE ALL ...`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users).
+
+#### Session variable precedence
+
+{% include {{ page.version.version }}/sql/session-variable-precedence-order.md %}
 
 ### `SET PRIMARY REGION`
 

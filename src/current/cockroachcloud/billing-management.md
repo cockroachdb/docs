@@ -25,7 +25,7 @@ You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit car
 
 1. On the **Billing** page, select the **Payment details** tab.
 1. Click **Add a credit card** in the **Payment method** field.
-1. In the **Edit payment method** dialog, enter the credit or debit card details.
+1. In the **Edit payment method** dialog, enter the credit card details.
 1. Click **Save card**.
 1. Click **Add a billing email** in the **Billing contact info** section.
 1. In **Edit billing email** enter the email address at which you want to receive invoices for the organization.
@@ -45,7 +45,7 @@ You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit car
 
 1. On the **Billing** page, select the **Payment details** tab.
 1. Click the pencil icon for the **Payment method** field.
-1. In the **Edit payment method** dialog, enter the credit or debit card details.
+1. In the **Edit payment method** dialog, enter the credit card details.
 1. Click **Save card**.
 1. In the **Billing contact info** section, click the pencil icon for the **Billing address** field.
 1. Enter the address associated with your new payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
@@ -136,10 +136,12 @@ Under the **Credits** section, you can see more information about each of your o
 The **Current billing period** section displays a table listing your organization's clusters and the Credits they have accrued. The table also includes the cluster type and associated [labels]({% link cockroachcloud/labels.md %}).
 
 ## View invoices
-
-You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Click any invoice to view the details of your charges for a billing period.
+ 
+You can review an in-progress invoice for the current billing period on the **Overview** tab of the **Billing** page. You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Click any invoice to view the details of your charges for a billing period.
 
 If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, billing is grouped by folder. Click any folder to view invoices for individual clusters in the folder or its descendants. Within a folder, click any subfolder to view its details.
+
+You can also use the Cloud API to [get invoices for an organization]({% link cockroachcloud/cloud-api.md %}#get-invoices-for-an-organization).
 
 ### Export invoices
 
@@ -150,3 +152,7 @@ You can export invoice data in CSV or PDF format. From the **Invoices** tab, on 
 - The PDF renders invoice information from the Console into a traditional invoice format. This format includes the high level information from the Console, a summary of total usage, the organization's billing address, and a CockroachDB letterhead.
 
 If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, the full path for each cluster is provided under the **Cluster path** column.
+
+## Non-payment
+
+{% include cockroachcloud/non-payment.md %}

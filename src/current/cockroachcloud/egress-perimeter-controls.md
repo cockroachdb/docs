@@ -62,7 +62,7 @@ The operations described in this page require an API key with very broad permiss
     ~~~shell
     curl --request GET \
     --header "Authorization: Bearer $CC_API_KEY" \
-    --url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID"
+    --url https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID
     ~~~
 
     ~~~json
@@ -113,8 +113,8 @@ Essential external traffic destined to resources managed by Cockroach Labs is al
     ~~~shell
     curl --request POST \
     --header "Authorization: Bearer $CC_API_KEY" \
-    --header 'Cc-Version: latest' \
-    --url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/egress-traffic-policy" \
+    --header "Cc-Version: latest" \
+    --url https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/egress-traffic-policy \
     --data '{"allow_all":false}'
     ~~~
 
@@ -210,12 +210,12 @@ The following steps create one FQDN rule and one CIDR rule.
     ~~~shell
     curl --request POST \
     --header "Authorization: Bearer $CC_API_KEY" \
-    --url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules" \
+    --url https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules \
     --data "@egress-rule1.json"
 
     curl --request POST \
     --header "Authorization: Bearer $CC_API_KEY" \
-    --url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules" \
+    --url https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules \
     --data "@egress-rule2.json"
     ~~~
 
@@ -269,8 +269,8 @@ Refer to the list of [rule statuses](#rule-statuses).
 ~~~shell
 curl --request GET \
 --header "Authorization: Bearer $CC_API_KEY" \
---header  'Cc-Version: 2022-09-20' \
---url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID"
+--header "Cc-Version: 2022-09-20" \
+--url https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID
 ~~~
 
 ~~~txt
@@ -302,7 +302,7 @@ Consult the glossary of [rule statuses](#rule-statuses).
 curl --request GET \
 --header "Authorization: Bearer $CC_API_KEY" \
 --header  'Cc-Version: 2022-09-20' \
---url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules"
+--url https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules
 
 ~~~
 
@@ -356,7 +356,7 @@ Your cluster's firewall behavior is enforced asynchronously after the API respon
 curl --request DELETE \
 --header "Authorization: Bearer $CC_API_KEY" \
 --header  'Cc-Version: 2022-09-20' \
---url "https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID"
+--url https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID
 ~~~
 
 ~~~txt

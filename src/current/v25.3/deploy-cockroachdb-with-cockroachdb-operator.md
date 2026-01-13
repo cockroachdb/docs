@@ -184,13 +184,13 @@ Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on
     ~~~ yaml
     apiVersion: v1
     kind: Secret
-      metadata:
-        name: azure-cluster-identity-credentials-secret
-        type: Opaque
-        stringData:
-          azure-credentials: |
-          azure_client_id: 11111111-1111-1111-1111-111111111111
-          azure_client_secret: s3cr3t
+    metadata:
+      name: azure-cluster-identity-credentials-secret
+    type: Opaque
+    stringData:
+      azure-credentials: |
+      azure_client_id: 11111111-1111-1111-1111-111111111111
+      azure_client_secret: s3cr3t
     ~~~
 
     For more information on how to use these variables, refer to the [`Azure.Identity` documentation](https://learn.microsoft.com/dotnet/api/azure.identity.environmentcredential?view=azure-dotnet).
@@ -252,7 +252,21 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
     If you intend to deploy CockroachDB nodes across multiple different regions, follow the additional steps described in [Deploy across multiple regions](#deploy-across-multiple-regions).
     {{site.data.alerts.callout_end}}
 
-1. Uncomment and modify `cockroachdb.crdbCluster.resources` in the values file with the CPU and memory requests and limits for each node to use. The default values are 4vCPU and 16GiB of memory:
+1. Modify `cockroachdb.crdbCluster.podTemplate.spec.resources` in the values file with the CPU and memory limits and requests for each node to use. For example, to define default values of 4vCPU and 16GiB of memory:
+
+    ~~~ yaml
+    cockroachdb:
+      crdbCluster:
+        podTemplate:
+          spec:
+            resources:
+              limits:
+                cpu: 4000m
+                memory: 16Gi
+              requests:
+                cpu: 4000m
+                memory: 16gi
+    ~~~
 
     For more information on configuring node resource allocation, refer to [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-operator.md %})
 
@@ -435,13 +449,18 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
     cockroach start --locality region=us-central1,zone=us-central1-c,dc=dc2
     ~~~
 
-    Optionally, review the `cockroachdb.crdbCluster.topologySpreadConstraints` configuration and set `topologyKey` to the `nodeLabel` value of a locality level that has distinct values for each node. By default the lowest locality level is `zone`, so the following configuration sets that value as the `topologyKey`:
+    Optionally, review the `cockroachdb.crdbCluster.podTemplate.spec.topologySpreadConstraints` configuration and set `topologyKey` to the `nodeLabel` value of a locality level that has distinct values for each node. By default the lowest locality level is `zone`, so the following configuration sets that value as the `topologyKey`:
 
     ~~~ yaml
     cockroachdb:
       crdbCluster:
-        topologySpreadConstraints:
-          topologyKey: topology.kubernetes.io/zone
+        podTemplate:
+          spec:
+            topologySpreadConstraints:
+              # maxSkew defines the degree to which the pods can be unevenly distributed.
+            - maxSkew: 1
+              # topologyKey defines the key for topology spread.
+              topologyKey: topology.kubernetes.io/zone
     ~~~
 
     For more information on localities and topology planning, see the [topology patterns documentation]({% link {{ page.version.version }}/topology-patterns.md %}).
@@ -460,6 +479,20 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     helm install $CRDBCLUSTER  ./cockroachdb-parent/charts/cockroachdb --set clusterDomain=cluster-test.local -n $NAMESPACE
+    ~~~
+
+1. Verify that the cluster has initialized and pods are now running:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get pods -n $NAMESPACE
+    ~~~
+    ~~~ shell
+    NAME                                    READY   STATUS    RESTARTS   AGE
+    crdb-operator-655fbf7847-zn9v8            1/1     Running   0          10m
+    cockroachdb-9swcg                         2/2     Running   0          45s
+    cockroachdb-bn6f7                         2/2     Running   0          45s
+    cockroachdb-nk2dw                         2/2     Running   0          45s
     ~~~
 
 #### Deploy across multiple regions

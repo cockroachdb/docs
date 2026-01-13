@@ -5,11 +5,11 @@ toc: true
 docs_area: manage
 ---
 
-[**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}):
+[**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) continuously and asynchronously replicates data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. When both clusters are virtualized, each cluster contains a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) during the PCR stream:
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
-This separation of concerns means that the replication stream can operate without affecting work happening in a virtual cluster.
+If you utilize the [read on standby](#start-up-sequence-with-read-on-standby) feature in PCR, the standby cluster has an additional reader virtual cluster that safely serves read requests on the replicating virtual cluster. 
 
 ### PCR stream start-up sequence
 
@@ -20,7 +20,7 @@ This separation of concerns means that the replication stream can operate withou
 
 The stream initialization proceeds as follows:
 
-1. The standby's consumer job connects via its system virtual cluster to the primary cluster and starts the primary cluster's physical stream producer job.
+1. The standby's consumer job connects to the primary cluster via the standby's system virtual cluster and starts the primary cluster's `REPLICATION STREAM PRODUCER` job.
 1. The primary cluster chooses a timestamp at which to start the physical replication stream. Data on the primary is protected from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) until it is replicated to the standby using a [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps).
 1. The primary cluster returns the timestamp and a [job ID]({% link {{ page.version.version }}/show-jobs.md %}#response) for the replication job.
 1. The standby cluster retrieves a list of all nodes in the primary cluster. It uses this list to distribute work across all nodes in the standby cluster.
@@ -53,7 +53,7 @@ If the primary cluster does not receive replicated time information from the sta
 
 ### Failover and promotion process
 
-The tracked replicated time and the advancing protected timestamp allows the replication stream to also track _retained time_, which is a timestamp in the past indicating the lower bound that the replication stream could fail over to. Therefore, the _failover window_ for a replication job falls between the retained time and the replicated time.
+The tracked replicated time and the advancing protected timestamp allow the replication stream to also track _retained time_, which is a timestamp in the past indicating the lower bound that the replication stream could fail over to. The retained time can be up to 4 hours in the past, due to the protected timestamp. Therefore, the _failover window_ for a replication job falls between the retained time and the replicated time.
 
 <img src="{{ 'images/v24.3/failover.svg' | relative_url }}" alt="Timeline showing how the failover window is between the retained time and replicated time." style="border:0px solid #eee;width:100%" />
 
@@ -68,3 +68,11 @@ When a PCR stream is started with a `readonly` virtual cluster, the job will del
 After reverting any necessary data, the standby virtual cluster is promoted as available to serve traffic and the replication job ends.
 
 For details on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#failback).
+
+### Multi-region behavior and best practices
+
+You can use PCR to replicate between clusters with different [cluster regions]({% link {{ page.version.version }}/multiregion-overview.md %}#cluster-regions), [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions), and [table localities]({% link {{ page.version.version }}/table-localities.md %}). Mismatched regions and localities do not impact the [failover process]({% link {{ page.version.version }}/failover-replication.md %}) or ability to access clusters after failover, but they do impact [leaseholders]({% link {{ page.version.version }}/architecture/glossary.md %}#leaseholder) and locality-dependent settings.
+
+If the localities on the primary cluster do not match the localities on the standby cluster, the standby cluster may be unable to satisfy replicating locality constraints. For example, if a replicated `REGIONAL BY ROW` table has partitions in `us-east`, `us-central`, and `us-west`, and the standby cluster only has nodes with the locality tags `us-east` and `us-central`, the standby cluster cannot satisfy the `REGIONAL BY ROW` `us-west` partition constraint. Data with unsatisfiable partition constraints is placed in an arbitrary location on the standby cluster, which can cause performance issues in the case of a failover event due to latency between regions.
+
+After a failover event involving clusters in different regions, do not change any configurations on your standby cluster if you plan to [fail back to the original primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#failback). If you plan to start using the standby cluster for long-running production traffic rather than performing a failback, adjust the configurations on the standby cluster to optimize for your traffic. When adjusting configurations, ensure that the new settings can be satisfied on the standby cluster. In particular, ensure that the cluster does not have pinned leaseholders for a region that does not exist on the cluster.

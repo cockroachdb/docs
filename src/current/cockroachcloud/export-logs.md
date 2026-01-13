@@ -24,6 +24,7 @@ Access to the `logexport` endpoint requires a valid CockroachDB {{ site.data.pro
 - [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin)
 - [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin)
 - [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
+- [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer)
 
 The following methods are available for use with the `logexport` endpoint:
 
@@ -74,7 +75,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq .keychain_config.aws_account_id
+      --header "Authorization: Bearer {secret_key}" | jq .keychain_config.aws_account_id
     ~~~
 
     Where:
@@ -251,7 +252,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq .keychain_config.gcp_auth_principal
+      --header "Authorization: Bearer {secret_key}" | jq .keychain_config.gcp_auth_principal
     ~~~
 
     Where:
@@ -449,7 +450,7 @@ No, logs for each region in your cluster are exported to the corresponding cloud
 
 ### What log channels are supported?
 
-You can export the following CockroachDB [log channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels): `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`.
+You can export the following CockroachDB [log channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels): `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, `SQL_PERF`, and `CHANGEFEED`.
 
 Log channels, such as `DEV`, `KV_DISTRIBUTION`, `SQL_INTERNAL_PERF`, and `TELEMETRY`, cannot be exported from CockroachDB {{ site.data.products.standard }}. These are for Cockroach Labs internal use cases and are not meant for external use. If you need access to additional logs, contact [Support](https://support.cockroachlabs.com/hc/).
 

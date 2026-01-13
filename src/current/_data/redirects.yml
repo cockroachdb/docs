@@ -81,7 +81,7 @@
 
 - destination: admin-ui-overview.md
   sources: ['explore-the-admin-ui.md']
-  versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1']
+  versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v20.1']
 
 - destination: architecture/distribution-layer.md#range-merges
   sources: ['range-merges.md']
@@ -89,11 +89,11 @@
 
 - destination: architecture/overview.md
   sources: ['architecture/index.md']
-  versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: authorization.md
   sources: ['create-and-manage-users.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: authorization.md
   sources: ['roles.md']
@@ -103,7 +103,7 @@
   sources:
     - backup-data.md
     - restore-data.md
-  versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1']
+  versions: ['v2.1', 'v19.1', 'v20.1']
 
 - destination: cdc-queries.md
   sources: ['cdc-transformations.md']
@@ -119,59 +119,59 @@
 
 - destination: cockroach-cert.md
   sources: ['create-security-certificates.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-debug-ballast.md
   sources: ['debug-ballast.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-debug-encryption-active-key.md
   sources: ['debug-encryption-active-key.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-debug-merge-logs.md
   sources: ['debug-merge-logs.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-debug-zip.md
   sources: ['debug-zip.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-dump.md
   sources: ['sql-dump.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-gen.md
   sources: ['generate-cockroachdb-resources.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-init.md
   sources: ['initialize-a-cluster.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-node.md
   sources: ['view-node-details.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-quit.md
   sources: ['stop-a-node.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-sql.md
   sources: ['use-the-built-in-sql-client.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1', 'v21.2', 'v21.2', 'v22.2', 'v23.1', 'v23.2']
+  versions: ['v20.1', 'v20.2', 'v21.1', 'v21.2', 'v21.2', 'v22.2', 'v23.1', 'v23.2']
 
 - destination: cockroach-sqlfmt.md
   sources: ['use-the-query-formatter.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-start.md
   sources: ['start-a-node.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroach-version.md
   sources: ['view-version-details.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: cockroachdb-feature-availability.md
   sources:
@@ -205,13 +205,13 @@
 
 - destination: demo-low-latency-multi-region-deployment.md
   sources: ['demo-geo-partitioning.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: demo-replication-and-rebalancing.md
   sources:
   - demo-automatic-rebalancing.md
   - demo-data-replication.md
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: v23.2/disaster-recovery-planning.md
   sources: ['v23.2/disaster-recovery.md']
@@ -233,11 +233,11 @@
 
 - destination: dev/failover-replication.md
   sources: ['cutover-replication.md']
-  versions: ['24.3']
+  versions: ['24.3', '24.1']
 
 - destination: failover-replication.md
   sources: ['cutover-replication.md']
-  versions: ['24.3']
+  versions: ['24.3', '24.1']
 
 - destination: fips.md
   sources: ['fips-compliance.md']
@@ -275,7 +275,7 @@
 
 - destination: manual-deployment.md
   sources: ['cloud-deployment.md']
-  versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: plan-your-cluster-serverless.md
   sources:
@@ -299,6 +299,12 @@
 - destination: molt/migrate-data-load-and-replication.md
   sources: [':version/migrate-from-postgres.md']
 
+- destination: molt/migrate-load-replicate.md
+  sources: ['molt/migrate-data-load-replicate-only.md']
+
+- destination: molt/migrate-resume-replication.md
+  sources: ['molt/migrate-replicate-only.md']
+
 - destination: molt/migration-overview.md
   sources: [':version/migration-overview.md']
 
@@ -307,7 +313,7 @@
 
 - destination: molt/migration-overview.md
   sources: ['import-data.md']
-  versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v2.1', 'v19.1', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: molt/migration-overview.md
   sources:
@@ -330,11 +336,11 @@
 
 - destination: orchestrate-cockroachdb-with-kubernetes-multi-cluster.md
   sources: ['orchetrate-cockroachdb-with-kubernetes-multi-region.md']
-  versions: ['v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v2.0', 'v2.1', 'v19.1', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: performance-benchmarking-with-tpc-c-1k-warehouses.md
   sources: ['performance-benchmarking-with-tpc-c.md']
-  versions: ['v19.2', 'v20.1']
+  versions: ['v20.1']
 
 - destination: performance-benchmarking-with-tpcc-large.md
   sources: ['performance-benchmarking-with-tpc-c-100k-warehouses.md']
@@ -355,7 +361,7 @@
 
 - destination: postgresql-compatibility.md
   sources: ['porting-postgres.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: regional-tables.md
   sources:
@@ -369,15 +375,15 @@
 
 - destination: scalar-expressions.md
   sources: ['sql-expressions.md']
-  versions: ['v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v2.0', 'v2.1', 'v19.1', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: select-clause.md
   sources: ['select.md']
-  versions: ['v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v2.0', 'v2.1', 'v19.1', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: selection-queries.md
   sources: ['selection-clauses.md']
-  versions: ['v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v2.0', 'v2.1', 'v19.1', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: serverless-faqs.md
   sources: ['free-faqs.md']
@@ -395,7 +401,7 @@
     - show-create-sequence.md
     - show-create-table.md
     - show-create-view.md
-  versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v2.1', 'v19.1', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: show-experimental-ranges.md
   sources: ['show-testing-ranges.md']
@@ -403,7 +409,7 @@
 
 - destination: show-ranges.md
   sources: ['show-experimental-ranges.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: show-statements.md
   sources: ['show-queries.md']
@@ -418,7 +424,6 @@
 
 - destination: stable/example-apps.md#python
   sources:
-    - v19.2/build-a-python-app-with-cockroachdb-pony.md
     - v20.1/build-a-python-app-with-cockroachdb-pony.md
 
 - destination: stable/install-client-drivers.md
@@ -429,7 +434,7 @@
 
 - destination: start-a-local-cluster-in-docker-mac.md
   sources: ['start-a-local-cluster-in-docker.md']
-  versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v20.1', 'v20.2', 'v21.1']
 
 - destination: stream-data-out-of-cockroachdb-using-changefeeds.md
   sources: ['change-data-capture.md']
@@ -453,7 +458,7 @@
 
 - destination: topology-patterns.md
   sources: ['cluster-topology-patterns.md']
-  versions: ['v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v19.1', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: ui-cdc-dashboard.md
   sources: ['admin-ui-cdc-dashboard.md']
@@ -521,6 +526,10 @@
 - destination: ui-storage-dashboard.md
   sources: ['admin-ui-storage-dashboard.md']
   versions: ['v20.2', 'v21.1']
+
+- destination: ui-top-ranges-page.md
+  sources: ['ui-hot-ranges-page.md']
+  versions: ['v25.4']
 
 - destination: use-a-local-file-server-for-bulk-operations.md
   sources: ['create-a-file-server.md']
@@ -766,7 +775,7 @@
     - simplified-deployment.md
     - sql.md
     - strong-consistency.md
-  versions: ['v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+  versions: ['v19.1', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: https://docs.peewee-orm.com/en/latest/peewee/playhouse.html
   sources: [':version/build-a-python-app-with-cockroachdb-peewee.md']

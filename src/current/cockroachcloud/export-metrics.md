@@ -26,7 +26,11 @@ Amazon CloudWatch  | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_
 Datadog            | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/datadog`
 Prometheus         | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/prometheus`
 
-Access to the `metricexport` endpoints requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the appropriate permissions (`admin` privilege or Cluster Admin role).
+Access to the `metricexport` endpoints requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) assigned one of the following [roles]({% link cockroachcloud/managing-access.md %}#edit-roles-on-a-service-account):
+
+- [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer)
+- [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
+- [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin)
 
 The following methods are available for use with the `metricexport` endpoints, and require the listed service account permissions:
 
@@ -74,7 +78,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq .keychain_config.aws_account_id
+      --header "Authorization: Bearer {secret_key}" | jq .keychain_config.aws_account_id
     ~~~
 
     Where:

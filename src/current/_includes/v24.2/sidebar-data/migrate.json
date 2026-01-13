@@ -24,21 +24,15 @@
           ]
         },
         {
-          "title": "Load and Replicate",
-          "urls": [
-            "/molt/migrate-data-load-and-replication.html"
-          ]
-        },
-        {
           "title": "Load and Replicate Separately",
           "urls": [
-            "/molt/migrate-data-load-replicate-only.html"
+            "/molt/migrate-load-replicate.html"
           ]
         },
         {
           "title": "Resume Replication",
           "urls": [
-            "/molt/migrate-replicate-only.html"
+            "/molt/migrate-resume-replication.html"
           ]
         },
         {
@@ -62,6 +56,29 @@
           "title": "Fetch",
           "urls": [
             "/molt/molt-fetch.html"
+          ]
+        },
+        {
+          "title": "Replicator",
+          "items": [
+            {
+              "title": "Guide",
+              "urls": [
+                "/molt/molt-replicator.html"
+              ]
+            },
+            {
+              "title": "Flags",
+              "urls": [
+                "/molt/replicator-flags.html"
+              ]
+            },
+            {
+              "title": "Metrics",
+              "urls": [
+                "/molt/replicator-metrics.html"
+              ]
+            }
           ]
         },
         {
