@@ -11,6 +11,12 @@ The userscript API provides configuration functions (`configureTargetSchema`, `c
 
 The [userscript cookbook]({% link molt/userscript-cookbook.md %}) includes example scenarios that further demonstrate how to use this API. Follow userscript [best practices](#best-practices).
 
+## Access this API
+
+To access the userscript API, [install MOLT Replicator **v1.1.4 or later**]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library, which you should import at the top of your TypeScript file: `import * as api from "replicator@v2";`
+
+In addition to importing the API from the `replicator` library, you can download the [userscript type definitions file](https://github.com/cockroachdb/replicator/blob/master/internal/script/testdata/replicator%40v2.d.ts). Place this file in your working directory to enable autocomplete, inline documentation, and real-time error detection directly in your IDE.
+
 ## Userscript functions list
 
 - [`configureTargetSchema(targetSchemaName, handlers)`](#configure-target-schema)
@@ -645,12 +651,12 @@ Avoid logging sensitive data, as `console` output is collected by `replicator`â€
 
 | Level | Description |
 |---|---|
-| console.log(...args) | General-purpose logging. Use for informational messages. |
-| console.info(...args) | General-purpose logging. Use for informational messages. |
-| console.debug(...args) | Verbose debugging output. Typically filtered out unless debug logging is enabled with [`-v`]({% link molt/replicator-flags.md %}#verbose) as a Replicator flag. |
-| console.trace(...args) | Even more verbose trace output. Filtered out unless trace logging is enabled with [`-v`]({% link molt/replicator-flags.md %}#verbose) as a Replicator flag. |
-| console.warn(...args) | Warnings about non-fatal issues or unexpected data. |
-| console.error(...args) | Errors or exceptions during script execution. |
+| console.**log**(...args) | General-purpose logging. Use for informational messages. |
+| console.**info**(...args) | General-purpose logging. Use for informational messages. |
+| console.**debug**(...args) | Verbose debugging output. Typically filtered out unless debug logging is enabled with [`-v`]({% link molt/replicator-flags.md %}#verbose) as a Replicator flag. |
+| console.**trace**(...args) | Even more verbose trace output. Filtered out unless trace logging is enabled with [`-v`]({% link molt/replicator-flags.md %}#verbose) as a Replicator flag. |
+| console.**warn**(...args) | Warnings about non-fatal issues or unexpected data. |
+| console.**error**(...args) | Errors or exceptions during script execution. |
 
 #### Example
 
@@ -694,7 +700,7 @@ api.configureTargetSchema("target_db.target_schema", {
 
 In general, consider the following when writing userscripts:
 
-- Always remember to import the `replicator` API when creating a userscript: `import * as api from "replicator@v2"`;
+- Always remember to import the `replicator` API when creating a userscript: `import * as api from "replicator@v2";`
 - Prefer `configureTargetSchema` for `onRowUpsert` and `onRowDelete`.
 - Default to returning the row you received, unless you explicitly want to skip or reroute.
 - Numerical columns will be represented as strings. Parse them when reading, convert back to a string after calculations and when returning the row.

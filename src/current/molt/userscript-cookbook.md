@@ -13,7 +13,7 @@ Below each example, you will see the equivalent way of carrying out that transfo
 
 ## Before you begin
 
-- Make sure that you understand the [purpose and usage of userscripts]({% link molt/userscript-guide.md %}). Take a look at the [userscript API]({% link molt/userscript-api.md %}).
+- Make sure that you understand the [purpose and usage of userscripts]({% link molt/userscript-guide.md %}). Take a look at the [userscript API]({% link molt/userscript-api.md %}). Understand [what you cannot do]({% link molt/userscript-guide.md %}#limitations) in a userscript.
 - [Install MOLT Replicator]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library.
 - [Install TypeScript](https://www.typescriptlang.org/download/), and install a TypeScript-compatible IDE (for example, VS Code).
 
