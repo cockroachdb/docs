@@ -345,7 +345,7 @@ api.configureTargetTables(["orders"], {
 
 ### `onWrite(rows)`
 
-`onWrite` is called after `onRowUpsert` and `onRowDelete` for each of the passed-in rows. The `onWrite` handler lets you override MOLT Replicator’s default behavior when rows are written to the target database. It is called right before the final commit, after all schema-level and table-level processing has completed. A commit will be scheduled once `onWrite` returns.
+`onWrite` is called after `onRowUpsert` and `onRowDelete` for each of the passed-in rows. The `onWrite` handler lets you override MOLT Replicator's default behavior when rows are written to the target database. It is called right before the final commit, after all schema-level and table-level processing has completed. A commit will be scheduled once `onWrite` returns.
 
 Use `onWrite` when you want full control over how data is applied to the target. Typical use cases include:
 
@@ -642,7 +642,7 @@ Userscripts include a built-in global `console` object that provides standard lo
 Further observability can be accessed with the userscript [metrics]({% link molt/userscript-metrics.md %}).
 
 {{site.data.alerts.callout_info}}
-Avoid logging sensitive data, as `console` output is collected by `replicator`’s internal logging pipeline.
+Avoid logging sensitive data, as `console` output is collected by `replicator`'s internal logging pipeline.
 {{site.data.alerts.end}}
 
 ### Logging levels

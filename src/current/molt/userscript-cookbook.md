@@ -9,7 +9,7 @@ Userscripts allow you to define custom schema and table transformations. These c
 
 This cookbook provides ready-to-use examples that demonstrate real-world uses of the [userscript API]({% link molt/userscript-api.md %}). You can copy and paste them into your own code, and you can adapt them for your specific use cases. 
 
-Below each example, you will see the equivalent way of carrying out that transformation using [MOLT Fetch]({% link molt/molt-fetch.md %}), if it's possible to do so. MOLT Fetch does not support userscripts.
+Below each example, you will see the equivalent way of carrying out that transformation using [MOLT Fetch]({% link molt/molt-fetch.md %}), if it's possible to do so. MOLT Fetch does not support userscripts. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **you must apply equivalent transformations in both the Fetch and Replicator commands** to ensure data consistency.
 
 ## Before you begin
 
@@ -23,7 +23,7 @@ Below each example, you will see the equivalent way of carrying out that transfo
 
 This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to exclude a specific table from replication, while still replicating everything else in the same schema. 
 
-This could be useful when you have internal, staging, or audit tables that appear in the changefeed but shouldn’t be written to the target.
+This could be useful when you have internal, staging, or audit tables that appear in the changefeed but shouldn't be written to the target.
 
 **Make sure to set the `SCHEMA_NAME` and `TABLE_TO_SKIP` constants to match your environment.**
 
@@ -361,7 +361,7 @@ is_deleted STRING, ssn STRING, credit_card_number STRING
 
 #### MOLT Fetch equivalent
 
-1-to-n table transformations aren’t supported by MOLT Fetch transforms.
+1-to-n table transformations are not supported by MOLT Fetch transforms.
 
 ### Compute new columns
 

@@ -47,8 +47,10 @@ api.configureTargetSchema(SCHEMA_NAME, {
 });
 ~~~
 
-{{site.data.alerts.callout_success}}
 For details on the userscript API and handler functions, refer to the [Userscript API]({% link molt/userscript-api.md %}).
+
+{{site.data.alerts.callout_success}}
+When writing userscripts, follow the [best practices]({% link molt/userscript-api.md %}#best-practices).
 {{site.data.alerts.end}}
 
 ## Step 3: Use with Replicator
