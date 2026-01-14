@@ -10232,13 +10232,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.10
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters, as part of our staged release
-      process, with binaries for self-hosted clusters available
-      a week afterward.
 
 - release_name: v25.3.7
   major_version: v25.3
@@ -10266,13 +10259,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.3.6
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters, as part of our staged release
-      process, with binaries for self-hosted clusters available
-      a week afterward.
 
 - release_name: v25.4.3
   major_version: v25.4
@@ -10300,13 +10286,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.4.2
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters, as part of our staged release
-      process, with binaries for self-hosted clusters available
-      a week afterward.
 
 - release_name: v24.3.25
   major_version: v24.3
@@ -10334,10 +10313,3 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.24
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters, as part of our staged release
-      process, with binaries for self-hosted clusters available
-      a week afterward.
