@@ -5,7 +5,11 @@ toc: true
 docs_area:
 ---
 
-The **Billing** page contains an overview of your charges and the payment details on file for your CockroachDB {{ site.data.products.cloud }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
+The **Billing** page contains an overview of your charges and the payment details on file for your CockroachDB {{ site.data.products.cloud }} organization.
+
+## View billing for an organization
+
+Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) or [Billing Viewer]({% link cockroachcloud/authorization.md %}#billing-viewer) role can view billing details, invoices, and usage for the organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
 
 ## Set up billing for an organization
 
