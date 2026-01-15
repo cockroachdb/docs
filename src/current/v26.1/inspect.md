@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `INSPECT` [statement]({% link {{ page.version.version }}/sql-statements.md %}) runs a data consistency validation job against a table or database. The initial validation checks primary-to-secondary index consistency and records any errors. To display any errors recorded by the validation job, use [`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}).
+The `INSPECT` [statement]({% link {{ page.version.version }}/sql-statements.md %}) runs a data consistency validation job against a table or database and records any errors it finds. To display errors recorded by an inspection job, use [`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}).
 
 {{site.data.alerts.callout_info}}
 `INSPECT` is used to verify data integrity. It does not automatically repair errors.
@@ -16,7 +16,7 @@ The `INSPECT` [statement]({% link {{ page.version.version }}/sql-statements.md %
 To run `INSPECT` and view its results, the user must have:
 
 - The `INSPECT` system-level [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) is required to run the `INSPECT` statement.
-- The `VIEWSYSTEMTABLE` system-level [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges), which is required to view the results of [`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %})).
+- The `VIEWSYSTEMTABLE` system-level [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges), which is required to view the results of [`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}).
 
 ## Synopsis
 
@@ -34,8 +34,8 @@ Parameter | Description
 ----------|------------
 `table_name` | The [table]({% link {{ page.version.version }}/create-table.md %}) to inspect.
 `db_name` | The [database]({% link {{ page.version.version }}/create-database.md %}) to inspect.
-`opt_as_of_clause` | Optional. Run the inspection against a historical read timestamp using `INSPECT ... AS OF SYSTEM TIME {expr}`. For an example, see [Inspect at a specific timestamp](#inspect-at-a-specific-timestamp). For more information about historical reads, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
-`opt_inspect_options_clause` | Optional. Control which [indexes]({% link {{ page.version.version }}/indexes.md %}) are inspected using `INSPECT ... WITH OPTIONS (...)`. For an example, see [Inspect a table for specific indexes](#inspect-a-table-for-specific-indexes). See [Options](#options).
+`opt_as_of_clause` | Optional. Run the inspection against a historical read timestamp using `INSPECT ... AS OF SYSTEM TIME {expr}`. For an example, see [`INSPECT` at a specific timestamp](#inspect-at-a-specific-timestamp). For more information about historical reads, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
+`opt_inspect_options_clause` | Optional. Control which [indexes]({% link {{ page.version.version }}/indexes.md %}) are inspected using `INSPECT ... WITH OPTIONS (...)`. For an example, see [`INSPECT` a table for specific indexes](#inspect-a-table-for-specific-indexes). See [Options](#options).
 
 ### Options
 
@@ -43,16 +43,19 @@ Option | Description
 -------|------------
 `INDEX ALL` | Inspect all supported index types in the target table or database. This is the default.
 `INDEX ({index_name} [, ...])` | Inspect only the specified indexes. Note that `INDEX ALL` and this option are mutually exclusive.
+`DETACHED` | Run the inspection job in the background. For an example, see [`INSPECT` a table and run the job in the background](#inspect-a-table-and-run-the-job-in-the-background). This option allows `INSPECT` to run inside a [multi-statement transaction]({% link {{ page.version.version }}/run-multi-statement-transactions.md %}).
 
 ## Considerations
 
-- `INSPECT` must be run in an [implicit transaction]({% link {{ page.version.version }}/transactions.md %}#individual-statements). It cannot be run inside a multi-statement transaction. For more information, see [Run Multi-Statement Transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %}).
+- `INSPECT` can be run inside a [multi-statement transaction]({% link {{ page.version.version }}/run-multi-statement-transactions.md %}) if the [`DETACHED` option](#options) is used. Otherwise, it needs to be run in an [implicit transaction]({% link {{ page.version.version }}/transactions.md %}#individual-statements).
 - `INSPECT` always runs as a [background job]({% link {{ page.version.version }}/show-jobs.md %}).
 - `INSPECT` runs with low priority under the [admission control]({% link {{ page.version.version }}/admission-control.md %}) subsystem and may take time on large datasets. Plan to run it during periods of lower system load.
 - The following index types are unsupported:
   - [Vector indexes]({% link {{ page.version.version }}/vector-indexes.md %})
   - [Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %})
   - [Expression indexes]({% link {{ page.version.version }}/expression-indexes.md %})
+  - [Hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})
+  - [Inverted indexes]({% link {{ page.version.version }}/inverted-indexes.md %})
 - Unsupported index types are automatically skipped when using the default `INDEX ALL` behavior. If an unsupported index type is directly requested using `INDEX {index_name}`, the statement will fail before starting.
 
 ## Examples
@@ -79,6 +82,17 @@ INSPECT TABLE movr.public.vehicles WITH OPTIONS INDEX (vehicles_auto_index_fk_ci
 ~~~
 NOTICE: waiting for INSPECT job to complete: 1141477560713150465
 If the statement is canceled, the job will continue in the background.
+~~~
+
+### `INSPECT` a table and run the job in the background
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSPECT TABLE movr.public.vehicles WITH OPTIONS DETACHED;
+~~~
+
+~~~
+NOTICE:  INSPECT job 1141773037670301697 running in the background
 ~~~
 
 ### `INSPECT` at a specific timestamp

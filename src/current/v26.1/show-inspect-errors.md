@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW INSPECT ERRORS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) displays any issues detected by the data consistency validation jobs run by the [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) statement.
+The `SHOW INSPECT ERRORS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) displays errors recorded by an [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) job.
 
-By default, `SHOW INSPECT ERRORS` returns errors from the most recent completed and successful `INSPECT` job for the specified table. To view errors from a specific inspection job, use its ID, e.g. `SHOW INSPECT ERRORS FOR JOB {id}`.
+`SHOW INSPECT ERRORS` shows results for a single `INSPECT` job at a time; it does not aggregate results across jobs. By default, it returns errors from the most recent completed, successful `INSPECT` job for the specified table. To view errors from a specific job, use `SHOW INSPECT ERRORS FOR JOB {job_id}`.
 
 ## Required privileges
 
@@ -51,8 +51,9 @@ The `INSPECT` implementation reports the following `error_type` values:
 
 Error type | Meaning
 ----------|---------
-`secondary_index_missing` | A row in the [primary index]({% link {{ page.version.version }}/primary-key.md %}) is missing a corresponding entry in a [secondary index]({% link {{ page.version.version }}/indexes.md %}).
-`secondary_index_dangling` | A [secondary index]({% link {{ page.version.version }}/indexes.md %}) entry exists, but the referenced [primary index]({% link {{ page.version.version }}/primary-key.md %}) row does not.
+`missing_secondary_index_entry` | A row in the [primary index]({% link {{ page.version.version }}/primary-key.md %}) is missing a corresponding entry in a [secondary index]({% link {{ page.version.version }}/indexes.md %}).
+`dangling_secondary_index_entry` | A [secondary index]({% link {{ page.version.version }}/indexes.md %}) entry exists, but the referenced [primary index]({% link {{ page.version.version }}/primary-key.md %}) row does not.
+`internal_error` | An internal error (for example, data corruption or encoding issues) prevented the check from completing normally. These errors can indicate data corruption or other serious issues that require investigation. If you see this error, please [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
 
 ## Examples
 
