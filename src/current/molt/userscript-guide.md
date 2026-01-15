@@ -18,17 +18,15 @@ Userscripts are [written in TypeScript]({% link molt/userscript-cookbook.md %}) 
 
 ## How it works
 
-Userscripts are TypeScript files that support ECMAScript 5.1, with partial ES6 support. Userscripts run in a sandboxed JavaScript runtime inside [MOLT Replicator]({% link molt/molt-replicator.md %}) that implements the core ECMAScript language but does **not** include the extended standard library APIs found in Node.js or web browsers (such as filesystem, networking, or timers). Learn more about [userscript limitations](#limitations).
-
 Userscripts act as a customizable processing layer within MOLT Replicator's live replication lifecycle. They are used to intercept, inspect, and modify the flow of data as it moves from the source database to the target database, enabling full control over how rows are transformed, filtered, or applied; as well as providing the ability to run custom transactional logic against the target database.
 
 The following diagram illustrates how userscripts fit into the replication pipeline:
 
-<!-- image TODO -->
+<img src="{{ 'images/molt/userscript-flow.png' | relative_url }}" alt="Userscript flow"  style="border:1px solid #eee;max-width:50%;margin:auto;display:block" />
 
-1. Source changefeed: Replicator continuously listens to the source database's changefeed for row modification events.
+1. **Source changefeed**: Replicator continuously listens to the source database's changefeed for row modification events.
 
-1. Userscript processing: When Replicator receives change events from the source database, it passes them through the userscript in two phases, in the following sequence:
+1. **Userscript processing**: When Replicator receives change events from the source database, it passes them through the userscript in two phases, in the following sequence:
 
     1. Schema-level handlers ([`onRowUpsert`]({% link molt/userscript-api.md %}#configure-target-schema-on-row-upsert), [`onRowDelete`]({% link molt/userscript-api.md %}#configure-target-schema-on-row-delete)) are invoked to transform, filter, or route rows before buffering them in a [staging database]({% link molt/molt-replicator.md %}#terminology) for ordered processing.
 
@@ -38,9 +36,11 @@ The following diagram illustrates how userscripts fit into the replication pipel
     For details on these handlers and other configuration functions, refer to [Userscript API]({% link molt/userscript-api.md %}).
     {{site.data.alerts.end}}
 
-1. Commit to target database: Replicator commits the transformed rows to the target database in a single transactional write. Target database writes and logic will only be scheduled to be committed after `onWrite` returns, or all table-level handlers are run.
+1. **Commit to target database**: Replicator commits the transformed rows to the target database in a single transactional write. Target database writes and logic will only be scheduled to be committed after `onWrite` returns, or all table-level handlers are run.
 
 This allows you to precisely defines how data from your source system should look and behave once it reaches your target database, without needing to modify MOLT Replicator's core logic.
+
+Userscripts run in a sandboxed JavaScript runtime inside [MOLT Replicator]({% link molt/molt-replicator.md %}) that implements the core ECMAScript language but does **not** include the extended standard library APIs found in Node.js or web browsers (such as filesystem, networking, or timers). Learn more about [userscript limitations](#unsupported-typescript-features).
 
 ## Usage
 
@@ -68,68 +68,38 @@ Userscripts are intended for scenarios where you need to customize the standard 
 
 Common use cases include:
 
-- Renaming tables or columns: Map source table or column names to different names on the target.
+- [Renaming columns]({% link molt/userscript-cookbook.md %}#rename-columns): Map source column names to different names on the target.
 - [Row filtering]({% link molt/userscript-cookbook.md %}#filter-a-single-table): Filter out specific rows based on conditions, such as excluding soft-deleted records or test data.
 - [Column filtering]({% link molt/userscript-cookbook.md %}#filter-columns): Remove sensitive or unnecessary columns from replicated data.
 - [Data transformation]({% link molt/userscript-cookbook.md %}#compute-new-columns): Transform column values, compute new columns, or change data types during replication.
 - [Table partitioning]({% link molt/userscript-cookbook.md %}#route-table-partitions): Distribute rows from a single source table across multiple target tables based on partitioning rules.
 - [Dead-letter queues]({% link molt/userscript-cookbook.md %}#implement-a-dead-letter-queue): Route failed operations to a separate (DLQ) table for offline inspection and recovery.
 
-For ready-to-use templates that handle the preceding use cases, refer to the [Userscript Cookbook]({% link molt/userscript-cookbook.md %}).
+For ready-to-use templates that handle the preceding use cases, refer to the [userscript cookbook]({% link molt/userscript-cookbook.md %}).
 
-## Limitations
+## Unsupported TypeScript features
 
-Userscripts themselves are TypeScript files that support ECMAScript 5.1, with partial ES6 support.
+Userscripts themselves are TypeScript files that support [ECMAScript 5.1](https://262.ecma-international.org/5.1/), with partial [ES6](https://262.ecma-international.org/6.0/) support.
 
-Additionally, the userscript JavaScript execution environment is intentionally minimal. It implements the core ECMAScript language but does not include the extended standard library APIs found in Node.js or web browsers. This ensures that userscripts remain lightweight, deterministic, and focused solely on processing data and executing transactional logic.
+The JavaScript execution environment in which userscripts run is intentionally minimal. It implements the core ECMAScript language but does not include the extended standard library APIs found in Node.js or web browsers. This ensures that userscripts remain lightweight, deterministic, and focused solely on processing data and executing transactional logic.
 
-The following capabilities are not available in userscripts:
+The following capabilities are not available within userscripts:
 
-**Filesystem**
+* **Filesystem**: No file reading or writing, directory listing, file streams, or `fs` module.
 
-* No file reading or writing
-* No directory listing
-* No file streams
-* No fs module
+* **Networking**: No HTTP/HTTPS requests, sockets, WebSockets or `fetch`.
 
-**Networking**
+* **Process and Operating System**: No `process` object, environment variables, subprocess execution, or OS-level access.
 
-* No HTTP/HTTPS requests
-* No sockets
-* No WebSockets
-* No fetch
+* **Timers and Scheduling**: No `setTimeout` / `setInterval`.
 
-**Process and Operating System**
+* **Cryptography and Binary Utilities**: No hashing or HMAC, secure random generation, WebCrypto, or compression or binary buffers.
 
-* No process object
-* No environment variables
-* No subprocess execution
-* No OS-level access
+* **Workers and Parallelism**: No Web Workers, threads, or shared memory.
 
-**Timers and Scheduling**
+* **Persistent Storage**: No local/session storage, filesystem-backed persistence, built-in key–value store.
 
-* No setTimeout / setInterval
-
-**Cryptography and Binary Utilities**
-
-* No hashing or HMAC
-* No secure random generation
-* No WebCrypto
-* No compression or binary buffers
-
-**Workers and Parallelism**
-
-* No Web Workers
-* No threads
-* No shared memory
-
-**Persistent Storage**
-
-* No local/session storage
-* No filesystem-backed persistence
-* No built-in key–value store
-
-
+Your IDE will not recognize unsupported functions, and attempting to use any of the above features will result in a **runtime error**.
 
 ## See also
 

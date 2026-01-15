@@ -13,7 +13,7 @@ Below each example, you will see the equivalent way of carrying out that transfo
 
 ## Before you begin
 
-- Make sure that you understand the [purpose and usage of userscripts]({% link molt/userscript-guide.md %}). Take a look at the [userscript API]({% link molt/userscript-api.md %}). Understand [what you cannot do]({% link molt/userscript-guide.md %}#limitations) in a userscript.
+- Make sure that you understand the [purpose and usage of userscripts]({% link molt/userscript-guide.md %}). Take a look at the [userscript API]({% link molt/userscript-api.md %}). Understand [what you cannot do]({% link molt/userscript-guide.md %}#unsupported-typescript-features) in a userscript.
 - [Install MOLT Replicator]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library.
 - [Install TypeScript](https://www.typescriptlang.org/download/), and install a TypeScript-compatible IDE (for example, VS Code).
 
@@ -56,15 +56,6 @@ api.configureTargetSchema(SCHEMA_NAME, {
     return row;
   }
 });
-~~~
-
-#### Target schema
-
-The target schema of the example above uses the same columns as the source table:
-
-~~~
-id STRING, name STRING, price STRING, qty STRING,
-is_deleted STRING, ssn STRING, credit_card_number STRING
 ~~~
 
 #### MOLT Fetch equivalent
@@ -120,15 +111,6 @@ api.configureTargetSchema(SCHEMA_NAME, {
     return row;
   }
 });
-~~~
-
-#### Target schema
-
-The target schema of the example above uses the same columns as the source table:
-
-~~~
-id STRING, name STRING, price STRING, qty STRING,
-is_deleted STRING, ssn STRING, credit_card_number STRING
 ~~~
 
 #### MOLT Fetch equivalent
@@ -194,9 +176,9 @@ api.configureTargetSchema(SCHEMA_NAME, {
 });
 ~~~
 
-#### Target schema
+#### Source/target table schema
 
-The target schema of the example above uses the same columns as the source table:
+The source and target tables have the same schema:
 
 ~~~
 id STRING, name STRING, price STRING, qty STRING,
@@ -267,13 +249,18 @@ api.configureTargetSchema(SCHEMA_NAME, {
 
 ~~~
 
-#### Target schema
+#### Source/target table schema
 
 The target schema of the example above uses the same columns as the source table, except the `qty` column is removed:
 
 ~~~
-id STRING, name STRING, price STRING, is_deleted STRING, 
-ssn STRING, credit_card_number STRING
+SOURCE
+id STRING, name STRING, price STRING, qty STRING,
+is_deleted STRING, ssn STRING, credit_card_number STRING
+
+TARGET
+id STRING, name STRING, price STRING, 
+is_deleted STRING, ssn STRING, credit_card_number STRING
 ~~~
 
 #### MOLT Fetch equivalent
@@ -292,6 +279,7 @@ molt fetch \
 
 **Replace the `YOUR_TABLE_HERE` placeholder with the name of the table to edit.**
 
+{% include_cached copy-clipboard.html %}
 ~~~ json
 // exclude_qty_column.json
 {
@@ -309,6 +297,91 @@ molt fetch \
     ]
 }
 ~~~
+
+### Rename columns
+
+This example shows how you can use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to rename a table's columns on the target database. It demonstrates how you might handle column renaming in the case of both upserts and deletes.
+
+**Make sure to set the `SCHEMA_NAME` and `TABLE_TO_EDIT` constants to match your environment.**
+
+{% include_cached copy-clipboard.html %}
+~~~ts
+import * as api from "replicator@v2";
+
+// ============================================================================
+// Configuration - Update these values for your environment
+// ============================================================================
+
+// Make sure the letter casing matches your target table and schema names.
+const SCHEMA_NAME = "YOUR_SCHEMA_HERE" // "postgres.public" in this example
+const TABLE_TO_EDIT = "YOUR_TABLE_HERE"; // "employees" in this example
+
+/**
+ * SOURCE
+ * emp_id STRING, emp_name STRING, department STRING
+ *
+ * TARGET
+ * employee_id STRING, employee_name STRING, department STRING
+ * 
+ * Use case: Source database uses "emp_id" and "emp_name" but target database
+ * uses "employee_id" and "employee_name". The script maps the source column
+ * names to the target column names during replication.
+ */
+api.configureTargetSchema(SCHEMA_NAME, {
+  onRowUpsert: (row, metadata) => {
+    if (metadata.table === TABLE_TO_EDIT) {
+      // Rename emp_id -> employee_id
+      if (row.emp_id !== undefined) {
+        row.employee_id = row.emp_id;
+        delete row.emp_id;
+      }
+
+      // Rename emp_name -> employee_name
+      if (row.emp_name !== undefined) {
+        row.employee_name = row.emp_name;
+        delete row.emp_name;
+      }
+    }
+
+    return row;
+  },
+
+  onRowDelete: (row, metadata) => {
+    // Deletes only need primary key columns to identify which row to remove.
+    // If your primary key column is renamed, apply the same renaming here.
+    //
+    // Note: Some databases may send primary keys as positional values instead
+    // of named columns - in that case, the source primary key columns will be
+    // undefined, and replicator handles the mapping automatically so you can
+    // just return the row unchanged.
+
+    // Rename emp_id -> employee_id for the primary key
+    if (row.emp_id !== undefined) {
+      row.employee_id = row.emp_id;
+      delete row.emp_id;
+    }
+
+    return row;
+  },
+});
+~~~
+
+#### Source/target table schema
+
+The column names in the target table above are longer versions of those in the source table:
+
+~~~
+SOURCE
+emp_id STRING, emp_name STRING, department STRING
+
+TARGET
+employee_id STRING, employee_name STRING, department STRING
+~~~
+
+#### MOLT Fetch equivalent
+
+MOLT Fetch does not have direct support for column renaming. You may need to rename the column on the target database after the initial bulk data load from MOLT Fetch.
+
 
 ### Route table partitions
 
@@ -350,15 +423,6 @@ api.configureTargetSchema(SCHEMA_NAME, {
 });
 ~~~
 
-#### Target schema
-
-The target schema of the example above uses the same columns as the source table:
-
-~~~
-id STRING, name STRING, price STRING, qty STRING,
-is_deleted STRING, ssn STRING, credit_card_number STRING
-~~~
-
 #### MOLT Fetch equivalent
 
 1-to-n table transformations are not supported by MOLT Fetch transforms.
@@ -397,11 +461,16 @@ api.configureTargetSchema(SCHEMA_NAME, {
 });
 ~~~
 
-#### Target schema
+#### Source/target table schema
 
 The target schema of the example above uses the same columns as the source table, plus an additional `total` column:
 
 ~~~
+SOURCE
+id STRING, name STRING, price STRING, qty STRING,
+is_deleted STRING, ssn STRING, credit_card_number STRING
+
+TARGET
 id STRING, name STRING, price STRING, qty STRING, total STRING,
 is_deleted STRING, ssn STRING, credit_card_number STRING
 ~~~
@@ -464,6 +533,20 @@ api.configureTargetSchema(SCHEMA_NAME, {
     return row;
   }
 });
+~~~
+
+#### Source/target table schema
+
+The target schema of the example above uses the same columns as the source table, except the `ssn` and `credit_card_number` columns are removed:
+
+~~~
+SOURCE
+id STRING, name STRING, price STRING, qty STRING,
+is_deleted STRING, ssn STRING, credit_card_number STRING
+
+TARGET
+id STRING, name STRING, price STRING, qty STRING,
+is_deleted STRING
 ~~~
 
 #### MOLT Fetch equivalent
@@ -531,6 +614,7 @@ This example demonstrates how you can use the userscript API to implement a dead
 
 **Make sure to set the `SCHEMA_NAME` and `DLQ_TABLE`, and `TABLES_WITH_DLQ` constants to match your environment.**
 
+{% include_cached copy-clipboard.html %}
 ~~~ ts
 import * as api from "replicator@v2";
 

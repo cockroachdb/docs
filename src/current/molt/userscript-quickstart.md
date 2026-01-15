@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This quickstart guides you through creating, validating, and deploying your first userscript based on a [cookbook]({% link molt/userscript-cookbook.md %}) example.
+This quickstart guides you through creating, validating, and deploying your first [userscript]({% link molt/userscript-guide.md %}) based on a [cookbook]({% link molt/userscript-cookbook.md %}) example.
 
 ## Before you begin
 
@@ -18,9 +18,9 @@ Create a new TypeScript file for your userscript in your IDE (for example, `user
 
 For IDE autocomplete and type-checking support, optionally add the Replicator TypeScript definitions. For details, refer to [Access this API]({% link molt/userscript-api.md %}#access-this-api).
 
-## Step 2: Write your userscript
+## Step 2: Write a userscript
 
-Use the [Userscript Cookbook]({% link molt/userscript-cookbook.md %}) as a starting point. The Cookbook provides ready-to-use examples that you can copy and adapt.
+Use the [userscript cookbook]({% link molt/userscript-cookbook.md %}) as a starting point. The cookbook provides ready-to-use examples that you can copy and adapt.
 
 Copy and adapt a cookbook example that matches your use case. For example, adapt the template to [filter a single table]({% link molt/userscript-cookbook.md %}#filter-a-single-table) to exclude the `audit_logs` table from the `public` schema during replication:
 
