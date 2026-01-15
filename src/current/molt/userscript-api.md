@@ -383,7 +383,7 @@ It takes as its input a list of `RowOp` objects. Together, these describe every 
 
 #### `onWrite` functions
 
-`onWrite` has a set of functions available to it that allow transactional logic to be performed on the target database:
+`onWrite` has a set of functions available to it that allows transactional logic to be performed on the target database:
 
 - [`getTX()`](#on-write-get-tx)
     - [`getTX().query(sql, ...params)`](#on-write-get-tx-query)

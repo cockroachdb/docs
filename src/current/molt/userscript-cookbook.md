@@ -652,4 +652,4 @@ There is no MOLT Fetch equivalent for DLQ. DLQ handling is part of a live replic
 
 - [Userscript Guide]({% link molt/userscript-guide.md %})
 - [Userscript API]({% link molt/userscript-api.md %})
-- [MOLT Replicator]({ link molt/molt-replicator.md })
+- [MOLT Replicator]({% link molt/molt-replicator.md %})

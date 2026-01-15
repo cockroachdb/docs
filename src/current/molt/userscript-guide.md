@@ -30,7 +30,7 @@ The following diagram illustrates how userscripts fit into the replication pipel
 
 1. Userscript processing: When Replicator receives change events from the source database, it passes them through the userscript in two phases, in the following sequence:
 
-    1. Schema-level handlers ([`onRowUpsert`](#configure-target-schema-on-row-upsert), [`onRowDelete`](#configure-target-schema-on-row-delete)) are invoked to transform, filter, or route rows before buffering them in a [staging database]({% link molt/molt-replicator.md %}#terminology) for ordered processing.
+    1. Schema-level handlers ([`onRowUpsert`]({% link molt/userscript-api.md %}#configure-target-schema-on-row-upsert), [`onRowDelete`]({% link molt/userscript-api.md %}#configure-target-schema-on-row-delete)) are invoked to transform, filter, or route rows before buffering them in a [staging database]({% link molt/molt-replicator.md %}#terminology) for ordered processing.
 
     1. After rows are retrieved from the staging database, table-level handlers ([`onRowUpsert`]({% link molt/userscript-api.md %}#configure-target-tables-on-row-upsert) and [`onRowDelete`]({% link molt/userscript-api.md %}#configure-target-tables-on-row-delete), followed by [`onWrite`]({% link molt/userscript-api.md %}#configure-target-tables-on-write)) are invoked to apply final transformations and custom write logic.
 
