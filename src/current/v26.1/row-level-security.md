@@ -128,6 +128,26 @@ For examples, refer to:
 - [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-row-level-security).
 - [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
 
+### Detect when row-level security is applied to a query
+
+The [`row_security` session variable]({% link {{ page.version.version }}/session-variables.md %}#row-security) controls whether queries in the current [session]({% link {{ page.version.version }}/show-sessions.md %}) should silently honor RLS policies or signal an error when those policies would filter out rows.
+
+The variable defaults to `on`, which applies policies as normal. Setting it to `off` lets non-[admin]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) users detect when an RLS policy would alter their results by returning an error instead of silently filtering rows. Admin users and table owners remain exempt from RLS by default regardless of this setting. To force table owners to be subject to RLS, you must use [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
+
+The following example shows how this session setting works:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Enable RLS error detection for the current session.
+SET row_security = off;
+
+-- This query should signal an error if an applicable RLS policy would filter out rows.
+SELECT * FROM sensitive_table;
+
+-- Restore the default behavior.
+RESET row_security;
+~~~
+
 ### RLS for data security (fine-grained access control)
 
 In a fine-grained access control scenario, you will want to restrict access to specific rows within a table based on user [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles), attributes, or relationships defined within the data itself. This goes beyond table-level [`GRANT`]({% link {{ page.version.version }}/grant.md %}) permissions. Common examples include restricting access to salary information, personal data, or region-specific records.
