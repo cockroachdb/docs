@@ -5,9 +5,9 @@ toc: true
 docs_area: migrate
 ---
 
-[MOLT Replicator]({% link molt/molt-replicator.md %}) can apply *userscripts* to customize how data is processed and transformed as it moves through the live replication pipeline. 
+[MOLT Replicator]({% link molt/molt-replicator.md %}) can apply *userscripts*, specified with the [`--userscript` flag]({% link molt/replicator-flags.md %}#userscript), to customize how data is processed and transformed as it moves through the live replication pipeline. 
 
-Userscripts are intended to address unique business or data transformation needs. You can write userscripts to filter out specific tables, rows, or columns; route data from a single source table to multiple target tables; transform column values or add computed columns; and implement custom error handling. Refer to [Common uses](#common-uses).
+Userscripts are intended to address unique business or data transformation needs. They perform operations that cannot be handled by the source change data capture (CDC) stream, such as filtering out specific tables, rows, or columns; routing data from a single source table to multiple target tables; transforming column values or adding computed columns; and implementing custom error handling. Refer to [Common uses](#common-uses).
 
 Userscripts are [written in TypeScript]({% link molt/userscript-cookbook.md %}) and run inside MOLT Replicator, giving you full programmatic control of your replication flow while maintaining type safety and consistency.
 
@@ -64,9 +64,7 @@ replicator pglogical \
 
 ## Common uses
 
-Userscripts are intended for scenarios where you need to customize the standard replication behavior, which applies change events directly from source to target. 
-
-Common use cases include:
+Userscripts customize the standard behavior of the source change data capture (CDC) stream consumed by Replicator. Common use cases include:
 
 - [Renaming columns]({% link molt/userscript-cookbook.md %}#rename-columns): Map source column names to different names on the target.
 - [Row filtering]({% link molt/userscript-cookbook.md %}#filter-a-single-table): Filter out specific rows based on conditions, such as excluding soft-deleted records or test data.
@@ -79,27 +77,21 @@ For ready-to-use templates that handle the preceding use cases, refer to the [us
 
 ## Unsupported TypeScript features
 
-Userscripts themselves are TypeScript files that support [ECMAScript 5.1](https://262.ecma-international.org/5.1/), with partial [ES6](https://262.ecma-international.org/6.0/) support.
+Userscripts are TypeScript files that support [ECMAScript 5.1](https://262.ecma-international.org/5.1/), with partial [ES6](https://262.ecma-international.org/6.0/) support.
 
 The JavaScript execution environment in which userscripts run is intentionally minimal. It implements the core ECMAScript language but does not include the extended standard library APIs found in Node.js or web browsers. This ensures that userscripts remain lightweight, deterministic, and focused solely on processing data and executing transactional logic.
 
 The following capabilities are not available within userscripts:
 
-* **Filesystem**: No file reading or writing, directory listing, file streams, or `fs` module.
+- **Filesystem**: No file reading or writing, directory listing, file streams, or `fs` module.
+- **Networking**: No HTTP/HTTPS requests, sockets, WebSockets or `fetch`.
+- **Process and operating system**: No `process` object, environment variables, subprocess execution, or OS-level access.
+- **Timers and scheduling**: No `setTimeout` / `setInterval`.
+- **Cryptography and binary utilities**: No hashing or HMAC, secure random generation, WebCrypto, or compression or binary buffers.
+- **Workers and parallelism**: No Web Workers, threads, or shared memory.
+- **Persistent storage**: No local/session storage, filesystem-backed persistence, built-in key–value store.
 
-* **Networking**: No HTTP/HTTPS requests, sockets, WebSockets or `fetch`.
-
-* **Process and Operating System**: No `process` object, environment variables, subprocess execution, or OS-level access.
-
-* **Timers and Scheduling**: No `setTimeout` / `setInterval`.
-
-* **Cryptography and Binary Utilities**: No hashing or HMAC, secure random generation, WebCrypto, or compression or binary buffers.
-
-* **Workers and Parallelism**: No Web Workers, threads, or shared memory.
-
-* **Persistent Storage**: No local/session storage, filesystem-backed persistence, built-in key–value store.
-
-Your IDE will not recognize unsupported functions, and attempting to use any of the above features will result in a **runtime error**.
+Your IDE will not recognize unsupported functions, and attempting to use any of the preceding features will result in a runtime error.
 
 ## See also
 

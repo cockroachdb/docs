@@ -700,6 +700,7 @@ api.configureTargetSchema("target_db.target_schema", {
 
 In general, consider the following when writing userscripts:
 
+- Prefer built-in database capabilities over userscripts when available. For example, use PostgreSQL publications to filter tables, rather than implementing table filters in a userscript.
 - Always remember to import the `replicator` API when creating a userscript: `import * as api from "replicator@v2";`
 - Prefer `configureTargetSchema` for `onRowUpsert` and `onRowDelete`.
 - Default to returning the row you received, unless you explicitly want to skip or reroute.

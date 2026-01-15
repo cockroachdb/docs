@@ -79,7 +79,7 @@ replicator oraclelogminer \
 ~~~
 
 {{site.data.alerts.callout_info}}
-When filtering out tables in a schema with a userscript, replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
+When [filtering out tables in a schema with a userscript]({% link molt/userscript-cookbook.md %}#filter-multiple-tables), replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
 {{site.data.alerts.end}}
 </section>
 
