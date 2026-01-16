@@ -43,12 +43,13 @@ Option | Description
 -------|------------
 `INDEX ALL` | Inspect all supported index types in the target table or database. This is the default.
 `INDEX ({index_name} [, ...])` | Inspect only the specified indexes. Note that `INDEX ALL` and this option are mutually exclusive.
-`DETACHED` | Run the inspection job in the background. For an example, see [`INSPECT` a table and run the job in the background](#inspect-a-table-and-run-the-job-in-the-background). This option allows `INSPECT` to run inside a [multi-statement transaction]({% link {{ page.version.version }}/run-multi-statement-transactions.md %}).
+`DETACHED` | Run `INSPECT` in detached mode so the statement returns to the SQL client after the job is created (instead of waiting for the job to complete). For an example, see [`INSPECT` a table without waiting for completion](#inspect-a-table-without-waiting-for-completion). This option allows `INSPECT` to run inside a [multi-statement transaction]({% link {{ page.version.version }}/run-multi-statement-transactions.md %}).
 
 ## Considerations
 
-- `INSPECT` can be run inside a [multi-statement transaction]({% link {{ page.version.version }}/run-multi-statement-transactions.md %}) if the [`DETACHED` option](#options) is used. Otherwise, it needs to be run in an [implicit transaction]({% link {{ page.version.version }}/transactions.md %}#individual-statements).
 - `INSPECT` always runs as a [background job]({% link {{ page.version.version }}/show-jobs.md %}).
+- By default, `INSPECT` causes the SQL client to wait for the background job to complete and returns a `NOTICE` with the job ID. To return to the client as soon as the job is created (without waiting for it to finish), use the [`DETACHED` option](#options).
+- `INSPECT` can be run inside a [multi-statement transaction]({% link {{ page.version.version }}/run-multi-statement-transactions.md %}) if the `DETACHED` option is used. Otherwise, it needs to be run in an [implicit transaction]({% link {{ page.version.version }}/transactions.md %}#individual-statements).
 - `INSPECT` runs with low priority under the [admission control]({% link {{ page.version.version }}/admission-control.md %}) subsystem and may take time on large datasets. Plan to run it during periods of lower system load.
 - The following index types are unsupported:
   - [Vector indexes]({% link {{ page.version.version }}/vector-indexes.md %})
@@ -84,7 +85,7 @@ NOTICE: waiting for INSPECT job to complete: 1141477560713150465
 If the statement is canceled, the job will continue in the background.
 ~~~
 
-### `INSPECT` a table and run the job in the background
+### `INSPECT` a table without waiting for completion
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

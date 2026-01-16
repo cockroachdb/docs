@@ -51,9 +51,9 @@ The `INSPECT` implementation reports the following `error_type` values:
 
 Error type | Meaning
 ----------|---------
-`missing_secondary_index_entry` | A row in the [primary index]({% link {{ page.version.version }}/primary-key.md %}) is missing a corresponding entry in a [secondary index]({% link {{ page.version.version }}/indexes.md %}).
-`dangling_secondary_index_entry` | A [secondary index]({% link {{ page.version.version }}/indexes.md %}) entry exists, but the referenced [primary index]({% link {{ page.version.version }}/primary-key.md %}) row does not.
-`internal_error` | An internal error (for example, data corruption or encoding issues) prevented the check from completing normally. These errors can indicate data corruption or other serious issues that require investigation. If you see this error, please [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
+`missing_secondary_index_entry` | A row in the [primary index]({% link {{ page.version.version }}/primary-key.md %}) is missing a corresponding entry in a [secondary index]({% link {{ page.version.version }}/indexes.md %}). If you see this error, [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
+`dangling_secondary_index_entry` | A [secondary index]({% link {{ page.version.version }}/indexes.md %}) entry exists, but the referenced [primary index]({% link {{ page.version.version }}/primary-key.md %}) row does not. If you see this error, [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
+`internal_error` | An error occurred while `INSPECT` was running its validation queries (for example, an [MVCC GC timeout]({% link {{ page.version.version }}/ui-queues-dashboard.md %}#mvcc-gc-queue)). The cause of this error type is usually not related to data validity. Investigate the underlying job error details and cluster logs to determine the cause before deciding whether to [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
 
 ## Examples
 
