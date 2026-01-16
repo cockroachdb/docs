@@ -66,6 +66,7 @@ replicator pglogical \
 
 Userscripts customize the standard behavior of the source change data capture (CDC) stream consumed by Replicator. Common use cases include:
 
+- [Renaming tables]({% link molt/userscript-cookbook.md %}#rename-tables): Map source table names to different names on the target.
 - [Renaming columns]({% link molt/userscript-cookbook.md %}#rename-columns): Map source column names to different names on the target.
 - [Row filtering]({% link molt/userscript-cookbook.md %}#filter-a-single-table): Filter out specific rows based on conditions, such as excluding soft-deleted records or test data.
 - [Column filtering]({% link molt/userscript-cookbook.md %}#filter-columns): Remove sensitive or unnecessary columns from replicated data.

@@ -50,16 +50,6 @@ type Row = { [column: string]: RowValue }
 type Metadata = Row & {schema: string, table: string};
 ~~~
 
-<!-- As shown above, the `RowHandlerFn` type receives a source `Row` and `Metadata` (the `Metadata` type includes the row's `schema` name and `table` name).
-
-The `RowHandlerFn` type returns either:
-
-- A modified row
-- A table-to-rows mapping (for fan-out)
-- `null` (to skip writing or deleting)
-
-The `RowHandlerFn` type forms the basis of the `configureTargetSchema` lifecycle handlers, defined below. -->
-
 <a id="configure-target-schema"></a> 
 
 ## `configureTargetSchema(targetSchemaName, handlers)` 
@@ -83,7 +73,9 @@ type RowHandlerFn = (row: Row, metadata: Metadata) => Row | Record<string, Row[]
 #### Arguments
 
 - `targetSchemaName`: The (case-sensitive) name of the schema in the **target** database.
-- An `onRowUpsert` and an `onRowDelete`function, defined below.
+- `handlers`: An object containing an `onRowUpsert` and an `onRowDelete`function, defined below.
+
+You can include multiple `configureTargetSchema` functions in your userscript, each with a different `targetSchemaName`. This enables you to define different functionality for different schemas within the same userscript.
 
 <a id="configure-target-schema-on-row-upsert"></a> 
 
@@ -168,7 +160,7 @@ declare function onRowDelete(row: Row, metadata: Metadata): Row | Record<string,
 
 ##### Arguments
 
-- A [`Row`](#common-typescript-definitions) object containing information about the row's primary key values. It may also contain information about non-primary key columns, **but these are not guaranteed**. The primary key/value mapping may come in one of the following forms, depending on the configuration of the source database:
+- A [`Row`](#common-typescript-definitions) object containing information about the row's primary key values. It may also contain information about non-primary key columns, **but these are not guaranteed**. If the source and target tables have different names for the primary keys, the key/value mapping may come in one of the following forms, depending on the configuration of the source database:
     - The **source** primary key name(s) mapped to the **source** primary key value(s).
     - The **target** primary key name(s) mapped to the **source** primary key value(s).
     - Both of the above.
@@ -183,6 +175,20 @@ Return one of the following:
 - A `Row` object containing the **target** primary keys for the row to delete on the target database.
 - `{ [table: string]: Row[] }`, to fan-out or reroute any number of `Row` deletions to multiple tables.
 - `null`, to skip writing this source data row deletion to the target database. This row will not be deleted on the target.
+
+{{site.data.alerts.callout_info}}
+By default, a single returned `Row` will be routed to a table in the target database with the same name and casing as the source table. If the target table is named differently than the source table, you will need to use the mapping return value above, `{ [table: string]: Row[] }`, to reroute the row to the target table. This rerouting is only possible in the `configureTargetSchema` handler, as the destination tables need to be defined prior to table-level handling. 
+
+See the [Rename tables]({% link molt/userscript-cookbook.md %}#rename-tables) cookbook example.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+If the source and target tables name the primary keys differently, you can't be certain that the `row` argument contains the target primary key names (it may contain only the source primary key names). 
+
+This handler expects the **target** primary key names in the return value. Therefore, if you need to rename the primary keys between the source and the target, you'll need to check for the primary key values in the `row` argument using both the source and the target primary key names, and then make sure that the return value uses the **target** primary key names. Columns that are included in the return `Row` that are not in the target table will be ignored.
+
+See the [Rename primary keys]({% link molt/userscript-cookbook.md %}#rename-primary-keys) cookbook example.
+{{site.data.alerts.end}}
 
 #### Example
 
@@ -257,18 +263,13 @@ type RowOp = ({
 - `tables`: A list of the (case-sensitive) names of the tables to write to in the **target** database. The handler functions will apply to all rows being routed to the tables in this list.
 - `configuration`: An object containing an `onRowUpsert`, an `onRowDelete`, and an `onWrite` function, defined below.
 
+You can include multiple `configureTargetTables` functions in your userscript, each with different tables included in the `tables` argument. This enables you to define different functionality for different tables within the same userscript.
+
 <a id="configure-target-tables-on-row-upsert"></a> 
 
 ### `onRowUpsert(row, metadata)`
 
 `onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetTables` function, it's called after rows are staged and are ready to be written to the target database. 
-
-<!-- It returns a value of one of the following types:
-
--  A modified `Row` to write to the default target database table.
-- `null`, to skip writing this source data row modification to the target database.
-
-You can use `onRowUpsert` to add computed or metadata columns during replication, to transform data values based on business logic, and to enrich records with additional information. -->
 
 #### TypeScript signature
 

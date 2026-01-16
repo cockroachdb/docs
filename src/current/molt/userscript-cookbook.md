@@ -25,7 +25,7 @@ This example shows how to use [`configureTargetSchema`]({% link molt/userscript-
 
 This could be useful when you have internal, staging, or audit tables that appear in the changefeed but shouldn't be written to the target.
 
-**Make sure to set the `SCHEMA_NAME` and `TABLE_TO_SKIP` constants to match your environment.**
+**Make sure to set the `TARGET_SCHEMA_NAME` and `TABLE_TO_SKIP` constants to match your environment.**
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -34,11 +34,11 @@ import * as api from "replicator@v2";
 // ============================================================================
 // Configuration - Update these values for your environment
 // ============================================================================
-const SCHEMA_NAME = "YOUR_SCHEMA_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
 const TABLE_TO_SKIP = "YOUR_TABLE_HERE";
 
 // Filter out the table 'YOUR_TABLE_HERE' from replication in the 'YOUR_SCHEMA_HERE' schema. 
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, meta) => {
     // Skip replication for 'YOUR_TABLE_HERE' by returning null
     if (meta.table === TABLE_TO_SKIP) {
@@ -76,7 +76,7 @@ molt fetch \
 
 This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to exclude multiple tables from the replication process. This is an extended version of the example shown in [Filter a single table](#filter-a-single-table), but it allows for multiple tables to be filtered instead of just one.
 
-**Make sure to set the `SCHEMA_NAME` and `TABLES_TO_SKIP` constants to match your environment.**
+**Make sure to set the `TARGET_SCHEMA_NAME` and `TABLES_TO_SKIP` constants to match your environment.**
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -85,12 +85,12 @@ import * as api from "replicator@v2";
 // ============================================================================
 // Configuration - Update these values for your environment
 // ============================================================================
-const SCHEMA_NAME = "YOUR_SCHEMA_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
 const TABLES_TO_SKIP = new Set(["YOUR_TABLE_HERE_1", "YOUR_TABLE_HERE_2"]);
 
 // Set up a filter to exclude rows from the tables "YOUR_TABLE_HERE_1" and "YOUR_TABLE_HERE_2" from being replicated.
 
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, meta) => {
     // If the table is in our exclusion set, skip replication by returning null.
     if (TABLES_TO_SKIP.has(meta.table)) {
@@ -145,7 +145,7 @@ This example demonstrates how to use [`configureTargetSchema`]({% link molt/user
 
 Many applications mark rows as deleted using an `is_deleted` column rather than actually deleting the row. This example will demonstrate how to use a conditional to ignore "soft-deleted" rows during upsert replication. This implementation avoids writing these rows to the target, while still propograting explicit delete events.
 
-**Make sure to set the `SCHEMA_NAME` constant to match your environment.**
+**Make sure to set the `TARGET_SCHEMA_NAME` constant to match your environment.**
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -155,12 +155,12 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const SCHEMA_NAME = "YOUR_SCHEMA_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
 
 // Below is an example to conditionally exclude soft_deleted rows from the 
 // replication process using userscripts.
 
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, meta) => {
     // Skip rows where is_deleted flag is true/1
     if (Number(row.is_deleted as string) === 1) {
@@ -219,7 +219,7 @@ molt fetch \
 
 This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to remove specific columns from replicated rows. For example, the source table may include internal metadata columns or values intended only for the source system. This example removes a single column `qty` before writing the row to the target.
 
-**Make sure to set the `SCHEMA_NAME` and `TABLE_TO_EDIT` constants to match your environment.**
+**Make sure to set the `TARGET_SCHEMA_NAME` and `TABLE_TO_EDIT` constants to match your environment.**
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -229,11 +229,11 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const SCHEMA_NAME = "YOUR_SCHEMA_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
 const TABLE_TO_EDIT = "YOUR_TABLE_HERE";
 
 // Configure the target schema to filter out the qty column from the `YOUR_TABLE_HERE` table.
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, meta) => {
     if (meta.table === TABLE_TO_EDIT) {
       if ("qty" in row) delete row["qty"]; // Remove the qty column from being replicated
@@ -302,7 +302,7 @@ molt fetch \
 
 This example shows how you can use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to rename a table's columns on the target database. It demonstrates how you might handle column renaming in the case of both upserts and deletes.
 
-**Make sure to set the `SCHEMA_NAME` and `TABLE_TO_EDIT` constants to match your environment.**
+**Make sure to set the `TARGET_SCHEMA_NAME` and `TABLE_TO_EDIT` constants to match your environment.**
 
 {% include_cached copy-clipboard.html %}
 ~~~ts
@@ -313,21 +313,15 @@ import * as api from "replicator@v2";
 // ============================================================================
 
 // Make sure the letter casing matches your target table and schema names.
-const SCHEMA_NAME = "YOUR_SCHEMA_HERE" // "postgres.public" in this example
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE" // "postgres.public" in this example
 const TABLE_TO_EDIT = "YOUR_TABLE_HERE"; // "employees" in this example
 
 /**
- * SOURCE
- * emp_id STRING, emp_name STRING, department STRING
- *
- * TARGET
- * employee_id STRING, employee_name STRING, department STRING
- * 
  * Use case: Source database uses "emp_id" and "emp_name" but target database
  * uses "employee_id" and "employee_name". The script maps the source column
  * names to the target column names during replication.
  */
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, metadata) => {
     if (metadata.table === TABLE_TO_EDIT) {
       // Rename emp_id -> employee_id
@@ -382,11 +376,94 @@ employee_id STRING, employee_name STRING, department STRING
 
 MOLT Fetch does not have direct support for column renaming. You may need to rename the column on the target database after the initial bulk data load from MOLT Fetch.
 
+### Rename primary keys
+
+This example shows how you can use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to rename a table's primary keys. Because of how the `onRowDelete` handler uses primary keys to identify rows, this scenario requires a different implementation than the [Rename columns](#rename-columns) example.
+
+This example maps source primary key columns `(pk1, pk2)` to target primary key columns `(id1, id2)`. Note how the `onRowDelete` handler includes conditionals to see if the primary keys are defined using the source or the target key names.
+
+**Make sure to set the `TARGET_SCHEMA_NAME` and `TABLES_TO_EDIT` constants to match your environment.**
+
+{% include_cached copy-clipboard.html %}
+~~~ts
+import * as api from "replicator@v2";
+
+// ============================================================================
+// Configuration - Update these values for your environment
+// ============================================================================
+
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. postgres.public
+const TABLE_TO_EDIT = "YOUR_TABLE_HERE"; // e.g. items
+
+/**
+ * This example demonstrates how to use onRowDelete to transform delete operations
+ * during replication, including mapping primary key columns.
+ *
+ * What it does:
+ * - Rename primary key columns between source and target
+ * - Handle schema differences between databases
+ * Map source PK columns (pk1, pk2) to target PK columns (id1, id2)
+ */
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
+  onRowUpsert: (row, metadata) => {
+    // Map source PK columns (pk1, pk2) to target PK columns (id1, id2)
+    if (metadata.table === TABLE_TO_EDIT) {
+      row.id1 = row.pk1;
+      row.id2 = row.pk2;
+
+      // Need to remove the old PK columns to avoid conflicts between source and target
+      // table schemas for onRowUpsert.
+      delete row.pk1;
+      delete row.pk2;
+    }
+
+    // All other tables/rows are passed through unchanged
+    return row;
+  },
+
+  onRowDelete: (row, metadata) => {
+    // Apply the same transformation to delete operations
+    // Map primary keys for proper delete matching 
+    if (metadata.table === TABLE_TO_EDIT) {
+      // Rename pk1 -> id1 for the primary key if necessary.
+      // We need to check if it exists for onRowDelete, unlike onRowUpsert.
+      if (row.pk1 !== undefined) {
+        row.id1 = row.pk1;
+        // We don't delete pk1 here unlike onRowUpsert, because onRowDelete will
+        // ignore extra columns.
+      }
+
+      // Rename pk2 -> id2 for the primary key if necessary
+      if (row.pk2 !== undefined) {
+        row.id2 = row.pk2;
+      }
+    }
+
+    // All other tables/rows are passed through unchanged
+    return row;
+  },
+});
+~~~
+
+#### Source/target table schema
+
+~~~
+SOURCE
+pk1 STRING, pk2 STRING, name STRING
+
+TARGET
+id1 STRING, id2 STRING, name STRING
+~~~
+
+#### MOLT Fetch equivalent
+
+MOLT Fetch does not have direct support for primary key renaming.
+
 ### Route table partitions
 
 This example demonstrates how you can use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to distribute the rows of a single source table across multiple target tables based on partitioning rules.
 
-**Make sure to set the `SCHEMA_NAME` and `TABLES_TO_PARTITION` constants to match your environment.**
+**Make sure to set the `TARGET_SCHEMA_NAME` and `TABLES_TO_PARTITION` constants to match your environment.**
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -396,7 +473,7 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ==========================================================================
 
-const SCHEMA_NAME = "YOUR_SCHEMA_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
 const TABLE_TO_PARTITION = "YOUR_TABLE_HERE";
 
 function partition(row, meta) {
@@ -416,7 +493,7 @@ function partition(row, meta) {
   return row;
 }
 
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: partition,
   onRowDelete: partition
 });
@@ -428,13 +505,117 @@ api.configureTargetSchema(SCHEMA_NAME, {
 
 ### Rename tables
 
-TODO
+This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to route data from a source table to a target table of a different name. This must be implemented in the schema-level handlers, as the row will need to be routed to the correct table-level handler using the correct target table name.
+
+**Make sure to set the `TARGET_SCHEMA_NAME` and `TABLE_MAPPINGS` constants to match your environment.**
+
+{% include_cached copy-clipboard.html %}
+~~~ts
+import * as api from "replicator@v2";
+
+// ============================================================================
+// Configuration - Update these values for your environment
+// ============================================================================
+
+// Make sure the letter casing matches your target table and schema names.
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE" // e.g. postgres.public
+
+// Define table name mappings: source table -> target table.
+// Update with your source table names -> renamed tables.
+const TABLE_MAPPINGS = {
+  "YOUR_FIRST_SOURCE_TABLE_NAME_HERE": "FIRST_RENAMED_TARGET_TABLE_HERE",
+  "YOUR_SECOND_SOURCE_TABLE_NAME_HERE": "SECOND_RENAMED_TARGET_TABLE_HERE",
+  // Add more tables as needed here
+};
+
+/**
+ * This example demonstrates how to rename tables from source to target
+ * using table routing with onRowUpsert and onRowDelete callbacks.
+ *
+ * Use case: The script routes rows from source tables to their
+ * renamed target tables during replication, using the TABLE_MAPPINGS above.
+ */
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
+  onRowUpsert: (row, metadata) => {
+    const sourceTable = metadata.table;
+
+    // Check if this table needs to be renamed
+    if (sourceTable in TABLE_MAPPINGS) {
+      const targetTable = TABLE_MAPPINGS[sourceTable];
+
+      // Return object with target table name as key and array of rows as value
+      return { [targetTable]: [row] };
+    }
+
+    // If no mapping exists, pass through unchanged
+    return row;
+  },
+
+  onRowDelete: (row, metadata) => {
+    const sourceTable = metadata.table;
+
+    // Check if this table needs to be renamed
+    if (sourceTable in TABLE_MAPPINGS) {
+      const targetTable = TABLE_MAPPINGS[sourceTable];
+
+      // Return object with target table name as key and array of key values as value
+      return { [targetTable]: [row] };
+    }
+
+    // If no mapping exists, pass through unchanged
+    return row;
+  },
+});
+~~~
+
+#### MOLT Fetch equivalent
+
+Rename tables using the [`--transformations-file`]({% link molt/molt-fetch.md %}#transformations) flag, which accepts a path to a JSON file that specifies table mappings.
+
+**Make sure to replace the `/path/to/rename_tables.json` placeholder with the path to your json file, and make sure that the source and target connection strings have been exported to the environment.**
+
+~~~shell
+molt fetch \
+  --source $SOURCE \
+  --target $TARGET \
+  --transformations-file /path/to/rename_tables.json
+~~~
+
+**Replace the `YOUR_*_TABLE_NAME_HERE` placeholders with the names of your source and target tables.**
+
+~~~json
+// rename_tables.json
+{
+    "transforms": [
+        {
+            "id": 1,
+            "resource_specifier": {
+                "schema": "public",
+                "table": "YOUR_FIRST_SOURCE_TABLE_NAME_HERE"
+            },
+            "table_rename_opts": {
+                "value": "FIRST_RENAMED_TARGET_TABLE_HERE"
+            }
+        },
+        {
+            "id": 2,
+            "resource_specifier": {
+                "schema": "public",
+                "table": "YOUR_SECOND_SOURCE_TABLE_NAME_HERE"
+            },
+            "table_rename_opts": {
+                "value": "SECOND_RENAMED_TARGET_TABLE_HERE"
+            }
+        }
+    ]
+}
+~~~
 
 ### Compute new columns
 
 This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to create computed columns on the target that do not exist on the source. In this example, we derive a `total` column, and add it to each replicated row on the target.
 
-**Make sure to set the `SCHEMA_NAME` and `TABLE_TO_COMPUTE` constants to match your environment.**
+**Make sure to set the `TARGET_SCHEMA_NAME` and `TABLE_TO_COMPUTE` constants to match your environment.**
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -444,10 +625,10 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const SCHEMA_NAME = "YOUR_SCHEMA_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
 const TABLE_TO_COMPUTE = "YOUR_TABLE_HERE";
 
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, meta) => {
     if (meta.table === TABLE_TO_COMPUTE) {
       const price = Number(row.price as string) || 0;
@@ -486,7 +667,7 @@ Creating computed columns is not supported by MOLT Fetch transforms. MOLT Fetch 
 
 You can combine multiple transformations into a single userscript. The following userscript first filters for a certain table, then it [filters out "soft-deleted" rows](#select-data-to-replicate) and [removes sensitive columns](#filter-columns) from the table on the replication target.
 
-**Make sure to set the `SCHEMA_NAME` and `TABLE_TO_EDIT` constants to match your environment.**
+**Make sure to set the `TARGET_SCHEMA_NAME` and `TABLE_TO_EDIT` constants to match your environment.**
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -496,7 +677,7 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const SCHEMA_NAME = "YOUR_SCHEMA_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
 const TABLE_TO_EDIT = "YOUR_TABLE_HERE";
 
 /**
@@ -506,7 +687,7 @@ const TABLE_TO_EDIT = "YOUR_TABLE_HERE";
  * - Remove sensitive columns: ssn, credit_card_number
  */
 
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, meta) => {
     const table = meta.table;
 
@@ -615,7 +796,7 @@ molt fetch \
 
 This example demonstrates how you can use the userscript API to implement a dead-letter queue (DLQ) strategy for `NOT NULL` errors by retrying the batch at row-level granularity and recording failures. Failed writes go to a dead-letter queue table.
 
-**Make sure to set the `SCHEMA_NAME` and `DLQ_TABLE`, and `TABLES_WITH_DLQ` constants to match your environment.**
+**Make sure to set the `TARGET_SCHEMA_NAME` and `DLQ_TABLE`, and `TABLES_WITH_DLQ` constants to match your environment.**
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -625,7 +806,7 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const SCHEMA_NAME = "YOUR_SCHEMA_HERE";          // Target schema (e.g., "mydb.public")
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";          // Target schema (e.g., "mydb.public")
 const DLQ_TABLE = "YOUR_DLQ_TABLE_HERE";         // DLQ table for failed operations
 const TABLES_WITH_DLQ = [                        // Tables to apply DLQ handling to
     "YOUR_TABLE_HERE",
@@ -713,7 +894,7 @@ async function handle_dlq_errors(rows: api.RowOp[]): Promise<any> {
 }
 
 // Pass through all rows unchanged at the schema level
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
     onRowUpsert: (row, meta) => {
         return row;
     },
