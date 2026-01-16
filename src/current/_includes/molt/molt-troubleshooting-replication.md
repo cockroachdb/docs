@@ -239,7 +239,7 @@ Indicates source and target schemas are mismatched:
 WARNING: schema drift detected in "database"."table" at payload object offset 0: unexpected columns: column_name
 ~~~
 
-**Resolution:** Align schemas or use userscripts to transform data.
+**Resolution:** Align schemas or [use userscripts to transform data]({% link molt/userscript-cookbook.md %}#filter-columns).
 
 ##### Apply flow failures
 

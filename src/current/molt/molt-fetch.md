@@ -448,34 +448,6 @@ The JSON file should contain one or more entries in `filters`, each with a `reso
 If the expression references columns that are not indexed, MOLT Fetch will emit a warning like: `filter expression ‘v > 100' contains column ‘v' which is not indexed. This may lead to performance issues.`
 {{site.data.alerts.end}}
 
-{% comment %}
-#### `--filter-path` userscript for replication
-
-To use `--filter-path` with replication, create and save a TypeScript userscript (e.g., `filter-script.ts`). The following script ensures that only rows where `v > 100` are replicated to `defaultdb.migration_schema.t1`:
-
-{% include_cached copy-clipboard.html %}
-~~~ ts
-import * as api from "replicator@v1";
-function disp(doc, meta) {
-    if (Number(doc.v) > 100) {
-        return { "defaultdb.migration_schema.t1" : [ doc ] };
-    }
-}
-// Always put target schema.
-api.configureSource("defaultdb.migration_schema", {
-    deletesTo: disp,
-    dispatch: disp,
-});
-~~~
-
-Apply the userscript with the `--userscript` replication flag:
-
-{% include_cached copy-clipboard.html %}
-~~~ 
---userscript 'filter-script.ts'
-~~~
-{% endcomment %}
-
 ### Target table handling
 
 `--table-handling` defines how MOLT Fetch loads data on the CockroachDB tables that [match the selection](#schema-and-table-selection).

@@ -5,11 +5,11 @@ toc: true
 docs_area: migrate
 ---
 
-Userscripts allow you to define custom schema and table transformations. These can be used to modify the data that [MOLT Replicator]({% link molt/molt-replicator.md %}) migrates from a source database to CockroachDB.
+Userscripts allow you to define custom schema and table transformations. When specified with the [`--userscript` flag]({% link molt/replicator-flags.md %}#userscript), userscripts modify the data that [MOLT Replicator]({% link molt/molt-replicator.md %}) migrates from a source database to CockroachDB.
 
 This cookbook provides ready-to-use examples that demonstrate real-world uses of the [userscript API]({% link molt/userscript-api.md %}). You can copy and paste them into your own code, and you can adapt them for your specific use cases. 
 
-Below each example, you will see the equivalent way of carrying out that transformation using [MOLT Fetch]({% link molt/molt-fetch.md %}), if it's possible to do so. MOLT Fetch does not support userscripts. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **you must apply equivalent transformations in both the Fetch and Replicator commands** to ensure data consistency.
+Below each example, you will see the equivalent way of carrying out that transformation using [MOLT Fetch]({% link molt/molt-fetch.md %}), if it's possible to do so. MOLT Fetch does not support userscripts. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **you must apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency.
 
 ## Before you begin
 
@@ -217,7 +217,7 @@ molt fetch \
 
 ### Filter columns
 
-This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to remove specific fields from replicated rows. For example, the source table may include internal metadata fields or values intended only for the source system. This example removes a single column `qty` before writing the row to the target.
+This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to remove specific columns from replicated rows. For example, the source table may include internal metadata columns or values intended only for the source system. This example removes a single column `qty` before writing the row to the target.
 
 **Make sure to set the `SCHEMA_NAME` and `TABLE_TO_EDIT` constants to match your environment.**
 
@@ -554,12 +554,12 @@ is_deleted STRING
 
 #### MOLT Fetch equivalent
 
-To implement this transformation with MOLT Fetch, you would need:
+To implement this transformation with MOLT Fetch, create:
 
-- A soft_delete_filter.json file (to be included via the [`--filter-path`]({% link molt/molt-fetch.md %}#selective-data-movement) flag)
-- A pii_removal_transform.json file (to be included via the [`--transformations-file`]({% link molt/molt-fetch.md %}#transformations) flag)
+- A `soft_delete_filter.json` file (to be included via the [`--filter-path`]({% link molt/molt-fetch.md %}#selective-data-movement) flag).
+- A `pii_removal_transform.json` file (to be included via the [`--transformations-file`]({% link molt/molt-fetch.md %}#transformations) flag).
 
-You would then call MOLT Fetch with the relevant flags.
+Call MOLT Fetch with both the `--filter-path` and `--transformations-file` flags.
 
 **Make sure to replace the `/path/to/soft_delete_filter.json` and `/path/to/pii_removal_transform.json` placeholders, and make sure that the source and target connection strings have been exported to the environment.**
 
@@ -733,7 +733,6 @@ api.configureTargetTables(TABLES_WITH_DLQ, {
 #### MOLT Fetch equivalent
 
 There is no MOLT Fetch equivalent for DLQ. DLQ handling is part of a live replication, not an initial data load. 
-
 
 ## See also
 
