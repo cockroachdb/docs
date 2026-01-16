@@ -13,7 +13,7 @@ The [userscript cookbook]({% link molt/userscript-cookbook.md %}) includes examp
 
 ## Access this API
 
-To access the userscript API, [install MOLT Replicator **v1.1.4 or later**]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library, which you should import at the top of your TypeScript file: `import * as api from "replicator@v2";`
+To access the userscript API, [install MOLT Replicator **v1.1.4 or later**]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library, which you should import at the top of your TypeScript file: `import * as api from "replicator@v2";`.
 
 In addition to importing the API from the `replicator` library, you can download the [userscript type definitions file](https://github.com/cockroachdb/replicator/blob/master/internal/script/testdata/replicator%40v2.d.ts). Place this file in your working directory to enable autocomplete, inline documentation, and real-time error detection directly in your IDE.
 
@@ -30,7 +30,7 @@ In addition to importing the API from the `replicator` library, you can download
 
 ## Common TypeScript definitions
 
-These TypeScript definitions are referenced throughout the API and describe the object structures you will deal with when writing userscript handler functions.
+The following TypeScript definitions are referenced throughout the API and describe the object structures you will deal with when writing userscript handler functions.
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -73,7 +73,7 @@ type RowHandlerFn = (row: Row, metadata: Metadata) => Row | Record<string, Row[]
 #### Arguments
 
 - `targetSchemaName`: The (case-sensitive) name of the schema in the **target** database.
-- `handlers`: An object containing an `onRowUpsert` and an `onRowDelete`function, defined below.
+- `handlers`: An object containing an [`onRowUpsert`](#configure-target-schema-on-row-upsert) and an [`onRowDelete`](#configure-target-schema-on-row-delete) function, defined in the following sections.
 
 You can include multiple `configureTargetSchema` functions in your userscript, each with a different `targetSchemaName`. This enables you to define different functionality for different schemas within the same userscript.
 
@@ -81,7 +81,7 @@ You can include multiple `configureTargetSchema` functions in your userscript, e
 
 ### `onRowUpsert(row, metadata)`
 
-`onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetSchema` function, it's called before staging and table-level processing. 
+`onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetSchema` function, it is called before staging and table-level processing. 
 
 #### TypeScript Signature
 
@@ -102,18 +102,18 @@ declare function onRowUpsert(row: Row, metadata: Metadata): Row | Record<string,
 Return one of the following:
 
 -  A modified `Row` to write to the target database, mapping all of the column names for the row in the **target** database to the values that will be written in those columns.
-- `{ [table: string]: Row[] }`, to fan-out or reroute any number of `Rows` to multiple or differently named tables on the target database.
+- `{ [table: string]: Row[] }`, to fan out or reroute any number of `Rows` to multiple or differently named tables on the target database.
 - `null`, to skip writing this source data row modification to the target database.
 
 {{site.data.alerts.callout_info}}
 By default, a single returned `Row` will be routed to a table in the target database with the same name and casing as the source table. If the target table is named differently than the source table, you will need to use the mapping return value above, `{ [table: string]: Row[] }`, to reroute the row to the target table. This rerouting is only possible in the `configureTargetSchema` handler, as the destination tables need to be defined prior to table-level handling. 
 
-See the [Rename tables]({% link molt/userscript-cookbook.md %}#rename-tables) cookbook example.
+Refer to the [Rename tables]({% link molt/userscript-cookbook.md %}#rename-tables) example in the Cookbook.
 {{site.data.alerts.end}}
 
 #### Example
 
-The example below demonstrates how to use `configureTargetSchema` with `onRowUpsert` to transform and filter data during replication. 
+The following example demonstrates how to use `configureTargetSchema` with `onRowUpsert` to transform and filter data during replication. 
 
 This function is called during upserts. It uppercases the value in the `status` field of the `orders` table, and it prevents the replication of non-target tables (that is, tables other than `orders` and `customers`).
 
@@ -149,7 +149,7 @@ api.configureTargetSchema("target_db.target_schema", {
 
 ### `onRowDelete(row, metadata)`
 
-`onRowDelete` is called when a row is deleted on the source database. Because it's a handler for the `configureTargetSchema` function, it's called before staging and table-level processing.
+`onRowDelete` is called when a row is deleted on the source database. Because it's a handler for the `configureTargetSchema` function, it is called before staging and table-level processing.
 
 #### TypeScript Signature
 
@@ -173,7 +173,7 @@ declare function onRowDelete(row: Row, metadata: Metadata): Row | Record<string,
 Return one of the following:
 
 - A `Row` object containing the **target** primary keys for the row to delete on the target database.
-- `{ [table: string]: Row[] }`, to fan-out or reroute any number of `Row` deletions to multiple tables.
+- `{ [table: string]: Row[] }`, to fan out or reroute any number of `Row` deletions to multiple tables.
 - `null`, to skip writing this source data row deletion to the target database. This row will not be deleted on the target.
 
 {{site.data.alerts.callout_info}}
@@ -192,9 +192,9 @@ See the [Rename primary keys]({% link molt/userscript-cookbook.md %}#rename-prim
 
 #### Example
 
-The example below demonstrates how to use `configureTargetSchema` with `onRowDelete` to transform and filter data during replication.
+The following example demonstrates how to use `configureTargetSchema` with `onRowDelete` to transform and filter data during replication.
 
-This function is called during deletions. The source primary key `(pk1, pk2)` differs from the target primary key `(id1, id2)` in name and in value. The function adds 100 to the values in the source primary key, and maps them to the target primary key fields for proper delete matching.
+This function is called during deletions. The source primary key `(pk1, pk2)` differs from the target primary key `(id1, id2)` in name and in value. The function adds `100` to the values in the source primary key, and maps the transformed values to the target primary key fields for proper delete matching.
  
 ~~~ ts
 import * as api from "replicator@v2";
@@ -225,7 +225,7 @@ api.configureTargetSchema("target_db.target_schema", {
 
 ## `configureTargetTables(tableNames, configuration)`
 
-`configureTargetTables` registers table-level handlers that run after rows are staged and are ready to be written to the target database. You can use this function to define transformations, filters, or column-level behaviors that are specific to certain tables. 
+`configureTargetTables` registers table-level handlers that run after rows are staged and ready to be written to the target database. You can use this function to define transformations, filters, or column-level behaviors that are specific to certain tables. 
 
 Table-level configuration provides finer control than schema-level handlers, allowing you to perform transactional logic on tables in the target database.
 
@@ -261,7 +261,7 @@ type RowOp = ({
 #### Arguments
 
 - `tables`: A list of the (case-sensitive) names of the tables to write to in the **target** database. The handler functions will apply to all rows being routed to the tables in this list.
-- `configuration`: An object containing an `onRowUpsert`, an `onRowDelete`, and an `onWrite` function, defined below.
+- `configuration`: An object containing an [`onRowUpsert`](#configure-target-tables-on-row-upsert), an [`onRowDelete`](#configure-target-tables-on-row-delete), and an [`onWrite`](#configure-target-tables-on-write) function, defined in the following sections.
 
 You can include multiple `configureTargetTables` functions in your userscript, each with different tables included in the `tables` argument. This enables you to define different functionality for different tables within the same userscript.
 
@@ -269,7 +269,7 @@ You can include multiple `configureTargetTables` functions in your userscript, e
 
 ### `onRowUpsert(row, metadata)`
 
-`onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetTables` function, it's called after rows are staged and are ready to be written to the target database. 
+`onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetTables` function, it is called after rows are staged and ready to be written to the target database. 
 
 #### TypeScript signature
 
@@ -294,7 +294,7 @@ Return one of the following:
 
 #### Example
 
-This example demonstrates how to use `configureTargetTables` to transform data during upserts, on a per-table basis.
+The following example demonstrates how to use `configureTargetTables` to transform data during upserts, on a per-table basis.
 
 This implementation adds a `replicated_at` column to the row, and it sets its value to the current time. It also adds a `status_description` column to the row, deriving its value from the value in the existing `status_code` field.
 
@@ -334,7 +334,7 @@ api.configureTargetTables(["orders"], {
 
 ### `onRowDelete(keys, metadata)`
 
-`onRowDelete` is called when a row is deleted on the source database. Because it's a handler for the `configureTargetTables` function, it's called after rows are staged and are ready to be written to the target database. 
+`onRowDelete` is called when a row is deleted on the source database. Because it's a handler for the `configureTargetTables` function, it is called after rows are staged and ready to be written to the target database. 
 
 #### TypeScript signature
 
@@ -359,9 +359,9 @@ Return one of the following:
 
 #### Example
 
-This example demonstrates how to use `configureTargetTables` with `onRowDelete` to conditionally filter or transform delete operations.
+The following example demonstrates how to use `configureTargetTables` with `onRowDelete` to conditionally filter or transform delete operations.
 
-This implementation skips deleting any row in the `EU` region, or whose `orderId` is greater than or equal to 1000.
+This implementation skips deleting any row in the `EU` region, or whose `orderId` is greater than or equal to `1000`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -400,7 +400,7 @@ api.configureTargetTables(["orders"], {
 
 ### `onWrite(rows)`
 
-`onWrite` is called after `onRowUpsert` and `onRowDelete` for each of the passed-in rows. The `onWrite` handler lets you override MOLT Replicator's default behavior when rows are written to the target database. It is called right before the final commit, after all schema-level and table-level processing has completed. A commit will be scheduled once `onWrite` returns.
+`onWrite` is called after `onRowUpsert` and `onRowDelete` for each of the passed-in rows. The `onWrite` handler lets you override [MOLT Replicator's default behavior]({% link molt/molt-replicator.md %}#how-it-works) when rows are written to the target database. It is called right before the final commit, after all schema-level and table-level processing has completed. A commit will be scheduled once `onWrite` returns.
 
 Use `onWrite` when you want full control over how data is applied to the target. Typical use cases include:
 
@@ -460,9 +460,8 @@ type RowOp = ({
 Use `api.getTX()` to run your own SQL statements within a single transaction. Use `api.write(rows)` to write the rows to the target database. Mix both approaches by handling some operations manually and passing others to `api.write(rows)`. Read detailed descriptions of these functions below.
 
 {{site.data.alerts.callout_danger}}
-These transactional logic helpers can only be used within `onWrite` for the table-level handlers. They cannot be used within the schema-level handlers, or within the table-level `onRowUpsert` or `onRowDelete` handlers. An error will be returned for `api.write(rows)` or `api.getTx()`if they are used in a handler where transactional logic is not supported.
+The preceding transactional logic helpers can **only** be used within `onWrite` for the table-level handlers. They cannot be used within the schema-level handlers, or within the table-level `onRowUpsert` or `onRowDelete` handlers. An error will be returned for `api.write(rows)` or `api.getTx()`if they are used in a handler where transactional logic is not supported.
 {{site.data.alerts.end}}
-
 
 <a id="on-write-get-tx"></a> 
 
@@ -476,8 +475,7 @@ When `getTX` is called, it returns a transaction object bound to the current rep
 
 #### `getTX().query(sql, ...params)`
 
-This function executes a SQL query within the current replication transaction.
-Returns an async iterable of result rows, allowing you to read data from the target database for validation or lookups.
+This function executes a SQL query within the current replication transaction. It returns an async iterable of result rows, allowing you to read data from the target database for validation or lookups.
 
 ##### TypeScript signature
 
@@ -498,7 +496,7 @@ function query(query: string, ...params: any): Promise<Iterable<any[]>>;
 
 #### `getTX().exec(sql, ...params)`
 
-This function runs a SQL statement (such as UPDATE, INSERT, or DELETE) in the current transaction. It does not return results. Use it to modify data or to apply additional logic atomically with replication. Changes will not be committed until after `onWrite` returns.
+This function runs a SQL statement (such as [`UPDATE`]({% link {{ site.current_cloud_version }}/update.md %}), [`INSERT`]({% link {{ site.current_cloud_version }}/insert.md %}), or [`DELETE`]({% link {{ site.current_cloud_version }}/delete.md %})) in the current transaction. It does not return results. Use it to modify data or to apply additional logic atomically with replication. Changes will not be committed until after `onWrite` returns.
 
 ##### TypeScript signature
 
@@ -632,7 +630,7 @@ function write(rows: RowOp[]): Promise<void>;
 
 #### `onWrite` example
 
-This example demonstrates how to use the `getTX()` and `write()` API functions within `onWrite` to access the transaction context and execute custom SQL queries during replication. This is useful when you need to:
+The following example demonstrates how to use the `getTX()` and `write()` API functions within `onWrite` to access the transaction context and execute custom SQL queries during replication. This is useful when you need to:
 
 - Validate referential integrity before inserting data
 - Query the target database to make replication decisions
@@ -640,7 +638,7 @@ This example demonstrates how to use the `getTX()` and `write()` API functions w
 - Execute custom SQL operations within the same transaction as the replication write
 
 <!-- /**
- * This example demonstrates how to use getTX() to access the transaction
+ * The following example demonstrates how to use getTX() to access the transaction
  * context and execute custom SQL queries during replication.
  *
  * Use case: Validate that referenced records exist before inserting,
@@ -717,8 +715,8 @@ Avoid logging sensitive data, as `console` output is collected by `replicator`'s
 |---|---|
 | console.**log**(...args) | General-purpose logging. Use for informational messages. |
 | console.**info**(...args) | General-purpose logging. Use for informational messages. |
-| console.**debug**(...args) | Verbose debugging output. Typically filtered out unless debug logging is enabled with [`-v`]({% link molt/replicator-flags.md %}#verbose) as a Replicator flag. |
-| console.**trace**(...args) | Even more verbose trace output. Filtered out unless trace logging is enabled with [`-v`]({% link molt/replicator-flags.md %}#verbose) as a Replicator flag. |
+| console.**debug**(...args) | Verbose debugging output. Typically filtered out unless debug logging is enabled with the [`-v`]({% link molt/replicator-flags.md %}#verbose) Replicator flag. |
+| console.**trace**(...args) | Even more verbose trace output. Filtered out unless trace logging is enabled with the [`-v`]({% link molt/replicator-flags.md %}#verbose) Replicator flag. |
 | console.**warn**(...args) | Warnings about non-fatal issues or unexpected data. |
 | console.**error**(...args) | Errors or exceptions during script execution. |
 
@@ -738,7 +736,7 @@ api.configureTargetSchema("target_db.target_schema", {
 });
 ~~~
 
-### Toggling logging
+### Toggle logging
 
 If you want to disable logging for a script entirely (for example, in production or high-throughput environments), but still keep the logging lines, call `console.disable()` at the beginning of your script. You can re-enable logging by removing the disable line or calling `console.enable()`.
 
@@ -765,11 +763,11 @@ api.configureTargetSchema("target_db.target_schema", {
 In general, consider the following when writing userscripts:
 
 - Prefer built-in database capabilities over userscripts when available. For example, use PostgreSQL publications to filter tables, rather than implementing table filters in a userscript.
-- Always remember to import the `replicator` API when creating a userscript: `import * as api from "replicator@v2";`
+- Always remember to import the `replicator` API when creating a userscript: `import * as api from "replicator@v2";`.
 - Prefer `configureTargetSchema` for `onRowUpsert` and `onRowDelete`.
 - Default to returning the row you received, unless you explicitly want to skip or reroute.
 - Numerical columns will be represented as strings. Parse them when reading, convert back to a string after calculations and when returning the row.
-- Be mindful of the letter casing for any table and schema names that you provide in a userscript. For example, an Oracle table may be named “EMPLOYEES” by default, while a Postgres table may be named “employees”.
+- Be mindful of the letter casing for any table and schema names that you provide in a userscript. For example, an Oracle table may be named `EMPLOYEES` by default, while a PostgreSQL table may be named `employees`.
 - Both the `onRowUpsert` and `onRowDelete` handlers must be provided, not just one. If you only want special handling logic for one, just return the original arguments that are passed in for the other. For instance, this could be as simple as `onRowDelete: (row, metadata) => row`.
 
 ## See also

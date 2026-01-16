@@ -40,7 +40,7 @@ The following diagram illustrates how userscripts fit into the replication pipel
 
 This allows you to precisely defines how data from your source system should look and behave once it reaches your target database, without needing to modify MOLT Replicator's core logic.
 
-Userscripts run in a sandboxed JavaScript runtime inside [MOLT Replicator]({% link molt/molt-replicator.md %}) that implements the core ECMAScript language but does **not** include the extended standard library APIs found in Node.js or web browsers (such as filesystem, networking, or timers). Learn more about [userscript limitations](#unsupported-typescript-features).
+Userscripts run in a sandboxed JavaScript runtime inside [MOLT Replicator]({% link molt/molt-replicator.md %}) that implements the core ECMAScript language but does **not** include the extended standard library APIs found in Node.js or web browsers (such as filesystem, networking, or timers). Learn more about [unsupported TypeScript features](#unsupported-typescript-features).
 
 ## Usage
 
@@ -68,7 +68,8 @@ Userscripts customize the standard behavior of the source change data capture (C
 
 - [Renaming tables]({% link molt/userscript-cookbook.md %}#rename-tables): Map source table names to different names on the target.
 - [Renaming columns]({% link molt/userscript-cookbook.md %}#rename-columns): Map source column names to different names on the target.
-- [Row filtering]({% link molt/userscript-cookbook.md %}#filter-a-single-table): Filter out specific rows based on conditions, such as excluding soft-deleted records or test data.
+- [Row filtering]({% link molt/userscript-cookbook.md %}#select-data-to-replicate): Filter out specific rows based on conditions, such as excluding soft-deleted records or test data.
+- [Table filtering]({% link molt/userscript-cookbook.md %}#filter-multiple-tables): Exclude specific tables from replication.
 - [Column filtering]({% link molt/userscript-cookbook.md %}#filter-columns): Remove sensitive or unnecessary columns from replicated data.
 - [Data transformation]({% link molt/userscript-cookbook.md %}#compute-new-columns): Transform column values, compute new columns, or change data types during replication.
 - [Table partitioning]({% link molt/userscript-cookbook.md %}#route-table-partitions): Distribute rows from a single source table across multiple target tables based on partitioning rules.

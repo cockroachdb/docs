@@ -9,7 +9,7 @@ Userscripts allow you to define custom schema and table transformations. When sp
 
 This cookbook provides ready-to-use examples that demonstrate real-world uses of the [userscript API]({% link molt/userscript-api.md %}). You can copy and paste them into your own code, and you can adapt them for your specific use cases. 
 
-Below each example, you will see the equivalent way of carrying out that transformation using [MOLT Fetch]({% link molt/molt-fetch.md %}), if it's possible to do so. MOLT Fetch does not support userscripts. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **you must apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency.
+[MOLT Fetch]({% link molt/molt-fetch.md %}) does **not** support userscripts. Below each example, you will see the equivalent way of carrying out that transformation using MOLT Fetch, if it's possible to do so. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency.
 
 ## Before you begin
 
@@ -21,7 +21,7 @@ Below each example, you will see the equivalent way of carrying out that transfo
 
 ### Filter a single table
 
-This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to exclude a specific table from replication, while still replicating everything else in the same schema. 
+The following example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to exclude a specific table from replication, while still replicating everything else in the same schema. 
 
 This could be useful when you have internal, staging, or audit tables that appear in the changefeed but shouldn't be written to the target.
 
@@ -74,7 +74,7 @@ molt fetch \
 
 ### Filter multiple tables
 
-This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to exclude multiple tables from the replication process. This is an extended version of the example shown in [Filter a single table](#filter-a-single-table), but it allows for multiple tables to be filtered instead of just one.
+The following example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to exclude multiple tables from the replication process. This extends the example shown in [Filter a single table](#filter-a-single-table) to allow for multiple tables to be filtered instead of just one.
 
 **Make sure to set the `TARGET_SCHEMA_NAME` and `TABLES_TO_SKIP` constants to match your environment.**
 
@@ -141,9 +141,9 @@ molt fetch \
 
 ### Select data to replicate
 
-This example demonstrates how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to conditionally replicate rows.
+The following example demonstrates how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to conditionally replicate rows.
 
-Many applications mark rows as deleted using an `is_deleted` column rather than actually deleting the row. This example will demonstrate how to use a conditional to ignore "soft-deleted" rows during upsert replication. This implementation avoids writing these rows to the target, while still propograting explicit delete events.
+Many applications mark rows as deleted using an `is_deleted` column rather than actually deleting the row. The following example will demonstrate how to use a conditional to ignore "soft-deleted" rows during upsert replication. This implementation avoids writing these rows to the target, while still propograting explicit delete events.
 
 **Make sure to set the `TARGET_SCHEMA_NAME` constant to match your environment.**
 
@@ -217,7 +217,7 @@ molt fetch \
 
 ### Filter columns
 
-This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to remove specific columns from replicated rows. For example, the source table may include internal metadata columns or values intended only for the source system. This example removes a single column `qty` before writing the row to the target.
+The following example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to remove specific columns from replicated rows. For example, the source table may include internal metadata columns or values intended only for the source system. The following example removes a single column `qty` before writing the row to the target.
 
 **Make sure to set the `TARGET_SCHEMA_NAME` and `TABLE_TO_EDIT` constants to match your environment.**
 
@@ -251,7 +251,7 @@ api.configureTargetSchema(TARGET_SCHEMA_NAME, {
 
 #### Source/target table schema
 
-The target schema of the example above uses the same columns as the source table, except the `qty` column is removed:
+The target schema of the preceding example uses the same columns as the source table, except the `qty` column is removed:
 
 ~~~
 SOURCE
@@ -300,7 +300,7 @@ molt fetch \
 
 ### Rename columns
 
-This example shows how you can use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to rename a table's columns on the target database. It demonstrates how you might handle column renaming in the case of both upserts and deletes.
+The following example shows how you can use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to rename a table's columns on the target database. It demonstrates how you might handle column renaming in the case of both upserts and deletes.
 
 **Make sure to set the `TARGET_SCHEMA_NAME` and `TABLE_TO_EDIT` constants to match your environment.**
 
@@ -362,7 +362,7 @@ api.configureTargetSchema(TARGET_SCHEMA_NAME, {
 
 #### Source/target table schema
 
-The column names in the target table above are longer versions of those in the source table:
+The column names in the preceding target table are longer versions of those in the source table:
 
 ~~~
 SOURCE
@@ -374,7 +374,7 @@ employee_id STRING, employee_name STRING, department STRING
 
 #### MOLT Fetch equivalent
 
-MOLT Fetch does not have direct support for column renaming. You may need to rename the column on the target database after the initial bulk data load from MOLT Fetch.
+MOLT Fetch does not have direct support for column renaming. You may need to rename the column on the target database after the [initial data load from MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch).
 
 ### Rename primary keys
 
@@ -461,7 +461,7 @@ MOLT Fetch does not have direct support for primary key renaming.
 
 ### Route table partitions
 
-This example demonstrates how you can use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to distribute the rows of a single source table across multiple target tables based on partitioning rules.
+The following example demonstrates how you can use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to distribute the rows of a single source table across multiple target tables based on partitioning rules.
 
 **Make sure to set the `TARGET_SCHEMA_NAME` and `TABLES_TO_PARTITION` constants to match your environment.**
 
@@ -613,7 +613,7 @@ molt fetch \
 
 ### Compute new columns
 
-This example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to create computed columns on the target that do not exist on the source. In this example, we derive a `total` column, and add it to each replicated row on the target.
+The following example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to create computed columns on the target that do not exist on the source. In this example, we derive a `total` column, and add it to each replicated row on the target.
 
 **Make sure to set the `TARGET_SCHEMA_NAME` and `TABLE_TO_COMPUTE` constants to match your environment.**
 
@@ -647,7 +647,7 @@ api.configureTargetSchema(TARGET_SCHEMA_NAME, {
 
 #### Source/target table schema
 
-The target schema of the example above uses the same columns as the source table, plus an additional `total` column:
+The target schema of the preceding example uses the same columns as the source table, plus an additional `total` column:
 
 ~~~
 SOURCE
@@ -721,7 +721,7 @@ api.configureTargetSchema(TARGET_SCHEMA_NAME, {
 
 #### Source/target table schema
 
-The target schema of the example above uses the same columns as the source table, except the `ssn` and `credit_card_number` columns are removed:
+The target schema of the preceding example uses the same columns as the source table, except the `ssn` and `credit_card_number` columns are removed:
 
 ~~~
 SOURCE
@@ -740,7 +740,7 @@ To implement this transformation with MOLT Fetch, create:
 - A `soft_delete_filter.json` file (to be included via the [`--filter-path`]({% link molt/molt-fetch.md %}#selective-data-movement) flag).
 - A `pii_removal_transform.json` file (to be included via the [`--transformations-file`]({% link molt/molt-fetch.md %}#transformations) flag).
 
-Call MOLT Fetch with both the `--filter-path` and `--transformations-file` flags.
+Run MOLT Fetch with both the `--filter-path` and `--transformations-file` flags.
 
 **Make sure to replace the `/path/to/soft_delete_filter.json` and `/path/to/pii_removal_transform.json` placeholders, and make sure that the source and target connection strings have been exported to the environment.**
 
@@ -794,7 +794,7 @@ molt fetch \
 
 ### Implement a dead-letter queue
 
-This example demonstrates how you can use the userscript API to implement a dead-letter queue (DLQ) strategy for `NOT NULL` errors by retrying the batch at row-level granularity and recording failures. Failed writes go to a dead-letter queue table.
+The following example demonstrates how you can use the userscript API to implement a dead-letter queue (DLQ) strategy for `NOT NULL` errors by retrying the batch at row-level granularity and recording failures. Failed writes go to a dead-letter queue table.
 
 **Make sure to set the `TARGET_SCHEMA_NAME` and `DLQ_TABLE`, and `TABLES_WITH_DLQ` constants to match your environment.**
 
@@ -819,7 +819,7 @@ const TABLES_WITH_DLQ = [                        // Tables to apply DLQ handling
  * Handles constraint violations and other errors by isolating failing operations
  * and writing them to a DLQ table instead of failing the entire replication batch.
  * 
- * This example handles NOT NULL violations, but you can extend it to handle other
+ * The following example handles NOT NULL violations, but you can extend it to handle other
  * error types (e.g., unique constraint violations) by adding more SQLSTATE codes.
  */
 
