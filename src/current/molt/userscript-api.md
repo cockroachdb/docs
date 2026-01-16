@@ -5,11 +5,11 @@ toc: true
 docs_area: migrate
 ---
 
-Userscripts allow you to define how rows are transformed, filtered, and routed before [MOLT Replicator]({% link molt/molt-replicator.md %}) writes them to the target database.
+[Userscripts]({% link molt/userscript-guide.md %}) allow you to define how rows are transformed, filtered, and routed before [MOLT Replicator]({% link molt/molt-replicator.md %}) writes them to the target database.
 
 The userscript API provides configuration functions (`configureTargetSchema`, `configureTargetTables`), and lifecycle handlers (`onRowUpsert`, `onRowDelete`, `onWrite`) that allow you to define custom logic for specific tables and schemas.
 
-The [userscript cookbook]({% link molt/userscript-cookbook.md %}) includes example scenarios that further demonstrate how to use this API. Follow userscript [best practices](#best-practices).
+The [userscript cookbook]({% link molt/userscript-cookbook.md %}) includes example scenarios that further demonstrate how to use this API. Be sure to follow userscript [best practices](#best-practices).
 
 ## Access this API
 
@@ -80,15 +80,16 @@ type RowHandlerFn = (row: Row, metadata: Metadata) => Row | Record<string, Row[]
 
 `Row` and `Metadata` are defined in [Common TypeScript definitions](#common-typescript-definitions).
 
+#### Arguments
+
+- `targetSchemaName`: The (case-sensitive) name of the schema in the **target** database.
+- An `onRowUpsert` and an `onRowDelete`function, defined below.
+
 <a id="configure-target-schema-on-row-upsert"></a> 
 
 ### `onRowUpsert(row, metadata)`
 
-`onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetSchema` function, it's called before staging and table-level processing. It returns a value of one of the following types:
-
--  A modified `Row` to write to the default target database table.
-- `{ [table: string]: Row[] }`, to fan-out or reroute any number of `Rows` to multiple tables.
-- `null`, to skip writing this source data row modification to the target database.
+`onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetSchema` function, it's called before staging and table-level processing. 
 
 #### TypeScript Signature
 
@@ -96,7 +97,27 @@ type RowHandlerFn = (row: Row, metadata: Metadata) => Row | Record<string, Row[]
 ~~~ ts
 declare function onRowUpsert(row: Row, metadata: Metadata): Row | Record<string, Row[]> | null
 ~~~
-`Row` and `Metadata` are defined in [Common TypeScript definitions](#common-typescript-definitions).
+
+##### Arguments
+
+- A [`Row`](#common-typescript-definitions) object containing all of the column names for the row in the **source** database, mapped to their values in the **source** database.
+- A [`Metadata`](#common-typescript-definitions) object containing the following (case-sensitive): 
+  - The `schema` name for the row in the **target** database.
+  - The `table` name for the row in the **source** database.
+
+##### What to return
+
+Return one of the following:
+
+-  A modified `Row` to write to the target database, mapping all of the column names for the row in the **target** database to the values that will be written in those columns.
+- `{ [table: string]: Row[] }`, to fan-out or reroute any number of `Rows` to multiple or differently named tables on the target database.
+- `null`, to skip writing this source data row modification to the target database.
+
+{{site.data.alerts.callout_info}}
+By default, a single returned `Row` will be routed to a table in the target database with the same name and casing as the source table. If the target table is named differently than the source table, you will need to use the mapping return value above, `{ [table: string]: Row[] }`, to reroute the row to the target table. This rerouting is only possible in the `configureTargetSchema` handler, as the destination tables need to be defined prior to table-level handling. 
+
+See the [Rename tables]({% link molt/userscript-cookbook.md %}#rename-tables) cookbook example.
+{{site.data.alerts.end}}
 
 #### Example
 
@@ -136,15 +157,7 @@ api.configureTargetSchema("target_db.target_schema", {
 
 ### `onRowDelete(row, metadata)`
 
-`onRowDelete` is called when a row is deleted on the source database. It returns a value of one of the following types:
-
-- A `Row` deletion to write to the default target database table.
-- `{ [table: string]: Row[] }`, to fan-out or reroute any number of `Row` deletions to multiple tables.
-- `null`, to skip writing this source data row deletion to the target database. This row will not be deleted on the target.
-
-{{site.data.alerts.callout_info}}
-Depending on the database source type, the `row` argument passed to `onRowDelete` may include the data columns for the deleted row, or may just include the primary key values.
-{{site.data.alerts.end}}
+`onRowDelete` is called when a row is deleted on the source database. Because it's a handler for the `configureTargetSchema` function, it's called before staging and table-level processing.
 
 #### TypeScript Signature
 
@@ -152,7 +165,24 @@ Depending on the database source type, the `row` argument passed to `onRowDelete
 ~~~ ts
 declare function onRowDelete(row: Row, metadata: Metadata): Row | Record<string, Row[]> | null
 ~~~
-`Row` and `Metadata` are defined in [Common TypeScript definitions](#common-typescript-definitions).
+
+##### Arguments
+
+- A [`Row`](#common-typescript-definitions) object containing information about the row's primary key values. It may also contain information about non-primary key columns, **but these are not guaranteed**. The primary key/value mapping may come in one of the following forms, depending on the configuration of the source database:
+    - The **source** primary key name(s) mapped to the **source** primary key value(s).
+    - The **target** primary key name(s) mapped to the **source** primary key value(s).
+    - Both of the above.
+- A [`Metadata`](#common-typescript-definitions) object containing the following (case-sensitive): 
+  - The `schema` name for the row in the **target** database.
+  - The `table` name for the row in the **source** database.
+
+##### What to return
+
+Return one of the following:
+
+- A `Row` object containing the **target** primary keys for the row to delete on the target database.
+- `{ [table: string]: Row[] }`, to fan-out or reroute any number of `Row` deletions to multiple tables.
+- `null`, to skip writing this source data row deletion to the target database. This row will not be deleted on the target.
 
 #### Example
 
@@ -184,8 +214,6 @@ api.configureTargetSchema("target_db.target_schema", {
   },
 });
 ~~~
-
----
 
 <a id="configure-target-tables"></a> 
 
@@ -224,16 +252,23 @@ type RowOp = ({
 
 `Row` and `Metadata` are defined in [Common TypeScript definitions](#common-typescript-definitions).
 
+#### Arguments
+
+- `tables`: A list of the (case-sensitive) names of the tables to write to in the **target** database. The handler functions will apply to all rows being routed to the tables in this list.
+- `configuration`: An object containing an `onRowUpsert`, an `onRowDelete`, and an `onWrite` function, defined below.
+
 <a id="configure-target-tables-on-row-upsert"></a> 
 
 ### `onRowUpsert(row, metadata)`
 
-`onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetTables` function, it's called after rows are staged and are ready to be written to the target database. It returns a value of one of the following types:
+`onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the `configureTargetTables` function, it's called after rows are staged and are ready to be written to the target database. 
+
+<!-- It returns a value of one of the following types:
 
 -  A modified `Row` to write to the default target database table.
 - `null`, to skip writing this source data row modification to the target database.
 
-You can use `onRowUpsert` to add computed or metadata columns during replication, to transform data values based on business logic, and to enrich records with additional information.
+You can use `onRowUpsert` to add computed or metadata columns during replication, to transform data values based on business logic, and to enrich records with additional information. -->
 
 #### TypeScript signature
 
@@ -242,7 +277,19 @@ You can use `onRowUpsert` to add computed or metadata columns during replication
 declare function onRowUpsert(row: Row, meta: Metadata) => Row | null
 ~~~
 
-`Row` and `Metadata` are defined in [Common TypeScript definitions](#common-typescript-definitions).
+##### Arguments
+
+- A [`Row`](#common-typescript-definitions) object containing all of the column names for the row in the **source** database, mapped to their values in the **source** database.
+- A [`Metadata`](#common-typescript-definitions) object containing the following (case-sensitive): 
+  - The `schema` name for the row in the **target** database.
+  - The `table` name for the row in the **target** database.
+
+##### What to return
+
+Return one of the following:
+
+-  A modified `Row` to write to the target database, mapping all of the column names for the row in the **target** database to the values supplied by the schema-level handlers.
+- `null`, to skip writing this source data row modification to the target database.
 
 #### Example
 
@@ -286,12 +333,7 @@ api.configureTargetTables(["orders"], {
 
 ### `onRowDelete(keys, metadata)`
 
-`onRowDelete` is called when a row is deleted on the source database. Because it's a handler for the `configureTargetTables` function, it's called after rows are staged and are ready to be written to the target database. Unlike `configureTargetSchema`'s `onRowDelete` handler, which receives a whole `row` as an input, this function receives only that row's primary keys as a list of strings called `keyVals`.
-
-It returns a value of one of the following types:
-
-- A list of primary key values, defining the row on the target table to delete.
-- `null`, to skip writing this source data row deletion to the target database. This row will not be deleted on the target.
+`onRowDelete` is called when a row is deleted on the source database. Because it's a handler for the `configureTargetTables` function, it's called after rows are staged and are ready to be written to the target database. 
 
 #### TypeScript signature
 
@@ -300,7 +342,19 @@ It returns a value of one of the following types:
 declare function onRowDelete(keyVals: string[], meta: Metadata) => string[] | null;
 ~~~
 
-`Row` and `Metadata` are defined in [Common TypeScript definitions](#common-typescript-definitions).
+##### Arguments
+
+- A list of the primary key values that define the row to be deleted on the **target** database, as supplied by the schema-level handlers. This is only a list of the key values, not a mapping of key names to values.
+- A [`Metadata`](#common-typescript-definitions) object containing the following (case-sensitive): 
+  - The `schema` name for the row in the **target** database.
+  - The `table` name for the row in the **target** database.
+
+##### What to return
+
+Return one of the following:
+
+- A list of primary key values, defining the row on the target table to delete.
+- `null`, to skip writing this source data row deletion to the target database. This row will not be deleted on the target.
 
 #### Example
 
@@ -377,7 +431,16 @@ type RowOp = ({
 }
 ~~~
 
-It takes as its input a list of `RowOp` objects. Together, these describe every upsert and deletion that is set to be applied to the target table. These include the action (`upsert` or `delete`), the row's primary keys (`pk`), the row's metadata (`meta`), and, optionally, [].
+##### Arguments
+
+- A list of `RowOp` objects. Together, these describe every upsert and deletion that is set to be applied to the target tables defined by the `tables` argument of `configureTargetTables`. Each `RowOp` object includes: 
+    - The relevant `action` (`"upsert"` or `"delete"`)
+    - The row's primary keys (`pk`)
+    - The row's metadata (`meta`)
+    - In the case of an upsert, the `Row` to be written to the target (`data`)
+    - Depending on the configuration of the source database, the value of this `Row` on the source database (`before`)
+
+##### What to return
 
 `onWrite` is asynchronous, so it must return a promise, once processing is complete. This is typically the result of `api.write(rows)`, which finally writes the rows to the target database and returns a promise that will be resolved on successful write.
 
@@ -635,7 +698,7 @@ api.configureTargetTables(["orders"], {
 
 <a id="console"></a> 
 
-## console
+## `console`
 
 Userscripts include a built-in global `console` object that provides standard logging functions for debugging and observability. Messages written through `console` are captured by `replicator` and forwarded to its structured logging system, making them visible in logs, monitoring tools, or local output depending on your deployment.
 
@@ -704,6 +767,7 @@ In general, consider the following when writing userscripts:
 - Prefer `configureTargetSchema` for `onRowUpsert` and `onRowDelete`.
 - Default to returning the row you received, unless you explicitly want to skip or reroute.
 - Numerical columns will be represented as strings. Parse them when reading, convert back to a string after calculations and when returning the row.
+- Be mindful of the letter casing for any table and schema names that you provide in a userscript. For example, an Oracle table may be named “EMPLOYEES” by default, while a Postgres table may be named “employees”.
 - Both the `onRowUpsert` and `onRowDelete` handlers must be provided, not just one. If you only want special handling logic for one, just return the original arguments that are passed in for the other. For instance, this could be as simple as `onRowDelete: (row, metadata) => row`.
 
 ## See also

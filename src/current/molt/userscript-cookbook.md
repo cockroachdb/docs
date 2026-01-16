@@ -382,7 +382,6 @@ employee_id STRING, employee_name STRING, department STRING
 
 MOLT Fetch does not have direct support for column renaming. You may need to rename the column on the target database after the initial bulk data load from MOLT Fetch.
 
-
 ### Route table partitions
 
 This example demonstrates how you can use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to distribute the rows of a single source table across multiple target tables based on partitioning rules.
@@ -426,6 +425,10 @@ api.configureTargetSchema(SCHEMA_NAME, {
 #### MOLT Fetch equivalent
 
 1-to-n table transformations are not supported by MOLT Fetch transforms.
+
+### Rename tables
+
+TODO
 
 ### Compute new columns
 

@@ -22,7 +22,7 @@ Userscripts act as a customizable processing layer within MOLT Replicator's live
 
 The following diagram illustrates how userscripts fit into the replication pipeline:
 
-<img src="{{ 'images/molt/userscript-flow.png' | relative_url }}" alt="Userscript flow"  style="border:1px solid #eee;max-width:50%;margin:auto;display:block" />
+<img src="{{ 'images/molt/userscript-flow.png' | relative_url }}" alt="Userscript flow"  style="border:1px solid #eee;max-width:65%;margin:auto;display:block" />
 
 1. **Source changefeed**: Replicator continuously listens to the source database's changefeed for row modification events.
 
