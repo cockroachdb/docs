@@ -4,3 +4,4 @@ By default, changefeeds emit messages in JSON format. You can use a different fo
 - `csv`
 - `avro`
 - `parquet`
+- `protobuf`
