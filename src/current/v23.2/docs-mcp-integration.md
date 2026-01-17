@@ -33,7 +33,7 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
 
 ### VS Code
 
-1. Install the [Claude for VS Code](https://marketplace.visualstudio.com/items?itemName=Anthropic.claude) extension
+1. Install the [Claude Code for VS Code](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code) extension
 2. Open VS Code Settings (⌘+,)
 3. Search for "Claude MCP"
 4. Add the following to your MCP configuration:
