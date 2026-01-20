@@ -104,3 +104,19 @@ clean-site:
 
 clean-cache:
 	rm -rf .jekyll-cache
+
+.PHONY: git-retry
+git-retry:
+	@echo "This will replace the last commit on the remote branch with an identical one,"
+	@echo "except for its timestamp and SHA, to kick off a new preview build."
+	@read -p "Proceed? (y/N): " confirm && \
+	if [ "$$confirm" = "y" ] || [ "$$confirm" = "Y" ]; then \
+		BRANCH=$$(git rev-parse --abbrev-ref HEAD); \
+		echo "Working on branch: $$BRANCH"; \
+		git pull && \
+		git commit --amend --no-edit --allow-empty && \
+		git push --force origin $$BRANCH && \
+		echo "✓ Successfully pushed amended commit to $$BRANCH"; \
+	else \
+		echo "Aborted."; \
+	fi
