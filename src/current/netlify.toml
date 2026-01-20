@@ -11,6 +11,9 @@
     # Enable retry logic for production builds
     MAX_RETRIES = "3"
     BASE_RETRY_DELAY = "30"
+    # Testing: Uncomment to simulate network errors and verify retry logic works
+    SIMULATE_NETWORK_ERROR = "1"
+    SIMULATE_NETWORK_ERROR_ATTEMPTS = "2"
   [build.processing.html]
     pretty_urls = true
 
