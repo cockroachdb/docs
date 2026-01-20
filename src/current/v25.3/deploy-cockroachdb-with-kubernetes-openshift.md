@@ -6,7 +6,7 @@ secure: true
 docs_area:
 ---
 
-This page shows you how to start and stop a secure 3-node CockroachDB cluster on the Red Hat OpenShift platform, using the [{{ site.data.products.public-operator }}](https://marketplace.redhat.com/en-us/products/cockroachdb-operator).
+This page shows you how to start and stop a secure 3-node CockroachDB cluster on the Red Hat OpenShift platform, using the [{{ site.data.products.public-operator }}](https://catalog.redhat.com/software/containers/cockroachdb/cockroachdb-operator/5d9cbed3ecb5240ff271264f).
 
 {% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 

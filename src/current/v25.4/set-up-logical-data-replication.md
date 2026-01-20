@@ -187,7 +187,7 @@ You can use the `cockroach encode-uri` command to generate a connection string c
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach encode-uri {user}:{password}@{node IP}:26257 --ca-cert {path to CA certificate} --inline
+    cockroach encode-uri postgresql://{user}:{password}@{node IP}:26257 --ca-cert {path to CA certificate} --inline
     ~~~
 
     The connection string output contains the source cluster's certificate:
@@ -224,7 +224,7 @@ Once the source cluster has made a connection to the destination cluster, the de
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach encode-uri {user}:{password}@{node IP}:26257 --ca-cert {path to CA certificate} --inline
+    cockroach encode-uri postgresql://{user}:{password}@{node IP}:26257 --ca-cert {path to CA certificate} --inline
     ~~~
 
     The connection string output contains the source cluster's certificate:
@@ -319,6 +319,10 @@ SHOW LOGICAL REPLICATION JOBS;
 ~~~
 
 If you're setting up bidirectional LDR, both clusters will have a history retention job and an LDR job running.
+
+{{site.data.alerts.callout_info}}
+You cannot pause an LDR job for longer than 24 hours. LDR jobs paused for longer than 24 hours fail and cannot be recovered.
+{{site.data.alerts.end}}
 
 ### DB Console
 

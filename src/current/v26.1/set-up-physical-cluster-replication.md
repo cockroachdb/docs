@@ -39,7 +39,7 @@ To set up PCR from an existing CockroachDB cluster, which will serve as the prim
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you initialize the cluster with the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command, you **must** pass the `--virtualized` or `--virtualized-empty` flag. Refer to the cluster creation steps for the [primary cluster](#initialize-the-primary-cluster) and for the [standby cluster](#initialize-the-standby-cluster) for details.
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
 - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Manage cluster certificates](#step-3-manage-cluster-certificates-and-generate-connection-strings).
-- The primary and standby clusters can have different [region topologies]({% link {{ page.version.version }}/topology-patterns.md %}). However, behavior for features that rely on multi-region primitives, such as Region by Row and Region by Table, may be affected.
+- The primary and standby clusters can have different [region topologies]({% link {{ page.version.version }}/topology-patterns.md %}). However, behavior for features that rely on multi-region primitives, such as Region by Row and Region by Table, may be affected. For more information, refer to [Multi-region behavior and best practices]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#multi-region-behavior-and-best-practices).
 
 ## Step 1. Create the primary cluster
 
@@ -351,6 +351,10 @@ The system virtual cluster in the standby cluster initializes and controls the r
     ~~~
 
     With the replication stream running, you can monitor the job via the DB Console, SQL shell, or Prometheus. You can also verify data is correct on the standby cluster at a specific point in time. For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
+
+    {{site.data.alerts.callout_info}}
+    You cannot pause a PCR job for longer than 24 hours. PCR jobs paused for longer than 24 hours fail and cannot be recovered.
+    {{site.data.alerts.end}}
 
 ## Set up PCR from an existing cluster
 

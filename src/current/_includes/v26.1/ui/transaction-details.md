@@ -22,3 +22,9 @@ The **Insights** table is displayed when CockroachDB has detected a problem with
 - **Latest Execution ID**: The ID of the latest transaction execution. To display the [details of the transaction execution]({{ link_prefix }}ui-insights-page.html#transaction-execution-details), click the ID.
 
 The **Statements Fingerprints** table displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement fingerprint]({{ page_prefix }}statements-page.html#statement-fingerprint-page), click a statement fingerprint.
+
+{{site.data.alerts.callout_info}}
+Statement statistics in the **Statement Fingerprints** table are not accurate when a transaction includes more than 100,000 statements.
+
+At most 100,000 statement statistics can be associated with a single transaction statistic. If a transaction exceeds this limit, CockroachDB automatically flushes buffered statement statistics before the transaction commits. Flushed statement statistics do not have an associated transaction fingerprint ID because the transaction has not yet completed. Because the transaction fingerprint ID cannot be backfilled in these cases, these flushed statement statistics are not included in aggregated results.
+{{site.data.alerts.end}}

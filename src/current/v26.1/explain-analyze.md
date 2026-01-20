@@ -76,7 +76,8 @@ Property        | Description
 `maximum memory usage` | The maximum amount of memory used by this statement anytime during its execution.
 `network usage` | The amount of data transferred over the network while the statement was executed. If the value is 0 B, the statement was executed on a single node and didn't use the network.
 `regions` | The [regions]({% link {{ page.version.version }}/show-regions.md %}) where the affected nodes were located.
-`sql cpu time` | The total amount of time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
+`kv cpu time` | The total amount of time spent in the [KV layer]({% link {{ page.version.version }}/architecture/overview.md %}#layers) on the critical path of serving the query. Excludes time spent on asynchronous replication and in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
+`sql cpu time` | The total amount of time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}).
 `max sql temp disk usage` | ([`DISTSQL`](#distsql-option) option only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
 `estimated RUs consumed` | The estimated number of [Request Units (RUs)]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) consumed by the statement. This property is visible only on CockroachDB {{ site.data.products.basic }} clusters.
 `isolation level` | The [isolation level]({% link {{ page.version.version }}/transactions.md %}#isolation-levels) at which this statement executed.
@@ -226,6 +227,7 @@ EXPLAIN ANALYZE SELECT city, AVG(revenue) FROM rides GROUP BY city;
   maximum memory usage: 240 KiB
   network usage: 0 B (0 messages)
   regions: us-east1
+  kv cpu time: 1ms
   sql cpu time: 443µs
   estimated RUs consumed: 0
   isolation level: serializable
@@ -354,6 +356,7 @@ EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
   maximum memory usage: 240 KiB
   network usage: 0 B (0 messages)
   regions: us-east1
+  kv cpu time: 944µs
   sql cpu time: 275µs
   estimated RUs consumed: 0
   isolation level: serializable
@@ -418,6 +421,7 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
   maximum memory usage: 240 KiB
   network usage: 0 B (0 messages)
   regions: us-east1
+  kv cpu time: 1ms
   sql cpu time: 300µs
   estimated RUs consumed: 0
   isolation level: serializable
@@ -498,6 +502,7 @@ EXPLAIN ANALYZE (REDACT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue
   maximum memory usage: 290 KiB
   network usage: 0 B (0 messages)
   regions: us-east1
+  kv cpu time: 2ms
   sql cpu time: 2ms
   estimated RUs consumed: 0
   isolation level: serializable
