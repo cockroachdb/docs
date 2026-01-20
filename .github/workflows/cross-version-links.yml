@@ -25,7 +25,7 @@ jobs:
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v35
+        uses: tj-actions/changed-files@cc08e170f4447237bcaf8acaacfa615b9cb86612  # v35
         with:
           files: |
             src/current/**/*.md
