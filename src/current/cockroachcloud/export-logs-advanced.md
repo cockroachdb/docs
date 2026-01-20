@@ -576,7 +576,7 @@ No, logs for each region in your cluster are exported to the corresponding cloud
 
 ### What log channels are supported?
 
-You can export the following CockroachDB [log channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels): `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`.
+You can export the following CockroachDB [log channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels): `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, `SQL_PERF`, and `CHANGEFEED`.
 
 Log channels, such as `DEV`, `KV_DISTRIBUTION`, `SQL_INTERNAL_PERF`, and `TELEMETRY`, cannot be exported from CockroachDB {{ site.data.products.advanced }}. These are for Cockroach Labs internal use cases and are not meant for external use. If you need access to additional logs, contact [Support](https://support.cockroachlabs.com/hc/).
 
