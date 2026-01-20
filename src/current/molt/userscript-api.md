@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-[Userscripts]({% link molt/userscript-guide.md %}) allow you to define how rows are transformed, filtered, and routed before [MOLT Replicator]({% link molt/molt-replicator.md %}) writes them to the target database.
+[Userscripts]({% link molt/userscript-overview.md %}) allow you to define how rows are transformed, filtered, and routed before [MOLT Replicator]({% link molt/molt-replicator.md %}) writes them to the target database.
 
 The userscript API provides configuration functions (`configureTargetSchema`, `configureTargetTables`), and lifecycle handlers (`onRowUpsert`, `onRowDelete`, `onWrite`) that allow you to define custom logic for specific tables and schemas.
 
@@ -772,7 +772,7 @@ In general, consider the following when writing userscripts:
 
 ## See also
 
-- [Userscript Guide]({% link molt/userscript-guide.md %})
+- [Userscript Overview]({% link molt/userscript-overview.md %})
 - [Userscript Cookbook]({% link molt/userscript-cookbook.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
 - [Migration Overview]({% link molt/migration-overview.md %})

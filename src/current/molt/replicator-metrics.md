@@ -301,7 +301,7 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 
 ## Userscript metrics
 
-[Userscripts]({% link molt/userscript-guide.md %}) define schema and table transformations that Replicator applies at multiple points in the replication pipeline. Replicator exposes Prometheus [metrics]({% link molt/userscript-metrics.md %}) that provide insight into userscript activity, performance, and stability.
+[Userscripts]({% link molt/userscript-overview.md %}) allow you to define how rows are transformed, filtered, and routed before Replicator writes them to the target database. Replicator exposes Prometheus [metrics]({% link molt/userscript-metrics.md %}) that provide insight into userscript activity, performance, and stability.
 
 {% include molt/userscript-metrics.md %}
 

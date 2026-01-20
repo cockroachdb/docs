@@ -32,6 +32,6 @@ Each metric may include the following standard labels:
 ## See also
 
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
-- [Userscript Guide]({% link molt/userscript-guide.md %})
+- [Userscript Overview]({% link molt/userscript-overview.md %})
 - [Userscript API]({% link molt/userscript-api.md %})
 - [Replicator Metrics]({% link molt/replicator-metrics.md %})

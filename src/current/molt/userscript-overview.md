@@ -1,5 +1,5 @@
 ---
-title: Userscript Guide
+title: Userscript Overview
 summary: Learn how userscripts work and how they can customize a MOLT Replicator process.
 toc: true
 docs_area: migrate

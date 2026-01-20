@@ -13,7 +13,7 @@ This cookbook provides ready-to-use examples that demonstrate real-world uses of
 
 ## Before you begin
 
-- Make sure that you understand the [purpose and usage of userscripts]({% link molt/userscript-guide.md %}). Take a look at the [userscript API]({% link molt/userscript-api.md %}). Understand [what you cannot do]({% link molt/userscript-guide.md %}#unsupported-typescript-features) in a userscript.
+- Make sure that you understand the [purpose and usage of userscripts]({% link molt/userscript-overview.md %}). Take a look at the [userscript API]({% link molt/userscript-api.md %}). Understand [what you cannot do]({% link molt/userscript-overview.md %}#unsupported-typescript-features) in a userscript.
 - [Install MOLT Replicator]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library.
 - [Install TypeScript](https://www.typescriptlang.org/download/), and install a TypeScript-compatible IDE (for example, VS Code).
 
@@ -34,8 +34,8 @@ import * as api from "replicator@v2";
 // ============================================================================
 // Configuration - Update these values for your environment
 // ============================================================================
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
-const TABLE_TO_SKIP = "YOUR_TABLE_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. "defaultdb.public"
+const TABLE_TO_SKIP = "YOUR_TABLE_HERE"; // e.g. "items"
 
 // Filter out the table 'YOUR_TABLE_HERE' from replication in the 'YOUR_SCHEMA_HERE' schema. 
 api.configureTargetSchema(TARGET_SCHEMA_NAME, {
@@ -85,8 +85,8 @@ import * as api from "replicator@v2";
 // ============================================================================
 // Configuration - Update these values for your environment
 // ============================================================================
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
-const TABLES_TO_SKIP = new Set(["YOUR_TABLE_HERE_1", "YOUR_TABLE_HERE_2"]);
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. "defaultdb.public"
+const TABLES_TO_SKIP = new Set(["YOUR_TABLE_HERE_1", "YOUR_TABLE_HERE_2"]); // e.g. ["items", "orders", "customers"]
 
 // Set up a filter to exclude rows from the tables "YOUR_TABLE_HERE_1" and "YOUR_TABLE_HERE_2" from being replicated.
 
@@ -155,7 +155,7 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. "defaultdb.public"
 
 // Below is an example to conditionally exclude soft_deleted rows from the 
 // replication process using userscripts.
@@ -229,8 +229,8 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
-const TABLE_TO_EDIT = "YOUR_TABLE_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. "defaultdb.public"
+const TABLE_TO_EDIT = "YOUR_TABLE_HERE"; // e.g. "items"
 
 // Configure the target schema to filter out the qty column from the `YOUR_TABLE_HERE` table.
 api.configureTargetSchema(TARGET_SCHEMA_NAME, {
@@ -313,8 +313,8 @@ import * as api from "replicator@v2";
 // ============================================================================
 
 // Make sure the letter casing matches your target table and schema names.
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE" // "postgres.public" in this example
-const TABLE_TO_EDIT = "YOUR_TABLE_HERE"; // "employees" in this example
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE" // e.g. "defaultdb.public"
+const TABLE_TO_EDIT = "YOUR_TABLE_HERE"; // e.g. "orders"
 
 /**
  * Use case: Source database uses "emp_id" and "emp_name" but target database
@@ -392,8 +392,8 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. postgres.public
-const TABLE_TO_EDIT = "YOUR_TABLE_HERE"; // e.g. items
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. "defaultdb.public"
+const TABLE_TO_EDIT = "YOUR_TABLE_HERE"; // e.g. "items"
 
 /**
  * This example demonstrates how to use onRowDelete to transform delete operations
@@ -473,8 +473,8 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ==========================================================================
 
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
-const TABLE_TO_PARTITION = "YOUR_TABLE_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. "defaultdb.public"
+const TABLE_TO_PARTITION = "YOUR_TABLE_HERE"; // e.g. "items"
 
 function partition(row, meta) {
   const id = Number(row.id as string); 
@@ -518,7 +518,7 @@ import * as api from "replicator@v2";
 // ============================================================================
 
 // Make sure the letter casing matches your target table and schema names.
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE" // e.g. postgres.public
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE" // e.g. "defaultdb.public"
 
 // Define table name mappings: source table -> target table.
 // Update with your source table names -> renamed tables.
@@ -526,7 +526,7 @@ const TABLE_MAPPINGS = {
   "YOUR_FIRST_SOURCE_TABLE_NAME_HERE": "FIRST_RENAMED_TARGET_TABLE_HERE",
   "YOUR_SECOND_SOURCE_TABLE_NAME_HERE": "SECOND_RENAMED_TARGET_TABLE_HERE",
   // Add more tables as needed here
-};
+}; // e.g. { "customer_table": "CUSTOMERS", "order_table": "ORDERS" }
 
 /**
  * This example demonstrates how to rename tables from source to target
@@ -625,8 +625,8 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
-const TABLE_TO_COMPUTE = "YOUR_TABLE_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. "defaultdb.public"
+const TABLE_TO_COMPUTE = "YOUR_TABLE_HERE"; // e.g. "orders"
 
 api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, meta) => {
@@ -677,8 +677,8 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";
-const TABLE_TO_EDIT = "YOUR_TABLE_HERE";
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. "defaultdb.public"
+const TABLE_TO_EDIT = "YOUR_TABLE_HERE"; // e.g. "customers"
 
 /**
  * Example:
@@ -806,12 +806,12 @@ import * as api from "replicator@v2";
 // Configuration - Update these values for your environment
 // ============================================================================
 
-const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE";          // Target schema (e.g., "mydb.public")
-const DLQ_TABLE = "YOUR_DLQ_TABLE_HERE";         // DLQ table for failed operations
-const TABLES_WITH_DLQ = [                        // Tables to apply DLQ handling to
+const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // Target schema, e.g. "defaultdb.public"
+const DLQ_TABLE = "YOUR_DLQ_TABLE_HERE"; // DLQ table for failed operations, e.g. "migration_dlq"
+const TABLES_WITH_DLQ = [
     "YOUR_TABLE_HERE",
     // Add more tables as needed
-];
+]; // Tables to apply DLQ handling to, e.g. [ "orders", "items", "customers" ]
 
 /**
  * Dead-Letter Queue (DLQ) Handler Example
@@ -917,6 +917,6 @@ There is no MOLT Fetch equivalent for DLQ. DLQ handling is part of a live replic
 
 ## See also
 
-- [Userscript Guide]({% link molt/userscript-guide.md %})
+- [Userscript Overview]({% link molt/userscript-overview.md %})
 - [Userscript API]({% link molt/userscript-api.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})

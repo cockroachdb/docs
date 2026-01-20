@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This quickstart guides you through creating, validating, and deploying your first [userscript]({% link molt/userscript-guide.md %}) based on a [cookbook]({% link molt/userscript-cookbook.md %}) example.
+This quickstart guides you through creating, validating, and deploying your first [userscript]({% link molt/userscript-overview.md %}) based on a [cookbook]({% link molt/userscript-cookbook.md %}) example.
 
 ## Before you begin
 
@@ -28,7 +28,7 @@ Copy and adapt a cookbook example that matches your use case. For example, adapt
 ~~~ ts
 import * as api from "replicator@v2";
 
-const SCHEMA_NAME = "public";
+const TARGET_SCHEMA_NAME = "defaultdb.public";
 const TABLE_TO_SKIP = "audit_logs";
 
 api.configureTargetSchema(SCHEMA_NAME, {
@@ -72,7 +72,7 @@ replicator pglogical \
 
 ## See also
 
-- [Userscript Guide]({% link molt/userscript-guide.md %})
+- [Userscript Overview]({% link molt/userscript-overview.md %})
 - [Userscript API]({% link molt/userscript-api.md %})
 - [Userscript Cookbook]({% link molt/userscript-cookbook.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})

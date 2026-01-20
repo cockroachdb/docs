@@ -10,7 +10,7 @@ Configure the following [MOLT Replicator]({% link molt/molt-replicator.md %}) fl
 | [`--stagingSchema`]({% link molt/replicator-flags.md %}#staging-schema)              | **Required.** Staging schema name on CockroachDB for replication metadata and checkpoints. Schema name must be fully qualified in the format `database.schema`.                                                          |
 | [`--stagingCreateSchema`]({% link molt/replicator-flags.md %}#staging-create-schema) | Automatically create the staging schema if it does not exist. Include this flag when starting replication for the first time.                                                                                            |
 | [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr)                  | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                                                                                                           |
-| [`--userscript`]({% link molt/replicator-flags.md %}#userscript)                     | Path to a [userscript]({% link molt/userscript-guide.md %}) that enables data filtering, routing, or transformations. For examples, refer to [Userscript Cookbook]({% link molt/userscript-cookbook.md %}).              |
+| [`--userscript`]({% link molt/replicator-flags.md %}#userscript)                     | Path to a [userscript]({% link molt/userscript-overview.md %}) that enables data filtering, routing, or transformations. For examples, refer to [Userscript Cookbook]({% link molt/userscript-cookbook.md %}).              |
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
@@ -22,7 +22,7 @@ Configure the following [MOLT Replicator]({% link molt/molt-replicator.md %}) fl
 | [`--stagingCreateSchema`]({% link molt/replicator-flags.md %}#staging-create-schema) | Automatically create the staging schema if it does not exist. Include this flag when starting replication for the first time.                                                                               |
 | [`--fetchMetadata`]({% link molt/replicator-flags.md %}#fetch-metadata)              | Explicitly fetch column metadata for MySQL versions that do not support `binlog_row_metadata`. Requires `SELECT` permissions on the source database or `PROCESS` privileges.                                |
 | [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr)                  | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                                                                                              |
-| [`--userscript`]({% link molt/replicator-flags.md %}#userscript)                     | Path to a [userscript]({% link molt/userscript-guide.md %}) that enables data filtering, routing, or transformations. For examples, refer to [Userscript Cookbook]({% link molt/userscript-cookbook.md %}). |
+| [`--userscript`]({% link molt/replicator-flags.md %}#userscript)                     | Path to a [userscript]({% link molt/userscript-overview.md %}) that enables data filtering, routing, or transformations. For examples, refer to [Userscript Cookbook]({% link molt/userscript-cookbook.md %}). |
 
 You can find the starting GTID in the `cdc_cursor` field of the `fetch complete` message after the [initial data load](#start-fetch) completes.
 </section>
@@ -37,7 +37,7 @@ You can find the starting GTID in the `cdc_cursor` field of the `fetch complete`
 | [`--stagingSchema`]({% link molt/replicator-flags.md %}#staging-schema)              | **Required.** Staging schema name on CockroachDB for replication metadata and checkpoints. Schema name must be fully qualified in the format `database.schema`.                                             |
 | [`--stagingCreateSchema`]({% link molt/replicator-flags.md %}#staging-create-schema) | Automatically create the staging schema if it does not exist. Include this flag when starting replication for the first time.                                                                               |
 | [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr)                  | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                                                                                              |
-| [`--userscript`]({% link molt/replicator-flags.md %}#userscript)                     | Path to a [userscript]({% link molt/userscript-guide.md %}) that enables data filtering, routing, or transformations. For examples, refer to [Userscript Cookbook]({% link molt/userscript-cookbook.md %}). |
+| [`--userscript`]({% link molt/replicator-flags.md %}#userscript)                     | Path to a [userscript]({% link molt/userscript-overview.md %}) that enables data filtering, routing, or transformations. For examples, refer to [Userscript Cookbook]({% link molt/userscript-cookbook.md %}). |
 
 You can find the SCN values in the message `replication-only mode should include the following replicator flags` after the [initial data load](#start-fetch) completes.
 </section>
@@ -50,7 +50,7 @@ You can find the SCN values in the message `replication-only mode should include
 | [`--tlsCertificate`]({% link molt/replicator-flags.md %}#tls-certificate) | Path to the server TLS certificate for the webhook sink. Refer to [TLS certificate and key](#tls-certificate-and-key).                                                                                      |
 | [`--tlsPrivateKey`]({% link molt/replicator-flags.md %}#tls-private-key)  | Path to the server TLS private key for the webhook sink. Refer to [TLS certificate and key](#tls-certificate-and-key).Q                                                                                      |
 | [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr)       | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                                                                                              |
-| [`--userscript`]({% link molt/replicator-flags.md %}#userscript)          | Path to a [userscript]({% link molt/userscript-guide.md %}) that enables data filtering, routing, or transformations. For examples, refer to [Userscript Cookbook]({% link molt/userscript-cookbook.md %}). |
+| [`--userscript`]({% link molt/replicator-flags.md %}#userscript)          | Path to a [userscript]({% link molt/userscript-overview.md %}) that enables data filtering, routing, or transformations. For examples, refer to [Userscript Cookbook]({% link molt/userscript-cookbook.md %}). |
 
 - The staging schema is first created during [initial replication setup]({% link molt/migrate-load-replicate.md %}#start-replicator) with [`--stagingCreateSchema`]({% link molt/replicator-flags.md %}#staging-create-schema).
 
