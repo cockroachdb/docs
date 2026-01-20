@@ -87,7 +87,8 @@
         {
           "title": "C# (.NET)",
           "urls": [
-            "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
+            "/${VERSION}/build-a-csharp-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-csharp-app-with-cockroachdb-efcore.html"
           ]
         },
         {
