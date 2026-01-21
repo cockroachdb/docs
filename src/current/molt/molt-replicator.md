@@ -303,7 +303,7 @@ CREATE CHANGEFEED ... WITH webhook_auth_header='Bearer <encoded_token>';
 
 ##### Generate JWT tokens
 
-The `make-jwt` command generates JWT tokens or claims for authorizing changefeed connections. It requires a signing key ([`-k`]({% link molt/replicator-flags.md %}#key)) and the database or schema to authorize ([`-a`]({% link molt/replicator-flags.md %}#allow)). You can output a signed token to a file ([`-o`]({% link molt/replicator-flags.md %}#output)) or generate an unsigned claim ([`--claim`]({% link molt/replicator-flags.md %}#claim)) for signing with an external JWT provider.
+The `make-jwt` command generates JWT tokens or claims for authorizing changefeed connections. It requires a signing key ([`-k`]({% link molt/replicator-flags.md %}#key)) and the database or schema to authorize ([`-a`]({% link molt/replicator-flags.md %}#allow)). You can output a signed token to a file ([`-o`]({% link molt/replicator-flags.md %}#out)) or generate an unsigned claim ([`--claim`]({% link molt/replicator-flags.md %}#claim)) for signing with an external JWT provider.
 
 The format of the `-a` argument depends on your target database. For CockroachDB and PostgreSQL, which have a schema concept, use the `database.schema` format:
 
