@@ -79,7 +79,7 @@ You can include multiple `configureTargetSchema` functions in your userscript, e
 
 <a id="configure-target-schema-on-row-upsert"></a> 
 
-### `onRowUpsert(row, metadata)`
+### Schema-level `onRowUpsert(row, metadata)`
 
 `onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the [`configureTargetSchema`](#configure-target-schema) function, it is called [before staging and table-level processing]({% link molt/userscript-overview.md %}#how-it-works). 
 
@@ -147,7 +147,7 @@ api.configureTargetSchema("target_db.target_schema", {
 
 <a id="configure-target-schema-on-row-delete"></a> 
 
-### `onRowDelete(row, metadata)`
+### Schema-level `onRowDelete(row, metadata)`
 
 `onRowDelete` is called when a row is deleted on the source database. Because it's a handler for the [`configureTargetSchema`](#configure-target-schema) function, it is called [before staging and table-level processing]({% link molt/userscript-overview.md %}#how-it-works).
 
@@ -270,7 +270,7 @@ You can include multiple `configureTargetTables` functions in your userscript, e
 
 <a id="configure-target-tables-on-row-upsert"></a> 
 
-### `onRowUpsert(row, metadata)`
+### Table-level `onRowUpsert(row, metadata)`
 
 `onRowUpsert` is called when a row is inserted or updated on the source database. Because it's a handler for the [`configureTargetTables`](#configure-target-tables) function, it is called [after rows are staged]({% link molt/userscript-overview.md %}#how-it-works) and ready to be written to the target database. 
 
@@ -335,7 +335,7 @@ api.configureTargetTables(["orders"], {
 
 <a id="configure-target-tables-on-row-delete"></a> 
 
-### `onRowDelete(keys, metadata)`
+### Table-level `onRowDelete(keys, metadata)`
 
 `onRowDelete` is called when a row is deleted on the source database. Because it's a handler for the [`configureTargetTables`](#configure-target-tables) function, it is called [after rows are staged]({% link molt/userscript-overview.md %}#how-it-works) and ready to be written to the target database. 
 
