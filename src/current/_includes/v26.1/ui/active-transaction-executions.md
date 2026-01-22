@@ -36,7 +36,7 @@ The transaction execution details page provides the following details on the tra
 
 If a transaction execution is waiting, the transaction execution details are followed by Contention Insights and details of the transaction execution on which the blocked transaction execution is waiting. For more information about contention, see [Transaction contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
 
-<img src="{{ 'images/v24.2/waiting-transaction.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/waiting-transaction.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
