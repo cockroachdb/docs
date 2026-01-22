@@ -115,7 +115,7 @@ Refer to the [Rename tables]({% link molt/userscript-cookbook.md %}#rename-table
 
 The following example demonstrates how to use `configureTargetSchema` with `onRowUpsert` to transform and filter data during replication. 
 
-This function is called during upserts. It uppercases the value in the `status` field of the `orders` table, and it prevents the replication of non-target tables (that is, tables other than `orders` and `customers`).
+The `onRowUpsert` handler is called during upserts on the source database. It uppercases the value in the `status` field of the `orders` table, and it prevents the replication of non-target tables (that is, tables other than `orders` and `customers`). It still passes deletions to all tables in `onRowDelete`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -228,7 +228,7 @@ api.configureTargetSchema("target_db.target_schema", {
 
 `configureTargetTables` registers table-level handlers that run after rows are staged and ready to be written to the target database. You can use this function to define transformations, filters, or column-level behaviors that are specific to certain tables. 
 
-Table-level configuration provides finer control than schema-level handlers, allowing you to perform transactional logic on tables in the target database.
+Table-level configuration provides finer control than schema-level handlers. Specifically, the [`onWrite`](#configure-target-tables-on-write) handler function enables you to perform transactional logic on tables in the target database.
 
 #### TypeScript signature
 
@@ -435,12 +435,12 @@ type RowOp = ({
 
 ##### Arguments
 
-- A list of `RowOp` objects. Together, these describe every upsert and deletion that is set to be applied to the target tables defined by the `tables` argument of `configureTargetTables`. Each `RowOp` object includes: 
+- A list of `RowOp` objects. Together, these describe every upsert and deletion that is planned to be written to the target tables defined by the `tables` argument of `configureTargetTables`. Each `RowOp` object includes: 
     - The relevant `action` (`"upsert"` or `"delete"`)
     - The row's primary keys (`pk`)
     - The row's metadata (`meta`)
     - In the case of an upsert, the `Row` to be written to the target (`data`)
-    - Depending on the configuration of the source database, the value of this `Row` on the source database (`before`)
+    - Depending on the configuration of the source database, the value of this `Row` on the source database before it was updated/deleted (`before`)
 
 ##### What to return
 
