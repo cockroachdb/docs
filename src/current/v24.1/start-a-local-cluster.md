@@ -26,7 +26,7 @@ The store directory is `cockroach-data/` in the same directory as the `cockroach
 
 ## Step 1. Start the cluster
 
-This section shows how to start a cluster interactively. In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link v23.1/deploy-cockroachdb-on-premises.md %}?filters=systemd).
+This section shows how to start a cluster interactively. In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}?filters=systemd).
 
 1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start the `node1` in the foreground:
 
@@ -43,7 +43,7 @@ This section shows how to start a cluster interactively. In production, operator
     {{site.data.alerts.callout_info}}
     The `--background` flag is not recommended. If you decide to start nodes in the background, you must also pass the `--pid-file` argument. To stop a `cockroach` process running in the background, extract the process ID from the PID file and pass it to the command to [stop the node](#step-7-stop-the-cluster).
 
-    In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link v23.1/deploy-cockroachdb-on-premises.md %}?filters=systemd).
+    In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}?filters=systemd).
     {{site.data.alerts.end}}
 
     You'll see a message like the following:
