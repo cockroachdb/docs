@@ -87,11 +87,11 @@ OK
 ### Visualize metrics
 
 <section class="filter-content" markdown="1" data-scope="postgres mysql cockroachdb">
-Use the [Replicator Grafana dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) to visualize metrics.
+Use the Replicator Grafana dashboard [bundled with your binary]({% link molt/molt-replicator.md %}#installation) (`replicator_grafana_dashboard.json`) to visualize metrics. The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-Use the [Replicator Grafana dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) to visualize metrics. For Oracle sources, also import the [Oracle Grafana dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json) to visualize [Oracle source metrics](#oracle-source).
+Use the Replicator Grafana dashboards [bundled with your binary]({% link molt/molt-replicator.md %}#installation) to visualize metrics. The general Replicator dashboard (`replicator_grafana_dashboard.json`) displays overall replication metrics, and the Oracle-specific dashboard (`replicator_oracle_grafana_dashboard.json`) displays [Oracle source metrics](#oracle-source). The bundled dashboards match your binary version. Alternatively, you can download the latest dashboards for [Replicator](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) and [Oracle source metrics](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
 </section>
 
 ## Overall replication metrics
@@ -177,7 +177,7 @@ Monitor the following metrics to track checkpoint progress:
 #### Oracle source
 
 {{site.data.alerts.callout_success}}
-To visualize the following metrics, import the [Oracle Grafana dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
+To visualize the following metrics, import the Oracle Grafana dashboard [bundled with your binary]({% link molt/molt-replicator.md %}#installation) (`replicator_oracle_grafana_dashboard.json`). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
 {{site.data.alerts.end}}
 
 - `oraclelogminer_scn_interval_size`
