@@ -43,7 +43,7 @@ To set a different sink URI to an existing changefeed, use the [`sink` option]({
 ## Kafka
 
 {{site.data.alerts.callout_info}}
-{% include_cached new-in.html version="v23.2.10" %} CockroachDB uses a different version of the Kafka sink that is implemented with the [franz-go](https://github.com/twmb/franz-go) Kafka client library. We recommend that you enable this updated version of the Kafka sink to avoid a potential bug in the previous version of the CockroachDB Kafka sink; for more details, refer to the [technical advisory 122372]({% link advisories/a122372.md %}). You can enable this Kafka sink with the cluster setting [`changefeed.new_kafka_sink.enabled`]({% link v24.2/show-cluster-setting.md %}).
+{% include_cached new-in.html version="v23.2.10" %} CockroachDB uses a different version of the Kafka sink that is implemented with the [franz-go](https://github.com/twmb/franz-go) Kafka client library. We recommend that you enable this updated version of the Kafka sink to avoid a potential bug in the previous version of the CockroachDB Kafka sink; for more details, refer to the [technical advisory 122372]({% link advisories/a122372.md %}). You can enable this Kafka sink with the cluster setting [`changefeed.new_kafka_sink.enabled`]({% link {{ page.version.version }}/show-cluster-setting.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
