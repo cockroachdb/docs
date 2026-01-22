@@ -14,7 +14,6 @@ The `SHOW INSPECT ERRORS` [statement]({% link {{ page.version.version }}/sql-sta
 To run `SHOW INSPECT ERRORS`, the user must have:
 
 - The `INSPECT` system-level [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges), which is required to run the [`INSPECT` statement]({% link {{ page.version.version }}/inspect.md %}).
-- The `VIEWSYSTEMTABLE` system-level [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges), which is required to view the output of `SHOW INSPECT ERRORS`.
 
 ## Synopsis
 
@@ -58,6 +57,8 @@ Error type | Meaning
 ## Examples
 
 ### Show the latest errors for a table
+
+To see the errors found by the most recent `INSPECT` job, issue the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -15,8 +15,7 @@ The `INSPECT` [statement]({% link {{ page.version.version }}/sql-statements.md %
 
 To run `INSPECT` and view its results, the user must have:
 
-- The `INSPECT` system-level [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) is required to run the `INSPECT` statement.
-- The `VIEWSYSTEMTABLE` system-level [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges), which is required to view the results of [`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}).
+- The `INSPECT` system-level [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges), which is required to run the `INSPECT` statement.
 
 ## Synopsis
 
@@ -117,7 +116,7 @@ NOTICE:  waiting for INSPECT job to complete: 1141477013029322753
 If the statement is canceled, the job will continue in the background.
 ~~~
 
-You can check the status of the `INSPECT` job using a statement like the following:
+You can check the status of the `INSPECT` [job]({% link {{ page.version.version }}/show-jobs.md %}) using a statement like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
