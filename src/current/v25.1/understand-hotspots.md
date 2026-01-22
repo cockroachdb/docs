@@ -33,7 +33,7 @@ All hotspot types described on this page will create hot nodes, as long as the c
 The following image is a graph of [CPU Percent]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent) utilization per node. Most of the nodes hover around 25%, while one hot node is around 95%. Since the hot node keeps changing, it means the hotspot is moving from one node to another as the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) containing writes fill up and split. For more information, refer to [hot range](#hot-range) and [moving hotspot](#moving-hotspot).
 
 <a id="hotspots-figure-1"></a>
-<img src="{{ 'images/v25.1/hotspots-figure-1.png' | relative_url }}" alt="graph of CPU Percent utilization per node showing hot nodes" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/hotspots-figure-1.png' | relative_url }}" alt="graph of CPU Percent utilization per node showing hot nodes" style="border:1px solid #eee;max-width:100%" />
 
 ### Hot range
 
@@ -104,7 +104,7 @@ An _index hotspot_ is a hotspot on an [index]({% link {{ page.version.version }}
 
 Consider a table `users` that contains a [primary key]({% link {{ page.version.version }}/primary-key.md %}) `user_id`, which is an incrementing integer value. Each new key will be the current maximum key + 1. In this way, all writes appear at the index tail. The following image visualizes writes to the `users` table using an incrementing `INT` primary key. Note how all writes are focused at the tail of the index, represented by the red section in Range 4.
 
-<img src="{{ 'images/v25.1/hotspots-figure-3.png' | relative_url }}" alt="incrementing INT primary key" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/hotspots-figure-3.png' | relative_url }}" alt="incrementing INT primary key" style="border:1px solid #eee;max-width:100%" />
 
 Even if performance degradation in Range 4 is mitigated, the system remains constrained by the number of writes a single range can handle. As a result, CockroachDB could be limited to the performance of a single node, which goes against the purpose of a distributed database.
 
@@ -114,7 +114,7 @@ In the ideal operation of a distributed SQL database, inserts into an index shou
 
 Consider a table `users` that contains a primary key `user_uuid` of type [`UUID`]({% link {{ page.version.version }}/uuid.md %}). Because `UUID`s are pseudo-random, new rows are inserted into the keyspace at random locations. The following image visualizes writes to the `users` table using a `UUID` primary key. Red lines indicate an insert into the keyspace. Note how the red lines are distributed evenly.
 
-<img src="{{ 'images/v25.1/hotspots-figure-2.png' | relative_url }}" alt="UUID primary key" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/hotspots-figure-2.png' | relative_url }}" alt="UUID primary key" style="border:1px solid #eee;max-width:100%" />
 
 Inserts are not the only way that index hotspots can occur. Consider the same table `users` that now has a [secondary index]({% link {{ page.version.version }}/schema-design-indexes.md %}) on a `TIMESTAMP` column:
 
@@ -143,7 +143,7 @@ The resolution of the index hotspot often depends on your requirements for the d
 
 If inserting in sequential order is important, the index itself can be [hash-sharded]({% link {{ page.version.version }}/hash-sharded-indexes.md %}), which means that it is still stored in order, albeit in some number of shards. Consider a `users` table, with a primary key `id INT`, which is hash-sharded with 4 shards, and a hashing function of modulo 4. The following image illustrates this example:
 
-<img src="{{ 'images/v25.1/hotspots-figure-4.png' | relative_url }}" alt="Hash-sharded index example" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/hotspots-figure-4.png' | relative_url }}" alt="Hash-sharded index example" style="border:1px solid #eee;max-width:100%" />
 
 Now the writes are distributed into the tails of the shards, rather than the tail of the whole index. This benefits write performance but makes reads more challenging. If you need to read a subset of the data, you will have to scan each shard of the index.
 
@@ -181,7 +181,7 @@ A _queueing hotspot_ is a type of index hotspot that occurs when a workload trea
 
 Queues, such as logs, generally require data to be ordered by write, which necessitates indexing in a way that is likely to create a hotspot. An outbox where data is deleted as it is read has an additional problem: it tends to accumulate an ordered set of [garbage data]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-my-disk-usage-not-decreasing-after-deleting-data) behind the live data. Since the system cannot determine whether any live rows exist within the garbage data, what appears to be a small table scan to the user can actually result in an unexpectedly intensive scan on the garbage data.
 
-<img src="{{ 'images/v25.1/hotspots-figure-5.png' | relative_url }}" alt="Outbox hotspot example" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/hotspots-figure-5.png' | relative_url }}" alt="Outbox hotspot example" style="border:1px solid #eee;max-width:100%" />
 
 To mitigate this issue, it is advisable to use [Change Data Capture (CDC)]({% link {{ page.version.version }}/cdc-queries.md %}) to ensure subscription to updates instead of using Outbox tables. If using CDC is not possible, sharding the index that the outbox uses for ordering can reduce the likelihood of a hotspot within the cluster.
 
@@ -218,13 +218,13 @@ UPDATE User SET follower_count = follower_count+1 WHERE id=2;
 
 This simple design works well until it encounters an unexpected surge in activity. For example, consider user 471, who suddenly gains millions of followers within an hour. This sudden increase in followers causes a significant amount of write traffic to the range responsible for this user, which the system may not be able to handle efficiently. The following image visualizes a hot row in the keyspace. Note how writes are focused on a single point, which cannot be split.
 
-<img src="{{ 'images/v25.1/hotspots-figure-6.png' | relative_url }}" alt="Single row hotspot example" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/hotspots-figure-6.png' | relative_url }}" alt="Single row hotspot example" style="border:1px solid #eee;max-width:100%" />
 
 Without changing the default behavior of the system, the load will not be distributed because it needs to be served by a single range. This behavior is not just temporary; certain users may consistently experience a high volume of activity compared to the average user. This can result in a system with multiple hotspots, each of which can potentially overload the system at any moment.
 
 The following image visualizes a keyspace with multiple hot rows. In a large enough cluster, each of these rows can burden the range they live in, leading to multiple burdened nodes.
 
-<img src="{{ 'images/v25.1/hotspots-figure-7.png' | relative_url }}" alt="Multiple row hotspots example" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/hotspots-figure-7.png' | relative_url }}" alt="Multiple row hotspots example" style="border:1px solid #eee;max-width:100%" />
 
 ### Hot sequence
 
@@ -246,7 +246,7 @@ Because the primary key index is [hash-sharded]({% link {{ page.version.version 
 
 The following image visualizes writes in the `products` keyspace using hash-sharded rows. With five shards, the writes are better distributed into the keyspace, but the `id` sequence row becomes the limiting factor.
 
-<img src="{{ 'images/v25.1/hotspots-figure-8.png' | relative_url }}" alt="Multiple row hotspots example" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/hotspots-figure-8.png' | relative_url }}" alt="Multiple row hotspots example" style="border:1px solid #eee;max-width:100%" />
 
 Because sequences avoid user expressions, optimizations can be made to improve their performance, but unfortunately the write volume on the sequence is still that of the sum total of all its accesses.
 
@@ -276,7 +276,7 @@ country_id UUID REFERENCES countries(id)
 SELECT * FROM posts p JOIN countries c ON p.country_id=c.id;
 ~~~
 
-<img src="{{ 'images/v25.1/hotspots-figure-9.png' | relative_url }}" alt="Table hotspot example" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/hotspots-figure-9.png' | relative_url }}" alt="Table hotspot example" style="border:1px solid #eee;max-width:100%" />
 
 Reads in the `posts` table may be evenly distributed, but joining the `countries` table becomes a bottleneck, since it exists in so few ranges. Splitting the `countries` table ranges can relieve pressure, but only to a limit as the indivisible rows experience high throughput. [Global tables]({% link {{ page.version.version }}/global-tables.md %}) and [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) can help scaling in this case, especially when write throughput is low.
 
@@ -301,7 +301,7 @@ By doing this, you have limited the traffic from the highest throughput table to
 
 The following image visualizes the regional breakout of data in the `orders` table. Because of the domiciling policy, reads and writes to the `orders` table will be focused on the `us-east-1` nodes.
 
-<img src="{{ 'images/v25.1/hotspots-figure-10.png' | relative_url }}" alt="Locality hotspot example" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/hotspots-figure-10.png' | relative_url }}" alt="Locality hotspot example" style="border:1px solid #eee;max-width:100%" />
 
 ### Temporal hotspot
 
