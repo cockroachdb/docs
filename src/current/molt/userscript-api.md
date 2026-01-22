@@ -194,7 +194,7 @@ See the [Rename primary keys]({% link molt/userscript-cookbook.md %}#rename-prim
 
 The following example demonstrates how to use `configureTargetSchema` with `onRowDelete` to transform and filter data during replication.
 
-This function is called during deletions. It ensures that any row where `id < 100` is not deleted from the target. It passes upserts along unchanged.
+This function is called during deletions. It ensures that any row where `id < 100` is not deleted from the target. It passes upserts along unchanged. This is useful when you want to preserve critical reference data or system records in your target database based on their primary key or other columns, even if they're removed from the source.
  
  {% include_cached copy-clipboard.html %}
 ~~~ ts
