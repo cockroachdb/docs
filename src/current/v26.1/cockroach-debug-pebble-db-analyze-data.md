@@ -30,7 +30,7 @@ Flag | Description
 `--comparer` | Comparer name (use default if empty).
 `--merger` | Merger name (use default if empty).
 `--output` | Path for the output CSV file.
-`--read-mb-per-sec` | Limits read I/O bandwidth to avoid disrupting running workloads. Recommended range is between `1` (1 MiB) and `10` (10 MiB) (`0` = no limit).<br /><br />**Default:** `0`
+`--read-mb-per-sec` | Limits read I/O bandwidth to avoid disrupting running workloads (`0` = no limit). Recommended range is between `1` (1 MiB) and `10` (10 MiB).<br /><br />**Default:** `0`
 `--sample-percent` | Percentage of data to sample before stopping.<br /><br />**Default:** `100`
 `--timeout` | Stop after this much time has passed (`0` = no timeout).<br /><br />**Default:** `0`
 
@@ -48,12 +48,12 @@ This data can help Cockroach Labs evaluate compression defaults and can help you
 ### Where to run
 
 - On a node's [store directory]({% link {{ page.version.version }}/cockroach-start.md %}#store): You can run this command alongside a live CockroachDB node's process. The command does not communicate with the process, but it can compete for disk bandwidth and CPU.
-- On a representative subset of nodes: For large clusters, you typically do not need to run this command on every node. You can also run it on one node for a while, then another node.
+- On a representative subset of nodes: For large clusters, you typically do not need to run this command on every node. You can also run it on one node for a period of time, and then on another node.
 - On a backup directory: You can run this command against a backup directory (specified [the same way it would be with `BACKUP`]({% link {{ page.version.version }}/use-cloud-storage.md %})). This can be much less disruptive than running it on nodes with an active workload.
 
 ### Output behavior
 
-The output CSV file is periodically rewritten while the command runs. Even if the command is interrupted, you can still use the most recently written output.
+The output CSV file is periodically rewritten while the command is running. Even if the command is interrupted, you can still use the most recently written output.
 
 ## Examples
 
@@ -139,7 +139,8 @@ $ cockroach debug pebble db analyze-data /tmp/node2 --timeout=1m --output ~/Desk
 Listing files and sizes...
 Found 4 files, total size 2.4MB.
 No read bandwidth limiting.
-Stopping after 1m0s.[2J[H
+Stopping after 1m0s.
+
 Kind  Size Range  Test CR  Samples  Size                 Snappy          MinLZ1          Zstd1            Auto1/30         Auto1/15        Zstd3
 data  24-48KB     1.5-2.5  39       31.0KB ± 2%  CR      1.94 ± 16%      2.02 ± 13%      2.45 ± 16%       2.02 ± 13%       2.28 ± 19%      2.54 ± 18%
                                                  Comp    973MBps ± 31%   1503MBps ± 35%  443MBps ± 18%    1440MBps ± 95%   683MBps ± 57%   269MBps ± 17%
