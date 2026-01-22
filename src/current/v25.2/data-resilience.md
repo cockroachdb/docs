@@ -9,7 +9,7 @@ CockroachDB provides built-in [**high availability (HA)**](#high-availability) f
 - HA features ensure continuous access to data without interruption even in the presence of [failures]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}) or disruptions to maximize uptime.
 - DR tools allow for recovery from major incidents to minimize downtime and data loss.
 
-<image src="{{ 'images/v25.2/resilience.svg' | relative_url }}" alt="Diagram showing how HA features and DR tools create a resilient CockroachDB deployment." style="width:80%" />
+<image src="{{ 'images/{{ page.version.version }}/resilience.svg' | relative_url }}" alt="Diagram showing how HA features and DR tools create a resilient CockroachDB deployment." style="width:80%" />
 
 You can balance required SLAs and recovery objectives with the cost and management of each of these features to build a resilient deployment.
 

@@ -15,7 +15,7 @@ In this tutorial, you will set up [**logical data replication (LDR)**]({% link {
 
 In the following diagram, **LDR stream 1** creates a unidirectional LDR setup. Introducing **LDR stream 2** extends the setup to bidirectional.
 
-<image src="{{ 'images/v25.2/bidirectional-stream.svg' | relative_url }}" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:70%" />
+<image src="{{ 'images/{{ page.version.version }}/bidirectional-stream.svg' | relative_url }}" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:70%" />
 
 For more details on use cases, refer to the [Logical Data Replication Overview]({% link {{ page.version.version }}/logical-data-replication-overview.md %}).
 

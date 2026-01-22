@@ -187,25 +187,25 @@ Initially, the workload creates a new database called `ycsb`, creates the table 
 
 1. To check the SQL queries getting executed, click **Metrics** on the left, and hover over the **SQL Statements** graph at the top:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-1.png' | relative_url }}" alt="DB Console SQL Statements" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/{{ page.version.version }}/fault-tolerance-1.png' | relative_url }}" alt="DB Console SQL Statements" style="border:1px solid #eee;max-width:100%" />
 
 1. To check the client connections from the load generator, select the **SQL** dashboard and hover over the **Open SQL Sessions** graph:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-2.png' | relative_url }}" alt="DB Console Open Sessions" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/{{ page.version.version }}/fault-tolerance-2.png' | relative_url }}" alt="DB Console Open Sessions" style="border:1px solid #eee;max-width:100%" />
 
     You'll notice 3 client connections from the load generator. If you want to check that HAProxy balanced each connection to a different node, you can change the **Graph** dropdown from **Cluster** to specific nodes.
 
 1. To see more details about the `ycsb` database and the `public.usertable` table, click **Databases** in the upper left and click **ycsb**:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-3.png' | relative_url }}" alt="DB Console Databases" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/{{ page.version.version }}/fault-tolerance-3.png' | relative_url }}" alt="DB Console Databases" style="border:1px solid #eee;max-width:100%" />
 
     You can also view the schema and other table details of `public.usertable` by clicking the table name:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-4.png' | relative_url }}" alt="DB Console usertable" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/{{ page.version.version }}/fault-tolerance-4.png' | relative_url }}" alt="DB Console usertable" style="border:1px solid #eee;max-width:100%" />
 
 1. By default, CockroachDB replicates all data 3 times and balances it across all nodes. To see this balance, click **Overview** and check the replica count across all nodes:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-6.png' | relative_url }}" alt="DB Console Overview" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/{{ page.version.version }}/fault-tolerance-6.png' | relative_url }}" alt="DB Console Overview" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 5. Simulate a single node failure
 
@@ -246,7 +246,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
 Go back to the DB Console, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite one of the nodes being unavailable and marked as **Suspect**:
 
-<img src="{{ 'images/v24.2/fault-tolerance-7.png' | relative_url }}" alt="DB Console Suspect Node" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/fault-tolerance-7.png' | relative_url }}" alt="DB Console Suspect Node" style="border:1px solid #eee;max-width:100%" />
 
 This shows that when all ranges are replicated 3 times (the default), the cluster can tolerate a single node failure because the surviving nodes have a majority of each range's replicas (2/3).
 
@@ -254,7 +254,7 @@ This shows that when all ranges are replicated 3 times (the default), the cluste
 
 Click **Overview** on the left:
 
-<img src="{{ 'images/v24.2/fault-tolerance-5.png' | relative_url }}" alt="DB Console Cluster Repair" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/fault-tolerance-5.png' | relative_url }}" alt="DB Console Cluster Repair" style="border:1px solid #eee;max-width:100%" />
 
 Because you reduced the time it takes for the cluster to consider the down node dead, after 1 minute or so, the cluster will consider the down node "dead", and you'll see the replica count on the remaining nodes increase and the number of under-replicated ranges decrease to 0. This shows the cluster repairing itself by re-replicating missing replicas.
 
@@ -286,7 +286,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 1. In the DB Console **Overview** dashboard, watch the replica count increase and even out across all 6 nodes:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-8.png' | relative_url }}" alt="DB Console Cluster Restore" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/{{ page.version.version }}/fault-tolerance-8.png' | relative_url }}" alt="DB Console Cluster Restore" style="border:1px solid #eee;max-width:100%" />
 
     This shows the cluster up-replicating so that each range has 5 replicas, one on each node.
 
@@ -303,7 +303,7 @@ kill -TERM {process IDs}
 
 1. Click **Overview** on the left, and verify the state of the cluster:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-9.png' | relative_url }}" alt="DB Console Cluster Health" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/{{ page.version.version }}/fault-tolerance-9.png' | relative_url }}" alt="DB Console Cluster Health" style="border:1px solid #eee;max-width:100%" />
 
 1. To verify that the cluster still serves data, use the `cockroach sql` command to interact with the cluster.
 
