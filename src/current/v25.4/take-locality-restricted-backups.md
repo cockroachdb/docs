@@ -55,7 +55,7 @@ The following diagram shows a CockroachDB cluster where each of the nodes can co
 
 Instead, Node 3's locality does match the backup job's `EXECUTION LOCALITY`. Replicas that match a backup job's locality designation and hold the backup job's row data will begin reading and exporting to cloud storage.
 
-<img src="{{ 'images/v24.2/network-restriction.png' | relative_url }}" alt="Using execution locality when there is a network restriction between locality requirements" style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/network-restriction.png' | relative_url }}" alt="Using execution locality when there is a network restriction between locality requirements" style="border:0px solid #eee;max-width:100%" />
 
 To execute the backup only on nodes in the same region as the cloud storage location, you can specify [locality filters]({% link {{ page.version.version }}/cockroach-start.md %}#locality) that a node must match to take part in the backup job's execution.
 
@@ -81,7 +81,7 @@ Sometimes the execution of backup jobs can consume considerable resources when r
 
 This diagram shows a CockroachDB cluster in four regions. The node used to run the backup job was configured with [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas) to provide low-latency reads. The node in this region will complete the backup job coordination and data export to cloud storage.
 
-<img src="{{ 'images/v24.2/background-work.png' | relative_url }}" alt="Using execution locality to create a non-primary region for backup jobs" style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/background-work.png' | relative_url }}" alt="Using execution locality to create a non-primary region for backup jobs" style="border:0px solid #eee;max-width:100%" />
 
 For details, refer to:
 

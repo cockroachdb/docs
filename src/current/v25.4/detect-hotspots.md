@@ -15,7 +15,7 @@ This page provides practical guidance on identifying common [hotspots]({% link {
 
 The following sections provide detailed instructions for identifying potential hotspots and applying mitigations.
 
-<img src="{{ 'images/v25.4/detect-hotspots-workflow.svg' | relative_url }}" alt="Troubleshoot hotspots workflow" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/detect-hotspots-workflow.svg' | relative_url }}" alt="Troubleshoot hotspots workflow" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 1. Check for a node outlier in metrics
 
@@ -27,7 +27,7 @@ To identify a [hotspot]({% link {{ page.version.version }}/understand-hotspots.m
 1. Create a custom chart to monitor the `kv.concurrency.latch_conflict_wait_durations-avg` metric, which tracks time spent on [latch acquisition]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#latch-manager) waiting for conflicts with other latches. For example, a [sequence]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-sequence) that writes to the same row must wait to acquire the latch.
 1. To display the metric per node, select the `PER NODE/STORE` checkbox as shown:
 
-    <img src="{{ 'images/v25.4/detect-hotspots-latch-conflict-wait-durations.png' | relative_url }}" alt="kv.concurrency.latch_conflict_wait_durations-avg" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/{{ page.version.version }}/detect-hotspots-latch-conflict-wait-durations.png' | relative_url }}" alt="kv.concurrency.latch_conflict_wait_durations-avg" style="border:1px solid #eee;max-width:100%" />
 
 1. Is there a node with a maximum value that is a clear outlier in the cluster for the latch conflict wait durations metric?
     - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time period when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
@@ -39,7 +39,7 @@ To identify a [hotspot]({% link {{ page.version.version }}/understand-hotspots.m
 1. Monitor the [**CPU Percent** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent). CPU usage typically increases with traffic volume.
 1. Check if the CPU usage of the hottest node is 20% or more above the cluster average. For example, node `n5`, represented by the green line in the following **CPU Percent** graph, hovers at around 87% at time 17:35 compared to other nodes that hover around 20% to 25%.
 
-    <img src="{{ 'images/v25.4/detect-hotspots-cpu-percent.png' | relative_url }}" alt="graph of CPU Percent utilization per node showing hot key" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/{{ page.version.version }}/detect-hotspots-cpu-percent.png' | relative_url }}" alt="graph of CPU Percent utilization per node showing hot key" style="border:1px solid #eee;max-width:100%" />
 
 1. Is there a node with a maximum value that is a clear outlier in the cluster for the CPU percent metric?
     - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time period when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).

@@ -8,7 +8,7 @@ The Jobs list is designed for you to manage pending work. It is not intended to 
 
 Use the **Jobs** table to see recently created and completed jobs.
 
-<img src="{{ 'images/v24.2/ui-jobs-page.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/ui-jobs-page.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
 ### Filter jobs
 
@@ -66,7 +66,7 @@ The details show:
 - **User Name**
 - error messages (if any)
 
-<img src="{{ 'images/v24.2/ui_jobs_page_details.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/ui_jobs_page_details.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

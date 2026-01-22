@@ -46,7 +46,7 @@ Knowing what service latency to expect, based on your cluster's usual activity, 
 4. Find the **Service Latency: SQL Statements, 99th percentile** graph. Use it to identify instances when service latency is higher than expected, based on typical use. This will depend on your own specific business and technical considerations.
 5. If you notice an unexplained latency increase, it's worth considering a query plan regression. Hover your cursor on the line in the graph at the beginning of the increase. The box that appears will indicate the time when the increase began.
 
-    <img src="{{ 'images/v25.4/troubleshooting-query-plan-regressions-1.png' | relative_url }}" alt="Query Plan Regression metrics graph"  style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/{{ page.version.version }}/troubleshooting-query-plan-regressions-1.png' | relative_url }}" alt="Query Plan Regression metrics graph"  style="border:1px solid #eee;max-width:100%" />
 
     The above is a very clean example. Note that on a production cluster, an increase like this might be obscured by the normal latency of your cluster's many other statement executions.
 
