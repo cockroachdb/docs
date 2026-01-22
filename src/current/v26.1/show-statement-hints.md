@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW STATEMENT HINTS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the [hint injection]({% link {{ page.version.version }}/cost-based-optimizer.md %}#hint-injection) rules that have been created for a specific SQL statement fingerprint using the `crdb_internal.inject_hint()` built-in function.
+The `SHOW STATEMENT HINTS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the [injected hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#hint-injection) that have been created for a specific SQL statement fingerprint using the `information_schema.crdb_rewrite_inline_hints()` built-in function.
 
 ## Required privileges
 
@@ -21,7 +21,7 @@ Users must have the [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/s
 
 Parameter | Description
 ----------|------------
-`string_or_placeholder` | The SQL statement fingerprint to show hints for. This can be a string literal (such as `'SELECT * FROM users WHERE city = _'`) or a SQL parameter placeholder (such as `$1`) for use in prepared statements.
+`string_or_placeholder` | The SQL statement fingerprint to show injected hints for. This can be a string literal (such as `'SELECT * FROM users WHERE city = _'`) or a SQL parameter placeholder (such as `$1`) for use in prepared statements.
 
 ### Options
 
@@ -35,17 +35,17 @@ The following fields are returned:
 
 Column | Type | Description
 -------|------|------------
-`row_id` | `INT` | A unique hint ID.
+`row_id` | `INT` | A unique ID.
 `fingerprint` | `STRING` | The SQL statement fingerprint that the hint applies to.
-`hint_type` | `STRING` | The type of hint: `rewrite_inline_hints` is supported.
-`created_at` | `TIMESTAMPTZ` | The timestamp when the hint was created.
-`details` | `JSONB` | When the [`DETAILS`](#options) option is specified, hint-specific information in JSON format. For `rewrite_inline_hints`, this includes the SQL statement with hints that will be applied.
+`hint_type` | `STRING` | `rewrite_inline_hints`, indicating an injected hint.
+`created_at` | `TIMESTAMPTZ` | The timestamp when the injected hint was created.
+`details` | `JSONB` | When the [`DETAILS`](#options) option is specified, hint-specific information in JSON format. For `rewrite_inline_hints`, this includes the donor SQL fingerprint with hints that will be applied.
 
 ## Examples
 
 ### Show hints for a statement
 
-To show all hints for a specific statement fingerprint:
+To show all injected hints for a specific statement fingerprint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -61,7 +61,7 @@ SHOW STATEMENT HINTS FOR 'SELECT * FROM users WHERE city = _';
 
 ### Show hints with detailed information
 
-To include the donor SQL and other hint-specific details:
+To include the donor fingerprint in the output:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
