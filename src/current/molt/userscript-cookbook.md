@@ -9,7 +9,7 @@ Userscripts allow you to define custom schema and table transformations. When sp
 
 This cookbook provides ready-to-use examples that demonstrate real-world uses of the [userscript API]({% link molt/userscript-api.md %}). You can copy and paste them into your own code, and you can adapt them for your specific use cases. 
 
-[MOLT Fetch]({% link molt/molt-fetch.md %}) does **not** support userscripts. Below each example, you will see the equivalent way of carrying out that transformation using MOLT Fetch, if it's possible to do so. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency.
+Userscripts are comparable to MOLT Fetch's [transformations]({% link molt/molt-fetch.md %}#transformations), which are used during the initial bulk load phase of a migration. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency. Below each example, you will see the equivalent way of carrying out that transformation using MOLT Fetch, if it's possible to do so.
 
 ## Before you begin
 
@@ -24,7 +24,7 @@ This cookbook provides ready-to-use examples that demonstrate real-world uses of
 
 The following example shows how to use [`configureTargetSchema`]({% link molt/userscript-api.md %}#configure-target-schema) to exclude a specific table from replication, while still replicating everything else in the same schema. 
 
-This could be useful when you have internal, staging, or audit tables that appear in the changefeed but shouldn't be written to the target.
+This could be useful when you have internal, staging, or audit tables that appear in the [changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) but shouldn't be written to the target.
 
 **Make sure to set the `TARGET_SCHEMA_NAME` and `TABLE_TO_SKIP` constants to match your environment.**
 

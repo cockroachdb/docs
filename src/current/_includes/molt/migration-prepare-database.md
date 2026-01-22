@@ -198,7 +198,7 @@ Configure binlog retention to ensure GTIDs remain available throughout the migra
 - Managed services: Refer to provider-specific configuration for [Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html) or [Google Cloud SQL](https://cloud.google.com/sql/docs/mysql/flags#mysql-b).
 
 {{site.data.alerts.callout_info}}
-GTID replication sends all database changes to Replicator. To limit replication to specific tables or schemas, [apply a userscript](#replicator-flags) when you run Replicator. See the [Filter multiple tables]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) cookbook example.
+GTID replication sends all database changes to Replicator. To limit replication to specific tables or schemas, [apply a userscript](#replicator-flags) when you run Replicator. Refer to the [Filter multiple tables]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) cookbook example.
 {{site.data.alerts.end}}
 
 |  Version   |                                                                                         Configuration                                                                                          |

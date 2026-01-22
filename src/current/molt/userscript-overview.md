@@ -7,7 +7,7 @@ docs_area: migrate
 
 [MOLT Replicator]({% link molt/molt-replicator.md %}) can apply *userscripts*, specified with the [`--userscript` flag]({% link molt/replicator-flags.md %}#userscript), to customize how data is processed and transformed as it moves through the live replication pipeline. 
 
-Userscripts are intended to address unique business or data transformation needs. They perform operations that cannot be handled by the source change data capture (CDC) stream, such as filtering out specific tables, rows, or columns; routing data from a single source table to multiple target tables; transforming column values or adding computed columns; and implementing custom error handling. Refer to [Common uses](#common-uses).
+Userscripts are intended to address unique business or data transformation needs. They perform operations that cannot be handled by the source change data capture (CDC) stream, such as filtering out specific tables, rows, or columns; routing data from a single source table to multiple target tables; transforming column values or adding computed columns; and implementing custom error handling. For more examples of how userscripts can be used, refer to [Common uses](#common-uses).
 
 Userscripts are [written in TypeScript]({% link molt/userscript-cookbook.md %}) and run inside MOLT Replicator, giving you full programmatic control of your replication flow while maintaining type safety and consistency.
 
@@ -20,6 +20,8 @@ Userscripts are [written in TypeScript]({% link molt/userscript-cookbook.md %}) 
 ## How it works
 
 Userscripts act as a customizable processing layer within MOLT Replicator's live replication lifecycle. They are used to intercept, inspect, and modify the flow of data as it moves from the source database to the target database, enabling full control over how rows are transformed, filtered, or written; as well as providing the ability to run custom transactional logic against the target database.
+
+Userscripts are comparable to MOLT Fetch's [transformations]({% link molt/molt-fetch.md %}#transformations), which are used during the initial bulk load phase of a migration. However, userscripts provide much greater customizability. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency.
 
 The following diagram illustrates how userscripts fit into the replication pipeline:
 

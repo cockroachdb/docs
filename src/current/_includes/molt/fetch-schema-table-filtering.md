@@ -14,7 +14,7 @@ Use the following flags to filter the data to be migrated.
 <section class="filter-content" markdown="1" data-scope="postgres oracle">
 |      Filter type       |            Flag            |                                                                                       Description                                                                                        |
 |------------------------|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Schema filter          | `--schema-filter`          | **Required** when migrating from Oracle. [POSIX regex](https://wikipedia.org/wiki/Regular_expression) matching schema names to include; all matching schemas and their tables are moved. |
+| Schema filter          | `--schema-filter`          | [POSIX regex](https://wikipedia.org/wiki/Regular_expression) matching schema names to include; all matching schemas and their tables are moved. **Required** when migrating from Oracle. |
 | Table filter           | `--table-filter`           | POSIX regex matching table names to include across all selected schemas.                                                                                                                 |
 | Table exclusion filter | `--table-exclusion-filter` | POSIX regex matching table names to exclude across all selected schemas.                                                                                                                 |
 </section>
