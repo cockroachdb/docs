@@ -73,7 +73,7 @@ type RowHandlerFn = (row: Row, metadata: Metadata) => Row | Record<string, Row[]
 #### Arguments
 
 - `targetSchemaName`: The (case-sensitive) name of the schema in the **target** database.
-- `handlers`: An object containing an [`onRowUpsert`](#configure-target-schema-on-row-upsert) and an [`onRowDelete`](#configure-target-schema-on-row-delete) function, defined in the following sections.
+- `handlers`: An object containing an [`onRowUpsert`](#configure-target-schema-on-row-upsert) and an [`onRowDelete`](#configure-target-schema-on-row-delete) handler function. Both handlers must be defined.
 
 You can include multiple `configureTargetSchema` functions in your userscript, each with a different `targetSchemaName`. This enables you to define different functionality for different schemas within the same userscript.
 
@@ -194,29 +194,29 @@ See the [Rename primary keys]({% link molt/userscript-cookbook.md %}#rename-prim
 
 The following example demonstrates how to use `configureTargetSchema` with `onRowDelete` to transform and filter data during replication.
 
-This function is called during deletions. The source primary key `(pk1, pk2)` differs from the target primary key `(id1, id2)` in name and in value. The function adds `100` to the values in the source primary key, and maps the transformed values to the target primary key fields for proper delete matching.
+This function is called during deletions. It ensures that any row where `id < 100` is not deleted from the target. It passes upserts along unchanged.
  
  {% include_cached copy-clipboard.html %}
 ~~~ ts
 import * as api from "replicator@v2";
-api.configureTargetSchema("target_db.target_schema", {
+
+api.configureTargetSchema("defaultdb.public", {
   onRowUpsert: (row, metadata) => {
-    // Pass upserts through unchanged by default, accept all tables
+    // Pass through all upserts unchanged
     return row;
   },
 
   onRowDelete: (row, metadata) => {
-    // Map source PK columns (pk1, pk2) to target PK columns (id1, id2)
-    // and add 100 to each value for proper delete matching
     if (metadata.table === "items") {
-      const transformedRow = {
-        id1: (parseInt(row.pk1 as string) + 100).toString(),
-        id2: (parseInt(row.pk2 as string) + 100).toString(),
-      };
-      return transformedRow;
+      const id = Number(row.id);
+
+      // Protect rows with id < 100 from deletion
+      if (id < 100) {
+        return null; // Filter out this delete
+      }
     }
 
-    // All other tables/rows are passed through unchanged
+    // Allow delete to proceed if id >= 100 or table is not "items"
     return row;
   },
 });
@@ -262,7 +262,9 @@ type RowOp = ({
 #### Arguments
 
 - `tables`: A list of the (case-sensitive) names of the tables to write to in the **target** database. The handler functions will apply to all rows being routed to the tables in this list. Table names can be fully qualified (for example, `defaultdb.public.table1`) or they can just include the name of the table (for example, `table1`).
-- `configuration`: An object containing an [`onRowUpsert`](#configure-target-tables-on-row-upsert), an [`onRowDelete`](#configure-target-tables-on-row-delete), and an [`onWrite`](#configure-target-tables-on-write) function, defined in the following sections.
+- `configuration`: An object containing (optionally) an [`onRowUpsert`](#configure-target-tables-on-row-upsert), an [`onRowDelete`](#configure-target-tables-on-row-delete), and an [`onWrite`](#configure-target-tables-on-write) handler function.
+    - If `onRowUpsert` is defined, `onRowDelete` must also be defined, and vice versa.
+    - If a handler function isn't defined, its `row` or `keys` argument is passed to the target without alteration.
 
 You can include multiple `configureTargetTables` functions in your userscript, each with different tables included in the `tables` argument. This enables you to define different functionality for different tables within the same userscript.
 
