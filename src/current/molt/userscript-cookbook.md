@@ -14,7 +14,7 @@ This cookbook provides ready-to-use examples that demonstrate real-world uses of
 ## Before you begin
 
 - Make sure that you understand the [purpose and usage of userscripts]({% link molt/userscript-overview.md %}). Take a look at the [userscript API]({% link molt/userscript-api.md %}). Understand [what you cannot do]({% link molt/userscript-overview.md %}#unsupported-typescript-features) in a userscript.
-- [Install MOLT Replicator]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library.
+- [Install MOLT Replicator]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library, which is already included in MOLT Replicator.
 - [Install TypeScript](https://www.typescriptlang.org/download/), and install a TypeScript-compatible IDE (for example, VS Code).
 
 ## Example userscripts
@@ -163,7 +163,7 @@ const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. "defaultdb.public"
 api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, meta) => {
     // Skip rows where is_deleted flag is true/1
-    if (Number(row.is_deleted as string) === 1) {
+    if (row.is_deleted !== undefined && Number(row.is_deleted) === 1) {
       return null; // Don't replicate soft-deleted rows
     }
     return row;
@@ -457,7 +457,7 @@ id1 STRING, id2 STRING, name STRING
 
 #### MOLT Fetch equivalent
 
-MOLT Fetch does not have direct support for primary key renaming.
+MOLT Fetch does not have direct support for primary key renaming. You may need to reconfigure the primary keys on the target database after the [initial data load from MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch).
 
 ### Route table partitions
 
@@ -661,7 +661,7 @@ is_deleted STRING, ssn STRING, credit_card_number STRING
 
 #### MOLT Fetch equivalent
 
-Creating computed columns is not supported by MOLT Fetch transforms. MOLT Fetch can only preserve computed columns that exist on the source.
+Creating computed columns is not supported by MOLT Fetch transforms. MOLT Fetch can only preserve computed columns that exist on the source. You may need to calculate this column for the target database table after the [initial data load from MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch).
 
 ### Combine multiple transforms
 
@@ -692,7 +692,7 @@ api.configureTargetSchema(TARGET_SCHEMA_NAME, {
     const table = meta.table;
 
     // 1) Only apply this logic to the `YOUR_TABLE_HERE` table.
-    if (table !== TABLE_TO_SKIP) {
+    if (table !== TABLE_TO_EDIT) {
       // Pass through all other tables unchanged
       return row;
     }
@@ -712,7 +712,6 @@ api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   },
 
   onRowDelete: (row, meta) => {
-    const table = meta.table;
     // For deletes, just pass through the keys unchanged
     return row;
   }
@@ -824,7 +823,7 @@ const TABLES_WITH_DLQ = [
  */
 
 async function handle_dlq_errors(rows: api.RowOp[]): Promise<any> {
-    console.log("Processing batch of", rows.length, "operations");
+    console.debug("Processing batch of", rows.length, "operations");
     let tx = api.getTX();
     
     await tx.exec("SAVEPOINT dlq_checkpoint");
@@ -832,11 +831,11 @@ async function handle_dlq_errors(rows: api.RowOp[]): Promise<any> {
     try {
         // Try to write the entire batch
         await api.write(rows);
-        console.log("Batch write succeeded");
+        console.debug("Batch write succeeded");
         return;
     } catch (err) {
         const errorStr = err.toString();
-        console.log("Batch write failed:", errorStr);
+        console.warn("Batch write failed:", errorStr);
         
         // Check for constraint violations that should go to DLQ
         // SQLSTATE 23502 = NOT NULL violation
@@ -848,7 +847,7 @@ async function handle_dlq_errors(rows: api.RowOp[]): Promise<any> {
             throw err;
         }
         
-        console.log("DLQ-handled error detected, retrying operations individually");
+        console.warn("DLQ-handled error detected, retrying operations individually");
         
         // Rollback to savepoint to get out of error state
         try {
@@ -859,12 +858,12 @@ async function handle_dlq_errors(rows: api.RowOp[]): Promise<any> {
     }
     
     // Retry each operation individually
-    console.log("Retrying operations individually...");
+    console.debug("Retrying operations individually...");
     for (let row of rows) {
         await tx.exec("SAVEPOINT dlq_checkpoint");
         try {
             await api.write([row]);
-            console.log("Operation succeeded");
+            console.debug("Operation succeeded");
             continue;
         } catch (err) {
             const errorStr = err.toString();
@@ -875,7 +874,7 @@ async function handle_dlq_errors(rows: api.RowOp[]): Promise<any> {
                 throw err;
             }
             
-            console.log("Operation failed, writing to DLQ");
+            console.warn("Operation failed, writing to DLQ");
             
             // Rollback to savepoint before writing to DLQ
             try {
@@ -898,8 +897,8 @@ api.configureTargetSchema(TARGET_SCHEMA_NAME, {
     onRowUpsert: (row, meta) => {
         return row;
     },
-    onRowDelete: (keyVals, meta) => {
-        return keyVals;
+    onRowDelete: (row, meta) => {
+        return row;
     }
 });
 

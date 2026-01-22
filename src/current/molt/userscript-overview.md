@@ -18,7 +18,7 @@ Userscripts are [written in TypeScript]({% link molt/userscript-cookbook.md %}) 
 
 ## How it works
 
-Userscripts act as a customizable processing layer within MOLT Replicator's live replication lifecycle. They are used to intercept, inspect, and modify the flow of data as it moves from the source database to the target database, enabling full control over how rows are transformed, filtered, or applied; as well as providing the ability to run custom transactional logic against the target database.
+Userscripts act as a customizable processing layer within MOLT Replicator's live replication lifecycle. They are used to intercept, inspect, and modify the flow of data as it moves from the source database to the target database, enabling full control over how rows are transformed, filtered, or written; as well as providing the ability to run custom transactional logic against the target database.
 
 The following diagram illustrates how userscripts fit into the replication pipeline:
 

@@ -26,7 +26,7 @@ Consider using these metrics to:
 Each metric may include the following standard labels:
 
 - `schema`: The schema name associated with the userscript handler.
-- `table`: The table name associated with the userscript handler.
+- `table`: The table name associated with the userscript handler. A wildcard value of "*" means it is a shared or global metric applying to all tables.
 - `function`: The handler function being observed.
 
 ## See also
