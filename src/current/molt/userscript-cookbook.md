@@ -16,6 +16,7 @@ This cookbook provides ready-to-use examples that demonstrate real-world uses of
 - Make sure that you understand the [purpose and usage of userscripts]({% link molt/userscript-overview.md %}). Take a look at the [userscript API]({% link molt/userscript-api.md %}). Understand [what you cannot do]({% link molt/userscript-overview.md %}#unsupported-typescript-features) in a userscript.
 - [Install MOLT Replicator]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library.
 - [Install TypeScript](https://www.typescriptlang.org/download/), and install a TypeScript-compatible IDE (for example, VS Code).
+- Download the [userscript type definitions file](https://replicator.cockroachdb.com/userscripts/replicator@v2.d.ts) and the [tsconfig.json file](https://replicator.cockroachdb.com/userscripts/tsconfig.json). Place these files in your working directory to enable autocomplete, inline documentation, and real-time error detection directly in your IDE.
 
 ## Example userscripts
 
@@ -477,8 +478,8 @@ const TARGET_SCHEMA_NAME = "YOUR_SCHEMA_HERE"; // e.g. "defaultdb.public"
 const TABLE_TO_PARTITION = "YOUR_TABLE_HERE"; // e.g. "items"
 
 function partition(row, meta) {
-  const id = Number(row.id as string); 
   if (meta.table === TABLE_TO_PARTITION) {
+    const id = Number(row.id as string);
     if (id <= 10000) {
       // Route row to target table "tbl1", which can be replaced with your target partition table
       return {"tbl1": [row]};
@@ -639,7 +640,8 @@ api.configureTargetSchema(TARGET_SCHEMA_NAME, {
     return row;
   },
   onRowDelete: (row, meta) => {
-    // Pass through the delete keys unchanged
+    // Pass through the delete keys unchanged; onRowDelete only cares about
+    // primary keys and isn't guaranteed to contain data columns like price and qty.
     return row;
   }
 });
@@ -918,5 +920,6 @@ There is no MOLT Fetch equivalent for DLQ. DLQ handling is part of a live replic
 ## See also
 
 - [Userscript Overview]({% link molt/userscript-overview.md %})
+- [Userscript Quickstart]({% link molt/userscript-quickstart.md %})
 - [Userscript API]({% link molt/userscript-api.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})

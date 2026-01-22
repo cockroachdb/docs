@@ -13,8 +13,9 @@ Userscripts are [written in TypeScript]({% link molt/userscript-cookbook.md %}) 
 
 ## Prerequisites
 
-- [Install MOLT Replicator **v1.1.4 or later**]({% link molt/molt-replicator.md %}) for full compatibility with the [userscript API]({% link molt/userscript-api.md %}).
-- Install a TypeScript-compatible IDE (for example, [VS Code](https://code.visualstudio.com/)) to write and edit userscripts with autocomplete and type-checking support.
+- [Install MOLT Replicator **v1.3.0 or later**]({% link molt/molt-replicator.md %}) for full compatibility with the [userscript API]({% link molt/userscript-api.md %}).
+- [Install TypeScript](https://www.typescriptlang.org/download/), and install a TypeScript-compatible IDE (for example, VS Code).
+- Download the [userscript type definitions file](https://replicator.cockroachdb.com/userscripts/replicator@v2.d.ts) and the [tsconfig.json file](https://replicator.cockroachdb.com/userscripts/tsconfig.json). Place these files in your working directory to enable autocomplete, inline documentation, and real-time error detection directly in your IDE.
 
 ## How it works
 

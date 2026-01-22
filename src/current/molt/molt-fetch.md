@@ -403,9 +403,12 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 --table-filter '.*user.*' --table-exclusion-filter '.*temp.*'
 ~~~
 
+To filter tables during replication, use [MOLT Replicator]({% link molt/molt-replicator.md %}) with [userscripts]({% link molt/userscript-cookbook.md %}#filter-a-single-table).
+
+
 ### Selective data movement
 
-Use `--filter-path` to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table. To apply row-level filters during replication, use [MOLT Replicator]({% link molt/molt-replicator.md %}) with userscripts.
+Use `--filter-path` to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table. To apply row-level filters during replication, use [MOLT Replicator]({% link molt/molt-replicator.md %}) with [userscripts]({% link molt/userscript-cookbook.md %}#select-data-to-replicate).
 
 {% include_cached copy-clipboard.html %}
 ~~~

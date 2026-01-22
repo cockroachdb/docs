@@ -13,9 +13,9 @@ The [userscript cookbook]({% link molt/userscript-cookbook.md %}) includes examp
 
 ## Access this API
 
-To access the userscript API, [install MOLT Replicator **v1.1.4 or later**]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library, which you should import at the top of your TypeScript file: `import * as api from "replicator@v2";`.
+To access the userscript API, [install MOLT Replicator **v1.3.0 or later**]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library, which you should import at the top of your TypeScript file: `import * as api from "replicator@v2";`. The `replicator` library is included in the MOLT Replicator binary itself, so you do not need to install any external packages in order to run userscripts.
 
-In addition to importing the API from the `replicator` library, you can download the [userscript type definitions file](https://replicator.cockroachdb.com/userscripts/replicator@v2.d.ts). Place this file in your working directory to enable autocomplete, inline documentation, and real-time error detection directly in your IDE.
+In addition to importing the API from the `replicator` library, you can download the [userscript type definitions file](https://replicator.cockroachdb.com/userscripts/replicator@v2.d.ts) and the [tsconfig.json file](https://replicator.cockroachdb.com/userscripts/tsconfig.json). Place these files in your working directory to enable autocomplete, inline documentation, and real-time error detection directly in your IDE.
 
 ## Userscript functions list
 
@@ -196,6 +196,7 @@ The following example demonstrates how to use `configureTargetSchema` with `onRo
 
 This function is called during deletions. The source primary key `(pk1, pk2)` differs from the target primary key `(id1, id2)` in name and in value. The function adds `100` to the values in the source primary key, and maps the transformed values to the target primary key fields for proper delete matching.
  
+ {% include_cached copy-clipboard.html %}
 ~~~ ts
 import * as api from "replicator@v2";
 api.configureTargetSchema("target_db.target_schema", {
@@ -260,7 +261,7 @@ type RowOp = ({
 
 #### Arguments
 
-- `tables`: A list of the (case-sensitive) names of the tables to write to in the **target** database. The handler functions will apply to all rows being routed to the tables in this list.
+- `tables`: A list of the (case-sensitive) names of the tables to write to in the **target** database. The handler functions will apply to all rows being routed to the tables in this list. Table names can be fully qualified (for example, `defaultdb.public.table1`) or they can just include the name of the table (for example, `table1`).
 - `configuration`: An object containing an [`onRowUpsert`](#configure-target-tables-on-row-upsert), an [`onRowDelete`](#configure-target-tables-on-row-delete), and an [`onWrite`](#configure-target-tables-on-write) function, defined in the following sections.
 
 You can include multiple `configureTargetTables` functions in your userscript, each with different tables included in the `tables` argument. This enables you to define different functionality for different tables within the same userscript.
@@ -773,6 +774,7 @@ In general, consider the following when writing userscripts:
 ## See also
 
 - [Userscript Overview]({% link molt/userscript-overview.md %})
+- [Userscript Quickstart]({% link molt/userscript-quickstart.md %})
 - [Userscript Cookbook]({% link molt/userscript-cookbook.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
 - [Migration Overview]({% link molt/migration-overview.md %})
