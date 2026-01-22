@@ -29,7 +29,7 @@ WAL failover uses a secondary disk to fail over WAL writes to when transient dis
 
 The following diagram shows how WAL failover works at a high level. For more information about the WAL, memtables, and SSTables, refer to the [Architecture &raquo; Storage Layer documentation]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 
-<img src="{{ 'images/v24.3/wal-failover-overview.png' | relative_url }}" alt="WAL failover overview diagram"  style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/wal-failover-overview.png' | relative_url }}" alt="WAL failover overview diagram"  style="border:1px solid #eee;max-width:100%" />
 
 ## Create and configure a cluster to be ready for WAL failover
 
@@ -280,7 +280,7 @@ In [DB Console's **Advanced Debug** page]({% link {{ page.version.version }}/ui-
 
 Set the source of these metrics to be the node where you are running the disk stall/unstall script.
 
-<img src="{{ 'images/v24.3/wal-failover-metrics-chart.jpg' | relative_url }}" alt="WAL Failover Metrics Chart" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/wal-failover-metrics-chart.jpg' | relative_url }}" alt="WAL Failover Metrics Chart" style="border:1px solid #eee;max-width:100%" />
 
 Notice there is a switchover followed by each stall. The node with the stalled disk continues to perform normal operations during and after WAL failover, as the stalls are transient and shorter than the current value of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables).
 
@@ -377,7 +377,7 @@ In a [multi-store](#multi-store-config) cluster, if a disk for a store has a tra
 
 The following diagram shows the behavior of WAL writes during a disk stall with and without WAL failover enabled.
 
-<img src="{{ 'images/v24.3/wal-failover-behavior.png' | relative_url }}" alt="how long WAL writes take during a disk stall with and without WAL failover enabled"  style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/{{ page.version.version }}/wal-failover-behavior.png' | relative_url }}" alt="how long WAL writes take during a disk stall with and without WAL failover enabled"  style="border:1px solid #eee;max-width:100%" />
 
 ## FAQs
 
