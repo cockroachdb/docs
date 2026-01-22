@@ -20,7 +20,7 @@ P99 Latency | The 99th percentile of service latency.
 
 Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
 
-<img src="{{ 'images/v24.2/ui_events.png' | relative_url }}" alt="DB Console Events" style="border:1px solid #eee;max-width:40%" />
+<img src="{{ 'images/{{ page.version.version }}/ui_events.png' | relative_url }}" alt="DB Console Events" style="border:1px solid #eee;max-width:40%" />
 
 The following types of events are listed:
 
