@@ -184,7 +184,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-1. Run the `replicator` command, specifying the GTID from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
+1. Run the `replicator` command, specifying the GTID from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) and specify the path with `--userscript`.
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -206,7 +206,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-1. Run the `replicator` command, specifying the backfill and starting SCN from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
+1. Run the `replicator` command, specifying the backfill and starting SCN from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) and specify the path with `--userscript`.
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -226,7 +226,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	~~~
 
 	{{site.data.alerts.callout_info}}
-	When filtering out tables in a schema with a userscript, replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
+	When [filtering out tables in a schema with a userscript]({% link molt/userscript-cookbook.md %}#filter-multiple-tables), replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
 	{{site.data.alerts.end}}
 </section>
 

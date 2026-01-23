@@ -144,9 +144,11 @@ By default, MOLT Fetch moves all data from the [`--source`]({% link molt/molt-fe
 --table-filter '.*user.*' --table-exclusion-filter '.*temp.*'
 ~~~
 
+To filter tables during replication, use [MOLT Replicator]({% link molt/molt-replicator.md %}) with [userscripts]({% link molt/userscript-cookbook.md %}#filter-a-single-table).
+
 #### Row-level filtering
 
-Use [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#filter-path) to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table. To apply row-level filters during replication, use [MOLT Replicator]({% link molt/molt-replicator.md %}) with userscripts.
+Use [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#filter-path) to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table. To apply row-level filters during replication, use [MOLT Replicator]({% link molt/molt-replicator.md %}) with [userscripts]({% link molt/userscript-cookbook.md %}#select-data-to-replicate).
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -188,34 +190,6 @@ The JSON file should contain one or more entries in `filters`, each with a `reso
 {{site.data.alerts.callout_info}}
 If the expression references columns that are not indexed, MOLT Fetch will emit a warning like: `filter expression 'v > 100' contains column 'v' which is not indexed. This may lead to performance issues.`
 {{site.data.alerts.end}}
-
-{% comment %}
-#### `--filter-path` userscript for replication
-
-To use `--filter-path` with replication, create and save a TypeScript userscript (e.g., `filter-script.ts`). The following script ensures that only rows where `v > 100` are replicated to `defaultdb.migration_schema.t1`:
-
-{% include_cached copy-clipboard.html %}
-~~~ ts
-import * as api from "replicator@v1";
-function disp(doc, meta) {
-    if (Number(doc.v) > 100) {
-        return { "defaultdb.migration_schema.t1" : [ doc ] };
-    }
-}
-// Always put target schema.
-api.configureSource("defaultdb.migration_schema", {
-    deletesTo: disp,
-    dispatch: disp,
-});
-~~~
-
-Apply the userscript with the `--userscript` replication flag:
-
-{% include_cached copy-clipboard.html %}
-~~~
---userscript 'filter-script.ts'
-~~~
-{% endcomment %}
 
 ### Shard tables for concurrent export
 

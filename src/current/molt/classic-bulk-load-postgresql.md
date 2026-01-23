@@ -226,12 +226,12 @@ You can use this information to [continue the task from the *continuation point*
 
 Continuation is only possible under the following conditions:
 
-- All data has been exported from the source database into intermediate files on [cloud](#bucket-path) or [local storage](#local-path).
+- All data has been exported from the source database into intermediate files on [cloud]({% link molt/molt-fetch.md %}#bucket-path) or [local storage]({% link molt/molt-fetch.md %}#local-path).
 - The *initial load* of source data into the target CockroachDB database is incomplete.
 - The load uses [`IMPORT INTO` rather than `COPY FROM`](#data-load-mode).
 
 {{site.data.alerts.callout_info}}
-Only one fetch ID and set of continuation tokens, each token corresponding to a table, are active at any time. See [List active continuation tokens](#list-active-continuation-tokens).
+Only one fetch ID and set of continuation tokens, each token corresponding to a table, are active at any time. See [List active continuation tokens]({% link molt/molt-fetch.md %}#list-active-continuation-tokens).
 {{site.data.alerts.end}}
 
 The following command reattempts the data load starting from a specific continuation file, but you can also use individual continuation tokens to [reattempt the data load for individual tables]({% link molt/molt-fetch.md %}#continue-molt-fetch-after-interruption).

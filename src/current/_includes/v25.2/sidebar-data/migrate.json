@@ -132,6 +132,41 @@
               ]
             },
             {
+              "title": "Userscripts",
+              "items": [
+                {
+                  "title": "Overview",
+                  "urls": [
+                    "/molt/userscript-overview.html"
+                  ]
+                },
+                {
+                  "title": "Quickstart",
+                  "urls": [
+                    "/molt/userscript-quickstart.html"
+                  ]
+                },
+                {
+                  "title": "API",
+                  "urls": [
+                    "/molt/userscript-api.html"
+                  ]
+                },
+                {
+                  "title": "Cookbook",
+                  "urls": [
+                    "/molt/userscript-cookbook.html"
+                  ]
+                },
+                {
+                  "title": "Metrics",
+                  "urls": [
+                    "/molt/userscript-metrics.html"
+                  ]
+                }
+              ]
+            },
+            {
               "title": "Metrics",
               "urls": [
                 "/molt/replicator-metrics.html"

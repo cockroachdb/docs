@@ -23,6 +23,22 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
     <button class="filter-button" data-scope="replicator"><code>replicator</code></button>
 </div>
 
+### January 22, 2026
+
+<section class="filter-content" markdown="1" data-scope="molt">
+`molt` 1.3.5 is [available](#installation):
+
+- Binary downloads now include version-compatible Grafana dashboards.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="replicator">
+`replicator` 1.3.0 is [available](#installation):
+
+- Added Prometheus metrics for userscript execution (execution time, invocation counts, rows processed/filtered, errors) with schema, table, and function labels.
+- Binary downloads now include version-compatible Grafana dashboards.
+- Added userscript API `v2` features.
+</section>
+
 ### December 18, 2025
 
 <section class="filter-content" markdown="1" data-scope="molt">
