@@ -27,7 +27,7 @@ See the links below for more information about how to use CockroachDB for spatia
 
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
 - [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
-- [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}#spatial-support-limitations)
+- Refer to [Known Limitations]({% link {{ page.version.version }}/spatial-data-overview.md %}#known-limitations)
 - [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
 - [Client library compatibility]({% link {{ page.version.version }}/query-spatial-data.md %}#compatibility)
 
