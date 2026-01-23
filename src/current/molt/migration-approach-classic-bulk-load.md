@@ -33,9 +33,9 @@ The application runs on a Kubernetes cluster.
 
 The following walkthroughs demonstrate how to use the MOLT tools to perform this migration for each supported source database:
 
-- [Classic Bulk Load Migration from PostgreSQL]({% link molt/classic-bulk-load-postgresql.md %})
-- [Classic Bulk Load Migration from MySQL]({% link molt/classic-bulk-load-mysql.md %})
-- [Classic Bulk Load Migration from Oracle]({% link molt/classic-bulk-load-oracle.md %})
+- [Classic Bulk Load Migration from PostgreSQL]({% link molt/classic-bulk-load.md %}?filters=postgres)
+- [Classic Bulk Load Migration from MySQL]({% link molt/classic-bulk-load.md %}?filters=mysql)
+- [Classic Bulk Load Migration from Oracle]({% link molt/classic-bulk-load.md %}?filters=oracle)
 
 ## See also
 

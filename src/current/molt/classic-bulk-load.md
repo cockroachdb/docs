@@ -1,9 +1,33 @@
 ---
-title: Classic Bulk Load Migration from PostgreSQL
-summary: Learn what a Classic Bulk Load Migration is, how it relates to the migration considerations, and how to perform it using MOLT tools (from PostgreSQL).
+title: Classic Bulk Load Migration
+summary: Learn what a Classic Bulk Load Migration is, how it relates to the migration considerations, and how to perform it using MOLT tools.
 toc: true
 docs_area: migrate
+source_db_not_selectable: true
 ---
+
+<script>
+  // This takes the source db filter query param from the url (e.g. "?filters=oracle") and uses it to
+  // load the correct page title. If none is present, it defaults to 'postgres'.
+
+  // The rest of the page content (any occurence of a <section> div with e.g. "data-scope=oracle" is
+  // based on that query param (not a button selector).
+  const scopeMap = {
+    'postgres': 'PostgreSQL',
+    'mysql': 'MySQL',
+    'oracle': 'Oracle'
+  };
+
+  const params = new URLSearchParams(window.location.search);
+  const scope = params.get('filters') || 'postgres';
+  console.log("HELLO")
+  console.log({{ page.source_db_not_selectable }})
+  const source = scopeMap[scope];
+
+  document.title = `Classic Bulk Load Migration from ${source}`;
+  document.querySelector('.post-title-main').textContent =
+    `Classic Bulk Load Migration from ${source}`;
+</script>
 
 A [*Classic Bulk Load Migration*]({% link molt/migration-approach-classic-bulk-load.md %}) is the simplest way of [migrating data to CockroachDB]({% link molt/migration-overview.md %}). In this approach, you stop application traffic to the source database and migrate data to the target cluster during a **significant downtime window**. Application traffic is then cut over to the target after schema finalization and data verification.
 
@@ -80,21 +104,9 @@ CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simpli
 
 ### Define the target tables
 
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
-    <button class="filter-button" data-scope="mysql">MySQL</button>
-    <button class="filter-button" data-scope="oracle">Oracle</button>
-</div>
-
 {% include molt/migration-prepare-schema.md %}
 
 ### Create the SQL user
-
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
-    <button class="filter-button" data-scope="mysql">MySQL</button>
-    <button class="filter-button" data-scope="oracle">Oracle</button>
-</div>
 
 {% include molt/migration-create-sql-user.md %}
 
@@ -117,6 +129,12 @@ Application downtime begins now.
 
 ## Step 4: Load data into CockroachDB
 
+In this step, you will:
+
+- [Configure MOLT Fetch with the flags needed for your migration](#configure-molt-fetch).
+- [Run MOLT Fetch](#run-molt-fetch).
+- [Understand how to continue a load after an interruption](#continue-molt-fetch-after-an-interruption).
+
 ### Configure MOLT Fetch
 
 When you run `molt fetch`, you can configure the following options for data load:
@@ -127,12 +145,6 @@ When you run `molt fetch`, you can configure the following options for data load
 - [Schema and table filtering](#schema-and-table-filtering): Specify schema and table names to migrate.
 - [Data load mode](#data-load-mode): Choose between `IMPORT INTO` and `COPY FROM`.
 - [Fetch metrics](#fetch-metrics): Configure metrics collection during initial data load.
-
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
-    <button class="filter-button" data-scope="mysql">MySQL</button>
-    <button class="filter-button" data-scope="oracle">Oracle</button>
-</div>
 
 #### Connection strings
 
@@ -237,6 +249,7 @@ Only one fetch ID and set of continuation tokens, each token corresponding to a 
 The following command reattempts the data load starting from a specific continuation file, but you can also use individual continuation tokens to [reattempt the data load for individual tables]({% link molt/molt-fetch.md %}#continue-molt-fetch-after-interruption).
 
 <section class="filter-content" markdown="1" data-scope="postgres">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 molt fetch \
@@ -253,6 +266,7 @@ molt fetch \
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 molt fetch \
@@ -286,25 +300,19 @@ molt fetch \
 ~~~
 </section>
 
-## Step 5: Finalize the target schema
+## Step 5: Verify the data
+
+In this step, you will use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and target data is consistent. This ensures that the data load was successful.
+
+### Run MOLT Verify
+
+{% include molt/verify-output.md %}
+
+## Step 6: Finalize the target schema
 
 ### Add constraints and indexes
 
 {% include molt/migration-modify-target-schema.md %}
-
-## Step 6: Verify the data
-
-TODO
-
-### Run MOLT Verify
-
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
-    <button class="filter-button" data-scope="mysql">MySQL</button>
-    <button class="filter-button" data-scope="oracle">Oracle</button>
-</div>
-
-{% include molt/verify-output.md %}
 
 ## Step 7: Cut over application traffic
 
@@ -336,3 +344,8 @@ This ends downtime.
 {% include molt/molt-troubleshooting-fetch.md %}
 
 ## See also
+
+- [MOLT Fetch]({% link molt/molt-fetch.md %})
+- [MOLT Verify]({% link molt/molt-verify.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
+- [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})

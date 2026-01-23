@@ -1,10 +1,13 @@
 ### Create migration user on source database
 
+{% if page.source_db_not_selectable %}
+{% else %}
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>
     <button class="filter-button" data-scope="mysql">MySQL</button>
     <button class="filter-button" data-scope="oracle">Oracle</button>
 </div>
+{% endif %}
 
 Create a dedicated migration user (for example, `MIGRATION_USER`) on the source database. This user is responsible for reading data from source tables during the migration. You will pass this username in the [source connection string](#source-connection-string).
 
@@ -166,11 +169,14 @@ GRANT SELECT, FLASHBACK ON migration_schema.tbl TO MIGRATION_USER;
 {% if page.name != "migrate-bulk-load.md" and page.name != "classic-bulk-load-postgresql.md" %}
 ### Configure source database for replication
 
+{% if page.source_db_not_selectable %}
+{% else %}
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>
     <button class="filter-button" data-scope="mysql">MySQL</button>
     <button class="filter-button" data-scope="oracle">Oracle</button>
 </div>
+{% endif %}
 
 {{site.data.alerts.callout_info}}
 Connect to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary), **not** a replica. Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
