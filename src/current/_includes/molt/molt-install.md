@@ -9,10 +9,12 @@ To install MOLT, download the binary that matches your architecture and source d
 | Mac              | AMD 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64-oracle.tgz) |
 |                  | ARM 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64-oracle.tgz) |
 
-The following binaries are included:
+The download package includes the following:
 
-- `molt`
-- `replicator`
+- `molt` binary.
+- `replicator` binary.
+- Grafana dashboard JSON files for MOLT Fetch (`grafana_dashboard.json`) and Replicator (`replicator_grafana_dashboard.json`) metrics.  Each bundled dashboard is compatible with its corresponding binary version.
+	- Oracle downloads also include the Oracle-specific Replicator dashboard (`replicator_oracle_grafana_dashboard.json`).
 
 {{site.data.alerts.callout_success}}
 For ease of use, keep both `molt` and `replicator` in your current working directory.
