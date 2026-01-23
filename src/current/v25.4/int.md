@@ -105,6 +105,10 @@ Type | Details
 `INTERVAL` | Converts to seconds.
 `STRING` | ––
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/int-limitations.md %}
+
 ## See also
 
 - [Data Types]({% link {{ page.version.version }}/data-types.md %})

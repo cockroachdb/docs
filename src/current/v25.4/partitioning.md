@@ -693,9 +693,7 @@ Other databases use partitioning for three additional use cases: secondary index
 
 ## Known limitations
 
-- {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
-
-- {% include {{ page.version.version }}/known-limitations/drop-single-partition.md %}
+{% include {{ page.version.version }}/known-limitations/partition-limitations.md %}
 
 ## See also
 

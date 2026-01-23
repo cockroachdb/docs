@@ -105,6 +105,10 @@ For more information, see [`ADD COLUMN`]({% link {{ page.version.version }}/alte
 If the computed column controls row locality in a [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) table (for example, using a custom [`crdb_internal_region`]({% link {{ page.version.version }}/alter-table.md %}#crdb_region) column with `REGIONAL BY ROW AS`), you can change its expression by following the steps in [Modify the region column or its expression]({% link {{ page.version.version }}/alter-table.md %}#modify-rbr-region-column).
 {{site.data.alerts.end}}
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/max-row-size-limitations.md %}
+
 ## See also
 
 - [Scalar Expressions]({% link {{ page.version.version }}/scalar-expressions.md %})

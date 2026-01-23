@@ -259,7 +259,7 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
     This demonstrates CockroachDB's [automated replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) of data via the Raft consensus protocol.
 
     {{site.data.alerts.callout_info}}
-    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation]({% link {{ page.version.version }}/known-limitations.md %}#available-capacity-metric-in-the-db-console).
+    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, refer to [Capacity metrics]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#capacity-metrics).
     {{site.data.alerts.end}}
 
 1. Click [**Metrics**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
