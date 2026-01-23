@@ -1,0 +1,6 @@
+- It is currently not possible to [add a column]({% link {{ page.version.version }}/alter-table.md %}#add-column) to a table when the column uses a [sequence]({% link {{ page.version.version }}/create-sequence.md %}) as the [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}) value, for example using `nextval()`. [#42508](https://github.com/cockroachdb/cockroach/issues/42508)
+- When executing an [`ALTER TABLE ADD COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#add-column) statement with a [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}) expression, new values generated:
+    - Use the default [search path]({% link {{ page.version.version }}/sql-name-resolution.md %}#search-path) regardless of the search path configured in the current session via `SET SEARCH_PATH`.
+    - Use the UTC time zone regardless of the time zone configured in the current session via [`SET TIME ZONE`]({% link {{ page.version.version }}/set-vars.md %}).
+    - Have no default database regardless of the default database configured in the current session via [`SET DATABASE`]({% link {{ page.version.version }}/set-vars.md %}), so you must specify the database of any tables they reference.
+    - Use the transaction timestamp for the `statement_timestamp()` function regardless of the time at which the `ALTER` statement was issued.

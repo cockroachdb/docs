@@ -64,6 +64,10 @@ In addition to the [generated reference documentation for spatial functions]({% 
 - [`ST_Union`]({% link {{ page.version.version }}/st_union.md %})
 - [`ST_Within`]({% link {{ page.version.version }}/st_within.md %})
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/spatial-limitations.md %}
+
 ## See also
 
 - [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)

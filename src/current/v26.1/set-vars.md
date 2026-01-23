@@ -459,6 +459,7 @@ When setting a time zone, note the following:
 ## Known Limitations
 
 {% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
+{% include {{ page.version.version }}/known-limitations/int-limitations.md %}
 
 ## See also
 

@@ -16,23 +16,6 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 {% include {{ page.version.version }}/known-limitations/view-limitations.md %}
 
-### User-defined functions
-
-- User-defined functions are not supported in partial index predicates. [#155488](https://github.com/cockroachdb/cockroach/issues/155488)
-- Views cannot reference a UDF that contains mutation statements (`INSERT`, `UPDATE`, `UPSERT`, `DELETE`). [#151686](https://github.com/cockroachdb/cockroach/issues/151686)
-
-### Stored procedures
-
-- Pausable portals are not supported with `CALL` statements for stored procedures. [#151529](https://github.com/cockroachdb/cockroach/issues/151529)
-
-### Mixed-isolation workloads
-
-- Mixed-isolation-level workloads must enable foreign-key check locking for `SERIALIZABLE` transactions to avoid race conditions. [#151663](https://github.com/cockroachdb/cockroach/issues/151663#issuecomment-3222083180)
-
-### Data domiciling
-
-- When using the `infer_rbr_region_col_using_constraint` option, inserting rows with `DEFAULT` for the region column uses the database's primary region instead of inferring the region from the parent table via foreign-key constraint. [#150783](https://github.com/cockroachdb/cockroach/issues/150783)
-
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
