@@ -1,0 +1,338 @@
+---
+title: Classic Bulk Load Migration from PostgreSQL
+summary: Learn what a Classic Bulk Load Migration is, how it relates to the migration considerations, and how to perform it using MOLT tools (from PostgreSQL).
+toc: true
+docs_area: migrate
+---
+
+A [*Classic Bulk Load Migration*]({% link molt/migration-approach-classic-bulk-load.md %}) is the simplest way of [migrating data to CockroachDB]({% link molt/migration-overview.md %}). In this approach, you stop application traffic to the source database and migrate data to the target cluster during a **significant downtime window**. Application traffic is then cut over to the target after schema finalization and data verification.
+
+- All source data is migrated to the target [at once]({% link molt/migration-considerations-phases.md %}).
+
+- This approach does not utilize [continuous replication]({% link molt/migration-considerations-replication.md %}).
+
+- [Rollback]({% link molt/migration-considerations-rollback.md %}) is manual, but in most cases it's simple, as the source database is preserved and write traffic begins on the target all at once.
+
+This approach is best for small databases (<100 GB), internal tools, dev/staging environments, and production environments that can handle business disruption. It's a simple approach that guarantees full data consistency and is easy to execute with limited resources, but it can only be performed if your system can handle significant downtime.
+
+This page describes an example scenario. While the commands provided can be copy-and-pasted, they may need to be altered or reconsidered to suit the needs of your specific environment.
+
+<div style="text-align: center;">
+<img src="{{ 'images/molt/molt_flows_2.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
+</div>
+
+## Example scenario
+
+You have a small (50 GB) database that provides the data store for a web application. You want to migrate the entirety of this database to a new CockroachDB cluster. You schedule a maintenance window for Saturday from 2 AM to 6 AM, and announce it to your users several weeks in advance.
+
+The application runs on a Kubernetes cluster.
+
+**Estimated system downtime:** 4 hours.
+
+## Before the migration
+
+- Install the [MOLT (Migrate Off Legacy Technology)]({% link molt/molt-fetch-installation.md %}#installation) tools.
+- Review the [MOLT Fetch]({% link molt/molt-fetch-best-practices.md %}) documentation.
+- Announce the maintenance window to your users.
+- **Recommended:** Perform a dry run of this full set of instructions in a development environment that closely resembles your production environment. This can help you get a realistic sense of the time and complexity it requires.
+
+## Step 1: Prepare the source database
+
+In this step, you will:
+
+- [Create a dedicated migration user on your source database](#create-migration-user-on-source-database).
+
+{% include molt/migration-prepare-database.md %}
+
+#### Checkpoint
+
+By this point in the migration, your **source** database should be configured so that a dedicated migration user is able to read its data.
+
+## Step 2: Prepare the target database
+
+In this step, you will:
+
+- [Provision and run a new CockroachDB cluster](#provision-a-cockroachdb-cluster).
+- [Define the tables on the target cluster](#define-the-target-tables) to match those on the source.
+- [Create a SQL user on the target cluster](#create-the-sql-user) with the necessary write permissions.
+
+### Provision a CockroachDB cluster
+
+Use one of the following options to create and run a new CockroachDB cluster. This is your migration **target**.
+
+#### Option 1: Create a secure cluster locally
+
+If you have the CockroachDB binary installed locally, you can manually deploy a multi-node, self-hosted CockroachDB cluster on your local machine.
+
+Learn how to [deploy a CockroachDB cluster locally]({% link {{ site.versions["stable"] }}/secure-a-cluster.md %}).
+
+#### Option 2: Create a CockroachDB Self-Hosted cluster on AWS
+
+You can manually deploy a multi-node, self-hosted CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load-balancing service to distribute client traffic.
+
+Learn how to [deploy a CockroachDB cluster on AWS]({% link {{ site.versions["stable"] }}/deploy-cockroachdb-on-aws.md %}).
+
+#### Option 3: Create a CockroachDB Cloud cluster
+
+CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simplifies the deployment and management of CockroachDB.
+
+[Sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud) and [create a cluster]({% link cockroachcloud/create-your-cluster.md %}) using [trial credits]({% link cockroachcloud/free-trial.md %}).
+
+### Define the target tables
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
+
+{% include molt/migration-prepare-schema.md %}
+
+### Create the SQL user
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
+
+{% include molt/migration-create-sql-user.md %}
+
+#### Checkpoint
+
+By this point in the migration, your source and target tables should match one another, although you may have dropped non-`PRIMARY KEY` constraints and indexes from the target to optimize data load performance. Additionally, both databases should have the correct read/write permissions to allow the MOLT tools to perform the migration.
+
+## Step 3: Stop application traffic
+
+With both the source and target databases prepared for the data load, it's time to stop application traffic to the source. At the start of the maintenance window, scale down the Kubernetes cluster to zero pods. 
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+kubectl scale deployment app --replicas=0
+~~~
+
+{{ site.data.alerts.callout_danger }}
+Application downtime begins now.
+{{ site.data.alerts.end }}
+
+## Step 4: Load data into CockroachDB
+
+### Configure MOLT Fetch
+
+When you run `molt fetch`, you can configure the following options for data load:
+
+- [Connection strings](#connection-strings): Specify URL‑encoded source and target connections.
+- [Intermediate file storage](#intermediate-file-storage): Export data to cloud storage or a local file server.
+- [Table handling mode](#table-handling-mode): Determine how existing target tables are initialized before load.
+- [Schema and table filtering](#schema-and-table-filtering): Specify schema and table names to migrate.
+- [Data load mode](#data-load-mode): Choose between `IMPORT INTO` and `COPY FROM`.
+- [Fetch metrics](#fetch-metrics): Configure metrics collection during initial data load.
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
+
+#### Connection strings
+
+{% include molt/molt-connection-strings.md %}
+
+#### Intermediate file storage
+
+{% include molt/fetch-intermediate-file-storage.md %}
+
+#### Table handling mode
+
+{% include molt/fetch-table-handling.md %}
+
+#### Schema and table filtering
+
+{% include molt/fetch-schema-table-filtering.md %}
+
+#### Data load mode
+
+{% include molt/fetch-data-load-modes.md %}
+
+#### Fetch metrics
+
+{% include molt/fetch-metrics.md %}
+
+### Run MOLT Fetch
+
+Perform the bulk load of the source data.
+
+1. Run the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to move the source data into CockroachDB. This example command passes the source and target connection strings [as environment variables](#secure-connections), writes [intermediate files](#intermediate-file-storage) to S3 storage, and uses the `truncate-if-exists` [table handling mode](#table-handling-mode) to truncate the target tables before loading data. It limits the migration to a single schema and filters for three specific tables. The [data load mode]({% link molt/molt-fetch.md %}#import-into-vs-copy-from) defaults to `IMPORT INTO`. Include the `--ignore-replication-check` flag to skip replication checkpoint queries, which eliminates the need to configure the source database for logical replication.
+
+    <section class="filter-content" markdown="1" data-scope="postgres">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    molt fetch \
+    --source $SOURCE \
+    --target $TARGET \
+    --schema-filter 'migration_schema' \
+    --table-filter 'employees|payments|orders' \
+    --bucket-path 's3://migration/data/cockroach' \
+    --table-handling truncate-if-exists \
+    --ignore-replication-check
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="mysql">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    molt fetch \
+    --source $SOURCE \
+    --target $TARGET \
+    --table-filter 'employees|payments|orders' \
+    --bucket-path 's3://migration/data/cockroach' \
+    --table-handling truncate-if-exists \
+    --ignore-replication-check
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="oracle">
+    The command assumes an Oracle Multitenant (CDB/PDB) source. [`--source-cdb`]({% link molt/molt-fetch-commands-and-flags.md %}#source-cdb) specifies the container database (CDB) connection string.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    molt fetch \
+    --source $SOURCE \
+    --source-cdb $SOURCE_CDB \
+    --target $TARGET \
+    --schema-filter 'migration_schema' \
+    --table-filter 'employees|payments|orders' \
+    --bucket-path 's3://migration/data/cockroach' \
+    --table-handling truncate-if-exists \
+    --ignore-replication-check
+    ~~~
+    </section>
+
+{% include molt/fetch-data-load-output.md %}
+
+### Continue MOLT Fetch after an interruption
+
+If MOLT Fetch fails while loading data into CockroachDB from intermediate files, it exits with an error message, fetch ID, and *continuation token* for each table that failed to load on the target database. 
+
+~~~json
+{"level":"info","table":"public.employees","file_name":"shard_01_part_00000001.csv.gz","message":"creating or updating token for duplicate key value violates unique constraint \"employees_pkey\"; Key (id)=(1) already exists."}
+{"level":"info","table":"public.employees","continuation_token":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","message":"created continuation token"}
+{"level":"info","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","message":"continue from this fetch ID"}
+{"level":"error","message":"Error: error from fetching table for public.employees: error importing data: duplicate key value violates unique
+  constraint \"employees_pkey\" (SQLSTATE 23505)"}
+~~~
+
+You can use this information to [continue the task from the *continuation point*]({% link molt/molt-fetch.md %}#continue-molt-fetch-after-interruption) where it was interrupted.
+
+Continuation is only possible under the following conditions:
+
+- All data has been exported from the source database into intermediate files on [cloud](#bucket-path) or [local storage](#local-path).
+- The *initial load* of source data into the target CockroachDB database is incomplete.
+- The load uses [`IMPORT INTO` rather than `COPY FROM`](#data-load-mode).
+
+{{site.data.alerts.callout_info}}
+Only one fetch ID and set of continuation tokens, each token corresponding to a table, are active at any time. See [List active continuation tokens](#list-active-continuation-tokens).
+{{site.data.alerts.end}}
+
+The following command reattempts the data load starting from a specific continuation file, but you can also use individual continuation tokens to [reattempt the data load for individual tables]({% link molt/molt-fetch.md %}#continue-molt-fetch-after-interruption).
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt fetch \
+--source $SOURCE \
+--target $TARGET \
+--schema-filter 'migration_schema' \
+--table-filter 'employees|payments|orders' \
+--bucket-path 's3://migration/data/cockroach' \
+--table-handling truncate-if-exists \
+--ignore-replication-check \
+--fetch-id f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c \
+--continuation-file-name shard_01_part_00000001.csv.gz
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt fetch \
+--source $SOURCE \
+--target $TARGET \
+--table-filter 'employees|payments|orders' \
+--bucket-path 's3://migration/data/cockroach' \
+--table-handling truncate-if-exists \
+--ignore-replication-check \
+--fetch-id f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c \
+--continuation-file-name shard_01_part_00000001.csv.gz
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+The command assumes an Oracle Multitenant (CDB/PDB) source. [`--source-cdb`]({% link molt/molt-fetch-commands-and-flags.md %}#source-cdb) specifies the container database (CDB) connection string.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt fetch \
+--source $SOURCE \
+--source-cdb $SOURCE_CDB \
+--target $TARGET \
+--schema-filter 'migration_schema' \
+--table-filter 'employees|payments|orders' \
+--bucket-path 's3://migration/data/cockroach' \
+--table-handling truncate-if-exists \
+--ignore-replication-check \
+--fetch-id f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c \
+--continuation-file-name shard_01_part_00000001.csv.gz
+~~~
+</section>
+
+## Step 5: Finalize the target schema
+
+### Add constraints and indexes
+
+{% include molt/migration-modify-target-schema.md %}
+
+## Step 6: Verify the data
+
+TODO
+
+### Run MOLT Verify
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
+
+{% include molt/verify-output.md %}
+
+## Step 7: Cut over application traffic
+
+With the target cluster verified and finalized, it's time to resume application traffic.
+
+### Modify application code
+
+In the application back end, make sure that the application now directs traffic to the CockroachDB cluster. For example:
+
+~~~yml
+env:
+  - name: DATABASE_URL
+    value: postgres://root@localhost:26257/defaultdb?sslmode=verify-full
+~~~
+
+### Resume application traffic 
+
+Scale up the Kubernetes deployment to the original number of replicas:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+kubectl scale deployment app --replicas=3
+~~~
+
+This ends downtime.
+
+## Troubleshooting
+
+{% include molt/molt-troubleshooting-fetch.md %}
+
+## See also

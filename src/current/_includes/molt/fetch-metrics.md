@@ -1,5 +1,3 @@
-### Fetch metrics
-
 By default, MOLT Fetch exports [Prometheus](https://prometheus.io/) metrics at `http://127.0.0.1:3030/metrics`. You can override the address with `--metrics-listen-addr '{host}:{port}'`, where the endpoint will be `http://{host}:{port}/metrics`.
 
 Cockroach Labs recommends monitoring the following metrics during data load:

@@ -95,4 +95,6 @@ When you run `molt fetch`, you can configure the following options for data load
 
 {% include molt/fetch-data-load-modes.md %}
 
+### Fetch metrics
+
 {% include molt/fetch-metrics.md %}

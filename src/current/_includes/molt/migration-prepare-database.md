@@ -1,4 +1,10 @@
-#### Create migration user on source database
+### Create migration user on source database
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
 
 Create a dedicated migration user (for example, `MIGRATION_USER`) on the source database. This user is responsible for reading data from source tables during the migration. You will pass this username in the [source connection string](#source-connection-string).
 
@@ -18,7 +24,7 @@ GRANT SELECT ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO migration_user;
 ~~~
 
-{% if page.name != "migrate-bulk-load.md" %}
+{% if page.name != "migrate-bulk-load.md" and page.name != "classic-bulk-load-postgresql.md" %}
 Grant the `SUPERUSER` role to the user (recommended for replication configuration):
 
 {% include_cached copy-clipboard.html %}
@@ -54,7 +60,7 @@ GRANT SELECT ON mysql.gtid_executed TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
 
-{% if page.name != "migrate-bulk-load.md" %}
+{% if page.name != "migrate-bulk-load.md" and page.name != "classic-bulk-load-postgresql.md" %}
 For replication, grant additional privileges for binlog access:
 
 {% include_cached copy-clipboard.html %}
@@ -77,7 +83,7 @@ When migrating from Oracle Multitenant (PDB/CDB), this should be a [common user]
 
 Grant the user privileges to connect, read metadata, and `SELECT` and `FLASHBACK` the tables you plan to migrate. The tables should all reside in a single schema (for example, `migration_schema`). For details, refer to [Schema and table filtering](#schema-and-table-filtering).
 
-##### Oracle Multitenant (PDB/CDB) user privileges
+#### Oracle Multitenant (PDB/CDB) user privileges
 
 Connect to the Oracle CDB as a DBA and grant the following:
 
@@ -126,7 +132,7 @@ GRANT SELECT ON V_$TRANSACTION TO C##MIGRATION_USER;
 GRANT SELECT, FLASHBACK ON migration_schema.tbl TO C##MIGRATION_USER;
 ~~~
 
-##### Single-tenant Oracle user privileges
+#### Single-tenant Oracle user privileges
 
 Connect to the Oracle database as a DBA and grant the following:
 
@@ -157,8 +163,14 @@ GRANT SELECT, FLASHBACK ON migration_schema.tbl TO MIGRATION_USER;
 ~~~
 </section>
 
-{% if page.name != "migrate-bulk-load.md" %}
-#### Configure source database for replication
+{% if page.name != "migrate-bulk-load.md" and page.name != "classic-bulk-load-postgresql.md" %}
+### Configure source database for replication
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
 
 {{site.data.alerts.callout_info}}
 Connect to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary), **not** a replica. Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
@@ -212,7 +224,8 @@ GTID replication sends all database changes to Replicator. To limit replication 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-##### Enable ARCHIVELOG and FORCE LOGGING
+
+#### Enable ARCHIVELOG and FORCE LOGGING
 
 Enable `ARCHIVELOG` mode for LogMiner to access archived redo logs:
 
@@ -255,7 +268,7 @@ ALTER DATABASE FORCE LOGGING;
 SELECT force_logging FROM v$database; -- Expected: YES
 ~~~
 
-##### Create source sentinel table
+#### Create source sentinel table
 
 Create a checkpoint table called `REPLICATOR_SENTINEL` in the Oracle schema you will migrate:
 
@@ -274,7 +287,7 @@ Grant privileges to modify the checkpoint table. In Oracle Multitenant, grant th
 GRANT SELECT, INSERT, UPDATE ON migration_schema."REPLICATOR_SENTINEL" TO C##MIGRATION_USER;
 ~~~
 
-##### Grant LogMiner privileges
+#### Grant LogMiner privileges
 
 Grant LogMiner privileges. In Oracle Multitenant, grant the permissions on the CDB:
 
@@ -304,7 +317,7 @@ The user must:
 - Retrieve active transaction information to determine the starting point for ongoing replication.
 - Update the internal [`REPLICATOR_SENTINEL` table](#create-source-sentinel-table) created on the Oracle source schema by the DBA.
 
-##### Verify LogMiner privileges
+#### Verify LogMiner privileges
 
 Query the locations of redo files in the Oracle database:
 
