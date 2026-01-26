@@ -97,7 +97,7 @@
 	{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["public.employees","public.payments","public.payments"],"cdc_cursor":"4c658ae6-e8ad-11ef-8449-0242ac140006:1-29","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 	~~~
 
-	{% if page.name != "migrate-bulk-load.md" and page.name != "classic-bulk-load-postgresql.md" %}
+	{% if page.name != "migrate-bulk-load.md" and page.name != "classic-bulk-load.md" %}
 	This message includes a `cdc_cursor` value. You must set the `--defaultGTIDSet` replication flag to this value when [starting Replicator](#start-replicator):
 
 	{% include_cached copy-clipboard.html %}
@@ -112,7 +112,7 @@
 	{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["migration_schema.employees","migration_schema.payments","migration_schema.payments"],"cdc_cursor":"backfillFromSCN=26685444,scn=26685786","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 	~~~
 
-	{% if page.name != "migrate-bulk-load.md" and page.name != "classic-bulk-load-postgresql.md" %}
+	{% if page.name != "migrate-bulk-load.md" and page.name != "classic-bulk-load.md" %}
 	This message shows the appropriate values for the `--backfillFromSCN` and `--scn` flags to use when [starting Replicator](#start-replicator):
 
 	{% include_cached copy-clipboard.html %}
