@@ -1,6 +1,6 @@
 Configure the following [MOLT Replicator]({% link molt/molt-replicator.md %}) flags for continuous replication. For details on all available flags, refer to [Replicator Flags]({% link molt/replicator-flags.md %}).
 
-{% if page.name == "migrate-load-replicate.md" %}
+{% if page.name == "migrate-load-replicate.md" or page.name == "delta-migration.md"  %}
 <section class="filter-content" markdown="1" data-scope="postgres">
 |                                         Flag                                         |                                                                                                       Description                                                                                                        |
 |--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -52,7 +52,7 @@ You can find the SCN values in the message `replication-only mode should include
 | [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr)       | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                                                                                              |
 | [`--userscript`]({% link molt/replicator-flags.md %}#userscript)          | Path to a [userscript]({% link molt/userscript-overview.md %}) that enables data filtering, routing, or transformations. For examples, refer to [Userscript Cookbook]({% link molt/userscript-cookbook.md %}). |
 
-- The staging schema is first created during [initial replication setup]({% link molt/migrate-load-replicate.md %}#start-replicator) with [`--stagingCreateSchema`]({% link molt/replicator-flags.md %}#staging-create-schema).
+- The staging schema is first created during [initial replication setup]({% link molt/molt-replicator.md %}#forward-replication-after-initial-load) with [`--stagingCreateSchema`]({% link molt/replicator-flags.md %}#staging-create-schema).
 
 - When configuring a [secure changefeed](#tls-certificate-and-key) for failback, you **must** include [`--tlsCertificate`]({% link molt/replicator-flags.md %}#tls-certificate) and [`--tlsPrivateKey`]({% link molt/replicator-flags.md %}#tls-private-key), which specify the paths to the server certificate and private key for the webhook sink connection.
 

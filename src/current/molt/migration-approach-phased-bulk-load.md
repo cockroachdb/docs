@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-A *Phased Bulk Load Migration* involves [migrating data to CockroachDB]({% link molt/migration-overview.md %}) in several phases. Data can be sliced per tenant, per service, per region, or per table to suit the needs of the migration. In this approach, you stop application traffic to the source database _only_ for the tables in a particular slice of data. You then migrate that phase of data to the target cluster during a **downtime window**. Application traffic is then cut over to those target tables after schema finalization and data verification. This process is repeated for each phase of data.
+A *Phased Bulk Load Migration* involves [migrating data to CockroachDB]({% link molt/migration-overview.md %}) in several phases. Data can be sliced per tenant, per service, per region, or per table to suit the needs of the migration. In this approach, you stop application traffic to the source database _only_ for the tables in a particular slice of data. You then migrate that phase of data to the target cluster using [MOLT Fetch]({% link molt/molt-fetch.md %}) during a **downtime window**. Application traffic is then cut over to those target tables after schema finalization and data verification. This process is repeated for each phase of data.
 
 - Data is migrated to the target [in phases]({% link molt/migration-considerations-phases.md %}).
 

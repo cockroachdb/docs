@@ -1,6 +1,6 @@
 1. Check the output to observe `fetch` progress. 
 
-	{% if page.name == "migrate-load-replicate.md" %}
+	{% if page.name == "migrate-load-replicate.md" or page.name == "delta-migration.md" %}
 	<section class="filter-content" markdown="1" data-scope="postgres">
 	If you included the `--pglogical-replication-slot-name` and `--pglogical-publication-and-slot-drop-and-recreate` flags, a publication named `molt_fetch` is automatically created:
 

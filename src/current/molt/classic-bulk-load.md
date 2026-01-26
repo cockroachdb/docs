@@ -20,12 +20,6 @@ source_db_not_selectable: true
 
   const params = new URLSearchParams(window.location.search);
   const scope = params.get('filters');
-  console.log("TEST")
-  if (!scope) {
-    window.location.replace('/molt/migration-approach-classic-bulk-load.html');
-    return; // stop executing the rest of the script
-  }
-
   const source = scopeMap[scope];
 
   document.title = `Classic Bulk Load Migration from ${source}`;
@@ -33,7 +27,7 @@ source_db_not_selectable: true
     `Classic Bulk Load Migration from ${source}`;
 </script>
 
-A [*Classic Bulk Load Migration*]({% link molt/migration-approach-classic-bulk-load.md %}) is the simplest way of [migrating data to CockroachDB]({% link molt/migration-overview.md %}). In this approach, you stop application traffic to the source database and migrate data to the target cluster during a **significant downtime window**. Application traffic is then cut over to the target after schema finalization and data verification.
+A [*Classic Bulk Load Migration*]({% link molt/migration-approach-classic-bulk-load.md %}) is the simplest way of [migrating data to CockroachDB]({% link molt/migration-overview.md %}). In this approach, you stop application traffic to the source database and migrate data to the target cluster using [MOLT Fetch]({% link molt/molt-fetch.md %}) during a **significant downtime window**. Application traffic is then cut over to the target after schema finalization and data verification.
 
 - All source data is migrated to the target [at once]({% link molt/migration-considerations-phases.md %}).
 
@@ -64,6 +58,13 @@ The application runs on a Kubernetes cluster.
 - Review the [MOLT Fetch]({% link molt/molt-fetch-best-practices.md %}) documentation.
 - Announce the maintenance window to your users.
 - **Recommended:** Perform a dry run of this full set of instructions in a development environment that closely resembles your production environment. This can help you get a realistic sense of the time and complexity it requires.
+- Understand the prequisites and limitations of the MOLT tools:
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+{% include molt/oracle-migration-prerequisites.md %}
+</section>
+
+{% include molt/molt-limitations.md %}
 
 ## Step 1: Prepare the source database
 

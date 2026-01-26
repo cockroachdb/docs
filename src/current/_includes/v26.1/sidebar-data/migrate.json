@@ -257,8 +257,31 @@
         },
         {
           "title": "Delta Migration",
-          "urls": [
-            "/molt/migration-approach-delta.html"
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/migration-approach-delta.html"
+              ]
+            },
+            {
+              "title": "from PostgreSQL",
+              "urls": [
+                "/molt/delta-migration.html?filters=postgres"
+              ]
+            },
+            {
+              "title": "from MySQL",
+              "urls": [
+                "/molt/delta-migration.html?filters=mysql"
+              ]
+            },
+            {
+              "title": "from Oracle",
+              "urls": [
+                "/molt/delta-migration.html?filters=oracle"
+              ]
+            }
           ]
         },
         {

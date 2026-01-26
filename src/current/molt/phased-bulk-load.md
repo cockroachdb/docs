@@ -27,7 +27,7 @@ source_db_not_selectable: true
     `Phased Bulk Load Migration from ${source}`;
 </script>
 
-A *Phased Bulk Load Migration* involves [migrating data to CockroachDB]({% link molt/migration-overview.md %}) in several phases. Data can be sliced per tenant, per service, per region, or per table to suit the needs of the migration. In this approach, you stop application traffic to the source database _only_ for the tables in a particular slice of data. You then migrate that phase of data to the target cluster during a **downtime window**. Application traffic is then cut over to those target tables after schema finalization and data verification. This process is repeated for each phase of data.
+A [*Phased Bulk Load Migration*]({% link molt/migration-approach-phased-bulk-load.md %}) involves [migrating data to CockroachDB]({% link molt/migration-overview.md %}) in several phases. Data can be sliced per tenant, per service, per region, or per table to suit the needs of the migration. In this approach, you stop application traffic to the source database _only_ for the tables in a particular slice of data. You then migrate that phase of data to the target cluster using [MOLT Fetch]({% link molt/molt-fetch.md %}) during a **downtime window**. Application traffic is then cut over to those target tables after schema finalization and data verification. This process is repeated for each phase of data.
 
 - Data is migrated to the target [in phases]({% link molt/migration-considerations-phases.md %}).
 
@@ -57,8 +57,16 @@ The application runs on a Kubernetes cluster with an NGINX Ingress Controller.
 
 - Install the [MOLT (Migrate Off Legacy Technology)]({% link molt/molt-fetch-installation.md %}#installation) tools.
 - Review the [MOLT Fetch]({% link molt/molt-fetch-best-practices.md %}) documentation.
-- Announce the maintenance window to your users.
+- Announce the maintenance window to your users on a per-region basis.
 - **Recommended:** Perform a dry run of this full set of instructions in a development environment that closely resembles your production environment. This can help you get a realistic sense of the time and complexity it requires.
+- Understand the prequisites and limitations of the MOLT tools:
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+{% include molt/oracle-migration-prerequisites.md %}
+</section>
+
+{% include molt/molt-limitations.md %}
+
 
 ## Step 1: Prepare the source database
 
