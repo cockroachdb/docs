@@ -569,15 +569,15 @@ When `encode_json_value_null_as_object` is enabled, if the changefeed encounters
 
 ### Protobuf
 
-You can use the [`format=protobuf`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option to emit Protocol Buffers (Protobuf) format messages from your changefeed. Protobuf is a binary serialization format that can provide efficient integration with Protobuf-native messaging infrastructure, such as Kafka-based streaming systems.
+You can use the [`format=protobuf`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option to emit [Protocol Buffer (protobuf)](https://protobuf.dev/overview/) messages from your changefeed. Protobuf is a binary serialization format that can provide efficient integration with protobuf-native messaging infrastructure, such as Kafka-based streaming systems.
 
-The following sections provide information on Protobuf usage with CockroachDB changefeeds.
+The following sections provide information on protobuf usage with CockroachDB changefeeds.
 
 #### Protobuf limitations
 
 The following changefeed option is **not** supported with `format=protobuf`:
 
-- [`headers_json_column_name`]({% link {{ page.version.version }}/create-changefeed.md %}#headers-json-column-name): This option is specific to JSON format and does not work with Protobuf messages.
+- [`headers_json_column_name`]({% link {{ page.version.version }}/create-changefeed.md %}#headers-json-column-name): This option is specific to JSON format and does not work with protobuf messages.
 
 The following changefeed options **are** supported with `format=protobuf`:
 

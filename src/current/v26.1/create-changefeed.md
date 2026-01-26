@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE CHANGEFEED` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (such as JSON, Avro, CSV, Parquet, or Protobuf) to a [configurable sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) or directly to the SQL session.
+The `CREATE CHANGEFEED` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (such as JSON, Avro, CSV, Parquet, or protobuf) to a [configurable sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) or directly to the SQL session.
 
 When a changefeed emits messages to a sink, it works as a [job]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}). You can [create](#examples), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter]({% link {{ page.version.version }}/alter-changefeed.md %}), or [cancel](#cancel-a-changefeed) a changefeed job.
 
