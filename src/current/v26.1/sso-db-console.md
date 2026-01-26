@@ -82,6 +82,8 @@ Cluster Setting | Description
 `server.oidc_authentication.principal_regex` | Regex used to map the external identity key to a SQL user. If the identity key contains a list of identities instead of a single identity, each identity is evaluated serially until a match is found. The first match that is found is used, and the remaining identities are not evaluated. For example: `^([^@]+)@[^@]+$` matches any email address (defined as a string containing one `@` sign) and extracts a username from the string to the left of `@`, whereas `^(.+)$` maps the claim directly to a principal. The regex must contain exactly one capture group (set of parentheses); a regex with no capture groups or multiple capture groups will never find a match.
 `server.oidc_authentication.autologin` | A Boolean that enables or disables automatic login with SSO when the DB Console is loaded. If set to `false` (the default), the user will have to click **Log in with your OIDC provider** (unless overriden with `server.oidc_authentication.button_text`) before they're authenticated.
 `server.oidc_authentication.button_text` | Specifies the text to show on the button that launches authentication with the OIDC provider. This is set to `Log in with your OIDC provider` by default but can be customized to reference your specific provider by name.
+`security.provisioning.oidc.enabled` | Enables automatic user creation on first OIDC login. Defaults to `false`. See [Configure OIDC Authorization for DB Console]({% link {{ page.version.version }}/oidc-authorization.md %}#step-3-configure-user-provisioning-optional).
+`server.oidc_authentication.authorization.enabled` | Enables automatic role synchronization based on OIDC group claims. See [Configure OIDC Authorization for DB Console]({% link {{ page.version.version }}/oidc-authorization.md %}). Defaults to `false`.
 
 ### Update your cluster settings
 
@@ -144,6 +146,8 @@ Cluster Setting | Description
     CREATE USER docs;
     ~~~
 
+    Alternatively, you can enable automatic user provisioning to create users automatically on their first OIDC login. For details, refer to [Configure OIDC Authorization for DB Console]({% link {{ page.version.version }}/oidc-authorization.md %}#step-3-configure-user-provisioning-optional).
+
 1. Finally, enable OIDC authentication:
 
 	{% include_cached copy-clipboard.html %}
@@ -159,9 +163,12 @@ You can optionally enable the [`server.oidc_authentication.autologin` cluster se
 
 
 
-Once OIDC authentication is configured, you can optionally enable automatic role synchronization based on group memberships from your identity provider. This simplifies access control by automatically granting and revoking CockroachDB roles based on IdP groups.
+Once OIDC authentication is configured, you can optionally enable:
 
-For detailed instructions on configuring OIDC authorization, refer to [Configure OIDC Authorization for DB Console]({% link {{ page.version.version }}/oidc-authorization.md %}).
+- **Automatic user provisioning**: Automatically create SQL users on their first OIDC login, eliminating the need to pre-create users manually.
+- **Automatic role synchronization**: Automatically grant and revoke CockroachDB roles based on group memberships from your identity provider.
+
+For detailed instructions on configuring OIDC authorization and user provisioning, refer to [Configure OIDC Authorization for DB Console]({% link {{ page.version.version }}/oidc-authorization.md %}).
 
 ## See also
 

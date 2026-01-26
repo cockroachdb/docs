@@ -105,7 +105,7 @@ CockroachDB offers the following methods for client authentication:
     Enter password:
     ~~~
 
-- [**Single sign-on authentication to DB Console**]({% link {{ page.version.version }}/sso-db-console.md %}). CockroachDB supports OpenID Connect (OIDC) for authenticating users to the DB Console. You can also enable [automatic role synchronization]({% link {{ page.version.version }}/oidc-authorization.md %}) based on group memberships from your identity provider.
+- [**Single sign-on authentication to DB Console**]({% link {{ page.version.version }}/sso-db-console.md %}). CockroachDB supports OpenID Connect (OIDC) for authenticating users to the DB Console. You can enable [automatic user provisioning]({% link {{ page.version.version }}/oidc-authorization.md %}#step-3-configure-user-provisioning-optional) and [automatic role synchronization]({% link {{ page.version.version }}/oidc-authorization.md %}) based on group memberships from your identity provider.
 
 - [**JWT authentication for SQL clients**]({% link {{ page.version.version }}/sso-sql.md %}). CockroachDB supports JSON Web Token (JWT) authentication for SQL client connections. You can enable [automatic user provisioning]({% link {{ page.version.version }}/sso-sql.md %}#configure-user-provisioning) and [automatic role synchronization]({% link {{ page.version.version }}/jwt-authorization.md %}) based on group claims in JWT tokens.
 

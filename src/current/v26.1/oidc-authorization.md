@@ -70,9 +70,13 @@ CREATE ROLE analysts;
 GRANT SELECT ON DATABASE analytics TO analysts;
 ~~~
 
-### Step 3: Ensure users exist in CockroachDB
+### Step 3: Configure user provisioning (optional)
 
-Users logging into the DB Console via OIDC must be pre-created in CockroachDB:
+You can either pre-create users manually or enable automatic user provisioning.
+
+#### Option A: Pre-create users manually
+
+Create users in CockroachDB before they authenticate via OIDC:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -80,9 +84,55 @@ CREATE ROLE alice LOGIN;
 CREATE ROLE bob LOGIN;
 ~~~
 
+#### Option B: Enable automatic user provisioning
+
+Enable automatic user creation on first OIDC login:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING security.provisioning.oidc.enabled = true;
+~~~
+
+When automatic provisioning is enabled:
+
+1. A user successfully authenticates via OIDC.
+1. If the user doesn't exist in CockroachDB, the user is created automatically.
+1. The user is tagged with the `PROVISIONSRC` role option: `oidc:<provider_url>`, where `<provider_url>` is the OIDC provider URL (e.g., `https://accounts.google.com`).
+1. If OIDC authorization is also enabled (configured in Steps 1-2), roles are synchronized immediately after user creation based on the user's IdP group memberships.
+
 {{site.data.alerts.callout_info}}
-Automatic user provisioning for OIDC is planned for a future release. Currently, users must be created via SQL before they can log in to the DB Console with OIDC. Automatic user provisioning using JWTs is currently supported.
+Automatic user provisioning does not assign any privileges by itself. Newly provisioned users will only receive roles if:
+- OIDC authorization is enabled and the user's IdP groups match existing CockroachDB roles, or
+- Roles are granted manually via SQL after user creation.
 {{site.data.alerts.end}}
+
+#### Auditing provisioned users
+
+You can identify automatically provisioned users by viewing their role options:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW ROLES;
+~~~
+
+Example output:
+
+~~~txt
+  username  |                       options                        | member_of
+------------+------------------------------------------------------+-----------
+  alice     | {PROVISIONSRC=oidc:https://accounts.google.com}      | {developers}
+  bob       | {PROVISIONSRC=oidc:https://accounts.google.com}      | {analysts}
+  charlie   |                                                      | {admin}
+~~~
+
+Users provisioned via OIDC will have `PROVISIONSRC=oidc:<provider_url>` in their options column. Users created manually (like `charlie` in this example) will not have this option set.
+
+You can also filter to see only provisioned users:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM [SHOW USERS] WHERE "options" LIKE '%PROVISIONSRC%';
+~~~
 
 ### Step 4: Confirm configuration
 
@@ -171,7 +221,7 @@ Potential issues to investigate may pertain to:
 - **Userinfo endpoint**: If relying on userinfo fallback, ensure the endpoint is accessible and returns the expected JSON structure.
 - **Role name mismatches**: Remember that group names are normalized (typically lowercased). Check that your role names match the normalized group names.
 - **Empty groups**: Verify that users have group memberships in the IdP.
-- **User doesn't exist**: Ensure the user has been created in CockroachDB before attempting to log in.
+- **User doesn't exist**: If automatic user provisioning is not enabled, ensure the user has been created in CockroachDB before attempting to log in. Alternatively, enable automatic user provisioning via `security.provisioning.oidc.enabled`.
 
 ### Common errors
 
@@ -187,8 +237,8 @@ Potential issues to investigate may pertain to:
 
 **Error**: User not found
 
-- **Cause**: The user doesn't exist in CockroachDB.
-- **Solution**: Create the user in CockroachDB before they attempt to log into the DB Console.
+- **Cause**: The user doesn't exist in CockroachDB and automatic user provisioning is not enabled.
+- **Solution**: Either create the user in CockroachDB manually before they attempt to log into the DB Console, or enable automatic user provisioning by setting `security.provisioning.oidc.enabled = true`.
 
 ## Security considerations
 
@@ -206,7 +256,7 @@ Potential issues to investigate may pertain to:
 
 1. **Regularly audit IdP groups**: Review and clean up group memberships in your identity provider to ensure they reflect current access requirements.
 
-1. **Pre-create users**: Since automatic user provisioning is not yet available for OIDC, ensure all users are created in CockroachDB before they need access to the DB Console.
+1. **User provisioning**: If using automatic user provisioning (`security.provisioning.oidc.enabled = true`), ensure your OIDC provider is properly secured and only trusted users can authenticate. Monitor provisioned users regularly to ensure only authorized users are being created. If not using automatic provisioning, ensure all users are created in CockroachDB before they need access to the DB Console.
 
 ## See also
 
