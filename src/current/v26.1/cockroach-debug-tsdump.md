@@ -34,7 +34,7 @@ Flag | Description
 -----|-----------
 `--format` | The output format to write the collected diagnostic data. Valid options are `text`, `csv`, `tsv`, `raw`.<br><br>**Default:** `text`
 `--from` | The oldest timestamp to include (inclusive), in the format `YYYY-MM-DD [HH:MM[:SS]]`.<br><br>**Default:** `0001-01-01 00:00:00`
-`--metrics-list-file` | Path to a text file containing metric names or regex patterns to dump (one per line). Prefixes `cr.node.`, `cr.store.`, and `cockroachdb.` are automatically stripped if present. When specified, only matching metrics are included in the dump. Blank lines and comment lines (starting with `#`) are ignored.<br><br>Useful for scenario-specific investigations (e.g., contention, latency, replication) or when you need specific metrics that may not be tagged as `ESSENTIAL` or `SUPPORT`. Refer to example [Generate a tsdump with specific metrics](#generate-a-tsdump-with-specific-metrics).<br><br>**Note:** Cannot be used with `--non-verbose`.
+`--metrics-list-file` | Path to a text file containing metric names or regex patterns to include in the dump (one per line). The prefixes `cr.node.`, `cr.store.`, and `cockroachdb.` are automatically stripped if present. When specified, only matching metrics are included. Blank lines and comment lines (starting with `#`) are ignored.<br><br>Useful for scenario-specific investigations (for example, contention, latency, or replication) or when you need a targeted subset of metrics. Refer to example [Generate a tsdump with specific metrics](#generate-a-tsdump-with-specific-metrics).<br><br>**Note:** Cannot be used with `--non-verbose`.
 `--non-verbose` | Dump only metrics tagged as `ESSENTIAL` or `SUPPORT`.<br><br>This provides a curated set of metrics needed for most escalations while significantly reducing file size and noise. Ideal for standard support escalations, routine health checks, and cases where you want to minimize output size. When this flag is not specified, all metrics are dumped (default behavior). Refer to example [Generate a tsdump with only essential and support metrics](#generate-a-tsdump-with-only-essential-and-support-metrics).<br><br>**Note:** Cannot be used with `--metrics-list-file`.
 `--to` | The newest timestamp to include (inclusive), in the format `YYYY-MM-DD [HH:MM[:SS]]`.<br><br>**Default:** Current timestamp plus 29 hours
 
@@ -140,13 +140,13 @@ $ cockroach debug tsdump --format=raw --non-verbose --certs-dir=${HOME}/.cockroa
 
 ### Generate a tsdump with specific metrics
 
-Use the `--metrics-list-file` flag to dump only specific metrics by providing a file with metric names or regex patterns for flexible metric matching. This option is ideal for:
+Use the `--metrics-list-file` flag to include only specific metrics in a tsdump by providing a file with metric names or regular expression patterns. This option is ideal for:
 
-- Scenario-specific investigations (e.g., contention, latency, replication issues)
-- Following runbooks for particular classes of issues
-- Investigating new or experimental metrics that aren't yet tagged as `ESSENTIAL` or `SUPPORT`.
+- Scenario-specific investigations (for example, contention, latency, or replication issues)
+- Following runbooks for specific classes of issues
+- Investigating a targeted subset of metrics
 
-First, create a text file with the metrics you want to dump. You can specify exact metric names or use regex patterns. Only metrics whose names match the patterns defined in the file are included in the output. Comments (lines starting with `#`) and blank lines are ignored:
+First, create a text file with the metrics you want to include. You can specify exact metric names or use regex patterns. Only metrics whose names match the patterns in the file are included in the output. Blank lines and comment lines (starting with `#`) are ignored:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
