@@ -228,8 +228,31 @@
         },
         {
           "title": "Phased Bulk Load Migration",
-          "urls": [
-            "/molt/migration-approach-phased-bulk-load.html"
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/migration-approach-phased-bulk-load.html"
+              ]
+            },
+            {
+              "title": "from PostgreSQL",
+              "urls": [
+                "/molt/phased-bulk-load.html?filters=postgres"
+              ]
+            },
+            {
+              "title": "from MySQL",
+              "urls": [
+                "/molt/phased-bulk-load.html?filters=mysql"
+              ]
+            },
+            {
+              "title": "from Oracle",
+              "urls": [
+                "/molt/phased-bulk-load.html?filters=oracle"
+              ]
+            }
           ]
         },
         {

@@ -1,6 +1,6 @@
 ---
-title: Classic Bulk Load Migration
-summary: Learn what a Classic Bulk Load Migration is, how it relates to the migration considerations, and how to perform it using MOLT tools.
+title: Phased Bulk Load Migration
+summary: Learn what a Phased Bulk Load Migration is, how it relates to the migration considerations, and how to perform it using MOLT tools.
 toc: true
 docs_area: migrate
 source_db_not_selectable: true
@@ -20,43 +20,38 @@ source_db_not_selectable: true
 
   const params = new URLSearchParams(window.location.search);
   const scope = params.get('filters');
-  console.log("TEST")
-  if (!scope) {
-    window.location.replace('/molt/migration-approach-classic-bulk-load.html');
-    return; // stop executing the rest of the script
-  }
-
   const source = scopeMap[scope];
 
-  document.title = `Classic Bulk Load Migration from ${source}`;
+  document.title = `Phased Bulk Load Migration from ${source}`;
   document.querySelector('.post-title-main').textContent =
-    `Classic Bulk Load Migration from ${source}`;
+    `Phased Bulk Load Migration from ${source}`;
 </script>
 
-A [*Classic Bulk Load Migration*]({% link molt/migration-approach-classic-bulk-load.md %}) is the simplest way of [migrating data to CockroachDB]({% link molt/migration-overview.md %}). In this approach, you stop application traffic to the source database and migrate data to the target cluster during a **significant downtime window**. Application traffic is then cut over to the target after schema finalization and data verification.
+A *Phased Bulk Load Migration* involves [migrating data to CockroachDB]({% link molt/migration-overview.md %}) in several phases. Data can be sliced per tenant, per service, per region, or per table to suit the needs of the migration. In this approach, you stop application traffic to the source database _only_ for the tables in a particular slice of data. You then migrate that phase of data to the target cluster during a **downtime window**. Application traffic is then cut over to those target tables after schema finalization and data verification. This process is repeated for each phase of data.
 
-- All source data is migrated to the target [at once]({% link molt/migration-considerations-phases.md %}).
+- Data is migrated to the target [in phases]({% link molt/migration-considerations-phases.md %}).
 
 - This approach does not utilize [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
-- [Rollback]({% link molt/migration-considerations-rollback.md %}) is manual, but in most cases it's simple, as the source database is preserved and write traffic begins on the target all at once.
+- [Rollback]({% link molt/migration-considerations-rollback.md %}) is manual.
 
-This approach is best for small databases (<100 GB), internal tools, dev/staging environments, and production environments that can handle business disruption. It's a simple approach that guarantees full data consistency and is easy to execute with limited resources, but it can only be performed if your system can handle significant downtime.
+This approach is comparable to the [Classic Bulk Load Migration]({% link molt/migration-approach-classic-bulk-load.md %}), but dividing the data into multiple phases allows each downtime window to be shorter, and it allows each phase of the migration to be less complex. Depending on how you divide the data, it also may allow your downtime windows to affect only a subset of users. For example, dividing the data per region could mean that, when migrating the data from Region A, application usage in Region B may remain unaffected. This approach may increase overall migration complexity: its duration is longer, you will need to do the work of partitioning the data, and you will have a longer period when you run both the source and the target database concurrently.
+
+This approach is best for databases that are too large to migrate all at once, internal tools, dev/staging environments, and production environments that can handle business disruption. It can only be performed if your system can handle downtime for each migration phase, and if your source database can easily be divided into the phases you need.
 
 This page describes an example scenario. While the commands provided can be copy-and-pasted, they may need to be altered or reconsidered to suit the needs of your specific environment.
 
 <div style="text-align: center;">
-<img src="{{ 'images/molt/molt_flows_2.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
+<img src="{{ 'images/molt/molt_flows_3.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
 </div>
 
 ## Example scenario
 
-You have a small (50 GB) database that provides the data store for a web application. You want to migrate the entirety of this database to a new CockroachDB cluster. You schedule a maintenance window for Saturday from 2 AM to 6 AM, and announce it to your users several weeks in advance.
+You have a moderately-sized (500GB) database that provides the data store for a web application. You want to migrate the entirety of this database to a new CockroachDB cluster. You will divide this migration into four geographic regions (A, B, C, and D). You schedule a maintenance window for each region over four subsequent evenings, and you announce them to your users (per region) several weeks in advance.
 
-The application runs on a Kubernetes cluster.
+The application runs on a Kubernetes cluster with an NGINX Ingress Controller.
 
-**Estimated system downtime:** 4 hours.
-
+**Estimated system downtime:** 4 hours per region.
 
 ## Before the migration
 
@@ -119,17 +114,51 @@ CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simpli
 
 By this point in the migration, your source and target tables should match one another, although you may have dropped non-`PRIMARY KEY` constraints and indexes from the target to optimize data load performance. Additionally, both databases should have the correct read/write permissions to allow the MOLT tools to perform the migration.
 
+## Migrating each phase
+
+Steps 3-7 are run for each phase of the data migration. Within the first migration downtime window, you will run through these steps for Region A. You will repeat these steps for the other regions during each subsequent downtime window.
+
 ## Step 3: Stop application traffic
 
-With both the source and target databases prepared for the data load, it's time to stop application traffic to the source. At the start of the maintenance window, scale down the Kubernetes cluster to zero pods. 
+With both the source and target databases prepared for the data load, it's time to stop application traffic to the source for a particular region. 
+
+If the Kubernetes cluster that deploys the application has pre-region deployments (for example, `app-us`, `app-eu`, `app-apac`), you can scale down only the deployment for that region.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-kubectl scale deployment app --replicas=0
+kubectl scale deploy/app-eu --replicas=0
+~~~
+
+Or this can be handled by the NGINX Ingress Controller, by including the following to your NGINX configuration, ensuring that the conditional statement is suitable for your deployment:
+
+{% include_cached copy-clipboard.html %}
+~~~yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      if ($http_x_region = "eu") {
+        return 503;
+      }
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: api.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app
+            port:
+              number: 80
 ~~~
 
 {{ site.data.alerts.callout_danger }}
-Application downtime begins now.
+Application downtime begins now, for users in the given region.
 {{ site.data.alerts.end }}
 
 ## Step 4: Load data into CockroachDB
@@ -148,6 +177,7 @@ When you run `molt fetch`, you can configure the following options for data load
 - [Intermediate file storage](#intermediate-file-storage): Export data to cloud storage or a local file server.
 - [Table handling mode](#table-handling-mode): Determine how existing target tables are initialized before load.
 - [Schema and table filtering](#schema-and-table-filtering): Specify schema and table names to migrate.
+- [Row-level filtering](#row-level-filtering): Define criteria that determines which rows within a table to migrate.
 - [Data load mode](#data-load-mode): Choose between `IMPORT INTO` and `COPY FROM`.
 - [Fetch metrics](#fetch-metrics): Configure metrics collection during initial data load.
 
@@ -166,6 +196,31 @@ When you run `molt fetch`, you can configure the following options for data load
 #### Schema and table filtering
 
 {% include molt/fetch-schema-table-filtering.md %}
+
+#### Row-level filtering
+
+MOLT Fetch enables you to move a subset of data in a table, rather than all data in the table. This may be especially useful in a phased data migration. If data for multiple regions occupies the same table, and the region of each row is included in the data, you can use row-level filtering to move only the relevant rows. You do so with the [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#filter-path) flag, specifying the path to a JSON file that defines row-level filtering for data load.
+
+{% include_cached copy-clipboard.html %}
+~~~
+--filter-path 'data-filter.json'
+~~~
+
+The JSON file should contain one or more entries in `filters`, each with a `resource_specifier` (`schema` and `table`) and a SQL expression `expr`. For example, the following example exports only rows from `migration_schema.t1` where `v > 100`:
+
+~~~ json
+{
+  "filters": [
+    {
+      "resource_specifier": {
+        "schema": "migration_schema",
+        "table": "t1"
+      },
+      "expr": "v > 100"
+    }
+  ]
+}
+~~~
 
 #### Data load mode
 
@@ -233,7 +288,7 @@ Perform the bulk load of the source data.
 
 ## Step 5: Verify the data
 
-In this step, you will use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and target data is consistent. This ensures that the data load was successful.
+In this step, you will use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and target data is consistent. This ensures that the data load was successful. Use MOLT Verify's [`--schema-filter`]({% link molt/molt-verify.md %}#flags) or [`--table-filter`]({% link molt/molt-verify.md %}#flags) to select only the tables that are relevant for the given phase.
 
 ### Run MOLT Verify
 
@@ -247,28 +302,72 @@ In this step, you will use [MOLT Verify]({% link molt/molt-verify.md %}) to conf
 
 ## Step 7: Cut over application traffic
 
-With the target cluster verified and finalized, it's time to resume application traffic.
+With the target cluster verified and finalized, it's time to resume application traffic for the current migration phase.
 
 ### Modify application code
 
-In the application back end, make sure that the application now directs traffic to the CockroachDB cluster. For example:
+In the application back end, update the application to route traffic for this migration phase to the CockroachDB cluster. A simple example:
 
 ~~~yml
 env:
-  - name: DATABASE_URL
-    value: postgres://root@localhost:26257/defaultdb?sslmode=verify-full
+  - name: DATABASE_URL_US_EAST
+    value: postgres://root@cockroachdb.us-east:26257/defaultdb?sslmode=verify-full
+  - name: DATABASE_URL_US_WEST
+    value: postgres://legacy-db.us-west:5432/defaultdb  # Still on source
+~~~
+
+In your application code, route database connections based on the user's region:
+
+~~~python
+def get_db_connection(user_region):
+    if user_region == "us-east":
+        return os.getenv("DATABASE_URL_US_EAST")  # CockroachDB
+    else:
+        return os.getenv("DATABASE_URL_US_WEST")  # Source database
 ~~~
 
 ### Resume application traffic 
 
-Scale up the Kubernetes deployment to the original number of replicas:
+If you halted traffic by scaling down a regional Kubernetes deployment, scale it back up.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-kubectl scale deployment app --replicas=3
+kubectl scale deploy/app-eu --replicas=3
 ~~~
 
-This ends downtime.
+Or if this was handled by the NGINX Controller, remove the 503 block that was written in step 3:
+
+{% include_cached copy-clipboard.html %}
+~~~yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app
+#   annotations:
+#     nginx.ingress.kubernetes.io/server-snippet: |
+#       if ($http_x_region = "eu") {
+#         return 503;
+#       }
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: api.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app
+            port:
+              number: 80
+~~~
+
+This ends downtime for the current migration phase.
+
+## Repeat for each phase
+
+During the next scheduled, regional downtime window, [return to step 3](#step-3-stop-application-traffic) to migrate the next phase of data. Repeat steps 3-7 for each phase of data, until every region's data has been migrated and all application traffic has been cut over to the target.
 
 ## Troubleshooting
 
@@ -276,7 +375,8 @@ This ends downtime.
 
 ## See also
 
+- [Migration Overview]({% link molt/migration-overview.md %})
+- [Migration Considerations]({% link molt/migration-considerations.md %})
+- [Classic Bulk Load Migration]({% link molt/migration-approach-classic-bulk-load.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
-- [Migration Overview]({% link molt/migration-overview.md %})
-- [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
