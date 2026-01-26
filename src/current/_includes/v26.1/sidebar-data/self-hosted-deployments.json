@@ -397,9 +397,15 @@
                     ]
                   },
                   {
-                    "title": "SSO for DB Console",
+                    "title": "DB Console SSO",
                     "urls": [
                       "/${VERSION}/sso-db-console.html"
+                    ]
+                  },
+                  {
+                    "title": "OIDC Authorization",
+                    "urls": [
+                      "/${VERSION}/oidc-authorization.html"
                     ]
                   },
                   {
