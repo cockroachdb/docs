@@ -69,4 +69,4 @@ To filter the transactions:
 
 The following screenshot shows the transactions that contain the string `rides` for the `movr` application filtered by `Runs Longer Than: 300 milliseconds`:
 
-<img src="{{ 'images/{{ page.version.version }}/movr-transactions-rides.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/movr-transactions-rides.png" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />

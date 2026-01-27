@@ -279,7 +279,7 @@ We can see that almost half of all of the tornadoes in this outbreak began in Ok
 
 It might be interesting to draw these points on a map. The image below shows the points from the query above drawn as a simple polygon on a map of Oklahoma. The boxes around the polygon show the [spatial index]({% link {{ page.version.version }}/spatial-indexes.md %}) coverings for the polygon.
 
-<img width="100%" src="{{ 'images/{{ page.version.version }}/geospatial/1999-oklahoma-tornado-outbreak-map.png' | relative_url }}" alt="1999 Oklahoma tornado outbreak map view">
+<img width="100%" src="/docs/images/{{ page.version.version }}/geospatial/1999-oklahoma-tornado-outbreak-map.png" alt="1999 Oklahoma tornado outbreak map view">
 
 (Map data &copy; 2020 Google)
 
