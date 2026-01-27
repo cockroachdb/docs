@@ -1,39 +1,10 @@
----
-title: Delta Migration
-summary: Learn what a Delta Migration is, how it relates to the migration considerations, and how to perform it using MOLT tools.
-toc: true
-docs_area: migrate
-source_db_not_selectable: true
----
-
-<script>
-  // This takes the source db filter query param from the url (e.g. "?filters=oracle") and uses it to
-  // load the correct page title. If none is present, it defaults to 'postgres'.
-
-  // The rest of the page content (any occurence of a <section> div with e.g. "data-scope=oracle" is
-  // based on that query param (not a button selector).
-  const scopeMap = {
-    'postgres': 'PostgreSQL',
-    'mysql': 'MySQL',
-    'oracle': 'Oracle'
-  };
-
-  const params = new URLSearchParams(window.location.search);
-  const scope = params.get('filters');
-  const source = scopeMap[scope];
-
-  document.title = `Delta Migration from ${source}`;
-  document.querySelector('.post-title-main').textContent =
-    `Delta Migration from ${source}`;
-</script>
-
 A [*Delta Migration*]({% link molt/migration-approach-delta.md %}) uses an initial data load, followed by [continuous replication]({% link molt/migration-considerations-replication.md %}), to [migrate data to CockroachDB]({% link molt/migration-overview.md %}). In this approach, you migrate most application data to the target using [MOLT Fetch]({% link molt/molt-fetch.md %}) **before** stopping application traffic to the source database. You then use [MOLT Replicator]({% link molt/molt-replicator.md %}) to keep the target database in sync with any changes in the source database (the migration _delta_), before finally halting traffic to the source and cutting over to the target after schema finalization and data verification.
 
 - All source data is migrated to the target [at once]({% link molt/migration-considerations-phases.md %}).
 
 - This approach utilizes [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
-- [Failback replication]({% link molt/migration-considerations-rollback.md %}) is supported, though this example will not use it. See [Active-Active Migration]({% link molt/migration-approach-active-active.md %}) for an example of a migration that uses failback replication.
+- [Failback replication]({% link molt/migration-considerations-rollback.md %}) is supported, though this example will not use it. See [Phased Delta Migration with Failback Replication]({% link molt/migration-approach-phased-delta-failback.md %}) for an example of a migration that uses failback replication.
 
 This approach is best for production environments that need to minimize system downtime.
 

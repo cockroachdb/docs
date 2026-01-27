@@ -27,7 +27,7 @@ GRANT SELECT ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO migration_user;
 ~~~
 
-{% unless page.name contains "-bulk-load.md" %}
+{% unless page.name contains "-bulk-load" %}
 Grant the `SUPERUSER` role to the user (recommended for replication configuration):
 
 {% include_cached copy-clipboard.html %}
@@ -63,7 +63,7 @@ GRANT SELECT ON mysql.gtid_executed TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
 
-{% unless page.name contains "-bulk-load.md" %}
+{% unless page.name contains "-bulk-load" %}
 For replication, grant additional privileges for binlog access:
 
 {% include_cached copy-clipboard.html %}
@@ -166,7 +166,7 @@ GRANT SELECT, FLASHBACK ON migration_schema.tbl TO MIGRATION_USER;
 ~~~
 </section>
 
-{% unless page.name contains "-bulk-load.md" %}
+{% unless page.name contains "-bulk-load" %}
 ### Configure source database for replication
 
 {% if page.source_db_not_selectable %}

@@ -11,14 +11,16 @@ A *Delta Migration* uses an initial data load, followed by [continuous replicati
 
 - This approach utilizes [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
-- [Failback replication]({% link molt/migration-considerations-rollback.md %}) is supported, though this example will not use it. See [Active-Active Migration]({% link molt/migration-approach-active-active.md %}) for an example of a migration that uses failback replication.
+- [Failback replication]({% link molt/migration-considerations-rollback.md %}) is supported, though this example will not use it. See [Phased Delta Migration with Failback Replication]({% link molt/migration-approach-phased-delta-failback.md %}) for an example of a migration that uses failback replication.
 
 This approach is best for production environments that need to minimize system downtime.
+
+{% include molt/crdb-to-crdb-migration.md %}
 
 This page describes an example scenario. While the commands provided can be copy-and-pasted, they may need to be altered or reconsidered to suit the needs of your specific environment.
 
 <div style="text-align: center;">
-<img src="{{ 'images/molt/molt_flows_4.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
+<img src="{{ 'images/molt/molt_delta_flow.svg' | relative_url }}" alt="Delta migration flow" style="max-width:100%" />
 </div>
 
 ## Example scenario
@@ -33,9 +35,9 @@ The application runs on a Kubernetes cluster.
 
 The following walkthroughs demonstrate how to use the MOLT tools to perform this migration for each supported source database:
 
-- [Delta Migration from PostgreSQL]({% link molt/delta-migration.md %}?filters=postgres)
-- [Delta Migration from MySQL]({% link molt/delta-migration.md %}?filters=mysql)
-- [Delta Migration from Oracle]({% link molt/delta-migration.md %}?filters=oracle)
+- [Delta Migration from PostgreSQL]({% link molt/delta-migration-postgres.md %})
+- [Delta Migration from MySQL]({% link molt/delta-migration-mysql.md %})
+- [Delta Migration from Oracle]({% link molt/delta-migration-oracle.md %})
 
 ## See also
 

@@ -20,7 +20,7 @@ This approach is best for databases that are too large to migrate all at once, i
 This page describes an example scenario. While the commands provided can be copy-and-pasted, they may need to be altered or reconsidered to suit the needs of your specific environment.
 
 <div style="text-align: center;">
-<img src="{{ 'images/molt/molt_flows_3.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
+<img src="{{ 'images/molt/molt_phased_bulk_load_flow.svg' | relative_url }}" alt="Phased Bulk Load Migration flow" style="max-width:100%" />
 </div>
 
 ## Example scenario
@@ -35,9 +35,9 @@ The application runs on a Kubernetes cluster.
 
 The following walkthroughs demonstrate how to use the MOLT tools to perform this migration for each supported source database:
 
-- [Phased Bulk Load Migration from PostgreSQL]({% link molt/phased-bulk-load.md %}?filters=postgres)
-- [Phased Bulk Load Migration from MySQL]({% link molt/phased-bulk-load.md %}?filters=mysql)
-- [Phased Bulk Load Migration from Oracle]({% link molt/phased-bulk-load.md %}?filters=oracle)
+- [Phased Bulk Load Migration from PostgreSQL]({% link molt/phased-bulk-load-postgres.md %})
+- [Phased Bulk Load Migration from MySQL]({% link molt/phased-bulk-load-mysql.md %})
+- [Phased Bulk Load Migration from Oracle]({% link molt/phased-bulk-load-oracle.md %})
 
 ## See also
 

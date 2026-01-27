@@ -174,19 +174,19 @@
             {
               "title": "from PostgreSQL",
               "urls": [
-                "/molt/classic-bulk-load.html?filters=postgres"
+                "/molt/classic-bulk-load-postgres.html"
               ]
             },
             {
               "title": "from MySQL",
               "urls": [
-                "/molt/classic-bulk-load.html?filters=mysql"
+                "/molt/classic-bulk-load-mysql.html"
               ]
             },
             {
               "title": "from Oracle",
               "urls": [
-                "/molt/classic-bulk-load.html?filters=oracle"
+                "/molt/classic-bulk-load-oracle.html"
               ]
             }
           ]

@@ -1,57 +1,40 @@
----
-title: Delta Migration
-summary: Learn what a Delta Migration is, how it relates to the migration considerations, and how to perform it using MOLT tools.
-toc: true
-docs_area: migrate
-source_db_not_selectable: true
----
+A [*Phased Delta Migration with Failback Replication*]({% link molt/migration-approach-phased-delta-failback.md %}) involves [migrating data to CockroachDB]({% link molt/migration-overview.md %}) in several phases. Data can be sliced per tenant, per service, per region, or per table to suit the needs of the migration. **For each given migration phase**, you use [MOLT Fetch]({% link molt/molt-fetch.md %}) to perform an initial bulk load of the data, you use [MOLT Replicator]({% link molt/molt-replicator.md %}) to update the target database via forward replication and to activate failback replication, and then you cut over application traffic to CockroachDB after schema finalization and data verification. This process is repeated for each phase of data.
 
-<script>
-  // This takes the source db filter query param from the url (e.g. "?filters=oracle") and uses it to
-  // load the correct page title. If none is present, it defaults to 'postgres'.
-
-  // The rest of the page content (any occurence of a <section> div with e.g. "data-scope=oracle" is
-  // based on that query param (not a button selector).
-  const scopeMap = {
-    'postgres': 'PostgreSQL',
-    'mysql': 'MySQL',
-    'oracle': 'Oracle'
-  };
-
-  const params = new URLSearchParams(window.location.search);
-  const scope = params.get('filters');
-  const source = scopeMap[scope];
-
-  document.title = `Delta Migration from ${source}`;
-  document.querySelector('.post-title-main').textContent =
-    `Delta Migration from ${source}`;
-</script>
-
-A [*Delta Migration*]({% link molt/migration-approach-delta.md %}) uses an initial data load, followed by [continuous replication]({% link molt/migration-considerations-replication.md %}), to [migrate data to CockroachDB]({% link molt/migration-overview.md %}). In this approach, you migrate most application data to the target using [MOLT Fetch]({% link molt/molt-fetch.md %}) **before** stopping application traffic to the source database. You then use [MOLT Replicator]({% link molt/molt-replicator.md %}) to keep the target database in sync with any changes in the source database (the migration _delta_), before finally halting traffic to the source and cutting over to the target after schema finalization and data verification.
-
-- All source data is migrated to the target [at once]({% link molt/migration-considerations-phases.md %}).
+- Data is migrated to the target [in phases]({% link molt/migration-considerations-phases.md %}).
 
 - This approach utilizes [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
-- [Failback replication]({% link molt/migration-considerations-rollback.md %}) is supported, though this example will not use it. See [Active-Active Migration]({% link molt/migration-approach-active-active.md %}) for an example of a migration that uses failback replication.
+- [Rollback]({% link molt/migration-considerations-rollback.md %}) is achieved via failback replication.
 
-This approach is best for production environments that need to minimize system downtime.
+This approach is comparable to the [Delta Migration]({% link molt/migration-approach-delta.md %}), but dividing the data into multiple phases allows each downtime window to be shorter, and it allows each phase of the migration to be less complex. Depending on how you divide the data, it also may allow your downtime windows to affect only a subset of users. For example, dividing the data per region could mean that, when migrating the data from Region A, application usage in Region B may remain unaffected. This approach may increase overall migration complexity: its duration is longer, you will need to do the work of partitioning the data, and you will have a longer period when you run both the source and the target database concurrently.
+
+[Failback replication]({% link molt/migration-considerations-rollback.md %}) keeps the source database up to date with changes that occur in the target database once the target database begins receiving write traffic. Failback replication ensures that, if something goes wrong during the migration process, traffic can easily be returned to source database without data loss. Like forward replication, in this approach, failback replication is run on a per-phase basis. It can persist indefinitely, until you're comfortable maintaining the target database as your sole data store.
+
+This approach is best for databases that are too large to migrate all at once, and in business cases where downtime must be minimal. It's also suitable for risk-averse situations in which a safe rollback path must be ensured. It can only be performed if your team can handle the complexity of this approach, and if your source database can easily be divided into the phases you need.
 
 {% include molt/crdb-to-crdb-migration.md %}
 
 This page describes an example scenario. While the commands provided can be copy-and-pasted, they may need to be altered or reconsidered to suit the needs of your specific environment.
 
 <div style="text-align: center;">
-<img src="{{ 'images/molt/molt_delta_flow.svg' | relative_url }}" alt="Delta migration flow" style="max-width:100%" />
+<img src="{{ 'images/molt/molt_phased_delta_flow.svg' | relative_url }}" alt="Phased Delta Migration flow" style="max-width:100%" />
 </div>
 
 ## Example scenario
 
-You have a small (300 GB) database that provides the data store for a web application. You want to migrate the entirety of this database to a new CockroachDB cluster. Business cannot accommodate a full maintenance window, but it can accommodate a brief (<60 second) halt in traffic.
+You have a moderately-sized (500GB) database that provides the data store for a web application. You want to migrate the entirety of this database to a new CockroachDB cluster. You will divide this migration into four geographic regions (A, B, C, and D).
 
 The application runs on a Kubernetes cluster.
 
-**Estimated system downtime:** Less than 60 seconds.
+**Estimated system downtime:** Less than 60 seconds per region.
+
+## Step-by-step walkthroughs
+
+The following walkthroughs demonstrate how to use the MOLT tools to perform this migration for each supported source database:
+
+- [Phased Delta Migration with Failback Replication from PostgreSQL]({% link molt/phased-delta-failback-postgres.md %})
+- [Phased Delta Migration with Failback Replication from MySQL]({% link molt/phased-delta-failback-mysql.md %})
+- [Phased Delta Migration with Failback Replication from Oracle]({% link molt/phased-delta-failback-oracle.md %})
 
 ## Before the migration
 

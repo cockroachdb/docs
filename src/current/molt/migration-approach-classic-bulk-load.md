@@ -18,7 +18,7 @@ This approach is best for small databases (<100 GB), internal tools, dev/staging
 This page describes an example scenario. While the commands provided can be copy-and-pasted, they may need to be altered or reconsidered to suit the needs of your specific environment.
 
 <div style="text-align: center;">
-<img src="{{ 'images/molt/molt_flows_2.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
+<img src="{{ 'images/molt/molt_classic_bulk_load_flow.svg' | relative_url }}" alt="Classic Bulk Load Migration flow" style="max-width:100%" />
 </div>
 
 ## Example scenario
@@ -33,9 +33,9 @@ The application runs on a Kubernetes cluster.
 
 The following walkthroughs demonstrate how to use the MOLT tools to perform this migration for each supported source database:
 
-- [Classic Bulk Load Migration from PostgreSQL]({% link molt/classic-bulk-load.md %}?filters=postgres)
-- [Classic Bulk Load Migration from MySQL]({% link molt/classic-bulk-load.md %}?filters=mysql)
-- [Classic Bulk Load Migration from Oracle]({% link molt/classic-bulk-load.md %}?filters=oracle)
+- [Classic Bulk Load Migration from PostgreSQL]({% link molt/classic-bulk-load-postgres.md %})
+- [Classic Bulk Load Migration from MySQL]({% link molt/classic-bulk-load-mysql.md %})
+- [Classic Bulk Load Migration from Oracle]({% link molt/classic-bulk-load-oracle.md %})
 
 ## See also
 

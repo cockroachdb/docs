@@ -209,19 +209,19 @@
             {
               "title": "from PostgreSQL",
               "urls": [
-                "/molt/classic-bulk-load.html?filters=postgres"
+                "/molt/classic-bulk-load-postgres.html"
               ]
             },
             {
               "title": "from MySQL",
               "urls": [
-                "/molt/classic-bulk-load.html?filters=mysql"
+                "/molt/classic-bulk-load-mysql.html"
               ]
             },
             {
               "title": "from Oracle",
               "urls": [
-                "/molt/classic-bulk-load.html?filters=oracle"
+                "/molt/classic-bulk-load-oracle.html"
               ]
             }
           ]
@@ -238,19 +238,19 @@
             {
               "title": "from PostgreSQL",
               "urls": [
-                "/molt/phased-bulk-load.html?filters=postgres"
+                "/molt/phased-bulk-load-postgres.html"
               ]
             },
             {
               "title": "from MySQL",
               "urls": [
-                "/molt/phased-bulk-load.html?filters=mysql"
+                "/molt/phased-bulk-load-mysql.html"
               ]
             },
             {
               "title": "from Oracle",
               "urls": [
-                "/molt/phased-bulk-load.html?filters=oracle"
+                "/molt/phased-bulk-load-oracle.html"
               ]
             }
           ]
@@ -267,33 +267,50 @@
             {
               "title": "from PostgreSQL",
               "urls": [
-                "/molt/delta-migration.html?filters=postgres"
+                "/molt/delta-migration-postgres.html"
               ]
             },
             {
               "title": "from MySQL",
               "urls": [
-                "/molt/delta-migration.html?filters=mysql"
+                "/molt/delta-migration-mysql.html"
               ]
             },
             {
               "title": "from Oracle",
               "urls": [
-                "/molt/delta-migration.html?filters=oracle"
+                "/molt/delta-migration-oracle.html"
               ]
             }
           ]
         },
         {
-          "title": "Streaming Migration",
-          "urls": [
-            "/molt/migration-approach-streaming.html"
-          ]
-        },
-        {
-          "title": "Active-Active Migration",
-          "urls": [
-            "/molt/migration-approach-active-active.html"
+          "title": "Phased Delta Migration with Failback Replication",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/migration-approach-phased-delta-failback.html"
+              ]
+            },
+            {
+              "title": "from PostgreSQL",
+              "urls": [
+                "/molt/phased-delta-failback-postgres.html"
+              ]
+            },
+            {
+              "title": "from MySQL",
+              "urls": [
+                "/molt/phased-delta-failback-mysql.html"
+              ]
+            },
+            {
+              "title": "from Oracle",
+              "urls": [
+                "/molt/phased-delta-failback-oracle.html"
+              ]
+            }
           ]
         }
       ]
