@@ -22,7 +22,7 @@ The changefeed pipeline contains three main sections that start at the [storage 
 - [**Processing**](#processing-aggregation-and-encoding): Prepares the change events from the rangefeed into [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}) by encoding messages into the specified format. 
 - [**Sink**](#sink): Delivers changefeed messages to the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). 
 
-<img src="{{ 'images/{{ page.version.version }}/changefeed-pipeline.svg' | relative_url }}" alt="An overview of the changefeed pipeline and the metrics that are connected to each stage." style="width:100%" />
+<img src="/docs/images/{{ page.version.version }}/changefeed-pipeline.svg" alt="An overview of the changefeed pipeline and the metrics that are connected to each stage." style="width:100%" />
 
 Where noted in the following sections, you can use changefeed [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) to measure metrics per changefeed.
 
