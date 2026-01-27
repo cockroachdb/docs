@@ -47,7 +47,7 @@ SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 (1 row)
 ~~~
 
-<img src="{{ 'images/v23.2/geospatial/st_overlaps_true.png' | relative_url }}" alt="ST_Overlaps - true" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geospatial/st_overlaps_true.png" alt="ST_Overlaps - true" style="border:1px solid #eee;max-width:100%" />
 
 ### False
 
@@ -67,7 +67,7 @@ SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-79.995888 40.440624,-74.
 (1 row)
 ~~~
 
-<img src="{{ 'images/v23.2/geospatial/st_overlaps_false.png' | relative_url }}" alt="ST_Overlaps - false" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geospatial/st_overlaps_false.png" alt="ST_Overlaps - false" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

@@ -189,7 +189,7 @@ The JSON below is modified from the output above: it is grouped into a GeoJSON `
 
 Here is the geometry described above as shown on [geojson.io](http://geojson.io):
 
-<img src="{{ 'images/v23.2/geospatial/geojson_example.png' | relative_url }}" alt="GeoJSON.io output" style="max-width: 100%" >
+<img src="/docs/images/{{ page.version.version }}/geospatial/geojson_example.png" alt="GeoJSON.io output" style="max-width: 100%" >
 
 ## See also
 
