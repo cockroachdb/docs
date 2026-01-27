@@ -105,11 +105,11 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
     1. To verify that each CockroachDB node is connected to Prometheus, go to **Status > Targets**. The screen should look like this:
 
-        <img src="{{ 'images/{{ page.version.version }}/kubernetes-prometheus-targets.png' | relative_url }}" alt="Prometheus targets" style="border:1px solid #eee;max-width:100%" />
+        <img src="/docs/images/{{ page.version.version }}/kubernetes-prometheus-targets.png" alt="Prometheus targets" style="border:1px solid #eee;max-width:100%" />
 
     1. To verify that data is being collected, go to **Graph**, enter the `sys_uptime` variable in the field, click **Execute**, and then click the **Graph** tab. The screen should like this:
 
-        <img src="{{ 'images/{{ page.version.version }}/kubernetes-prometheus-graph.png' | relative_url }}" alt="Prometheus graph" style="border:1px solid #eee;max-width:100%" />
+        <img src="/docs/images/{{ page.version.version }}/kubernetes-prometheus-graph.png" alt="Prometheus graph" style="border:1px solid #eee;max-width:100%" />
 
     {{site.data.alerts.callout_info}}
     Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in [Access the DB Console]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#step-4-access-the-db-console) and then point your browser to [http://localhost:8080/_status/vars](http://localhost:8080/_status/vars).
@@ -174,11 +174,11 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
     1. Go to [http://localhost:9093](http://localhost:9093/) in your browser. The screen should look like this:
 
-        <img src="{{ 'images/{{ page.version.version }}/kubernetes-alertmanager-home.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
+        <img src="/docs/images/{{ page.version.version }}/kubernetes-alertmanager-home.png" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
 1. Ensure that the Alertmanagers are visible to Prometheus by opening [http://localhost:9090/status](http://localhost:9090/status). The screen should look like this:
 
-    <img src="{{ 'images/{{ page.version.version }}/kubernetes-prometheus-alertmanagers.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/kubernetes-prometheus-alertmanagers.png" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
 1. Add CockroachDB's starter [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alert-rules.yaml):
 
@@ -193,11 +193,11 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Ensure that the rules are visible to Prometheus by opening [http://localhost:9090/rules](http://localhost:9090/rules). The screen should look like this:
 
-    <img src="{{ 'images/{{ page.version.version }}/kubernetes-prometheus-alertrules.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/kubernetes-prometheus-alertrules.png" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
 1. Verify that the `TestAlertManager` example alert is firing by opening [http://localhost:9090/alerts](http://localhost:9090/alerts). The screen should look like this:
 
-    <img src="{{ 'images/{{ page.version.version }}/kubernetes-prometheus-alerts.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/kubernetes-prometheus-alerts.png" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
 1. To remove the example alert:
     1. Use the `kubectl edit` command to open the rules for editing:

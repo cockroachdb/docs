@@ -171,7 +171,7 @@ Now open the DB Console at `http://localhost:8080` and click **Metrics** in the 
 
 Scroll down a bit and hover over the **Replicas per Node** graph. Because CockroachDB replicates each piece of data 3 times by default, the replica count on each of your 3 nodes should be identical:
 
-<img src="{{ 'images/{{ page.version.version }}/ui_replicas_migration.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replicas_migration.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 7. Add 3 nodes on "cloud 2"
 
@@ -223,7 +223,7 @@ $ cockroach start \
 
 Back on the **Overview** dashboard in DB Console, hover over the **Replicas per Node** graph again. Because you used [`--locality`]({% link {{ page.version.version }}/configure-replication-zones.md %}#descriptive-attributes-assigned-to-nodes) to specify that nodes are running on 2 clouds, you'll see an approximately even number of replicas on each node, indicating that CockroachDB has automatically rebalanced replicas across both simulated clouds:
 
-<img src="{{ 'images/{{ page.version.version }}/ui_replicas_migration2.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replicas_migration2.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 Note that it takes a few minutes for the DB Console to show accurate per-node replica counts on hover. This is why the new nodes in the screenshot above show 0 replicas. However, the graph lines are accurate, and you can click **View node list** in the **Summary** area for accurate per-node replica counts as well.
 
@@ -242,7 +242,7 @@ $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING constraints=
 
 Back on the **Overview** dashboard in the DB Console, hover over the **Replicas per Node** graph again. Very soon, you'll see the replica count double on nodes 4, 5, and 6 and drop to 0 on nodes 1, 2, and 3:
 
-<img src="{{ 'images/{{ page.version.version }}/ui_replicas_migration3.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replicas_migration3.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 This indicates that all data has been migrated from cloud 1 to cloud 2. In a real cloud migration scenario, at this point you would update the load balancer to point to the nodes on cloud 2 and then stop the nodes on cloud 1. But for the purpose of this local simulation, there's no need to do that.
 

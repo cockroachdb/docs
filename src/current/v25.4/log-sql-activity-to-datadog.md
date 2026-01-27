@@ -151,7 +151,7 @@ Each `sampled_query` and `sampled_transaction` event has an `event.TransactionID
 1. Navigate to [**Datadog > Logs**](https://app.datadoghq.com/logs).
 1. Search for `@event.EventType:(sampled_query OR sampled_transaction)` to see the logs for the query and transaction events that are emitted. For example:
 
-<img src="{{ 'images/{{ page.version.version }}/datadog-telemetry-logs.png' | relative_url }}" alt="Datadog Telemetry Logs" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/datadog-telemetry-logs.png" alt="Datadog Telemetry Logs" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
