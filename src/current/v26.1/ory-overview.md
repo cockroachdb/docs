@@ -13,7 +13,7 @@ docs_area: Integrate
 
 The following diagram shows the relationship between Ory Hydra, Kratos and Keto:
 
-<img src="{{ 'images/{{ page.version.version }}/integrate-ory-architecture-overview.png' | relative_url }}" alt="Ory Architecture Overview"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+<img src="/docs/images/{{ page.version.version }}/integrate-ory-architecture-overview.png" alt="Ory Architecture Overview"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 ## Ory components
 
@@ -25,11 +25,11 @@ The OAuth 2.0 authorization framework enables a third-party application to obtai
 
 The following diagram shows the series of requests made between a user, an application client, and an underlying authorization server:
 
-<img src="{{ 'images/{{ page.version.version }}/integrate-ory-oauth2-flow.png' | relative_url }}" alt="OAuth2 Flow"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+<img src="/docs/images/{{ page.version.version }}/integrate-ory-oauth2-flow.png" alt="OAuth2 Flow"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 This sequence diagram illustrates the OAuth 2.0 authorization flow as a series of requests and responses, using Ory Hydra as the authorization server:
 
-<img src="{{ 'images/{{ page.version.version }}/integrate-ory-hydra-flow.png' | relative_url }}" alt="Interaction flow using Ory Hydra"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+<img src="/docs/images/{{ page.version.version }}/integrate-ory-hydra-flow.png" alt="Interaction flow using Ory Hydra"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 The diagram depicts the interactions between four key components:
 
@@ -65,7 +65,7 @@ Kratos enables users to sign up and manage their profiles without administrative
 
 The following diagram demonstrates how an API Client might interact with Ory Kratos:
 
-<img src="{{ 'images/{{ page.version.version }}/integrate-ory-kratos-registration.png' | relative_url }}" alt="Kratos Registration"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+<img src="/docs/images/{{ page.version.version }}/integrate-ory-kratos-registration.png" alt="Kratos Registration"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 ### Ory Keto
 
@@ -85,7 +85,7 @@ When you ask Keto, "Is user Bob allowed to view document X?" the system checks w
 
 The following diagram illustrates the object relationships that Ory Keto enables:
 
-<img src="{{ 'images/{{ page.version.version }}/integrate-ory-permission-graph.png' | relative_url }}" alt="Permission Graph"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+<img src="/docs/images/{{ page.version.version }}/integrate-ory-permission-graph.png" alt="Permission Graph"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 ## Integrate with Ory
 

@@ -21,7 +21,7 @@ The **Slow Requests** dashboard displays the following time series graphs:
 
 ## Slow Raft Proposals
 
-<img src="{{ 'images/{{ page.version.version }}/ui_slow_raft.png' | relative_url }}" alt="DB Console slow Raft proposals graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_slow_raft.png" alt="DB Console slow Raft proposals graph" style="border:1px solid #eee;max-width:100%" />
 
 The **Slow Raft Proposals** graph displays requests that have been stuck for longer than usual in [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 
@@ -33,7 +33,7 @@ Slow Raft Proposals | The number of requests that have been stuck for longer tha
 
 ## Slow DistSender RPCs
 
-<img src="{{ 'images/{{ page.version.version }}/ui_slow_distsender.png' | relative_url }}" alt="DB Console slow DistSender RPCs graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_slow_distsender.png" alt="DB Console slow DistSender RPCs graph" style="border:1px solid #eee;max-width:100%" />
 
 The **Slow DistSender RPCs** graph displays requests that have been stuck for longer than usual in [`DistSender`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender).
 
@@ -45,7 +45,7 @@ Slow DistSender RPCs | The number of requests that have been stuck for longer th
 
 ## Slow Lease Acquisitions
 
-<img src="{{ 'images/{{ page.version.version }}/ui_slow_lease.png' | relative_url }}" alt="DB Console slow lease acquisitions graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_slow_lease.png" alt="DB Console slow lease acquisitions graph" style="border:1px solid #eee;max-width:100%" />
 
 The **Slow Lease Acquisitions** graph displays requests that have been stuck for longer than usual while attempting to acquire a [lease]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases).
 
@@ -57,7 +57,7 @@ Slow Lease Acquisitions | The number of requests that have been stuck for longer
 
 ## Slow Latch Acquisitions
 
-<img src="{{ 'images/{{ page.version.version }}/ui_slow_latch.png' | relative_url }}" alt="DB Console slow latch acquisitions graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_slow_latch.png" alt="DB Console slow latch acquisitions graph" style="border:1px solid #eee;max-width:100%" />
 
 The **Slow Latch Acquisitions** graph displays requests that have been stuck for longer than usual while attempting to acquire a [latch]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#latch-manager).
 
