@@ -45,7 +45,7 @@ SELECT st_equals(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.9
 (1 row)
 ~~~
 
-<img src="{{ 'images/v24.1/geospatial/st_equals_true.png' | relative_url }}" alt="ST_Equals - true" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geospatial/st_equals_true.png" alt="ST_Equals - true" style="border:1px solid #eee;max-width:100%" />
 
 ### False
 
@@ -65,7 +65,7 @@ SELECT st_equals(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.9
 (1 row)
 ~~~
 
-<img src="{{ 'images/v24.1/geospatial/st_equals_false.png' | relative_url }}" alt="ST_Equals - false" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geospatial/st_equals_false.png" alt="ST_Equals - false" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

@@ -53,7 +53,7 @@ See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.
 
 ## Replicas per Node
 
-<img src="{{ 'images/v24.1/ui_replicas_per_node.png' | relative_url }}" alt="DB Console Replicas per node graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replicas_per_node.png" alt="DB Console Replicas per node graph" style="border:1px solid #eee;max-width:100%" />
 
 Ranges are subsets of your data, which are replicated to ensure survivability. Ranges are replicated to a configurable number of CockroachDB nodes.
 
@@ -65,7 +65,7 @@ For details about how to control the number and location of replicas, see [Repli
 
 ## Capacity
 
-<img src="{{ 'images/v24.1/ui_capacity.png' | relative_url }}" alt="DB Console Capacity graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_capacity.png" alt="DB Console Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
 You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster]({% link {{ page.version.version }}/cockroach-start.md %})).
 

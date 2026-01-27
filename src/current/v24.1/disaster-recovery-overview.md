@@ -24,7 +24,7 @@ As you evaluate CockroachDB's disaster recovery features, consider your organiza
 
 For example, when you use backups:
 
-<img src="{{ 'images/v24.1/rpo-rto.png' | relative_url }}" alt="Simulating RPO and RTO. With RPO representing the tolerable data loss, and RTO representing the tolerable time to recovery." style="border:0px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/rpo-rto.png" alt="Simulating RPO and RTO. With RPO representing the tolerable data loss, and RTO representing the tolerable time to recovery." style="border:0px solid #eee;max-width:100%" />
 
 For a comparison of CockroachDB resiliency features, refer to the following sections:
 
