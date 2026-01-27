@@ -106,32 +106,127 @@ Automatic user provisioning does not assign any privileges by itself. Newly prov
 - Roles are granted manually via SQL after user creation.
 {{site.data.alerts.end}}
 
-#### Auditing provisioned users
+## Managing auto-provisioned users
 
-You can identify automatically provisioned users by viewing their role options:
+When automatic user provisioning is enabled, you can identify and manage auto-provisioned users using the following methods:
+
+### Viewing provisioned users
+
+Auto-provisioned users can be identified by their `PROVISIONSRC` role option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW ROLES;
+-- View all auto-provisioned users (users with PROVISIONSRC role option)
+SELECT * FROM [SHOW USERS] AS u
+WHERE EXISTS (
+  SELECT 1 FROM unnest(u.options) AS opt
+  WHERE opt LIKE 'PROVISIONSRC=oidc:%'
+);
 ~~~
 
-Example output:
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- View all manually created users (users without PROVISIONSRC role option)
+SELECT * FROM [SHOW USERS] AS u
+WHERE NOT EXISTS (
+  SELECT 1 FROM unnest(u.options) AS opt
+  WHERE opt LIKE 'PROVISIONSRC=oidc:%'
+);
+~~~
+
+Example output from `SHOW USERS`:
 
 ~~~txt
-  username  |                       options                        | member_of
-------------+------------------------------------------------------+-----------
-  alice     | {PROVISIONSRC=oidc:https://accounts.google.com}      | {developers}
-  bob       | {PROVISIONSRC=oidc:https://accounts.google.com}      | {analysts}
-  charlie   |                                                      | {admin}
+  username  |                       options                        | member_of | estimated_last_login_time
+------------+------------------------------------------------------+-----------+----------------------------
+  alice     | {PROVISIONSRC=oidc:https://accounts.google.com}      | {developers} | 2025-08-04 19:18:00.201402+00
+  bob       | {PROVISIONSRC=oidc:https://accounts.google.com}      | {analysts}   | 2025-08-03 14:22:15.102938+00
+  charlie   |                                                      | {admin}      | NULL
 ~~~
 
 Users provisioned via OIDC will have `PROVISIONSRC=oidc:<provider_url>` in their options column. Users created manually (like `charlie` in this example) will not have this option set.
 
-You can also filter to see only provisioned users:
+### Last-login tracking for usage and dormancy
+
+The `estimated_last_login_time` column in the output of `SHOW USERS` tracks when users last authenticated. This can help identify dormant accounts that may need review or removal.
+
+{{site.data.alerts.callout_info}}
+`estimated_last_login_time` is computed on a best-effort basis and may not capture every login event due to asynchronous updates.
+{{site.data.alerts.end}}
+
+**To identify potentially dormant auto-provisioned users:**
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT * FROM [SHOW USERS] WHERE "options" LIKE '%PROVISIONSRC%';
+SELECT u.username, u.estimated_last_login_time
+FROM [SHOW USERS] AS u
+WHERE EXISTS (
+  SELECT 1 FROM unnest(u.options) AS opt
+  WHERE opt LIKE 'PROVISIONSRC=oidc:%'
+) AND (
+  u.estimated_last_login_time IS NULL OR
+  u.estimated_last_login_time < NOW() - INTERVAL '90 days'
+)
+ORDER BY u.estimated_last_login_time DESC NULLS LAST;
+~~~
+
+### Cleaning up users removed from the identity provider
+
+Auto-provisioned users who have been removed or deactivated in your identity provider will not be automatically removed from CockroachDB. To identify and clean up these orphaned accounts:
+
+**Step 1: Export auto-provisioned users from CockroachDB**
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Export list of auto-provisioned usernames for comparison with your IdP
+SELECT u.username FROM [SHOW USERS] AS u
+WHERE EXISTS (
+  SELECT 1 FROM unnest(u.options) AS opt
+  WHERE opt LIKE 'PROVISIONSRC=oidc:%'
+);
+~~~
+
+**Step 2: Cross-reference with your identity provider**
+
+Use your organization's identity management tools to verify which of these users still exist in your IdP. The specific method depends on your identity provider (Okta, Google Workspace, Azure AD, etc.).
+
+**Step 3: Remove orphaned users**
+
+Before dropping users confirmed to no longer exist in your identity provider, check for any privileges that were granted directly to the user:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Check for direct grants to the user (privileges inherited through roles won't block DROP USER)
+SHOW GRANTS FOR username;
+~~~
+
+If any direct grants exist, revoke them before dropping the user. For users confirmed to no longer exist in your identity provider:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Remove users that no longer exist in the identity provider
+DROP USER username1, username2, username3;
+~~~
+
+{{site.data.alerts.callout_info}}
+Users cannot be dropped if they have direct privilege grants or own database objects. For complete requirements, refer to [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}). When using both automatic user provisioning and OIDC authorization, consider granting privileges primarily through roles (mapped to IdP groups) rather than directly to users to simplify cleanup operations.
+{{site.data.alerts.end}}
+
+### Restrictions on auto-provisioned users
+
+Users created through automatic provisioning have specific restrictions:
+
+- **Password changes**: Auto-provisioned users cannot change their own passwords using `ALTER USER`, even if the cluster setting `sql.auth.change_own_password.enabled` is true.
+- **PROVISIONSRC modification**: The `PROVISIONSRC` role option cannot be modified or removed once set.
+- **Authentication method**: These users must authenticate through OIDC; password-based authentication is not available.
+
+Attempting to change the password of an auto-provisioned user will result in an error:
+
+~~~ sql
+ALTER USER provisioned_user WITH PASSWORD 'newpassword';
+~~~
+~~~
+ERROR: cannot alter PASSWORD/PROVISIONSRC option for provisioned user provisioned_user
 ~~~
 
 ### Step 4: Confirm configuration
@@ -256,7 +351,7 @@ Potential issues to investigate may pertain to:
 
 1. **Regularly audit IdP groups**: Review and clean up group memberships in your identity provider to ensure they reflect current access requirements.
 
-1. **User provisioning**: If using automatic user provisioning (`security.provisioning.oidc.enabled = true`), ensure your OIDC provider is properly secured and only trusted users can authenticate. Monitor provisioned users regularly to ensure only authorized users are being created. If not using automatic provisioning, ensure all users are created in CockroachDB before they need access to the DB Console.
+1. **User provisioning**: If using automatic user provisioning (`security.provisioning.oidc.enabled = true`), ensure your OIDC provider is properly secured and only trusted users can authenticate. Regularly review auto-provisioned users using the methods described in [Manage auto-provisioned users](#manage-auto-provisioned-users) to identify accounts that may need deprovisioning. If not using automatic provisioning, ensure all users are created in CockroachDB before they need access to the DB Console.
 
 ## See also
 
