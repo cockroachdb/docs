@@ -241,7 +241,7 @@ This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been 
 {% if page.cloud != true -%}
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
 
-<img src="{{ 'images/v22.2/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v23.1/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
 
 {% endif -%}
 

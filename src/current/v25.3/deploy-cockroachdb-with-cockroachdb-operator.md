@@ -42,7 +42,7 @@ If you want to secure your cluster to use TLS certificates for all network commu
 
 ### Localities
 
-CockroachDB clusters use localities to efficiently distribute replicas. This is especially important in multi-region deployments. With the {{ site.data.products.cockroachdb-operator }}, you specify mappings between locality levels and the location on a Kubernetes node where the value for that locality can be found.
+CockroachDB clusters use localities to efficiently distribute replicas. This is especially important for [multi-region deployments](#multi-region-deployments). With the {{ site.data.products.cockroachdb-operator }}, you specify mappings between locality levels and the location on a Kubernetes node where the value for that locality can be found.
 
 In cloud provider deployments (e.g., [GKE](#hosted-gke), [EKS](#hosted-eks), or [AKS](#hosted-aks)), the [`topology.kubernetes.io/region`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesioregion) and [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) values on Kubernetes nodes are populated by cloud provider. For further granularity, you can define arbitrary locality labels (e.g., `province`, `datacenter`, `rack`), but these need to be applied individually to the Kubernetes node when initialized so that CockroachDB can understand where the node lives and distribute replicas accordingly.
 
@@ -61,6 +61,15 @@ When starting Kubernetes, select machines with at least 4 vCPUs and 16 GiB of me
 ### Storage
 
 Kubernetes deployments use external persistent volumes that are often replicated by the provider. CockroachDB replicates data automatically, and this redundant layer of [replication]({% link {{ page.version.version }}/architecture/overview.md %}#replication) can impact performance. Using [local volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local) may improve performance.
+
+### Multi-region deployments
+
+The following deployment requirements and best practices apply to multi-region deployments with the {{ site.data.products.cockroachdb-operator }}:
+
+- Plan an operator deployment in each region. Each operator handles CockroachDB node management in its own region, so you must factor that there are multiple operator deployments into your upgrade and maintenance strategy to ensure availability.
+- VPC peering and CoreDNS are needed to resolve services and discovery across regions. Refer to the documentation for your cloud solution to configure your cross-region network accordingly.
+- Make sure that region is part of your [locality](#localities) configuration and nodes are tagged consistently with their deployment region. For deployments with a cloud service provider this is handled automatically, but must be applied manually for bare metal deployments.
+- A single certificate authority (CA) across all regions is required. One namespace per region is recommended to simplify certificate management.
 
 ## Step 1. Start Kubernetes
 
@@ -252,7 +261,21 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
     If you intend to deploy CockroachDB nodes across multiple different regions, follow the additional steps described in [Deploy across multiple regions](#deploy-across-multiple-regions).
     {{site.data.alerts.callout_end}}
 
-1. Uncomment and modify `cockroachdb.crdbCluster.resources` in the values file with the CPU and memory requests and limits for each node to use. The default values are 4vCPU and 16GiB of memory:
+1. Modify `cockroachdb.crdbCluster.podTemplate.spec.resources` in the values file with the CPU and memory limits and requests for each node to use. For example, to define default values of 4vCPU and 16GiB of memory:
+
+    ~~~ yaml
+    cockroachdb:
+      crdbCluster:
+        podTemplate:
+          spec:
+            resources:
+              limits:
+                cpu: 4000m
+                memory: 16Gi
+              requests:
+                cpu: 4000m
+                memory: 16gi
+    ~~~
 
     For more information on configuring node resource allocation, refer to [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-operator.md %})
 
@@ -435,13 +458,18 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
     cockroach start --locality region=us-central1,zone=us-central1-c,dc=dc2
     ~~~
 
-    Optionally, review the `cockroachdb.crdbCluster.topologySpreadConstraints` configuration and set `topologyKey` to the `nodeLabel` value of a locality level that has distinct values for each node. By default the lowest locality level is `zone`, so the following configuration sets that value as the `topologyKey`:
+    Optionally, review the `cockroachdb.crdbCluster.podTemplate.spec.topologySpreadConstraints` configuration and set `topologyKey` to the `nodeLabel` value of a locality level that has distinct values for each node. By default the lowest locality level is `zone`, so the following configuration sets that value as the `topologyKey`:
 
     ~~~ yaml
     cockroachdb:
       crdbCluster:
-        topologySpreadConstraints:
-          topologyKey: topology.kubernetes.io/zone
+        podTemplate:
+          spec:
+            topologySpreadConstraints:
+              # maxSkew defines the degree to which the pods can be unevenly distributed.
+            - maxSkew: 1
+              # topologyKey defines the key for topology spread.
+              topologyKey: topology.kubernetes.io/zone
     ~~~
 
     For more information on localities and topology planning, see the [topology patterns documentation]({% link {{ page.version.version }}/topology-patterns.md %}).
@@ -478,12 +506,9 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 
 #### Deploy across multiple regions
 
-The Helm chart supports specifying multiple region definitions in `cockroachdb.crdbCluster.regions` with their respective node counts. You must ensure the required networking is set up to allow for service discovery across regions. Also, ensure that the same CA cert is used across all the regions.
+The Helm chart supports specifying multiple region definitions in `cockroachdb.crdbCluster.regions` with their respective node counts. Make sure to review the prerequisites and best practices for a [multi-region deployment](#multi-region-deployments).
 
-For each region, modify the `regions` configuration as described in [Initialize the cluster](#initialize-the-cluster) and perform `helm install` against the respective Kubernetes cluster. While applying the installation in a given region, do the following:
-
-- Verify that the domain matches `cockroachdb.clusterDomain` in the values file.
-- Ensure that `cockroachdb.crdbCluster.regions` captures the information for regions that have already been deployed, including the current region. This allows CockroachDB in the current region to connect to clusters deployed in the existing regions.
+For each region, modify the `regions` configuration as described in [Initialize the cluster](#initialize-the-cluster) and perform `helm install` against the respective Kubernetes cluster.
 
 The following example shows a configuration across two regions, `us-central1` and `us-east1`, with 3 nodes in each cluster:
 
@@ -503,6 +528,10 @@ cockroachdb:
         domain: cluster.gke.gcp-us-east1
         namespace: cockroach-ns
 ~~~
+
+While applying the installation in a given region, do the following:
+- Verify that the domain matches `cockroachdb.clusterDomain` in the values file.
+- Ensure that `cockroachdb.crdbCluster.regions` captures the information for regions that have already been deployed, including the current region. This allows CockroachDB in the current region to connect to clusters deployed in the existing regions.
 
 ## Step 3. Use the built-in SQL client
 

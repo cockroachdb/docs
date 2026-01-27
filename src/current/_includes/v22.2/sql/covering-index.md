@@ -1,1 +1,0 @@
-An index that stores all the columns needed by a query is also known as a _covering index_ for that query.  When a query has a covering index, CockroachDB can use that index directly instead of doing an "index join" with the primary index, which is likely to be slower.

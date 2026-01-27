@@ -1,9 +1,5 @@
 ### View managed backups
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 To view a list of managed backups on a cluster with timestamps and their respective IDs, send a `GET` request to the `/v1/clusters/{cluster_id}/backups` endpoint:
 
 {% include_cached copy-clipboard.html %}

@@ -31,10 +31,6 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in limited access** and are subject to change. To begin validating a limited access feature and share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
-### Metrics Viewer and Cluster Monitor CockroachDB Cloud user roles
-
-The [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer) role grants read‑only access to observability metrics for a cluster without any administrative or data‑manipulation privileges. The [Cluster Monitor]({% link cockroachcloud/authorization.md %}#cluster-monitor) role provides read‑only visibility into SQL activity and workload health without broader administrative privileges. 
-
 ### Export logs to Azure Monitor
 
 [Exporting logs to Azure Monitor]({% link cockroachcloud/export-logs-advanced.md %}?filters=azure-monitor-log-export) from your CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
@@ -42,9 +38,6 @@ The [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer) 
 ### Export metrics to Azure Monitor
 
 [Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
-
-### Backup and restore with the Cloud API
-You can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}#managed-backups-and-restores) to handle [managed backups and restore operations]({% link cockroachcloud/backup-and-restore-overview.md %}). To express interest and try out these API endpoints, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### Egress private endpoints
 

@@ -1,3 +1,0 @@
-- Expressions (column, index, constraint) in tables.
-- Views.
-- Other user-defined functions.

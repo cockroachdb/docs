@@ -635,10 +635,6 @@ Where `{cluster_id}` is the ID of your cluster and `{secret_key}` is your API ke
 
 ## Managed backups and restores
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 For information on using the Cloud API to handle [managed backups and restore jobs]({% link cockroachcloud/backup-and-restore-overview.md %}), see the respective managed backup documentation for [Basic]({% link cockroachcloud/managed-backups-basic.md %}#cloud-api), [Standard]({% link cockroachcloud/managed-backups.md %}#cloud-api), and [Advanced]({% link cockroachcloud/managed-backups-advanced.md %}#cloud-api) plans.
 
 ## Change a cluster's plan

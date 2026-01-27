@@ -68,6 +68,12 @@
         ]
       },
       {
+        "title": "Docs MCP Server",
+        "urls": [
+          "/${VERSION}/docs-mcp-integration.html"
+        ]
+      },
+      {
         "title": "Cluster Settings",
         "urls": [
           "/${VERSION}/cluster-settings.html"
@@ -176,6 +182,12 @@
             "title": "<code>cockroach debug merge-logs</code>",
             "urls": [
               "/${VERSION}/cockroach-debug-merge-logs.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach debug pebble db analyze-data</code>",
+            "urls": [
+              "/${VERSION}/cockroach-debug-pebble-db-analyze-data.html"
             ]
           },
           {

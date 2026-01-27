@@ -86,7 +86,9 @@ Next, use the following code to again connect as the `maxroach` user but this ti
 
 Download the [`txn-sample.js`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.0/app/txn-sample.js) file, or create the file yourself and copy the code into it.
 
-{% include v2.1/client-transaction-retry.md %}
+{{site.data.alerts.callout_info}}
+With the default `SERIALIZABLE` isolation level, CockroachDB may require the client to retry a transaction in case of read/write contention. The code sample below shows how to implement retry logic.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ js
@@ -176,7 +178,9 @@ Next, use the following code to again connect as the `maxroach` user but this ti
 
 Download the [`txn-sample.js`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.0/app/insecure/txn-sample.js) file, or create the file yourself and copy the code into it.
 
-{% include v2.1/client-transaction-retry.md %}
+{{site.data.alerts.callout_info}}
+With the default `SERIALIZABLE` isolation level, CockroachDB may require the client to retry a transaction in case of read/write contention. The code sample below shows how to implement retry logic.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ js
