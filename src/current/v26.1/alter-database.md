@@ -833,6 +833,15 @@ SHOW ZONE CONFIGURATION FROM DATABASE movr;
 (1 row)
 ~~~
 
+In a multi-region database, the default zone configuration may include additional non-voting replicas (for example, to support [follower reads]({% link {{ page.version.version }}/follower-reads.md %})). The database's [survival goal]({% link {{ page.version.version }}/multiregion-overview.md %}#survival-goals) depends only on the number of voting replicas (`num_voters`), not the total number of replicas (`num_replicas`).
+
+If you want to reduce storage costs by removing non-voting replicas, you can use Zone Config Extensions to set `num_replicas` equal to `num_voters`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE movr ALTER LOCALITY REGIONAL CONFIGURE ZONE USING num_replicas = 3;
+~~~
+
 We will now use `ALTER DATABASE ... ALTER LOCALITY` to overwrite the `lease_preferences` field to add `us-west1` to the list of regions:
 
 {% include_cached copy-clipboard.html %}
