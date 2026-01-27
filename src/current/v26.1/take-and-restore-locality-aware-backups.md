@@ -45,6 +45,8 @@ When you run the `BACKUP` statement for a locality-aware backup, check the follo
 - {% include {{ page.version.version }}/backups/cap-parameter-ext-connection.md %}
 - {% include {{ page.version.version }}/backups/locality-aware-access.md %}
 
+Locality-aware backups attempt to match data to buckets in corresponding regions as specified. However, in cases involving unhealthy nodes, a locality-aware backup may be forced to write to a bucket in the default region instead. Use the [`STRICT`]({% link {{ page.version.version }}/backup-options.md %}) option when creating a locality-aware backup to force the backup to fail rather than writing to a bucket in a region that does not match the data being written.
+
 You can restore the backup by running:
 
 {% include_cached copy-clipboard.html %}
