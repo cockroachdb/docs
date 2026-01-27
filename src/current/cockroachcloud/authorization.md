@@ -66,7 +66,7 @@ This role can be assigned only at the organization scope.
 
 ### Billing Coordinator
 
-The **Billing Coordinator** role allows users to [manage billing and view usage for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
+The **Billing Coordinator** role allows users to [manage and view billing details, invoices, and usage for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
 
 ### Billing Viewer
 
