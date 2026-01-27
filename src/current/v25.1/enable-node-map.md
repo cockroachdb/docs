@@ -15,7 +15,7 @@ This page guides you through the process of setting up and enabling the Node Map
 
 
 
-<img src="{{ 'images/{{ page.version.version }}/ui-node-map-navigation3.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-node-map-navigation3.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 ## Set up and enable the Node Map
 
@@ -99,17 +99,17 @@ To start a new cluster with the correct `--locality` flags:
 
 1. [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
 
-1. If the node list displays, click the selector <img src="{{ 'images/{{ page.version.version }}/node-map.png' | relative_url }}" alt="Node map selector" /> and select **Node Map**.
+1. If the node list displays, click the selector <img src="/docs/images/{{ page.version.version }}/node-map.png" alt="Node map selector" /> and select **Node Map**.
 
 The following page is displayed:
 
-<img src="{{ 'images/{{ page.version.version }}/ui-node-map-before-license.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-node-map-before-license.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 ### Step 2. Set the Enterprise license and refresh the DB Console
 
 The Node Map should now be displaying the highest-level localities you defined:
 
-<img src="{{ 'images/{{ page.version.version }}/ui-node-map-after-license.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-node-map-after-license.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
 To be displayed on the world map, localities must be assigned a corresponding latitude and longitude.
@@ -140,7 +140,7 @@ For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [L
 
 Refresh the DB Console to see the updated Node Map:
 
-<img src="{{ 'images/{{ page.version.version }}/ui-node-map-complete.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-node-map-complete.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 ### Step 5. Navigate the Node Map
 
@@ -148,11 +148,11 @@ To navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` re
 
 1. Click the map component marked as **region=us-east-1** on the Node Map. The [locality component]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#locality-component) for the datacenter is displayed.
 
-     <img src="{{ 'images/{{ page.version.version }}/ui-node-map-navigation1.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+     <img src="/docs/images/{{ page.version.version }}/ui-node-map-navigation1.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 1. Click the datacenter component marked as **datacenter=us-east-1a**. The individual [node components]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-component) are displayed.
 
-     <img src="{{ 'images/{{ page.version.version }}/ui-node-map-navigation2.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+     <img src="/docs/images/{{ page.version.version }}/ui-node-map-navigation2.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 1. To navigate back to the cluster view, either click **Cluster** in the breadcrumb trail at the top of the Node Map, or click **Up to REGION=US-EAST-1** and then click **Up to CLUSTER** in the lower left-hand side of the Node Map.
 
@@ -165,7 +165,7 @@ To navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` re
 
 To verify all requirements, navigate to the [**Localities**]({% link {{ page.version.version }}/ui-debug-pages.md %}#configuration) debug page in the DB Console.
 
-<img src="{{ 'images/{{ page.version.version }}/ui-localities-debug.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-localities-debug.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 The **Localities** debug page displays the following:
 

@@ -20,7 +20,7 @@ Select **Collapse Nodes** to display the mean latencies of each locality, depend
 
 Each cell in the matrix displays the round-trip latency in milliseconds between two nodes in your cluster. Round-trip latency includes the return time of a packet. Latencies are color-coded by their standard deviation from the mean latency on the network: green for lower values, and blue for higher. Nodes with the lowest latency are displayed in darker green, and nodes with the highest latency are displayed in darker blue.
 
-<img src="{{ 'images/{{ page.version.version }}/ui_network_latency_matrix.png' | relative_url }}" alt="DB Console Network Latency matrix" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_network_latency_matrix.png" alt="DB Console Network Latency matrix" style="border:1px solid #eee;max-width:100%" />
 
 Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to display more details:
 
@@ -34,7 +34,7 @@ On a [typical multi-region cluster]({% link {{ page.version.version }}/demo-low-
 
 For instance, the cluster shown above has nodes in `us-west1`, `us-east1`, and `europe-west2`. Latencies are highest between nodes in `us-west1` and `europe-west2`, which span the greatest distance. This is especially clear when sorting by region or availability zone and collapsing nodes:
 
-<img src="{{ 'images/{{ page.version.version }}/ui_network_latency_collapsed_nodes.png' | relative_url }}" alt="DB Console Network Latency collapsed nodes" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_network_latency_collapsed_nodes.png" alt="DB Console Network Latency collapsed nodes" style="border:1px solid #eee;max-width:100%" />
 
 ### No connections
 
@@ -45,7 +45,7 @@ Nodes that have completely lost connectivity are color-coded depending on connec
 
 This information can help you diagnose a network partition in your cluster.
 
-<img src="{{ 'images/{{ page.version.version }}/ui_network_latency_matrix_suspect_node.png' | relative_url }}" alt="DB Console Network Latency suspect node" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_network_latency_matrix_suspect_node.png" alt="DB Console Network Latency suspect node" style="border:1px solid #eee;max-width:100%" />
 
 Hover over a cell to display more details:
 

@@ -235,7 +235,7 @@ In this example, we will generate the convex hull of a single geometry.  The geo
 
 1. Paste the JSON emitted in the previous step into [geojson.io](http://geojson.io) and you should see an image like the following, which shows the convex hull surrounding the locations of [most of the independent bookstores in New York State](https://www.bookweb.org/member_directory/search/ABAmember/results/0/0/ny/0):
 
-    <img src="{{ 'images/{{ page.version.version }}/geospatial/st_convexhull.png' | relative_url }}" alt="ST_ConvexHull example" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/geospatial/st_convexhull.png" alt="ST_ConvexHull example" style="border:1px solid #eee;max-width:100%" />
 
 1. Finally, drop the temporary table if you no longer need it:
 

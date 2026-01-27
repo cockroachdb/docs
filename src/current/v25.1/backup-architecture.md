@@ -27,7 +27,7 @@ At a high level, CockroachDB performs the following tasks when running a backup 
 
 The following diagram illustrates the flow from `BACKUP` statement through to a complete backup in cloud storage:
 
-<img src="{{ 'images/{{ page.version.version }}/backup-overview.png' | relative_url }}" alt="A flow diagram representing the process of a backup job from statement through to backup data stored." style="border:0px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/backup-overview.png" alt="A flow diagram representing the process of a backup job from statement through to backup data stored." style="border:0px solid #eee;max-width:100%" />
 
 ## Job creation phase
 
@@ -85,7 +85,7 @@ In the following diagram, nodes that contain replicas of the relevant key spans 
 
 While processing, the nodes emit progress data that tracks their backup work to the coordinator. In the diagram, **Node 3** and **Node 1** will send progress data to **Node 2**. The coordinator node will then aggregate the progress data into checkpoint files in the storage bucket. The checkpoint files provide a marker for the backup to resume after a retryable state, such as when it has been [paused]({% link {{ page.version.version }}/pause-job.md %}).
 
-<img src="{{ 'images/{{ page.version.version }}/backup-processing.png' | relative_url }}" alt="Three-node cluster exporting backup data from the leaseholders" style="border:0px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/backup-processing.png" alt="Three-node cluster exporting backup data from the leaseholders" style="border:0px solid #eee;max-width:100%" />
 
 ## Metadata writing phase
 
@@ -112,7 +112,7 @@ For example, in the following diagram there is a three-node cluster split across
 
 During a [restore]({% link {{ page.version.version }}/restore.md %}) job, the job creation statement will need access to each of the storage locations to read the metadata files in order to complete a successful restore.
 
-<img src="{{ 'images/{{ page.version.version }}/locality-aware-backups.png' | relative_url }}" alt="How a locality-aware backup writes to storage buckets in each region" style="border:0px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/locality-aware-backups.png" alt="How a locality-aware backup writes to storage buckets in each region" style="border:0px solid #eee;max-width:100%" />
 
 #### Job coordination on CockroachDB Standard and Basic clusters
 
