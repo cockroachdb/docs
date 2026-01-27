@@ -770,6 +770,8 @@ have a good estimate for this information for all of its followers, and since
 followers are expected to be behind (when they are not required as part of a
 quorum) *and* the aggregate thus scales like the count of such followers, it is
 difficult to meaningfully interpret this metric.",Log Entries,GAUGE,COUNT,AVG,NONE
+STORAGE,raftlog.size.max,Approximate size of the largest Raft log on the store.,Bytes,GAUGE,BYTES,AVG,NONE
+STORAGE,raftlog.size.total,Approximate size of all Raft logs on the store.,Bytes,GAUGE,BYTES,AVG,NONE
 STORAGE,raftlog.truncated,Number of Raft log entries truncated,Log Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,range.adds,Number of range additions,Range Ops,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,range.merges,Number of range merges,Range Ops,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -1266,6 +1268,9 @@ APPLICATION,changefeed.buffer_pushback_nanos,Total time spent waiting while the 
 APPLICATION,changefeed.buffer_pushback_nanos.aggregator,Total time spent waiting while the buffer was full - between the kvfeed and the sink,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.buffer_pushback_nanos.rangefeed,Total time spent waiting while the buffer was full - between the rangefeed and the kvfeed,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.bytes.messages_pushback_nanos,Total time spent throttled for bytes quota,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.checkpoint.create_nanos,Time it takes to create a changefeed checkpoint,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.checkpoint.span_count,Number of spans in a changefeed checkpoint,Spans,HISTOGRAM,COUNT,AVG,NONE
+APPLICATION,changefeed.checkpoint.total_bytes,Total size of a changefeed checkpoint,Bytes,HISTOGRAM,BYTES,AVG,NONE
 APPLICATION,changefeed.checkpoint_hist_nanos,Time spent checkpointing changefeed progress,Changefeeds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.checkpoint_progress,The earliest timestamp of any changefeed's persisted checkpoint (values prior to this timestamp will never need to be re-emitted),Unix Timestamp Nanoseconds,GAUGE,TIMESTAMP_NS,AVG,NONE
 APPLICATION,changefeed.cloudstorage_buffered_bytes,The number of bytes buffered in cloudstorage sink files which have not been emitted yet,Bytes,GAUGE,COUNT,AVG,NONE
@@ -2245,6 +2250,7 @@ APPLICATION,jobs.row_level_ttl.fail_or_cancel_completed,Number of row_level_ttl 
 APPLICATION,jobs.row_level_ttl.fail_or_cancel_failed,Number of row_level_ttl jobs which failed with a non-retriable error on their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.row_level_ttl.fail_or_cancel_retry_error,Number of row_level_ttl jobs which failed with a retriable error on their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.row_level_ttl.num_active_spans,Number of active spans the TTL job is deleting from.,num_active_spans,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.row_level_ttl.num_delete_batch_retries,Number of times the row level TTL job had to reduce the delete batch size and retry.,num_retries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.row_level_ttl.protected_age_sec,The age of the oldest PTS record protected by row_level_ttl jobs,seconds,GAUGE,SECONDS,AVG,NONE
 APPLICATION,jobs.row_level_ttl.protected_record_count,Number of protected timestamp records held by row_level_ttl jobs,records,GAUGE,COUNT,AVG,NONE
 APPLICATION,jobs.row_level_ttl.resume_completed,Number of row_level_ttl jobs which successfully resumed to completion,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2425,6 +2431,7 @@ the constituent parts of this metric are available on a per-peer basis and one c
 for how long a given peer has been unreachable",Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
 APPLICATION,schedules.BACKUP.failed,Number of BACKUP jobs failed,Jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,schedules.BACKUP.last-completed-time,The unix timestamp of the most recently completed backup by a schedule specified as maintaining this metric,Jobs,GAUGE,TIMESTAMP_SEC,AVG,NONE
+APPLICATION,schedules.BACKUP.last-completed-time-by-virtual_cluster,The unix timestamp of the most recently completed host scheduled backup by virtual cluster specified as maintaining this metric,Jobs,GAUGE,TIMESTAMP_SEC,AVG,NONE
 APPLICATION,schedules.BACKUP.protected_age_sec,The age of the oldest PTS record protected by BACKUP schedules,Seconds,GAUGE,SECONDS,AVG,NONE
 APPLICATION,schedules.BACKUP.protected_record_count,Number of PTS records held by BACKUP schedules,Records,GAUGE,COUNT,AVG,NONE
 APPLICATION,schedules.BACKUP.started,Number of BACKUP jobs started,Jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2629,8 +2636,12 @@ APPLICATION,sql.select.started.count,Number of SQL SELECT statements started,SQL
 APPLICATION,sql.select.started.count.internal,Number of SQL SELECT statements started (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.service.latency,Latency of SQL request execution,Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,sql.service.latency.internal,Latency of SQL request execution (internal queries),SQL Internal Statements,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,sql.statement_timeout.count,Count of statements that failed because they exceeded the statement timeout,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statement_timeout.count.internal,Count of statements that failed because they exceeded the statement timeout (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.statements.active,Number of currently active user SQL statements,Active Statements,GAUGE,COUNT,AVG,NONE
 APPLICATION,sql.statements.active.internal,Number of currently active user SQL statements (internal queries),SQL Internal Statements,GAUGE,COUNT,AVG,NONE
+APPLICATION,sql.statements.auto_retry.count,Number of SQL statement automatic retries,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statements.auto_retry.count.internal,Number of SQL statement automatic retries (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.stats.activity.update.latency,The latency of updates made by the SQL activity updater job. Includes failed update attempts,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,sql.stats.activity.updates.failed,Number of update attempts made by the SQL activity updater job that failed with errors,failed updates,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.stats.activity.updates.successful,Number of successful updates made by the SQL activity updater job,successful updates,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2650,8 +2661,12 @@ APPLICATION,sql.temp_object_cleaner.active_cleaners,number of cleaner tasks curr
 APPLICATION,sql.temp_object_cleaner.schemas_deletion_error,number of errored schema deletions by the temp object cleaner on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.temp_object_cleaner.schemas_deletion_success,number of successful schema deletions by the temp object cleaner on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.temp_object_cleaner.schemas_to_delete,number of schemas to be deleted by the temp object cleaner on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.transaction_timeout.count,Count of statements that failed because they exceeded the transaction timeout,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.transaction_timeout.count.internal,Count of statements that failed because they exceeded the transaction timeout (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.txn.abort.count,Number of SQL transaction abort errors,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.txn.abort.count.internal,Number of SQL transaction abort errors (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.txn.auto_retry.count,Number of SQL transaction automatic retries,SQL Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.txn.auto_retry.count.internal,Number of SQL transaction automatic retries (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.txn.begin.count,Number of SQL transaction BEGIN statements successfully executed,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.txn.begin.count.internal,Number of SQL transaction BEGIN statements successfully executed (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.txn.begin.started.count,Number of SQL transaction BEGIN statements started,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
