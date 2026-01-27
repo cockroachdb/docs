@@ -70,166 +70,7 @@ CREATE ROLE analysts;
 GRANT SELECT ON DATABASE analytics TO analysts;
 ~~~
 
-### Step 3: Configure user provisioning (optional)
-
-You can either pre-create users manually or enable automatic user provisioning.
-
-#### Option A: Pre-create users manually
-
-Create users in CockroachDB before they authenticate via OIDC:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE ROLE alice LOGIN;
-CREATE ROLE bob LOGIN;
-~~~
-
-#### Option B: Enable automatic user provisioning
-
-Enable automatic user creation on first OIDC login:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING security.provisioning.oidc.enabled = true;
-~~~
-
-When automatic provisioning is enabled:
-
-1. A user successfully authenticates via OIDC.
-1. If the user doesn't exist in CockroachDB, the user is created automatically.
-1. The user is tagged with the `PROVISIONSRC` role option: `oidc:<provider_url>`, where `<provider_url>` is the OIDC provider URL (e.g., `https://accounts.google.com`).
-1. If OIDC authorization is also enabled (configured in Steps 1-2), roles are synchronized immediately after user creation based on the user's IdP group memberships.
-
-{{site.data.alerts.callout_info}}
-Automatic user provisioning does not assign any privileges by itself. Newly provisioned users will only receive roles if:
-- OIDC authorization is enabled and the user's IdP groups match existing CockroachDB roles, or
-- Roles are granted manually via SQL after user creation.
-{{site.data.alerts.end}}
-
-## Managing auto-provisioned users
-
-When automatic user provisioning is enabled, you can identify and manage auto-provisioned users using the following methods:
-
-### Viewing provisioned users
-
-Auto-provisioned users can be identified by their `PROVISIONSRC` role option:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- View all auto-provisioned users (users with PROVISIONSRC role option)
-SELECT * FROM [SHOW USERS] AS u
-WHERE EXISTS (
-  SELECT 1 FROM unnest(u.options) AS opt
-  WHERE opt LIKE 'PROVISIONSRC=oidc:%'
-);
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- View all manually created users (users without PROVISIONSRC role option)
-SELECT * FROM [SHOW USERS] AS u
-WHERE NOT EXISTS (
-  SELECT 1 FROM unnest(u.options) AS opt
-  WHERE opt LIKE 'PROVISIONSRC=oidc:%'
-);
-~~~
-
-Example output from `SHOW USERS`:
-
-~~~txt
-  username  |                       options                        | member_of | estimated_last_login_time
-------------+------------------------------------------------------+-----------+----------------------------
-  alice     | {PROVISIONSRC=oidc:https://accounts.google.com}      | {developers} | 2025-08-04 19:18:00.201402+00
-  bob       | {PROVISIONSRC=oidc:https://accounts.google.com}      | {analysts}   | 2025-08-03 14:22:15.102938+00
-  charlie   |                                                      | {admin}      | NULL
-~~~
-
-Users provisioned via OIDC will have `PROVISIONSRC=oidc:<provider_url>` in their options column. Users created manually (like `charlie` in this example) will not have this option set.
-
-### Last-login tracking for usage and dormancy
-
-The `estimated_last_login_time` column in the output of `SHOW USERS` tracks when users last authenticated. This can help identify dormant accounts that may need review or removal.
-
-{{site.data.alerts.callout_info}}
-`estimated_last_login_time` is computed on a best-effort basis and may not capture every login event due to asynchronous updates.
-{{site.data.alerts.end}}
-
-**To identify potentially dormant auto-provisioned users:**
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT u.username, u.estimated_last_login_time
-FROM [SHOW USERS] AS u
-WHERE EXISTS (
-  SELECT 1 FROM unnest(u.options) AS opt
-  WHERE opt LIKE 'PROVISIONSRC=oidc:%'
-) AND (
-  u.estimated_last_login_time IS NULL OR
-  u.estimated_last_login_time < NOW() - INTERVAL '90 days'
-)
-ORDER BY u.estimated_last_login_time DESC NULLS LAST;
-~~~
-
-### Cleaning up users removed from the identity provider
-
-Auto-provisioned users who have been removed or deactivated in your identity provider will not be automatically removed from CockroachDB. To identify and clean up these orphaned accounts:
-
-**Step 1: Export auto-provisioned users from CockroachDB**
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- Export list of auto-provisioned usernames for comparison with your IdP
-SELECT u.username FROM [SHOW USERS] AS u
-WHERE EXISTS (
-  SELECT 1 FROM unnest(u.options) AS opt
-  WHERE opt LIKE 'PROVISIONSRC=oidc:%'
-);
-~~~
-
-**Step 2: Cross-reference with your identity provider**
-
-Use your organization's identity management tools to verify which of these users still exist in your IdP. The specific method depends on your identity provider (Okta, Google Workspace, Azure AD, etc.).
-
-**Step 3: Remove orphaned users**
-
-Before dropping users confirmed to no longer exist in your identity provider, check for any privileges that were granted directly to the user:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- Check for direct grants to the user (privileges inherited through roles won't block DROP USER)
-SHOW GRANTS FOR username;
-~~~
-
-If any direct grants exist, revoke them before dropping the user. For users confirmed to no longer exist in your identity provider:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- Remove users that no longer exist in the identity provider
-DROP USER username1, username2, username3;
-~~~
-
-{{site.data.alerts.callout_info}}
-Users cannot be dropped if they have direct privilege grants or own database objects. For complete requirements, refer to [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}). When using both automatic user provisioning and OIDC authorization, consider granting privileges primarily through roles (mapped to IdP groups) rather than directly to users to simplify cleanup operations.
-{{site.data.alerts.end}}
-
-### Restrictions on auto-provisioned users
-
-Users created through automatic provisioning have specific restrictions:
-
-- **Password changes**: Auto-provisioned users cannot change their own passwords using `ALTER USER`, even if the cluster setting `sql.auth.change_own_password.enabled` is true.
-- **PROVISIONSRC modification**: The `PROVISIONSRC` role option cannot be modified or removed once set.
-- **Authentication method**: These users must authenticate through OIDC; password-based authentication is not available.
-
-Attempting to change the password of an auto-provisioned user will result in an error:
-
-~~~ sql
-ALTER USER provisioned_user WITH PASSWORD 'newpassword';
-~~~
-~~~
-ERROR: cannot alter PASSWORD/PROVISIONSRC option for provisioned user provisioned_user
-~~~
-
-### Step 4: Confirm configuration
+### Step 3: Confirm configuration
 
 1. On your identity provider, set up test users with memberships in groups that should be synced to CockroachDB roles.
 
@@ -316,7 +157,7 @@ Potential issues to investigate may pertain to:
 - **Userinfo endpoint**: If relying on userinfo fallback, ensure the endpoint is accessible and returns the expected JSON structure.
 - **Role name mismatches**: Remember that group names are normalized (typically lowercased). Check that your role names match the normalized group names.
 - **Empty groups**: Verify that users have group memberships in the IdP.
-- **User doesn't exist**: If automatic user provisioning is not enabled, ensure the user has been created in CockroachDB before attempting to log in. Alternatively, enable automatic user provisioning via `security.provisioning.oidc.enabled`.
+- **User doesn't exist**: Ensure the user has been created in CockroachDB before attempting to log in, or enable [automatic user provisioning]({% link {{ page.version.version }}/sso-db-console.md %}#manage-auto-provisioned-users).
 
 ### Common errors
 
@@ -333,7 +174,7 @@ Potential issues to investigate may pertain to:
 **Error**: User not found
 
 - **Cause**: The user doesn't exist in CockroachDB and automatic user provisioning is not enabled.
-- **Solution**: Either create the user in CockroachDB manually before they attempt to log into the DB Console, or enable automatic user provisioning by setting `security.provisioning.oidc.enabled = true`.
+- **Solution**: Either create the user in CockroachDB manually before they attempt to log into the DB Console, or enable [automatic user provisioning]({% link {{ page.version.version }}/sso-db-console.md %}#manage-auto-provisioned-users).
 
 ## Security considerations
 
@@ -351,7 +192,7 @@ Potential issues to investigate may pertain to:
 
 1. **Regularly audit IdP groups**: Review and clean up group memberships in your identity provider to ensure they reflect current access requirements.
 
-1. **User provisioning**: If using automatic user provisioning (`security.provisioning.oidc.enabled = true`), ensure your OIDC provider is properly secured and only trusted users can authenticate. Regularly review auto-provisioned users using the methods described in [Manage auto-provisioned users](#manage-auto-provisioned-users) to identify accounts that may need deprovisioning. If not using automatic provisioning, ensure all users are created in CockroachDB before they need access to the DB Console.
+1. **User provisioning**: If using [automatic user provisioning]({% link {{ page.version.version }}/sso-db-console.md %}#manage-auto-provisioned-users), ensure your OIDC provider is properly secured and only trusted users can authenticate. Regularly review auto-provisioned users to identify accounts that may need deprovisioning. If not using automatic provisioning, ensure all users are created in CockroachDB before they need access to the DB Console.
 
 ## See also
 

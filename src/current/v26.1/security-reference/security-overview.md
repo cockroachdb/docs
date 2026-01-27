@@ -81,7 +81,7 @@ docs_area: reference.security
       <td>&nbsp;</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link {{ page.version.version }}/oidc-authorization.md %}#step-3-configure-user-provisioning-optional">Automatic user provisioning</a> for OIDC authentication</td>
+      <td><a href="{% link {{ page.version.version }}/sso-db-console.md %}#step-3-configure-user-creation">Automatic user provisioning</a> for OIDC authentication</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
