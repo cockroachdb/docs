@@ -111,7 +111,7 @@ Replace:
 
 ### Get details about a trusted owner
 
-To [get details about a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-), send a `get` request to the `clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner-id}` endpoint as follows:
+To [get details about a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-), send a `GET` request to the `clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner-id}` endpoint as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
