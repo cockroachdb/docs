@@ -164,7 +164,7 @@ To test this functionality, you can generate a SQL query with a [Slow Execution]
     ~~~
 1. On the Insights page, in the **Columns** selector, check **Query Tags** and click **Apply**.
 1. For the row where **Statement Execution** is `SELECT pg_sleep()`, scroll to the right to see the key-value pairs from the SQL comment displayed in the **Query Tags** column.
-    <img src="{{ 'images/{{ page.version.version }}/query-tags.png' | relative_url }}" alt="Query tags" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/query-tags.png" alt="Query tags" style="border:1px solid #eee;max-width:100%" />
 1. On the same row, click on the **Latest Statement Execution ID** (the first column on the left) to open the [**Statement Execution** details](#statement-execution-details) page. These key-value pairs also appear on the **Overview** tab under **Query Tags**.
 
 ### Statement Execution details
@@ -222,11 +222,11 @@ The Workload Insights tab surfaces the following type of insights:
 
 The transaction or statement execution failed. The following screenshot shows a failed transaction execution:
 
-<img src="{{ 'images/{{ page.version.version }}/transaction_executions_failed.png' | relative_url }}" alt="Failed transaction execution" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction_executions_failed.png" alt="Failed transaction execution" style="border:1px solid #eee;max-width:100%" />
 
 The following screenshot shows the default details of the preceding failed transaction execution.
 
-<img src="{{ 'images/{{ page.version.version }}/transaction_execution_details_failed.png' | relative_url }}" alt="Failed transaction execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction_execution_details_failed.png" alt="Failed transaction execution details" style="border:1px solid #eee;max-width:100%" />
 
 The **Insights** column shows the name of the insight, in this case **Failed Execution**. The **Details** column provides the **Error Code** and **Error Message**. CockroachDB uses [PostgreSQL Error Codes](https://www.postgresql.org/docs/current/errcodes-appendix.html). In this example, Error Code `40001` is a `serialization_failure`.
 
@@ -234,7 +234,7 @@ The **Insights** column shows the name of the insight, in this case **Failed Exe
 
 The following screenshot shows the conditional details of the preceding failed transaction execution. In this case, there was a *serialization conflict*, also known as an *isolation conflict*, due to [transaction contention]({{ link_prefix }}performance-recipes.html#transaction-contention). (For transaction contention that causes *lock contention*, see [High Contention](#high-contention)).
 
-<img src="{{ 'images/{{ page.version.version }}/transaction_execution_details_failed_conditional.png' | relative_url }}" alt="Failed transaction execution details conditional" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction_execution_details_failed_conditional.png" alt="Failed transaction execution details conditional" style="border:1px solid #eee;max-width:100%" />
 
 To capture more information in the event of a failed transaction execution due to a serialization conflict, set the [`sql.contention.record_serialization_conflicts.enabled`]({{ link_prefix }}cluster-settings.html#setting-sql-contention-record-serialization-conflicts-enabled) cluster setting to `true` (default). With this setting enabled, when the **Error Code** is `40001` and the **Error Message** specifically has [`RETRY_SERIALIZABLE - failed preemptive refresh`]({{ link_prefix }}transaction-retry-error-reference.html#failed_preemptive_refresh)` due to conflicting locks`, a conditional **Failed Execution** section is displayed with **Conflicting Transaction** and **Conflicting Location** information.
 
@@ -248,11 +248,11 @@ To troubleshoot, refer to the performance tuning recipe for [identifying and unb
 
 The following screenshot shows the execution of a transaction flagged with **High Contention**:
 
-<img src="{{ 'images/{{ page.version.version }}/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eeqe;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction_execution.png" alt="Transaction execution" style="border:1px solid #eeqe;max-width:100%" />
 
 The following screenshot shows the execution details of the preceding transaction execution:
 
-<img src="{{ 'images/{{ page.version.version }}/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction_execution_details.png" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
 
 ### High Retry Count
 
@@ -273,11 +273,11 @@ The statement execution has resulted in one or more [index recommendations](#sch
 
 The following screenshot shows the statement execution of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
-<img src="{{ 'images/{{ page.version.version }}/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/statement_executions.png" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
 
 The following screenshot shows the execution details of the preceding statement execution:
 
-<img src="{{ 'images/{{ page.version.version }}/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/statement_execution_details.png" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
 
 The **Insights** column shows the name of the insight, in this case **Suboptimal Plan**. The **Details** column provides details on the insight, such as a **Description** with the cause of the suboptimal plan and a **Recommendation** with a `CREATE INDEX` statement. The final column contains a **Create Index** button. Click the **Create Index** button to execute the recommended statement to mitigate the cause of the insight.
 
@@ -299,7 +299,7 @@ This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been 
 
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) six or more times:
 
-<img src="{{ 'images/{{ page.version.version }}/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/schema_insight.png" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
 
 CockroachDB uses the threshold of six executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
 
