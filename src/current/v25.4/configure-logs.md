@@ -25,8 +25,8 @@ To prepare for the change and assess potential downstream impacts on your loggin
 
 To configure the logging behavior of a `cockroach` command, include one of these flags with the command:
 
-- `--log={yaml}`, where `{yaml}` is the [YAML payload](#yaml-payload)
-- `--log-config-file={yaml-file}`, where `{yaml-file}` is the path to a YAML file
+- [`--log={yaml}`]({% link {{ page.version.version }}/cockroach-start.md %}#logging), where `{yaml}` is the [YAML payload](#yaml-payload)
+- [`--log-config-file={yaml-file}`]({% link {{ page.version.version }}/cockroach-start.md %}#logging), where `{yaml-file}` is the path to a YAML file
 
 To disable logging, set `--log-dir` to a blank directory (`--log-dir=`) instead of using one of the other logging flags. Do not use `--log-dir=""`; this creates a new directory named `""` and stores log files in that directory.
 
@@ -83,7 +83,7 @@ Providing a logging configuration is optional. Any fields included in the YAML p
 When you provide a minimal logging configuration for `file-groups`, CockroachDB replaces the entire default `file-groups` structure instead of merging only the specified fields. As a result, all logging channels flow into the `default` file sink, which can produce noisy logs and rapid log rotation. Partial YAML overrides that merge with the default logging configuration are not supported. To avoid misconfiguration, validate your logging settings using the [`cockroach debug check-log-config`](#cockroach-debug-check-log-config) command.
 {{site.data.alerts.end}}
 
-To demonstrate this warning scenario, consider the following excerpt from the [default logging configuration](#default-logging-configuration) which has several file sinks followed by `stderr`. To view the full default logging configuration, refer to [this section](#default-logging-configuration). Note that each file sink has a `max-group-size: 100MiB`.
+To demonstrate this warning scenario, consider the following excerpt from the [default logging configuration](#default-logging-configuration) which has several file sinks followed by `stderr`. Note that each file sink has a `max-group-size: 100MiB`.
 
 ~~~ yaml
 ...
@@ -154,7 +154,7 @@ sinks:
 
 The `cockroach debug check-log-config` command helps you validate logging settings before starting or restarting nodes. It returns the YAML definitions and a URL to a visualization of the default logging configuration.
 
-When you run it without logging flags, it prints the [default log configuration](#default-logging-configuration). If you pass a logging flag (for example, `--log=...` or `--log-config-file=...`), the output shows the configuration after your YAML payload is applied, so you can confirm the final sink, channel, and formatting behaviors.
+When you run it without logging flags, it prints the [default log configuration](#default-logging-configuration). If you pass a logging flag (for example, [`--log=...` or `--log-config-file=...`]({% link {{ page.version.version }}/cockroach-start.md %}#logging)), the output shows the configuration after your YAML payload is applied, so you can confirm the final sink, channel, and formatting behaviors.
 
 ## Configure log sinks
 
