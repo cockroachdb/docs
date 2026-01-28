@@ -113,6 +113,15 @@ Statement | Usage
 [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %}) | Lists the users for all databases.
 [`SHOW DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/show-default-privileges.md %}) | Show the default privileges for objects created by specific roles/users in the current database.
 
+<a id="data-consistency-statements"></a>
+
+## Data consistency statements
+
+Statement | Usage
+----------|------------
+[`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) | Run data consistency validation checks against tables or databases.
+[`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}) | View issues detected by [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) data consistency validation jobs.
+
 <a id="transaction-management-statements"></a>
 
 ## Transaction control statements
