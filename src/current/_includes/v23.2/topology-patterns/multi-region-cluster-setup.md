@@ -1,6 +1,6 @@
 Each [multi-region pattern]({% link {{ page.version.version }}/topology-patterns.md %}#multi-region) assumes the following setup:
 
-<img src="/docs/images/{{ page.version.version }}/topology-patterns/topology_multi-region_hardware.png" alt="Multi-region hardware setup" style="max-width:100%" />
+<img src="{{ 'images/v23.2/topology-patterns/topology_multi-region_hardware.png' | relative_url }}" alt="Multi-region hardware setup" style="max-width:100%" />
 
 #### Hardware
 
