@@ -1,11 +1,16 @@
-# CockroachDB Docs
 
-This repository contains the source files for the CockroachDB documentation available at [cockroachlabs.com/docs](https://cockroachlabs.com/docs).
 
-## Suggest Improvements
+## Local Development for writers
 
-Want a topic added to the docs? Need additional details or clarification? See an error or other problem? Please [open an issue](https://github.com/cockroachdb/docs/issues).
+Prerequisites: [Docker](https://www.docker.com/products/docker-desktop/)
 
-## Resources
+```bash
+# Pull the docs builder image
+make docker-pull
 
-- [Code of conduct](CODE_OF_CONDUCT.md)
+# Serve docs locally with live reload
+make docker-serve
+```
+
+Open http://localhost:4000/docs/ in your browser. Changes to files will automatically reload.
+
