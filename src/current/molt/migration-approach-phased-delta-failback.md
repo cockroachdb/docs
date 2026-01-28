@@ -15,7 +15,7 @@ A *Phased Delta Migration with Failback Replication* involves [migrating data to
 
 This approach is comparable to the [Delta Migration]({% link molt/migration-approach-delta.md %}), but dividing the data into multiple phases allows each downtime window to be shorter, and it allows each phase of the migration to be less complex. Depending on how you divide the data, it also may allow your downtime windows to affect only a subset of users. For example, dividing the data per region could mean that, when migrating the data from Region A, application usage in Region B may remain unaffected. This approach may increase overall migration complexity: its duration is longer, you will need to do the work of partitioning the data, and you will have a longer period when you run both the source and the target database concurrently.
 
-[Failback replication]({% link molt/migration-considerations-rollback.md %}) keeps the source database up to date with changes that occur in the target database once the target database begins receiving write traffic. Failback replication ensures that, if something goes wrong during the migration process, traffic can easily be returned to source database without data loss. Like forward replication, in this approach, failback replication is run on a per-phase basis. It can persist indefinitely, until you're comfortable maintaining the target database as your sole data store.
+[Failback replication]({% link molt/migration-considerations-rollback.md %}) keeps the source database up to date with changes that occur in the target database once the target database begins receiving write traffic. Failback replication ensures that, if something goes wrong during the migration process, traffic can easily be returned to the source database without data loss. Like forward replication, in this approach, failback replication is run on a per-phase basis. It can persist indefinitely, until you're comfortable maintaining the target database as your sole data store.
 
 This approach is best for databases that are too large to migrate all at once, and in business cases where downtime must be minimal. It's also suitable for risk-averse situations in which a safe rollback path must be ensured. It can only be performed if your team can handle the complexity of this approach, and if your source database can easily be divided into the phases you need.
 
@@ -31,7 +31,7 @@ This page describes an example scenario. While the commands provided can be copy
 
 You have a moderately-sized (500GB) database that provides the data store for a web application. You want to migrate the entirety of this database to a new CockroachDB cluster. You will divide this migration into four geographic regions (A, B, C, and D).
 
-The application runs on a Kubernetes cluster.
+The application runs on a Kubernetes cluster with an NGINX Ingress Controller.
 
 **Estimated system downtime:** Less than 60 seconds per region.
 

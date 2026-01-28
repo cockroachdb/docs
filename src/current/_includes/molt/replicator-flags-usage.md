@@ -1,6 +1,6 @@
 Configure the following [MOLT Replicator]({% link molt/molt-replicator.md %}) flags for continuous replication. For details on all available flags, refer to [Replicator Flags]({% link molt/replicator-flags.md %}).
 
-{% if page.name == "migrate-load-replicate.md" or page.name == "delta-migration.md"  %}
+{% if page.name == "migrate-load-replicate.md" or page.name contains "delta"  %}
 <section class="filter-content" markdown="1" data-scope="postgres">
 |                                         Flag                                         |                                                                                                       Description                                                                                                        |
 |--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

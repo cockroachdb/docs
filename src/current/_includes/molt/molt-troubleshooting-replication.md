@@ -84,7 +84,7 @@ could not connect to source database: failed to connect to `user=migration_user 
 run SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput'); in source database
 ~~~
 
-**Resolution:** {% if page.name == "migrate-load-replicate.md" or page.name == "delta-migration.md" %}[Create the replication slot](#configure-source-database-for-replication){% else %}[Create the replication slot]({% link molt/delta-migration.md %}#configure-source-database-for-replication){% endif %} or verify the correct slot name:
+**Resolution:** {% if page.name == "migrate-load-replicate.md" or page.name contains "delta" %}[Create the replication slot](#configure-source-database-for-replication){% else %}[Create the replication slot]({% link molt/delta-migration-postgres.md %}#configure-source-database-for-replication){% endif %} or verify the correct slot name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -92,7 +92,7 @@ SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
 ~~~
 </section>
 
-{% if page.name == "migrate-resume-replication.md" page.name == "delta-migration.md" %}
+{% if page.name == "migrate-resume-replication.md" page.name contains "delta" %}
 ##### Resuming from stale location
 
 <section class="filter-content" markdown="1" data-scope="postgres">
@@ -177,7 +177,7 @@ Invalid GTIDs can occur when GTIDs are purged due to insufficient binlog retenti
 
 **Resolution:** Use a valid GTID from `SHOW MASTER STATUS` (MySQL < 8.0) or `SHOW BINARY LOG STATUS` (MySQL 8.0+) and ensure you're connecting to the primary host. If GTIDs are being purged, increase binlog retention.
 
-{% if page.name == "migrate-resume-replication.md" or page.name == "delta-migration.md" %}
+{% if page.name == "migrate-resume-replication.md" or page.name contains "delta" %}
 ##### Stale GTID from cache
 
 **Resolution:** Clear the `_replicator` database memo table:

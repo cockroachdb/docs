@@ -8,7 +8,7 @@ A [*Phased Delta Migration with Failback Replication*]({% link molt/migration-ap
 
 This approach is comparable to the [Delta Migration]({% link molt/migration-approach-delta.md %}), but dividing the data into multiple phases allows each downtime window to be shorter, and it allows each phase of the migration to be less complex. Depending on how you divide the data, it also may allow your downtime windows to affect only a subset of users. For example, dividing the data per region could mean that, when migrating the data from Region A, application usage in Region B may remain unaffected. This approach may increase overall migration complexity: its duration is longer, you will need to do the work of partitioning the data, and you will have a longer period when you run both the source and the target database concurrently.
 
-[Failback replication]({% link molt/migration-considerations-rollback.md %}) keeps the source database up to date with changes that occur in the target database once the target database begins receiving write traffic. Failback replication ensures that, if something goes wrong during the migration process, traffic can easily be returned to source database without data loss. Like forward replication, in this approach, failback replication is run on a per-phase basis. It can persist indefinitely, until you're comfortable maintaining the target database as your sole data store.
+[Failback replication]({% link molt/migration-considerations-rollback.md %}) keeps the source database up to date with changes that occur in the target database once the target database begins receiving write traffic. Failback replication ensures that, if something goes wrong during the migration process, traffic can easily be returned to the source database without data loss. Like forward replication, in this approach, failback replication is run on a per-phase basis. It can persist indefinitely, until you're comfortable maintaining the target database as your sole data store.
 
 This approach is best for databases that are too large to migrate all at once, and in business cases where downtime must be minimal. It's also suitable for risk-averse situations in which a safe rollback path must be ensured. It can only be performed if your team can handle the complexity of this approach, and if your source database can easily be divided into the phases you need.
 
@@ -24,17 +24,9 @@ This page describes an example scenario. While the commands provided can be copy
 
 You have a moderately-sized (500GB) database that provides the data store for a web application. You want to migrate the entirety of this database to a new CockroachDB cluster. You will divide this migration into four geographic regions (A, B, C, and D).
 
-The application runs on a Kubernetes cluster.
+The application runs on a Kubernetes cluster with an NGINX Ingress Controller.
 
 **Estimated system downtime:** Less than 60 seconds per region.
-
-## Step-by-step walkthroughs
-
-The following walkthroughs demonstrate how to use the MOLT tools to perform this migration for each supported source database:
-
-- [Phased Delta Migration with Failback Replication from PostgreSQL]({% link molt/phased-delta-failback-postgres.md %})
-- [Phased Delta Migration with Failback Replication from MySQL]({% link molt/phased-delta-failback-mysql.md %})
-- [Phased Delta Migration with Failback Replication from Oracle]({% link molt/phased-delta-failback-oracle.md %})
 
 ## Before the migration
 
@@ -93,6 +85,10 @@ ALTER DATABASE defaultdb CONFIGURE ZONE USING gc.ttlseconds = 300;
 
 For details, refer to [Protect Changefeed Data from Garbage Collection]({% link {{ site.current_cloud_version }}/protect-changefeed-data.md %}).
 {% endif %}
+
+## Migrating each phase
+
+Steps 3-12 are run for each phase of the data migration. When migrating the first phase, you will run through these steps for Region A. You will repeat these steps for the other regions during each subsequent migration phase.
 
 ## Step 3: Load data into CockroachDB
 
@@ -198,7 +194,9 @@ Perform the initial load of the source data.
 
 ## Step 4: Verify the initial data load
 
-Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and target data is consistent. This ensures that the data load was successful.
+In this step, you will use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and target data is consistent. This ensures that the data load was successful. Use MOLT Verify's [`--schema-filter`]({% link molt/molt-verify.md %}#flags) or [`--table-filter`]({% link molt/molt-verify.md %}#flags) to select only the tables that are relevant for the given phase.
+
+### Run MOLT Verify
 
 {% include molt/verify-output.md %}
 
@@ -212,11 +210,11 @@ Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and
 
 In this step, you will:
 
-- [Configure MOLT Replicator with the flags needed for your migration](#configure-molt-replicator).
-- [Start MOLT Replicator](#start-molt-replicator).
-- [Understand how to continue replication after an interruption](#continue-molt-replicator-after-an-interruption).
+- [Configure MOLT Replicator with the flags needed for your migration](#configure-molt-replicator-forward-replication).
+- [Start MOLT Replicator](#start-molt-replicator-forward-replication).
+- [Understand how to continue replication after an interruption](#continue-molt-replicator-after-an-interruption-forward-replication).
 
-### Configure MOLT Replicator
+### Configure MOLT Replicator (forward replication)
 
 When you run `replicator`, you can configure the following options for replication:
 
@@ -298,7 +296,7 @@ For guidelines on using and interpreting replication metrics, refer to [Replicat
 For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=oracle).
 </section>
 
-### Start MOLT Replicator
+### Start MOLT Replicator (forward replication)
 
 <a id="start-replicator"></a>
 
@@ -309,7 +307,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-1. Run the `replicator` command, using the same slot name that you specified with `--pglogical-replication-slot-name` and the publication name created by `--pglogical-publication-and-slot-drop-and-recreate` in the [Fetch command](#run-molt-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
+Run the `replicator` command, using the same slot name that you specified with `--pglogical-replication-slot-name` and the publication name created by `--pglogical-publication-and-slot-drop-and-recreate` in the [Fetch command](#run-molt-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -327,7 +325,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-1. Run the `replicator` command, specifying the GTID from the [checkpoint recorded during data load](#run-molt-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) and specify the path with `--userscript`.
+Run the `replicator` command, specifying the GTID from the [checkpoint recorded during data load](#run-molt-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) and specify the path with `--userscript`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -349,7 +347,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-1. Run the `replicator` command, specifying the backfill and starting SCN from the [checkpoint recorded during data load](#run-molt-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) and specify the path with `--userscript`.
+Run the `replicator` command, specifying the backfill and starting SCN from the [checkpoint recorded during data load](#run-molt-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) and specify the path with `--userscript`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -375,7 +373,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 
 #### Check that replication is working
 
-1. Verify that Replicator is processing changes successfully. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see connection and row processing messages:
+Verify that Replicator is processing changes successfully. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see connection and row processing messages:
 
     <section class="filter-content" markdown="1" data-scope="postgres">
     You should see periodic primary keepalive messages:
@@ -428,24 +426,54 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 
     These messages confirm successful replication. You can disable verbose logging after verifying the connection.
 
-### Continue MOLT Replicator after an interruption
+### Continue MOLT Replicator after an interruption (forward replication)
 
 {% include molt/replicator-resume-replication.md %}
 
 ## Step 7: Stop application traffic
 
-Once the inital data load has been verified and the target schema has been finalized, it's time to begin the cutover process. First, stop application traffic to the source. Scale down the Kubernetes cluster to zero pods. 
+Once the inital data load has been verified and the target schema has been finalized, it's time to begin the cutover process. First, stop application traffic to the source for this particular region.
+
+If the Kubernetes cluster that deploys the application has pre-region deployments (for example, `app-us`, `app-eu`, `app-apac`), you can scale down only the deployment for that region.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-kubectl scale deployment app --replicas=0
+kubectl scale deploy/app-eu --replicas=0
+~~~
+
+Or this can be handled by the NGINX Ingress Controller, by including the following to your NGINX configuration, ensuring that the conditional statement is suitable for your deployment:
+
+{% include_cached copy-clipboard.html %}
+~~~yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      if ($http_x_region = "eu") {
+        return 503;
+      }
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: api.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app
+            port:
+              number: 80
 ~~~
 
 {{ site.data.alerts.callout_danger }}
-Application downtime begins now.
+Application downtime begins now, for users in the given region.
 {{ site.data.alerts.end }}
 
-## Step 8: End forward replication
+## Step 8: Stop forward replication
 
 Before you can cut over traffic to the target, the changes to the source database need to finish being written to the target. Once the source is no longer receiving write traffic, MOLT Replicator will take some seconds to finish replicating the final changes. This is known as _drainage_.
 
@@ -455,35 +483,299 @@ Before you can cut over traffic to the target, the changes to the source databas
 
 Repeat [Step 4](#step-4-verify-the-initial-data-load) to verify the updated data.
 
-## Step 10: Cut over application traffic
+## Step 10: Begin failback replication
 
-With the target cluster verified and finalized, it's time to resume application traffic.
+In this step, you will:
+
+- [Configure MOLT Replicator with the flags needed for your migration](#configure-molt-replicator-failback-replication).
+- [Start MOLT Replicator](#start-molt-replicator-failback-replication).
+- [Create a CockroachDB changefeed](#create-a-cockroachdb-changefeed).
+- [Understand how to continue replication after an interruption](#continue-molt-replicator-after-an-interruption-failback-replication).
+
+### Configure MOLT Replicator (failback replication)
+
+When you run `replicator`, you can configure the following options for replication:
+
+- [Replication connection strings](#replication-connection-strings): Specify URL-encoded source and target database connections.
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
+<section class="filter-content" markdown="1" data-scope="postgres oracle">
+- [Tuning parameters](#tuning-parameters): Optimize replication performance and resource usage.
+</section>
+- [Replicator metrics](#replicator-metrics): Monitor replication progress and performance.
+
+#### Replication connection strings
+
+MOLT Replicator uses `--sourceConn` and `--targetConn` to specify the source and target database connections.
+
+{{site.data.alerts.callout_info}}
+For MOLT Replicator, the source is always the **replication** source, while the target is always the **replication** target. This is distinct from the **migration** source and target. In the case of this example migration, the new CockroachDB cluster is the migration target, but because failback replication moves data from the migration target back to the migration source, the **replication** target is the original source database. In essence, the `--sourceConn` and `--targetConn` strings should be reversed for failback replication.
+{{site.data.alerts.end}}
+
+`--sourceConn` specifies the connection string of the CockroachDB cluster:
+
+~~~
+--sourceConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
+~~~
+
+`--targetConn` specifies the original source database:
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+~~~
+--targetConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+~~~
+--targetConn 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+~~~
+--targetConn 'oracle://{username}:{password}@{host}:{port}/{service_name}'
+~~~
+</section>
+
+{{site.data.alerts.callout_success}}
+Follow best practices for securing connection strings. Refer to [Secure connections](#secure-connections).
+{{site.data.alerts.end}}
+
+#### Replicator flags
+
+{% include molt/replicator-flags-usage.md %}
+
+<section class="filter-content" markdown="1" data-scope="postgres oracle">
+
+#### Tuning parameters
+
+{% include molt/optimize-replicator-performance.md %}
+</section>
+
+#### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+~~~ 
+--metricsAddr :30005
+~~~
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=postgres).
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=mysql).
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=oracle).
+</section>
+
+### Start MOLT Replicator (failback replication)
+
+With initial load complete, start replication of ongoing changes on the source to CockroachDB using [MOLT Replicator]({% link molt/molt-replicator.md %}).
+
+{{site.data.alerts.callout_info}}
+MOLT Fetch captures a consistent point-in-time checkpoint at the start of the data load (shown as `cdc_cursor` in the fetch output). Starting replication from this checkpoint ensures that all changes made during and after the data load are replicated to CockroachDB, preventing data loss or duplication. The following steps use the checkpoint values from the fetch output to start replication at the correct position.
+{{site.data.alerts.end}}
+
+Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `start` command to begin failback replication from CockroachDB to your source database. In this example, `--metricsAddr :30005` enables a Prometheus endpoint for monitoring replication metrics, and `--bindAddr :30004` sets up the webhook endpoint for the changefeed.
+
+    `--stagingSchema` specifies the staging database name (`defaultdb._replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    replicator start \
+    --targetConn $TARGET \
+    --stagingConn $STAGING \
+    --stagingSchema defaultdb._replicator \
+    --metricsAddr :30005 \
+    --bindAddr :30004 \
+    --tlsCertificate ./certs/server.crt \
+    --tlsPrivateKey ./certs/server.key \
+    -v
+    ~~~
+
+### Create a CockroachDB changefeed
+
+Create a CockroachDB changefeed to send changes to MOLT Replicator.
+
+1. Get the current logical timestamp from CockroachDB, after [ensuring that forward replication has fully drained](#step-8-stop-forward-replication):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT cluster_logical_timestamp();
+    ~~~
+
+    ~~~
+        cluster_logical_timestamp
+    ----------------------------------
+      1759246920563173000.0000000000
+    ~~~
+
+1. Create the CockroachDB changefeed pointing to the MOLT Replicator webhook endpoint. Use `cursor` to specify the logical timestamp from the preceding step. For details on the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
+
+    {{site.data.alerts.callout_info}}
+    Explicitly set a default `10s` [`webhook_client_timeout`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options) value in the `CREATE CHANGEFEED` statement. This value ensures that the webhook can report failures in inconsistent networking situations and make crash loops more visible.
+    {{site.data.alerts.end}}
+
+    <section class="filter-content" markdown="1" data-scope="postgres">
+    The target schema is specified in the webhook URL path in the fully-qualified format `/database/schema`. The path specifies the database and schema on the target PostgreSQL database. For example, `/migration_db/migration_schema` routes changes to the `migration_schema` schema in the `migration_db` database.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE employees, payments, orders \
+    INTO 'webhook-https://replicator-host:30004/migration_db/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="mysql">
+    MySQL tables belong directly to the database, not to a separate schema. The webhook URL path specifies the database name on the target MySQL database. For example, `/migration_db` routes changes to the `migration_db` database.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE employees, payments, orders \
+    INTO 'webhook-https://replicator-host:30004/migration_db?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="oracle">
+    The webhook URL path specifies the schema name on the target Oracle database. Oracle capitalizes identifiers by default. For example, `/MIGRATION_SCHEMA` routes changes to the `MIGRATION_SCHEMA` schema.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE employees, payments, orders \
+    INTO 'webhook-https://replicator-host:30004/MIGRATION_SCHEMA?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
+    ~~~
+    </section>
+
+    The output shows the job ID:
+
+    ~~~
+            job_id
+    -----------------------
+      1101234051444375553
+    ~~~
+
+    {{site.data.alerts.callout_success}}
+    Ensure that only **one** changefeed points to MOLT Replicator at a time to avoid mixing streams of incoming data.
+    {{site.data.alerts.end}}
+
+1. Monitor the changefeed status, specifying the job ID:
+
+    ~~~ sql
+    SHOW CHANGEFEED JOB 1101234051444375553;
+    ~~~
+
+    ~~~
+            job_id        | ... | status  |              running_status               | ...
+    ----------------------+-----+---------+-------------------------------------------+----
+      1101234051444375553 | ... | running | running: resolved=1759246920563173000,0 | ...
+    ~~~
+
+    To confirm the changefeed is active and replicating changes to the target database, check that `status` is `running` and `running_status` shows `running: resolved={timestamp}`.
+
+    {{site.data.alerts.callout_danger}}
+    `running: resolved` may be reported even if data isn't being sent properly. This typically indicates incorrect host/port configuration or network connectivity issues.
+    {{site.data.alerts.end}}
+
+1. Verify that Replicator is reporting incoming HTTP requests from the changefeed. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see periodic HTTP request successes:
+
+    ~~~
+    DEBUG  [Aug 25 11:52:47]  httpRequest="&{0x14000b068c0 45 200 3 9.770958ms   false false}"
+    DEBUG  [Aug 25 11:52:48]  httpRequest="&{0x14000d1a000 45 200 3 13.438125ms   false false}"
+    ~~~
+
+    These debug messages confirm successful changefeed connections to MOLT Replicator. You can disable verbose logging after verifying the connection.
+
+### Continue MOLT Replicator after an interruption (failback replication)
+
+{% include molt/replicator-resume-replication.md %}
+
+## Step 11: Cut over application traffic
+
+With the target cluster verified and finalized, it's time to resume application traffic for the current migration phase.
 
 ### Modify application code
 
-In the application back end, make sure that the application now directs traffic to the CockroachDB cluster. For example:
+In the application back end, update the application to route traffic for this migration phase to the CockroachDB cluster. A simple example:
 
 ~~~yml
 env:
-  - name: DATABASE_URL
-    value: postgres://root@localhost:26257/defaultdb?sslmode=verify-full
+  - name: DATABASE_URL_US_EAST
+    value: postgres://root@cockroachdb.us-east:26257/defaultdb?sslmode=verify-full
+  - name: DATABASE_URL_US_WEST
+    value: postgres://legacy-db.us-west:5432/defaultdb  # Still on source
+~~~
+
+In your application code, route database connections based on the user's region:
+
+~~~python
+def get_db_connection(user_region):
+    if user_region == "us-east":
+        return os.getenv("DATABASE_URL_US_EAST")  # CockroachDB
+    else:
+        return os.getenv("DATABASE_URL_US_WEST")  # Source database
 ~~~
 
 ### Resume application traffic 
 
-Scale up the Kubernetes deployment to the original number of replicas:
+If you halted traffic by scaling down a regional Kubernetes deployment, scale it back up.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-kubectl scale deployment app --replicas=3
+kubectl scale deploy/app-eu --replicas=3
 ~~~
 
-This ends downtime.
+Or if this was handled by the NGINX Controller, remove the 503 block that was written in step 3:
+
+{% include_cached copy-clipboard.html %}
+~~~yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app
+#   annotations:
+#     nginx.ingress.kubernetes.io/server-snippet: |
+#       if ($http_x_region = "eu") {
+#         return 503;
+#       }
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: api.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app
+            port:
+              number: 80
+~~~
+
+This ends downtime for the current migration phase.
+
+## Step 12: Stop failback replication
+
+After traffic has been cut over to the target, you can maintain failback replication indefinitely. Once you decide that you want to use the CockroachDB cluster as your sole data store going forward, you can end failback replication with the following steps.
+
+{% include molt/migration-stop-replication.md %}
+
+## Repeat for each phase
+
+During the next scheduled migration phase, [return to step 3](#step-3-load-data-into-cockroachdb) to migrate the next phase of data. Repeat steps 3-12 for each phase of data, until every region's data has been migrated and all application traffic has been cut over to the target.
 
 ## Troubleshooting
 
 {% include molt/molt-troubleshooting-fetch.md %}
 {% include molt/molt-troubleshooting-replication.md %}
+{% include molt/molt-troubleshooting-failback.md %}
 
 ## See also
 

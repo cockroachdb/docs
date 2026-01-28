@@ -47,10 +47,6 @@ In this step, you will:
 
 {% include molt/migration-prepare-database.md %}
 
-#### Checkpoint
-
-By this point in the migration, your **source** database should be configured so that a dedicated migration user is able to read its data.
-
 ## Step 2: Prepare the target database
 
 In this step, you will:
@@ -88,10 +84,6 @@ CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simpli
 ### Create the SQL user
 
 {% include molt/migration-create-sql-user.md %}
-
-#### Checkpoint
-
-By this point in the migration, your source and target tables should match one another, although you may have dropped non-`PRIMARY KEY` constraints and indexes from the target to optimize data load performance. Additionally, both databases should have the correct read/write permissions to allow the MOLT tools to perform the migration.
 
 ## Migrating each phase
 

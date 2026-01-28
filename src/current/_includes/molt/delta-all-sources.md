@@ -188,6 +188,8 @@ Perform the initial load of the source data.
 
 Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and target data is consistent. This ensures that the data load was successful.
 
+### Run MOLT Verify
+
 {% include molt/verify-output.md %}
 
 ## Step 5: Finalize the target schema
@@ -433,7 +435,7 @@ kubectl scale deployment app --replicas=0
 Application downtime begins now.
 {{ site.data.alerts.end }}
 
-## Step 8: End forward replication
+## Step 8: Stop forward replication
 
 Before you can cut over traffic to the target, the changes to the source database need to finish being written to the target. Once the source is no longer receiving write traffic, MOLT Replicator will take some seconds to finish replicating the final changes. This is known as _drainage_.
 

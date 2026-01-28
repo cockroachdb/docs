@@ -3,6 +3,7 @@ title: Phased Delta Migration with Failback Replication from Oracle
 summary: Learn what a Phased Delta Migration with Failback Replication is, how it relates to the migration considerations, and how to perform it using MOLT tools.
 toc: true
 docs_area: migrate
+source_db_not_selectable: true
 ---
 
 <script>
