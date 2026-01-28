@@ -1,4 +1,6 @@
 {% if page.cloud != true %}
+By default, the table is filtered to display active and idle sessions and to exclude closed sessions.
+
 <img src="{{ 'images/v26.1/ui-sessions-page.png' | relative_url }}" alt="Sessions Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
