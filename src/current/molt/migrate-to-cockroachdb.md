@@ -11,27 +11,27 @@ MOLT Fetch supports various migration flows using [MOLT Fetch modes]({% link mol
 
 |                            Migration flow                           |             Mode             |                                         Description                                         |                                                 Best for                                                |
 |---------------------------------------------------------------------|------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| [Bulk load]({% link molt/migrate-bulk-load.md %})                   | `--mode data-load`           | Perform a one-time bulk load of source data into CockroachDB.                               | Testing, migrations with [planned downtime]({% link molt/migration-considerations.md %}#permissible-downtime) |
-| [Load and replicate]({% link molt/migrate-load-replicate.md %})     | MOLT Fetch + MOLT Replicator | Load source data using MOLT Fetch, then replicate subsequent changes using MOLT Replicator. | [Minimal downtime]({% link molt/migration-considerations.md %}#permissible-downtime) migrations               |
-| [Resume replication]({% link molt/migrate-resume-replication.md %}) | `--mode replication-only`    | Resume replication from a checkpoint after interruption.                                    | Resuming interrupted migrations, post-load sync                                                         |
-| [Failback]({% link molt/migrate-failback.md %})                     | `--mode failback`            | Replicate changes from CockroachDB back to the source database.                             | [Rollback]({% link molt/migrate-failback.md %}) scenarios                                               |
+| Bulk load                   | `--mode data-load`           | Perform a one-time bulk load of source data into CockroachDB.                               | Testing, migrations with [planned downtime]({% link molt/migration-considerations.md %}#permissible-downtime) |
+| Load and replicate    | MOLT Fetch + MOLT Replicator | Load source data using MOLT Fetch, then replicate subsequent changes using MOLT Replicator. | [Minimal downtime]({% link molt/migration-considerations.md %}#permissible-downtime) migrations               |
+| Resume replication | `--mode replication-only`    | Resume replication from a checkpoint after interruption.                                    | Resuming interrupted migrations, post-load sync                                                         |
+| Failback                   | `--mode failback`            | Replicate changes from CockroachDB back to the source database.                             | Rollback scenarios                                               |
 
 ### Bulk load
 
-For migrations that tolerate downtime, use `data-load` mode to perform a one-time bulk load of source data into CockroachDB. Refer to [Bulk Load]({% link molt/migrate-bulk-load.md %}).
+For migrations that tolerate downtime, use `data-load` mode to perform a one-time bulk load of source data into CockroachDB.
 
 ### Migrations with minimal downtime
 
 To minimize downtime during migration, MOLT Fetch supports replication streams that sync ongoing changes from the source database to CockroachDB. Instead of performing the entire data load during a planned downtime window, you can perform an initial load followed by continuous replication. Writes are only briefly paused to allow replication to drain before final cutover. The length of the pause depends on the volume of write traffic and the amount of replication lag between the source and CockroachDB.
 
-- Use MOLT Fetch for data loading followed by MOLT Replicator for replication. Refer to [Load and replicate]({% link molt/migrate-load-replicate.md %}).
+- Use MOLT Fetch for data loading followed by MOLT Replicator for replication.
 
 ### Recovery and rollback strategies
 
 If the migration is interrupted or you need to abort cutover, MOLT Fetch supports safe recovery flows:
 
-- Use `replication-only` to resume a previously interrupted replication stream. Refer to [Resume Replication]({% link molt/migrate-resume-replication.md %}).
-- Use `failback` to reverse the migration, syncing changes from CockroachDB back to the original source. This ensures data consistency on the source so that you can retry later. Refer to [Migration Failback]({% link molt/migrate-failback.md %}).
+- Use `replication-only` to resume a previously interrupted replication stream.
+- Use `failback` to reverse the migration, syncing changes from CockroachDB back to the original source. This ensures data consistency on the source so that you can retry later.
 
 ## See also
 

@@ -14,7 +14,7 @@ Cockroach Labs recommends monitoring the following metrics during data load:
 
 To visualize the preceding metrics, use the Grafana dashboard [bundled with your binary (`grafana_dashboard.json`)]({% link molt/molt-fetch-installation.md %}). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json).
 
-{% if page.name != "migrate-bulk-load.md" %}
+{% if page.name contains "delta" %}
 {{site.data.alerts.callout_success}}
 For details on Replicator metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}).
 {{site.data.alerts.end}}

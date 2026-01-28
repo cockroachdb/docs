@@ -81,7 +81,7 @@ Grant [`admin`]({% link {{site.current_cloud_version}}/security-reference/author
 GRANT admin TO crdb_user;
 ~~~
 
-{% if page.name != "migrate-bulk-load.md" %}
+{% if page.name contains "delta" %}
 #### Replication privileges
 
 Grant permissions to create the staging schema for replication:

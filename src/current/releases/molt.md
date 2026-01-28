@@ -159,7 +159,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 
 ##### Bug fixes
 
-- MOLT Fetch [failback]({% link molt/migrate-failback.md %}) now reliably creates changefeeds with a sorted list of table names so that create changefeed operations can be properly deduplicated.
+- MOLT Fetch failback now reliably creates changefeeds with a sorted list of table names so that create changefeed operations can be properly deduplicated.
 - Fixed an issue where shard connections failed to recognize custom types (e.g., `ENUM`) in primary keys during table migration. This occurred because the type map from the original `pgx.Conn` was not cloned. The type map is now properly cloned and attached to each shard connection.
 - Fixed a bug that could cause an integer overflow, which impacts retrieving the correct shards for exporting data.
 

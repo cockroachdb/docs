@@ -125,7 +125,7 @@ For failback, [`--targetConn`]({% link molt/replicator-flags.md %}#target-conn) 
 
 MOLT Replicator requires a checkpoint value to start replication from the correct position in the source database's transaction log.
 
-For PostgreSQL, use [`--slotName`]({% link molt/replicator-flags.md %}#slot-name) to specify the [replication slot created during the data load]({% link molt/migrate-load-replicate.md %}#start-fetch). The slot automatically tracks the LSN (Log Sequence Number):
+For PostgreSQL, use [`--slotName`]({% link molt/replicator-flags.md %}#slot-name) to specify the [replication slot created during the data load]({% link molt/molt-fetch.md %}#initial-bulk-load-before-replication). The slot automatically tracks the LSN (Log Sequence Number):
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -371,8 +371,7 @@ replicator oraclelogminer \
 For detailed walkthroughs of migrations that use `replicator` in this way, refer to these common migration approaches:
 
 - [Delta Migration]({% link molt/migration-approach-delta.md %})
-- [Streaming Migration]({% link molt/migration-approach-streaming.md %})
-- [Active-Active Migration]({% link molt/migration-approach-active-active.md %})
+- [Phased Delta Migration with Failback Replication]({% link molt/migration-approach-phased-delta-failback.md %})
 
 ### Failback replication
 
@@ -434,17 +433,42 @@ replicator start \
 --tlsPrivateKey ./certs/server.key
 ~~~
 
-After starting `replicator`, create a CockroachDB changefeed to send changes to MOLT Replicator. For detailed steps, refer to [Migration failback]({% link molt/migrate-failback.md %}).
+<section class="filter-content" markdown="1" data-scope="postgres">
+
+After starting `replicator`, create a CockroachDB changefeed to send changes to MOLT Replicator. For a detailed example, refer to [Phased Delta Migration with Failback Replication]({% link molt/phased-delta-failback-postgres.md %}#create-a-cockroachdb-changefeed).
 
 {{site.data.alerts.callout_info}}
-When [creating the CockroachDB changefeed]({% link molt/migrate-failback.md %}#create-the-cockroachdb-changefeed), you specify the target database and schema in the webhook URL path. For PostgreSQL targets, use the fully-qualified format `/database/schema` (`/migration_db/migration_schema`). For MySQL targets, use the database name (`/migration_db`). For Oracle targets, use the uppercase schema name (`/MIGRATION_SCHEMA`).
+When [creating the CockroachDB changefeed]({% link molt/phased-delta-failback-postgres.md %}#create-a-cockroachdb-changefeed), you specify the target database and schema in the webhook URL path. For PostgreSQL targets, use the fully-qualified format `/database/schema` (`/migration_db/migration_schema`). For MySQL targets, use the database name (`/migration_db`). For Oracle targets, use the uppercase schema name (`/MIGRATION_SCHEMA`).
 
 Explicitly set a default `10s` [`webhook_client_timeout`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options) value in the `CREATE CHANGEFEED` statement. This value ensures that the webhook can report failures in inconsistent networking situations and make crash loops more visible.
 {{site.data.alerts.end}}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+
+After starting `replicator`, create a CockroachDB changefeed to send changes to MOLT Replicator. For a detailed example, refer to [Phased Delta Migration with Failback Replication]({% link molt/phased-delta-failback-mysql.md %}#create-a-cockroachdb-changefeed).
+
+{{site.data.alerts.callout_info}}
+When [creating the CockroachDB changefeed]({% link molt/phased-delta-failback-mysql.md %}#create-a-cockroachdb-changefeed), you specify the target database and schema in the webhook URL path. For PostgreSQL targets, use the fully-qualified format `/database/schema` (`/migration_db/migration_schema`). For MySQL targets, use the database name (`/migration_db`). For Oracle targets, use the uppercase schema name (`/MIGRATION_SCHEMA`).
+
+Explicitly set a default `10s` [`webhook_client_timeout`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options) value in the `CREATE CHANGEFEED` statement. This value ensures that the webhook can report failures in inconsistent networking situations and make crash loops more visible.
+{{site.data.alerts.end}}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+
+After starting `replicator`, create a CockroachDB changefeed to send changes to MOLT Replicator. For a detailed example, refer to [Phased Delta Migration with Failback Replication]({% link molt/phased-delta-failback-oracle.md %}#create-a-cockroachdb-changefeed).
+
+{{site.data.alerts.callout_info}}
+When [creating the CockroachDB changefeed]({% link molt/phased-delta-failback-oracle.md %}#create-a-cockroachdb-changefeed), you specify the target database and schema in the webhook URL path. For PostgreSQL targets, use the fully-qualified format `/database/schema` (`/migration_db/migration_schema`). For MySQL targets, use the database name (`/migration_db`). For Oracle targets, use the uppercase schema name (`/MIGRATION_SCHEMA`).
+
+Explicitly set a default `10s` [`webhook_client_timeout`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options) value in the `CREATE CHANGEFEED` statement. This value ensures that the webhook can report failures in inconsistent networking situations and make crash loops more visible.
+{{site.data.alerts.end}}
+</section>
 
 For a detailed walkthrough of a migration that use `replicator` in this way, refer to this common migration approach:
 
-- [Active-Active Migration]({% link molt/migration-approach-active-active.md %})
+- [Phased Delta Migration with Failback Replication]({% link molt/migration-approach-phased-delta-failback.md %})
 
 ### Resuming after an interruption
 

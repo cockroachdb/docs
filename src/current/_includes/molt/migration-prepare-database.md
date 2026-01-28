@@ -27,7 +27,7 @@ GRANT SELECT ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO migration_user;
 ~~~
 
-{% unless page.name contains "-bulk-load" %}
+{% if page.name contains "delta" %}
 Grant the `SUPERUSER` role to the user (recommended for replication configuration):
 
 {% include_cached copy-clipboard.html %}
@@ -45,7 +45,7 @@ ALTER TABLE migration_schema.table_name OWNER TO migration_user;
 ~~~
 
 Run the `ALTER TABLE` command for each table to replicate.
-{% endunless %}
+{% endif %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
@@ -63,7 +63,7 @@ GRANT SELECT ON mysql.gtid_executed TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
 
-{% unless page.name contains "-bulk-load" %}
+{% if page.name contains "delta" %}
 For replication, grant additional privileges for binlog access:
 
 {% include_cached copy-clipboard.html %}
@@ -71,7 +71,7 @@ For replication, grant additional privileges for binlog access:
 GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
-{% endunless %}
+{% endif %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
@@ -166,7 +166,7 @@ GRANT SELECT, FLASHBACK ON migration_schema.tbl TO MIGRATION_USER;
 ~~~
 </section>
 
-{% unless page.name contains "-bulk-load" %}
+{% if page.name contains "delta" %}
 ### Configure source database for replication
 
 {% if page.source_db_not_selectable %}
@@ -392,4 +392,4 @@ PL/SQL procedure successfully completed.
 If you receive `ORA-01435: user does not exist`, the Oracle user lacks sufficient LogMiner privileges. Refer to [Grant LogMiner privileges](#grant-logminer-privileges).
 {{site.data.alerts.end}}
 </section>
-{% endunless %}
+{% endif %}

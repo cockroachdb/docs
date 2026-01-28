@@ -60,7 +60,6 @@ In this step, you will:
 
 {% include molt/migration-create-sql-user.md %}
 
-{% if page.name != "migrate-bulk-load.md" %}
 ### Configure GC TTL
 
 Before starting the [initial data load](#run-molt-fetch), configure the [garbage collection (GC) TTL]({% link {{ site.current_cloud_version }}/configure-replication-zones.md %}#gc-ttlseconds) on the source CockroachDB cluster to ensure that historical data remains available when replication begins. The GC TTL must be long enough to cover the full duration of the data load.
@@ -84,7 +83,6 @@ ALTER DATABASE defaultdb CONFIGURE ZONE USING gc.ttlseconds = 300;
 ~~~
 
 For details, refer to [Protect Changefeed Data from Garbage Collection]({% link {{ site.current_cloud_version }}/protect-changefeed-data.md %}).
-{% endif %}
 
 ## Migrating each phase
 
@@ -307,24 +305,26 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="postgres">
+
 Run the `replicator` command, using the same slot name that you specified with `--pglogical-replication-slot-name` and the publication name created by `--pglogical-publication-and-slot-drop-and-recreate` in the [Fetch command](#run-molt-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    replicator pglogical \
-    --sourceConn $SOURCE \
-    --targetConn $TARGET \
-    --targetSchema defaultdb.migration_schema \
-    --slotName molt_slot \
-    --publicationName molt_fetch \
-    --stagingSchema defaultdb._replicator \
-    --stagingCreateSchema \
-    --metricsAddr :30005 \
-    -v
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator pglogical \
+--sourceConn $SOURCE \
+--targetConn $TARGET \
+--targetSchema defaultdb.migration_schema \
+--slotName molt_slot \
+--publicationName molt_fetch \
+--stagingSchema defaultdb._replicator \
+--stagingCreateSchema \
+--metricsAddr :30005 \
+-v
+~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
+
 Run the `replicator` command, specifying the GTID from the [checkpoint recorded during data load](#run-molt-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) and specify the path with `--userscript`.
 
     {% include_cached copy-clipboard.html %}
@@ -347,6 +347,7 @@ Run the `replicator` command, specifying the GTID from the [checkpoint recorded 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
+
 Run the `replicator` command, specifying the backfill and starting SCN from the [checkpoint recorded during data load](#run-molt-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) and specify the path with `--userscript`.
 
     {% include_cached copy-clipboard.html %}
@@ -375,60 +376,124 @@ Run the `replicator` command, specifying the backfill and starting SCN from the 
 
 Verify that Replicator is processing changes successfully. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see connection and row processing messages:
 
-    <section class="filter-content" markdown="1" data-scope="postgres">
-    You should see periodic primary keepalive messages:
+<section class="filter-content" markdown="1" data-scope="postgres">
+You should see periodic primary keepalive messages:
 
-    ~~~
-    DEBUG  [Aug 25 14:38:10] primary keepalive received                    ReplyRequested=false ServerTime="2025-08-25 14:38:09.556773 -0500 CDT" ServerWALEnd=0/49913A58
-    DEBUG  [Aug 25 14:38:15] primary keepalive received                    ReplyRequested=false ServerTime="2025-08-25 14:38:14.556836 -0500 CDT" ServerWALEnd=0/49913E60
-    ~~~
+~~~
+DEBUG  [Aug 25 14:38:10] primary keepalive received                    ReplyRequested=false ServerTime="2025-08-25 14:38:09.556773 -0500 CDT" ServerWALEnd=0/49913A58
+DEBUG  [Aug 25 14:38:15] primary keepalive received                    ReplyRequested=false ServerTime="2025-08-25 14:38:14.556836 -0500 CDT" ServerWALEnd=0/49913E60
+~~~
 
-    When rows are successfully replicated, you should see debug output like the following:
+When rows are successfully replicated, you should see debug output like the following:
 
-    ~~~
-    DEBUG  [Aug 25 14:40:02] upserted rows                                 conflicts=0 duration=7.855333ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
-    DEBUG  [Aug 25 14:40:02] progressed to LSN: 0/49915DD0
-    ~~~
-    </section>
+~~~
+DEBUG  [Aug 25 14:40:02] upserted rows                                 conflicts=0 duration=7.855333ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
+DEBUG  [Aug 25 14:40:02] progressed to LSN: 0/49915DD0
+~~~
+</section>
 
-    <section class="filter-content" markdown="1" data-scope="mysql">
-    You should see binlog syncer connection and row processing:
+<section class="filter-content" markdown="1" data-scope="mysql">
+You should see binlog syncer connection and row processing:
 
-    ~~~
-    [2025/08/25 15:29:09] [info] binlogsyncer.go:463 begin to sync binlog from GTID set 77263736-7899-11f0-81a5-0242ac120002:1-38
-    [2025/08/25 15:29:09] [info] binlogsyncer.go:409 Connected to mysql 8.0.43 server
-    INFO   [Aug 25 15:29:09] connected to MySQL version 8.0.43
-    ~~~
+~~~
+[2025/08/25 15:29:09] [info] binlogsyncer.go:463 begin to sync binlog from GTID set 77263736-7899-11f0-81a5-0242ac120002:1-38
+[2025/08/25 15:29:09] [info] binlogsyncer.go:409 Connected to mysql 8.0.43 server
+INFO   [Aug 25 15:29:09] connected to MySQL version 8.0.43
+~~~
 
-    When rows are successfully replicated, you should see debug output like the following:
+When rows are successfully replicated, you should see debug output like the following:
 
-    ~~~
-    DEBUG  [Aug 25 15:29:38] upserted rows                                 conflicts=0 duration=1.801ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
-    DEBUG  [Aug 25 15:29:38] progressed to consistent point: 77263736-7899-11f0-81a5-0242ac120002:1-39
-    ~~~
-    </section>
+~~~
+DEBUG  [Aug 25 15:29:38] upserted rows                                 conflicts=0 duration=1.801ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
+DEBUG  [Aug 25 15:29:38] progressed to consistent point: 77263736-7899-11f0-81a5-0242ac120002:1-39
+~~~
+</section>
 
-    <section class="filter-content" markdown="1" data-scope="oracle">
-    When transactions are read from the Oracle source, you should see registered transaction IDs (XIDs):
+<section class="filter-content" markdown="1" data-scope="oracle">
+When transactions are read from the Oracle source, you should see registered transaction IDs (XIDs):
 
-    ~~~
-    DEBUG  [Jul  3 15:55:12] registered xid 0f001f0040060000
-    DEBUG  [Jul  3 15:55:12] registered xid 0b001f00bb090000
-    ~~~
+~~~
+DEBUG  [Jul  3 15:55:12] registered xid 0f001f0040060000
+DEBUG  [Jul  3 15:55:12] registered xid 0b001f00bb090000
+~~~
 
-    When rows are successfully replicated, you should see debug output like the following:
+When rows are successfully replicated, you should see debug output like the following:
 
-    ~~~
-    DEBUG  [Jul  3 15:55:12] upserted rows                                 conflicts=0 duration=2.620009ms proposed=13 target="\"molt_movies\".\"USERS\".\"CUSTOMER_CONTACT\"" upserted=13
-    DEBUG  [Jul  3 15:55:12] upserted rows                                 conflicts=0 duration=2.212807ms proposed=16 target="\"molt_movies\".\"USERS\".\"CUSTOMER_DEVICE\"" upserted=16
-    ~~~
-    </section>
+~~~
+DEBUG  [Jul  3 15:55:12] upserted rows                                 conflicts=0 duration=2.620009ms proposed=13 target="\"molt_movies\".\"USERS\".\"CUSTOMER_CONTACT\"" upserted=13
+DEBUG  [Jul  3 15:55:12] upserted rows                                 conflicts=0 duration=2.212807ms proposed=16 target="\"molt_movies\".\"USERS\".\"CUSTOMER_DEVICE\"" upserted=16
+~~~
+</section>
 
-    These messages confirm successful replication. You can disable verbose logging after verifying the connection.
+These messages confirm successful replication. You can disable verbose logging after verifying the connection.
 
 ### Continue MOLT Replicator after an interruption (forward replication)
 
-{% include molt/replicator-resume-replication.md %}
+<section class="filter-content" markdown="1" data-scope="postgres">
+Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `pglogical` command using the same `--stagingSchema` value from your [initial replication command](#start-molt-replicator-forward-replication).
+
+Be sure to specify the same `--slotName` value that you used during your [initial replication command](#start-molt-replicator-forward-replication). The replication slot on the source PostgreSQL database automatically tracks the LSN (Log Sequence Number) checkpoint, so replication will resume from where it left off.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator pglogical \
+--sourceConn $SOURCE \
+--targetConn $TARGET \
+--targetSchema defaultdb.migration_schema \
+--slotName molt_slot \
+--stagingSchema defaultdb._replicator \
+--metricsAddr :30005 \
+-v
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `mylogical` command using the same `--stagingSchema` value from your [initial replication command](#start-molt-replicator-forward-replication).
+
+Replicator will automatically use the saved GTID (Global Transaction Identifier) from the `memo` table in the staging schema (in this example, `defaultdb._replicator.memo`) and track advancing GTID checkpoints there. To have Replicator start from a different GTID instead of resuming from the checkpoint, clear the `memo` table with `DELETE FROM defaultdb._replicator.memo;` and run the `replicator` command with a new `--defaultGTIDSet` value.
+
+{{site.data.alerts.callout_success}}
+For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON migration_db.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator mylogical \
+--sourceConn $SOURCE \
+--targetConn $TARGET \
+--targetSchema defaultdb.public \
+--stagingSchema defaultdb._replicator \
+--metricsAddr :30005 \
+--userscript table_filter.ts \
+-v
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `oraclelogminer` command using the same `--stagingSchema` value from your [initial replication command](#start-molt-replicator-forward-replication).
+
+Replicator will automatically find the correct restart SCN (System Change Number) from the `_oracle_checkpoint` table in the staging schema. The restart point is determined by the non-committed row with the smallest `startscn` column value.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator oraclelogminer \
+--sourceConn $SOURCE \
+--sourcePDBConn $SOURCE_PDB \
+--sourceSchema MIGRATION_USER \
+--targetSchema defaultdb.migration_schema \
+--targetConn $TARGET \
+--stagingSchema defaultdb._replicator \
+--metricsAddr :30005 \
+--userscript table_filter.ts \
+-v
+~~~
+
+{{site.data.alerts.callout_info}}
+When [filtering out tables in a schema with a userscript]({% link molt/userscript-cookbook.md %}#filter-multiple-tables), replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
+{{site.data.alerts.end}}
+</section>
+
+Replication resumes from the last checkpoint without performing a fresh load. Monitor the metrics endpoint at `http://localhost:30005/_/varz` to track replication progress.
 
 ## Step 7: Stop application traffic
 
@@ -487,119 +552,90 @@ Repeat [Step 4](#step-4-verify-the-initial-data-load) to verify the updated data
 
 In this step, you will:
 
+- [Prepare both databases for failback replication](#prepare-your-source-and-target-databases-for-failback-replication)
 - [Configure MOLT Replicator with the flags needed for your migration](#configure-molt-replicator-failback-replication).
 - [Start MOLT Replicator](#start-molt-replicator-failback-replication).
-- [Create a CockroachDB changefeed](#create-a-cockroachdb-changefeed).
 - [Understand how to continue replication after an interruption](#continue-molt-replicator-after-an-interruption-failback-replication).
 
-### Configure MOLT Replicator (failback replication)
+### Prepare your source and target databases for failback replication
 
-When you run `replicator`, you can configure the following options for replication:
-
-- [Replication connection strings](#replication-connection-strings): Specify URL-encoded source and target database connections.
-- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
-<section class="filter-content" markdown="1" data-scope="postgres oracle">
-- [Tuning parameters](#tuning-parameters): Optimize replication performance and resource usage.
-</section>
-- [Replicator metrics](#replicator-metrics): Monitor replication progress and performance.
-
-#### Replication connection strings
-
-MOLT Replicator uses `--sourceConn` and `--targetConn` to specify the source and target database connections.
-
-{{site.data.alerts.callout_info}}
-For MOLT Replicator, the source is always the **replication** source, while the target is always the **replication** target. This is distinct from the **migration** source and target. In the case of this example migration, the new CockroachDB cluster is the migration target, but because failback replication moves data from the migration target back to the migration source, the **replication** target is the original source database. In essence, the `--sourceConn` and `--targetConn` strings should be reversed for failback replication.
-{{site.data.alerts.end}}
-
-`--sourceConn` specifies the connection string of the CockroachDB cluster:
-
-~~~
---sourceConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
-~~~
-
-`--targetConn` specifies the original source database:
-
-<section class="filter-content" markdown="1" data-scope="postgres">
-~~~
---targetConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
-~~~
-</section>
-
-<section class="filter-content" markdown="1" data-scope="mysql">
-~~~
---targetConn 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
-~~~
-</section>
-
-<section class="filter-content" markdown="1" data-scope="oracle">
-~~~
---targetConn 'oracle://{username}:{password}@{host}:{port}/{service_name}'
-~~~
-</section>
+#### Prepare the CockroachDB cluster
 
 {{site.data.alerts.callout_success}}
-Follow best practices for securing connection strings. Refer to [Secure connections](#secure-connections).
+For details on enabling CockroachDB changefeeds, refer to [Create and Configure Changefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}).
 {{site.data.alerts.end}}
 
-#### Replicator flags
+If you are migrating to a CockroachDB {{ site.data.products.core }} cluster, [enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) on the cluster:
 
-{% include molt/replicator-flags-usage.md %}
-
-<section class="filter-content" markdown="1" data-scope="postgres oracle">
-
-#### Tuning parameters
-
-{% include molt/optimize-replicator-performance.md %}
-</section>
-
-#### Replicator metrics
-
-MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
-
-~~~ 
---metricsAddr :30005
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
 
+Use the following optional settings to increase changefeed throughput. 
+
+{{site.data.alerts.callout_danger}}
+The following settings can impact source cluster performance and stability, especially SQL foreground latency during writes. For details, refer to [Advanced Changefeed Configuration]({% link {{ site.current_cloud_version }}/advanced-changefeed-configuration.md %}).
+{{site.data.alerts.end}}
+
+To lower changefeed emission latency, but increase SQL foreground latency:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING kv.rangefeed.closed_timestamp_refresh_interval = '250ms';
+~~~
+
+To lower the [closed timestamp]({% link {{ site.current_cloud_version }}/architecture/transaction-layer.md %}#closed-timestamps) lag duration:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING kv.closed_timestamp.target_duration = '1s';
+~~~
+
+To improve catchup speeds but increase cluster CPU usage:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING kv.rangefeed.concurrent_catchup_iterators = 64;
+~~~
+
+#### Grant target database user permissions
+
+You should have already created a migration user on the target database (your **original source database**) with the necessary privileges. Refer to [Create migration user on source database](#create-migration-user-on-source-database).
+
+For failback replication, grant the user additional privileges to write data back to the target database:
+
 <section class="filter-content" markdown="1" data-scope="postgres">
-For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=postgres).
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Grant INSERT and UPDATE on tables to fail back to
+GRANT INSERT, UPDATE ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT INSERT, UPDATE ON TABLES TO migration_user;
+~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=mysql).
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Grant INSERT and UPDATE on tables to fail back to
+GRANT SELECT, INSERT, UPDATE ON migration_db.* TO 'migration_user'@'%';
+FLUSH PRIVILEGES;
+~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=oracle).
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Grant INSERT, UPDATE, and FLASHBACK on tables to fail back to
+GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.employees TO MIGRATION_USER;
+GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.payments TO MIGRATION_USER;
+GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.orders TO MIGRATION_USER;
+~~~
 </section>
 
-### Start MOLT Replicator (failback replication)
+#### Create a CockroachDB changefeed
 
-With initial load complete, start replication of ongoing changes on the source to CockroachDB using [MOLT Replicator]({% link molt/molt-replicator.md %}).
-
-{{site.data.alerts.callout_info}}
-MOLT Fetch captures a consistent point-in-time checkpoint at the start of the data load (shown as `cdc_cursor` in the fetch output). Starting replication from this checkpoint ensures that all changes made during and after the data load are replicated to CockroachDB, preventing data loss or duplication. The following steps use the checkpoint values from the fetch output to start replication at the correct position.
-{{site.data.alerts.end}}
-
-Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `start` command to begin failback replication from CockroachDB to your source database. In this example, `--metricsAddr :30005` enables a Prometheus endpoint for monitoring replication metrics, and `--bindAddr :30004` sets up the webhook endpoint for the changefeed.
-
-    `--stagingSchema` specifies the staging database name (`defaultdb._replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    replicator start \
-    --targetConn $TARGET \
-    --stagingConn $STAGING \
-    --stagingSchema defaultdb._replicator \
-    --metricsAddr :30005 \
-    --bindAddr :30004 \
-    --tlsCertificate ./certs/server.crt \
-    --tlsPrivateKey ./certs/server.key \
-    -v
-    ~~~
-
-### Create a CockroachDB changefeed
-
-Create a CockroachDB changefeed to send changes to MOLT Replicator.
+On the target cluster, create a CockroachDB changefeed to send changes to MOLT Replicator.
 
 1. Get the current logical timestamp from CockroachDB, after [ensuring that forward replication has fully drained](#step-8-stop-forward-replication):
 
@@ -692,9 +728,217 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
 
     These debug messages confirm successful changefeed connections to MOLT Replicator. You can disable verbose logging after verifying the connection.
 
+### Configure MOLT Replicator (failback replication)
+
+When you run `replicator`, you can configure the following options for replication:
+
+- [Connection strings](#connection-strings): Specify URL‑encoded source and target connections.
+- [TLS certificate and key](#tls-certificate-and-key): Configure secure TLS connections.
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
+<section class="filter-content" markdown="1" data-scope="postgres oracle">
+- [Tuning parameters](#tuning-parameters): Optimize failback performance and resource usage.
+</section>
+- [Replicator metrics](#replicator-metrics): Monitor failback replication performance.
+
+#### Replication connection strings
+
+MOLT Replicator uses `--sourceConn` and `--targetConn` to specify the source and target database connections.
+
+{{site.data.alerts.callout_info}}
+For MOLT Replicator, the source is always the **replication** source, while the target is always the **replication** target. This is distinct from the **migration** source and target. In the case of this example migration, the new CockroachDB cluster is the migration target, but because failback replication moves data from the migration target back to the migration source, the **replication** target is the original source database. In essence, the `--sourceConn` and `--targetConn` strings should be reversed for failback replication.
+{{site.data.alerts.end}}
+
+`--sourceConn` specifies the connection string of the CockroachDB cluster:
+
+~~~
+--sourceConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
+~~~
+
+`--targetConn` specifies the original source database:
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+~~~
+--targetConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+~~~
+--targetConn 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+~~~
+--targetConn 'oracle://{username}:{password}@{host}:{port}/{service_name}'
+~~~
+</section>
+
+{{site.data.alerts.callout_success}}
+Follow best practices for securing connection strings. Refer to [Secure connections](#secure-connections).
+{{site.data.alerts.end}}
+
+##### Secure connections
+
+{% include molt/molt-secure-connection-strings.md %}
+
+#### TLS certificate and key
+
+Always use **secure TLS connections** for failback replication to protect data in transit. Do **not** use insecure configurations in production: avoid the `--disableAuthentication` and `--tlsSelfSigned` Replicator flags and `insecure_tls_skip_verify=true` query parameter in the changefeed webhook URI.
+
+Generate self-signed TLS certificates or certificates from an external CA. Ensure the TLS server certificate and key are accessible on the MOLT Replicator host machine via a relative or absolute file path. When you [start failback with Replicator](#start-replicator), specify the paths with `--tlsCertificate` and `--tlsPrivateKey`. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator start \
+... \
+--tlsCertificate ./certs/server.crt \
+--tlsPrivateKey ./certs/server.key
+~~~
+
+The client certificates defined in the changefeed webhook URI must correspond to the server certificates specified in the `replicator` command. This ensures proper TLS handshake between the changefeed and MOLT Replicator. To include client certificates in the changefeed webhook URL, encode them with `base64` and then URL-encode the output with `jq`:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+base64 -i ./client.crt | jq -R -r '@uri'
+base64 -i ./client.key | jq -R -r '@uri'
+base64 -i ./ca.crt | jq -R -r '@uri'
+~~~
+
+When you [create the changefeed](#create-a-cockroachdb-changefeed), pass the encoded certificates in the changefeed URL, where `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE table1, table2
+INTO 'webhook-https://host:port/database/schema?client_cert={base64_and_url_encoded_cert}&client_key={base64_and_url_encoded_key}&ca_cert={base64_and_url_encoded_ca}'
+WITH ...;
+~~~
+
+For additional details on the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
+
+#### Replicator flags
+
+|                                    Flag                                   |                                                                                                 Description                                                                                                 |
+|---------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`--stagingSchema`]({% link molt/replicator-flags.md %}#staging-schema)   | **Required.** Staging schema name on CockroachDB for the changefeed checkpoint table. Schema name must be fully qualified in the format `database.schema`.                                                  |
+| [`--bindAddr`]({% link molt/replicator-flags.md %}#bind-addr)             | **Required.** Network address to bind the webhook sink for the changefeed. For example, `:30004`.                                                                                                           |
+| [`--tlsCertificate`]({% link molt/replicator-flags.md %}#tls-certificate) | Path to the server TLS certificate for the webhook sink. Refer to [TLS certificate and key](#tls-certificate-and-key).                                                                                      |
+| [`--tlsPrivateKey`]({% link molt/replicator-flags.md %}#tls-private-key)  | Path to the server TLS private key for the webhook sink. Refer to [TLS certificate and key](#tls-certificate-and-key).Q                                                                                      |
+| [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr)       | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                                                                                              |
+| [`--userscript`]({% link molt/replicator-flags.md %}#userscript)          | Path to a [userscript]({% link molt/userscript-overview.md %}) that enables data filtering, routing, or transformations. For examples, refer to [Userscript Cookbook]({% link molt/userscript-cookbook.md %}). |
+
+- The staging schema is first created during [initial replication setup]({% link molt/molt-replicator.md %}#forward-replication-after-initial-load) with [`--stagingCreateSchema`]({% link molt/replicator-flags.md %}#staging-create-schema).
+
+- When configuring a [secure changefeed](#tls-certificate-and-key) for failback, you **must** include [`--tlsCertificate`]({% link molt/replicator-flags.md %}#tls-certificate) and [`--tlsPrivateKey`]({% link molt/replicator-flags.md %}#tls-private-key), which specify the paths to the server certificate and private key for the webhook sink connection.
+
+<section class="filter-content" markdown="1" data-scope="postgres oracle">
+### Tuning parameters
+
+{% include molt/optimize-replicator-performance.md %}
+</section>
+
+#### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+~~~ 
+--metricsAddr :30005
+~~~
+
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=cockroachdb).
+
+### Start MOLT Replicator (failback replication)
+
+With initial load complete, start replication of ongoing changes on the source to CockroachDB using [MOLT Replicator]({% link molt/molt-replicator.md %}).
+
+{{site.data.alerts.callout_info}}
+MOLT Fetch captures a consistent point-in-time checkpoint at the start of the data load (shown as `cdc_cursor` in the fetch output). Starting replication from this checkpoint ensures that all changes made during and after the data load are replicated to CockroachDB, preventing data loss or duplication. The following steps use the checkpoint values from the fetch output to start replication at the correct position.
+{{site.data.alerts.end}}
+
+Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `start` command to begin failback replication from CockroachDB to your source database. In this example, `--metricsAddr :30005` enables a Prometheus endpoint for monitoring replication metrics, and `--bindAddr :30004` sets up the webhook endpoint for the changefeed.
+
+`--stagingSchema` specifies the staging database name (`defaultdb._replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication](#step-6-begin-forward-replication) when you first ran MOLT Replicator with `--stagingCreateSchema`.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator start \
+--targetConn $TARGET \
+--stagingConn $STAGING \
+--stagingSchema defaultdb._replicator \
+--metricsAddr :30005 \
+--bindAddr :30004 \
+--tlsCertificate ./certs/server.crt \
+--tlsPrivateKey ./certs/server.key \
+-v
+~~~
+
 ### Continue MOLT Replicator after an interruption (failback replication)
 
-{% include molt/replicator-resume-replication.md %}
+<section class="filter-content" markdown="1" data-scope="postgres">
+Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `pglogical` command using the same `--stagingSchema` value from your [initial replication command](#start-molt-replicator-failback-replication).
+
+Be sure to specify the same `--slotName` value that you used during your [initial replication command](#start-molt-replicator-failback-replication). The replication slot on the source PostgreSQL database automatically tracks the LSN (Log Sequence Number) checkpoint, so replication will resume from where it left off.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator pglogical \
+--sourceConn $SOURCE \
+--targetConn $TARGET \
+--targetSchema defaultdb.migration_schema \
+--slotName molt_slot \
+--stagingSchema defaultdb._replicator \
+--metricsAddr :30005 \
+-v
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `mylogical` command using the same `--stagingSchema` value from your [initial replication command](#start-molt-replicator-failback-replication).
+
+Replicator will automatically use the saved GTID (Global Transaction Identifier) from the `memo` table in the staging schema (in this example, `defaultdb._replicator.memo`) and track advancing GTID checkpoints there. To have Replicator start from a different GTID instead of resuming from the checkpoint, clear the `memo` table with `DELETE FROM defaultdb._replicator.memo;` and run the `replicator` command with a new `--defaultGTIDSet` value.
+
+{{site.data.alerts.callout_success}}
+For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON migration_db.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator mylogical \
+--sourceConn $SOURCE \
+--targetConn $TARGET \
+--targetSchema defaultdb.public \
+--stagingSchema defaultdb._replicator \
+--metricsAddr :30005 \
+--userscript table_filter.ts \
+-v
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `oraclelogminer` command using the same `--stagingSchema` value from your [initial replication command](#start-molt-replicator-failback-replication).
+
+Replicator will automatically find the correct restart SCN (System Change Number) from the `_oracle_checkpoint` table in the staging schema. The restart point is determined by the non-committed row with the smallest `startscn` column value.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator oraclelogminer \
+--sourceConn $SOURCE \
+--sourcePDBConn $SOURCE_PDB \
+--sourceSchema MIGRATION_USER \
+--targetSchema defaultdb.migration_schema \
+--targetConn $TARGET \
+--stagingSchema defaultdb._replicator \
+--metricsAddr :30005 \
+--userscript table_filter.ts \
+-v
+~~~
+
+{{site.data.alerts.callout_info}}
+When [filtering out tables in a schema with a userscript]({% link molt/userscript-cookbook.md %}#filter-multiple-tables), replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
+{{site.data.alerts.end}}
+</section>
+
+Replication resumes from the last checkpoint without performing a fresh load. Monitor the metrics endpoint at `http://localhost:30005/_/varz` to track replication progress.
 
 ## Step 11: Cut over application traffic
 

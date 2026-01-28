@@ -818,8 +818,6 @@ molt fetch \
 --ignore-replication-check
 ~~~
 
-For detailed walkthroughs of migrations that use `molt fetch` in this way, refer to the [Classic Bulk Load]({% link molt/migrate-bulk-load.md %}) and [Phased Bulk Load]({% link molt/migrate-bulk-load.md %}) migration approaches.
-
 For detailed walkthroughs of migrations that use `molt fetch` in this way, refer to these common migration approaches:
 
 - [Classic Bulk Load Migration]({% link molt/migration-approach-classic-bulk-load.md %})
@@ -885,14 +883,13 @@ The output will include a `cdc_cursor` value at the end of the fetch task:
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="mysql oracle">
-Use this `cdc_cursor` value when starting MOLT Replicator to ensure replication begins from the correct position. For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-replicate.md %}).
+Use this `cdc_cursor` value when starting MOLT Replicator to ensure replication begins from the correct position.
 </section>
 
 For detailed walkthroughs of migrations that use `molt fetch` in this way, refer to these common migration approaches:
 
 - [Delta Migration]({% link molt/migration-approach-delta.md %})
-- [Streaming Migration]({% link molt/migration-approach-streaming.md %})
-- [Active-Active Migration]({% link molt/migration-approach-active-active.md %})
+- [Phased Delta Migration with Failback Replication]({% link molt/migration-approach-phased-delta-failback.md %})
 
 ## See also
 

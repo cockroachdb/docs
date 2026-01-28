@@ -14,7 +14,7 @@
 
 - Only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded with [`--export-concurrency`]({% link molt/molt-fetch-best-practices.md %}#configure-the-source-database-and-connection).
 
-{% if page.name != "migrate-bulk-load.md" %}
+{% if page.name contains "delta" %}
 #### Replicator limitations
 
 - Replication modes require connection to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). MOLT cannot obtain replication checkpoints or transaction metadata from replicas.

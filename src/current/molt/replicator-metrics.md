@@ -5,14 +5,14 @@ toc: true
 docs_area: migrate
 ---
 
-[MOLT Replicator]({% link molt/molt-replicator.md %}) exposes Prometheus metrics at each stage of the [replication pipeline](#replication-pipeline). When using Replicator to perform [forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) or [failback]({% link molt/migrate-failback.md %}), you should monitor the health of each relevant pipeline stage to quickly detect issues. 
+[MOLT Replicator]({% link molt/molt-replicator.md %}) exposes Prometheus metrics at each stage of the [replication pipeline](#replication-pipeline). When using Replicator to perform [forward replication]({% link molt/molt-replicator.md %}#forward-replication-after-initial-load) or [failback]({% link molt/molt-replicator.md %}#failback-replication), you should monitor the health of each relevant pipeline stage to quickly detect issues. 
 
 This page describes and provides usage guidelines for Replicator metrics, according to the replication source:
 
 - PostgreSQL
 - MySQL
 - Oracle
-- CockroachDB (during [failback]({% link molt/migrate-failback.md %}))
+- CockroachDB (during [failback]({% link molt/molt-replicator.md %})#failback-replication)
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>
@@ -311,5 +311,5 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
 - [Replicator Flags]({% link molt/replicator-flags.md %})
-- [Load and Replicate]({% link molt/migrate-load-replicate.md %})
-- [Migration Failback]({% link molt/migrate-failback.md %})
+- [MOLT Replicator Best Practices]({% link molt/molt-replicator-best-practices.md %})
+- [MOLT Replicator Troubleshooting]({% link molt/molt-replicator-troubleshooting.md %})

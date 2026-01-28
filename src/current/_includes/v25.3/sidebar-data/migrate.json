@@ -228,26 +228,89 @@
         },
         {
           "title": "Phased Bulk Load Migration",
-          "urls": [
-            "/molt/migration-approach-phased-bulk-load.html"
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/migration-approach-phased-bulk-load.html"
+              ]
+            },
+            {
+              "title": "from PostgreSQL",
+              "urls": [
+                "/molt/phased-bulk-load-postgres.html"
+              ]
+            },
+            {
+              "title": "from MySQL",
+              "urls": [
+                "/molt/phased-bulk-load-mysql.html"
+              ]
+            },
+            {
+              "title": "from Oracle",
+              "urls": [
+                "/molt/phased-bulk-load-oracle.html"
+              ]
+            }
           ]
         },
         {
           "title": "Delta Migration",
-          "urls": [
-            "/molt/migration-approach-delta.html"
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/migration-approach-delta.html"
+              ]
+            },
+            {
+              "title": "from PostgreSQL",
+              "urls": [
+                "/molt/delta-migration-postgres.html"
+              ]
+            },
+            {
+              "title": "from MySQL",
+              "urls": [
+                "/molt/delta-migration-mysql.html"
+              ]
+            },
+            {
+              "title": "from Oracle",
+              "urls": [
+                "/molt/delta-migration-oracle.html"
+              ]
+            }
           ]
         },
         {
-          "title": "Streaming Migration",
-          "urls": [
-            "/molt/migration-approach-streaming.html"
-          ]
-        },
-        {
-          "title": "Active-Active Migration",
-          "urls": [
-            "/molt/migration-approach-active-active.html"
+          "title": "Phased Delta Migration with Failback Replication",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/migration-approach-phased-delta-failback.html"
+              ]
+            },
+            {
+              "title": "from PostgreSQL",
+              "urls": [
+                "/molt/phased-delta-failback-postgres.html"
+              ]
+            },
+            {
+              "title": "from MySQL",
+              "urls": [
+                "/molt/phased-delta-failback-mysql.html"
+              ]
+            },
+            {
+              "title": "from Oracle",
+              "urls": [
+                "/molt/phased-delta-failback-oracle.html"
+              ]
+            }
           ]
         }
       ]

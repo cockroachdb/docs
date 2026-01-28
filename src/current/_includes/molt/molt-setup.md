@@ -9,7 +9,7 @@
 
 - Create a CockroachDB [{{ site.data.products.cloud }}]({% link cockroachcloud/create-your-cluster.md %}) or [{{ site.data.products.core }}]({% link {{ site.current_cloud_version }}/install-cockroachdb-mac.md %}) cluster.
 - Install the [MOLT (Migrate Off Legacy Technology)]({% link releases/molt.md %}#installation) tools.
-- Review the [Fetch]({% link molt/molt-fetch-best-practices.md %}) and {% if page.name != "migrate-bulk-load.md" %}[Replicator]({% link molt/molt-replicator-best-practices.md %}){% endif %} best practices.
+- Review the [Fetch]({% link molt/molt-fetch-best-practices.md %}) {% if page.name != "migrate-bulk-load.md" %} and [Replicator]({% link molt/molt-replicator-best-practices.md %}){% endif %} best practices.
 - Review [Migration Strategy]({% link molt/migration-strategy.md %}).
 
 <section class="filter-content" markdown="1" data-scope="oracle">

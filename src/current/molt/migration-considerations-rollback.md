@@ -94,4 +94,3 @@ Rollback plans that do not utilize failback replication will require external to
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
-- [Migrate with Failback]({% link molt/migrate-failback.md %})

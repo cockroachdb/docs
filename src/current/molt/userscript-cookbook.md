@@ -9,7 +9,7 @@ Userscripts allow you to define custom schema and table transformations. When sp
 
 This cookbook provides ready-to-use examples that demonstrate real-world uses of the [userscript API]({% link molt/userscript-api.md %}). You can copy and paste them into your own code, and you can adapt them for your specific use cases. 
 
-Userscripts are comparable to MOLT Fetch's [transformations]({% link molt/molt-fetch.md %}#define-transformations), which are used during the initial bulk load phase of a migration. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency. Below each example, you will see the equivalent way of carrying out that transformation using MOLT Fetch, if it's possible to do so.
+Userscripts are comparable to MOLT Fetch's [transformations]({% link molt/molt-fetch.md %}#define-transformations), which are used during the initial bulk load phase of a migration. When performing an [initial data load followed by live replication]({% link molt/molt-replicator.md %}#forward-replication-after-initial-load), **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency. Below each example, you will see the equivalent way of carrying out that transformation using MOLT Fetch, if it's possible to do so.
 
 ## Before you begin
 
@@ -375,7 +375,7 @@ employee_id STRING, employee_name STRING, department STRING
 
 #### MOLT Fetch equivalent
 
-MOLT Fetch does not have direct support for column renaming. You may need to rename the column on the target database after the [initial data load from MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch).
+MOLT Fetch does not have direct support for column renaming. You may need to rename the column on the target database after the [initial data load from MOLT Fetch]({% link molt/migration-approach-delta.md %}).
 
 ### Rename primary keys
 
@@ -458,7 +458,7 @@ id1 STRING, id2 STRING, name STRING
 
 #### MOLT Fetch equivalent
 
-MOLT Fetch does not have direct support for primary key renaming. You may need to reconfigure the primary keys on the target database after the [initial data load from MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch).
+MOLT Fetch does not have direct support for primary key renaming. You may need to reconfigure the primary keys on the target database after the [initial data load from MOLT Fetch]({% link molt/migration-approach-delta.md %}).
 
 ### Route table partitions
 
@@ -663,7 +663,7 @@ is_deleted STRING, ssn STRING, credit_card_number STRING
 
 #### MOLT Fetch equivalent
 
-Creating computed columns is not supported by MOLT Fetch transforms. MOLT Fetch can only preserve computed columns that exist on the source. You may need to calculate this column for the target database table after the [initial data load from MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch).
+Creating computed columns is not supported by MOLT Fetch transforms. MOLT Fetch can only preserve computed columns that exist on the source. You may need to calculate this column for the target database table after the [initial data load from MOLT Fetch]({% link molt/migration-approach-delta.md %}).
 
 ### Combine multiple transforms
 
