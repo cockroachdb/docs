@@ -456,7 +456,7 @@ When setting a time zone, note the following:
 
 {% include {{ page.version.version }}/sql/session-variable-precedence-order.md %}
 
-## Known Limitations
+## Known limitations
 
 {% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
 {% include {{ page.version.version }}/known-limitations/int-limitations.md %}
