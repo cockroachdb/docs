@@ -48,7 +48,7 @@ Concept         | Description
 
 Consider a visualization of a trace for one statement as [visualized by Jaeger]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#visualize-statement-traces-in-jaeger). The image shows spans and log messages. You can see names of operations and sub-operations, along with parent-child relationships and timing information, and it's easy to see which operations are executed in parallel.
 
-<img src="/docs/images/{{ page.version.version }}/jaeger-trace-log-messages.png" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
 ## Response
 

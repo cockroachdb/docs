@@ -58,23 +58,23 @@ You can look more closely at the behavior of a statement by visualizing a [state
 
 1. Click **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right.
 
-    <img src="/docs/images/{{ page.version.version }}/jaeger-trace-json.png" alt="Jaeger Trace Upload JSON" style="border:1px solid #eee;max-width:40%" />
+    <img src="{{ 'images/v26.1/jaeger-trace-json.png' | relative_url }}" alt="Jaeger Trace Upload JSON" style="border:1px solid #eee;max-width:40%" />
 
 1. Click the trace to view its details. It is visualized as a collection of spans with timestamps. These may include operations executed by different nodes.
 
-    <img src="/docs/images/{{ page.version.version }}/jaeger-trace-spans.png" alt="Jaeger Trace Spans" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v26.1/jaeger-trace-spans.png' | relative_url }}" alt="Jaeger Trace Spans" style="border:1px solid #eee;max-width:100%" />
 
     The full timeline displays the execution time and [execution phases]({% link {{ page.version.version }}/architecture/sql-layer.md %}#sql-parser-planner-executor) for the statement.
 
 1. Click a span to view details for that span and log messages.
 
-    <img src="/docs/images/{{ page.version.version }}/jaeger-trace-log-messages.png" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v26.1/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
 1. You can troubleshoot [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), for example, by gathering [diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
 
     In the following example, the trace shows that there is significant latency between a push attempt on a transaction that is holding a [lock]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing) (56.85ms) and that transaction being committed (131.37ms).
 
-    <img src="/docs/images/{{ page.version.version }}/jaeger-trace-transaction-contention.png" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v26.1/jaeger-trace-transaction-contention.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
 #### Visualize traces sent directly from CockroachDB
 
@@ -93,7 +93,7 @@ Enabling full tracing is expensive both in terms of CPU usage and memory footpri
 1. Go to [`http://localhost:16686`](http://localhost:16686).
 1. In the Service field, select **CockroachDB**.
 
-    <img src="/docs/images/{{ page.version.version }}/jaeger-cockroachdb.png" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v26.1/jaeger-cockroachdb.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
 1. Click **Find Traces**.
 

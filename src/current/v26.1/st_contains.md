@@ -53,7 +53,7 @@ SELECT ST_Contains(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 (1 row)
 ~~~
 
-<img src="/docs/images/{{ page.version.version }}/geospatial/st_contains_true.png" alt="ST_Contains - true" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/geospatial/st_contains_true.png' | relative_url }}" alt="ST_Contains - true" style="border:1px solid #eee;max-width:100%" />
 
 ### False
 
@@ -75,7 +75,7 @@ SELECT st_contains(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 (1 row)
 ~~~
 
-<img src="/docs/images/{{ page.version.version }}/geospatial/st_contains_false.png" alt="ST_Contains - false" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/geospatial/st_contains_false.png' | relative_url }}" alt="ST_Contains - false" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

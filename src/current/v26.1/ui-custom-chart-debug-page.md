@@ -13,7 +13,7 @@ To view the Custom Chart page, [access the DB Console]({% link {{ page.version.v
 
 ## Use the Custom Chart page
 
-<img src="/docs/images/{{ page.version.version }}/ui-custom-chart-debug-00.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/ui-custom-chart-debug-00.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 On the **Custom Chart** page, you can set the time span for all charts, add new custom charts, and customize each chart:
 
@@ -28,7 +28,7 @@ On the **Custom Chart** page, you can set the time span for all charts, add new 
 
 ### Query user and system CPU usage
 
-<img src="/docs/images/{{ page.version.version }}/ui-custom-chart-debug-01.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/ui-custom-chart-debug-01.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 To compare system vs. userspace CPU usage, select the following values under **Metric Name**:
 

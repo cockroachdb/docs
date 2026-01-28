@@ -19,7 +19,7 @@ CockroachDB provides the database layer that ensures the accuracy and availabili
 
 The following diagram illustrates how a CockroachDB/Ory integration could be designed:
 
-<img src="/docs/images/{{ page.version.version }}/integrate-ory-single-region.svg" alt="Single Region MAZ"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+<img src="{{ 'images/v26.1/integrate-ory-single-region.svg' | relative_url }}" alt="Single Region MAZ"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 As illustrated in the diagram above, a single cloud region is shown containing three Availability Zones (AZs): `us-east-1a`, `us-east-1b`, and `us-east-1c`. Each AZ is an isolated failure domain with its own independent power, cooling, and networking. By deploying nodes of the CockroachDB/Ory clusters across all three zones, the system ensures resilience against localized outages. If one AZ becomes unavailable due to a hardware or network issue, the remaining two zones continue to serve client requests without data loss or downtime.
 

@@ -22,7 +22,7 @@ For a refresher on what exactly TPC-C is and how it is measured, see [Benchmark 
 
 CockroachDB achieves this performance in [`SERIALIZABLE` isolation]({% link {{ page.version.version }}/demo-serializable.md %}), the strongest isolation level in the SQL standard.
 
-<img src="/docs/images/{{ page.version.version }}/tpcc140k.png" alt="TPC-C 140,000" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/tpcc140k.png' | relative_url }}" alt="TPC-C 140,000" style="border:1px solid #eee;max-width:100%" />
 
 | Metric                                          | CockroachDB 19.2 | CockroachDB 21.1 |
 |-------------------------------------------------+------------------+------------------|
@@ -37,7 +37,7 @@ CockroachDB achieves this performance in [`SERIALIZABLE` isolation]({% link {{ p
 
 CockroachDB has **no theoretical scaling limit** and, in practice, can achieve near-linear performance at 256 nodes. Because the TPC-C results reflect leaps in scale, to test linear scaling, Cockroach Labs ran a simple benchmark named KV 95 (95% point reads, 5% point writes, all uniformly distributed) on AWS `c5d.4xlarge` machines:
 
-<img src="/docs/images/{{ page.version.version }}/linearscale.png" alt="CRDB Linear Scale" style="max-width:100%" />
+<img src="{{ 'images/v26.1/linearscale.png' | relative_url }}" alt="CRDB Linear Scale" style="max-width:100%" />
 
 This chart shows that adding nodes increases throughput linearly while holding p50 and p99 latency constant. The concurrency for each scale was chosen to optimize throughput while maintaining an acceptable latency and can be observed in the following table.
 

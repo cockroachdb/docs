@@ -17,7 +17,7 @@ The **Runtime** dashboard displays the following time series graphs:
 
 ## Live Node Count
 
-<img src="/docs/images/{{ page.version.version }}/ui_node_count.png" alt="DB Console Node Count" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/ui_node_count.png' | relative_url }}" alt="DB Console Node Count" style="border:1px solid #eee;max-width:100%" />
 
 In the node view as well as the cluster view, the graph shows the number of live nodes in the cluster.
 
@@ -25,7 +25,7 @@ A dip in the graph indicates decommissioned nodes, dead nodes, or nodes that are
 
 ## Memory Usage
 
-<img src="/docs/images/{{ page.version.version }}/ui_memory_usage.png" alt="DB Console Memory Usage" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/ui_memory_usage.png' | relative_url }}" alt="DB Console Memory Usage" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the memory in use for the selected node.
 
@@ -49,7 +49,7 @@ CGo Total | Total memory managed by the C layer.
 
 ## CPU Time
 
-<img src="/docs/images/{{ page.version.version }}/ui_cpu_time.png" alt="DB Console CPU Time" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/ui_cpu_time.png' | relative_url }}" alt="DB Console CPU Time" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the [CPU time](https://wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations for the selected node.
 - In the cluster view, the graph shows the [CPU time](https://wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations across all nodes in the cluster.
@@ -63,7 +63,7 @@ Sys CPU Time | Total CPU seconds per second used for CockroachDB system-level op
 
 ## Clock Offset
 
-<img src="/docs/images/{{ page.version.version }}/ui_clock_offset.png" alt="DB Console Clock Offset" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/ui_clock_offset.png' | relative_url }}" alt="DB Console Clock Offset" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the mean clock offset of the node against the rest of the cluster.
 - In the cluster view, the graph shows the mean clock offset of each node against the rest of the cluster.
