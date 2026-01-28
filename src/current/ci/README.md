@@ -2,6 +2,18 @@
 
 This directory contains configuration for building and publishing the hermetic Docker image used for CockroachDB documentation builds.
 
+## Local Development for writers
+
+Prerequisites: [Rancher Desktop](https://rancherdesktop.io/) (Docker Desktop is not supported)
+
+```bash
+# Pull the docs builder image
+make docker-pull
+
+# Serve docs locally with live reload
+make docker-serve
+```
+
 ## Quick Start (Local Development)
 
 ```bash
