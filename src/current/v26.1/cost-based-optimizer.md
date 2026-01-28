@@ -554,7 +554,7 @@ Use the [`SHOW STATEMENT HINTS`]({% link {{ page.version.version }}/show-stateme
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW STATEMENT HINTS FOR 'SELECT * FROM users WHERE city = _' WITH DETAILS;
+SHOW STATEMENT HINTS FOR $$ SELECT * FROM users WHERE city = _ $$ WITH DETAILS;
 ~~~
 
 ~~~
@@ -603,7 +603,7 @@ EXPLAIN SELECT * FROM users WHERE city = 'new york';
 ~~~
 
 {{site.data.alerts.callout_info}}
-The `statement hints count` field shows the number of individual inline hints applied. A single row in `system.statement_hints` can contain multiple inline hints.
+The `statement hints count` field shows the number of `system.statement_hints` rows that were applied. A single row in `system.statement_hints` can contain multiple inline hints.
 {{site.data.alerts.end}}
 
 ### Remove injected hints

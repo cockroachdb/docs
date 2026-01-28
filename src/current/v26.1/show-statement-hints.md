@@ -49,7 +49,7 @@ To show all injected hints for a specific statement fingerprint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW STATEMENT HINTS FOR 'SELECT * FROM users WHERE city = _';
+SHOW STATEMENT HINTS FOR $$ SELECT * FROM users WHERE city = _ $$;
 ~~~
 
 ~~~
@@ -65,7 +65,7 @@ To include the donor fingerprint in the output:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW STATEMENT HINTS FOR 'SELECT * FROM users WHERE city = _' WITH DETAILS;
+SHOW STATEMENT HINTS FOR $$ SELECT * FROM users WHERE city = _ $$ WITH DETAILS;
 ~~~
 
 ~~~
