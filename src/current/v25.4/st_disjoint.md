@@ -49,7 +49,7 @@ SELECT st_disjoint(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 (1 row)
 ~~~
 
-<img src="/docs/images/{{ page.version.version }}/geospatial/st_disjoint_true.png" alt="ST_Disjoint - true" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/geospatial/st_disjoint_true.png' | relative_url }}" alt="ST_Disjoint - true" style="border:1px solid #eee;max-width:100%" />
 
 ### False
 
@@ -69,7 +69,7 @@ SELECT st_disjoint(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 (1 row)
 ~~~
 
-<img src="/docs/images/{{ page.version.version }}/geospatial/st_disjoint_false.png" alt="ST_Disjoint - false" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/geospatial/st_disjoint_false.png' | relative_url }}" alt="ST_Disjoint - false" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

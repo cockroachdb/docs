@@ -143,7 +143,7 @@ The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecat
 
 Several endpoints return raw status meta information in JSON at `http://<host>:<http-port>/#/debug`. You can investigate and use these endpoints, but note that they are subject to change.
 
-<img src="/docs/images/{{ page.version.version }}/raw-status-endpoints.png" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/raw-status-endpoints.png' | relative_url }}" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
 
 ### Node status command
 

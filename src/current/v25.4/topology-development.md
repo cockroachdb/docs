@@ -17,7 +17,7 @@ If you haven't already, [review the full range of topology patterns]({% link {{ 
 
 ## Configuration
 
-<img src="/docs/images/{{ page.version.version }}/topology-patterns/topology_development1.png" alt="Development topology" style="max-width:100%" />
+<img src="{{ 'images/v25.4/topology-patterns/topology_development1.png' | relative_url }}" alt="Development topology" style="max-width:100%" />
 
 For this pattern, you can either [run CockroachDB locally]({% link {{ page.version.version }}/start-a-local-cluster.md %}) or [deploy a single-node cluster on a cloud VM]({% link {{ page.version.version }}/manual-deployment.md %}).
 
@@ -27,13 +27,13 @@ For this pattern, you can either [run CockroachDB locally]({% link {{ page.versi
 
 With the CockroachDB node in the same region as your client, and without the overhead of replication, both read and write latency are very low:
 
-<img src="/docs/images/{{ page.version.version }}/topology-patterns/topology_development_latency.png" alt="Development topology read and write latency" style="max-width:100%" />
+<img src="{{ 'images/v25.4/topology-patterns/topology_development_latency.png' | relative_url }}" alt="Development topology read and write latency" style="max-width:100%" />
 
 ### Resiliency
 
 In a single-node cluster, CockroachDB does not replicate data and, therefore, is not resilient to failures. If the machine where the node is running fails, or if the region or availability zone containing the machine fails, the cluster becomes unavailable:
 
-<img src="/docs/images/{{ page.version.version }}/topology-patterns/topology_development2.png" alt="Development topology single failure" style="max-width:100%" />
+<img src="{{ 'images/v25.4/topology-patterns/topology_development2.png' | relative_url }}" alt="Development topology single failure" style="max-width:100%" />
 
 ## See also
 

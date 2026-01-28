@@ -158,7 +158,7 @@ FROM
 
 Paste the result above into <https://geojson.io> and you should see the following map, with gray markers for each loon sighting from the bird survey.
 
-<img src="/docs/images/{{ page.version.version }}/geospatial/tutorial/query-01.png" alt="Common Loon sightings in the years 2000-2019 in NY state" style="max-width:100%" />
+<img src="{{ 'images/v25.4/geospatial/tutorial/query-01.png' | relative_url }}" alt="Common Loon sightings in the years 2000-2019 in NY state" style="max-width:100%" />
 
 ### (2) What is the total area of Loon sightings?
 
@@ -561,7 +561,7 @@ WHERE
 
 Paste the result above into <https://geojson.io> and you should see the following map:
 
-<img src="/docs/images/{{ page.version.version }}/geospatial/tutorial/query-09.png" alt="Convex hull of bookstore locations within Common Loon habitat" style="max-width:100%" />
+<img src="{{ 'images/v25.4/geospatial/tutorial/query-09.png' | relative_url }}" alt="Convex hull of bookstore locations within Common Loon habitat" style="max-width:100%" />
 
 ### (10) What is the area of the shape of all bookstore locations that are in the Loon's habitat range within NY state?
 
@@ -702,7 +702,7 @@ The result is a very large chunk of JSON:
 
 Paste the result above into <https://geojson.io> and you should see the following map:
 
-<img src="/docs/images/{{ page.version.version }}/geospatial/tutorial/query-12.png" alt="What does the route from Mysteries on Main Street in Johnstown, NY to The Book Nook in Saranac Lake, NY look like?" style="max-width:100%" />
+<img src="{{ 'images/v25.4/geospatial/tutorial/query-12.png' | relative_url }}" alt="What does the route from Mysteries on Main Street in Johnstown, NY to The Book Nook in Saranac Lake, NY look like?" style="max-width:100%" />
 
 ### (13) What were the 25 most-commonly-sighted birds in 2019 within 10 miles of the route between Mysteries on Main Street in Johnstown, NY and The Bookstore Plus in Lake Placid, NY?
 
@@ -1687,7 +1687,7 @@ The `tutorial` database contains the following tables:
 
 Below is an entity-relationship diagram showing the `bookstores` and `bookstore_routes` tables (generated using [DBeaver]({% link {{ page.version.version }}/dbeaver.md %})):
 
-<img src="/docs/images/{{ page.version.version }}/geospatial/tutorial/er-bookstores.png" alt="tutorial.bookstores and tutorial.bookstore_routes ER diagrams" style="max-width:100%" />
+<img src="{{ 'images/v25.4/geospatial/tutorial/er-bookstores.png' | relative_url }}" alt="tutorial.bookstores and tutorial.bookstore_routes ER diagrams" style="max-width:100%" />
 
 As mentioned above, the `bookstores` table was created by scraping web data from the [American Booksellers Association website's member directory](https://bookweb.org/member_directory/search/ABAmember). In addition, the `geom` column was constructed by doing some [address geocoding](https://wikipedia.org/wiki/Address_geocoding) that converted each bookstore's address to a lon/lat pair and converted to a spatial object using `ST_MakePoint`. For each bookstore, the script did a bit of parsing and geocoding and ran essentially the following query:
 
@@ -1751,7 +1751,7 @@ There are multiple ways to do geocoding. You can use REST API-based services or 
 
 Meanwhile, the `roads` table has many columns; the most important ones used in this tutorial are `state`, `geom`, `miles`, and `prime_name` (the human-readable name of the road).
 
-<img src="/docs/images/{{ page.version.version }}/geospatial/tutorial/er-roads.png" alt="tutorial.roads ER diagrams" style="max-width:100%" />
+<img src="{{ 'images/v25.4/geospatial/tutorial/er-roads.png' | relative_url }}" alt="tutorial.roads ER diagrams" style="max-width:100%" />
 
 For more information about what the other columns in `roads` mean, see the [full data set description](https://www.sciencebase.gov/catalog/file/get/581d052be4b08da350d524ce?f=__disk__60%2F6b%2F4e%2F606b4e564884da8cca57ffeb229cd817006616e0&transform=1&allowOpen=true).
 
@@ -1769,7 +1769,7 @@ The tables in the `birds` database are diagrammed below:
 - `routes` is a list of ~130 prescribed locations that the birdwatchers helping with the survey visit each year. The `geom` associated with each route is a [Point]({% link {{ page.version.version }}/point.md %}) marking the latitude and longitude of the route's starting point. For details, see the [schema](https://www.sciencebase.gov/catalog/file/get/5ea04e9a82cefae35a129d65?f=__disk__b4%2F2f%2Fcf%2Fb42fcfe28a799db6e8c97200829ea1ebaccbf8ea&transform=1&allowOpen=true) (search for the text "routes.csv").
 - `observations` describes the ~85,000 times and places in which birds of various species were actually seen. The `bird_id` is a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) to the ID in the `birds` table, and the `route_id` points to the ID of the `routes` table.
 
-<img src="/docs/images/{{ page.version.version }}/geospatial/tutorial/er-birds.png" alt="birds.birds, birds.routes, and birds.observations ER diagrams" style="max-width:100%" />
+<img src="{{ 'images/v25.4/geospatial/tutorial/er-birds.png' | relative_url }}" alt="birds.birds, birds.routes, and birds.observations ER diagrams" style="max-width:100%" />
 
 Each of these tables were populated using a script that parsed [the CSV files available for download](https://www.sciencebase.gov/catalog/item/52b1dfa8e4b0d9b325230cd9) and added the data using [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statements. For the `routes` table, once again the `ST_MakePoint` function was used to create a geometry from the lon/lat values in the CSV as follows:
 

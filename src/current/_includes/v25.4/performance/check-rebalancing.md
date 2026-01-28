@@ -2,7 +2,7 @@ Since you started each node with the `--locality` flag set to its GCE zone, over
 
 To check this, access the DB Console on any node at `<node address>:8080` and look at the **Node List**. You'll see that the range count is more or less even across all nodes:
 
-<img src="/docs/images/{{ page.version.version }}/perf_tuning_multi_region_rebalancing.png" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/perf_tuning_multi_region_rebalancing.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
 
 For reference, here's how the nodes map to zones:
 

@@ -70,11 +70,11 @@ Identify the transaction fingerprint ID of the example transaction by navigating
 
 In the **Transactions** column, click the transaction fingerprint `SELECT pg_sleep(_), _` to open the [**Transaction Details**]({% link {{ page.version.version }}/ui-transactions-page.md %}#transaction-details-page) page for that fingerprint.
 
-<img src="/docs/images/{{ page.version.version }}/transaction-diagnostics-1.png" alt="Transactions tab" style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/transaction-diagnostics-1.png' | relative_url }}" alt="Transactions tab" style="border:0px solid #eee;max-width:100%" />
 
 From the **Transaction Details** page, copy the hexadecimal **Fingerprint ID** for this transaction, `afdd4059a899442e`.
 
-<img src="/docs/images/{{ page.version.version }}/transaction-diagnostics-2.png" alt="Transactions Details page" style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/transaction-diagnostics-2.png' | relative_url }}" alt="Transactions Details page" style="border:0px solid #eee;max-width:100%" />
 
 Note the decimal equivalent of the fingerprint ID in the browser's address bar. In this case, the URL may look like `https://127.0.0.1:29001/#/transaction/12672355680315327534?appNames=cockroachdb_test`. The decimal value of the fingerprint is `12672355680315327534`.
 
@@ -116,7 +116,7 @@ In the DB Console, go to [**Advanced Debug**]({% link {{ page.version.version }}
 - A **Status** of `WAITING`.
 - A button to **Cancel request** (Use this if a transaction diagnostics bundle is no longer needed).
 
-<img src="/docs/images/{{ page.version.version }}/transaction-diagnostics-3.png" alt="Diagnostics History, Transactions, Status Waiting" style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/transaction-diagnostics-3.png' | relative_url }}" alt="Diagnostics History, Transactions, Status Waiting" style="border:0px solid #eee;max-width:100%" />
 
 ### Step 3. Download the bundle
 
@@ -134,7 +134,7 @@ Navigate to the [**Advanced Debug**]({% link {{ page.version.version }}/ui-debug
 - A **Status** of `READY`.
 - A **Bundle.zip** link.
 
-<img src="/docs/images/{{ page.version.version }}/transaction-diagnostics-4.png" alt="Diagnostics History, Transactions, Status Ready" style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/transaction-diagnostics-4.png' | relative_url }}" alt="Diagnostics History, Transactions, Status Ready" style="border:0px solid #eee;max-width:100%" />
 
 Click the **Bundle.zip** link to download the completed bundle, which will be named `txn-bundle-1113386693458034689.zip` using the `transaction_diagnostics_id` from the `system.transaction_diagnostics_requests` table.
 
