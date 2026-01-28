@@ -30,7 +30,7 @@ For help, refer to [Establish private connectivity]({% link cockroachcloud/conne
 If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 {{site.data.alerts.end}}
 
-## Step 1. Set up a cluster
+## Set up a cluster
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
@@ -40,7 +40,7 @@ If you have multiple clusters, you will have to repeat these steps for each clus
 1. Select the **PrivateLink** tab.
 1. Click **Add Connection** to open the connection dialog.
 
-Continue to [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
+Continue to [Create an AWS endpoint](#create-an-aws-endpoint).
 
 </section>
 
@@ -51,13 +51,13 @@ Continue to [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
 1. Select the **PrivateLink** tab. PrivateLink connections that have already been configured are shown as a private endpoint allowlist.
 1. Click **Add Connection** to open the connection dialog.
 
-Continue to [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
+Continue to [Create an AWS endpoint](#create-an-aws-endpoint).
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-## Step 2. (Optional) Configure private endpoint trusted owners
+## (Optional) Configure private endpoint trusted owners
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/limited-access.md %}
@@ -72,7 +72,7 @@ Your service account must have one of the following roles on the cluster, either
 
 ### Add a private endpoint trusted owner
 
-To [add a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners):
+To [add a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners), send a `POST` request to the `clusters/{cluster_id}/networking/private-endpoint-trusted-owners` endpoint as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -91,11 +91,11 @@ Replace:
 
 The response includes details about the trusted owner, including a unique trusted owner ID. This ID is required to get details about or remove a trusted owner.
 
-Next, you can [create an AWS endpoint](#step-3-create-an-aws-endpoint).
+Next, you can [create an AWS endpoint](#create-an-aws-endpoint).
 
 ### List private endpoint trusted owners
 
-To [list private endpoint trusted owners](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners) for a cluster:
+To [list private endpoint trusted owners](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners), send a `GET` request to the `clusters/{cluster_id}/networking/private-endpoint-trusted-owners` endpoint as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -111,7 +111,7 @@ Replace:
 
 ### Get details about a trusted owner
 
-To [get details about a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
+To [get details about a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-), send a `GET` request to the `clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner-id}` endpoint as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -128,7 +128,7 @@ Replace:
 
 ### Remove a trusted owner
 
-To [remove a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#delete-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
+To [remove a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#delete-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-), send a `DELETE` request to the `clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner-id}` endpoint as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -145,21 +145,13 @@ Replace:
 
 </section>
 
-## Step 3. Create an AWS endpoint
-
-{% capture security_group_substeps %}
-    <ul><li>In the **Security group name** field, enter a name for the security group.</li>
-    <li>In the **Description** field, enter a description for the security group.</li>
-    <li>From the **VPC** dropdown, select the VPC you chose in Step 4.</li>
-    <li><ul><li>In the **Inbound rules** section, click **Add rule**.</li><li>Enter *26257* in the **Port range** field.</li><li>In the **Source** field, enter the CIDR range from Step 5.</li></ul></li>
-    <li>Click **Create security group**.</li></ul>
-{% endcapture %}
+## Create an AWS endpoint
 
 {{site.data.alerts.callout_success}}
 Complete these steps once for each private endpoint in your AWS account that will be used to privately connect to one or more of your clusters. If you connect additional clusters to the same private endpoint, you do not need to make additional changes in your AWS account.
 {{site.data.alerts.end}}
 
-1. <a name="step-1"></a>In the **Add connection** dialog in the CockroachDB {{ site.data.products.cloud }} Console, select the region to create a connection in.
+1. In the **Add connection** dialog in the CockroachDB {{ site.data.products.cloud }} Console, select the region to create a connection in.
 
 1. Copy the **Service Name** shown in the connection dialog.
 
@@ -173,7 +165,14 @@ Complete these steps once for each private endpoint in your AWS account that wil
 
 1. Click **Subnets** in the sidebar. Make a note of the subnet ID of each subnet that corresponds to your chosen VPC.
 1. Click **Security Groups** in the sidebar.
-1. <a name="step-8"></a>Click **Create security group** to create a security group within your VPC. The security group allows inbound access from your application or source program on Port 26257: {{ security_group_substeps }}
+1. Click **Create security group** to create a security group within your VPC. The security group allows inbound access from your application or source program on Port 26257:
+  - In the **Security group name** field, enter a name for the security group.
+  - In the **Description** field, enter a description for the security group.
+  - From the **VPC** dropdown, select the VPC you chose in Step 4.
+  - In the **Inbound rules** section, click **Add rule**.
+  - Enter *26257* in the **Port range** field.
+  - In the **Source** field, enter the CIDR range from Step 5.
+  - Click **Create security group**.
 
 Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](https://aws.amazon.com/cli/) to continue:
 
@@ -187,16 +186,16 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 1. Click **Endpoints** in the sidebar.
 1. Click **Create Endpoint**.
 1. On the **Create Endpoint** page, for the **Service Category** field, select **Find service by name**.
-1. In the **Service Name** field, enter the **Service Name** you copied from the connection dialog in [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
+1. In the **Service Name** field, enter the **Service Name** you copied from the connection dialog in [Create an AWS endpoint](#create-an-aws-endpoint).
 1. Click **Verify**.
 1. In the **VPC** field, enter the ID of the VPC you want to create your endpoint in.
 1. Verify that the subnets are pre-populated.
-1. In the **Security group** section, select the security group you created in [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint) and uncheck the box for **default** security group.
+1. In the **Security group** section, select the security group you created in [Create an AWS endpoint](#create-an-aws-endpoint) and uncheck the box for **default** security group.
 1. Click **Create Endpoint**.
 
     The VPC Endpoint ID displays.
 
-1. Copy the Endpoint ID to your clipboard and return to CockroachDB {{ site.data.products.cloud }}'s **Add PrivateLink** dialog.
+1. Copy the Endpoint ID to your clipboard and return to the **Add PrivateLink** dialog in CockroachDB {{ site.data.products.cloud }}.
 
 </section>
 
@@ -216,18 +215,18 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 1. Locate the VPC Endpoint ID in the CLI output.
 
-1. Copy the Endpoint ID to your clipboard and return to CockroachDB {{ site.data.products.cloud }}'s **Add PrivateLink** dialog.
+1. Copy the Endpoint ID to your clipboard and return to the **Add PrivateLink** dialog in CockroachDB {{ site.data.products.cloud }}.
 
 </section>
 
-## Step 4. Verify the endpoint ID
+## Verify the endpoint ID
 
 1. Click **Next**.
 1. Enter the Endpoint ID, then click **Validate**. If validation fails, check the endpoint ID and try again. Otherwise, click **Next**.
 1. Follow the instructions in the dialog to enable **private DNS name** for the endpoint in AWS. When this option is enabled, CockroachDB {{ site.data.products.cloud }} maintains private DNS records in the VPC for the cluster.
 1. Click **Complete** to save the configuration and close the dialog.
 
-## Step 5. Enable private DNS
+## Enable private DNS
 
 Allow CockroachDB {{ site.data.products.cloud }} to modify the **private DNS name** for the endpoint in AWS. When this option is enabled, CockroachDB {{ site.data.products.cloud }} maintains private DNS records in the VPC for your cluster.
 
@@ -269,9 +268,5 @@ After a short (less than 5 minute) delay, the status will change from **Pending 
 ## What's next?
 
 - [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
-<section class="filter-content" markdown="1" data-scope="advanced">
-- [Connect to your CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %})
-</section>
-<section class="filter-content" markdown="1" data-scope="standard">
+- [Connect to a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %})
 - [Connect to a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
-</section>
