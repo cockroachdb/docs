@@ -188,21 +188,24 @@ Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on
       --generate-ssh-keys
     ~~~
 
-1. Create an application in your Azure tenant and create a secret named `azure-cluster-identity-credentials-secret` that contains `AZURE_CLIENT_ID` and `AZURE_CLIENT_SECRET` to hold the application credentials. You can use the following example YAML to define this application:
+1. Configure authentication for the {{ site.data.products.cockroachdb-operator }}. The operator can use [Azure Managed Identities](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview) if they are configured.
 
-    ~~~ yaml
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: azure-cluster-identity-credentials-secret
-    type: Opaque
-    stringData:
-      azure-credentials: |
-      azure_client_id: 11111111-1111-1111-1111-111111111111
-      azure_client_secret: s3cr3t
-    ~~~
+    If Azure Managed Identities are not configured for the {{ site.data.products.cockroachdb-operator }}, create an application in your Azure tenant and create a secret named `azure-cluster-identity-credentials-secret` that contains `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET` to hold the application credentials. You can use the following example YAML to define this application:
 
-    For more information on how to use these variables, refer to the [`Azure.Identity` documentation](https://learn.microsoft.com/dotnet/api/azure.identity.environmentcredential?view=azure-dotnet).
+      ~~~ yaml
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: azure-cluster-identity-credentials-secret
+      type: Opaque
+      stringData:
+        azure-credentials: |
+        azure_tenant_id: {tenant ID}
+        azure_client_id: {client ID}
+        azure_client_secret: {client secret}
+      ~~~
+
+      For more information on how to use these variables, refer to the [`Azure.Identity` documentation](https://learn.microsoft.com/dotnet/api/azure.identity.environmentcredential?view=azure-dotnet).
 
 ### Bare metal deployments
 
