@@ -30,18 +30,39 @@ $(document).ready(function() {
     }
   });
 
-  // Handle search input in topnav - redirect to Algolia search page
-  $('#search-input').on('keypress', function(e) {
-    if (e.which === 13) { // Enter key
+  // Handle search inputs (topnav and sidebar)
+  // Check if Kapa search mode is handling the input
+  const kapaScript = document.querySelector('script[data-modal-override-open-selector-search]');
+  if (kapaScript) {
+    // Kapa is configured - intercept clicks to open Kapa modal
+    $('#search-input, #sidebar-search-input').on('click', function(e) {
       e.preventDefault();
-      const query = $(this).val().trim();
-      if (query) {
-        // Redirect to Algolia search page
-        const searchPath = getSearchPath();
-        window.location.href = searchPath + '?query=' + encodeURIComponent(query);
+      e.stopPropagation();
+      $(this).blur();
+      if (window.Kapa && window.Kapa.open) {
+        window.Kapa.open({ mode: 'search' });
       }
-    }
-  });
+    });
+    // Prevent sidebar search form submission
+    $('#sidebar-search-form').on('submit', function(e) {
+      e.preventDefault();
+      if (window.Kapa && window.Kapa.open) {
+        window.Kapa.open({ mode: 'search' });
+      }
+    });
+  } else {
+    // No Kapa - use Algolia search page redirect on Enter
+    $('#search-input').on('keypress', function(e) {
+      if (e.which === 13) { // Enter key
+        e.preventDefault();
+        const query = $(this).val().trim();
+        if (query) {
+          const searchPath = getSearchPath();
+          window.location.href = searchPath + '?query=' + encodeURIComponent(query);
+        }
+      }
+    });
+  }
 
   // Disable old suggestions - now handled by kapaLiveSuggestions.js
   // which provides real-time search results from Kapa API

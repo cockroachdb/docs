@@ -27,7 +27,7 @@ Use the **Schedules** list to see your active and paused schedules.
 
 The following screenshot shows a list of backups and automated statistics compaction schedules:
 
-<img src="{{ 'images/v24.2/schedules-page.png' | relative_url }}" alt="Schedules Page UI in the DB Console showing a list of schedules" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/schedules-page.png' | relative_url }}" alt="Schedules Page UI in the DB Console showing a list of schedules" style="border:1px solid #eee;max-width:100%" />
 
 Column               | Description
 ---------------------+--------------
@@ -44,7 +44,7 @@ Creation Time (UTC)       | The time at which the user originally created the sc
 
 Click on a schedule ID to view the full SQL statement that the schedule runs. For example, the following screenshot shows the resulting [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) statement for a full cluster backup recurring every day:
 
-<img src="{{ 'images/v24.2/schedule-id-screen.png' | relative_url }}" alt="UI for each individual schedule ID displaying the CREATE SCHEDULE SQL statement" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/schedule-id-screen.png' | relative_url }}" alt="UI for each individual schedule ID displaying the CREATE SCHEDULE SQL statement" style="border:1px solid #eee;max-width:100%" />
 
 You may also view a `protected_timestamp_record` on this page. This indicates that the schedule is actively managing its own [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records independently of [GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds). See [Protected timestamps and scheduled backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#protected-timestamps-and-scheduled-backups) for more detail.
 

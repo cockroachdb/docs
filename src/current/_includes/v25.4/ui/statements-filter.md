@@ -72,4 +72,4 @@ To filter the statements:
 
 The following screenshot shows the statements that contain the string `rides` for the `movr` application filtered by `Statement Type: DML`:
 
-<img src="{{ 'images/v24.2/movr-statements-rides.png' | relative_url }}" alt="Movr rides statements" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/movr-statements-rides.png' | relative_url }}" alt="Movr rides statements" style="border:1px solid #eee;max-width:100%" />

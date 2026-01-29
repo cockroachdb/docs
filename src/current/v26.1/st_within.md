@@ -53,7 +53,7 @@ SELECT ST_Within(st_geomfromtext('SRID=4326;POLYGON((-87.623177 41.881832, -90.1
 (1 row)
 ~~~
 
-<img src="{{ 'images/v24.2/geospatial/st_within_true.png' | relative_url }}" alt="ST_Within - true" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/geospatial/st_within_true.png' | relative_url }}" alt="ST_Within - true" style="border:1px solid #eee;max-width:100%" />
 
 ### False
 
@@ -73,7 +73,7 @@ SELECT ST_Within(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.9
 (1 row)
 ~~~
 
-<img src="{{ 'images/v24.2/geospatial/st_within_false.png' | relative_url }}" alt="ST_Within - false" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/geospatial/st_within_false.png' | relative_url }}" alt="ST_Within - false" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
