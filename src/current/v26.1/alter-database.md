@@ -746,11 +746,12 @@ ALTER DATABASE movr CONFIGURE ZONE DISCARD;
 The following examples show:
 
 - How to [override specific fields of a schema object's zone configs](#override-specific-fields-of-a-schema-objects-zone-configs).
+- How to [reduce storage costs by removing non-voting replicas](#reduce-storage-costs-by-removing-non-voting-replicas)
+- How you could [implement super regions](#implement-super-regions).
+- How to [minimize cross-region write latency](#minimize-cross-region-write-latency).
 - How something like the [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions) multi-region abstraction could have been implemented using Zone Config Extensions. For this example, we will call it ["Failover regions"](#failover-regions).
 - How to [reset a region's Zone Config Extensions](#reset-a-regions-zone-config-extensions).
 - How to [discard a region's Zone Config Extensions](#discard-a-regions-zone-config-extensions).
-- How you could [implement super regions](#implement-super-regions).
-- How to [minimize cross-region write latency](#minimize-cross-region-write-latency).
 
 {{site.data.alerts.callout_info}}
 We strongly recommend using the multi-region abstractions over "rolling your own" using Zone Config Extensions. These examples are provided to show the flexibility of Zone Config Extensions.
@@ -870,7 +871,43 @@ To remove the changes made in this example, [reset the Zone Config Extensions](#
 
 In a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}), the default zone configuration may include additional [non-voting replicas]({% link {{ page.version.version }}/configure-replication-zones.md %}#num_voters) (for example, to support [follower reads]({% link {{ page.version.version }}/follower-reads.md %})). The database's [survival goal]({% link {{ page.version.version }}/multiregion-overview.md %}#survival-goals) depends only on the number of voting replicas (`num_voters`), not the total number of replicas (`num_replicas`).
 
-If you want to reduce storage costs by removing non-voting replicas, you can use Zone Config Extensions to set `num_replicas` equal to `num_voters`:
+By default, the `movr` database [as configured for this example](#Setup) has a [zone survival goal]({% link {{ page.version.version }}/multiregion-survival-goals.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW SURVIVAL GOAL FROM DATABASE movr;
+~~~
+
+~~~
+  database | survival_goal
+-----------+----------------
+  movr     | zone
+(1 row)
+~~~
+
+This means that the number of replicas (`num_replicas`) is greater than strictly necessary to support the zone survival goal, which you can confirm with [`SHOW ZONE CONFIGURATION`]({% link {{ page.version.version }}/show-zone-configurations.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW ZONE CONFIGURATION FROM DATABASE movr;
+~~~
+
+~~~
+     target     |                                      raw_config_sql
+----------------+-------------------------------------------------------------------------------------------
+  DATABASE movr | ALTER DATABASE movr CONFIGURE ZONE USING
+                |     range_min_bytes = 134217728,
+                |     range_max_bytes = 536870912,
+                |     gc.ttlseconds = 14400,
+                |     num_replicas = 5,
+                |     num_voters = 3,
+                |     constraints = '{+region=europe-west1: 1, +region=us-east1: 1, +region=us-west1: 1}',
+                |     voter_constraints = '[+region=us-east1]',
+                |     lease_preferences = '[[+region=us-east1], [+region=us-west1]]'
+(1 row)
+~~~
+
+If you want to reduce storage costs, and can accept losing the ability to perform [follower reads]({% link {{ page.version.version }}/follower-reads.md %}), use Zone Config Extensions to reduce the number of non-voting replicas by setting `num_replicas` equal to `num_voters`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
