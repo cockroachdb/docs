@@ -141,7 +141,7 @@ docs_area:
         <li><a href="{% link releases/{{page.version.version}}.md %}">{{page.version.version}} Release</a></li>
         <li><a href="{% link releases/index.md %}">All Releases</a></li>
         <li><a href="{% link releases/release-support-policy.md %}">Release Support Policy</a></li>
-        <li><a href="known-limitations.html">Known Limitations</a></li>
+        <li><a href="{% link releases/v26.1.md %}#known-limitations">Known Limitations</a></li>
       </ul>
     </div>
   </div>
