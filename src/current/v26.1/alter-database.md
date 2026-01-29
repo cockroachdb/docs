@@ -746,7 +746,7 @@ ALTER DATABASE movr CONFIGURE ZONE DISCARD;
 The following examples show:
 
 - How to [override specific fields of a schema object's zone configs](#override-specific-fields-of-a-schema-objects-zone-configs).
-- How to [reduce storage costs by removing non-voting replicas](#reduce-storage-costs-by-removing-non-voting-replicas)
+- How to [reduce storage costs by removing non-voting replicas](#reduce-storage-costs-by-removing-non-voting-replicas).
 - How you could [implement super regions](#implement-super-regions).
 - How to [minimize cross-region write latency](#minimize-cross-region-write-latency).
 - How something like the [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions) multi-region abstraction could have been implemented using Zone Config Extensions. For this example, we will call it ["Failover regions"](#failover-regions).
