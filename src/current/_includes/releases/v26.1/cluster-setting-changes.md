@@ -2,26 +2,6 @@ Changes to [cluster settings]({% link v26.1/cluster-settings.md %}) should be re
 
 <h5 id="v26-1-0-settings-added">New settings</h5>
 
-- `admission.cpu_time_tokens.target_util.app_tenant` (reserved)
-
-- `admission.cpu_time_tokens.target_util.burst_delta` (reserved)
-
-- `admission.cpu_time_tokens.target_util.system_tenant` (reserved)
-
-- `admission.elastic_cpu.yield_in_pacer.enabled` (reserved)
-
-- `bulkio.elastic_cpu_control.always_yield.enabled` (reserved)
-
-- `bulkio.index_backfill.distributed_merge.mode` (reserved)
-
-- `bulkio.sst_writer.batch_size` (reserved)
-
-- `cloudstorage.azure.session_reuse.enabled` (reserved)
-
-- `cloudstorage.azure.try.timeout` (reserved)
-
-- `jobs.registry.claim_query.timeout` (reserved)
-
 - `jobs.registry.max_adoptions_per_loop` (reserved)
   - Added the `jobs.registry.max_adoptions_per_loop` cluster setting to configure the maximum number of jobs a node can adopt per adoption loop. [#155385][#155385]
 
@@ -29,86 +9,21 @@ Changes to [cluster settings]({% link v26.1/cluster-settings.md %}) should be re
 
 - `kv.closed_timestamp.side_transport_pacing_smear_interval`
 
-- `kv.concurrency.slow_latch_request_duration` (reserved)
-
-- `kv.dist_sender.non_transactional_writes_not_idempotent.enabled` (reserved)
-
-- `kv.lock_table.default_size` (reserved)
-
-- `kv.rangefeed.buffered_sender.per_registration_max_queue_size` (reserved)
-
-- `kv.store_liveness.heartbeat_smearing.enabled` (reserved)
-
-- `kv.store_liveness.heartbeat_smearing.refresh` (reserved)
-
-- `kv.store_liveness.heartbeat_smearing.smear` (reserved)
-
-- `logical_replication.consumer.use_swap_mutations.enabled` (reserved)
-
-- `logical_replication.deprecated_udf_writer.enabled` (reserved)
-
-- `restore.wait_for_span_config_conformance.enabled` (reserved)
-
 - `security.provisioning.oidc.enabled` (reserved)
   - Added a new cluster setting, `security.provisioning.oidc.enabled`, to allow automatic provisioning of users when they log in for the first time via OIDC. When enabled, a new user will be created in CockroachDB upon their first successful OIDC authentication. This feature is disabled by default. [#160016][#160016]
-
-- `server.rpc.request_metrics.enabled` (reserved)
-
-- `sql.catalog.allow_leased_descriptors.prefetch.enabled` (reserved)
-
-- `sql.catalog.descriptor_lease.lock_old_versions.enabled` (reserved)
-
-- `sql.catalog.descriptor_lease.max_batch_lease_count` (reserved)
-
-- `sql.distsql.streamer.initial_avg_response_size` (reserved)
-
-- `sql.inspect.admission_control.enabled` (reserved)
-
-- `sql.inspect.index_consistency_hash.enabled` (reserved)
-
-- `sql.metrics.transaction_details.max_statement_stats` (reserved)
-
-- `sql.override.allow_unsafe_internals.enabled` (reserved)
-
-- `sql.pgwire.max_repeated_error_count` (reserved)
-
-- `sql.schema_changer.batch_flush_threshold_size` (reserved)
 
 - `sql.stats.automatic_extremes_concurrency_limit`
 
 - `sql.stats.automatic_full_concurrency_limit`
 
-- `sql.stats.automatic_stats_job_auto_cleanup.enabled` (reserved)
-
-- `sql.stats.automatic_stats_job_use_locks_table.enabled` (reserved)
-
 - `sql.stats.canary_fraction` (reserved)
     - Cluster setting `sql.stats.canary_fraction` (float, range [0, 1], default: 0): Controls what fraction of queries use "canary statistics" (newly collected stats within their canary window) versus "stable statistics" (previously proven stats). For example, a value of `0.2` means 20% of queries will use canary stats while 80% use stable stats. The selection is atomic per query: if a query is chosen for canary evaluation, it uses canary statistics for **all** tables it references (where available). A query never uses a mix of canary and stable statistics.
-
-- `sql.ttl.checkpoint_interval` (reserved)
-
-- `sql.ttl.fraction_update_interval` (reserved)
-
-- `storage.deprecated_compensated_score.enabled` (reserved)
 
 - `storage.snapshot.recreate_iter_duration` (reserved)
   - Added the cluster setting `storage.snapshot.recreate_iter_duration` (default 20s), which controls how frequently a long-lived storage engine iterator, backed by an engine snapshot, will be closed and recreated. Currently, it is only used for iterators used in rangefeed catchup scans. [#154412][#154412]
   - The cluster setting `storage.snapshot.recreate_iter_duration` (default `20s`) controls how frequently a long-lived engine iterator, backed by an engine snapshot, will be closed and recreated. Currently, it is only used for iterators used in rangefeed catchup scans. [#156303][#156303]
 
-- `storage.tombstone_dense_compaction_threshold` (reserved)
-
-- `storage.value_separation.latency_tolerant_minimum_size` (reserved)
-
-- `storage.value_separation.mvcc_history_minimum_size` (reserved)
-
-- `timeseries.persist_child_metrics.enabled` (reserved)
-
 - `timeseries.storage.resolution_1m.ttl`
-
-- `trace.structured_bytes_per_span.max` (reserved)
-
-- `trace.structured_bytes_per_trace.max` (reserved)
-
 
 <h5 id="v26-1-0-settings-changed-default">Settings with changed defaults</h5>
 
@@ -140,7 +55,6 @@ Changes to [cluster settings]({% link v26.1/cluster-settings.md %}) should be re
 
 - `version` has had its default changed to `26.1`
   - Additional [documentation]({{% cockroachcloud/provision-a-cluster-with-terraform.md %}}) is available for this setting.
-
 
 <h5 id="v26-1-0-settings-changed-description">Settings with changed descriptions</h5>
 
