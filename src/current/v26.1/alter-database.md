@@ -871,7 +871,7 @@ To remove the changes made in this example, [reset the Zone Config Extensions](#
 
 In a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}), the default zone configuration may include additional [non-voting replicas]({% link {{ page.version.version }}/configure-replication-zones.md %}#num_voters) (for example, to support [follower reads]({% link {{ page.version.version }}/follower-reads.md %})). The database's [survival goal]({% link {{ page.version.version }}/multiregion-overview.md %}#survival-goals) depends only on the number of voting replicas (`num_voters`), not the total number of replicas (`num_replicas`).
 
-By default, the `movr` database [as configured for this example](#Setup) has a [zone survival goal]({% link {{ page.version.version }}/multiregion-survival-goals.md %}):
+By default, the `movr` database [as configured for this example](#setup) has a [zone survival goal]({% link {{ page.version.version }}/multiregion-survival-goals.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
