@@ -126,7 +126,7 @@ CockroachDB supports two approaches for the creation of users who will authentic
 
 #### Option 1: Automatic user provisioning (recommended)
 
-With automatic user provisioning, CockroachDB creates users automatically during their first successful OIDC authentication. This eliminates the need for custom scripting to create user accounts.
+{% include_cached new-in.html version="v26.1" %} With automatic user provisioning, CockroachDB creates users automatically during their first successful OIDC authentication. This eliminates the need for custom scripting to create user accounts.
 
 To enable automatic user provisioning:
 

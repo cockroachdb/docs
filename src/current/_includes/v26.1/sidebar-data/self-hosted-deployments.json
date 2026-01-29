@@ -397,6 +397,12 @@
                     ]
                   },
                   {
+                    "title": "JWT Authorization",
+                    "urls": [
+                      "/${VERSION}/jwt-authorization.html"
+                    ]
+                  },
+                  {
                     "title": "DB Console SSO",
                     "urls": [
                       "/${VERSION}/sso-db-console.html"
