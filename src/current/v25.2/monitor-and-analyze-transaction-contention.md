@@ -40,7 +40,7 @@ In the DB Console, in the cluster view, this rate is averaged across all nodes, 
 
 The following image from the DB Console was taken from a cluster running more than 50,000 queries per second with around 2 contention events per second. This contention is unlikely to have an impact on the workload.
 
-<img src="{{ 'images/v25.2/contention-1.png' | relative_url }}" alt="DB Console SQL Statement Contention graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/contention-1.png" alt="DB Console SQL Statement Contention graph" style="border:1px solid #eee;max-width:100%" />
 
 ### SQL Activity pages
 
@@ -54,7 +54,7 @@ The [**Contention Time** column]({% link {{ page.version.version }}/ui-statement
 
 The following image shows the **Statements** page with the top 3 statement fingerprints by Contention Time in a cluster containing the test data from the [Analyze using `crdb_internal` tables](#analyze-using-crdb_internal-tables) section.
 
-<img src="{{ 'images/v25.2/contention-2.png' | relative_url }}" alt="Statements page by Contention Time" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/contention-2.png" alt="Statements page by Contention Time" style="border:1px solid #eee;max-width:100%" />
 
 #### Transactions page
 
@@ -64,7 +64,7 @@ The [**Contention Time** column]({% link {{ page.version.version }}/ui-transacti
 
 The following image shows the **Transactions** page with the top 3 transactions fingerprints by Contention Time in a cluster containing the test data in the [Analyze using `crdb_internal` tables](#analyze-using-crdb_internal-tables) section.
 
-<img src="{{ 'images/v25.2/contention-3.png' | relative_url }}" alt="Transactions page by Contention Time" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/contention-3.png" alt="Transactions page by Contention Time" style="border:1px solid #eee;max-width:100%" />
 
 ### Insights page
 
@@ -377,15 +377,15 @@ This section applies a variation of the previously described analysis process to
 
 Review the [DB Console Metrics]({% link {{ page.version.version }}/ui-overview.md %}#metrics) graphs to get a high-level understanding of the contention events. The [SQL Statement Errors]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-errors) graph shows an increase of errors during the time period of 9:16 to 9:23 UTC:
 
-<img src="{{ 'images/v25.2/contention-4.png' | relative_url }}" alt="DB Console SQL Statement Errors graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/contention-4.png" alt="DB Console SQL Statement Errors graph" style="border:1px solid #eee;max-width:100%" />
 
 The [SQL Statement Contention]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention) graph shows a corresponding increase between 9:16 and 9:23 UTC: 
 
-<img src="{{ 'images/v25.2/contention-5.png' | relative_url }}" alt="DB Console SQL Statement Contention graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/contention-5.png" alt="DB Console SQL Statement Contention graph" style="border:1px solid #eee;max-width:100%" />
 
 The [Transaction Restarts]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#transaction-restarts) graph also shows a corresponding increase between 9:16 and 9:23 UTC: 
 
-<img src="{{ 'images/v25.2/contention-6.png' | relative_url }}" alt="DB Console Transaction Restarts graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/contention-6.png" alt="DB Console Transaction Restarts graph" style="border:1px solid #eee;max-width:100%" />
 
 These graphs help to understand the incident at a high-level, but not the specific transactions that are involved. To understand that, query the `crdb_internal.transaction_contention_events` table.
 

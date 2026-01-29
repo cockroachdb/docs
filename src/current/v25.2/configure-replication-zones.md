@@ -129,7 +129,7 @@ The following diagram presents the same set of schema objects as the previous ou
 
 Each box represents a schema object in the zone configuration inheritance hierarchy. Each solid line ends in an arrow that points from a parent object to its child object, which will inherit the parent's values unless those values are changed at the child level. The dotted lines between partitions and sub-partitions represent the known limitation mentioned previously that sub-partitions do not inherit their values from their parent partitions. Instead, sub-partitions inherit their values from the parent table. For more information about this limitation, see [cockroachdb/cockroach#75862](https://github.com/cockroachdb/cockroach/issues/75862).
 
-<img src="{{ 'images/v25.2/zone-config-inheritance-diagram.png' | relative_url }}" alt="zone config inheritance diagram" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/zone-config-inheritance-diagram.png" alt="zone config inheritance diagram" style="border:1px solid #eee;max-width:100%" />
 
 #### Zone config inheritance - example SQL session
 
