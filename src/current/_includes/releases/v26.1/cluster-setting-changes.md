@@ -1,7 +1,6 @@
-# Cluster Setting Changes
+Changes to [cluster settings]({% link v26.1/cluster-settings.md %}) should be reviewed prior to upgrading. New default cluster setting values will be used unless you have manually set a value for a setting. This can be confirmed by running the SQL statement `SELECT * FROM system.settings` to view the non-default settings.
 
-
-## Settings Added
+<h5 id="v26-1-0-settings-added">New settings</h5>
 
 - `admission.cpu_time_tokens.target_util.app_tenant` (reserved)
 
@@ -111,7 +110,7 @@
 - `trace.structured_bytes_per_trace.max` (reserved)
 
 
-## Settings Changed Default
+<h5 id="v26-1-0-settings-changed-default">Settings with changed defaults</h5>
 
 - `bulkio.ingest.compute_stats_diff_in_stream_batcher.enabled` (reserved) has had its default changed to `true`
 
@@ -143,7 +142,7 @@
   - Additional [documentation]({{% cockroachcloud/provision-a-cluster-with-terraform.md %}}) is available for this setting.
 
 
-## Settings Changed Description
+<h5 id="v26-1-0-settings-changed-description">Settings with changed descriptions</h5>
 
 - `changefeed.default_range_distribution_strategy` description has been updated
   - Improved the description of the `changefeed.default_range_distribution_strategy` cluster setting to better explain the available options and their behavior. [#158602][#158602]
@@ -168,7 +167,7 @@
 - `storage.sstable.compression_algorithm` description has been updated
 
 
-## Additional Cluster Setting Changes
+<h5 id="v26-1-0-additional-cluster-setting-changes">Additional cluster setting changes</h5>
 
 The following release notes mention cluster settings but do not cite a specific changed setting by name:
 

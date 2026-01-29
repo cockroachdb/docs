@@ -1,5 +1,3 @@
-# Backward-Incompatible Changes
-
 {% comment %}
 NOTE: Based on review of v26.1 testing releases, there appear to be no significant backward-incompatible changes from v25.4 to v26.1.
 
