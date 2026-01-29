@@ -197,7 +197,7 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
     - To monitor the number of lease transfers, open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), select the **Replication** dashboard, hover over the **Range Operations** graph, and check the **Lease Transfers** data point.
     - To check the number of snapshots, open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), select the **Replication** dashboard, and hover over the **Snapshots** graph.
 
-    <img src="{{ 'images/v24.2/tpcc-large-replication-dashboard.png' | relative_url }}" alt="TPC-C 140k replication and partitioning dashboards" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/tpcc-large-replication-dashboard.png" alt="TPC-C 140k replication and partitioning dashboards" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 7. Allocate partitions
 
