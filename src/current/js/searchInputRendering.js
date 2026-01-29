@@ -31,17 +31,20 @@ $(document).ready(function() {
   });
 
   // Handle search input in topnav - redirect to Algolia search page
-  $('#search-input').on('keypress', function(e) {
-    if (e.which === 13) { // Enter key
-      e.preventDefault();
-      const query = $(this).val().trim();
-      if (query) {
-        // Redirect to Algolia search page
-        const searchPath = getSearchPath();
-        window.location.href = searchPath + '?query=' + encodeURIComponent(query);
+  // Skip if Kapa search mode is handling the input
+  const kapaScript = document.querySelector('script[data-modal-override-open-selector-search]');
+  if (!kapaScript) {
+    $('#search-input').on('keypress', function(e) {
+      if (e.which === 13) { // Enter key
+        e.preventDefault();
+        const query = $(this).val().trim();
+        if (query) {
+          const searchPath = getSearchPath();
+          window.location.href = searchPath + '?query=' + encodeURIComponent(query);
+        }
       }
-    }
-  });
+    });
+  }
 
   // Disable old suggestions - now handled by kapaLiveSuggestions.js
   // which provides real-time search results from Kapa API
