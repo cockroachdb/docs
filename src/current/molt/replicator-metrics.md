@@ -1,18 +1,18 @@
 ---
-title: Replicator Metrics
+title: MOLT Replicator Metrics
 summary: Learn how to monitor stages of the MOLT Replicator pipeline.
 toc: true
 docs_area: migrate
 ---
 
-[MOLT Replicator]({% link molt/molt-replicator.md %}) exposes Prometheus metrics at each stage of the [replication pipeline](#replication-pipeline). When using Replicator to perform [forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) or [failback]({% link molt/migrate-failback.md %}), you should monitor the health of each relevant pipeline stage to quickly detect issues. 
+[MOLT Replicator]({% link molt/molt-replicator.md %}) exposes Prometheus metrics at each stage of the [replication pipeline](#replication-pipeline). When using Replicator to perform [forward replication]({% link molt/molt-replicator.md %}#forward-replication-after-initial-load) or [failback]({% link molt/molt-replicator.md %}#failback-replication), you should monitor the health of each relevant pipeline stage to quickly detect issues. 
 
 This page describes and provides usage guidelines for Replicator metrics, according to the replication source:
 
 - PostgreSQL
 - MySQL
 - Oracle
-- CockroachDB (during [failback]({% link molt/migrate-failback.md %}))
+- CockroachDB (during [failback]({% link molt/molt-replicator.md %})#failback-replication)
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>
@@ -87,11 +87,11 @@ OK
 ### Visualize metrics
 
 <section class="filter-content" markdown="1" data-scope="postgres mysql cockroachdb">
-Use the Replicator Grafana dashboard [bundled with your binary]({% link molt/molt-replicator.md %}#installation) (`replicator_grafana_dashboard.json`) to visualize metrics. The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json).
+Use the Replicator Grafana dashboard [bundled with your binary]({% link molt/molt-replicator-installation.md %}) (`replicator_grafana_dashboard.json`) to visualize metrics. The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-Use the Replicator Grafana dashboards [bundled with your binary]({% link molt/molt-replicator.md %}#installation) to visualize metrics. The general Replicator dashboard (`replicator_grafana_dashboard.json`) displays overall replication metrics, and the Oracle-specific dashboard (`replicator_oracle_grafana_dashboard.json`) displays [Oracle source metrics](#oracle-source). The bundled dashboards match your binary version. Alternatively, you can download the latest dashboards for [Replicator](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) and [Oracle source metrics](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
+Use the Replicator Grafana dashboards [bundled with your binary]({% link molt/molt-replicator-installation.md %}) to visualize metrics. The general Replicator dashboard (`replicator_grafana_dashboard.json`) displays overall replication metrics, and the Oracle-specific dashboard (`replicator_oracle_grafana_dashboard.json`) displays [Oracle source metrics](#oracle-source). The bundled dashboards match your binary version. Alternatively, you can download the latest dashboards for [Replicator](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) and [Oracle source metrics](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
 </section>
 
 ## Overall replication metrics
@@ -177,7 +177,7 @@ Monitor the following metrics to track checkpoint progress:
 #### Oracle source
 
 {{site.data.alerts.callout_success}}
-To visualize the following metrics, import the Oracle Grafana dashboard [bundled with your binary]({% link molt/molt-replicator.md %}#installation) (`replicator_oracle_grafana_dashboard.json`). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
+To visualize the following metrics, import the Oracle Grafana dashboard [bundled with your binary]({% link molt/molt-replicator-installation.md %}) (`replicator_oracle_grafana_dashboard.json`). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
 {{site.data.alerts.end}}
 
 - `oraclelogminer_scn_interval_size`
@@ -311,5 +311,5 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
 - [Replicator Flags]({% link molt/replicator-flags.md %})
-- [Load and Replicate]({% link molt/migrate-load-replicate.md %})
-- [Migration Failback]({% link molt/migrate-failback.md %})
+- [MOLT Replicator Best Practices]({% link molt/molt-replicator-best-practices.md %})
+- [MOLT Replicator Troubleshooting]({% link molt/molt-replicator-troubleshooting.md %})

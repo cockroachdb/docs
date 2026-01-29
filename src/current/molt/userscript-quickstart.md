@@ -9,7 +9,7 @@ This quickstart guides you through creating, validating, and deploying your firs
 
 ## Before you begin
 
-- [Install MOLT Replicator **v1.3.0 or later**]({% link molt/molt-replicator.md %}#installation) for full compatibility with the userscript API.
+- [Install MOLT Replicator **v1.3.0 or later**]({% link molt/molt-replicator-installation.md %}) for full compatibility with the userscript API.
 - Install a TypeScript-compatible IDE (for example, [VS Code](https://code.visualstudio.com/)).
 
 ## Step 1: Set up your environment
