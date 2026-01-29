@@ -48,7 +48,7 @@ SELECT ST_CoveredBy(st_geomfromtext('SRID=4326;POLYGON((-87.623177 41.881832, -9
 (1 row)
 ~~~
 
-<img src="{{ 'images/v24.2/geospatial/st_coveredby_true.png' | relative_url }}" alt="ST_CoveredBy - true" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geospatial/st_coveredby_true.png" alt="ST_CoveredBy - true" style="border:1px solid #eee;max-width:100%" />
 
 ### False
 
@@ -68,7 +68,7 @@ SELECT ST_CoveredBy(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -9
 (1 row)
 ~~~
 
-<img src="{{ 'images/v24.2/geospatial/st_coveredby_false.png' | relative_url }}" alt="ST_CoveredBy - false" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geospatial/st_coveredby_false.png" alt="ST_CoveredBy - false" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
