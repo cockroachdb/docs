@@ -37,7 +37,7 @@ Column | Type | Description
 -------|------|------------
 `row_id` | `INT` | A unique ID.
 `fingerprint` | `STRING` | The SQL statement fingerprint that the hint applies to.
-`hint_type` | `STRING` | `rewrite_inline_hints`, indicating an injected hint.
+`hint_type` | `STRING` | Hint type. `rewrite_inline_hints` indicates an injected hint.
 `created_at` | `TIMESTAMPTZ` | The timestamp when the injected hint was created.
 `details` | `JSONB` | When the [`DETAILS`](#options) option is specified, hint-specific information in JSON format. For `rewrite_inline_hints`, this includes the donor SQL fingerprint with hints that will be applied.
 

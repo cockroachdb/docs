@@ -487,7 +487,7 @@ SELECT information_schema.crdb_rewrite_inline_hints(
 );
 ~~~
 
-Both fingerprints in the function invocation **must** have the same syntactic structure and use underscores (`_`) as placeholders for constants (for example, `SELECT * FROM users WHERE city = _`). If you use a regular SQL statement in either argument, it is automatically converted into the matching fingerprint.
+Both fingerprints in the function invocation **must** have the same syntactic structure and use underscores (`_`) as placeholders for constants (for example, `SELECT * FROM users WHERE city = _`). If you use a regular SQL statement in either argument, it is automatically replaced by the matching fingerprint.
 
 {{site.data.alerts.callout_success}}
 To find the fingerprint for a statement, use the [**Statements** page of the DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}#statement-fingerprints-view) or [`EXPLAIN (FINGERPRINT) {statement}`]({% link {{ page.version.version }}/explain.md %}#fingerprint-option).
