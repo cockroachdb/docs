@@ -29,7 +29,7 @@ The `docs-builder` Docker image provides a consistent build environment with pin
 |-----------|---------|
 | Base Image | ruby:3.4-slim (Debian Trixie) |
 | Ruby | 3.4.0 |
-| Bundler | 4.0.0 |
+| Bundler | 2.7.2 |
 | Jekyll | 4.3.4 |
 | Python | 3.13+ |
 | Node.js | 20 LTS |
@@ -55,7 +55,7 @@ make docker-build
 
 ```bash
 make docker-serve
-# Then open http://localhost:4000
+# Then open http://localhost:4000/docs/
 ```
 
 ### Interactive shell in the container
