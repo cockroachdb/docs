@@ -121,7 +121,7 @@ node 9:
 
 And here is the view on the **Network Latency Page**, which shows which nodes are in which cluster regions:
 
-<img src="{{ 'images/v23.1/geo-partitioning-network-latency.png' | relative_url }}" alt="Geo-partitioning network latency" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geo-partitioning-network-latency.png" alt="Geo-partitioning network latency" style="max-width:100%" />
 
 You can see by referring back and forth between `\demo ls` and the **Network Latency Page** that the cluster has the following region/node/port correspondences, which we can use to determine how to connect MovR from various regions:
 
@@ -251,13 +251,13 @@ Now that you have load hitting the cluster from different regions, check how the
 
 In the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) at <a data-proofer-ignore href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>, click [**Metrics**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) on the left and hover over the [**Service Latency: SQL, 99th percentile**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}#service-latency-sql-99th-percentile) timeseries graph. You should see the effects of network latency on this workload.
 
-<img src="{{ 'images/v23.1/geo-partitioning-sql-latency-before.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geo-partitioning-sql-latency-before.png" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 
 For each of the 3 nodes that you are pointing the movr workload at, the max latency of 99% of queries are in the 1-2 seconds range. The SQL latency is high because of the network latency between regions.
 
 To see the network latency between any two nodes in the cluster, click [**Network Latency**]({% link {{ page.version.version }}/ui-network-latency-page.md %}) in the left-hand navigation.
 
-<img src="{{ 'images/v23.1/geo-partitioning-network-latency.png' | relative_url }}" alt="Geo-partitioning network latency" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geo-partitioning-network-latency.png" alt="Geo-partitioning network latency" style="max-width:100%" />
 
 Within a single region, round-trip latency is under 6 ms (milliseconds). Across regions, round-trip latency is significantly higher.
 
@@ -314,7 +314,7 @@ As the multi-region schema changes complete, you should see changes to the follo
 The small demo cluster used in this example is essentially in a state of overload from the start. The performance numbers shown here only reflect the direction of the performance improvements. You should expect to see much better absolute performance numbers than those described here [in a production deployment]({% link {{ page.version.version }}/recommended-production-settings.md %}).
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/v23.1/geo-partitioning-sql-latency-after-1.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geo-partitioning-sql-latency-after-1.png" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 
 ## See also
 

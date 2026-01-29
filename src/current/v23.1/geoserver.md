@@ -166,7 +166,7 @@ In the row for the `roads` layer, click the **OpenLayers** button under the **Co
 
 Your browser should open a new tab with the title **OpenLayers map preview**. It should show a map view that looks like the following:
 
-<img src="{{ 'images/v23.1/geospatial/geoserver-us-atlas-00.png' | relative_url }}" alt="GeoServer U.S. National Atlas preview" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geospatial/geoserver-us-atlas-00.png" alt="GeoServer U.S. National Atlas preview" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
