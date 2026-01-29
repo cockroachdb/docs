@@ -50,7 +50,7 @@ Follow the steps in [Instance Dashboard](https://docs.dbmarlin.com/docs/Using-DB
 
 When you open the dashboard you'll see :
 
-<img src="{{ 'images/v24.1/dbmarlin-crdb-dashboard.png' | relative_url }}" alt="CockroachDB Overview dashboard for DBmarlin" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/dbmarlin-crdb-dashboard.png" alt="CockroachDB Overview dashboard for DBmarlin" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
