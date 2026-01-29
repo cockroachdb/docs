@@ -13,70 +13,66 @@ Connect your AI assistant to CockroachDB documentation by configuring the MCP se
 
 ### Cursor
 
-1. Open Cursor Settings (⌘+,)
-2. Navigate to **Models** → **Model Context Protocol**
-3. Add the following configuration:
+1. Create or open the file `.cursor/mcp.json` in your project directory
+2. Add the following configuration:
 
     ```json
     {
       "mcpServers": {
         "cockroachdb-docs": {
-          "command": "npx",
-          "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+          "type": "http",
+          "url": "https://cockroachdb.mcp.kapa.ai"
         }
       }
     }
     ```
 
-4. Restart Cursor to apply the configuration
-5. You can now ask questions about CockroachDB documentation directly in Cursor
+3. Restart Cursor to apply the configuration
+4. You can now ask questions about CockroachDB documentation directly in Cursor
 
 ### VS Code
 
-1. Install the [Claude Code for VS Code](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code) extension
-2. Open VS Code Settings (⌘+,)
-3. Search for "Claude MCP"
-4. Add the following to your MCP configuration:
+{{site.data.alerts.callout_info}}
+Requires VS Code 1.102 or later with GitHub Copilot.
+{{site.data.alerts.end}}
+
+1. Create or open the file `.vscode/mcp.json` in your project directory
+2. Add the following configuration:
 
     ```json
     {
-      "claude.mcpServers": {
+      "servers": {
         "cockroachdb-docs": {
-          "command": "npx",
-          "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+          "type": "http",
+          "url": "https://cockroachdb.mcp.kapa.ai"
         }
       }
     }
     ```
 
-5. Reload VS Code window (⌘+R)
-6. The CockroachDB documentation is now available through Claude in VS Code
+3. Reload VS Code window (⌘+R)
+4. The CockroachDB documentation is now available through GitHub Copilot in VS Code
 
 ### Claude Code
 
-1. Open Claude Code settings
-2. Navigate to MCP Servers configuration
-3. Add the CockroachDB Docs server:
+1. Run the following command in your terminal:
 
-    ```json
-    {
-      "mcpServers": {
-        "cockroachdb-docs": {
-          "command": "npx",
-          "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
-        }
-      }
-    }
+    ```shell
+    claude mcp add --transport http cockroachdb-docs https://cockroachdb.mcp.kapa.ai
     ```
 
-4. Restart Claude Code
-5. CockroachDB documentation is now accessible in your Claude Code environment
+2. Execute `/mcp` in Claude Code and authenticate via browser when prompted
+3. CockroachDB documentation is now accessible in your Claude Code environment
 
 ### ChatGPT Desktop
 
-{{site.data.alerts.callout_info}}
-MCP support for ChatGPT Desktop is coming soon. Check back for updates.
-{{site.data.alerts.end}}
+1. Open ChatGPT Desktop
+2. Go to **Settings** → **Features** and enable **Developer mode**
+3. Navigate to **Settings** → **MCP Servers**
+4. Click **Add Server** and enter:
+   - **Name**: `cockroachdb-docs`
+   - **URL**: `https://cockroachdb.mcp.kapa.ai`
+5. CockroachDB documentation is now accessible in ChatGPT Desktop
 
 ### Claude Desktop
 
@@ -91,8 +87,8 @@ MCP support for ChatGPT Desktop is coming soon. Check back for updates.
     {
       "mcpServers": {
         "cockroachdb-docs": {
-          "command": "npx",
-          "args": ["-y", "@modelcontextprotocol/server-everything", "https://cockroachdb.mcp.kapa.ai"]
+          "type": "npx",
+          "args": ["mcp-remote", "https://cockroachdb.mcp.kapa.ai"]
         }
       }
     }
@@ -101,7 +97,7 @@ MCP support for ChatGPT Desktop is coming soon. Check back for updates.
 3. Save the file and restart Claude Desktop
 4. You can now query CockroachDB documentation directly in Claude Desktop
 
-### Other
+### Other MCP Clients
 
 For other MCP-compatible clients, use the following server configuration:
 
@@ -111,10 +107,11 @@ For other MCP-compatible clients, use the following server configuration:
 
 ```json
 {
-  "servers": [{
-    "name": "cockroachdb-docs",
-    "url": "https://cockroachdb.mcp.kapa.ai"
-  }]
+  "mcpServers": {
+    "cockroachdb-docs": {
+      "url": "https://cockroachdb.mcp.kapa.ai"
+    }
+  }
 }
 ```
 
@@ -180,7 +177,7 @@ If the configuration doesn't seem to take effect:
 1. Ensure the configuration file is saved in the correct location
 2. Check for JSON syntax errors in your configuration
 3. Fully quit and restart your application (not just reload)
-4. Verify that `npx` is available in your system `PATH`
+4. For Claude Desktop: Verify that `npx` is available in your system `PATH`
 
 ## Feedback and Support
 
