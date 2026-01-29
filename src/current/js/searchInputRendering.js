@@ -30,10 +30,21 @@ $(document).ready(function() {
     }
   });
 
-  // Handle search input in topnav - redirect to Algolia search page
-  // Skip if Kapa search mode is handling the input
+  // Handle search input in topnav
+  // Check if Kapa search mode is handling the input
   const kapaScript = document.querySelector('script[data-modal-override-open-selector-search]');
-  if (!kapaScript) {
+  if (kapaScript) {
+    // Kapa is configured - intercept clicks to open Kapa modal
+    $('#search-input').on('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $(this).blur();
+      if (window.Kapa && window.Kapa.open) {
+        window.Kapa.open({ mode: 'search' });
+      }
+    });
+  } else {
+    // No Kapa - use Algolia search page redirect on Enter
     $('#search-input').on('keypress', function(e) {
       if (e.which === 13) { // Enter key
         e.preventDefault();
