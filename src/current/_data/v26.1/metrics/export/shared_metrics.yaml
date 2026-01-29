@@ -18,6 +18,7 @@ metrics:
   changefeed_backfill_count: sum
   changefeed_backfill_pending_ranges: sum
   changefeed_commit_latency: sum
+  changefeed_emitted_bytes: sum
   changefeed_emitted_messages: sum
   changefeed_error_retries: sum
   changefeed_failures: sum
@@ -32,7 +33,29 @@ metrics:
   distsender_rpc_sent: sum
   distsender_rpc_sent_local: sum
   distsender_rpc_sent_nextreplicaerror: sum
+  jobs_changefeed_currently_paused: sum
+  jobs_changefeed_protected_age_sec: max
   jobs_changefeed_resume_retry_error: sum
+  jobs_row_level_ttl_currently_paused: sum
+  jobs_row_level_ttl_currently_running: sum
+  jobs_row_level_ttl_delete_duration: sum
+  jobs_row_level_ttl_num_active_spans: sum
+  jobs_row_level_ttl_resume_completed: sum
+  jobs_row_level_ttl_resume_failed: sum
+  jobs_row_level_ttl_rows_deleted: sum
+  jobs_row_level_ttl_rows_selected: sum
+  jobs_row_level_ttl_select_duration: sum
+  jobs_row_level_ttl_span_total_duration: sum
+  jobs_row_level_ttl_total_expired_rows: sum
+  jobs_scheduled_row_level_ttl_executor_failed: sum
+  queue_replicate_replacedecommissioningreplica_error: sum
+  range_merges: sum
+  rebalancing_cpunanospersecond: sum
+  rebalancing_lease_transfers: sum
+  rebalancing_queriespersecond: sum
+  rebalancing_range_rebalances: sum
+  rebalancing_replicas_cpunanospersecond: sum
+  rebalancing_replicas_queriespersecond: sum
   requests_slow_distsender: sum
   round_trip_latency: sum
   schedules_BACKUP_failed: sum
@@ -41,6 +64,7 @@ metrics:
   schedules_BACKUP_succeeded: sum
   sql_bytesin: sum
   sql_bytesout: sum
+  sql_conn_failures: sum
   sql_conn_latency: sum
   sql_conns: sum
   sql_ddl_count: sum
@@ -63,7 +87,6 @@ metrics:
   sql_mem_internal_session_max: max
   sql_mem_internal_txn_current: sum
   sql_mem_internal_txn_max: max
-  sql_mem_root_current: sum
   sql_misc_count: sum
   sql_new_conns: sum
   sql_query_count: sum
@@ -84,4 +107,8 @@ metrics:
   txn_durations: sum
   txn_restarts: sum
   txn_restarts_serializable: sum
+  txn_restarts_txnaborted: sum
+  txn_restarts_txnpush: sum
+  txn_restarts_unknown: sum
   txn_restarts_writetooold: sum
+  txnwaitqueue_deadlocks_total: sum

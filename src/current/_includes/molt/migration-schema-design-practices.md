@@ -1,18 +1,39 @@
-Convert the source schema into a CockroachDB-compatible schema. CockroachDB supports the PostgreSQL wire protocol and is largely [compatible with PostgreSQL syntax]({% link {{ site.current_cloud_version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
+Convert the source table definitions into CockroachDB-compatible equivalents. CockroachDB supports the PostgreSQL wire protocol and is largely [compatible with PostgreSQL syntax]({% link {{ site.current_cloud_version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
 
-- The source and target schemas must **match**. Review [Type mapping]({% link molt/molt-fetch.md %}#type-mapping) to understand which source types can be mapped to CockroachDB types.
+- The source and target table definitions must **match**. Review [Type mapping]({% link molt/molt-fetch.md %}#type-mapping) to understand which source types can be mapped to CockroachDB types.
 
-	For example, a source table defined as `CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);` must have a corresponding schema and table in CockroachDB:
+	<section class="filter-content" markdown="1" data-scope="postgres">
+	For example, a PostgreSQL source table defined as `CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);` must have a corresponding schema and table in CockroachDB:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE SCHEMA migration_schema;
 	CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);
 	~~~
+	</section>
 
-	- MOLT Fetch can automatically create a matching CockroachDB schema using the {% if page.name != "migration-strategy.md" %}[`drop-on-target-and-recreate`](#table-handling-mode){% else %}[`drop-on-target-and-recreate`]({% link molt/molt-fetch.md %}#target-table-handling){% endif %} option.
+	<section class="filter-content" markdown="1" data-scope="mysql">
+	MySQL tables belong directly to the database specified in the connection string. A MySQL source table defined as `CREATE TABLE tbl (id INT PRIMARY KEY);` should map to CockroachDB's default `public` schema:
 
-	- If you create the target schema manually, review how MOLT Fetch handles [type mismatches]({% link molt/molt-fetch.md %}#mismatch-handling). You can use the {% if page.name != "migration-strategy.md" %}[MOLT Schema Conversion Tool](#schema-conversion-tool){% else %}[MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}){% endif %} to create a matching schema.
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	CREATE TABLE tbl (id INT PRIMARY KEY);
+	~~~
+	</section>
+
+	<section class="filter-content" markdown="1" data-scope="oracle">
+	For example, an Oracle source table defined as `CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);` must have a corresponding schema and table in CockroachDB:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	CREATE SCHEMA migration_schema;
+	CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);
+	~~~
+	</section>
+
+	- MOLT Fetch can automatically define matching CockroachDB tables using the {% if page.name != "migration-strategy.md" %}[`drop-on-target-and-recreate`](#table-handling-mode){% else %}[`drop-on-target-and-recreate`]({% link molt/molt-fetch.md %}#target-table-handling){% endif %} option.
+
+	- If you define the target tables manually, review how MOLT Fetch handles [type mismatches]({% link molt/molt-fetch.md %}#mismatch-handling). You can use the {% if page.name != "migration-strategy.md" %}[MOLT Schema Conversion Tool](#schema-conversion-tool){% else %}[MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}){% endif %} to create matching table definitions.
 
 	<section class="filter-content" markdown="1" data-scope="oracle">
 	- By default, table and column names are case-insensitive in MOLT Fetch. If using the [`--case-sensitive`]({% link molt/molt-fetch.md %}#global-flags) flag, schema, table, and column names must match Oracle's default uppercase identifiers. Use quoted names on the target to preserve case. For example, the following CockroachDB SQL statement will error:

@@ -154,6 +154,8 @@ COMMIT;
 
 ## Considerations
 
+To prevent unnecessary queuing in admission control CPU queues, the `goschedstats.always_use_short_sample_period.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) should be set to `true` for any production cluster.
+
 [Client connections]({% link {{ page.version.version }}/connection-parameters.md %}) are not managed by the admission control subsystem. Too many connections per [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) can also lead to cluster overload.
 
 {% include {{page.version.version}}/sql/server-side-connection-limit.md %}

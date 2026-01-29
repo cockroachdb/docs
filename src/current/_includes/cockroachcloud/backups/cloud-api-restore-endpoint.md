@@ -1,9 +1,5 @@
 ### Restore from a managed backup
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 You can use the `/v1/clusters/{destination_cluster_id}/restores` endpoint to restore the contents of a managed backup to a specified destination cluster.
 
 {% if page.name == "managed-backups-advanced.md" %}
@@ -283,10 +279,6 @@ If the request is successful, the client recieves a response containing JSON des
 {% endif %}
 
 ### Get status of a restore job
-
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
 
 To view the status of a restore job using the cloud API, send a `GET` request to the `/v1/clusters/{cluster_id}/restores/{restore_id}` endpoint where `restore_id` is the `id` from the JSON response:
 

@@ -47,6 +47,7 @@ Almost all database operations that use CPU or perform storage IO are controlled
 - [`COPY`]({% link {{ page.version.version }}/copy.md %}) statements.
 - [Deletes]({% link {{ page.version.version }}/delete-data.md %}) (including deletes initiated by [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}); the [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) performed by TTL jobs are also subject to CPU admission control).
 - [Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
+- [Restore]({% link {{ page.version.version }}/restore.md %}) operations, including [full cluster]({% link {{ page.version.version }}/restore.md %}#full-cluster), [database]({% link {{ page.version.version }}/restore.md %}#databases), and [table]({% link {{ page.version.version }}/restore.md %}#tables) restores.
 - [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), including index and column backfills (on both the [leaseholder replica]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
 - [Follower replication work](#replication-admission-control).
 - [Raft log entries being written to disk]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
@@ -65,14 +66,14 @@ The pacing of catchup writes is controlled at the replication layer to avoid ove
 
 At a high level, replication admission control works by:
 
-- Pacing regular SQL writes at the rate of replica quorum. ()
+- Pacing regular SQL writes at the rate of replica quorum.
 - Pacing background (elastic) replication at the rate of the slowest replica.
 
 This has the following effects:
 
-1. Does not overload slow/restarted nodes with replication flows. ()
+1. Does not overload slow/restarted nodes with replication flows.
 2. Isolates performance between regular and elastic traffic.
-3. Paces regular writes at quorum speed. ()
+3. Paces regular writes at quorum speed.
 4. Paces elastic writes at the slowest replica's speed.
 
 For example, prior to CockroachDB v25.1, when a leader and follower replica were disconnected from each other due to a node going away and coming back, once the follower came back the leader would slam the follower with any Raft entries it had missed. In v25.1 and later, the leader paces the entries it sends to the follower. The result is that baseline cluster QPS (queries per second) and latency should not change substantially during perturbations such as [node restarts]({% link {{ page.version.version }}/eventlog.md %}#node_restart).

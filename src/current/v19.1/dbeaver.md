@@ -29,17 +29,17 @@ To work through this tutorial, take the following steps:
 
 Start DBeaver, and select **Database > New Connection** from the menu.  In the dialog that appears, select **CockroachDB** from the list.
 
-<img src="{{ 'images/v2.1/dbeaver-01-select-cockroachdb.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/dbeaver/dbeaver-01-select-cockroachdb.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 2. Update the connection settings
 
 On the **Create new connection** dialog that appears, click **Network settings**.  
 
-<img src="{{ 'images/v2.1/dbeaver-02-cockroachdb-connection-settings.png' | relative_url }}" alt="DBeaver - CockroachDB connection settings" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/dbeaver/dbeaver-02-cockroachdb-connection-settings.png' | relative_url }}" alt="DBeaver - CockroachDB connection settings" style="border:1px solid #eee;max-width:100%" />
 
 From the network settings, click the **SSL** tab.  It will look like the screenshot below.
 
-<img src="{{ 'images/v2.1/dbeaver-03-ssl-tab.png' | relative_url }}" alt="DBeaver - SSL tab" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/dbeaver/dbeaver-03-ssl-tab.png' | relative_url }}" alt="DBeaver - SSL tab" style="border:1px solid #eee;max-width:100%" />
 
 Check the **Use SSL** checkbox as shown, and fill in the text areas as follows:
 
@@ -57,13 +57,13 @@ Select **require** from the **SSL mode** dropdown.  There is no need to set the 
 
 Click **Test Connection ...**.  If everything worked, you will see a **Success** dialog like the one shown below.
 
-<img src="{{ 'images/v2.1/dbeaver-04-connection-success-dialog.png' | relative_url }}" alt="DBeaver - connection success dialog" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/dbeaver/dbeaver-04-connection-success-dialog.png' | relative_url }}" alt="DBeaver - connection success dialog" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 4. Start using DBeaver
 
 Click **Finish** to get started using DBeaver with CockroachDB.
 
-<img src="{{ 'images/v2.1/dbeaver-05-movr.png' | relative_url }}" alt="DBeaver - CockroachDB with the movr database" style="max-width:100%" />
+<img src="{{ 'images/common/dbeaver/dbeaver-05-movr.png' | relative_url }}" alt="DBeaver - CockroachDB with the movr database" style="max-width:100%" />
 
 For more information about using DBeaver, see the [DBeaver documentation](https://dbeaver.io/docs/).
 

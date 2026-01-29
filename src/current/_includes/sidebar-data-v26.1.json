@@ -21,6 +21,7 @@
   {% include_cached v26.1/sidebar-data/multi-region-capabilities.json %},
   {% include_cached v26.1/sidebar-data/optimize-performance.json %},
   {% include_cached v26.1/sidebar-data/troubleshooting.json %},
+  {% include_cached v26.1/sidebar-data/integrate.json %},
   {% include_cached v26.1/sidebar-data/sql.json %},
   {% include_cached v26.1/sidebar-data/reference.json %},
   {% include_cached v26.1/sidebar-data/faqs.json %},

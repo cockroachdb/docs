@@ -5,7 +5,7 @@ If the changefeed shows connection errors in `SHOW CHANGEFEED JOB`:
 ##### Connection refused
 
 ~~~
-transient error: Post "https://replicator-host:30004/molt/public": dial tcp [::1]:30004: connect: connection refused
+transient error: Post "https://replicator-host:30004/migration_db/migration_schema": dial tcp [::1]:30004: connect: connection refused
 ~~~
 
 This indicates that Replicator is down, the webhook URL is incorrect, or the port is misconfigured.
@@ -24,9 +24,17 @@ The webhook URL path is specified in the `INTO` clause when you [create the chan
 
 **Resolution:** Verify the webhook path format matches your target database type:
 
-- PostgreSQL or CockroachDB targets: Use `/database/schema` format. For example, `webhook-https://replicator-host:30004/migration_schema/public`.
-- MySQL targets: Use `/database` format (schema is implicit). For example, `webhook-https://replicator-host:30004/migration_schema`.
-- Oracle targets: Use `/DATABASE` format in uppercase. For example, `webhook-https://replicator-host:30004/MIGRATION_SCHEMA`.
+<section class="filter-content" markdown="1" data-scope="postgres">
+- PostgreSQL targets should use `/database/schema` format. For example, `webhook-https://replicator-host:30004/migration_db/migration_schema`.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+- MySQL targets should use `/database` format. For example, `webhook-https://replicator-host:30004/migration_db`.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+- Oracle targets should use `/SCHEMA` format in uppercase. For example, `webhook-https://replicator-host:30004/MIGRATION_SCHEMA`.
+</section>
 
 For details on configuring the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
 

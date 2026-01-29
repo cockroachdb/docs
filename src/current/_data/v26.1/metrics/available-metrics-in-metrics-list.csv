@@ -392,10 +392,6 @@ jobs.auto_config_task.currently_paused
 jobs.auto_config_task.protected_age_sec
 jobs.auto_config_task.protected_record_count
 jobs.auto_create_partial_stats.currently_paused
-jobs.auto_create_partial_stats.protected_age_sec
-jobs.auto_create_partial_stats.protected_record_count
-jobs.auto_create_stats.protected_age_sec
-jobs.auto_create_stats.protected_record_count
 jobs.auto_schema_telemetry.currently_paused
 jobs.auto_schema_telemetry.protected_age_sec
 jobs.auto_schema_telemetry.protected_record_count
@@ -412,8 +408,6 @@ jobs.backup.protected_age_sec
 jobs.backup.protected_record_count
 jobs.changefeed.protected_record_count
 jobs.create_stats.currently_paused
-jobs.create_stats.protected_age_sec
-jobs.create_stats.protected_record_count
 jobs.history_retention.currently_paused
 jobs.history_retention.protected_age_sec
 jobs.history_retention.protected_record_count
@@ -421,8 +415,6 @@ jobs.import.currently_paused
 jobs.import.protected_age_sec
 jobs.import.protected_record_count
 jobs.import_rollback.currently_paused
-jobs.import_rollback.protected_age_sec
-jobs.import_rollback.protected_record_count
 jobs.key_visualizer.currently_paused
 jobs.key_visualizer.protected_age_sec
 jobs.key_visualizer.protected_record_count
@@ -491,3 +483,14 @@ sql.routine.select.count
 sql.routine.select.started.count
 sql.routine.update.count
 sql.routine.update.started.count
+sql.select.started.count
+sql.insert.started.count
+sql.update.started.count
+sql.delete.started.count
+admission.wait_durations.kv
+admission.wait_durations.kv-stores
+storage.wal.fsync.latency
+sql.conn.failures
+sql.mem.sql.current
+cloud.read_bytes
+cloud.write_bytes

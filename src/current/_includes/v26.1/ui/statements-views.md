@@ -32,6 +32,10 @@ The **Statements Fingerprints** view helps you:
 - View SQL statement fingerprint [details](#statement-fingerprint-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
+{{site.data.alerts.callout_info}}
+The **Statements** page displays all SQL statements, including those executed within [user-defined functions]({{ link_prefix}}user-defined-functions.html#statement-statistics) and [stored procedures]({{ link_prefix}}stored-procedures.html#statement-statistics). This allows you to monitor the performance of individual statements within your routines.
+{{site.data.alerts.end}}
+
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console.
 {% else %}

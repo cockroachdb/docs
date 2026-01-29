@@ -19,7 +19,7 @@ The **Distributed** dashboard displays the following time series graphs:
 
 ## Batches
 
-<img src="{{ 'images/v22.1/ui_batches.png' | relative_url }}" alt="DB Console batches graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/ui/ui_batches.png' | relative_url }}" alt="DB Console batches graph" style="border:1px solid #eee;max-width:100%" />
 
 The **Batches** graph displays various details about [`BatchRequest`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#batchrequest) traffic in the [Distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 
@@ -32,7 +32,7 @@ Partial Batches | The number of partial `BatchRequests` made, as tracked by the 
 
 ## RPCs
 
-<img src="{{ 'images/v22.1/ui_rpcs.png' | relative_url }}" alt="DB Console RPCs graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/ui/ui_rpcs.png' | relative_url }}" alt="DB Console RPCs graph" style="border:1px solid #eee;max-width:100%" />
 
 The **RPCs** graph displays various details about [`RPC`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#grpc) traffic in the [Distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 
@@ -45,7 +45,7 @@ Local Fast-path | The number of local fast-path RPC calls made, as tracked by th
 
 ## RPC Errors
 
-<img src="{{ 'images/v22.1/ui_rpc_errors.png' | relative_url }}" alt="DB Console RPC errors graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/ui/ui_rpc_errors.png' | relative_url }}" alt="DB Console RPC errors graph" style="border:1px solid #eee;max-width:100%" />
 
 The **RPC Errors** graph displays various details about [`RPC`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#grpc) errors encountered in the [Distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 
@@ -58,7 +58,7 @@ Not Leaseholder Errors | The number of `NotLeaseHolderErrors` logged, as tracked
 
 ## KV Transactions
 
-<img src="{{ 'images/v22.1/ui_kv_transactions.png' | relative_url }}" alt="DB Console KV transactions graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/ui/ui_kv_transactions.png' | relative_url }}" alt="DB Console KV transactions graph" style="border:1px solid #eee;max-width:100%" />
 
 The **KV Transactions** graph displays various details about transactions in the [Transaction layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}).
 
@@ -72,7 +72,7 @@ Aborted | The number of aborted KV transactions, as tracked by the `txn.aborts` 
 
 ## KV Transaction Durations: 99th percentile
 
-<img src="{{ 'images/v22.1/ui_kv_transactions_99.png' | relative_url }}" alt="DB Console KV transaction durations: 99th percentile graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/ui/ui_kv_transactions_99.png' | relative_url }}" alt="DB Console KV transaction durations: 99th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
 The **KV Transaction Durations: 99th percentile** graph displays the 99th percentile of transaction durations over a one-minute period.
 
@@ -84,7 +84,7 @@ Metric | Description
 
 ## KV Transaction Durations: 90th percentile
 
-<img src="{{ 'images/v22.1/ui_kv_transactions_90.png' | relative_url }}" alt="DB Console KV transaction durations: 90th percentile graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/ui/ui_kv_transactions_90.png' | relative_url }}" alt="DB Console KV transaction durations: 90th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
 The **KV Transaction Durations: 90th percentile** graph displays the 90th percentile of transaction durations over a one-minute period.
 
@@ -96,7 +96,7 @@ Metric | Description
 
 ## Node Heartbeat Latency: 99th percentile
 
-<img src="{{ 'images/v22.1/ui_node_heartbeat_99.png' | relative_url }}" alt="DB Console node heartbeat latency: 99th percentile graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/ui/ui_node_heartbeat_99.png' | relative_url }}" alt="DB Console node heartbeat latency: 99th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
 The **Node Heartbeat Latency: 99th percentile** graph displays the 99th percentile of time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats on the cluster over a one-minute period.
 
@@ -108,7 +108,7 @@ Metric | Description
 
 ## Node Heartbeat Latency: 90th percentile
 
-<img src="{{ 'images/v22.1/ui_node_heartbeat_90.png' | relative_url }}" alt="DB Console node heartbeat latency: 90th percentile graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/ui/ui_node_heartbeat_90.png' | relative_url }}" alt="DB Console node heartbeat latency: 90th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
 The **Node Heartbeat Latency: 90th percentile** graph displays the 90th percentile of time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats on the cluster over a one-minute period.
 

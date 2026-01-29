@@ -60,8 +60,25 @@
         },
         {
           "title": "Replicator",
-          "urls": [
-            "/molt/molt-replicator.html"
+          "items": [
+            {
+              "title": "Guide",
+              "urls": [
+                "/molt/molt-replicator.html"
+              ]
+            },
+            {
+              "title": "Flags",
+              "urls": [
+                "/molt/replicator-flags.html"
+              ]
+            },
+            {
+              "title": "Metrics",
+              "urls": [
+                "/molt/replicator-metrics.html"
+              ]
+            }
           ]
         },
         {

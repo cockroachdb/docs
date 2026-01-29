@@ -34,7 +34,7 @@ Users can expect to encounter the following behaviors when using CockroachDB wit
 
 ##### [XXUUU] ERROR: could not decorrelate subquery
 
-<img src="{{ 'images/v25.2/intellij/XX000_error_could_not_decorrelate_subquery.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/intellij/XX000_error_could_not_decorrelate_subquery.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
 Displays once per load of schema.
 
@@ -42,7 +42,7 @@ Displays once per load of schema.
 
 ##### [42883] ERROR: unknown function: pg_function_is_visible() Failed to retrieve
 
-<img src="{{ 'images/v25.2/intellij/42883_error_pg_function_is_visible.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/intellij/42883_error_pg_function_is_visible.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
 Display periodically. Does not impact functionality.
 
@@ -50,7 +50,7 @@ Display periodically. Does not impact functionality.
 
 ##### [42703] org.postgresql.util.PSQLException: ERROR: column "n.xmin" does not exist
 
-<img src="{{ 'images/v25.2/intellij/42073_error_column_n_xmin_does_not_exist.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/common/intellij/42073_error_column_n_xmin_does_not_exist.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
 Requires setting **Introspect using JDBC metadata** ([details below](#set-cockroachdb-as-a-data-source-in-intellij)).
 
@@ -58,8 +58,8 @@ Requires setting **Introspect using JDBC metadata** ([details below](#set-cockro
 
 ## Set CockroachDB as a data source in IntelliJ
 
-1. Launch the **Database** tool window. (**View** > **Tool Windows** > **Database**) <img src="{{ 'images/v25.2/intellij/01_database_tool_window.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
-1. Add a PostgreSQL data source. (**New (+)** > **Data Source** > **PostgreSQL**)<img src="{{ 'images/v25.2/intellij/02_postgresql_data_source.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
+1. Launch the **Database** tool window. (**View** > **Tool Windows** > **Database**) <img src="{{ 'images/common/intellij/01_database_tool_window.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
+1. Add a PostgreSQL data source. (**New (+)** > **Data Source** > **PostgreSQL**)<img src="{{ 'images/common/intellij/02_postgresql_data_source.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 1. On the **General** tab, enter your database's connection string:
 
 	Field | Value
@@ -71,10 +71,10 @@ Requires setting **Introspect using JDBC metadata** ([details below](#set-cockro
 	**Password** | If your cluster uses password authentication, enter the password.
 	**Driver** | Select or install **PostgreSQL** using a version greater than or equal to 41.1. (Older drivers have not been tested.)
 
-	<img src="{{ 'images/v25.2/intellij/03_general_tab.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
+	<img src="{{ 'images/common/intellij/03_general_tab.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 1. Install or select a **PostgreSQL** driver. We recommend a version greater than or equal to 41.1.
 1. If your cluster uses SSL authentication, go to the **SSH/SSL** tab, select **Use SSL** and provide the location of your certificate files.
-1. Go to the **Options** tab, and then select **Introspect using JDBC metadata**.<img src="{{ 'images/v25.2/intellij/04_options_tab.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
+1. Go to the **Options** tab, and then select **Introspect using JDBC metadata**.<img src="{{ 'images/common/intellij/04_options_tab.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 1. Click **OK**.
 
 You can now use IntelliJ's [database tool window](https://www.jetbrains.com/help/idea/working-with-the-database-tool-window.html) to interact with your CockroachDB cluster.

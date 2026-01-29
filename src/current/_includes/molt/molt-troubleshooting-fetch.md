@@ -21,6 +21,34 @@ When run in `none` or `truncate-if-exists` mode, `molt fetch` exits early in the
 - A source column has a `NOT NULL` constraint, and the corresponding target column is nullable (i.e., the constraint is less strict on the target).
 - A [`DEFAULT`]({% link {{site.current_cloud_version}}/default-value.md %}), [`CHECK`]({% link {{site.current_cloud_version}}/check.md %}), [`FOREIGN KEY`]({% link {{site.current_cloud_version}}/foreign-key.md %}), or [`UNIQUE`]({% link {{site.current_cloud_version}}/unique.md %}) constraint is specified on a target column and not on the source column.
 
+<section class="filter-content" markdown="1" data-scope="mysql">
+##### Failed to export snapshot: no rows in result set
+
+~~~
+failed to export snapshot: please ensure that you have GTID-based replication enabled: sql: no rows in result set
+~~~
+
+This typically occurs on a new MySQL cluster that has not had any writes committed. The GTID set will not appear in `SHOW MASTER STATUS` until at least one transaction has been committed on the database.
+
+**Resolution:** Execute a minimal transaction to initialize the GTID set:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+START TRANSACTION;
+SELECT 1;
+COMMIT;
+~~~
+
+Verify that the GTID set now appears:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW MASTER STATUS;
+~~~
+
+This should return a valid GTID value instead of an empty result.
+</section>
+
 <section class="filter-content" markdown="1" data-scope="oracle">
 ##### ORA-01950: no privileges on tablespace
 

@@ -14,10 +14,10 @@ Cockroach Labs recommends monitoring the following metrics during data load:
 | `molt_fetch_table_export_duration_ms` | Duration (in milliseconds) of a table's export. For example:<br>`molt_fetch_table_export_duration_ms{table="public.users"}` |
 | `molt_fetch_table_import_duration_ms` | Duration (in milliseconds) of a table's import. For example:<br>`molt_fetch_table_import_duration_ms{table="public.users"}` |
 
-You can also use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view the preceding metrics.
+To visualize the preceding metrics, use the Grafana dashboard [bundled with your binary (`grafana_dashboard.json`)]({% link molt/molt-fetch.md %}#installation). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json).
 
 {% if page.name != "migrate-bulk-load.md" %}
-{{site.data.alerts.callout_info}}
-Metrics from the `replicator` process are enabled by setting the `--metricsAddr` [replication flag](#replication-flags), and are served at `http://{host}:{port}/_/varz`. <section class="filter-content" markdown="1" data-scope="oracle">To view Oracle-specific metrics from `replicator`, import [this Grafana dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).</section>
+{{site.data.alerts.callout_success}}
+For details on Replicator metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}).
 {{site.data.alerts.end}}
 {% endif %}

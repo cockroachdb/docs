@@ -509,6 +509,12 @@ To enable log export for your CockroachDB {{ site.data.products.advanced }} clus
 Once log export has been enabled, logs generated going forward are sent to the specified cloud sink. Logs are not back-filled to the specified cloud sink.
 {{site.data.alerts.end}}
 
+## Send logs over a private cloud connection
+
+You can send logs to Amazon CloudWatch from private egress endpoints on your CockroachDB {{ site.data.products.cloud }} clusters to ensure they are sent over private connections within the cloud service.
+
+To learn more, read the [egress private endpoints documentation]({% link cockroachcloud/egress-private-endpoints.md %}).
+
 ## Monitor the status of a log export configuration
 
 To check the status of an existing CockroachDB {{ site.data.products.advanced }} log export configuration, use the following Cloud API command:
@@ -570,7 +576,7 @@ No, logs for each region in your cluster are exported to the corresponding cloud
 
 ### What log channels are supported?
 
-You can export the following CockroachDB [log channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels): `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`.
+You can export the following CockroachDB [log channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels): `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, `SQL_PERF`, and `CHANGEFEED`.
 
 Log channels, such as `DEV`, `KV_DISTRIBUTION`, `SQL_INTERNAL_PERF`, and `TELEMETRY`, cannot be exported from CockroachDB {{ site.data.products.advanced }}. These are for Cockroach Labs internal use cases and are not meant for external use. If you need access to additional logs, contact [Support](https://support.cockroachlabs.com/hc/).
 
