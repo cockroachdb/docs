@@ -1,10 +1,17 @@
 // Algolia Autocomplete with Kapa Integration
 // Following: https://docs.kapa.ai/integrations/website-widget/examples/algolia-integration
+// NOTE: Disabled when Kapa search mode overrides the search input
 (function() {
   // Wait for DOM and dependencies
   function initializeAutocomplete() {
     if (typeof algoliasearch === 'undefined' || !document.getElementById('search-input')) {
       setTimeout(initializeAutocomplete, 100);
+      return;
+    }
+
+    // Skip Algolia autocomplete - Kapa search mode handles search via data-modal-override-open-selector-search
+    const kapaScript = document.querySelector('script[data-modal-override-open-selector-search]');
+    if (kapaScript) {
       return;
     }
 
