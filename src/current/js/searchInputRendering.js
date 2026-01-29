@@ -30,15 +30,22 @@ $(document).ready(function() {
     }
   });
 
-  // Handle search input in topnav
+  // Handle search inputs (topnav and sidebar)
   // Check if Kapa search mode is handling the input
   const kapaScript = document.querySelector('script[data-modal-override-open-selector-search]');
   if (kapaScript) {
     // Kapa is configured - intercept clicks to open Kapa modal
-    $('#search-input').on('click', function(e) {
+    $('#search-input, #sidebar-search-input').on('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
       $(this).blur();
+      if (window.Kapa && window.Kapa.open) {
+        window.Kapa.open({ mode: 'search' });
+      }
+    });
+    // Prevent sidebar search form submission
+    $('#sidebar-search-form').on('submit', function(e) {
+      e.preventDefault();
       if (window.Kapa && window.Kapa.open) {
         window.Kapa.open({ mode: 'search' });
       }
