@@ -524,9 +524,9 @@ Previously, the Helm chart used a self-signer for cluster authentication. This a
     apiVersion: cert-manager.io/v1
     kind: Issuer
     metadata:
-    name: cockroachdb
+      name: cockroachdb
     spec:
-    selfSigned: {% raw %}{}{% endraw %}
+      selfSigned: {% raw %}{}{% endraw %}
     ~~~
 
 1. Use `kubectl apply` to create the issuer from the YAML file:
