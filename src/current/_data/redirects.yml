@@ -553,9 +553,9 @@
 
 # Removed Pages
 
-- destination: releases/:version.md#known-limitations
+- destination: ../releases/v25.4.md#known-limitations
   sources: ['known-limitations.md']
-  versions: ['v25.4', 'v26.1']
+  versions: ['v25.4']
 
 - destination: licensing-faqs.md
   sources: ['enterprise-licensing.md']
