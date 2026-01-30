@@ -68,7 +68,7 @@ The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) gives you
 To verify that the 9 nodes you specified are up and running as expected, go to the [**Cluster Overview**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}) at <a href="http://localhost:8080/#/overview/list" data-proofer-ignore>http://localhost:8080/#/overview/list</a>.
 
 {{site.data.alerts.callout_info}}
-Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation]({% link {{ page.version.version }}/known-limitations.md %}#available-capacity-metric-in-the-db-console).
+Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, refer to [Capacity metrics]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#capacity-metrics).
 {{site.data.alerts.end}}
 
 To see which nodes are located in which regions, and to see the simulated latencies between them, go to the [**Network Diagnostics**]({% link {{ page.version.version }}/ui-network-latency-page.md %}) page at <a href="http://localhost:8080/#/reports/network/region" data-proofer-ignore>http://localhost:8080/#/reports/network/region</a>

@@ -880,6 +880,10 @@ Most of the guidance in this page is most relevant to manual deployments, althou
 
 You can adjust the [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout) setting for client applications or application servers that connect to CockroachDB {{ site.data.products.advanced }} clusters. Ensure that the connection pool maximum lifetime is shorter than that value, as per the [Cluster settings](#server-shutdown-connections-timeout) guidance.
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/node-shutdown-limitations.md %}
+
 ## See also
 
 - [Upgrade CockroachDB]({% link {{ page.version.version }}/upgrade-cockroach-version.md %})

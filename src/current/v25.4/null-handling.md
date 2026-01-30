@@ -554,3 +554,7 @@ For example:
   NULL
 (1 row)
 ~~~
+
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/null-limitations.md %}

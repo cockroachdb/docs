@@ -49,12 +49,6 @@
       "urls": [
         "/releases/release-support-policy.html"
       ]
-    },
-    {
-      "title": "Known Limitations",
-      "urls": [
-        "/${VERSION}/known-limitations.html"
-      ]
     }
   ]
 },
