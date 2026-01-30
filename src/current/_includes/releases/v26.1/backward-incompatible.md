@@ -1,10 +1,22 @@
-- Bullet
+{% comment %}
+NOTE: Based on review of v26.1 testing releases, there appear to be no significant backward-incompatible changes from v25.4 to v26.1.
 
-    Removed the `bulkio.backup.deprecated_full_backup_with_subdir.enabled` cluster setting. This optional ability to specify a target subdirectory with the `BACKUP` command when creating a full backup was deprecated in v22.1. [#][#]
+Most changes found were:
+1. Changes within v26.1 development (not affecting v25.4 users)
+2. Optional/Limited Access features (opt-in)
+3. New features with new privilege requirements (not breaking existing functionality)
 
-- Bullet
+The cluster settings with changed defaults should be reviewed to confirm none are backward-incompatible.
+{% endcomment %}
 
-    Added cluster setting `sql.schema.approx_max_object_count` to prevent creation of new schema objects when the limit is exceeded. The check uses cached table statistics for performance and is approximate - it may not be immediately accurate until table statistics are updated by the background statistics refreshing job. Clusters that have been running stably with a larger object count should raise the limit or disable the limit by setting the value to `0`. In future releases, the default value for this setting will be raised as more CockroachDB features support larger object counts. [#][#]
+{% comment %}TODO: Review cluster setting default changes for backward-incompatible impact{% endcomment %}
 
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
+{% comment %}TODO: Get engineering verification on log.channel_compatibility_mode.enabled default change{% endcomment %}
+
+{% comment %}TODO: Coordinate with Release Engineering on any known backward-incompatible changes{% endcomment %}
+
+{% comment %}
+If no backward-incompatible changes are found after review, consider using:
+"There are no backward-incompatible changes in v26.1.0."
+or removing this section entirely and not including it in v26.1.0.md
+{% endcomment %}
