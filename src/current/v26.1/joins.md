@@ -185,6 +185,10 @@ If you see an `apply-join`, it means the optimizer was not able to perform de-co
 - Use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) over queries containing joins to verify that indexes are used.
 - Use [indexes]({% link {{ page.version.version }}/indexes.md %}) for faster joins.
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/inverted-index-limitations.md %}
+
 ## See also
 
 - [Join hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#join-hints)
