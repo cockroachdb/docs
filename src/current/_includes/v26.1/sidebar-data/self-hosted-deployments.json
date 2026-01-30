@@ -397,9 +397,21 @@
                     ]
                   },
                   {
-                    "title": "SSO for DB Console",
+                    "title": "JWT Authorization",
+                    "urls": [
+                      "/${VERSION}/jwt-authorization.html"
+                    ]
+                  },
+                  {
+                    "title": "DB Console SSO",
                     "urls": [
                       "/${VERSION}/sso-db-console.html"
+                    ]
+                  },
+                  {
+                    "title": "OIDC Authorization",
+                    "urls": [
+                      "/${VERSION}/oidc-authorization.html"
                     ]
                   },
                   {

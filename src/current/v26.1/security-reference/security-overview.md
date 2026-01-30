@@ -4,27 +4,6 @@ summary: An comparison of CockroachDB Cloud's Security Features
 toc: true
 docs_area: reference.security
 ---
-## Ways to Use CockroachDB
-
-### CockroachDB Cloud
-
-CockroachDB {{ site.data.products.cloud }} provides fast and easy access (including a *free* tier) to CockroachDB as a web service, hosted by Cockroach Labs. Clusters run in multi-tenant Google Cloud Platform (GCP) or Amazon Web Services (AWS) environments with shared compute and networking resources.
-
-CockroachDB {{ site.data.products.advanced }} offers a single-tenant cluster running in its own Virtual Private Cloud (VPC). Compute and networking resources are isolated. CockroachDB {{ site.data.products.advanced }} provides additional security-enhancing features such as single sign-on (SSO) and SQL audit logging.
-
-[Sign up for a CockroachDB Cloud account!](https://www.cockroachlabs.com/get-started-cockroachdb/)
-
-{% include {{ page.version.version }}/dedicated-pci-compliance.md %}
-
-Learn more: [Integrate CockroachDB {{ site.data.products.advanced }} with Satori]({% link {{ page.version.version }}/satori-integration.md %})
-
-### Self-Hosted
-
-CockroachDB {{ site.data.products.core }} here refers to the situation of a user deploying and operating their own cluster.
-
-{{ site.data.products.enterprise }} refers to an ongoing license relationship with Cockroach Labs. In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of Cockroach Labs' {{ site.data.products.enterprise }} Support staff.
-
-For more information, see the [licensing FAQ]({% link {{ page.version.version }}/licensing-faqs.md %})
 
 ## Comparison of security features
 
@@ -32,16 +11,16 @@ For more information, see the [licensing FAQ]({% link {{ page.version.version }}
   <thead>
     <tr>
       <td width="100">Security Domain</td>
-      <td>{{ site.data.products.basic }}</td>
-      <td>{{ site.data.products.standard }}</td>
-      <td>{{ site.data.products.advanced }}</td>
-      <td>{{ site.data.products.core }} {{ site.data.products.enterprise }}</td>
+      <td>CockroachDB {{ site.data.products.basic }}</td>
+      <td>CockroachDB {{ site.data.products.standard }}</td>
+      <td>CockroachDB {{ site.data.products.advanced }}</td>
+      <td>CockroachDB {{ site.data.products.core }} {{ site.data.products.enterprise }}</td>
       <td width="120">Feature</td>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td rowspan="10"><a href="authentication.html">Authentication</a></td>
+      <td rowspan="11"><a href="authentication.html">Authentication</a></td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
@@ -96,6 +75,13 @@ For more information, see the [licensing FAQ]({% link {{ page.version.version }}
       <td>✓</td>
       <td>✓</td>
       <td><a href="{% link {{ page.version.version }}/sso-sql.md %}#configure-user-provisioning">Automatic user provisioning</a> for JWT authentication</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td><a href="{% link {{ page.version.version }}/sso-db-console.md %}#step-3-configure-user-creation">Automatic user provisioning</a> for OIDC authentication</td>
     </tr>
     <tr>
       <td>&nbsp;</td>

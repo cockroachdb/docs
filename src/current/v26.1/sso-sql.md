@@ -13,9 +13,10 @@ Users can obtain JWTs directly from their IdP and use them to authenticate to SQ
 
 JWT authentication supports automatic role synchronization and user provisioning. When [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) is enabled, users' role memberships are automatically synchronized based on group claims from the IdP on each login. Additionally, [automatic user provisioning](#configure-user-provisioning) can automatically create SQL users on first authentication, eliminating the need to pre-create users.
 
-This page describes how to configure a cluster for cluster single sign-on using JWTs and then how users can authenticate using the JWTs. If you're a user ready to sign in to the DB Console with JWTs, you can skip the configuration section:
+This page describes how to configure a cluster for cluster single sign-on using JWTs and then how users can authenticate using the JWTs:
 
 - [Configure a cluster for cluster single sign-on using JWTs](#configure-your-cluster-for-sso)
+- [Configure user provisioning](#configure-user-provisioning) (optional)
 - [Authenticate to your cluster](#authenticate-to-your-cluster)
 
 **Prerequisites**
@@ -218,8 +219,6 @@ Examples:
     Maps each GCP-provisioned service account to a SQL user named `gcp_{ GCP user ID }`. For example, `gcp_1234567` for a service account with ID `1234567`.
 
 ## Configure user provisioning
-
-
 
 CockroachDB can automatically create users on their first JWT authentication, eliminating the need to pre-create user accounts.
 

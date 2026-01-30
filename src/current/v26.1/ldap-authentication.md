@@ -196,11 +196,11 @@ If LDAP authentication is configured, DB Console access will also use this confi
 Authorization (role-based access control) is not applied when logging in to DB Console.
 {{site.data.alerts.end}}
 
-## Managing auto-provisioned users
+## Manage auto-provisioned users
 
 When automatic user provisioning is enabled, you can identify and manage auto-provisioned users using the following methods:
 
-### Viewing provisioned users
+### View provisioned users
 
 Auto-provisioned users can be identified by their `PROVISIONSRC` role option:
 
@@ -256,7 +256,7 @@ The `estimated_last_login_time` column in the output of `SHOW USERS` tracks when
   ORDER BY u.estimated_last_login_time DESC NULLS LAST;
 ~~~
 
-### Cleaning up users removed from Active Directory
+### Clean up users removed from Active Directory
 
 Auto-provisioned users who have been removed or deactivated in Active Directory will not be automatically removed from CockroachDB. To identify and clean up these orphaned accounts:
 
@@ -315,20 +315,7 @@ Users cannot be dropped if they have direct privilege grants or own database obj
 
 ### Restrictions on auto-provisioned users
 
-Users created through automatic provisioning have specific restrictions:
-
-- **Password changes**: Auto-provisioned users cannot change their own passwords using `ALTER USER`, even if the cluster setting `sql.auth.change_own_password.enabled` is true.
-- **PROVISIONSRC modification**: The `PROVISIONSRC` role option cannot be modified or removed once set.
-- **Authentication method**: These users must authenticate through LDAP; password-based authentication is not available.
-
-Attempting to change the password of an auto-provisioned user will result in an error:
-
-~~~ sql
-ALTER USER provisioned_user WITH PASSWORD 'newpassword';
-~~~
-~~~ 
-ERROR: user "provisioned_user" with PROVISIONSRC cannot change password
-~~~
+{% include {{ page.version.version }}/security/auto-provisioned-user-restrictions.md %}
 
 ## Troubleshooting
 
@@ -353,7 +340,7 @@ Potential issues to investigate may pertain to:
 - TLS certificates.
 - Missing or mismatched role names.
 
-## Security Considerations
+## Security considerations
 
 1. Always keep a backup authentication method (like password) for administrative users.
 1. Use LDAPS (LDAP over TLS) in production environments.
