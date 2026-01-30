@@ -10,6 +10,8 @@ cloud: true
 
 CockroachDB {{ site.data.products.advanced }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure log export to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/), [GCP Cloud Logging](https://cloud.google.com/logging), or [Azure Monitor](https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs). Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, and more.
 
+Log exports include the cluster name (`cloud_cluster_name`) in addition to the cluster ID (`cloud_cluster_id`), which makes it easier to identify logs from specific clusters.
+
 ## The `logexport` endpoint
 
 To configure and manage log export for your CockroachDB {{ site.data.products.advanced }} cluster, use the `logexport` endpoint:
