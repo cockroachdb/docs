@@ -25,6 +25,10 @@ Click a **database name** to open the **Tables** page.
 
 -  Select **View: Tables** in the pulldown menu to display the [Tables view](#tables-view).
 -  Select **View: Grants** in the pulldown menu to display the [Grants view](#grants-view).
+  
+{{site.data.alerts.callout_success}}
+To programmatically retrieve the live data size of the database, refer to [SQL query to get database size]({{ link_prefix }}show-ranges.html#sql-query-to-get-database-size).
+{{site.data.alerts.end}}
 
 {% if page.cloud != true  -%}
 ### `ui.database_locality_metadata.enabled` cluster setting
@@ -72,7 +76,7 @@ The following information is displayed for each table:
 {% else -%}
 | Regions                        | The regions where the table data is stored.
 {% endif -%}
-| % of Live Data                 | Percent of total uncompressed logical data that has not been modified (updated or deleted).              |
+| % of Live Data                 | Percent of total uncompressed logical data that has not been modified (updated or deleted). Live data size and total data size are displayed.<br><br>To programmatically retrieve the live data size, refer to [SQL query to get table size]({{ link_prefix }}show-ranges.html#sql-query-to-get-table-size). |
 | Table Stats Last Updated (UTC) | The last time table statistics were created or updated.   |
 
 Click a **table name** to view table details.
@@ -91,7 +95,7 @@ The table details include:
 - **Size**: The approximate disk size of all replicas of this table on the cluster.
 - **Replicas**: The number of [replicas]({{ link_prefix }}architecture/replication-layer.html) of this table on the cluster. On a multi-node cluster, the display of this information is controlled by the cluster setting [`ui.database_locality_metadata.enabled`](#ui-database_locality_metadata-enabled-cluster-setting) (default `true`).
 - **Ranges**: The number of [ranges]({{ link_prefix }}architecture/glossary.html#architecture-range) in this table.
-- **% of Live Data**: Percentage of total uncompressed logical data that has not been modified (updated or deleted).
+- **% of Live Data**: Percentage of total uncompressed logical data that has not been modified (updated or deleted). To programmatically retrieve the live data size, refer to [SQL query to get table size]({{ link_prefix }}show-ranges.html#sql-query-to-get-table-size).
 - **Table Stats Last Updated**: The last time table statistics were created or updated.
 {% endif %}
 - **Auto Stats Collection**: Whether [automatic statistics collection]({{ link_prefix }}cost-based-optimizer.html#table-statistics) is enabled.

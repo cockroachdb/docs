@@ -18,6 +18,10 @@ The following information is displayed for each index:
 Click an **index name** to view index details. The index details page displays the query used to create the index, the number of times the index was read since index statistics were reset, the time the index was last read, and the reason for the index recommendation. [Admin users]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) also see a list of executed statement fingerprints using the index.
 {% endif %}
 
+{{site.data.alerts.callout_success}}
+To programmatically retrieve the live data size of the index, refer to [SQL query to get index size]({{ link_prefix }}show-ranges.html#sql-query-to-get-index-size).
+{{site.data.alerts.end}}
+
 ## Grants view
 
 The **Grants** view shows the [privileges]({{ link_prefix }}security-reference/authorization.html#managing-privileges) granted to users and roles for each database.
