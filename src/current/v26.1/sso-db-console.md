@@ -135,6 +135,10 @@ To enable automatic user provisioning:
 SET CLUSTER SETTING security.provisioning.oidc.enabled = true;
 ~~~
 
+{{site.data.alerts.callout_info}}
+Enabling automatic user provisioning may introduce latency during periods of concurrent OIDC authentication attempts from multiple browsers. This is because CockroachDB must check for user existence before provisioning, which generates read request load on the `system.users` table.
+{{site.data.alerts.end}}
+
 When enabled:
 
 - Users are created automatically upon successful OIDC authentication.
