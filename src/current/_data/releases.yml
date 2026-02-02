@@ -10371,7 +10371,7 @@
 
 - release_name: v26.1.0
   major_version: v26.1
-  release_date: '2026-01-28'
+  release_date: '2026-02-02'
   release_type: Production
   go_version: go1.25.3
   sha: 6c9b2f778bd29895383d493a2fa4490323499ecf
