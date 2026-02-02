@@ -176,6 +176,10 @@ The **Version** and **Cluster ID** details are particularly noteworthy:
 
 {% include {{ page.version.version }}/sql/sql-examples.md %}
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/sql-input-size-limitations.md %}
+
 ## See also
 
 - [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})

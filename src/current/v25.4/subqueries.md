@@ -123,6 +123,10 @@ In a `LATERAL` subquery join, the rows returned by the inner subquery are added 
 
 The results of scalar subqueries are loaded entirely into memory when the execution of the surrounding query starts. To prevent execution errors due to memory exhaustion, ensure that subqueries return as few results as possible.
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/subquery-mutations-limitations.md %}
+
 ## See also
 
 - [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})

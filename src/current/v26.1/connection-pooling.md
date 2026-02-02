@@ -237,3 +237,7 @@ defer dbpool.Close()
 For a full list of connection pool configuration parameters for pgxpool, see [the pgxpool documentation](https://pkg.go.dev/github.com/jackc/pgx/v5/pgxpool#Config).
 
 </section>
+
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/client-connections-limitations.md %}
