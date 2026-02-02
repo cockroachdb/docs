@@ -1,25 +1,47 @@
 ---
 title: Install a FIPS-ready CockroachDB Runtime
-summary: Learn how to install and run CockroachDB in an environment subject to FIPS 140-2.
+summary: Learn how to install and run CockroachDB in an environment subject to FIPS 140-3.
 toc: true
 docs_area: deploy
 ---
 
+{{site.data.alerts.callout_danger}}
+**FIPS is Experimental in v26.1**
+
+FIPS support is marked as **Experimental** in CockroachDB v26.1 and will return to **General Availability** (GA) status in v26.2. As an [Innovation release]({% link releases/index.md %}#major-releases), CockroachDB v26.1 can be skipped. Production clusters running v25.4 with FIPS should be upgraded directly to v26.2 after it is available (May 2026) for continuous GA support of FIPS.
+
+CockroachDB v26.1 has been upgraded to use the FIPS cryptographic module and FIPS 140-3 mode that are available with Go 1.25 (`GOFIPS140=latest`), transitioning from the previous OpenSSL-based approach. This version of the module is not under NIST review and will not be FIPS 140-3 validated. v26.2 will complete this transition by using the frozen v1.0.0 module (`GOFIPS140=v1.0.0`), which is on the [CMVP Modules In Process List](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/modules-in-process/modules-in-process-list) and can be deployed in certain regulated environments.
+
+**Recommendation for Production Deployments:**
+
+- **Current FIPS users:** Stay on v25.4 or wait for v26.2.
+- **New FIPS deployments:** Wait for v26.2, or start on v25.4 and later upgrade directly to v26.2.
+- **Testing/non-production:** v26.1 can be used for testing and evaluation.
+
+For more information about Go's FIPS 140-3 module, refer to the [Go FIPS 140 documentation](https://go.dev/doc/security/fips140).
+{{site.data.alerts.end}}
+
 ## Overview of FIPS-ready CockroachDB
 
-[Federal Information Processing Standards (FIPS) 140-2](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf) is a mandatory standard that is used to approve cryptographic models. The goal of FIPS 140-2 is to provide measurable security guidelines for handling and accessing sensitive but unclassified (SBU) information. The FIPS 140-2 standard is applicable to all federal agencies that use cryptographic-based security systems to protect sensitive information in computer and telecommunication systems (including voice systems) as defined in Section 5131 of the Information Technology Management Reform Act of 1996, Public Law 104-106; and the Federal Information Security Management Act of 2002, Public Law 107-347. U.S. and Canadian governments, as well as organizations working with them, may be subject to FIPS 140-2 requirements.
+[Federal Information Processing Standards (FIPS) 140-3](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-3.pdf) is a U.S. government standard that specifies security requirements for cryptographic modules. FIPS 140-3 provides measurable security guidelines for protecting sensitive but unclassified information. The standard is applicable to all federal agencies that use cryptographic-based security systems to protect sensitive information in computer and telecommunication systems. U.S. and Canadian governments, as well as organizations working with them, may be subject to FIPS 140-3 requirements.
 
-The Cryptographic Module Validation Program (CMVP) validates cryptographic modules to FIPS 140-2 and other cryptography-based standards. When a cryptographic module or library has a FIPS 140-2 certificate, it has been tested and formally validated under the CMVP as meeting the requirements for FIPS 140-2.
+The Cryptographic Module Validation Program (CMVP) validates cryptographic modules to FIPS 140-3 and other cryptography-based standards. When a cryptographic module or library has a FIPS 140-3 certificate, it has been tested and formally validated under the CMVP as meeting the requirements for FIPS 140-3.
 
-FIPS-ready CockroachDB binaries and Docker images are available for CockroachDB v23.1.0 and later. FIPS-ready CockroachDB runtimes run only on Intel 64-bit Linux systems.
+FIPS-ready CockroachDB binaries and Docker images are available for CockroachDB v23.1.0 and later. FIPS-ready CockroachDB runtimes run on Intel 64-bit Linux systems.
 
-FIPS-ready CockroachDB binaries are built using [Red Hat's Go FIPS with OpenSSL toolchain](https://github.com/golang-fips/go), which contains the necessary modifications for the Go crypto library to use an external cryptographic library in a manner compatible with FIPS 140-2. FIPS-ready CockroachDB delegates cryptographic operations to the host operating system's OpenSSL libraries and commands, rather than Go's cryptographic libraries. When the installed OpenSSL has a FIPS 140-2 certificate and [FIPS mode is enabled in the Linux kernel](#enable-fips-mode-in-the-linux-kernel), the CockroachDB runtime is suitable for workloads that are subject to FIPS 140-2 requirements.
+Starting with v26.1, FIPS-ready CockroachDB binaries are built using Go 1.25's native FIPS 140-3 support. The cryptographic operations are performed by Go's built-in cryptographic modules, which are independent of the host operating system's libraries. This represents a significant architectural change from previous versions (v25.4 and earlier), which used Red Hat's golang-fips toolchain with OpenSSL.
 
-For details about cryptographic algorithms and key lengths used by CockroachDB. refer to [Details About Cryptographic Algorithms](#details-about-cryptographic-algorithms).
+{{site.data.alerts.callout_info}}
+**Migration from FIPS 140-2 to FIPS 140-3**
+
+Previous versions of CockroachDB (v25.4 and earlier) supported FIPS 140-2. Starting with v26.1, CockroachDB supports FIPS 140-3. FIPS 140-2 will transition to historical status on September 22, 2026, per [NIST's FIPS 140-3 Transition Effort](https://csrc.nist.gov/Projects/fips-140-3-transition-effort).
+{{site.data.alerts.end}}
+
+For details about cryptographic algorithms and key lengths used by CockroachDB, refer to [Details About Cryptographic Algorithms](#details-about-cryptographic-algorithms).
 
 ### FIPS-ready features
 
-When you use a FIPS-ready CockroachDB runtime and each cluster node's OpenSSL is FIPS-validated and configured correctly, Cockroach Labs has verified that cryptographic operations in the following contexts meet the requirements of FIPS 140-2:
+When you use a FIPS-ready CockroachDB runtime, Cockroach Labs has verified that cryptographic operations in the following contexts meet the requirements of FIPS 140-3:
 
 - [Encryption At Rest]({% link {{ page.version.version }}/security-reference/encryption.md %}#encryption-keys-used-by-cockroachdb-self-hosted-clusters)
 - [Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %})
@@ -29,89 +51,39 @@ When you use a FIPS-ready CockroachDB runtime and each cluster node's OpenSSL is
 - [SQL Cryptographic Built-in Functions]({% link {{ page.version.version }}/functions-and-operators.md %}#cryptographic-functions)
 
   {{site.data.alerts.callout_danger}}
-  When running a FIPS-ready runtime, Cockroach Labs recommends that you avoid using cryptographic operations that are not supported by FIPS 140-2. For example, generating an MD5 hash is not compatible with FIPS 140-2, because MD5 is not a FIPS-validated algorithm. Use algorithms and functions that do not comply with the standard at your own risk.
+  When running a FIPS-ready runtime, Cockroach Labs recommends that you avoid using cryptographic operations that are not supported by FIPS 140-3. For example, generating an MD5 hash is not compatible with FIPS 140-3, because MD5 is not a FIPS-validated algorithm. Use algorithms and functions that do not comply with the standard at your own risk.
   {{site.data.alerts.end}}
 
-This page shows how to configure a FIPS-ready CockroachDB {{ site.data.products.core }} runtime using Red Hat's FIPS-validated OpenSSL package. The FIPS-ready Docker image for CockroachDB comes with Red Hat's OpenSSL libraries pre-installed and configured.
+This page shows how to install and configure a FIPS-ready CockroachDB {{ site.data.products.core }} runtime using Go's native FIPS 140-3 support.
 
 ### Performance considerations
 
-When comparing performance of the same workload in a FIPS-ready CockroachDB runtime to a standard CockroachDB runtime, some performance degradation is expected, due to the use of the system's installed FIPS-validated OpenSSL libraries. The amount of performance impact depends upon the workload, cluster configuration, query load, and other factors.
+When comparing performance of the same workload in a FIPS-ready CockroachDB runtime to a standard CockroachDB runtime, some performance difference may be observed. The amount of performance impact depends upon the workload, cluster configuration, query load, and other factors.
 
 ### Upgrading to a FIPS-ready CockroachDB runtime
 
 Upgrading an existing CockroachDB cluster's binaries in-place to be FIPS-ready is not supported.
 
-## Enable FIPS mode in the Linux kernel
+## Operating System Requirements
 
-The following section provides several ways to help ensure that the FIPS object module is loaded in your system's kernel and is used by your system's OpenSSL libraries. The FIPS object module helps to prevent the use of weak cryptographic algorithms and functions which are incompatible with FIPS 140-2.
-
-The FIPS-ready CockroachDB Docker images are based on [Red Hat's Universal Base Image 8 Docker image](https://catalog.redhat.com/software/containers/ubi8/ubi/), which comes with FIPS-validated OpenSSL libraries pre-installed with settings to comply with FIPS 140-2. To [use the FIPS-ready CockroachDB Docker image](#use-the-fips-ready-cockroachdb-docker-image), skip directly to that section of this page.
+FIPS-ready CockroachDB v26.1 uses Go's native cryptographic module, which is independent of the host operating system's libraries. The FIPS-ready binary can run on any Intel 64-bit Linux system.
 
 {{site.data.alerts.callout_info}}
-A [Ubuntu Pro or Ubuntu Advantage subscription](https://ubuntu.com/pro) is required to access [FIPS-validated OpenSSL libraries and pre-configured Docker images](https://ubuntu.com/security/certifications/docs/fips). See [Enabling FIPS with the `ua` tool](https://ubuntu.com/security/certifications/docs/fips-enablement) in Ubuntu's documentation. This page does not provide specific instructions for Ubuntu.
+**Optional: Enable FIPS mode in the Linux kernel**
+
+While not required for Go's native FIPS support to function, enabling FIPS mode in the Linux kernel provides an additional layer of compliance enforcement and may be required by your organization's security policies. The kernel's FIPS mode helps prevent the use of weak cryptographic algorithms system-wide.
+
+To enable kernel FIPS mode on Red Hat Enterprise Linux or its derivatives, refer to [Enable FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening) in Red Hat's documentation.
 {{site.data.alerts.end}}
 
-A system must have FIPS mode enabled in the kernel before it can run the FIPS-ready CockroachDB binary or the FIPS-ready CockroachDB Docker image. Enabling FIPS mode loads the FIPS kernel module so that the kernel itself enforces compliance with FIPS 140-2. To enable FIPS mode on Red Hat Enterprise Linux or its derivatives, refer to [Enable FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/assembly_installing-a-rhel-8-system-with-fips-mode-enabled_security-hardening) in Red Hat's documentation. To verify that FIPS mode is enabled, refer to [Verify that the kernel enforces FIPS mode](#verify-that-the-kernel-enforces-fips-mode).
+The FIPS-ready CockroachDB Docker images are based on [Red Hat's Universal Base Image 10](https://catalog.redhat.com/software/containers/ubi10/ubi-minimal/). To [use the FIPS-ready CockroachDB Docker image](#use-the-fips-ready-cockroachdb-docker-image), skip directly to that section of this page.
 
-### Extend Red Hat's Universal Base Image 8 Docker image
+### Extend Red Hat's Universal Base Image 10 Docker image
 
-If you do not want to use the FIPS-ready CockroachDB Docker image directly, you can create a custom Docker image based on [Red Hat's Universal Base Image 8 Docker image](https://catalog.redhat.com/software/containers/ubi8/ubi/):
+If you do not want to use the FIPS-ready CockroachDB Docker image directly, you can create a custom Docker image based on [Red Hat's Universal Base Image 10](https://catalog.redhat.com/software/containers/ubi10/ubi-minimal/):
 
 - You can model your Dockerfile on the one that Cockroach Labs uses to produce the [FIPS-ready Docker image](https://github.com/cockroachdb/cockroach/blob/master/build/deploy/Dockerfile) for CockroachDB.
-- Your Dockerfile must install OpenSSL before it starts the `cockroach` binary.
-- You must enable FIPS mode on the Docker host kernel before it can run containers with FIPS mode enabled. The FIPS-ready CockroachDB Docker image must run with FIPS mode enabled. To enable FIPS mode in the Docker host kernel, refer to [Enable FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/assembly_installing-a-rhel-8-system-with-fips-mode-enabled_security-hardening) in Red Hat's documentation. To verify that FIPS mode is enabled, refer to [Verify that the kernel enforces FIPS mode](#verify-that-the-kernel-enforces-fips-mode).
-
-### Install on Red Hat Enterprise Linux
-
-When you install Red Hat Enterprise Linux (RHEL) on a host, or after installation has completed, you can [enable FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/assembly_installing-a-rhel-8-system-with-fips-mode-enabled_security-hardening). Red Hat recommends installing RHEL with FIPS mode enabled, as opposed to enabling FIPS mode later, to help ensure that the system generates all keys with FIPS-approved algorithms and continuous monitoring tests in place.
-
-Once FIPS mode is enabled, install OpenSSL so that the FIPS-validated OpenSSL libraries are installed.
-
-To install OpenSSL on RHEL:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-microdnf -y install openssl crypto-policies-scripts
-fips-mode-setup --enable
-~~~
-
-Next, [verify that the kernel enforces FIPS mode](#verify-that-the-kernel-enforces-fips-mode).
-
-### Verify that the kernel enforces FIPS mode
-
-If FIPS mode is not enabled in the Linux kernel, or if OpenSSL is not configured correctly, the Linux kernel does not enforce FIPS 140-2 by default even if the FIPS module is present. Take these steps to verify that the Linux kernel is enforcing FIPS 140-2:
-
-1. You can list the FIPS-validated ciphers using the `openssl ciphers` command. If FIPS mode is disabled, a `no cipher match` error occurs.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    openssl ciphers FIPS -v
-    ~~~
-
-1. When FIPS mode is enabled, the `sysctl` variable `fips_enabled` is set to `1`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    sysctl crypto.fips_enabled
-    ~~~
-
-    ~~~ shell
-    1
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    The preceding command does not work from within a Docker container. A Docker container runs with FIPS mode enabled if the Docker host has FIPS mode enabled. Run this command from the Docker host rather than from the Docker container.
-    {{site.data.alerts.end}}
-
-1. The MD5 hashing algorithm is not compatible with FIPS 140-2. If the following command **fails**, FIPS mode is enabled:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    echo "test" | openssl md5
-    ~~~
-
-After verifying that the kernel enforces FIPS mode, you can [download](#downloads) and [install](#install) the FIPS-ready CockroachDB binary. If the tests indicate that FIPS mode is not enforced, refer to your operating system's documentation about enabling FIPS mode to resolve the issue before continuing.
+- The FIPS-ready binary includes Go's native FIPS cryptographic module and does not require additional system libraries to be installed.
 
 <a id="downloads"></a>
 
@@ -220,28 +192,38 @@ No FIPS-ready runtimes are available at this time. Please check again later.
 After you [download](#downloads) a FIPS-ready CockroachDB binary, install it in the same way as the standard binary. Refer to [Install CockroachDB on Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
 
 {{site.data.alerts.callout_info}}
-Upgrading an existing CockroachDB cluster's binary in-place to be FIPS-ready is not supported. Instead, you can [restore your cluster]({% link {{ page.version.version }}/restore.md %}#full-cluster) to a new FIPS-ready cluster.
+**Upgrading from v25.4 FIPS to v26.1 FIPS**
+
+CockroachDB v26.1 represents a major architectural change in FIPS implementation (migration from golang-fips/OpenSSL to Go's native FIPS support). Because v26.1 FIPS is experimental, production FIPS customers are recommended to stay on v25.4 or wait for v26.2.
+
+Upgrading an existing CockroachDB cluster's binary in-place from non-FIPS to FIPS is not supported. Instead, you can [restore your cluster]({% link {{ page.version.version }}/restore.md %}#full-cluster) to a new FIPS-ready cluster.
 {{site.data.alerts.end}}
 
 ### Verify that CockroachDB is FIPS-ready
 
-If the CockroachDB binary is FIPS-ready, the string `fips` is appended to the Go version in the `cockroach version` command:
+To verify that the CockroachDB binary is FIPS-ready, use the `cockroach version` command and check for the `FIPS enabled` field:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach version |grep fips
+cockroach version | grep -i fips
 ~~~
 
 ~~~ shell
-go1.19.5fips
+FIPS enabled: true
 ~~~
 
-This indicates that CockroachDB was built using [Red Hat's Go FIPS with OpenSSL toolchain](https://github.com/golang-fips/go).
+This indicates that CockroachDB was built with Go's native FIPS 140-3 support.
+
+{{site.data.alerts.callout_info}}
+**Change from previous versions:** In v25.4 and earlier, FIPS-ready binaries showed `fips` appended to the Go version (e.g., `go1.19.5fips`). Starting with v26.1, FIPS status is indicated by the `FIPS enabled: true` field.
+{{site.data.alerts.end}}
 
 ## Use the FIPS-ready CockroachDB Docker image
 
-1. If necessary, enable FIPS mode on the Docker host. The FIPS-ready CockroachDB Docker image must run on a Docker host with FIPS mode enabled. To enable FIPS mode in the Docker host kernel, refer to [Enable FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/assembly_installing-a-rhel-8-system-with-fips-mode-enabled_security-hardening) in Red Hat's documentation. To verify that FIPS mode is enabled, refer to [Verify that the kernel enforces FIPS mode](#verify-that-the-kernel-enforces-fips-mode).
-1. Go to [Download FIPS-ready Runtimes](#download-fips-ready-runtimes) and copy the name of a FIPS-ready Docker image tag.
+The FIPS-ready CockroachDB Docker image is based on Red Hat Universal Base Image 10 and includes the FIPS-ready CockroachDB binary.
+
+1. Go to [Download FIPS-ready Runtimes](#download-fips-ready-runtimes) and copy the name of a FIPS-ready Docker image tag. The image tag format is `cockroachdb/cockroach:v26.1.0-fips` (replace with the specific version).
+
 1. Pull the Docker image locally, create a new container that uses it, run the container, and attach to it. The following example gives the running container the name `cockroachdb-fips-container`. Replace `{image_tag}` with the name of the Docker image tag you copied.
 
     {% include_cached copy-clipboard.html %}
@@ -249,14 +231,19 @@ This indicates that CockroachDB was built using [Red Hat's Go FIPS with OpenSSL 
     docker run {image_tag} --name="cockroachdb-fips-container" -i
     ~~~
 
-1. In the Docker host, [verify that the kernel enforces FIPS mode](#verify-that-the-kernel-enforces-fips-mode).
-
-    {{site.data.alerts.callout_info}}
-    Do not attempt to run the `sysctl` test from within the running container. Run the command from the Docker host rather than from the Docker container.
-    {{site.data.alerts.end}}
-
 1. In the running container, [verify that CockroachDB is FIPS-ready](#verify-that-cockroachdb-is-fips-ready).
+
 1. To stop the container, use `CTRL-C`. To detach from the container but keep it running in the background, use the sequence `CTRL+P+CTRL+Q`.
+
+## Password Requirements in FIPS Mode
+
+FIPS 140-3 has stricter requirements for password length compared to FIPS 140-2. When running a FIPS-ready CockroachDB binary, the minimum password length is **14 characters**. This aligns with NIST's recommendation that HMAC keys should have a length of at least 112 bits, which translates to 14 ASCII characters.
+
+{{site.data.alerts.callout_danger}}
+**Important for upgrades:** Users with passwords shorter than 14 characters may be locked out when upgrading to v26.1 FIPS from an earlier version. Ensure all user passwords meet the minimum length requirement before upgrading.
+{{site.data.alerts.end}}
+
+For more information about this change, refer to the [pull request #151636](https://github.com/cockroachdb/cockroach/pull/151636).
 
 ## Details about cryptographic algorithms
 
