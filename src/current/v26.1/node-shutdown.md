@@ -311,25 +311,25 @@ This can lead to disk utilization imbalance across nodes. **This is expected beh
 
 In this scenario, each range is replicated 3 times, with each replica on a different node:
 
-<div style="text-align: center;"><img src="{{ 'images/v24.1/decommission-scenario1.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v26.1/decommission-scenario1.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 If you try to decommission a node, the process will hang indefinitely because the cluster cannot move the decommissioning node's replicas to the other 2 nodes, which already have a replica of each range:
 
-<div style="text-align: center;"><img src="{{ 'images/v24.1/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v26.1/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 To successfully decommission a node in this cluster, you need to **add a 4th node**. The decommissioning process can then complete:
 
-<div style="text-align: center;"><img src="{{ 'images/v24.1/decommission-scenario1.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v26.1/decommission-scenario1.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 #### 5-node cluster with 3-way replication
 
 In this scenario, like in the scenario above, each range is replicated 3 times, with each replica on a different node:
 
-<div style="text-align: center;"><img src="{{ 'images/v24.1/decommission-scenario2.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v26.1/decommission-scenario2.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 If you decommission a node, the process will run successfully because the cluster will be able to move the node's replicas to other nodes without doubling up any range replicas:
 
-<div style="text-align: center;"><img src="{{ 'images/v24.1/decommission-scenario2.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="{{ 'images/v26.1/decommission-scenario2.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 </section>
 
@@ -879,6 +879,10 @@ Cockroach Labs recommends that you:
 Most of the guidance in this page is most relevant to manual deployments, although decommissioning and draining work the same way behind the scenes in a CockroachDB {{ site.data.products.advanced }} cluster. CockroachDB {{ site.data.products.advanced }} clusters are deployed with the [server.shutdown.connections.timeout](#server-shutdown-connections-timeout) setting at its default value of `0s`, and have a termination grace period that is slightly longer than 30 minutes. This grace period is not configurable.
 
 You can adjust the [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout) setting for client applications or application servers that connect to CockroachDB {{ site.data.products.advanced }} clusters. Ensure that the connection pool maximum lifetime is shorter than that value, as per the [Cluster settings](#server-shutdown-connections-timeout) guidance.
+
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/node-shutdown-limitations.md %}
 
 ## See also
 
