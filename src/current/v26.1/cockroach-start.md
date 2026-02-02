@@ -189,6 +189,20 @@ For another multi-region example, see [Start a multi-region cluster](#start-a-mu
 
 For more information about how to use CockroachDB's multi-region capabilities, see the [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).
 
+#### Load-based lease rebalancing in uneven latency deployments
+
+When nodes are started with the `--locality` flag, CockroachDB attempts to place the replica lease holder (the replica that client requests are forwarded to) on the node closest to the source of the request. This means as client requests move geographically, so too does the replica lease holder.
+
+However, you might see increased latency caused by a consistently high rate of lease transfers between datacenters in the following case:
+
+- Your cluster runs in datacenters which are very different distances away from each other.
+- Each node was started with a single tier of `--locality`, e.g., `--locality=datacenter=a`.
+- Most client requests get sent to a single datacenter because that's where all your application traffic is.
+
+To detect if this is happening, open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), select the **Queues** dashboard, hover over the **Replication Queue** graph, and check the **Leases Transferred / second** data point. If the value is consistently larger than 0, you should consider stopping and restarting each node with additional tiers of locality to improve request latency.
+
+For example, let's say that latency is 10ms from nodes in datacenter A to nodes in datacenter B but is 100ms from nodes in datacenter A to nodes in datacenter C. To ensure A's and B's relative proximity is factored into lease holder rebalancing, you could restart the nodes in datacenter A and B with a common region, `--locality=region=foo,datacenter=a` and `--locality=region=foo,datacenter=b`, while restarting nodes in datacenter C with a different region, `--locality=region=bar,datacenter=c`.
+
 ### Storage
 
 - [Storage engine](#storage-engine)

@@ -5,7 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `INSPECT` [statement]({% link {{ page.version.version }}/sql-statements.md %}) runs a data consistency validation job against a table or database and records any errors it finds. To display errors recorded by an inspection job, use [`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}).
+{% include_cached new-in.html version="v26.1" %} The `INSPECT` [statement]({% link {{ page.version.version }}/sql-statements.md %}) runs a data consistency validation job against a table or database and records any errors it finds. To display errors recorded by an inspection job, use [`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}).
+
+`INSPECT` is the generally available replacement for the deprecated `EXPERIMENTAL SCRUB` command.
 
 {{site.data.alerts.callout_info}}
 `INSPECT` is used to verify data integrity. It does not automatically repair errors.
