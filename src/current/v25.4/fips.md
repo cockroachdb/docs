@@ -12,7 +12,7 @@ As an [Innovation release]({% link releases/index.md %}#major-releases), v26.1 c
 
 Production clusters running a v25.4 FIPS binary should be upgraded directly to a v26.2 FIPS binary (available May 2026) for continuous GA support of FIPS.
 
-For more information, refer to the [v26.1 FIPS documentation]({% link v26.1/fips.md %}).
+For more information, refer to the [v26.1 FIPS documentation](https://www.cockroachlabs.com/docs/v26.1/fips).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
