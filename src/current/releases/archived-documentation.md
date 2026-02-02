@@ -43,8 +43,8 @@ The table below contains links to archived documentation for versions of Cockroa
         <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-docs-v19.1-offline.zip" class="download-link">ZIP</a></td></tr>
     <tr><td><strong>v2.1</strong></td>
         <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-v2.1-documentation.zip" class="download-link">ZIP</a></td></tr>
-    <tr><td><strong>v1.0</strong></td>
-        <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-docs-v1.0-offline.zip" class="download-link">ZIP</a></td></tr>
+    <tr><td><strong>v2.0</strong></td>
+        <td><a href="https://storage.googleapis.com/crdbdocs-archive/cockroachdb-docs-v2.0-offline.zip" class="download-link">ZIP</a></td></tr>
   </tbody>
 </table>
 
