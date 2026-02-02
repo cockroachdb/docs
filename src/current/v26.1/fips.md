@@ -196,7 +196,7 @@ After you [download](#downloads) a FIPS-ready CockroachDB binary, install it in 
 {{site.data.alerts.callout_info}}
 **Upgrading from v25.4 FIPS to v26.1 FIPS**
 
-CockroachDB v26.1 represents a major architectural change in FIPS implementation (migration from golang-fips/OpenSSL to Go's native FIPS support). Because v26.1 FIPS is experimental, production FIPS customers are recommended to stay on v25.4 or wait for v26.2.
+CockroachDB v26.1 represents a major architectural change in FIPS implementation, transitioning from the previous OpenSSL-based approach to Go's native FIPS cryptographic module. Because FIPS support is Preview in v26.1 and will return to GA in v26.2, production FIPS-ready clusters should remain on v25.4 or wait for v26.2.
 
 Upgrading an existing CockroachDB cluster's binary in-place from non-FIPS to FIPS is not supported. Instead, you can [restore your cluster]({% link {{ page.version.version }}/restore.md %}#full-cluster) to a new FIPS-ready cluster.
 {{site.data.alerts.end}}
