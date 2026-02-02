@@ -289,6 +289,10 @@ Use the [`SHOW SAVEPOINT STATUS`]({% link {{ page.version.version }}/show-savepo
 
 Note that the `is_initial_savepoint` column will be true if the savepoint is the outermost savepoint in the transaction.
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/savepoint-limitations.md %}
+
 ## See also
 
 - [`SHOW SAVEPOINT STATUS`]({% link {{ page.version.version }}/show-savepoint-status.md %})

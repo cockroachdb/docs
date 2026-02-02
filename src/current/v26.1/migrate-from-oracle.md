@@ -261,12 +261,12 @@ Use the table below for data type mappings:
 
 When moving from Oracle to CockroachDB data types, consider the following:
 
-- [Schema changes within transactions]({% link {{ page.version.version }}/known-limitations.md %}#schema-changes-within-transactions)
+- [Schema changes within transactions]({% link {{ page.version.version }}/online-schema-changes.md %}#known-limitations)
 - [Schema changes between executions of prepared statements]({% link {{ page.version.version }}/online-schema-changes.md %}#no-online-schema-changes-between-executions-of-prepared-statements)
 - If [`JSON`]({% link {{ page.version.version }}/jsonb.md %}) columns are used only for payload, consider switching to [`BYTES`]({% link {{ page.version.version }}/bytes.md %}).
 - Max size of a single [column family]({% link {{ page.version.version }}/column-families.md %}) (by default, the [maximum size of a range]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes)).
 
-For more information, see [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}), [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}), and [Transactions]({% link {{ page.version.version }}/transactions.md %}).
+For more information, refer to [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}) and [Transactions]({% link {{ page.version.version }}/transactions.md %}).
 
 ### NULLs
 

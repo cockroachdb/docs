@@ -392,6 +392,10 @@ For an example showing how to create a full-text index on a [`TSVECTOR`]({% link
 
 {% include {{ page.version.version }}/sql/inverted-joins.md %}
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/inverted-index-limitations.md %}
+
 ## See also
 
 - [Indexes]({% link {{ page.version.version }}/indexes.md %})

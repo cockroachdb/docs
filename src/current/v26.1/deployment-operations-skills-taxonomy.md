@@ -27,7 +27,7 @@ This section covers how to ensure that your hardware and network are properly co
 
 - [Verify vCPU, RAM, storage, and disk IOPS performance]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware)
 - [Configure time synchronization with NTP server]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-1-synchronize-clocks)
-- [Validate network connectivity]({% link {{ page.version.version }}/known-limitations.md %}#cockroachdb-does-not-test-for-all-connection-failure-scenarios)
+- [Validate network connectivity]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#tcp-connection-lingering)
 
 ## Security
 
