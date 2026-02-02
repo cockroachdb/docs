@@ -70,14 +70,6 @@ Upgrading an existing CockroachDB cluster's binaries in-place to be FIPS-ready i
 
 FIPS-ready CockroachDB v26.1 uses Go's native cryptographic module, which is independent of the host operating system's libraries. The FIPS-ready binary can run on any Intel 64-bit Linux system.
 
-{{site.data.alerts.callout_info}}
-**Optional: Enable FIPS mode in the Linux kernel**
-
-While not required for Go's native FIPS support to function, enabling FIPS mode in the Linux kernel provides an additional layer of compliance enforcement and may be required by your organization's security policies. The kernel's FIPS mode helps prevent the use of weak cryptographic algorithms system-wide.
-
-To enable kernel FIPS mode on Red Hat Enterprise Linux or its derivatives, refer to [Enable FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening) in Red Hat's documentation.
-{{site.data.alerts.end}}
-
 The FIPS-ready CockroachDB Docker images are based on [Red Hat's Universal Base Image 10](https://catalog.redhat.com/software/containers/ubi10/ubi-minimal/). To [use the FIPS-ready CockroachDB Docker image](#use-the-fips-ready-cockroachdb-docker-image), skip directly to that section of this page.
 
 ### Extend Red Hat's Universal Base Image 10 Docker image
