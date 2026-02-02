@@ -245,8 +245,6 @@ FIPS 140-3 has stricter requirements for password length compared to FIPS 140-2.
 **Important for upgrades:** Users with passwords shorter than 14 characters may be locked out when upgrading to v26.1 FIPS from an earlier version. Ensure all user passwords meet the minimum length requirement before upgrading.
 {{site.data.alerts.end}}
 
-For more information about this change, refer to the [pull request #151636](https://github.com/cockroachdb/cockroach/pull/151636).
-
 ## Details about cryptographic algorithms
 
 This section provides more information about the cryptographic algorithms and key lengths used by FIPS-ready CockroachDB.
