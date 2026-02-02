@@ -15,6 +15,14 @@ Production clusters running a v25.4 FIPS binary should be upgraded directly to a
 For more information, refer to the [v26.1 FIPS documentation]({% link v26.1/fips.md %}).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+**What "FIPS support" means**
+
+When CockroachDB documentation refers to "FIPS support" or "FIPS-ready" deployments, this means CockroachDB can be configured to use FIPS 140-2-approved cryptographic algorithms and operate in accordance with a FIPS 140-2 cryptographic module's Security Policy. It does not mean that CockroachDB itself is FIPS 140-2 validated.
+
+CockroachDB v25.4 delegates cryptographic operations to the host operating system's FIPS-validated OpenSSL libraries. When the installed OpenSSL has a FIPS 140-2 certificate and FIPS mode is enabled in the Linux kernel, the CockroachDB runtime is suitable for workloads that are subject to FIPS 140-2 requirements.
+{{site.data.alerts.end}}
+
 ## Overview of FIPS-ready CockroachDB
 
 [Federal Information Processing Standards (FIPS) 140-2](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf) is a mandatory standard that is used to approve cryptographic models. The goal of FIPS 140-2 is to provide measurable security guidelines for handling and accessing sensitive but unclassified (SBU) information. The FIPS 140-2 standard is applicable to all federal agencies that use cryptographic-based security systems to protect sensitive information in computer and telecommunication systems (including voice systems) as defined in Section 5131 of the Information Technology Management Reform Act of 1996, Public Law 104-106; and the Federal Information Security Management Act of 2002, Public Law 107-347. U.S. and Canadian governments, as well as organizations working with them, may be subject to FIPS 140-2 requirements.

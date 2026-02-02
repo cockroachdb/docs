@@ -1,16 +1,16 @@
 ---
 title: Install a FIPS-ready CockroachDB Runtime
-summary: Learn how to install and run CockroachDB in an environment subject to FIPS 140-3.
+summary: Learn how to install and run CockroachDB in an environment requiring FIPS 140-3-ready cryptography.
 toc: true
 docs_area: deploy
 ---
 
 {{site.data.alerts.callout_danger}}
-**FIPS is Experimental in v26.1 and will be GA in v26.2**
+**FIPS support is Preview in v26.1 and will be GA in v26.2**
 
 CockroachDB v26.1 has been upgraded to use [Go's native FIPS 140-3 support](https://go.dev/doc/security/fips140), transitioning from a previous OpenSSL-based approach. v26.1 is built with `GOFIPS140=latest`, which uses the current (non-frozen) implementation of the FIPS 140-3 Go Cryptographic Module v1.0.0 as it ships with Go 1.25. This version is not under NIST review and will not be FIPS 140-3 validated. v26.2 will complete this transition by using `GOFIPS140=v1.0.0`, which locks to the frozen v1.0.0 module from early 2025. The frozen module is on the [CMVP Modules In Process List](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/modules-in-process/modules-in-process-list) and can be deployed in certain regulated environments.
 
-FIPS support is therefore marked as **Experimental** in CockroachDB v26.1 and will return to **General Availability** (GA) status in v26.2.
+FIPS support is therefore marked as **Preview** in CockroachDB v26.1 and will return to **General Availability** (GA) status in v26.2.
 
 As an [Innovation release]({% link releases/index.md %}#major-releases), CockroachDB v26.1 can be skipped. Production clusters running a v25.4 FIPS binary should be upgraded directly to a v26.2 FIPS binary (available May 2026) for continuous GA support of FIPS.
 
@@ -19,6 +19,14 @@ As an [Innovation release]({% link releases/index.md %}#major-releases), Cockroa
 - **Current FIPS users:** Stay on v25.4 or wait for v26.2.
 - **New FIPS deployments:** Wait for v26.2, or start on v25.4 and later upgrade directly to v26.2.
 - **Testing/non-production:** v26.1 can be used for testing and evaluation.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+**What "FIPS support" means**
+
+When CockroachDB documentation refers to "FIPS support" or "FIPS-ready" deployments, this means CockroachDB can be configured to use FIPS 140-3-approved cryptographic algorithms and operate in accordance with a FIPS 140-3 cryptographic module's Security Policy. It does not mean that CockroachDB itself is FIPS 140-3 validated.
+
+CockroachDB v26.1 uses the current (non-frozen) implementation of the Go FIPS 140-3 Cryptographic Module, which is not under NIST review and will not be FIPS 140-3 validated. v26.2 will use the frozen module version submitted for CMVP validation, enabling FIPS 140-3 validated operation upon module certification.
 {{site.data.alerts.end}}
 
 ## Overview of FIPS-ready CockroachDB
