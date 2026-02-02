@@ -1,0 +1,1 @@
+- Altering the minimum or maximum value of a series does not check the current value of a series. This means that it is possible to silently set the maximum to a value less than, or a minimum value greater than, the current value. [#23719](https://github.com/cockroachdb/cockroach/issues/23719)

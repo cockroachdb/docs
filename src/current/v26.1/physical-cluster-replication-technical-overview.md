@@ -27,7 +27,7 @@ The stream initialization proceeds as follows:
 1. The initial scan runs on the primary and backfills all data from the primary virtual cluster as of the starting timestamp of the replication stream.
 1. Once the initial scan is complete, the primary then begins streaming all changes from the point of the starting timestamp.
 
-<img src="{{ 'images/v24.2/physical-rep-to.png' | relative_url }}" alt="Two virtualized clusters with system virtual cluster and application virtual cluster showing the directional stream." style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/physical-rep-to.png' | relative_url }}" alt="Two virtualized clusters with system virtual cluster and application virtual cluster showing the directional stream." style="border:0px solid #eee;max-width:100%" />
 
 #### Start-up sequence with read on standby
 

@@ -109,6 +109,7 @@ A cluster that is upgraded to an alpha binary of CockroachDB or a binary that wa
 
 | Version | Release Type | GA date |
 | :---: | :---: | :---: |
+| [v25.4](#v25-4) | Regular | 2025-11-03 |
 | [v25.3](#v25-3) | Innovation | 2025-08-04 |
 | [v25.2](#v25-2) | Regular | 2025-05-12 |
 | [v25.1]({% link releases/unsupported-versions.md %}#v25-1) | Innovation | 2025-02-18 |
@@ -123,7 +124,6 @@ The following releases and their descriptions represent proposed plans that are 
 
 | Version | Release Type | Expected GA date |
 | :---: | :---: | :---: |
-| v25.4 | Regular    | 2025 Q4    |
 | v26.1 | Innovation | 2026 Q1    |
 | v26.2 | Regular    | 2026 Q2    |
 
