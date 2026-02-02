@@ -32,7 +32,7 @@ For best query performance, most users should leave automatic statistics enabled
 
 ### Full statistics
 
-By default, CockroachDB automatically generates full statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}) and during [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). Full statistics for a table are automatically refreshed when approximately 20% of its rows are updated.
+By default, CockroachDB automatically generates full statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}) and after [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). Full statistics for a table are automatically refreshed when approximately 20% of its rows are updated.
 
 {{site.data.alerts.callout_success}}
 You can manually collect *partial statistics* on a subset of table data without scanning the full table. Refer to [Create partial statistics using extremes]({% link {{ page.version.version }}/create-statistics.md %}#create-partial-statistics-using-extremes).
@@ -155,8 +155,6 @@ CockroachDB deletes statistics on non-default columns according to the `sql.stat
 
 - There have been at least 3 historical statistics collections.
 - The historical statistics closely fit a linear pattern.
-
-By default, the optimizer uses forecasts that closely match the historical statistics.
 
 You can enable and disable forecasted statistics collection for individual tables using the `sql_stats_forecasts_enabled` [table parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters). This table setting **takes precedence** over the `sql.stats.forecasts.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 

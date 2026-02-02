@@ -33,7 +33,7 @@ For best query performance, most users should leave automatic statistics enabled
 
 ### Full statistics
 
-By default, CockroachDB automatically generates full statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}) and during [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). Full statistics for a table are automatically refreshed when approximately 20% of its rows are updated.
+By default, CockroachDB automatically generates full statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}) and after [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). Full statistics for a table are automatically refreshed when approximately 20% of its rows are updated.
 
 A [background job]({% link {{ page.version.version }}/create-statistics.md %}#view-statistics-jobs) automatically determines which columns to get statistics on. Specifically, the optimizer chooses:
 
@@ -98,7 +98,7 @@ In such cases, we recommend that you use the [`sql_stats_automatic_collection_en
 
 *Partial statistics* are collected on a subset of table data without scanning the full table. Partial statistics can improve query performance in large tables where only a portion of rows are regularly updated or queried.
 
-Whereas [full statistics](#full-statistics) refresh infrequently and can allow stale rows to accumulate, partial statistics [automatically refresh](#automatically-collect-partial-statistics) when the number of stale rows reaches a threshold. Partial statistics automatically collect on extreme index values, which is particularly valuable for timestamp indexes where workloads commonly access the most recent data. They can also be [collected manually](#manually-collect-partial-statistics).
+Whereas [full statistics](#full-statistics) refresh infrequently and can allow stale rows to accumulate, partial statistics automatically refresh at a [lower threshold](#automatically-collect-partial-statistics) of stale rows. Partial statistics automatically collect on extreme index values, which is particularly valuable for timestamp indexes where workloads commonly access the most recent data. They can also be [collected manually](#manually-collect-partial-statistics).
 
 Partial statistics have the following constraints:
 
@@ -221,8 +221,6 @@ CockroachDB deletes statistics on non-default columns according to the `sql.stat
 
 - There have been at least 3 historical statistics collections.
 - The historical statistics closely fit a linear pattern.
-
-By default, the optimizer uses forecasts that closely match the historical statistics.
 
 You can enable and disable forecasted statistics collection for individual tables using the `sql_stats_forecasts_enabled` [table parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters). This table setting **takes precedence** over the `sql.stats.forecasts.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 

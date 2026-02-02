@@ -177,9 +177,9 @@ To create [partial statistics]({% link {{ page.version.version }}/cost-based-opt
 CREATE STATISTICS rides_extremes_stats FROM rides USING EXTREMES;
 ~~~
 
-This creates partial statistics on all single-column prefixes of non-inverted indexes in the `rides` table by scanning only the highest and lowest index values, providing updated statistics without performing a full table scan.
+This creates partial statistics on all single-column prefixes of non-inverted indexes in the `rides` table by scanning only the highest and lowest index values, rather than performing a full table scan.
 
-You can also create extremes statistics on specific columns, as long as [the column is indexed]({% link {{ page.version.version }}/cost-based-optimizer.md %}#partial-statistics):
+You can also create extremes statistics on specific columns, provided there is an index with the specified column as the first key column:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -192,17 +192,17 @@ CREATE STATISTICS city_extremes_stats ON city FROM rides USING EXTREMES;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE INDEX ON rides (start_time);
+CREATE INDEX ON rides (revenue);
 ~~~
 
-Partial statistics are particularly valuable for timestamp columns where workloads commonly access the most recent data:
+Partial statistics can target any subset of data matching specific conditions. For example, to create statistics on high-value rides:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE STATISTICS recent_rides_stats ON start_time FROM rides WHERE start_time > '2023-01-01';
+CREATE STATISTICS high_value_rides_stats ON revenue FROM rides WHERE revenue > 50;
 ~~~
 
-This creates statistics only on rides that started after January 1, 2023, allowing the optimizer to have accurate statistics for recent data without scanning the entire table.
+This creates partial statistics covering only high-value rides.
 
 ### Delete statistics
 
