@@ -6,17 +6,13 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
-**FIPS Support Across Versions**
+FIPS support is GA in v25.4, experimental in v26.1, and will return to GA in v26.2, completing a transition to Go's native FIPS cryptographic module.
 
-CockroachDB v25.4 is the last stable FIPS release before v26.2.
+As an [Innovation release]({% link releases/index.md %}#major-releases), v26.1 can be skipped by CockroachDB self-hosted clusters.
 
-**v26.1 FIPS Status:** FIPS support in v26.1 is marked as **Experimental** due to a major architectural change (migration from golang-fips/OpenSSL to Go's native FIPS 140-3 support). v26.1 uses a Go cryptographic library that is not under NIST review.
+Production clusters running a v25.4 FIPS binary should be upgraded directly to a v26.2 FIPS binary (available May 2026) for continuous GA support of FIPS.
 
-**Recommendation for Production FIPS Deployments:**
-- **Stay on v25.4** or **wait for v26.2**, which will use a NIST-reviewable Go cryptographic library
-- v26.2 will return FIPS support to General Availability status
-
-For more information, refer to the [v26.1 FIPS documentation]({% link {{ page.version.version }}/fips.md %}).
+For more information, refer to the [v26.1 FIPS documentation]({% link v26.1/fips.md %}).
 {{site.data.alerts.end}}
 
 ## Overview of FIPS-ready CockroachDB

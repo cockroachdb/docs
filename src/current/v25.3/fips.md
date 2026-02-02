@@ -5,18 +5,6 @@ toc: true
 docs_area: deploy
 ---
 
-{{site.data.alerts.callout_info}}
-**FIPS Support Across Versions**
-
-CockroachDB v25.3 and v25.4 are stable FIPS releases. For production FIPS deployments, stay on v25.3/v25.4 or wait for v26.2.
-
-**v26.1 FIPS Status:** FIPS support in v26.1 is marked as **Experimental** due to a major architectural change (migration from golang-fips/OpenSSL to Go's native FIPS 140-3 support). v26.1 uses a Go cryptographic library that is not under NIST review.
-
-**v26.2:** Will return FIPS support to General Availability status and use a NIST-reviewable Go cryptographic library.
-
-For more information, refer to the [v26.1 FIPS documentation](https://www.cockroachlabs.com/docs/v26.1/fips).
-{{site.data.alerts.end}}
-
 ## Overview of FIPS-ready CockroachDB
 
 [Federal Information Processing Standards (FIPS) 140-2](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf) is a mandatory standard that is used to approve cryptographic models. The goal of FIPS 140-2 is to provide measurable security guidelines for handling and accessing sensitive but unclassified (SBU) information. The FIPS 140-2 standard is applicable to all federal agencies that use cryptographic-based security systems to protect sensitive information in computer and telecommunication systems (including voice systems) as defined in Section 5131 of the Information Technology Management Reform Act of 1996, Public Law 104-106; and the Federal Information Security Management Act of 2002, Public Law 107-347. U.S. and Canadian governments, as well as organizations working with them, may be subject to FIPS 140-2 requirements.

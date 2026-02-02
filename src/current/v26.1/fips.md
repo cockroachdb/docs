@@ -6,19 +6,19 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_danger}}
-**FIPS is Experimental in v26.1**
+**FIPS is Experimental in v26.1 and will be GA in v26.2**
 
-FIPS support is marked as **Experimental** in CockroachDB v26.1 and will return to **General Availability** (GA) status in v26.2. As an [Innovation release]({% link releases/index.md %}#major-releases), CockroachDB v26.1 can be skipped. Production clusters running v25.4 with FIPS should be upgraded directly to v26.2 after it is available (May 2026) for continuous GA support of FIPS.
+CockroachDB v26.1 has been upgraded to use [Go's native FIPS 140-3 support](https://go.dev/doc/security/fips140), transitioning from a previous OpenSSL-based approach. v26.1 is built with `GOFIPS140=latest`, which uses the current (non-frozen) implementation of the FIPS 140-3 Go Cryptographic Module v1.0.0 as it ships with Go 1.25. This version is not under NIST review and will not be FIPS 140-3 validated. v26.2 will complete this transition by using `GOFIPS140=v1.0.0`, which locks to the frozen v1.0.0 module from early 2025. The frozen module is on the [CMVP Modules In Process List](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/modules-in-process/modules-in-process-list) and can be deployed in certain regulated environments.
 
-CockroachDB v26.1 has been upgraded to use the FIPS cryptographic module and FIPS 140-3 mode that are available with Go 1.25 (`GOFIPS140=latest`), transitioning from the previous OpenSSL-based approach. This version of the module is not under NIST review and will not be FIPS 140-3 validated. v26.2 will complete this transition by using the frozen v1.0.0 module (`GOFIPS140=v1.0.0`), which is on the [CMVP Modules In Process List](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/modules-in-process/modules-in-process-list) and can be deployed in certain regulated environments.
+FIPS support is therefore marked as **Experimental** in CockroachDB v26.1 and will return to **General Availability** (GA) status in v26.2.
+
+As an [Innovation release]({% link releases/index.md %}#major-releases), CockroachDB v26.1 can be skipped. Production clusters running a v25.4 FIPS binary should be upgraded directly to a v26.2 FIPS binary (available May 2026) for continuous GA support of FIPS.
 
 **Recommendation for Production Deployments:**
 
 - **Current FIPS users:** Stay on v25.4 or wait for v26.2.
 - **New FIPS deployments:** Wait for v26.2, or start on v25.4 and later upgrade directly to v26.2.
 - **Testing/non-production:** v26.1 can be used for testing and evaluation.
-
-For more information about Go's FIPS 140-3 module, refer to the [Go FIPS 140 documentation](https://go.dev/doc/security/fips140).
 {{site.data.alerts.end}}
 
 ## Overview of FIPS-ready CockroachDB
@@ -34,7 +34,9 @@ Starting with v26.1, FIPS-ready CockroachDB binaries are built using Go 1.25's n
 {{site.data.alerts.callout_info}}
 **Migration from FIPS 140-2 to FIPS 140-3**
 
-Previous versions of CockroachDB (v25.4 and earlier) supported FIPS 140-2. Starting with v26.1, CockroachDB supports FIPS 140-3. FIPS 140-2 will transition to historical status on September 22, 2026, per [NIST's FIPS 140-3 Transition Effort](https://csrc.nist.gov/Projects/fips-140-3-transition-effort).
+Previous versions of CockroachDB (v25.4 and earlier) supported FIPS 140-2. Starting with v26.1, CockroachDB supports a cryptographic module designed for FIPS 140-3 support, though the version of that module that is in review by NIST for FIPS 140-3 certification will not be used by CockroachDB until v26.2. (Refer to the note on Go's native FIPS support at the top of this page.)
+
+FIPS 140-2 will transition to historical status on September 22, 2026, per [NIST's FIPS 140-3 Transition Effort](https://csrc.nist.gov/Projects/fips-140-3-transition-effort).
 {{site.data.alerts.end}}
 
 For details about cryptographic algorithms and key lengths used by CockroachDB, refer to [Details About Cryptographic Algorithms](#details-about-cryptographic-algorithms).
@@ -83,7 +85,7 @@ The FIPS-ready CockroachDB Docker images are based on [Red Hat's Universal Base 
 If you do not want to use the FIPS-ready CockroachDB Docker image directly, you can create a custom Docker image based on [Red Hat's Universal Base Image 10](https://catalog.redhat.com/software/containers/ubi10/ubi-minimal/):
 
 - You can model your Dockerfile on the one that Cockroach Labs uses to produce the [FIPS-ready Docker image](https://github.com/cockroachdb/cockroach/blob/master/build/deploy/Dockerfile) for CockroachDB.
-- The FIPS-ready binary includes Go's native FIPS cryptographic module and does not require additional system libraries to be installed.
+- The FIPS-ready binary includes the FIPS 140-3 Go Cryptographic Module and does not require additional system libraries to be installed.
 
 <a id="downloads"></a>
 
