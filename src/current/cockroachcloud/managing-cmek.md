@@ -18,6 +18,8 @@ This guide will walk you through creating the necessary cloud identities and enc
 - An IAM role in your AWS account, a cross-tenant service account in your GCP project, or admin consent for CockroachDB Cloud to access your Azure Key Vault. CockroachDB Cloud will use this identity to encrypt and decrypt using the CMEK.
 - A CMEK key for your cluster stored in AWS KMS, GCP KMS, or Azure Key Vault. CockroachDB Cloud never has access to the CMEK itself. You can use an existing key or create a new one following the instructions in this guide.
 
+The instructions on this page describe how to enable and manage CMEK using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) which requires a service account and corresponding access token. As an alternative to the API, you can request to have the CMEK UI enabled in the {{ site.data.products.cloud }} Console which is available as a [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview).
+
 ## Enable CMEK
 
 This section shows how to enable CMEK on a CockroachDB {{ site.data.products.advanced }} cluster.

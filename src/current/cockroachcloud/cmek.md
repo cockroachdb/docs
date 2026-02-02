@@ -157,7 +157,7 @@ The store key is only stored as encrypted by the CMEK, while it’s available as
 
 #### Can we use the CockroachDB {{ site.data.products.cloud }} Console to enable or revoke a CMEK for a cluster?
 
-Yes. You can use the CockroachDB {{ site.data.products.cloud }} Console, the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest).
+Yes. You can use the CockroachDB {{ site.data.products.cloud }} Console, the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest). The Console UI is available in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview) and you can request to have the UI enabled for your {{ site.data.products.cloud }} organization.
 
 #### Is it possible to self-serve restore a CMEK-enabled cluster in case of a cluster failure or disaster scenario?
 
