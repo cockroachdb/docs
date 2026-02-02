@@ -91,6 +91,10 @@ Parameter | Description |
 
 For usage, see [Synopsis](#synopsis).
 
+#### Known limitations
+
+{% include {{ page.version.version }}/known-limitations/alter-table-add-column-limitations.md %}
+
 ### `ADD CONSTRAINT`
 
 Use `ALTER TABLE ... ADD CONSTRAINT` to add the following [constraints]({% link {{ page.version.version }}/constraints.md %}) to columns:

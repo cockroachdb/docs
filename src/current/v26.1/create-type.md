@@ -194,6 +194,10 @@ SELECT * FROM points ORDER BY ((p).x) ASC LIMIT 25;
 (25 rows)
 ~~~
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/composite-type-limitations.md %}
+
 ## See also
 
 - [Data types]({% link {{ page.version.version }}/data-types.md %})
