@@ -1,1 +1,1 @@
-`SHOW CHANGEFEED JOBS` will return all changefeed jobs from the last 12 hours. For more information on the retention of job details, refer to the {% if page.name == "show-jobs.md" %} [Response](#response) {% else %} [Response]({% link "{{ page.version.version }}/show-jobs.md" %}#response) {% endif %} section.
+All changefeed jobs will display regardless of if the job completed and when it completed. You can define a retention time and delete completed jobs by using the `jobs.retention_time` [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}).

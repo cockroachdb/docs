@@ -481,7 +481,7 @@ In addition, this release includes the following features:
 
 <h3 id="2023-07-24-security-changes"> Security updates </h3>
 
-- [Configuring private connectivity using AWS PrivateLink](/docs/cockroachcloud/aws-privatelink.html?filters=serverless) is available in [limited access](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability) for multi-region CockroachDB {{ site.data.products.serverless }} clusters on AWS. To enroll your organization, contact your Cockroach Labs account team.
+- [Configuring private connectivity using AWS PrivateLink]({{ site.baseurl }}/cockroachcloud/aws-privatelink.html?filters=serverless) is available in [limited access](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability) for multi-region CockroachDB {{ site.data.products.serverless }} clusters on AWS. To enroll your organization, contact your Cockroach Labs account team.
 
 <h3 id="2023-07-24-console-changes"> Console changes </h3>
 

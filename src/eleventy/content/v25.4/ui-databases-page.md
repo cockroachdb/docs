@@ -32,15 +32,15 @@ To view this information, [access the DB Console]({% link {{ version_prefix }}/u
     - [Indexes List Tab](#indexes-list-tab): lists indexes on a table with index recommendations and actions.
 - [Index Details Page](#index-details-page): displays an index’s details with index recommendations.
 
-{% include {{ version_prefix }}/ui/index-recommendations.md %}
+{% dynamic_include version_prefix, "/ui/index-recommendations.md" %}
 
-{% include {{ version_prefix }}/ui/databases-list-page.md %}
+{% dynamic_include version_prefix, "/ui/databases-list-page.md" %}
 
-{% include {{ version_prefix }}/ui/database-details-page.md %}
+{% dynamic_include version_prefix, "/ui/database-details-page.md" %}
 
-{% include {{ version_prefix }}/ui/table-details-page.md %}
+{% dynamic_include version_prefix, "/ui/table-details-page.md" %}
 
-{% include {{ version_prefix }}/ui/index-details-page.md %}
+{% dynamic_include version_prefix, "/ui/index-details-page.md" %}
 
 ## See also
 

@@ -1,4 +1,4 @@
-{% if page.name != "known-limitations.md" # New limitations in v24.2 %}
+{% if page.name != "known-limitations.md" %}
 {% endif %}
 - It is not possible to use a variable as a target more than once in the same `INTO` clause. For example, `SELECT 1, 2 INTO x, x;`. [#121605](https://github.com/cockroachdb/cockroach/issues/121605)
 - PLpgSQL variable declarations cannot inherit the type of a table row or column using `%TYPE` or `%ROWTYPE` syntax. [#114676](https://github.com/cockroachdb/cockroach/issues/114676)
