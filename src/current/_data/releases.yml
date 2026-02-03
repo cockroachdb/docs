@@ -10395,3 +10395,10 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v26.1.0-rc.1
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters, as part of our staged release
+      process, with binaries for self-hosted clusters available
+      a week afterward.
