@@ -2,11 +2,11 @@
 
 To deploy CockroachDB {{page.version.version}}, Kubernetes 1.18 or higher is required. Cockroach Labs strongly recommends that you use a Kubernetes version that is [eligible for patch support by the Kubernetes project](https://kubernetes.io/releases/).
 
-#### {{ site.data.products.public-operator }}
+#### Kubernetes Operator
 
-- The {{ site.data.products.public-operator }} deploys clusters in a single region. For multi-region deployments using manual configs, Cockroach Labs recommends using the [{{ site.data.products.cockroachdb-operator }}]({% link "{{ page.version.version }}/cockroachdb-operator-overview.md" %}) which is designed to support multi-region deployments. For guidance on how to force multi-region support with the {{ site.data.products.public-operator }}, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({% link "{{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md" %}).
+- The CockroachDB Kubernetes Operator currently deploys clusters in a single region. For multi-region deployments using manual configs, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({% link "{{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md" %}).
 
-- Using the {{ site.data.products.public-operator }}, you can give a new cluster an arbitrary number of [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/). However, a cluster's labels cannot be modified after it is deployed. To track the status of this limitation, refer to [#993](https://github.com/cockroachdb/cockroach-operator/issues/993) in the {{ site.data.products.public-operator }} project's issue tracker.
+- Using the Operator, you can give a new cluster an arbitrary number of [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/). However, a cluster's labels cannot be modified after it is deployed. To track the status of this limitation, refer to [#993](https://github.com/cockroachdb/cockroach-operator/issues/993) in the Operator project's issue tracker.
 
 {% unless page.name == "orchestrate-cockroachdb-with-kubernetes-multi-cluster.md" %}
 #### Helm version
@@ -17,9 +17,9 @@ The CockroachDB Helm chart requires Helm 3.0 or higher. If you attempt to use an
 Error: UPGRADE FAILED: template: cockroachdb/templates/tests/client.yaml:6:14: executing "cockroachdb/templates/tests/client.yaml" at <.Values.networkPolicy.enabled>: nil pointer evaluating interface {}.enabled
 ~~~
 
-The public Helm chart is currently not under active development, and no new features are planned. However, Cockroach Labs remains committed to fully supporting the Helm chart by addressing defects, providing security patches, and addressing breaking changes due to deprecations in Kubernetes APIs.
+The CockroachDB Helm chart is currently not under active development, and no new features are planned. However, Cockroach Labs remains committed to fully supporting the Helm chart by addressing defects, providing security patches, and addressing breaking changes due to deprecations in Kubernetes APIs.
 
-A deprecation notice for the public Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
+A deprecation notice for the Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
 {% endunless %}
 
 #### Network

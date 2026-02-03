@@ -18,6 +18,10 @@
     cockroach sql --insecure
     ~~~
 
+    {{site.data.alerts.callout_info}}
+    To set your {{ site.data.products.enterprise }} license, refer to the [Licensing FAQs]({% link "{{ page.version.version }}/licensing-faqs.md" %}#set-a-license) page.
+    {{site.data.alerts.end}}
+
 1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link "{{ page.version.version }}/cluster-settings.md" %}):
 
     ~~~ sql

@@ -55,7 +55,7 @@
     1. You may want to modify `storage.persistentVolume.size` and `storage.persistentVolume.storageClass` for your use case. This chart defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions]({% link "{{ page.version.version }}/kubernetes-performance.md" %}#disk-type).
 
         {{site.data.alerts.callout_info}}
-        If necessary, you can [expand disk size](/docs/{{ page.version.version }}/configure-cockroachdb-kubernetes.html?filters=helm#expand-disk-size) after the cluster is live.
+        If necessary, you can [expand disk size]({{ site.baseurl }}/{{ page.version.version }}/configure-cockroachdb-kubernetes.html?filters=helm#expand-disk-size) after the cluster is live.
         {{site.data.alerts.end}}
 
 1. Install the CockroachDB Helm chart.

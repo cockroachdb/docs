@@ -19,7 +19,7 @@ In addition to the requirements listed in [Setting Up a Virtual Environment for 
 
 ## Multi-region database deployment
 
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/quickstart.md %}). To use CockroachDB {{ site.data.products.core }} instead, refer to [Install CockroachDB](/docs/{{ page.version.version }}/install-cockroachdb.html).
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/quickstart.md %}). To use CockroachDB {{ site.data.products.core }} instead, refer to [Install CockroachDB]({{ site.baseurl }}/{{ page.version.version }}/install-cockroachdb.html).
 
 ### Create a multi-region CockroachDB {{ site.data.products.standard }} cluster
 

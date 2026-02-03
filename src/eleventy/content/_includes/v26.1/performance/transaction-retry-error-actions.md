@@ -1,5 +1,5 @@
 In most cases, the correct actions to take when encountering transaction retry errors are:
 
-1. Under `SERIALIZABLE` isolation, update your application to support [client-side retry handling]({% link "{{ page.version.version }}/transaction-retry-error-reference.md" %}#client-side-retry-handling) when transaction retry errors are encountered. Follow the guidance for the [specific error type]({% link "{{ page.version.version }}/transaction-retry-error-reference.md" %}#transaction-retry-error-reference).
+1. Update your application to support [client-side retry handling]({% link "{{ page.version.version }}/transaction-retry-error-reference.md" %}#client-side-retry-handling) when transaction retry errors are encountered. Follow the guidance for the [specific error type]({% link "{{ page.version.version }}/transaction-retry-error-reference.md" %}#transaction-retry-error-reference).
 
 1. Take steps to [minimize transaction retry errors]({% link "{{ page.version.version }}/transaction-retry-error-reference.md" %}#minimize-transaction-retry-errors) in the first place. This means reducing transaction contention overall, and increasing the likelihood that CockroachDB can [automatically retry]({% link "{{ page.version.version }}/transactions.md" %}#automatic-retries) a failed transaction.

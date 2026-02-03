@@ -1,3 +1,5 @@
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link "{{ page.version.version }}/licensing-faqs.md" %}#obtain-a-license).
+
 1. Use the [`cockroach start-single-node`]({% link "{{ page.version.version }}/cockroach-start-single-node.md" %}) command to start a single-node cluster:
 
     ~~~ shell

@@ -1,4 +1,4 @@
-To modify a changefeed, [pause]({% link "{{ page.version.version }}/create-and-configure-changefeeds.md" %}#pause) the job and then use:
+To modify an {{ site.data.products.enterprise }} changefeed, [pause]({% link "{{ page.version.version }}/create-and-configure-changefeeds.md" %}#pause) the job and then use:
 
 ~~~ sql
 ALTER CHANGEFEED job_id {ADD table DROP table SET option UNSET option};

@@ -1,5 +1,3 @@
-</code></pre></div>
-{% endcapture %}
 The default value for `--cache` is 128 MiB. For production deployments, set `--cache` to `25%` or higher. To determine appropriate settings for `--cache` and `--max-sql-memory`, use the following formula: {{ formula }}
 
 To help guard against [OOM events]({% link "{{ page.version.version }}/cluster-setup-troubleshooting.md" %}#out-of-memory-oom-crash), CockroachDB sets a soft memory limit using mechanisms in Go. Depending on your hardware and workload, you may not need to manually tune `--max-sql-memory`.

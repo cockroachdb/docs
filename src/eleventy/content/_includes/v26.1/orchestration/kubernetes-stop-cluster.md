@@ -9,13 +9,13 @@ To shut down the CockroachDB cluster:
     kubectl delete -f example.yaml
     ~~~
 
-1. Remove the {{ site.data.products.public-operator }}:
+1. Remove the Operator:
 
     ~~~ shell
     kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
 
-    This will delete the CockroachDB cluster being run by the {{ site.data.products.public-operator }}. It intentionally does **not** delete:
+    This will delete the CockroachDB cluster being run by the Operator. It intentionally does **not** delete:
     - The persistent volumes that were attached to the pods, to avoid the risk of data loss. Before deleting a cluster's persistent volumes, be sure to back them up. For more information, refer to [Delete a Cluster's Persistent Volumes](#delete-a-clusters-persistent-volumes) in the Kubernetes project's documentation.
     - Any secrets you may have created. For more information on managing secrets, refer to [Managing Secrets Using `kubectl`](https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl) in the Kubernetes project's documentation.
 
