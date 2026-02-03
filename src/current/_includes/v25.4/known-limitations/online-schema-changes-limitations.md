@@ -23,3 +23,19 @@ You cannot start an online schema change on a table if a [primary key change]({%
 ##### No online schema changes between executions of prepared statements
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
+
+##### Column-dropping schema changes may not roll back properly
+
+Some [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) that [drop columns]({% link {{ page.version.version }}/alter-table.md %}#drop-column) cannot be [rolled back]({% link {{ page.version.version }}/rollback-transaction.md %}) properly.
+
+In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change. [#46541](https://github.com/cockroachdb/cockroach/issues/46541)
+
+In other cases, the rollback will fail in such a way that will never be cleaned up properly, leaving the table descriptor in a state where no other schema changes can be run successfully. [#47712](https://github.com/cockroachdb/cockroach/issues/47712)
+
+To reduce the chance that a column drop will roll back incorrectly:
+
+- Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures will not cause the column drop to be rolled back.
+- Drop all [constraints]({% link {{ page.version.version }}/constraints.md %}) (including [unique indexes]({% link {{ page.version.version }}/unique.md %})) on the column in a separate transaction, before dropping the column.
+- Drop any [default values]({% link {{ page.version.version }}/default-value.md %}) or [computed expressions]({% link {{ page.version.version }}/computed-columns.md %}) on a column before attempting to drop the column. This prevents conflicts between constraints and default/computed values during a column drop rollback.
+
+If you think a rollback of a column-dropping schema change has occurred, check the [jobs table]({% link {{ page.version.version }}/show-jobs.md %}). Schema changes with an error prefaced by `cannot be reverted, manual cleanup may be required` might require manual intervention.

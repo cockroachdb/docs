@@ -13,7 +13,7 @@ LABEL org.opencontainers.image.title="CockroachDB Docs Builder"
 LABEL org.opencontainers.image.description="Hermetic build environment for CockroachDB documentation"
 LABEL org.opencontainers.image.source="https://github.com/cockroachdb/docs"
 LABEL ruby.version="3.4.0"
-LABEL bundler.version="4.0.0"
+LABEL bundler.version="2.7.2"
 LABEL jekyll.version="4.3.4"
 
 # Install build and runtime dependencies
@@ -35,7 +35,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 WORKDIR /docs
 
 # Install specific bundler version (must match Gemfile.lock BUNDLED WITH)
-RUN gem install bundler:4.0.0 --no-document
+RUN gem install bundler:2.7.2 --no-document
 
 # Copy Gemfile and local gem for dependency installation
 # The jekyll-algolia-dev directory contains a local gem that must be present

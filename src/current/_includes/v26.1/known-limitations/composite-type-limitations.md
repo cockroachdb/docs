@@ -1,0 +1,2 @@
+- Updating subfields of composite types using dot syntax results in a syntax error. [#102984](https://github.com/cockroachdb/cockroach/issues/102984)
+- Tuple elements cannot be accessed without enclosing the [composite variable]({% link {{ page.version.version }}/create-type.md %}) name in parentheses. For example, `(OLD).column` and `(NEW).column` when used in [triggers]({% link {{ page.version.version }}/triggers.md %}). [#114687](https://github.com/cockroachdb/cockroach/issues/114687)

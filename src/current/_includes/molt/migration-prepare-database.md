@@ -12,7 +12,7 @@ Grant the user privileges to connect, view schema objects, and select the tables
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT CONNECT ON DATABASE source_database TO migration_user;
+GRANT CONNECT ON DATABASE migration_db TO migration_user;
 GRANT USAGE ON SCHEMA migration_schema TO migration_user;
 GRANT SELECT ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO migration_user;
@@ -31,7 +31,7 @@ Alternatively, grant the following permissions to create replication slots, acce
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER USER migration_user WITH LOGIN REPLICATION;
-GRANT CREATE ON DATABASE source_database TO migration_user;
+GRANT CREATE ON DATABASE migration_db TO migration_user;
 ALTER TABLE migration_schema.table_name OWNER TO migration_user;
 ~~~
 
@@ -45,11 +45,12 @@ Run the `ALTER TABLE` command for each table to replicate.
 CREATE USER 'migration_user'@'%' IDENTIFIED BY 'password';
 ~~~
 
-Grant the user privileges to select only the tables you migrate:
+Grant the user privileges to select the tables you migrate and access GTID information for snapshot consistency:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT SELECT ON source_database.* TO 'migration_user'@'%';
+GRANT SELECT ON migration_db.* TO 'migration_user'@'%';
+GRANT SELECT ON mysql.gtid_executed TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
 
@@ -74,7 +75,7 @@ CREATE USER MIGRATION_USER IDENTIFIED BY 'password';
 When migrating from Oracle Multitenant (PDB/CDB), this should be a [common user](https://docs.oracle.com/database/121/ADMQS/GUID-DA54EBE5-43EF-4B09-B8CC-FAABA335FBB8.htm). Prefix the username with `C##` (e.g., `C##MIGRATION_USER`).
 {{site.data.alerts.end}}
 
-Grant the user privileges to connect, read metadata, and `SELECT` and `FLASHBACK` the tables you plan to migrate. The tables should all reside in a single schema (e.g., `migration_schema`). For details, refer to [Schema and table filtering](#schema-and-table-filtering).
+Grant the user privileges to connect, read metadata, and `SELECT` and `FLASHBACK` the tables you plan to migrate. The tables should all reside in a single schema (for example, `migration_schema`). For details, refer to [Schema and table filtering](#schema-and-table-filtering).
 
 ##### Oracle Multitenant (PDB/CDB) user privileges
 
@@ -164,7 +165,20 @@ Connect to the primary instance (PostgreSQL primary, MySQL primary/master, or Or
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-Verify that you are connected to the primary server by running `SELECT pg_is_in_recovery();` and getting a `false` result.
+Verify that you are connected to the primary server:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT pg_is_in_recovery();
+~~~
+
+You should get a false result:
+
+~~~
+ pg_is_in_recovery
+-------------------
+ f
+~~~
 
 Enable logical replication by setting `wal_level` to `logical` in `postgresql.conf` or in the SQL shell. For example:
 
@@ -183,11 +197,9 @@ Configure binlog retention to ensure GTIDs remain available throughout the migra
 - MySQL < 8.0: Set `expire_logs_days`, or manually manage retention by setting `max_binlog_size` and using `PURGE BINARY LOGS BEFORE NOW() - INTERVAL 1 HOUR` (adjusting the interval as needed). Force binlog rotation with `FLUSH BINARY LOGS` if needed.
 - Managed services: Refer to provider-specific configuration for [Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html) or [Google Cloud SQL](https://cloud.google.com/sql/docs/mysql/flags#mysql-b).
 
-{% comment %}
 {{site.data.alerts.callout_info}}
-GTID replication sends all database changes to Replicator. To limit replication to specific tables or schemas, use a userscript.
+GTID replication sends all database changes to Replicator. To limit replication to specific tables or schemas, [apply a userscript](#replicator-flags) when you run Replicator. Refer to the [Filter multiple tables]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) cookbook example.
 {{site.data.alerts.end}}
-{% endcomment %}
 
 |  Version   |                                                                                         Configuration                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -243,11 +255,11 @@ SELECT force_logging FROM v$database; -- Expected: YES
 
 ##### Create source sentinel table
 
-Create a checkpoint table called `_replicator_sentinel` in the Oracle schema you will migrate:
+Create a checkpoint table called `REPLICATOR_SENTINEL` in the Oracle schema you will migrate:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE TABLE migration_schema."_replicator_sentinel" (
+CREATE TABLE migration_schema."REPLICATOR_SENTINEL" (
   keycol NUMBER PRIMARY KEY,
   lastSCN NUMBER
 );
@@ -257,7 +269,7 @@ Grant privileges to modify the checkpoint table. In Oracle Multitenant, grant th
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT SELECT, INSERT, UPDATE ON migration_schema."_replicator_sentinel" TO C##MIGRATION_USER;
+GRANT SELECT, INSERT, UPDATE ON migration_schema."REPLICATOR_SENTINEL" TO C##MIGRATION_USER;
 ~~~
 
 ##### Grant LogMiner privileges
@@ -288,7 +300,7 @@ The user must:
 
 - Query [redo logs from LogMiner](#verify-logminer-privileges).
 - Retrieve active transaction information to determine the starting point for ongoing replication.
-- Update the internal [`_replicator_sentinel` table](#create-source-sentinel-table) created on the Oracle source schema by the DBA.
+- Update the internal [`REPLICATOR_SENTINEL` table](#create-source-sentinel-table) created on the Oracle source schema by the DBA.
 
 ##### Verify LogMiner privileges
 

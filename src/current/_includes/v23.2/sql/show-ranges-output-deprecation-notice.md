@@ -5,7 +5,7 @@ The statement syntax and output documented on this page use the updated `SHOW RA
 SET CLUSTER SETTING sql.show_ranges_deprecated_behavior.enabled = true;
 ~~~
 
-The pre-v23.1 output of `SHOW RANGES` was deprecated in v23.1 and will be removed in a future release. To view the documentation for the deprecated version of the `SHOW RANGES` statement, see [`SHOW RANGES` (v22.2)]({% link v22.2/show-ranges.md %}).
+The pre-v23.1 output of `SHOW RANGES` was deprecated in v23.1 and will be removed in a future release.
 
 When you use the deprecated version of the `SHOW RANGES` statement, the following message will appear, reminding you to update [the cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-show-ranges-deprecated-behavior-enabled):
 

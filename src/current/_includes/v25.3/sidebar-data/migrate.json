@@ -60,8 +60,60 @@
         },
         {
           "title": "Replicator",
-          "urls": [
-            "/molt/molt-replicator.html"
+          "items": [
+            {
+              "title": "Guide",
+              "urls": [
+                "/molt/molt-replicator.html"
+              ]
+            },
+            {
+              "title": "Flags",
+              "urls": [
+                "/molt/replicator-flags.html"
+              ]
+            },
+            {
+              "title": "Metrics",
+              "urls": [
+                "/molt/replicator-metrics.html"
+              ]
+            },
+            {
+              "title": "Userscripts",
+              "items": [
+                {
+                  "title": "Overview",
+                  "urls": [
+                    "/molt/userscript-overview.html"
+                  ]
+                },
+                {
+                  "title": "Quickstart",
+                  "urls": [
+                    "/molt/userscript-quickstart.html"
+                  ]
+                },
+                {
+                  "title": "API",
+                  "urls": [
+                    "/molt/userscript-api.html"
+                  ]
+                },
+                {
+                  "title": "Cookbook",
+                  "urls": [
+                    "/molt/userscript-cookbook.html"
+                  ]
+                },
+                {
+                  "title": "Metrics",
+                  "urls": [
+                    "/molt/userscript-metrics.html"
+                  ]
+                }
+              ]
+            }
           ]
         },
         {

@@ -28,6 +28,7 @@ Command | Usage
 [`cockroach debug job-trace`]({% link {{ page.version.version }}/cockroach-debug-job-trace.md %}) | Generate trace payloads for an executing job from a particular node.
 [`cockroach debug list-files`]({% link {{ page.version.version }}/cockroach-debug-list-files.md %}) | Show the files that will be collected by using `cockroach debug zip`.
 [`cockroach debug merge-logs`]({% link {{ page.version.version }}/cockroach-debug-merge-logs.md %}) | Merge log files from multiple nodes into a single time-ordered stream of messages with an added per-message prefix to indicate the corresponding node.
+[`cockroach debug pebble db analyze-data`]({% link {{ page.version.version }}/cockroach-debug-pebble-db-analyze-data.md %}) | Analyze Pebble data to compare compression algorithms and output results as a CSV file.
 [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}) | Generate a diagnostic dump of timeseries metrics that can help Cockroach Labs troubleshoot issues with your cluster.
 [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
 [`cockroach convert-url`]({% link {{ page.version.version }}/connection-parameters.md %}#convert-a-url-for-different-drivers) | Convert a connection URL to a format recognized by a [supported client driver]({% link {{ page.version.version }}/third-party-database-tools.md %}#drivers).

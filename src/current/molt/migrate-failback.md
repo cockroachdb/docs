@@ -57,7 +57,7 @@ SET CLUSTER SETTING kv.rangefeed.concurrent_catchup_iterators = 64;
 
 ## Grant target database user permissions
 
-You should have already created a migration user on the target database (your original source database) with the necessary privileges. Refer to [Create migration user on source database]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database).
+You should have already created a migration user on the target database (your **original source database**) with the necessary privileges. Refer to [Create migration user on source database]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database).
 
 For failback replication, grant the user additional privileges to write data back to the target database:
 
@@ -74,7 +74,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT INSERT, UPDATE ON TABL
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 -- Grant INSERT and UPDATE on tables to fail back to
-GRANT SELECT, INSERT, UPDATE ON source_database.* TO 'migration_user'@'%';
+GRANT SELECT, INSERT, UPDATE ON migration_db.* TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
 </section>
@@ -95,11 +95,17 @@ When you run `replicator`, you can configure the following options for replicati
 
 - [Connection strings](#connection-strings): Specify URL‑encoded source and target connections.
 - [TLS certificate and key](#tls-certificate-and-key): Configure secure TLS connections.
-- [Replication flags](#replication-flags): Specify required and optional flags to configure replicator behavior.
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
 <section class="filter-content" markdown="1" data-scope="postgres oracle">
 - [Tuning parameters](#tuning-parameters): Optimize failback performance and resource usage.
 </section>
 - [Replicator metrics](#replicator-metrics): Monitor failback replication performance.
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
 
 ### Connection strings
 
@@ -160,18 +166,18 @@ base64 -i ./client.key | jq -R -r '@uri'
 base64 -i ./ca.crt | jq -R -r '@uri'
 ~~~
 
-When you [create the changefeed](#create-the-cockroachdb-changefeed), pass the encoded certificates in the changefeed URL, where `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters). For example:
+When you [create the changefeed](#create-the-cockroachdb-changefeed), pass the encoded certificates in the changefeed URL, where `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE table1, table2
-INTO 'webhook-https://host:port/database/schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}'
+INTO 'webhook-https://host:port/database/schema?client_cert={base64_and_url_encoded_cert}&client_key={base64_and_url_encoded_key}&ca_cert={base64_and_url_encoded_ca}'
 WITH ...;
 ~~~
 
 For additional details on the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
 
-### Replication flags
+### Replicator flags
 
 {% include molt/replicator-flags-usage.md %}
 
@@ -181,7 +187,15 @@ For additional details on the webhook sink URI, refer to [Webhook sink]({% link 
 {% include molt/optimize-replicator-performance.md %}
 </section>
 
-{% include molt/replicator-metrics.md %}
+### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+~~~ 
+--metricsAddr :30005
+~~~
+
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=cockroachdb).
 
 ## Stop forward replication
 
@@ -191,14 +205,14 @@ For additional details on the webhook sink URI, refer to [Webhook sink]({% link 
 
 1. Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `start` command to begin failback replication from CockroachDB to your source database. In this example, `--metricsAddr :30005` enables a Prometheus endpoint for monitoring replication metrics, and `--bindAddr :30004` sets up the webhook endpoint for the changefeed.
 
-    `--stagingSchema` specifies the staging database name (`_replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
+    `--stagingSchema` specifies the staging database name (`defaultdb._replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     replicator start \
     --targetConn $TARGET \
     --stagingConn $STAGING \
-    --stagingSchema _replicator \
+    --stagingSchema defaultdb._replicator \
     --metricsAddr :30005 \
     --bindAddr :30004 \
     --tlsCertificate ./certs/server.crt \
@@ -223,40 +237,42 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
       1759246920563173000.0000000000
     ~~~
 
-1. Create the CockroachDB changefeed pointing to the MOLT Replicator webhook endpoint. Use `cursor` to specify the logical timestamp from the preceding step.
+1. Create the CockroachDB changefeed pointing to the MOLT Replicator webhook endpoint. Use `cursor` to specify the logical timestamp from the preceding step. For details on the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
 
     {{site.data.alerts.callout_info}}
-    Ensure that only **one** changefeed points to MOLT Replicator at a time to avoid mixing streams of incoming data.
-    {{site.data.alerts.end}}
-
-    {{site.data.alerts.callout_success}}
-    For details on the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
+    Explicitly set a default `10s` [`webhook_client_timeout`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options) value in the `CREATE CHANGEFEED` statement. This value ensures that the webhook can report failures in inconsistent networking situations and make crash loops more visible.
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="postgres">
+    The target schema is specified in the webhook URL path in the fully-qualified format `/database/schema`. The path specifies the database and schema on the target PostgreSQL database. For example, `/migration_db/migration_schema` routes changes to the `migration_schema` schema in the `migration_db` database.
+
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
-    INTO 'webhook-https://replicator-host:30004/migration_schema/public?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
-    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
+    INTO 'webhook-https://replicator-host:30004/migration_db/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="mysql">
+    MySQL tables belong directly to the database, not to a separate schema. The webhook URL path specifies the database name on the target MySQL database. For example, `/migration_db` routes changes to the `migration_db` database.
+
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
-    INTO 'webhook-https://replicator-host:30004/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
-    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
+    INTO 'webhook-https://replicator-host:30004/migration_db?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="oracle">
+    The webhook URL path specifies the schema name on the target Oracle database. Oracle capitalizes identifiers by default. For example, `/MIGRATION_SCHEMA` routes changes to the `MIGRATION_SCHEMA` schema.
+
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders \
     INTO 'webhook-https://replicator-host:30004/MIGRATION_SCHEMA?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
-    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
     ~~~
     </section>
 
@@ -267,6 +283,10 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     -----------------------
       1101234051444375553
     ~~~
+
+    {{site.data.alerts.callout_success}}
+    Ensure that only **one** changefeed points to MOLT Replicator at a time to avoid mixing streams of incoming data.
+    {{site.data.alerts.end}}
 
 1. Monitor the changefeed status, specifying the job ID:
 

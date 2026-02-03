@@ -7,6 +7,9 @@ metrics:
   addsstable_applications: sum
   addsstable_copies: sum
   addsstable_proposals: sum
+  admission_io_overload: mean
+  admission_wait_durations_kv: sum
+  admission_wait_durations_kv_stores: sum
   admission_wait_sum_kv: sum
   admission_wait_sum_kv_stores: sum
   admission_wait_sum_sql_kv_response: sum
@@ -184,6 +187,7 @@ metrics:
   security_certificate_expiration_ca: max
   storage_l0_num_files: sum
   storage_l0_sublevels: sum
+  storage_wal_fsync_latency: sum
   sys_cgo_allocbytes: sum
   sys_cgo_totalbytes: sum
   sys_cgocalls: sum

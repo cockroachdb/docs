@@ -1,0 +1,315 @@
+---
+title: Replicator Metrics
+summary: Learn how to monitor stages of the MOLT Replicator pipeline.
+toc: true
+docs_area: migrate
+---
+
+[MOLT Replicator]({% link molt/molt-replicator.md %}) exposes Prometheus metrics at each stage of the [replication pipeline](#replication-pipeline). When using Replicator to perform [forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) or [failback]({% link molt/migrate-failback.md %}), you should monitor the health of each relevant pipeline stage to quickly detect issues. 
+
+This page describes and provides usage guidelines for Replicator metrics, according to the replication source:
+
+- PostgreSQL
+- MySQL
+- Oracle
+- CockroachDB (during [failback]({% link molt/migrate-failback.md %}))
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+    <button class="filter-button" data-scope="cockroachdb">CockroachDB</button>
+</div>
+
+## Replication pipeline
+
+[MOLT Replicator]({% link molt/molt-replicator.md %}) replicates data as a pipeline of change events that travel from the source database to the target database where changes are applied. The Replicator pipeline consists of four stages:
+
+- [**Source read**](#source-read): Connects Replicator to the source database and captures changes via logical replication (PostgreSQL, MySQL), LogMiner (Oracle), or [changefeed messages]({% link {{ site.current_cloud_version }}/changefeed-messages.md %}) (CockroachDB).
+
+<section class="filter-content" markdown="1" data-scope="postgres mysql oracle">
+- **Staging**: Buffers mutations for ordered processing and crash recovery.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachdb">
+- [**Staging**](#staging): Buffers mutations for ordered processing and crash recovery.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="postgres oracle cockroachdb">
+- [**Core sequencer**](#core-sequencer): Processes staged mutations, maintains ordering guarantees, and coordinates transaction application.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+- **Core sequencer**: Processes staged mutations, maintains ordering guarantees, and coordinates transaction application.
+</section>
+
+- [**Target apply**](#target-apply): Applies mutations to the target database.
+
+## Set up metrics
+
+Enable Replicator metrics by specifying the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following command exposes metrics on port `30005`:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator start \
+--targetConn $TARGET \
+--stagingConn $STAGING \
+--metricsAddr :30005
+...
+~~~
+
+To collect Replicator metrics, set up [Prometheus](https://prometheus.io/) to scrape the [Replicator metrics endpoint](#metrics-endpoints). To [visualize Replicator metrics](#visualize-metrics), use [Grafana](https://grafana.com/) to create dashboards.
+
+## Metrics endpoints
+
+The following endpoints are available when you [enable Replicator metrics](#set-up-metrics):
+
+|     Endpoint    |                                Description                                 |
+|-----------------|----------------------------------------------------------------------------|
+| `/_/varz`       | Prometheus metrics endpoint.                                               |
+| `/_/diag`       | Structured diagnostic information (JSON).                                  |
+| `/_/healthz`    | Health check endpoint.                                                     |
+| `/debug/pprof/` | Go pprof handlers for profiling.                                           |
+
+For example, to view the current snapshot of Replicator metrics on port `30005`, open `http://localhost:30005/_/varz` in a browser. To track metrics over time and create visualizations, use Prometheus and Grafana as described in [Set up metrics](#set-up-metrics).
+
+To check Replicator health:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl http://localhost:30005/_/healthz
+~~~
+
+~~~
+OK
+~~~
+
+### Visualize metrics
+
+<section class="filter-content" markdown="1" data-scope="postgres mysql cockroachdb">
+Use the Replicator Grafana dashboard [bundled with your binary]({% link molt/molt-replicator.md %}#installation) (`replicator_grafana_dashboard.json`) to visualize metrics. The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json).
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+Use the Replicator Grafana dashboards [bundled with your binary]({% link molt/molt-replicator.md %}#installation) to visualize metrics. The general Replicator dashboard (`replicator_grafana_dashboard.json`) displays overall replication metrics, and the Oracle-specific dashboard (`replicator_oracle_grafana_dashboard.json`) displays [Oracle source metrics](#oracle-source). The bundled dashboards match your binary version. Alternatively, you can download the latest dashboards for [Replicator](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) and [Oracle source metrics](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
+</section>
+
+## Overall replication metrics
+
+### High-level performance metrics
+
+Monitor the following metrics to track the overall health of the [replication pipeline](#replication-pipeline):
+
+<section class="filter-content" markdown="1" data-scope="postgres mysql">
+- `core_source_lag_seconds`
+    - Description: Age of the most recently received checkpoint. This represents the time from source commit to `COMMIT` event processing.
+    - Interpretation: If consistently increasing, Replicator is falling behind in reading source changes, and cannot keep pace with database changes.
+</section>
+<section class="filter-content" markdown="1" data-scope="cockroachdb">
+- `core_source_lag_seconds`
+    - Description: Age of the most recently received checkpoint. This represents the time elapsed since the latest received resolved timestamp.
+    - Interpretation: If consistently increasing, Replicator is falling behind in reading source changes, and cannot keep pace with database changes.
+</section>
+<section class="filter-content" markdown="1" data-scope="postgres mysql cockroachdb">
+- `target_apply_mutation_age_seconds`
+    - Description: End-to-end replication lag per mutation from source commit to target apply. Measures the difference between current wall time and the mutation's [MVCC timestamp]({% link {{ site.current_cloud_version }}/architecture/storage-layer.md %}#mvcc).
+    - Interpretation: Higher values mean that older mutations are being applied, and indicate end-to-end pipeline delays. Compare across tables to find bottlenecks.
+</section>
+<section class="filter-content" markdown="1" data-scope="postgres oracle">
+- `target_apply_queue_utilization_percent`
+    - Description: Percentage of target apply queue capacity utilization.
+	- Interpretation: Values above 90 percent indicate severe backpressure throughout the pipeline, and potential data processing delays. Increase [`--targetApplyQueueSize`]({% link molt/replicator-flags.md %}#target-apply-queue-size) or investigate target database performance.
+</section>
+<section class="filter-content" markdown="1" data-scope="mysql cockroachdb">
+- `target_apply_queue_utilization_percent`
+    - Description: Percentage of target apply queue capacity utilization.
+	- Interpretation: Values above 90 percent indicate severe backpressure throughout the pipeline, and potential data processing delays. Investigate target database performance.
+</section>
+
+
+<section class="filter-content" markdown="1" data-scope="postgres mysql cockroachdb">
+### Replication lag
+
+Monitor the following metric to track end-to-end replication lag:
+
+- `target_apply_transaction_lag_seconds`
+    - Description: Age of the transaction applied to the target table, measuring time from source commit to target apply.
+    - Interpretation: Consistently high values indicate bottlenecks in the pipeline. Compare with `core_source_lag_seconds` to determine if the delay is in source read or target apply.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachdb">
+### Progress tracking
+
+Monitor the following metrics to track checkpoint progress:
+
+- `target_applied_timestamp_seconds`
+	- Description: Wall time (Unix timestamp) of the most recently applied resolved timestamp.
+	- Interpretation: Use to verify continuous progress. Stale values indicate apply stalls.
+- `target_pending_timestamp_seconds`
+	- Description: Wall time (Unix timestamp) of the most recently received resolved timestamp.
+	- Interpretation: A gap between this metric and `target_applied_timestamp_seconds` indicates apply backlog, meaning that the pipeline cannot keep up with incoming changes.
+</section>
+
+## Replication pipeline metrics
+
+### Source read
+
+[Source read](#replication-pipeline) metrics track the health of connections to source databases and the volume of incoming changes.
+
+<section class="filter-content" markdown="1" data-scope="cockroachdb">
+#### CockroachDB source
+
+- `checkpoint_committed_age_seconds`
+	- Description: Age of the committed checkpoint.
+	- Interpretation: Increasing values indicate checkpoint commits are falling behind, which affects crash recovery capability.
+- `checkpoint_proposed_age_seconds`
+	- Description: Age of the proposed checkpoint.
+	- Interpretation: A gap with `checkpoint_committed_age_seconds` indicates checkpoint commit lag.
+- `checkpoint_commit_duration_seconds`
+	- Description: Amount of time taken to save the committed checkpoint to the staging database.
+	- Interpretation: High values indicate staging database bottlenecks due to write contention or performance issues.
+- `checkpoint_proposed_going_backwards_errors_total`
+	- Description: Number of times an error condition occurred where the changefeed was restarted.
+	- Interpretation: Indicates source changefeed restart or time regression. Requires immediate investigation of source changefeed stability.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+#### Oracle source
+
+{{site.data.alerts.callout_success}}
+To visualize the following metrics, import the Oracle Grafana dashboard [bundled with your binary]({% link molt/molt-replicator.md %}#installation) (`replicator_oracle_grafana_dashboard.json`). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
+{{site.data.alerts.end}}
+
+- `oraclelogminer_scn_interval_size`
+	- Description: Size of the interval from the start SCN to the current Oracle SCN.
+	- Interpretation: Values larger than the [`--scnWindowSize`]({% link molt/replicator-flags.md %}#scn-window-size) flag value indicate replication lag, or that replication is idle.
+- `oraclelogminer_time_per_window_seconds`
+	- Description: Amount of time taken to fully process an SCN interval.
+	- Interpretation: Large values indicate Oracle slowdown, blocked replication loop, or slow processing.
+- `oraclelogminer_query_redo_logs_duration_seconds`
+	- Description: Amount of time taken to query redo logs from LogMiner.
+	- Interpretation: High values indicate Oracle is under load or the SCN interval is too large.
+- `oraclelogminer_num_inflight_transactions_in_memory`
+	- Description: Current number of in-flight transactions in memory.
+	- Interpretation: High counts indicate long-running transactions on source. Monitor for memory usage.
+- `oraclelogminer_num_async_checkpoints_in_queue`
+	- Description: Checkpoints queued for processing against staging database.
+	- Interpretation: Values close to the `--checkpointQueueBufferSize` flag value indicate checkpoint processing cannot keep up with incoming checkpoints.
+- `oraclelogminer_upsert_checkpoints_duration`
+	- Description: Amount of time taken to upsert checkpoint batch into staging database.
+	- Interpretation: High values indicate the staging database is under heavy load or batch size is too large.
+- `oraclelogminer_delete_checkpoints_duration`
+	- Description: Amount of time taken to delete old checkpoints from the staging database.
+	- Interpretation: High values indicate staging database load or long-running transactions preventing checkpoint deletion.
+- `mutation_total`
+	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete). 
+    - Interpretation: Use to monitor replication throughput and identify traffic patterns.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+#### MySQL source
+
+- `mylogical_dial_success_total`
+	- Description: Number of times Replicator successfully started logical replication.
+	- Interpretation: Multiple successes may indicate reconnects. Monitor for connection stability.
+- `mylogical_dial_failure_total`
+	- Description: Number of times Replicator failed to start logical replication.
+	- Interpretation: Nonzero values indicate connection issues. Check network connectivity and source database health.
+- `mutation_total`
+	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete). 
+    - Interpretation: Use to monitor replication throughput and identify traffic patterns.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+#### PostgreSQL source
+
+- `pglogical_dial_success_total`
+	- Description: Number of times Replicator successfully started logical replication (executed `START_REPLICATION` command).
+	- Interpretation: Multiple successes may indicate reconnects. Monitor for connection stability.
+- `pglogical_dial_failure_total`
+	- Description: Number of times Replicator failed to start logical replication (failure to execute `START_REPLICATION` command).
+	- Interpretation: Nonzero values indicate connection issues. Check network connectivity and source database health.
+- `mutation_total`
+	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete).
+    - Interpretation: Use to monitor replication throughput and identify traffic patterns.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachdb">
+### Staging
+
+[Staging](#replication-pipeline) metrics track the health of the staging layer where mutations are buffered for ordered processing.
+
+{{site.data.alerts.callout_info}}
+For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link molt/molt-replicator.md %}#terminology).
+{{site.data.alerts.end}}
+
+- `stage_commit_lag_seconds`
+	- Description: Time between writing a mutation to source and writing it to staging.
+	- Interpretation: High values indicate delays in getting data into the staging layer.
+- `stage_mutations_total`
+	- Description: Number of mutations staged for each table. 
+    - Interpretation: Use to monitor staging throughput per table.
+- `stage_duration_seconds`
+	- Description: Amount of time taken to successfully stage mutations.
+	- Interpretation: High values indicate write performance issues on the staging database.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="postgres oracle cockroachdb">
+### Core sequencer
+
+[Core sequencer](#replication-pipeline) metrics track mutation processing, ordering, and transaction coordination.
+
+- `core_sweep_duration_seconds`
+	- Description: Duration of each schema sweep operation, which looks for and applies staged mutations.
+	- Interpretation: Long durations indicate that large backlogs, slow staging reads, or slow target writes are affecting throughput.
+- `core_sweep_mutations_applied_total`
+	- Description: Total count of mutations read from staging and successfully applied to the target database during a sweep.
+	- Interpretation: Use to monitor processing throughput. A flat line indicates no mutations are being applied.
+- `core_sweep_success_timestamp_seconds`
+	- Description: Wall time (Unix timestamp) at which a sweep attempt last succeeded.
+	- Interpretation: If this value stops updating and becomes stale, it indicates that the sweep has stopped.
+- `core_parallelism_utilization_percent`
+	- Description: Percentage of the configured parallelism that is actively being used for concurrent transaction processing.
+    - Interpretation: High utilization indicates bottlenecks in mutation processing.
+</section>
+
+### Target apply
+
+[Target apply](#replication-pipeline) metrics track mutation application to the target database.
+
+- `target_apply_queue_size`
+	- Description: Number of transactions waiting in the target apply queue.
+	- Interpretation: High values indicate target apply cannot keep up with incoming transactions.
+- `apply_duration_seconds`
+	- Description: Amount of time taken to successfully apply mutations to a table.
+	- Interpretation: High values indicate target database performance issues or contention.
+- `apply_upserts_total`
+	- Description: Number of rows upserted to the target. 
+    - Interpretation: Use to monitor write throughput. Should grow steadily during active replication.
+- `apply_deletes_total`
+	- Description: Number of rows deleted from the target.
+    - Interpretation: Use to monitor delete throughput. Compare with delete operations on the source database.
+- `apply_errors_total`
+	- Description: Number of times an error was encountered while applying mutations.
+	- Interpretation: Growing error count indicates target database issues or constraint violations.
+- `apply_conflicts_total`
+	- Description: Number of rows that experienced a compare-and-set (CAS) conflict.
+	- Interpretation: High counts indicate concurrent modifications or stale data conflicts. May require conflict resolution tuning.
+- `apply_resolves_total`
+	- Description: Number of rows that experienced a compare-and-set (CAS) conflict and were successfully resolved.
+    - Interpretation: Compare with `apply_conflicts_total` to verify conflict resolution is working. Should be close to or equal to conflicts.
+
+## Userscript metrics
+
+[Userscripts]({% link molt/userscript-overview.md %}) allow you to define how rows are transformed, filtered, and routed before Replicator writes them to the target database. Replicator exposes Prometheus [metrics]({% link molt/userscript-metrics.md %}) that provide insight into userscript activity, performance, and stability.
+
+{% include molt/userscript-metrics.md %}
+
+[Read more about userscript metrics]({% link molt/userscript-metrics.md %}).
+
+## See also
+
+- [MOLT Replicator]({% link molt/molt-replicator.md %})
+- [Replicator Flags]({% link molt/replicator-flags.md %})
+- [Load and Replicate]({% link molt/migrate-load-replicate.md %})
+- [Migration Failback]({% link molt/migrate-failback.md %})

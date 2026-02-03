@@ -24,5 +24,5 @@ To optimize data load performance, drop all non-`PRIMARY KEY` [constraints]({% l
 Do **not** drop [`PRIMARY KEY`]({% link {{ site.current_cloud_version }}/primary-key.md %}) constraints.
 {{site.data.alerts.end}}
 
-You can [recreate the constraints and indexes after loading the data](#modify-the-cockroachdb-schema).
+You can [recreate the constraints and indexes after loading the data](#add-constraints-and-indexes).
 {% endif %}

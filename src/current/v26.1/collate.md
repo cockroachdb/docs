@@ -239,6 +239,10 @@ This is equivalent to:
 (1 row)
 ~~~
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/collate-limitations.md %}
+
 ## See also
 
 [Data Types]({% link {{ page.version.version }}/data-types.md %})

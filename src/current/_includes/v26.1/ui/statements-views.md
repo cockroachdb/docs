@@ -32,6 +32,10 @@ The **Statements Fingerprints** view helps you:
 - View SQL statement fingerprint [details](#statement-fingerprint-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
+{{site.data.alerts.callout_info}}
+The **Statements** page displays all SQL statements, including those executed within [user-defined functions]({{ link_prefix}}user-defined-functions.html#statement-statistics) and [stored procedures]({{ link_prefix}}stored-procedures.html#statement-statistics). This allows you to monitor the performance of individual statements within your routines.
+{{site.data.alerts.end}}
+
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console.
 {% else %}
@@ -41,11 +45,11 @@ The **Statements** tab is selected. The **Statement Fingerprints** radio button 
 
 The following screenshot shows the statement fingerprint for `SELECT city, id FROM vehicles WHERE city = $1` while running the [`movr` workload]({{ link_prefix}}cockroach-workload.html#run-the-movr-workload):
 
-<img src="{{ 'images/v24.2/statement-fingerprint.png' | relative_url }}" alt="Statement fingerprint" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/statement-fingerprint.png' | relative_url }}" alt="Statement fingerprint" style="border:1px solid #eee;max-width:100%" />
 
 If you click the statement fingerprint in the **Statements** column, the [**Statement Fingerprint** page](#statement-fingerprint-page) displays.
 
-<img src="{{ 'images/v24.2/statement-details.png' | relative_url }}" alt="Statement details" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/statement-details.png' | relative_url }}" alt="Statement details" style="border:1px solid #eee;max-width:100%" />
 
 ## Active Executions view
 
@@ -66,11 +70,11 @@ When Auto [Refresh](#refresh) is On, active executions are polled every 10 secon
 
 The following screenshot shows the active statement execution for `INSERT INTO users VALUES ($1, $2, $3, $4, $5)` while running the [`movr` workload]({{ link_prefix }}cockroach-workload.html#run-the-movr-workload):
 
-<img src="{{ 'images/v24.2/statement-execution.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/statement-execution.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
 
 If you click the execution ID in the **Statement Execution ID** column, the [**Statement Execution** details page](#statement-execution-details-page) displays.
 
-<img src="{{ 'images/v24.2/statement-execution-details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/statement-execution-details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
 
 {% if page.cloud != true %}
 {% include {{ page.version.version }}/ui/refresh.md %}

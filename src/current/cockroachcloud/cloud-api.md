@@ -633,11 +633,80 @@ curl --request PATCH \
 
 Where `{cluster_id}` is the ID of your cluster and `{secret_key}` is your API key.
 
-## Managed backups and restores
+## Create and managed Customer-Managed Encryption Keys (CMEK)
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
+CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} clusters support Customer-Managed Encryption Keys (CMEK) to secure connections with a key that you control and host. Learn more about [CMEK in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/cmek.md %}).
+
+### Enable CMEK on a cluster
+
+Follow the instructions in [Build your CMEK configuration manifest]({% link cockroachcloud/managing-cmek.md %}#step-3-build-your-cmek-configuration-manifest) to create a `cmek_config.json` file with your CMEK configuration details.
+
+To enable CMEK on a cluster, send a `POST` request to the `v1/clusters/{cluster_id}` endpoint with the contents of `cmek_config.json`:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+CLUSTER_ID= #{ your cluster ID }
+API_KEY= #{ your API key }
+curl --request POST \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
+  --header "Authorization: Bearer {secret_key}" \
+  --header "content-type: application/json" \
+  --data "@cmek_config.json"
+~~~
+
+### Check CMEK status
+
+To view your cluster's CMEK status, send a `GET` request to the `v1/clusters/{cluster_id}/cmek` endpoint:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
+  --header "Authorization: Bearer {secret_key}"
+~~~
+
+### Rotate a CMEK key
+
+Modify the `cmek_config.json` manifest as described in the [CMEK key rotation documentation]({% link cockroachcloud/managing-cmek.md %}#rotate-a-cmek-key), then send a `PUT` request with the updated manifest to the `v1/clusters/{cluster_id}/cmek` endpoint:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request PUT \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
+  --header "Authorization: Bearer {secret_key}" \
+  --header "content-type: application/json" \
+  --data "@cmek_config.json"
+~~~
+
+### Modify a CMEK configuration
+
+To modify individual parts of a CMEK configuration, such as [adding a region]({% link cockroachcloud/managing-cmek.md %}#add-a-region-to-a-cmek-enabled-cluster), modify the `cmek_config.json` manifest as needed and send a `PATCH` request with the updated manifest to the `v1/clusters/{cluster_id}/cmek` endpoint:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+curl --request PATCH \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+  --header "Authorization: Bearer {secret_key} \
+  --header "content-type: application/json" \
+  --data "@cmek_config.json"
+~~~
+
+### Revoke CMEK on a cluster
+
+Revoking access to a CMEK key does not immediately stop the cluster from encrypting and decrypting data. See the [revoke CMEK documentation]({% link cockroachcloud/managing-cmek.md %}#revoke-cmek-for-a-cluster) for more information.
+
+To revoke access to CMEK on a cluster, send a `PATCH` request to the `v1/clusters/{cluster_id}/cmek` endpoint with a payload of `{"action":"REVOKE"}`:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request PATCH \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
+  --header "Authorization: Bearer {secret_key} \
+  --header "content-type: application/json" \
+  --data '{"action":"REVOKE"}'
+~~~
+
+## Managed backups and restores
 
 For information on using the Cloud API to handle [managed backups and restore jobs]({% link cockroachcloud/backup-and-restore-overview.md %}), see the respective managed backup documentation for [Basic]({% link cockroachcloud/managed-backups-basic.md %}#cloud-api), [Standard]({% link cockroachcloud/managed-backups.md %}#cloud-api), and [Advanced]({% link cockroachcloud/managed-backups-advanced.md %}#cloud-api) plans.
 

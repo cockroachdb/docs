@@ -258,6 +258,10 @@ To remove the comment from the type you created in the [preceding example](#add-
 COMMENT ON TYPE my_point IS NULL;
 ~~~
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/comment-on-limitations.md %}
+
 ## See also
 
 - [`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %})
