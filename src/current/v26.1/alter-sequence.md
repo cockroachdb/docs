@@ -246,6 +246,10 @@ SQLSTATE: 42P01
 (1 row)
 ~~~
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/alter-sequence-limitations.md %}
+
 ## See also
 
 - [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %})

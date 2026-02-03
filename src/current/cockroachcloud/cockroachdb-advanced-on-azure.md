@@ -13,8 +13,8 @@ To express interest or request more information about a given limitation, contac
 CockroachDB {{ site.data.products.advanced }} clusters on Azure have the following temporary limitations. To express interest or request more information about a given limitation, contact your Cockroach Labs account team.
 
 - A cluster must have at minimum three nodes. A multi-region cluster must have at minimum three nodes per region. Single-node clusters are not supported on Azure.
-- CockroachDB {{ site.data.products.advanced }} on Azure meets or exceeds the requirements of SOC 2 Type 2. (Refer to [Regulatory Compliance in CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/compliance.md %}).) However, note that the following features needed for [PCI-Ready]({% link cockroachcloud/pci-dss.md %}) and HIPAA compliance are in Preview for Azure:
-  - [Customer Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) 
+- CockroachDB {{ site.data.products.advanced }} on Azure meets or exceeds the requirements of SOC 2 Type 2, and now supports [PCI DSS]({% link cockroachcloud/pci-dss.md %}) and HIPAA compliance. (Refer to [Regulatory Compliance in CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/compliance.md %}).) Note that the following features required for PCI DSS and HIPAA compliance are in Preview for Azure:
+  - [Customer Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %})
   - [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
 
   You can configure IP allowlisting to limit the IP addresses or CIDR ranges that can access a CockroachDB {{ site.data.products.advanced }} cluster on Azure, and you can use [Azure Private Link](https://learn.microsoft.com/azure/private-link/private-link-overview) to connect your applications in Azure to your cluster and avoid exposing your cluster or applications to the public internet. Refer to [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link).

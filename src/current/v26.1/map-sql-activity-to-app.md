@@ -22,7 +22,7 @@ SET application_name = movr_app;
 
 Once you set the application name, the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) lets you [filter database workloads by application name]({% link {{ page.version.version }}/ui-statements-page.md %}#filter).
 
-<img src="{{ 'images/v24.2/movr-app.png' | relative_url }}" alt="Movr app filter" style="border:1px solid #eee;max-width:80%" />
+<img src="{{ 'images/v26.1/movr-app.png' | relative_url }}" alt="Movr app filter" style="border:1px solid #eee;max-width:80%" />
 
 If parts of your applications or known microservices are experiencing performance degradation, you can filter for the database workload tracing statements and transactions back to that part of your application directly in the DB Console. You can quickly identify whether there were database performance problems and if so, troubleshoot the issue using [SQL observability touch points](#trace-sql-activity-using-metrics) in the DB Console.
 

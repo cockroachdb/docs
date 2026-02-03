@@ -485,6 +485,12 @@
               ]
             },
             {
+              "title": "<code>INSPECT</code>",
+              "urls": [
+                "/${VERSION}/inspect.html"
+              ]
+            },
+            {
               "title": "<code>JOIN</code>",
               "urls": [
                 "/${VERSION}/joins.html"
@@ -701,6 +707,12 @@
               ]
             },
             {
+              "title": "<code>SHOW INSPECT ERRORS</code>",
+              "urls": [
+                "/${VERSION}/show-inspect-errors.html"
+              ]
+            },
+            {
               "title": "<code>SHOW JOBS</code>",
               "urls": [
                 "/${VERSION}/show-jobs.html"
@@ -794,6 +806,12 @@
               "title": "<code>SHOW SESSIONS</code>",
               "urls": [
                 "/${VERSION}/show-sessions.html"
+              ]
+            },
+            {
+              "title": "<code>SHOW STATEMENT HINTS</code>",
+              "urls": [
+                "/${VERSION}/show-statement-hints.html"
               ]
             },
             {
