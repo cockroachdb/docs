@@ -163,11 +163,35 @@ liquidEngine.registerTag('dynamic_include', {
       version = version.replace(/^["']|["']$/g, '');
       pathSuffix = pathSuffix.replace(/^["']|["']$/g, '');
 
-      // If version is empty or looks like a variable, try to get from context
+      // If version is a bare variable name (not starting with 'v' followed by a digit),
+      // try to resolve it from context
+      if (version && !version.match(/^v\d/)) {
+        // Try to resolve as a variable name (handles things like version_prefix)
+        const varValue = ctx.get([version]);
+        if (varValue !== undefined && varValue !== null) {
+          version = String(varValue).trim();
+        } else {
+          // Also try dotted paths like page.version.version
+          const parts = version.split('.');
+          const dotValue = ctx.get(parts);
+          if (dotValue !== undefined && dotValue !== null) {
+            version = String(dotValue).trim();
+          }
+        }
+      }
+
+      // If version is still empty or looks like an unresolved variable, try to get from context
       if (!version || version.includes('{{') || version === 'page.version.version') {
         let v = ctx.get(['version', 'version']);
         if (!v) v = ctx.get(['page', 'version', 'version']);
         version = v || 'v26.1';
+      }
+
+      // If version has a trailing slash, use it as-is for path building
+      // This supports version_prefix patterns like "v26.1/"
+      const versionHasTrailingSlash = version.endsWith('/');
+      if (versionHasTrailingSlash) {
+        version = version.slice(0, -1); // Remove trailing slash, will be handled by path join
       }
 
       // Ensure pathSuffix starts with / for proper path joining
@@ -217,6 +241,95 @@ liquidEngine.registerTag('dynamic_include', {
   }
 });
 
+// Import EleventyFetch at module level for use in liquidEngine's remote_include
+const EleventyFetch = require("@11ty/eleventy-fetch");
+
+// remote_include tag for module-level liquidEngine
+// Supports: {% remote_include "URL" %} or {% remote_include "URL", "START MARKER", "END MARKER" %}
+liquidEngine.registerTag('remote_include', {
+  parse: function(tagToken) { this.args = tagToken.args; },
+  render: async function(ctx, emitter) {
+    try {
+      // Helper to resolve {{ variable }} expressions
+      const resolveVars = (str) => {
+        const varPattern = /\{\{\s*([^}]+)\s*\}\}/g;
+        return str.replace(varPattern, (match, varPath) => {
+          const parts = varPath.trim().split('.');
+          let resolved = ctx.get(parts);
+          if (resolved === undefined && parts[0] === 'page' && parts[1] === 'version') {
+            resolved = ctx.get(parts.slice(1));
+          }
+          if (resolved === undefined && parts[0] === 'page' && parts[1] === 'release_info') {
+            resolved = ctx.get(parts.slice(1));
+          }
+          return resolved !== undefined ? resolved : '';
+        });
+      };
+
+      let argsStr = resolveVars(this.args.trim());
+
+      // Parse comma-separated arguments: URL, startMarker, endMarker
+      const parts = [];
+      let current = '';
+      let inQuotes = false;
+      let quoteChar = '';
+      for (let i = 0; i < argsStr.length; i++) {
+        const char = argsStr[i];
+        if ((char === '"' || char === "'") && !inQuotes) {
+          inQuotes = true;
+          quoteChar = char;
+        } else if (char === quoteChar && inQuotes) {
+          inQuotes = false;
+          quoteChar = '';
+        } else if (char === ',' && !inQuotes) {
+          parts.push(current.trim().replace(/^["']|["']$/g, ''));
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      if (current.trim()) {
+        parts.push(current.trim().replace(/^["']|["']$/g, ''));
+      }
+
+      const resolvedUrl = parts[0] || '';
+      const startMarker = parts[1] || null;
+      const endMarker = parts[2] || null;
+
+      if (resolvedUrl.includes('{{')) {
+        emitter.write(`<!-- remote_include: unresolved vars -->`);
+        return;
+      }
+
+      let content = await EleventyFetch(resolvedUrl, {
+        duration: "1d", type: "text",
+        fetchOptions: { headers: { "User-Agent": "CockroachDB-Docs-Builder/1.0" } }
+      });
+      if (Buffer.isBuffer(content)) content = content.toString('utf8');
+
+      // Extract content between markers if specified
+      if (startMarker && endMarker) {
+        const startIdx = content.indexOf(startMarker);
+        const endIdx = content.indexOf(endMarker, startIdx + startMarker.length);
+        if (startIdx !== -1 && endIdx !== -1) {
+          content = content.substring(startIdx + startMarker.length, endIdx).trim();
+        }
+      } else if (startMarker) {
+        const startIdx = content.indexOf(startMarker);
+        if (startIdx !== -1) {
+          const lineEnd = content.indexOf('\n', startIdx + startMarker.length);
+          content = content.substring(startIdx + startMarker.length, lineEnd !== -1 ? lineEnd : undefined).trim();
+        }
+      }
+
+      emitter.write(content);
+    } catch (error) {
+      console.error(`remote_include (module) error: ${error.message}`);
+      emitter.write(`<!-- Remote include error: ${error.message} -->`);
+    }
+  }
+});
+
 module.exports = function(eleventyConfig) {
   // ---------------------------------------------------------------------------
   // Liquid Engine Configuration - Use custom Liquid instance with raw tags
@@ -253,27 +366,81 @@ module.exports = function(eleventyConfig) {
         resolved = ctx.get(parts.slice(1));
       }
 
+      // Jekyll compatibility: page.release_info.* -> release_info.*
+      // In Jekyll, release_info was at page.release_info, but in Eleventy it's at release_info directly
+      if (resolved === undefined && parts[0] === 'page' && parts[1] === 'release_info') {
+        // Try without the 'page' prefix
+        resolved = ctx.get(parts.slice(1));
+      }
+
       return resolved !== undefined ? resolved : '';
     });
   }
 
   // remote_include tag
+  // Supports: {% remote_include "URL" %} or {% remote_include "URL", "START MARKER", "END MARKER" %}
   customLiquid.registerTag('remote_include', {
     parse: function(tagToken) { this.args = tagToken.args; },
     render: async function(ctx, emitter) {
       try {
-        let resolvedUrl = resolveVarsInCtx(this.args.trim(), ctx);
-        // Strip surrounding quotes from the URL
-        resolvedUrl = resolvedUrl.replace(/^["']|["']$/g, '');
+        let argsStr = resolveVarsInCtx(this.args.trim(), ctx);
+
+        // Parse comma-separated arguments: URL, startMarker, endMarker
+        // Need to handle quoted strings with commas inside them
+        const parts = [];
+        let current = '';
+        let inQuotes = false;
+        let quoteChar = '';
+        for (let i = 0; i < argsStr.length; i++) {
+          const char = argsStr[i];
+          if ((char === '"' || char === "'") && !inQuotes) {
+            inQuotes = true;
+            quoteChar = char;
+          } else if (char === quoteChar && inQuotes) {
+            inQuotes = false;
+            quoteChar = '';
+          } else if (char === ',' && !inQuotes) {
+            parts.push(current.trim().replace(/^["']|["']$/g, ''));
+            current = '';
+          } else {
+            current += char;
+          }
+        }
+        if (current.trim()) {
+          parts.push(current.trim().replace(/^["']|["']$/g, ''));
+        }
+
+        const resolvedUrl = parts[0] || '';
+        const startMarker = parts[1] || null;
+        const endMarker = parts[2] || null;
+
         if (resolvedUrl.includes('{{')) {
           emitter.write(`<!-- remote_include: unresolved vars -->`);
           return;
         }
+
         let content = await EleventyFetch(resolvedUrl, {
           duration: "1d", type: "text",
           fetchOptions: { headers: { "User-Agent": "CockroachDB-Docs-Builder/1.0" } }
         });
         if (Buffer.isBuffer(content)) content = content.toString('utf8');
+
+        // Extract content between markers if specified
+        if (startMarker && endMarker) {
+          const startIdx = content.indexOf(startMarker);
+          const endIdx = content.indexOf(endMarker, startIdx + startMarker.length);
+          if (startIdx !== -1 && endIdx !== -1) {
+            content = content.substring(startIdx + startMarker.length, endIdx).trim();
+          }
+        } else if (startMarker) {
+          // Single marker: extract from marker to end of line
+          const startIdx = content.indexOf(startMarker);
+          if (startIdx !== -1) {
+            const lineEnd = content.indexOf('\n', startIdx + startMarker.length);
+            content = content.substring(startIdx + startMarker.length, lineEnd !== -1 ? lineEnd : undefined).trim();
+          }
+        }
+
         emitter.write(content);
       } catch (error) {
         console.error(`remote_include error: ${error.message}`);
@@ -299,12 +466,34 @@ module.exports = function(eleventyConfig) {
         version = version.replace(/^["']|["']$/g, '');
         pathSuffix = pathSuffix.replace(/^["']|["']$/g, '');
 
-        // If version is empty or looks like a variable, try to get from context
+        // If version is a bare variable name (not starting with 'v' followed by a digit),
+        // try to resolve it from context
+        if (version && !version.match(/^v\d/)) {
+          // Try to resolve as a variable name (handles things like version_prefix)
+          const varValue = ctx.get([version]);
+          if (varValue !== undefined && varValue !== null) {
+            version = String(varValue).trim();
+          } else {
+            // Also try dotted paths like page.version.version
+            const versionParts = version.split('.');
+            const dotValue = ctx.get(versionParts);
+            if (dotValue !== undefined && dotValue !== null) {
+              version = String(dotValue).trim();
+            }
+          }
+        }
+
+        // If version is still empty or looks like a variable, try to get from context
         if (!version || version.includes('{{') || version === 'page.version.version') {
           // Try to get version from context
           let v = ctx.get(['version', 'version']);
           if (!v) v = ctx.get(['page', 'version', 'version']);
           version = v || 'v26.1'; // Default to stable
+        }
+
+        // If version has a trailing slash, remove it (the path joining will add separator)
+        if (version.endsWith('/')) {
+          version = version.slice(0, -1);
         }
 
         // Ensure pathSuffix starts with / for proper path joining
@@ -843,15 +1032,32 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addAsyncShortcode("dynamic_include", async function(versionVar, pathSuffix) {
     try {
-      // Get the version from the Eleventy context
-      // In our setup, 'version' is set by the directory data file (v26.1.11tydata.js)
-      let version = this.ctx?.version?.version || this.version?.version;
+      let version;
 
-      // Fallback: try to extract version from the current page path
-      if (!version) {
-        const inputPath = this.page?.inputPath || '';
-        const versionMatch = inputPath.match(/[/\\](v\d+\.\d+)[/\\]/);
-        version = versionMatch ? versionMatch[1] : 'v26.1'; // Default to stable
+      // Check if versionVar is already a version string (starts with v and digit)
+      // This handles cases like version_prefix which gets resolved to "v26.1/"
+      if (versionVar && typeof versionVar === 'string' && versionVar.match(/^v\d/)) {
+        version = versionVar.trim();
+        // Remove trailing slash if present - we'll add separator later
+        if (version.endsWith('/')) {
+          version = version.slice(0, -1);
+        }
+      } else {
+        // Get the version from the Eleventy context
+        // In our setup, 'version' is set by the directory data file (v26.1.11tydata.js)
+        version = this.ctx?.version?.version || this.version?.version;
+
+        // Fallback: try to extract version from the current page path
+        if (!version) {
+          const inputPath = this.page?.inputPath || '';
+          const versionMatch = inputPath.match(/[/\\](v\d+\.\d+)[/\\]/);
+          version = versionMatch ? versionMatch[1] : 'v26.1'; // Default to stable
+        }
+      }
+
+      // Ensure pathSuffix starts with / for proper path joining
+      if (pathSuffix && !pathSuffix.startsWith('/')) {
+        pathSuffix = '/' + pathSuffix;
       }
 
       // Build the full include path

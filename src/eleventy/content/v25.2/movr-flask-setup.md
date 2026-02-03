@@ -12,7 +12,7 @@ This page guides you through setting up a virtual environment for developing and
 1. Complete the previous sections of the tutorial, ending with [Create a Multi-Region Database Schema]({% link {{ page.version.version }}/movr-flask-database.md %}).
 
 1. On your local machine:
-      - [Install CockroachDB](/docs/{{ page.version.version }}/install-cockroachdb.html).
+      - [Install CockroachDB]({{ site.baseurl }}/{{ page.version.version }}/install-cockroachdb.html).
       - [Install Python 3](https://www.python.org/downloads/) and [Pipenv](https://pipenv.pypa.io) if necessary.
       - Clone the [`movr-flask`](https://github.com/cockroachlabs/movr-flask) repository. We'll reference the source code in this repository throughout the tutorial.
 

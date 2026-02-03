@@ -13,7 +13,7 @@
 
 {% for file in site.pages %}
   {% unless branched == true %}
-    {% capture fpath %}{{ file.dir | remove:'/' }}{% endcapture %}
+    {% capture fpath %}{{ file.dir | remove: '/' }}{% endcapture %}
     {% if fpath == page.major_version %}
       {% assign branched = true %}
     {% endif %}
@@ -54,11 +54,11 @@
   {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }} or {{ upgrade_link }}.{% endcapture %}
 {% else %}
   {% if branched %}
-    {% capture install_link %}[install CockroachDB](/docs/{{ page.major_version }}/install-cockroachdb.html){% endcapture %}
-    {% capture upgrade_link %}[upgrade your cluster](/docs/{{ page.major_version }}/upgrade-cockroach-version.html){% endcapture %}
+    {% capture install_link %}[install CockroachDB]({{ site.baseurl }}/{{ page.major_version }}/install-cockroachdb.html){% endcapture %}
+    {% capture upgrade_link %}[upgrade your cluster]({{ site.baseurl }}/{{ page.major_version }}/upgrade-cockroach-version.html){% endcapture %}
   {% else %}
-    {% capture install_link %}[install CockroachDB](/docs/dev/install-cockroachdb.html){% endcapture %}
-    {% capture upgrade_link %}[upgrade your cluster](/docs/dev/upgrade-cockroach-version.html){% endcapture %}
+    {% capture install_link %}[install CockroachDB]({{ site.baseurl }}/dev/install-cockroachdb.html){% endcapture %}
+    {% capture upgrade_link %}[upgrade your cluster]({{ site.baseurl }}/dev/upgrade-cockroach-version.html){% endcapture %}
   {% endif %}
   {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }} or {{ upgrade_link }}.{% endcapture %}
 {% endif %}

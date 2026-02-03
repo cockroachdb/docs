@@ -1,4 +1,4 @@
-{% if page.name != "known-limitations.md" # New limitations in v25.4 %}
+{% if page.name != "known-limitations.md" %}
 - When using the `infer_rbr_region_col_using_constraint` option, inserting rows with `DEFAULT` for the region column uses the database's primary region instead of inferring the region from the parent table via foreign-key constraint. [#150783](https://github.com/cockroachdb/cockroach/issues/150783)
 {% endif %}
 - When columns are [indexed]({% link "{{ page.version.version }}/indexes.md" %}), a subset of data from the indexed columns may appear in [meta ranges]({% link "{{ page.version.version }}/architecture/distribution-layer.md" %}#meta-ranges) or other system tables. CockroachDB synchronizes these system ranges and system tables across nodes. This synchronization does not respect any multi-region settings applied via either the [multi-region SQL statements]({% link "{{ page.version.version }}/multiregion-overview.md" %}), or the low-level [zone configs]({% link "{{ page.version.version }}/configure-replication-zones.md" %}) mechanism.
