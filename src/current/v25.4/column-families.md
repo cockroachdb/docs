@@ -88,6 +88,10 @@ When using the [`ALTER TABLE .. ADD COLUMN`]({% link {{ page.version.version }}/
   > ALTER TABLE test ADD COLUMN last_name STRING;
   ~~~
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/column-family-limitations.md %}
+
 ## See also
 
 - [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})

@@ -39,6 +39,7 @@ TODO: clean up the SQL diagrams not to link to these missing nonterminals.
 <a id="table_alias_name"></a>
 <a id="target_name"></a>
 <a id="timestamp"></a>
+<a id="query"></a>
 
 <div>
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/stmt_block.html %}

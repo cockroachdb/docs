@@ -419,6 +419,10 @@ Due to SQL's implicit `AS` syntax, you cannot specify a join hint with only the 
 
 For a join hint example, see [Use the right join type]({% link {{ page.version.version }}/apply-statement-performance-rules.md %}#rule-3-use-the-right-join-type).
 
+{{site.data.alerts.callout_success}}
+{% include_cached new-in.html version="v26.1" %} You can use [hint injection](#hint-injection) to apply join hints without modifying the original query text.
+{{site.data.alerts.end}}
+
 ### Supported join algorithms
 
 - `HASH`: Forces a hash join; in other words, it disables merge and lookup joins. A hash join is always possible, even if there are no equality columns: CockroachDB treats a nested loop join without an index as a special case of a hash join, where the hash table effectively has one bucket.
@@ -456,6 +460,167 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
   - `(a JOIN b) JOIN c` might be changed to `a JOIN (b JOIN c)`, but this does not happen if `a JOIN b` uses a hint; the hint forces that particular join to happen as written in the query.
 
 - You should reconsider hint usage with each new release of CockroachDB. Due to improvements in the optimizer, hints specified to work with an older version may cause decreased performance in a newer version.
+
+## Hint injection
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v26.1" %} *Hint injection* allows you to apply inline hints, such as [index hints]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) and [join hints](#join-hints), without modifying the original statement. This is useful when you cannot modify application code, need to optimize queries from ORMs or third-party applications, or want to test different hints without changing queries in production.
+
+Hint injection supports all inline hint types, and automatically applies them to statements that match a [fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints).
+
+### Inject hints
+
+{{site.data.alerts.callout_info}}
+To inject hints using `information_schema.crdb_rewrite_inline_hints()`, users must have the [`REPAIRCLUSTER`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege.
+{{site.data.alerts.end}}
+
+To inject hints, invoke the `information_schema.crdb_rewrite_inline_hints()` built-in function with two matching SQL statement fingerprints: a fingerprint identifying which statements to optimize, and a *donor* fingerprint with inline hints that must be applied to those statements:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_rewrite_inline_hints(
+  '{fingerprint}',
+  '{donor fingerprint}'
+);
+~~~
+
+Both fingerprints in the function invocation **must** have the same syntactic structure and use underscores (`_`) as placeholders for constants (for example, `SELECT * FROM users WHERE city = _`). If you use a regular SQL statement in either argument, it is automatically replaced by the matching fingerprint.
+
+{{site.data.alerts.callout_success}}
+To find the fingerprint for a statement, use the [**Statements** page of the DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}#statement-fingerprints-view) or [`EXPLAIN (FINGERPRINT) {statement}`]({% link {{ page.version.version }}/explain.md %}#fingerprint-option).
+{{site.data.alerts.end}}
+
+The `information_schema.crdb_rewrite_inline_hints()` function does the following:
+
+1. Stores the injected hint in the `system.statement_hints` table.
+1. Matches SQL statements with the fingerprint in the first argument.
+1. Removes any existing inline hints from the matching SQL statements.
+1. Rewrites the matching SQL statements with the inline hints from the donor fingerprint.
+
+For example, the following call injects the `users_city_idx` index hint (provided an [index was created]({% link {{ page.version.version }}/create-index.md %}#create-standard-indexes) on the `city` column) into SQL statements matching `SELECT * FROM users WHERE city = _`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_rewrite_inline_hints(
+  'SELECT * FROM users WHERE city = _',
+  'SELECT * FROM users@users_city_idx WHERE city = _'
+);
+~~~
+
+A unique ID is returned:
+
+~~~
+  information_schema.crdb_rewrite_inline_hints
+------------------------------------------------
+                           1143727380739620865
+~~~
+
+Afterward, any executed statement that matches the `SELECT * FROM users WHERE city = _` fingerprint will first be rewritten with the `users_city_idx` index hint, regardless of the `city` value.
+
+The following call injects the `MERGE` [join algorithm](#supported-join-algorithms):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_rewrite_inline_hints(
+  'SELECT * FROM users AS u INNER JOIN rides AS r ON u.id = r.rider_id',
+  'SELECT * FROM users AS u INNER MERGE JOIN rides AS r ON u.id = r.rider_id'
+);
+~~~
+
+Fingerprints distinguish between queries with different inline hints. For example, the fingerprint `SELECT * FROM users WHERE city = _` does **not** match the statement `SELECT * FROM users@users_pkey WHERE city = 'new york'` (which matches the fingerprint `SELECT * FROM users@users_pkey WHERE city = _`). As a result, you can use `information_schema.crdb_rewrite_inline_hints()` to remove inline hints:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_rewrite_inline_hints(
+  'SELECT * FROM users@users_pkey WHERE city = _',
+  'SELECT * FROM users WHERE city = _'
+);
+~~~
+
+{{site.data.alerts.callout_success}}
+If multiple injected hints exist for the same statement fingerprint, only the **most recently created hint** with `information_schema.crdb_rewrite_inline_hints()` is applied. To replace an existing hint, you can create a new one for the same fingerprint, which will take precedence.
+{{site.data.alerts.end}}
+
+### View injected hints
+
+{{site.data.alerts.callout_info}}
+To view hints using [`SHOW STATEMENT HINTS`]({% link {{ page.version.version }}/show-statement-hints.md %}), users must have the [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege.
+{{site.data.alerts.end}}
+
+Use the [`SHOW STATEMENT HINTS`]({% link {{ page.version.version }}/show-statement-hints.md %}) statement to view injected hints for a specific statement fingerprint:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW STATEMENT HINTS FOR $$ SELECT * FROM users WHERE city = _ $$ WITH DETAILS;
+~~~
+
+~~~
+        row_id        |            fingerprint             |      hint_type       |          created_at           |                              details
+----------------------+------------------------------------+----------------------+-------------------------------+--------------------------------------------------------------------
+  1143727380739620865 | SELECT * FROM users WHERE city = _ | rewrite_inline_hints | 2026-01-22 18:58:16.952689+00 | {"donorSql": "SELECT * FROM users@users_city_idx WHERE city = _"}
+~~~
+
+You can also query the `system.statement_hints` table directly to view all fingerprints with injected hints:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT row_id, fingerprint, created_at FROM system.statement_hints;
+~~~
+
+~~~
+        row_id        |                             fingerprint                             |          created_at
+----------------------+---------------------------------------------------------------------+--------------------------------
+  1143727380739620865 | SELECT * FROM users WHERE city = _                                  | 2026-01-22 18:58:16.952689+00
+  1143727427097886721 | SELECT * FROM users AS u INNER JOIN rides AS r ON u.id = r.rider_id | 2026-01-22 18:58:31.100944+00
+  1143727443278921729 | SELECT * FROM users@users_pkey WHERE city = _                       | 2026-01-22 18:58:36.039125+00
+(3 rows)
+~~~
+
+To verify that injected hints are being applied to your queries, use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) or [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}). When hints from `system.statement_hints` are applied, the output includes a `statement hints count` field showing the number of hints applied. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN SELECT * FROM users WHERE city = 'new york';
+~~~
+
+~~~
+                                       info
+----------------------------------------------------------------------------------
+  distribution: local
+  statement hints count: 1
+
+  • index join
+  │ estimated row count: 6
+  │ table: users@users_pkey
+  │
+  └── • scan
+        estimated row count: 6 (12% of the table; stats collected 4 minutes ago)
+        table: users@users_city_idx
+        spans: [/'new york' - /'new york']
+~~~
+
+{{site.data.alerts.callout_info}}
+The `statement hints count` field shows the number of `system.statement_hints` rows that were applied. A single row in `system.statement_hints` can contain multiple inline hints.
+{{site.data.alerts.end}}
+
+### Remove injected hints
+
+To remove an injected hint by its ID:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DELETE FROM system.statement_hints WHERE row_id = {id};
+~~~
+
+To remove all injected hints for a specific query fingerprint:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DELETE FROM system.statement_hints WHERE fingerprint = '{statement_fingerprint}';
+~~~
 
 ## Zigzag joins
 

@@ -31,7 +31,7 @@ For details, see [`CREATE PROCEDURE`]({% link {{ page.version.version }}/create-
 ## Statement statistics
 
 SQL statements executed within stored procedures are tracked in the SQL statistics subsystem and will appear in the [**SQL Activity** > **Statements**]({% link {{ page.version.version }}/ui-statements-page.md %}) page and the [**Insights**]({% link {{ page.version.version }}/ui-insights-page.md %}) page in the DB Console. This allows you to monitor the performance and execution statistics of individual statements within your procedures.
-f
+
 When the stored procedure is invoked as part of a transaction, the statements executed within the procedure will also appear in the [**Transaction details**]({% link {{ page.version.version }}/ui-transactions-page.md %}#transaction-details-page) in the **Statement Fingerprints** table.
 
 {{site.data.alerts.callout_info}}
