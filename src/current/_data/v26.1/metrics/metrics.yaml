@@ -1401,6 +1401,22 @@ layers:
       derivative: NON_NEGATIVE_DERIVATIVE
       how_to_use: The rate of this metric shows how frequently new connections are being established. This can be useful in determining if a high rate of incoming new connections is causing additional load on the server due to a misconfigured application.
       visibility: ESSENTIAL
+    - name: sql.query.with_statement_hints.count
+      exported_name: sql_query_with_statement_hints_count
+      description: Number of SQL queries executed with external statement hints
+      y_axis_label: SQL Statements
+      type: COUNTER
+      unit: COUNT
+      aggregation: AVG
+      derivative: NON_NEGATIVE_DERIVATIVE
+    - name: sql.query.with_statement_hints.count.internal
+      exported_name: sql_query_with_statement_hints_count_internal
+      description: Number of SQL queries executed with external statement hints (internal queries)
+      y_axis_label: SQL Internal Statements
+      type: COUNTER
+      unit: COUNT
+      aggregation: AVG
+      derivative: NON_NEGATIVE_DERIVATIVE
     - name: sql.routine.delete.count
       exported_name: sql_routine_delete_count
       labeled_name: 'sql.count{query_type: routine_delete}'
@@ -4960,6 +4976,14 @@ layers:
       unit: COUNT
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
+    - name: jobs.inspect.num_active_spans
+      exported_name: jobs_inspect_num_active_spans
+      description: Number of spans currently being processed by INSPECT jobs
+      y_axis_label: Spans
+      type: GAUGE
+      unit: COUNT
+      aggregation: AVG
+      derivative: NONE
     - name: jobs.inspect.protected_age_sec
       exported_name: jobs_inspect_protected_age_sec
       labeled_name: 'jobs.protected_age_sec{type: inspect}'
@@ -7591,6 +7615,14 @@ layers:
       unit: COUNT
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
+    - name: sql.distsql.parallel_runner.count
+      exported_name: sql_distsql_parallel_runner_count
+      description: Number of SetupFlowRequest RPCs executed concurrently via DistSQL runners
+      y_axis_label: Requests
+      type: COUNTER
+      unit: COUNT
+      aggregation: AVG
+      derivative: NON_NEGATIVE_DERIVATIVE
     - name: sql.distsql.queries.active
       exported_name: sql_distsql_queries_active
       description: Number of invocations of the execution engine currently active (multiple of which may occur for a single SQL statement)
@@ -7643,6 +7675,14 @@ layers:
       exported_name: sql_distsql_select_distributed_exec_count_internal
       description: Number of SELECT statements that were distributed (internal queries)
       y_axis_label: SQL Internal Statements
+      type: COUNTER
+      unit: COUNT
+      aggregation: AVG
+      derivative: NON_NEGATIVE_DERIVATIVE
+    - name: sql.distsql.sequential_runner.count
+      exported_name: sql_distsql_sequential_runner_count
+      description: Number of SetupFlowRequest RPCs executed sequentially via the main gateway goroutine
+      y_axis_label: Requests
       type: COUNTER
       unit: COUNT
       aggregation: AVG
@@ -10771,10 +10811,10 @@ layers:
       derivative: NON_NEGATIVE_DERIVATIVE
     - name: admission.elastic_cpu.nanos_exhausted_duration
       exported_name: admission_elastic_cpu_nanos_exhausted_duration
-      description: Total duration when elastic CPU nanoseconds were exhausted, in micros
-      y_axis_label: Microseconds
+      description: Total duration when elastic CPU tokens were exhausted. This is reported in nanoseconds from 26.1 onwards, and was microseconds before that.
+      y_axis_label: Nanoseconds
       type: GAUGE
-      unit: COUNT
+      unit: NANOSECONDS
       aggregation: AVG
       derivative: NONE
     - name: admission.elastic_cpu.over_limit_durations
@@ -10987,18 +11027,18 @@ layers:
       derivative: NON_NEGATIVE_DERIVATIVE
     - name: admission.granter.cpu_load_long_period_duration.kv
       exported_name: admission_granter_cpu_load_long_period_duration_kv
-      description: Total duration when CPULoad was being called with a long period, in micros
-      y_axis_label: Microseconds
+      description: Total duration when CPULoad was being called with a long period. This is reported in nanoseconds from 26.1 onwards, and was microseconds before that.
+      y_axis_label: Nanoseconds
       type: COUNTER
-      unit: COUNT
+      unit: NANOSECONDS
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
     - name: admission.granter.cpu_load_short_period_duration.kv
       exported_name: admission_granter_cpu_load_short_period_duration_kv
-      description: Total duration when CPULoad was being called with a short period, in micros
-      y_axis_label: Microseconds
+      description: Total duration when CPULoad was being called with a short period. This is reported in nanoseconds from 26.1 onwards, and was microseconds before that.
+      y_axis_label: Nanoseconds
       type: COUNTER
-      unit: COUNT
+      unit: NANOSECONDS
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
     - name: admission.granter.elastic_io_tokens_available.kv
@@ -11011,10 +11051,10 @@ layers:
       derivative: NONE
     - name: admission.granter.elastic_io_tokens_exhausted_duration.kv
       exported_name: admission_granter_elastic_io_tokens_exhausted_duration_kv
-      description: Total duration when Elastic IO tokens were exhausted, in micros
-      y_axis_label: Microseconds
+      description: Total duration when Elastic IO tokens were exhausted. This is reported in nanoseconds from 26.1 onwards, and was microseconds before that.
+      y_axis_label: Nanoseconds
       type: COUNTER
-      unit: COUNT
+      unit: NANOSECONDS
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
     - name: admission.granter.io_tokens_available.kv
@@ -11035,10 +11075,10 @@ layers:
       derivative: NON_NEGATIVE_DERIVATIVE
     - name: admission.granter.io_tokens_exhausted_duration.kv
       exported_name: admission_granter_io_tokens_exhausted_duration_kv
-      description: Total duration when IO tokens were exhausted, in micros
-      y_axis_label: Microseconds
+      description: Total duration when IO tokens were exhausted. This is reported in nanoseconds from 26.1 onwards, and was microseconds before that.
+      y_axis_label: Nanoseconds
       type: COUNTER
-      unit: COUNT
+      unit: NANOSECONDS
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
     - name: admission.granter.io_tokens_returned.kv
@@ -11075,10 +11115,10 @@ layers:
       derivative: NON_NEGATIVE_DERIVATIVE
     - name: admission.granter.slots_exhausted_duration.kv
       exported_name: admission_granter_slots_exhausted_duration_kv
-      description: Total duration when KV slots were exhausted, in micros
-      y_axis_label: Microseconds
+      description: Total duration when KV slots were exhausted. This is reported in nanoseconds from 26.1 onwards, and was microseconds before that.
+      y_axis_label: Nanoseconds
       type: COUNTER
-      unit: COUNT
+      unit: NANOSECONDS
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
     - name: admission.granter.total_slots.kv
@@ -13396,6 +13436,24 @@ layers:
       labeled_name: 'mma.overloaded_store{type: short_dur, result: success}'
       description: Number of stores overloaded for a short duration for which shedding succeeded
       y_axis_label: Stores
+      type: GAUGE
+      unit: COUNT
+      aggregation: AVG
+      derivative: NONE
+    - name: mma.span_config.normalization.error
+      exported_name: mma_span_config_normalization_error
+      labeled_name: 'mma.span_config.normalization{result: error}'
+      description: Number of ranges where the local store is leaseholder and span config normalization encountered errors. Includes both hard errors (nil conf, excluded from rebalancing) and soft errors (usable config, still rebalanced). Operators should review zone config if this metric is non-zero.
+      y_axis_label: Range
+      type: GAUGE
+      unit: COUNT
+      aggregation: AVG
+      derivative: NONE
+    - name: mma.span_config.normalization.soft_error
+      exported_name: mma_span_config_normalization_soft_error
+      labeled_name: 'mma.span_config.normalization{result: soft_error}'
+      description: Number of ranges where the local store is leaseholder and structural span config normalization failed, but produced a best-effort usable config. Operators should fix the zone config if this metric is non-zero.
+      y_axis_label: Range
       type: GAUGE
       unit: COUNT
       aggregation: AVG
@@ -17511,6 +17569,14 @@ layers:
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
       visibility: SUPPORT
+    - name: storeliveness.heartbeat.persist_duration
+      exported_name: storeliveness_heartbeat_persist_duration
+      description: Latency of persisting Store Liveness requester meta before sending heartbeats
+      y_axis_label: Duration
+      type: HISTOGRAM
+      unit: NANOSECONDS
+      aggregation: AVG
+      derivative: NONE
     - name: storeliveness.heartbeat.successes
       exported_name: storeliveness_heartbeat_successes
       description: Number of Store Liveness heartbeats sent out by the Store Liveness Support Manager
@@ -17527,6 +17593,14 @@ layers:
       unit: COUNT
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
+    - name: storeliveness.message_handle.persist_duration
+      exported_name: storeliveness_message_handle_persist_duration
+      description: Latency of persisting Store Liveness state when handling incoming messages
+      y_axis_label: Duration
+      type: HISTOGRAM
+      unit: NANOSECONDS
+      aggregation: AVG
+      derivative: NONE
     - name: storeliveness.message_handle.successes
       exported_name: storeliveness_message_handle_successes
       description: Number of incoming Store Liveness messages handled by the Store Liveness Support Manager
@@ -17559,6 +17633,14 @@ layers:
       unit: COUNT
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
+    - name: storeliveness.support_withdraw.persist_duration
+      exported_name: storeliveness_support_withdraw_persist_duration
+      description: Latency of persisting Store Liveness state when withdrawing support
+      y_axis_label: Duration
+      type: HISTOGRAM
+      unit: NANOSECONDS
+      aggregation: AVG
+      derivative: NONE
     - name: storeliveness.support_withdraw.successes
       exported_name: storeliveness_support_withdraw_successes
       description: Number of times the Store Liveness Support Manager has successfully withdrawn support for another store
