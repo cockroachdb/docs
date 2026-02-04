@@ -223,6 +223,18 @@ To efficiently troubleshoot the issue, it's important to understand where and wh
 
 Again, firewalls or hostname issues can cause any of these steps to fail.
 
+#### TCP connection lingering
+
+If there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a [TCP handshake can linger](https://github.com/cockroachdb/cockroach/issues/53410) while the client network stack waits for a TCP packet in response to network requests.
+
+**Explanation:** CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a `Connection refused` error. However, the scenario described above can cause connections to hang instead of failing immediately.
+
+**Solution:** To work around this scenario:
+
+- When migrating a node to a new machine, keep the server listening at the previous IP address until the cluster has completed the migration.
+- Configure any active network firewalls to allow node-to-node traffic.
+- Verify that orchestration tools (e.g., Kubernetes) are configured to use the correct network connection information.
+
 #### Network partition
 
 If the DB Console

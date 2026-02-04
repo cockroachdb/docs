@@ -30,7 +30,7 @@ If reads can use stale data, use [stale follower reads]({% link {{ page.version.
 
 With each node started with the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag specifying its region and zone combination, CockroachDB will balance the replicas for a table across the three regions:
 
-<img src="{{ 'images/v24.2/topology-patterns/topology_follower_reads1.png' | relative_url }}" alt="Follower reads table replication" style="max-width:100%" />
+<img src="{{ 'images/v26.1/topology-patterns/topology_follower_reads1.png' | relative_url }}" alt="Follower reads table replication" style="max-width:100%" />
 
 ### Summary
 
@@ -108,7 +108,7 @@ For example, in the following diagram:
 1. The replica retrieves the results as of your preferred staleness interval in the past and returns to the gateway node.
 1. The gateway node returns the results to the client.
 
-<img src="{{ 'images/v24.2/topology-patterns/topology_follower_reads_reads.png' | relative_url }}" alt="Follower reads topology reads" style="max-width:100%" />
+<img src="{{ 'images/v26.1/topology-patterns/topology_follower_reads_reads.png' | relative_url }}" alt="Follower reads topology reads" style="max-width:100%" />
 
 #### Writes
 
@@ -124,13 +124,13 @@ For example, in the following animation:
 1. The leaseholder then returns acknowledgement of the commit to the gateway node.
 1. The gateway node returns the acknowledgement to the client.
 
-<img src="{{ 'images/v24.2/topology-patterns/topology_follower_reads_writes.gif' | relative_url }}" alt="Follower reads topology writes" style="max-width:100%" />
+<img src="{{ 'images/v26.1/topology-patterns/topology_follower_reads_writes.gif' | relative_url }}" alt="Follower reads topology writes" style="max-width:100%" />
 
 ### Resiliency
 
 Because this pattern balances the replicas for the table across regions, one entire region can fail without interrupting access to the table:
 
-<img src="{{ 'images/v24.2/topology-patterns/topology_follower_reads_resiliency.png' | relative_url }}" alt="Follower reads topology region failure" style="max-width:100%" />
+<img src="{{ 'images/v26.1/topology-patterns/topology_follower_reads_resiliency.png' | relative_url }}" alt="Follower reads topology region failure" style="max-width:100%" />
 
 ## See also
 

@@ -1,7 +1,9 @@
-By using the explicit index annotation, you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index]({% link {{ page.version.version }}/indexes.md %}) when reading from a named table.
+By using the explicit index annotation, you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index]({% link {{ page.version.version }}/indexes.md %}) when reading from a named table. This is called an *index hint*.
 
-{{site.data.alerts.callout_info}}
 Index selection can impact [performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), but does not change the result of a query.
+
+{{site.data.alerts.callout_success}}
+{% include_cached new-in.html version="v26.1" %} You can use [hint injection]({% link {{ page.version.version }}/cost-based-optimizer.md %}#hint-injection) to apply index hints without modifying the original query text.
 {{site.data.alerts.end}}
 
 ##### Force index scan
