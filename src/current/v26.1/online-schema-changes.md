@@ -66,11 +66,11 @@ For advice about how to avoid running out of space during an online schema chang
 
 ## Best practices for online schema changes
 
-### Prevent concurrent schema changes on a table
+### Improve changefeed performance with `schema_locked`
 
-Set the [`schema_locked` table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#storage-parameter-schema-locked) to `true` to prevent concurrent schema changes on a table. CockroachDB rejects new schema change statements that target the table, and the setting applies only to that table.
+Set the [`schema_locked` table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#storage-parameter-schema-locked) to `true` to indicate that a schema change is not currently ongoing on a table. CockroachDB automatically unsets this parameter before performing a schema change and reapplies it when done. Enabling `schema_locked` can help [improve performance of changefeeds]({% link {{ page.version.version }}/create-changefeed.md %}#disallow-schema-changes-on-tables-to-improve-changefeed-performance) running on the table, which can reduce commit-to-emit latency.
 
-Use the [`create_table_with_schema_locked` session variable]({% link {{ page.version.version }}/set-vars.md %}#create_table_with_schema_locked) to set this storage parameter on every table created in the session. In v26.1 and later, it is enabled by default. If you run [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), preventing concurrent schema changes on watched tables can significantly improve commit-to-emit latency.
+Use the [`create_table_with_schema_locked` session variable]({% link {{ page.version.version }}/set-vars.md %}#create_table_with_schema_locked) to set this storage parameter on every table created in the session. In v26.1 and later, it is enabled by default.
 
 ### Estimate your storage capacity before performing online schema changes
 
