@@ -178,6 +178,21 @@ MOLT Replicator supports three consistency modes for balancing throughput and tr
 
 1. *Immediate* (default for PostgreSQL, MySQL, and Oracle sources): Applies updates as they arrive to Replicator with no buffering or waiting for resolved timestamps. For CockroachDB sources, provides highest throughput but requires no foreign keys on the target schema.
 
+### Userscripts
+
+MOLT Replicator can apply *userscripts*, specified with the [`--userscript` flag]({% link molt/replicator-flags.md %}#userscript), to customize how data is processed and transformed as it moves through the live replication pipeline. Userscripts are customized TypeScript files that apply transformation logic to rows of data on a per-schema and per-table basis.
+
+Userscripts are intended to address unique business or data transformation needs. They perform operations that cannot be handled by the source change data capture (CDC) stream, such as filtering out specific tables, rows, or columns; routing data from a single source table to multiple target tables; transforming column values or adding computed columns; and implementing custom error handling. These tranformations occur in-flight, between the source and target databases.
+
+To have MOLT Replicator apply a userscript, include the [`--userscript`]({% link molt/replicator-flags.md %}#userscript) flag with any [Replicator command]({% link molt/replicator-flags.md %}). The flag accepts a path to a TypeScript filename.
+
+{% include_cached copy-clipboard.html %}
+~~~ 
+--userscript 'path/to/script.ts'
+~~~
+
+For more information, read the [userscript documentation]({% link molt/userscript-overview.md %}). Learn how to use the [userscript API]({% link molt/userscript-api.md %}) and refer to the [userscript cookbook examples]({% link molt/userscript-cookbook.md %}).
+
 ### Monitoring
 
 #### Metrics
@@ -465,10 +480,6 @@ When [creating the CockroachDB changefeed]({% link molt/phased-delta-failback-or
 Explicitly set a default `10s` [`webhook_client_timeout`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options) value in the `CREATE CHANGEFEED` statement. This value ensures that the webhook can report failures in inconsistent networking situations and make crash loops more visible.
 {{site.data.alerts.end}}
 </section>
-
-For a detailed walkthrough of a migration that use `replicator` in this way, refer to this common migration approach:
-
-- [Phased Delta Migration with Failback Replication]({% link molt/migration-approach-phased-delta-failback.md %})
 
 ### Resuming after an interruption
 

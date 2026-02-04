@@ -12,7 +12,7 @@ This page describes and provides usage guidelines for Replicator metrics, accord
 - PostgreSQL
 - MySQL
 - Oracle
-- CockroachDB (during [failback]({% link molt/molt-replicator.md %})#failback-replication)
+- CockroachDB (during [failback]({% link molt/molt-replicator.md %}#failback-replication))
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>

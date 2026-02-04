@@ -28,8 +28,9 @@ The application runs on a Kubernetes cluster with an NGINX Ingress Controller.
 
 - Install the [MOLT (Migrate Off Legacy Technology)]({% link molt/molt-fetch-installation.md %}#installation) tools.
 - Review the [MOLT Fetch]({% link molt/molt-fetch-best-practices.md %}) documentation.
-- Announce the maintenance window to your users on a per-region basis.
+- [Develop a migration plan]({% link molt/migration-strategy.md %}#develop-a-migration-plan) and [prepare for the migration]({% link molt/migration-strategy.md %}#prepare-for-migration).
 - **Recommended:** Perform a dry run of this full set of instructions in a development environment that closely resembles your production environment. This can help you get a realistic sense of the time and complexity it requires.
+- Announce the maintenance window to your users on a per-region basis.
 - Understand the prequisites and limitations of the MOLT tools:
 
 <section class="filter-content" markdown="1" data-scope="oracle">
@@ -142,64 +143,45 @@ In this step, you will:
 
 ### Configure MOLT Fetch
 
+The [MOLT Fetch documentation]({% link molt/molt-fetch.md %}) includes detailed information about how to [configure MOLT Fetch]({% link molt/molt-fetch.md %}#run-molt-fetch), and how to [monitor MOLT Fetch metrics]({% link molt/molt-fetch-monitoring.md %}).
+
 When you run `molt fetch`, you can configure the following options for data load:
 
-- [Connection strings](#connection-strings): Specify URL‑encoded source and target connections.
-- [Intermediate file storage](#intermediate-file-storage): Export data to cloud storage or a local file server.
-- [Table handling mode](#table-handling-mode): Determine how existing target tables are initialized before load.
-- [Schema and table filtering](#schema-and-table-filtering): Specify schema and table names to migrate.
-- [Row-level filtering](#row-level-filtering): Define criteria that determines which rows within a table to migrate.
-- [Data load mode](#data-load-mode): Choose between `IMPORT INTO` and `COPY FROM`.
-- [Fetch metrics](#fetch-metrics): Configure metrics collection during initial data load.
+<a id="schema-and-table-filtering"></a>
+<a id="source-connection-string"></a>
+<a id="table-handling-mode"></a>
+<a id="target-connection-string"></a>
+<a id="cloud-storage-authentication"></a>
+<a id="secure-connections"></a>
+<a id="intermediate-file-storage"></a>
+<a id="data-load-mode"></a>
+<a id="connection-strings"></a>
 
-#### Connection strings
+- [Specify source and target databases]({% link molt/molt-fetch.md %}#specify-source-and-target-databases): Specify URL‑encoded source and target connections.
+- [Select data to migrate]({% link molt/molt-fetch.md %}#select-data-to-migrate): Specify schema and table names to migrate. **Important for a phased migration.**
+- [Define intermediate file storage]({% link molt/molt-fetch.md %}#define-intermediate-storage): Export data to cloud storage or a local file server.
+- [Define fetch mode]({% link molt/molt-fetch.md %}#define-fetch-mode): Specifies whether data will only be loaded into/from intermediate storage.
+- [Shard tables]({% link molt/molt-fetch.md %}#shard-tables-for-concurrent-export): Divide larger tables into multiple shards during data export.
+- [Data load mode]({% link molt/molt-fetch.md %}#import-into-vs-copy-from): Choose between `IMPORT INTO` and `COPY FROM`.
+- [Table handling mode]({% link molt/molt-fetch.md %}#handle-target-tables): Determine how existing target tables are initialized before load.
+- [Define data transformations]({% link molt/molt-fetch.md %}#define-transformations): Define any row-level transformations to apply to the data before it reaches the target.
+- [Monitor fetch metrics]({% link molt/molt-fetch-monitoring.md %}): Configure metrics collection during initial data load.
 
-{% include molt/molt-connection-strings.md %}
+Read through the documentation to understand how to configure your `molt fetch` command and its flags. Follow [best practices]({% link molt/molt-fetch-best-practices.md %}), especially those related to security.
 
-#### Intermediate file storage
-
-{% include molt/fetch-intermediate-file-storage.md %}
-
-#### Table handling mode
-
-{% include molt/fetch-table-handling.md %}
-
-#### Schema and table filtering
-
-{% include molt/fetch-schema-table-filtering.md %}
-
-#### Row-level filtering
-
-MOLT Fetch enables you to move a subset of data in a table, rather than all data in the table. This may be especially useful in a phased data migration. If data for multiple regions occupies the same table, and the region of each row is included in the data, you can use row-level filtering to move only the relevant rows. You do so with the [`--filter-path`]({% link molt/molt-fetch-commands-and-flags.md %}#filter-path) flag, specifying the path to a JSON file that defines row-level filtering for data load.
+At minimum, the `molt fetch` command should include the source, target, data path, and [`--ignore-replication-check`]({% link molt/molt-fetch-commands-and-flags.md %}#ignore-replication-check) flags. For a phased migration, you may also choose to include [`--schema-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#schema-filter) or [`--table-filter`]({% link molt/molt-fetch-commands-and-flags.md %}#table-filter) flags:
 
 {% include_cached copy-clipboard.html %}
-~~~
---filter-path 'data-filter.json'
-~~~
-
-The JSON file should contain one or more entries in `filters`, each with a `resource_specifier` (`schema` and `table`) and a SQL expression `expr`. For example, the following example exports only rows from `migration_schema.t1` where `v > 100`:
-
-~~~ json
-{
-  "filters": [
-    {
-      "resource_specifier": {
-        "schema": "migration_schema",
-        "table": "t1"
-      },
-      "expr": "v > 100"
-    }
-  ]
-}
+~~~ shell
+molt fetch \
+--source $SOURCE \
+--target $TARGET \
+--table-filter '.*user.*' \
+--bucket-path 's3://bucket/path' \
+--ignore-replication-check
 ~~~
 
-#### Data load mode
-
-{% include molt/fetch-data-load-modes.md %}
-
-#### Fetch metrics
-
-{% include molt/fetch-metrics.md %}
+However, depending on the needs of your migration, you may have many more flags set, and you may need to prepare some accompanying .json files.
 
 ### Run MOLT Fetch
 

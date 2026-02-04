@@ -1,5 +1,5 @@
 ---
-title: Migration Strategy
+title: Migration Best Practices
 summary: Build a migration strategy before performing a database migration to CockroachDB.
 toc: true
 docs_area: migrate

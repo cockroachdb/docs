@@ -54,19 +54,8 @@
       "items": [
         {
           "title": "Schema Conversion Tool",
-          "items": [
-            {
-              "title": "Guide",
-              "urls": [
-                "/cockroachcloud/migrations-page.html"
-              ]
-            },
-            {
-              "title": "Type Mapping",
-              "urls": [
-                "/molt/molt-type-mapping.html"
-              ]
-            }
+          "urls": [
+            "/cockroachcloud/migrations-page.html"
           ]
         },
         {
@@ -192,6 +181,12 @@
             "/molt/molt-verify.html"
           ]
         }
+      ]
+    },
+    {
+      "title": "Migration Strategy",
+      "urls": [
+        "/molt/migration-strategy.html"
       ]
     },
     {

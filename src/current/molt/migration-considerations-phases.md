@@ -79,20 +79,6 @@ Similarly, you can use [MOLT Verify]({% link molt/molt-verify.md %})'s `--schema
 
 [MOLT Replicator]({% link molt/molt-replicator.md %}) replicates full tables by default. If you choose to combine phased migration with [continuous replication]({% link molt/migration-considerations-replication.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/replicator-flags.md %}#userscript) to select rows to replicate.
 
-## Example sequences
-
-#### Migrating all data at once
-
-<div style="text-align: center;">
-<img src="{{ 'images/molt/molt_flows_2.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
-</div>
-
-#### Phased migration
-
-<div style="text-align: center;">
-<img src="{{ 'images/molt/molt_flows_3.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
-</div>
-
 ## See Also
 
 - [Migration Overview]({% link molt/migration-overview.md %})

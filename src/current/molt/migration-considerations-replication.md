@@ -96,20 +96,6 @@ MOLT Replicator can be stopped after cutover, or it can remain online to continu
 
 If you're only interested in capturing recent changes, skip MOLT Fetch entirely and just use MOLT Replicator.
 
-## Example sequences
-
-#### Bulk load only
-
-<div style="text-align: center;">
-<img src="{{ 'images/molt/molt_flows_2.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
-</div>
-
-#### Hybrid approach
-
-<div style="text-align: center;">
-<img src="{{ 'images/molt/molt_flows_4.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
-</div>
-
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})

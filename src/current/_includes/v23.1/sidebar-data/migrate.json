@@ -52,21 +52,10 @@
     {
       "title": "MOLT Tools",
       "items": [
-        {
+{
           "title": "Schema Conversion Tool",
-          "items": [
-            {
-              "title": "Guide",
-              "urls": [
-                "/cockroachcloud/migrations-page.html"
-              ]
-            },
-            {
-              "title": "Type Mapping",
-              "urls": [
-                "/molt/molt-type-mapping.html"
-              ]
-            }
+          "urls": [
+            "/cockroachcloud/migrations-page.html"
           ]
         },
         {
@@ -129,6 +118,41 @@
               "title": "Commands and Flags",
               "urls": [
                 "/molt/replicator-flags.html"
+              ]
+            },
+            {
+              "title": "Userscripts",
+              "items": [
+                {
+                  "title": "Overview",
+                  "urls": [
+                    "/molt/userscript-overview.html"
+                  ]
+                },
+                {
+                  "title": "Quickstart",
+                  "urls": [
+                    "/molt/userscript-quickstart.html"
+                  ]
+                },
+                {
+                  "title": "API",
+                  "urls": [
+                    "/molt/userscript-api.html"
+                  ]
+                },
+                {
+                  "title": "Cookbook",
+                  "urls": [
+                    "/molt/userscript-cookbook.html"
+                  ]
+                },
+                {
+                  "title": "Metrics",
+                  "urls": [
+                    "/molt/userscript-metrics.html"
+                  ]
+                }
               ]
             },
             {
