@@ -18,7 +18,7 @@ Enable the [Node Map](#node-map) view for a visual representation of your cluste
 
 Use the **Cluster Overview** panel to quickly assess the capacity and health of your cluster.
 
-<img src="{{ 'images/v24.2/ui-cluster-overview-panel.png' | relative_url }}" alt="DB Console cluster overview" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v26.1/ui-cluster-overview-panel.png' | relative_url }}" alt="DB Console cluster overview" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|----
@@ -110,7 +110,7 @@ The **Node Map** visualizes the geographical configuration of your cluster. It r
 
 For guidance on enabling and configuring the node map, see [Enable the Node Map]({% link {{ page.version.version }}/enable-node-map.md %}).
 
-<img src="{{ 'images/v24.2/ui-node-map.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
+<img src="{{ 'images/v26.1/ui-node-map.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
 The Node Map uses the longitude and latitude of each locality to position the components on the map. The map is populated with [**locality components**](#locality-component) and [**node components**](#node-component).
 
@@ -122,7 +122,7 @@ The map shows the components for the highest-level locality tier (e.g., region).
 
 For details on how **Capacity Usage** is calculated, see [Capacity metrics](#capacity-metrics).
 
-<img src="{{ 'images/v24.2/ui-region-component.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
+<img src="{{ 'images/v26.1/ui-region-component.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
 {{site.data.alerts.callout_info}}
 On multi-core systems, the displayed CPU usage can be greater than 100%. Full utilization of 1 core is considered as 100% CPU usage. If you have _n_ cores, then CPU usage can range from 0% (indicating an idle system) to (_n_ * 100)% (indicating full utilization).
@@ -136,7 +136,7 @@ Node components are accessed by clicking on the **Node Count** of the lowest-lev
 
 For details on how **Capacity Usage** is calculated, see [Capacity metrics](#capacity-metrics).
 
-<img src="{{ 'images/v24.2/ui-node-components.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
+<img src="{{ 'images/v26.1/ui-node-components.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
 {{site.data.alerts.callout_info}}
 On multi-core systems, the displayed CPU usage can be greater than 100%. Full utilization of 1 core is considered as 100% CPU usage. If you have _n_ cores, then CPU usage can range from 0% (indicating an idle system) to (_n_ * 100)% (indicating full utilization).

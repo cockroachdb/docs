@@ -130,6 +130,10 @@ The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-
 Exporting metrics to Azure Monitor is in limited access. Refer to [Export metrics to Azure Monitor](#export-metrics-to-azure-monitor).
 {{site.data.alerts.end}}
 
+### CMEK management UI for the {{ site.data.products.cloud }} Console
+
+Enabling and managing [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for CockroachDB {{ site.data.products.advanced }} in the {{ site.data.products.cloud }} Console is in preview. CMEK management with the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in general availability.
+
 ### Convert a schema from Oracle or Microsoft SQL Server
 
 Using the [Migrations page]({% link cockroachcloud/migrations-page.md %}) to convert a schema from Oracle or Microsoft SQL Server is in preview.

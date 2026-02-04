@@ -26,7 +26,7 @@ CockroachDB does not implement the full list of PostGIS built-in functions and o
 
 If your application needs support for functions that are not yet implemented, check the [meta-issue for built-in function support on GitHub](https://github.com/cockroachdb/cockroach/issues/49203), which describes how to find an issue for the built-in function(s) you need.
 
-For a list of other known limitations, see [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}#spatial-support-limitations).
+For a list of other known limitations, refer to [Known Limitations]({% link {{ page.version.version }}/spatial-data-overview.md %}#known-limitations).
 
 ### ORM compatibility
 

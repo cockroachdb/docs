@@ -1,4 +1,4 @@
-CockroachDB implements SQL {% if page.name == "known-limitations.md" %} [cursor]({% link {{ page.version.version }}/cursors.md %}) {% else %} cursor {% endif %} support with the following limitations:
+CockroachDB implements SQL [cursor]({% link {{ page.version.version }}/cursors.md %}) support with the following limitations:
 
 - `DECLARE` only supports forward cursors. Reverse cursors created with `DECLARE SCROLL` are not supported. [#77102](https://github.com/cockroachdb/cockroach/issues/77102)
 - `FETCH` supports forward, relative, and absolute variants, but only for forward cursors. [#77102](https://github.com/cockroachdb/cockroach/issues/77102)
