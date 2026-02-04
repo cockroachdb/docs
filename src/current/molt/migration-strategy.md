@@ -1,5 +1,5 @@
 ---
-title: Migration Strategy
+title: Migration Best Practices
 summary: Build a migration strategy before performing a database migration to CockroachDB.
 toc: true
 docs_area: migrate
@@ -10,10 +10,9 @@ A successful migration to CockroachDB requires planning for downtime, applicatio
 This page outlines key decisions, infrastructure considerations, and best practices for a resilient and repeatable high-level migration strategy:
 
 - [Develop a migration plan](#develop-a-migration-plan).
-- Evaluate your [downtime approach](#approach-to-downtime).
 - [Size the target CockroachDB cluster](#capacity-planning).
 - Implement [application changes](#application-changes) to address necessary [schema changes](#schema-design-best-practices), [transaction contention](#handling-transaction-contention), and [unimplemented features](#unimplemented-features-and-syntax-incompatibilities).
-- [Prepare for migration](#prepare-for-migration) by running a [pre-mortem](#run-a-migration-pre-mortem), setting up [metrics](#set-up-monitoring-and-alerting), [loading test data](#load-test-data), [validating application queries](#validate-queries) for correctness and performance, performing a [migration dry run](#perform-a-dry-run), and reviewing your [cutover strategy](#cutover-strategy).
+- [Prepare for migration](#prepare-for-migration) by running a [pre-mortem](#run-a-migration-pre-mortem), setting up [metrics](#set-up-monitoring-and-alerting), [loading test data](#load-test-data), [validating application queries](#validate-queries) for correctness and performance, performing a [migration dry run](#perform-a-dry-run), and reviewing your cutover strategy.
 {% assign variable = value %}
 {{site.data.alerts.callout_success}}
 For help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
@@ -30,20 +29,6 @@ Consider the following as you plan your migration:
 - What is your target date for completing the migration?
 
 Create a document summarizing the migration's purpose, technical details, and team members involved.
-
-## Approach to downtime
-
-It's important to fully [prepare the migration](#prepare-for-migration) in order to be certain that the migration can be completed successfully during the downtime window.
-
-- *Planned downtime* is made known to your users in advance. Once you have [prepared for the migration](#prepare-for-migration), you take the application offline, [conduct the migration]({% link molt/migration-overview.md %}), and bring the application back online on CockroachDB. To succeed, you should estimate the amount of downtime required to migrate your data, and ideally schedule the downtime outside of peak hours. Scheduling downtime is easiest if your application traffic is "periodic", meaning that it varies by the time of day, day of week, or day of month.
-
-	Migrations with planned downtime are only recommended if you can complete the bulk data load (e.g., using the MOLT Fetch [`data-load` mode]({% link molt/molt-fetch.md %}#fetch-mode)) within the downtime window. Otherwise, you can [minimize downtime using continuous replication]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
-
-- *Minimal downtime* impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), you can queue requests while the system is offline and process them after completing the migration to CockroachDB. 
-
-	MOLT enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using [MOLT Replicator]({% link molt/molt-replicator.md %}) for continuous replication of source changes to CockroachDB.
-
-- *Reduced functionality* takes some, but not all, application functionality offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
 
 ## Capacity planning
 
@@ -110,9 +95,9 @@ Based on the error budget you [defined in your migration plan](#develop-a-migrat
 
 ### Load test data
 
-It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries). Refer to [Migration flows]({% link molt/migration-overview.md %}#migration-flows).
+It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries).
 
-MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch.md %}#data-load-mode) for loading data into CockroachDB:
+MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch.md %}#import-into-vs-copy-from) for loading data into CockroachDB:
 
 - Use `IMPORT INTO` for maximum throughput when the target tables can be offline. For a bulk data migration, most users should use `IMPORT INTO` because the tables will be offline anyway, and `IMPORT INTO` can [perform the data import much faster]({% link {{ site.current_cloud_version }}/import-performance-best-practices.md %}) than `COPY FROM`.
 - Use `COPY FROM` (or `--direct-copy`) when the target must remain queryable during load.
@@ -147,7 +132,7 @@ To further minimize potential surprises when you conduct the migration, practice
 
 Performing a dry run is highly recommended. In addition to demonstrating how long the migration may take, a dry run also helps to ensure that team members understand what they need to do during the migration, and that changes to the application are coordinated.
 
-## Cutover strategy
+<!-- ## Cutover strategy
 
 *Cutover* is the process of switching application traffic from the source database to CockroachDB. Once the source data is fully migrated to CockroachDB, switch application traffic to the new database to end downtime.
 
@@ -160,12 +145,11 @@ To safely cut over when using replication:
 1. When your [monitoring](#set-up-monitoring-and-alerting) indicates that replication is idle, use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the CockroachDB data.
 1. Start application traffic on CockroachDB.
 
-When you are ready to migrate, refer to [Migration flows]({% link molt/migration-overview.md %}#migration-flows) for a summary of migration types.
+When you are ready to migrate, refer to [Migration flows]({% link molt/migration-overview.md %}#migration-flows) for a summary of migration types. -->
 
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})
-- [Migration Failback]({% link molt/migrate-failback.md %})
 - [Schema Design Overview]({% link {{ site.current_cloud_version }}/schema-design-overview.md %})
 - [Primary key best practices]({% link {{ site.current_cloud_version }}/schema-design-table.md %}#primary-key-best-practices)
 - [Secondary index best practices]({% link {{ site.current_cloud_version }}/schema-design-indexes.md %}#best-practices)
