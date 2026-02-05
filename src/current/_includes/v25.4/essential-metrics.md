@@ -17,7 +17,7 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
   {% assign metrics_datadog = site.data[version].metrics.datadog-crdb-dedicated %}
   {% assign datadog_link = "https://docs.datadoghq.com/integrations/cockroach-cloud/#metrics" %}
   {% assign datadog_prefix = "crdb_dedicated" %}
-{% comment %} Removed NETWORKING AND LOGICAL_DATA_REPLICATIOON categories for advanced deployment {% endcomment %}
+{% comment %} Removed NETWORKING AND LOGICAL_DATA_REPLICATION categories for advanced deployment {% endcomment %}
   {% assign category_order = "HARDWARE,STORAGE,OVERLOAD,DISTRIBUTED,REPLICATION,SQL,CHANGEFEEDS,TTL,CROSS_CLUSTER_REPLICATION,UNSET," %}
 
   {% comment %} Build list of allowed metrics from export YAML files {% endcomment %}
