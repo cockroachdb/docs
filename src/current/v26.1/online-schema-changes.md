@@ -10,9 +10,15 @@ CockroachDB's online schema changes provide a simple way to update a table schem
 Benefits of online schema changes include:
 
 - Changes to your table schema happen while the database is running.
-- The schema change runs as a [background job][show-jobs] without holding locks on the underlying table data.
 - Your application's queries can run normally, with no effect on read/write latency. The schema is cached for performance.
 - Your data is kept in a safe, [consistent][consistent] state throughout the entire schema change process.
+- The schema change runs as a [background job][show-jobs] without holding locks on the underlying table data.
+  - {% include_cached new-in.html version="v26.1" %} As soon as the statement is accepted, CockroachDB returns a SQL `NOTICE` (as shown below) that includes the ID of the background job. To track the job's progress, use [`SELECT * FROM [SHOW JOBS] WHERE job_id = {job_id}`]({% link {{ page.version.version }}/show-jobs.md %}) or view the [DB Console **Jobs Page**]({% link {{ page.version.version }}/ui-jobs-page.md %}).
+
+    ~~~
+    NOTICE: waiting for job(s) to complete: 1145445286329516033
+    If the statement is canceled, jobs will continue in the background.
+    ~~~
 
 {{site.data.alerts.callout_danger}}
 Schema changes consume additional resources, and if they are run when the cluster is near peak capacity, latency spikes can occur. This is especially true for any schema change that adds columns, drops columns, or adds an index. We do not recommend doing more than one schema change at a time while in production.
