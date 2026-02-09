@@ -74,7 +74,7 @@ By default, [MOLT Fetch]({% link molt/molt-fetch.md %}) moves all data from the 
 
 Similarly, you can use [MOLT Verify]({% link molt/molt-verify.md %})'s `--schema-filter` and `--table-filter` flags to run validation checks on subsets of the data in your source and target databases. In a phased migration, you will likely want to verify data at the end of each migration phase, rather than at the end of the entire migration.
 
-[MOLT Replicator]({% link molt/molt-replicator.md %}) replicates full tables by default. If you choose to combine phased migration with [continuous replication]({% link molt/migration-considerations-replication.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/userscript-overview.md %}#userscript) to select rows to replicate.
+[MOLT Replicator]({% link molt/molt-replicator.md %}) replicates full tables by default. If you choose to combine phased migration with [continuous replication]({% link molt/migration-considerations-replication.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/userscript-overview.md %}) to select rows to replicate.
 
 ## See Also
 
