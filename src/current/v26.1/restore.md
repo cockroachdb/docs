@@ -173,14 +173,12 @@ You can exclude a table's row data from a backup using the [`exclude_data_from_b
 
 Also, consider that:
 
-- [Temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}) will be restored to their original database during a full cluster restore.
-- The restore will drop the cluster's `defaultdb` and `postgres` [pre-loaded databases]({% link {{ page.version.version }}/show-databases.md %}#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}).
-- [Changefeed jobs]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will not resume automatically on the new cluster. It is necessary to manually [create changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) after a full-cluster restore.
-- When the cluster is in a mixed-version state during an [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), a full cluster restore will fail. To perform a full cluster restore, it is necessary to first [finalize the upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually).
-
-{{site.data.alerts.callout_info}}
-When you restore a full cluster with an {{ site.data.products.enterprise }} license, it will restore the [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) **after** the restore is complete.
-{{site.data.alerts.end}}
+- [Temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}) are restored to their original database during a full cluster restore.
+- The restore drops the cluster's `defaultdb` and `postgres` [pre-loaded databases]({% link {{ page.version.version }}/show-databases.md %}#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}).
+- [Changefeed jobs]({% link {{ page.version.version }}/change-data-capture-overview.md %}) do not resume automatically on the new cluster. It is necessary to manually [create changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) after a full-cluster restore.
+- Newly restored [changefeed schedules]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) and [backup schedules]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) pause before running their scheduled jobs. To keep schedules running smoothly, either restart them with a new destination sink or pause the equivalent schedules on the backup cluster and restart them with the same destination sink on the restored cluster.
+- When the cluster is in a mixed-version state during an [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), a full cluster restore fails. To perform a full cluster restore, it is necessary to first [finalize the upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually).
+- When you restore a full cluster with an {{ site.data.products.enterprise }} license, it restores the [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) **after** the restore is complete.
 
 ### Databases
 
