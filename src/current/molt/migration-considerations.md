@@ -7,7 +7,7 @@ docs_area: migrate
 
 When planning a migration to CockroachDB, you need to make several high-level decisions that will shape your migration approach. This page provides an overview of key migration variables and the factors that influence them. Each variable has multiple options, and the combination you choose will largely define your migration strategy.
 
-For detailed migration sequencing and tool usage, see [Migration Overview]({% link molt/migration-overview.md %}). For detailed planning guidance, see [Migration Strategy]({% link molt/migration-strategy.md %}).
+For detailed migration sequencing and tool usage, see [Migration Overview]({% link molt/migration-overview.md %}). For detailed planning guidance, see [Migration Best Practices]({% link molt/migration-strategy.md %}).
 
 ## Migration variables
 
@@ -39,8 +39,6 @@ How much downtime can your application tolerate during the migration? This is on
 
 - **Minimal downtime** impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), you can queue requests while the system is offline and process them after completing the migration to CockroachDB.
 
-- **Near-zero downtime** is necessary for mission-critical applications. For these migrations, consider cutover strategies that keep applications online for as long as possible, and which utilize continuous replication.
-
 In addition to downtime duration, consider whether your application could support windows of **reduced functionality** in which some, but not all, application functionality is brought offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
 
 ### Migration timeframe and allowable complexity
@@ -61,12 +59,12 @@ How much risk is your organization willing to accept during the migration? This 
 
 ___
 
-These above factors are only a subset of all of what you'll want to consider in the decision-making about your CockroachDB migration, along with your specific business requirements and technical constraints. It's recommended that you document these decisions and the reasoning behind them as part of your [migration plan]({% link molt/migration-strategy.md %}#develop-a-migration-plan).
+These factors are only a subset of what you will want to consider in designing your CockroachDB migration, along with your specific business requirements and technical constraints. It's recommended that you document these decisions and the reasoning behind them as part of your [migration plan]({% link molt/migration-strategy.md %}#develop-a-migration-plan).
 
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})
-- [Migration Strategy]({% link molt/migration-strategy.md %})
+- [Migration Best Practices]({% link molt/migration-strategy.md %})
 - [Bulk vs. Phased Migration]({% link molt/migration-considerations-phases.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})

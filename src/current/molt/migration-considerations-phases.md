@@ -13,15 +13,15 @@ In general:
 
 - Choose to migrate your data **all at once** if your data volume is modest, if you want to minimize migration complexity, or if you don't mind taking on a greater risk of something going wrong.
 
-- Choose a **phased migration** if your data volume is large, especially if you can naturally partition workload by tenant, service/domain, table/shard, geography, or time. A phased migration helps to reduce risk by limiting the workloads that would be adversely affected by a migration failure. It also helps to limit the downtime per phase, and allows the application to continue serving unaffected subsets of the data during the migration of a phase.
+- Choose a **phased migration** if your data volume is large, especially if you can naturally partition workload by tenant, service/domain, table/shard, geography, or time. A phased migration helps to reduce risk by limiting the workloads that would be adversely affected by a migration failure. It also helps to limit the downtime per phase, and allows the application to continue serving unaffected subsets of data during the migration of a phase.
 
 ## How to divide migrations into phases
 
 Here are some common ways to divide migrations:
 
-* **Per-tenant**: Multi-tenant apps route traffic and data per customer/tenant. Migrate a small cohort first (canary), then progressively larger cohorts. This aligns with access controls and isolates blast radius.
+* **Per-tenant**: Multi-tenant apps route traffic and data per customer/tenant. Migrate a small cohort first, then migrate progressively larger cohorts. This aligns with access controls and isolates blast radius.
 
-* **Per-service/domain**: In microservice architectures, migrate data owned by a service or domain (e.g., billing, catalog) and route only that service to CockroachDB while others continue on the source. Requires clear data ownership and integration contracts.
+* **Per-service/domain**: In microservice architectures, migrate data owned by a service or domain (e.g., billing, catalog) and route only that service to CockroachDB while others continue on the source. This requires clear data ownership and integration contracts.
 
 * **Per-table or shard**: Start with non-critical tables, large-but-isolated tables, or shard ranges. For monolith schemas, you can still phase by tables with few foreign-key dependencies and clear read/write paths.
 
@@ -63,11 +63,8 @@ Phased migrations spread downtime across multiple smaller windows, each affectin
 **What is your team's capacity for orchestration?**
 Phased migrations require repeated cycles of migration, validation, and cutover, with careful coordination of routing and monitoring. All-at-once is a single coordinated event.
 
-**Do you need to validate incrementally?**
-If you want fast feedback loops and the ability to adjust your migration strategy based on early phases, phased migration provides incremental validation. All-at-once validates everything once at the end.
-
 **Can you route traffic selectively?**
-Phased migrations require the ability to route specific tenants, services, or regions to CockroachDB while others remain on the source. If your application can't easily support this, all-at-once may be necessary.
+Phased migrations may require the ability to route specific tenants, services, or regions to CockroachDB while others remain on the source. If your application can't easily support this, all-at-once may be necessary.
 
 ## MOLT toolkit support
 
@@ -77,7 +74,7 @@ By default, [MOLT Fetch]({% link molt/molt-fetch.md %}) moves all data from the 
 
 Similarly, you can use [MOLT Verify]({% link molt/molt-verify.md %})'s `--schema-filter` and `--table-filter` flags to run validation checks on subsets of the data in your source and target databases. In a phased migration, you will likely want to verify data at the end of each migration phase, rather than at the end of the entire migration.
 
-[MOLT Replicator]({% link molt/molt-replicator.md %}) replicates full tables by default. If you choose to combine phased migration with [continuous replication]({% link molt/migration-considerations-replication.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/replicator-flags.md %}#userscript) to select rows to replicate.
+[MOLT Replicator]({% link molt/molt-replicator.md %}) replicates full tables by default. If you choose to combine phased migration with [continuous replication]({% link molt/migration-considerations-replication.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/userscript-overview.md %}#userscript) to select rows to replicate.
 
 ## See Also
 

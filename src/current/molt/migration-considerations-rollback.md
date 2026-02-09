@@ -7,7 +7,7 @@ docs_area: migrate
 
 A rollback plan defines how you will undo or recover from a failed migration. A clear rollback strategy limits risk during migration, minimizes business impact, and preserves data integrity so that you can retry the migration with confidence.
 
-This page explains four common rollback options, their trade-offs, and how the MOLT toolkit supports each approach.
+This page explains common rollback options, their trade-offs, and how the MOLT toolkit supports each approach.
 
 In general:
 
@@ -39,24 +39,12 @@ Failback replication requires an external replication system (like [MOLT Replica
 
 This enables faster rollback, but increases application complexity as you need to manage two write paths.
 
-## Tradeoffs
-
-| | Manual reconciliation | Failback replication (on-demand) | Bidirectional replication | Dual-write |
-|---|---|---|---|---|
-| **Rollback speed (RTO)** | Slow | Moderate | Fast | Fast |
-| **Data loss risk (RPO)** | Medium-High | Low | Low | Low-Medium (app-dependent) |
-| **Synchronization mechanism** | None (backups/scripts) | Activate failback when needed | Continuous forward + failback | Application writes to both |
-| **Application changes** | None | None | None | Required |
-| **Operational complexity** | Low (tooling), High (manual) | Medium (runbook activation) | High (two replication streams) | High (app layer) |
-| **Overhead during trial** | Low | Low-Medium | High (two replication streams) | Medium (two write paths) |
-| **Best for** | Low-risk systems, simple migrations | Moderate RTO tolerance, lower ongoing cost | Strict RTO/RPO, long or complex cutovers | Short trials, resilient app teams |
-
 ## Decision framework
 
 Use these questions to guide your rollback strategy:
 
 **How quickly do you need to roll back if problems occur?**
-If you need immediate rollback, choose dual-write or bidirectional replication. If you can tolerate some delay to activate failback replication, one-way failback replication is sufficient. For low-risk migrations with generous time windows, manual reconciliation may be acceptable.
+If you need immediate rollback, choose dual-write or bidirectional replication. If you can tolerate some delay to activate failback replication, one-way, on-demand failback replication is sufficient. For low-risk migrations with generous time windows, manual reconciliation may be acceptable.
 
 **How much data can you afford to lose during rollback?**
 If you cannot lose any data written after cutover, choose bidirectional replication or on-demand failback (both preserve all writes). Dual-write can also preserve data if implemented carefully. Manual reconciliation typically accepts some data loss.
@@ -79,9 +67,9 @@ Ensure your source database supports the change data capture requirements for th
 
 To use MOLT Replicator in failback mode, run the [`replicator start`]({% link molt/replicator-flags.md %}#commands) command with its various [flags]({% link molt/replicator-flags.md %}).
 
-When enabling failback replication, the original source database becomes the replication target, and the original target CockroachDB cluster becomes the replication source. Use the `--sourceConn` flag to indicate the CockroachDB cluster, and use the `--targetConn` flag to indicate the PostgreSQL, MySQL, or Oracle database from which data is being migrated.
+When enabling failback replication, the original source database becomes the replication target, and the original target CockroachDB cluster becomes the replication source. Use the [`--sourceConn`]({% link molt/replicator-flags.md %}#source-conn) flag to indicate the CockroachDB cluster, and use the [`--targetConn`]({% link molt/replicator-flags.md %}#target-conn) flag to indicate the PostgreSQL, MySQL, or Oracle database from which data is being migrated.
 
-MOLT Replicator can be stopped after cutover, or it can remain online to continue streaming changes indefinitely. This could be useful for as long as you want as you want the migration source database to serve as a backup to the new CockroachDB cluster.
+MOLT Replicator can be stopped after cutover, or it can remain online to continue streaming changes indefinitely.
 
 Rollback plans that do not utilize failback replication will require external tooling, or in the case of a dual-write strategy, changes to application code. You can still use [MOLT Verify]({% link molt/molt-verify.md %}) to ensure parity between the two databases.
 

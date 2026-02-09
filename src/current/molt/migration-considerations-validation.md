@@ -9,14 +9,6 @@ Validation strategies are critical to ensuring a successful data migration. They
 
 This page explains how to think about different validation strategies and how to use MOLT tooling to enable validation.
 
-<!-- In general:
-
-- Validate **early and often** to catch issues when they're easier to fix—during design, after initial load, throughout replication, and before cutover.
-
-- Align validation scope and timing with your **migration pattern**: bulk load requires full validation during downtime; load-then-replicate needs live-aware validation; phased migrations validate each subset independently.
-
-- Combine **automated data comparison** (MOLT Verify) with **application-level testing** to ensure both row-level correctness and end-to-end behavioral equivalence. -->
-
 ## What to validate
 
 Running any of the following validations can help you feel confident that the data in the CockroachDB cluster matches the data in the migration source database.
@@ -69,7 +61,7 @@ If using [continuous replication]({% link molt/migration-considerations-replicat
 
 Once replication has drained, run final validation on the complete cutover scope and verify critical application queries.
 
-#### Post-cutover confidence checks
+#### After cutover
 
 After traffic moves to CockroachDB, run targeted validation on critical tables and application smoke tests to confirm steady state.
 
@@ -80,17 +72,17 @@ Use these questions to help you determine what validations you want to perform, 
 **What is your data volume and validation timeline?**
 Larger datasets require more validation time. Consider concurrency tuning, phased validation, or off-peak runs to fit within windows.
 
-**Is the source database active during migration?**
-Active sources require live-aware validation and continuous monitoring during replication. Plan for replication drain before final validation.
-
 **Are there intentional schema or type differences?**
 Expect validation to flag type conversions and collation differences. Decide upfront whether to accept conditional successes or redesign to enable strict parity.
 
-**Which tables are most critical?**
-Prioritize critical data (compliance, transactions, authentication) for comprehensive validation. Use targeted validation loops on high-churn tables during replication.
+**What is your organization's risk tolerance?**
+High-risk migrations may require comprehensive validation at every checkpoint, including both automated and manual verification. Lower-risk migrations may accept sampling or targeted validation.
 
-**Do you have unsupported column types?**
-For types that cannot be compared automatically (e.g., geospatial), plan alternative checks like row counts or application-level validation.
+**Are you migrating in phases?**
+Phased migrations offer natural checkpoints for validation between phases. Decide whether to validate after each phase or defer to pre-cutover validation.
+
+**How will you handle validation failures?**
+Determine in advance whether mismatches will block cutover, trigger investigation, or allow conditional proceed. Establish clear thresholds and escalation paths.
 
 ## MOLT toolkit support
 
@@ -109,45 +101,6 @@ If performing a [phased migration]({% link molt/migration-considerations-phases.
 If using [continuous replication]({% link molt/migration-considerations-replication.md %}), you can use MOLT Verify's `--continuous` and `--live` flags to enable continuous verification.
 
 Check MOLT Verify's [known limitations]({% link molt/molt-verify.md %}#known-limitations) to ensure the tool's suitability for your validation strategy.
-
-<!-- ### MOLT Fetch
-
-[MOLT Fetch]({% link molt/molt-fetch.md %}) bulk loads data and defines the first validation checkpoint. After Fetch completes, run MOLT Verify before re-adding constraints and indexes that were dropped for performance.
-
-### MOLT Replicator
-
-[MOLT Replicator]({% link molt/molt-replicator.md %}) streams ongoing changes and provides health signals for validation timing:
-
-- Enable metrics (`--metricsAddr`) to monitor replication lag and confirm steady-state.
-- Use lag signals to determine when replication has "drained" before running final validation.
-- Ensure GC TTL is configured so checkpoint positions remain valid during the migration window. -->
-
-<!-- ## Validation by migration stage
-
-| Stage | Purpose | Approach |
-|---|---|---|
-| **Design & dry-run** | Catch schema and type issues early | Convert schema, load test data, validate critical queries, note differences to waive or fix |
-| **After bulk load** | Prove parity before resuming constraints | Run MOLT Verify on full scope; resolve mismatches; re-add non-PK constraints/indexes |
-| **During replication** | Ensure convergence while source is live | Run MOLT Verify with `--live` and optionally `--continuous` on critical tables; monitor Replicator metrics |
-| **Pre-cutover gate** | Final correctness guarantee | Confirm Replicator drained; run comprehensive MOLT Verify; validate critical query suite |
-| **Post-cutover** | Confidence in steady state | Targeted MOLT Verify on high-risk tables; application smoke tests | -->
-<!-- 
-## Common validation pitfalls
-
-**Collation on STRING primary keys:**
-Different collations between source and target can cause validation failures. Align collations where possible or plan documented exceptions.
-
-**Type differences by design:**
-Converting `AUTO_INCREMENT` to `UUID` or other intentional type changes will flag column mismatches. Review conditional successes and decide whether to accept or redesign.
-
-**Unsupported comparison types:**
-Geospatial and certain other types cannot be automatically compared. Use row counts, subset spot checks, or application-level validation, and document residual risk.
-
-**Validation runtime in tight windows:**
-Large datasets may not fit validation within downtime windows. Plan phased validation, increase concurrency, or use off-peak periods for comprehensive runs.
-
-**False positives during live replication:**
-Active sources can cause transient mismatches. Always use `--live` mode during replication to retry rows before flagging errors. -->
 
 ## See also
 

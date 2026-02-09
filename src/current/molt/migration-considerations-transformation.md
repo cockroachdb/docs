@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-Data transformations are applied to data as it moves from the source system to the target system. Transformations ensure that the data is compatible, consistent, and valuable in the destination. They are a key part of a migration to CockroachDB. When planning a migration, it's important to determine **what** transformations are necessary and **where** they need to occur.
+Data transformations are applied to data as it moves from the source to the target. Transformations ensure that the data is compatible, consistent, and valuable in the destination. They are a key part of a migration to CockroachDB. When planning a migration, it's important to determine **what** transformations are necessary and **where** they need to occur.
 
 This page explains the types of transformations to expect, where they can be applied, and how these choices shape your use of MOLT tooling.
 
@@ -71,11 +71,15 @@ While not a part of the transformation process itself, the [MOLT Schema Conversi
 
 ### MOLT Replicator
 
-[MOLT Replicator]({% link molt/molt-replicator.md %}) uses TypeScript **userscripts** to implement in-flight transformations for continuous replication:
+[MOLT Replicator]({% link molt/molt-replicator.md %}) uses TypeScript [userscripts]({% link molt/userscript-overview.md %}) to implement in-flight transformations for continuous replication. Common use cases include:
 
-- **Capabilities**: Transform or normalize values, route rows to different tables, enrich data, filter rows, merge partitioned sources.
-- **Structure**: Userscripts export functions (`configureTargetTables`, `onRowUpsert`, `onRowDelete`) that process change data before commit to CockroachDB.
-- **Staging schema**: Replicator uses a CockroachDB staging schema to store replication state and buffered mutations (`--stagingSchema` and `--stagingCreateSchema`).
+- [Renaming tables]({% link molt/userscript-cookbook.md %}#rename-tables): Map source table names to different names on the target.
+- [Renaming columns]({% link molt/userscript-cookbook.md %}#rename-columns): Map source column names to different names on the target.
+- [Row filtering]({% link molt/userscript-cookbook.md %}#select-data-to-replicate): Filter out specific rows based on conditions, such as excluding soft-deleted records or test data.
+- [Table filtering]({% link molt/userscript-cookbook.md %}#filter-multiple-tables): Exclude specific tables from replication.
+- [Column filtering]({% link molt/userscript-cookbook.md %}#filter-columns): Remove sensitive or unnecessary columns from replicated data.
+- [Data transformation]({% link molt/userscript-cookbook.md %}#compute-new-columns): Transform column values, compute new columns, or change data types during replication.
+- [Table partitioning]({% link molt/userscript-cookbook.md %}#route-table-partitions): Distribute rows from a single source table across multiple target tables based on partitioning rules.
 
 ## See also
 
