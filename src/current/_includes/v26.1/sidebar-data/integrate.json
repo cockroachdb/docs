@@ -3,6 +3,12 @@
     "is_top_level": true,
     "items": [
       {
+        "title": "AuthZed",
+        "urls": [
+          "/${VERSION}/authzed-integration-guide.html"
+        ]
+      },
+      {
         "title": "Ory",
         "items": [
           {
