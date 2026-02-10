@@ -70,21 +70,7 @@ CREATE ROLE analysts;
 GRANT SELECT ON DATABASE analytics TO analysts;
 ~~~
 
-### Step 3: Ensure users exist in CockroachDB
-
-Users logging into the DB Console via OIDC must be pre-created in CockroachDB:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE ROLE alice LOGIN;
-CREATE ROLE bob LOGIN;
-~~~
-
-{{site.data.alerts.callout_info}}
-Automatic user provisioning for OIDC is planned for a future release. Currently, users must be created via SQL before they can log in to the DB Console with OIDC. Automatic user provisioning using JWTs is currently supported.
-{{site.data.alerts.end}}
-
-### Step 4: Confirm configuration
+### Step 3: Confirm configuration
 
 1. On your identity provider, set up test users with memberships in groups that should be synced to CockroachDB roles.
 
@@ -171,7 +157,7 @@ Potential issues to investigate may pertain to:
 - **Userinfo endpoint**: If relying on userinfo fallback, ensure the endpoint is accessible and returns the expected JSON structure.
 - **Role name mismatches**: Remember that group names are normalized (typically lowercased). Check that your role names match the normalized group names.
 - **Empty groups**: Verify that users have group memberships in the IdP.
-- **User doesn't exist**: Ensure the user has been created in CockroachDB before attempting to log in.
+- **User doesn't exist**: Ensure the user has been created in CockroachDB before attempting to log in, or enable [automatic user provisioning]({% link {{ page.version.version }}/sso-db-console.md %}#manage-auto-provisioned-users).
 
 ### Common errors
 
@@ -187,8 +173,8 @@ Potential issues to investigate may pertain to:
 
 **Error**: User not found
 
-- **Cause**: The user doesn't exist in CockroachDB.
-- **Solution**: Create the user in CockroachDB before they attempt to log into the DB Console.
+- **Cause**: The user doesn't exist in CockroachDB and automatic user provisioning is not enabled.
+- **Solution**: Either create the user in CockroachDB manually before they attempt to log into the DB Console, or enable [automatic user provisioning]({% link {{ page.version.version }}/sso-db-console.md %}#manage-auto-provisioned-users).
 
 ## Security considerations
 
@@ -206,7 +192,7 @@ Potential issues to investigate may pertain to:
 
 1. **Regularly audit IdP groups**: Review and clean up group memberships in your identity provider to ensure they reflect current access requirements.
 
-1. **Pre-create users**: Since automatic user provisioning is not yet available for OIDC, ensure all users are created in CockroachDB before they need access to the DB Console.
+1. **User provisioning**: If using [automatic user provisioning]({% link {{ page.version.version }}/sso-db-console.md %}#manage-auto-provisioned-users), ensure your OIDC provider is properly secured and only trusted users can authenticate. Regularly review auto-provisioned users to identify accounts that may need deprovisioning. If not using automatic provisioning, ensure all users are created in CockroachDB before they need access to the DB Console.
 
 ## See also
 
