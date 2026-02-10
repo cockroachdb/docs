@@ -1,3 +1,6 @@
+- `CREATE OR REPLACE TRIGGER` is not supported. [#128422](https://github.com/cockroachdb/cockroach/issues/128422)
+- Statement-level triggers are not supported. [#126362](https://github.com/cockroachdb/cockroach/issues/126362)
+- `INSTEAD OF` triggers are not supported. [#126363](https://github.com/cockroachdb/cockroach/issues/126363)
 - A [trigger function]({% link {{ page.version.version }}/triggers.md %}#trigger-function) that is used in an existing trigger cannot be replaced with `CREATE OR REPLACE` syntax. To use `CREATE OR REPLACE`, first [drop any triggers]({% link {{ page.version.version }}/drop-trigger.md %}) that are using the function. [#134555](https://github.com/cockroachdb/cockroach/issues/134555)
 - Hidden columns are not visible to triggers. [#133331](https://github.com/cockroachdb/cockroach/issues/133331)
 - The `REFERENCING` clause for `CREATE TRIGGER` is not supported. [#135655](https://github.com/cockroachdb/cockroach/issues/135655)
