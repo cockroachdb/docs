@@ -9,6 +9,10 @@ docs_area: manage
 
 This page describes the cluster management and cluster deletion workflows for CockroachDB {{ site.data.products.advanced }}.
 
+{{site.data.alerts.callout_danger}}
+If you are managing clusters in a [BYOC deployment]({% link cockroachcloud/byoc-deployment.md %}) you must use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to perform the actions described on this page.
+{{site.data.alerts.end}}
+
 ## Planning your cluster
 
 Before making any changes to your cluster's nodes or regions, review the [requirements and recommendations]({% link cockroachcloud/plan-your-cluster.md %}) for CockroachDB {{ site.data.products.cloud }} cluster configuration.
