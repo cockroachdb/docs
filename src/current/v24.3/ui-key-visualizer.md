@@ -39,7 +39,7 @@ Once you have enabled the Key Visualizer, CockroachDB will begin monitoring keys
 
 When navigating to the **Key Visualizer** page in the DB Console, after a brief loading time, CockroachDB will present the collected data in a visualization designed to help you see data traffic trends at a glance.
 
-<img src="{{ 'images/v24.2/key-visualizer-hot-range.png' | relative_url }}" alt="Key Visualizer showing hot range" style="max-width:80%" />
+<img src="/docs/images/{{ page.version.version }}/key-visualizer-hot-range.png" alt="Key Visualizer showing hot range" style="max-width:80%" />
 
 The Key Visualizer presents the following information:
 
@@ -82,7 +82,7 @@ The Key Visualizer was designed to make potentially problematic ranges stand out
 
 The following image shows the Key Visualizer highlighting a series of [hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots): ranges with much higher-than-average write rates as compared to the rest of the cluster.
 
-<img src="{{ 'images/v24.2/key-visualizer-range-split.png' | relative_url }}" alt="Key Visualizer showing range split" style="max-width:80%" />
+<img src="/docs/images/{{ page.version.version }}/key-visualizer-range-split.png" alt="Key Visualizer showing range split" style="max-width:80%" />
 
 **Remediation:** If you've identified a potentially-problematic range as a hot spot, follow the recommended best practices to [reduce hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-hot-spots). In the case of the screenshot above, the increased write cadence is due to a series of [range splits]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits), where a range experiencing a large volume of incoming writes is splitting its keyspace to accommodate the growing range. This is often part of normal operation, but can be indicative of a data modeling issue if the range split is unexpected or causing cluster performance issues.
 
@@ -90,7 +90,7 @@ The following image shows the Key Visualizer highlighting a series of [hot spots
 
 The following image shows the Key Visualizer highlighting a [full-table scan]({% link {{ page.version.version }}/make-queries-fast.md %}), where the lack of an appropriate index causes the query planner to need to scan the entire table to find the requested records in a query. This can be seen most clearly by the cascading series of bright red ranges that proceed in diagonal fashion to each other, such as the series of three shown at the mouse cursor. This cascade represents the sequential scan of contiguous ranges in the keyspace as the query planner attempts to locate requested data without an index.
 
-<img src="{{ 'images/v24.2/key-visualizer-table-scan.png' | relative_url }}" alt="Key Visualizer showing table scan" style="max-width:80%" />
+<img src="/docs/images/{{ page.version.version }}/key-visualizer-table-scan.png" alt="Key Visualizer showing table scan" style="max-width:80%" />
 
 **Remediation:**  If you've identified a full table scan, follow the guidance to [optimize statement performance]({% link {{ page.version.version }}/make-queries-fast.md %}). You can also [analyze your queries with `EXPLAIN`]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}) to investigate if an index was used in the execution of the query.
 
