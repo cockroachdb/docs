@@ -127,7 +127,7 @@ For example, to configure a user to assume an IAM role that allows a bulk operat
 
     The `sts:AssumeRole` permission allows the user to obtain a temporary set of security credentials that gives them access to an S3 bucket to which they would not have access with their user-based permissions.
 
-    <img src="{{ 'images/v24.2/aws-user-view.png' | relative_url }}" alt="AWS user summary page showing the JSON policy in place" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-user-view.png" alt="AWS user summary page showing the JSON policy in place" style="border:1px solid #eee;max-width:100%" />
 
 1. <a name="step-3-assume"></a> Return to your IAM role's **Summary** page, and click on the **Trust Relationships** tab. Add a trust policy into the role, which will define the users that can assume the role.
 
@@ -300,7 +300,7 @@ Once you have an identity role that your CockroachDB nodes can assume, you can c
 
 Copy the ARN of the identity role. In the Amazon management console, click on **IAM**, then **Roles**, and select the name of your identity role. From the **Summary** page, copy your ARN. You will need this when configuring the Trust Policy for the IAM role to be assumed.
 
-<img src="{{ 'images/v24.2/aws-wi-arn-copy.png' | relative_url }}" alt="Role summary page showing the ARN copied" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/aws-wi-arn-copy.png" alt="Role summary page showing the ARN copied" style="border:1px solid #eee;max-width:100%" />
 
 See [Step 2. Trust the identity role](#step-2-trust-the-identity-role) to add this ARN to an operation role's Trust Policy.
 
@@ -314,21 +314,21 @@ If you already have the role that contains permissions for the operation, ensure
 
 1. To create an operation role, click **Create Role** under the **Roles** menu. Select **Custom trust policy** and then add the ARN of your identity role (from [Step 1](#step-1-set-up-the-identity-role)) to the JSON by clicking `Principal`. This will open a dialog box. Select **IAM Roles** for **Principal Type** and paste the ARN. Click **Add Principal** and then **Next**.
 
-    <img src="{{ 'images/v24.2/aws-wi-principal.png' | relative_url }}" alt="Dialog box to add principal with IAM roles selected" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-wi-principal.png" alt="Dialog box to add principal with IAM roles selected" style="border:1px solid #eee;max-width:100%" />
 
 2. On the **Add Permissions** page, search for the permission policies that the role will need to complete the bulk operation.
 
-    <img src="{{ 'images/v24.2/aws-add-permissions.png' | relative_url }}" alt="Filter list to add permissions to IAM roles" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-add-permissions.png" alt="Filter list to add permissions to IAM roles" style="border:1px solid #eee;max-width:100%" />
 
     Or, use the **Create Policy** button to define the required permissions. You can use the visual editor to select the service, actions, and resources.
 
-    <img src="{{ 'images/v24.2/aws-permission-visual-editor.png' | relative_url }}" alt="Using the visual editor to define S3 service and S3 actions." style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-permission-visual-editor.png" alt="Using the visual editor to define S3 service and S3 actions." style="border:1px solid #eee;max-width:100%" />
 
     Or, use the JSON tab to specify the policy. For the JSON editor, see [Storage Permissions]({% link {{ page.version.version }}/use-cloud-storage.md %}#storage-permissions) for an example and detail on the minimum permissions required for each operation to complete. Click **Next**.
 
 3. Finally, give the role a name on the **Name, review, and create** page. The following screenshot shows the selected trust policy and permissions:
 
-    <img src="{{ 'images/v24.2/aws-wi-review-page.png' | relative_url }}" alt="Final screen in the create role process to review permissions and name role" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-wi-review-page.png" alt="Final screen in the create role process to review permissions and name role" style="border:1px solid #eee;max-width:100%" />
 
 ### Step 3. Run the operation by assuming the role
 
@@ -443,7 +443,7 @@ For this example, both service accounts have already been created. If you need t
     - In [Google's Cloud console](https://console.cloud.google.com/getting-started), click **IAM & Admin**, **Roles**, and then **Create Role**.
     - Add a title for the role and then click **Add Permissions**. Filter for the permissions required for the bulk operation. For example, if you want to enable service account B to run a changefeed, your role will include the `storage.objects.create` permission. See the [Storage permissions]({% link {{ page.version.version }}/use-cloud-storage.md %}#storage-permissions) section on this page for details on the minimum permissions each CockroachDB bulk operation requires.
 
-    <img src="{{ 'images/v24.2/gcs-assume-add-perms-role.png' | relative_url }}" alt="Adding permissions to a changefeed role when creating a role." style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/gcs-assume-add-perms-role.png" alt="Adding permissions to a changefeed role when creating a role." style="border:1px solid #eee;max-width:100%" />
 
     {{site.data.alerts.callout_success}}
     Alternately, you can use the [gcloud CLI](https://cloud.google.com/sdk/gcloud/reference/iam/roles/create) to create roles.
@@ -453,14 +453,14 @@ For this example, both service accounts have already been created. If you need t
     - Go to the **Cloud Storage** menu and select the bucket. In the bucket's menu, click **Grant Access**.
     - Add the service account to the **Add principals** box and select the name of the role you created in step 1 under **Assign roles**.
 
-    <img src="{{ 'images/v24.2/gcs-assume-add-sa-bucket.png' | relative_url }}" alt="Adding service account with the created role to the bucket." style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/gcs-assume-add-sa-bucket.png" alt="Adding service account with the created role to the bucket." style="border:1px solid #eee;max-width:100%" />
 
 1. <a name="service-account-token-granting"></a>Next, service account B needs the "Service Account Token Creator" role for service account A. This enables service account B to create short-lived tokens for A.
     - Go to the **Service Accounts** menu in the Google Cloud Console.
     - Select service account B from the list, then the **Permissions** tab, and click **Grant Access** under **Principals with access to this service account**.
     - Enter the name of service account A into the **New principals** box and select "Service Account Token Creator" under the **Assign roles** dropdown. Click **Save** to complete.
 
-    <img src="{{ 'images/v24.2/gcs-assume-grant-sa-access.png' | relative_url }}" alt="Granting service account A access to service account B with the token creator role." style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/gcs-assume-grant-sa-access.png" alt="Granting service account A access to service account B with the token creator role." style="border:1px solid #eee;max-width:100%" />
 
 1. Finally, you will run the bulk operation from your CockroachDB cluster. If you're using [specified authentication](#google-cloud-storage-specified), pass in the GCS bucket's URL with the IAM user's `CREDENTIALS`. If you're using [implicit authentication](#google-cloud-storage-implicit), specify `AUTH=IMPLICIT` instead. For assuming the role, pass the assumed role's service account name, which you can copy from the **Service Accounts** page:
 
@@ -596,13 +596,13 @@ See [Step 2](#step-2-create-the-operation-service-account) to create an operatio
 
     b. In the **Grant this service account access to project** section, select the role you require for the bulk operation, e.g., "Storage Object Creator". See [Storage Permissions]({% link {{ page.version.version }}/use-cloud-storage.md %}#storage-permissions) for detail on the minimum permissions required for each operation to complete. Click **Continue**.
 
-    <img src="{{ 'images/v24.2/gcs-wi-role-grant.png' | relative_url }}" alt="Adding the workload identity role to the service account users role box" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/gcs-wi-role-grant.png" alt="Adding the workload identity role to the service account users role box" style="border:1px solid #eee;max-width:100%" />
 
     <a name="grant-access-identity-operation-sa"></a>
 
     c. In the **Grant users access to this service account** section, paste the name of the identity service account. Then, click **Done**.
 
-    <img src="{{ 'images/v24.2/gcs-wi-grant-users.png' | relative_url }}" alt="Adding the workload identity role to the service account users role box" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/gcs-wi-grant-users.png" alt="Adding the workload identity role to the service account users role box" style="border:1px solid #eee;max-width:100%" />
 
 ### Step 3. Give the identity service account the token creator role
 
@@ -612,7 +612,7 @@ Next, the operation service account needs to contain the "Service Account Token 
 1. Select the operation service account from the list, then the **Permissions** tab, and click **Grant Access** under **Principals with access to this service account**.
 1. Enter the name of the identity service account into the **New principals** box and select "Service Account Token Creator" under the **Assign roles** dropdown. Click **Save** to complete.
 
-    <img src="{{ 'images/v24.2/gcs-wi-service-token.png' | relative_url }}" alt="Granting the identity service account access to the operation service account with the token creator role." style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/gcs-wi-service-token.png" alt="Granting the identity service account access to the operation service account with the token creator role." style="border:1px solid #eee;max-width:100%" />
 
 ### Step 4. Run the operation by assuming the service account
 
