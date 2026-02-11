@@ -10406,7 +10406,7 @@
 
 - release_name: v25.2.12
   major_version: v25.2
-  release_date: '2026-02-06'
+  release_date: '2026-02-11'
   release_type: Production
   go_version: go1.25.5
   sha: ca60d6346a81d99d640c89c7c1e9282002357319
@@ -10430,10 +10430,3 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.11
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
