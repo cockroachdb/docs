@@ -54,7 +54,7 @@ Operator | Description | Example Query and Output |
 `->` | Access a `JSONB` field, returning a `JSONB` value. | `SELECT '[{"foo":"bar"}]'::JSONB->0->'foo';`<br><br>`"bar"::JSONB`
 `->>` | Access a `JSONB` field, returning a string. | `SELECT '{"foo":"bar"}'::JSONB->>'foo';`<br><br>`bar::STRING`
 `@>` | Tests whether the left `JSONB` field contains the right `JSONB` field. | `SELECT ('{"foo": {"baz": 3}, "bar": 2}'::JSONB@>'{"foo": {"baz":3}}'::JSONB );`<br><br>`true`
-`>@` | Tests whether the left `JSONB` field is contained by the right `JSONB` field. | `SELECT('{"bar":2}'::JSONB<@'{"foo":1, "bar":2}'::JSONB);`<br><br>`true`
+`<@` | Tests whether the left `JSONB` field is contained by the right `JSONB` field. | `SELECT('{"bar":2}'::JSONB<@'{"foo":1, "bar":2}'::JSONB);`<br><br>`true`
 `#>` | Access a `JSONB` field at the specified path, returning a `JSONB` value.  | `SELECT '[{"foo":"bar"}]'::JSONB#>'{0,foo}';`<br><br>`"bar"::JSONB`
 `#>>` | Access a `JSONB` field at the specified path, returning a string. | `SELECT '[{"foo":"bar"}]'::JSONB#>>'{0,foo}';`<br><br>`bar::STRING`
 `?` | Does the key or element string exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?'bar');`<br><br>`true`
