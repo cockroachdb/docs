@@ -19,6 +19,7 @@ gem "csv"
 gem "logger"
 gem "base64"
 gem "bigdecimal"
+gem "mutex_m"
 group :jekyll_plugins do
     gem "jekyll-include-cache"
     gem 'jekyll-algolia', "~> 1.0", path: "./jekyll-algolia-dev"
