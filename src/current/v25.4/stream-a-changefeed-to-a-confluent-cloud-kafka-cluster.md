@@ -331,11 +331,11 @@ Move to the terminal window in which you started the Kafka consumer. As the chan
 
 You can also view the messages for your cluster in the Confluent Cloud console in the **Topics** sidebar under the **Messages** tab.
 
-<img src="{{ 'images/v24.2/confluent-messages-screenshot.png' | relative_url }}" alt="Users topic messages in the Confluent Cloud console." style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/confluent-messages-screenshot.png' | relative_url }}" alt="Users topic messages in the Confluent Cloud console." style="border:1px solid #eee;max-width:100%" />
 
 You can use the **Schema** tab to view the schema for a specific topic.
 
-<img src="{{ 'images/v24.2/confluent-schemas-screenshot.png' | relative_url }}" alt="Users vale schema in the Confluent Cloud console." style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/confluent-schemas-screenshot.png' | relative_url }}" alt="Users vale schema in the Confluent Cloud console." style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

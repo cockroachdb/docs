@@ -1,0 +1,2 @@
+- The system virtual cluster manages the cluster's control plane and the replication of the cluster's data. Admins connect to the system virtual cluster to configure and manage the underlying CockroachDB cluster, set up PCR, create and manage a virtual cluster, and observe metrics and logs for the CockroachDB cluster and each virtual cluster.
+- The application virtual cluster manages the cluster’s data plane. Application virtual clusters contain user data and run application workloads.

@@ -1,0 +1,1 @@
+CockroachDB does not support placeholders in {% if page.name == "as-of-system-time.md" %}`AS OF SYSTEM TIME`{% else %}[`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}){% endif %}. The time value must be a constant value embedded in the SQL string. [#30955](https://github.com/cockroachdb/cockroach/issues/30955)

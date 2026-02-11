@@ -1,1 +1,0 @@
-The approximate number of rows on all TTL tables.

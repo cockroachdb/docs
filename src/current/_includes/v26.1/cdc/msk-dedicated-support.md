@@ -1,0 +1,1 @@
+You can stream a changefeed to a public IP MSK endpoint from any CockroachDB cluster. If you would like to connect a changefeed running on a CockroachDB {{ site.data.products.advanced }} cluster to an Amazon MSK Serverless cluster over AWS PrivateLink, contact your Cockroach Labs account team.

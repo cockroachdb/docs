@@ -19,7 +19,9 @@ Schema changes consume additional resources, and if they are run when the cluste
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-CockroachDB [does not support schema changes within explicit transactions](#schema-changes-within-transactions) with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction. <br /><br /> Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
+CockroachDB [does not support schema changes within explicit transactions](#schema-changes-within-transactions) with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction.
+
+Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
 {{site.data.alerts.end}}
 
 ## How online schema changes work
@@ -63,6 +65,12 @@ If a schema change fails, the schema change job will be cleaned up automatically
 For advice about how to avoid running out of space during an online schema change, refer to [Estimate your storage capacity before performing online schema changes](#estimate-your-storage-capacity-before-performing-online-schema-changes).
 
 ## Best practices for online schema changes
+
+### Improve changefeed performance with `schema_locked`
+
+Set the [`schema_locked` table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#storage-parameter-schema-locked) to `true` to indicate that a schema change is not currently ongoing on a table. CockroachDB automatically unsets this parameter before performing a schema change and reapplies it when done. Enabling `schema_locked` can help [improve performance of changefeeds]({% link {{ page.version.version }}/create-changefeed.md %}#disallow-schema-changes-on-tables-to-improve-changefeed-performance) running on the table, which can reduce commit-to-emit latency.
+
+Use the [`create_table_with_schema_locked` session variable]({% link {{ page.version.version }}/set-vars.md %}#create_table_with_schema_locked) to set this storage parameter to `true` on every table created in the session.
 
 ### Estimate your storage capacity before performing online schema changes
 
@@ -181,7 +189,7 @@ COMMIT
 
 ### Run multiple schema changes in a single `ALTER TABLE` statement
 
-Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}). For a demonstration, see [Add and rename columns atomically]({% link {{ page.version.version }}/alter-table.md %}#add-and-rename-columns-atomically).
+Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, refer to [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#subcommands). For examples, refer to [Add and rename columns atomically]({% link {{ page.version.version }}/alter-table.md %}#add-and-rename-columns-atomically) and [Drop and add a primary key constraint]({% link {{ page.version.version }}/alter-table.md %}#drop-and-add-a-primary-key-constraint).
 
 ### Show all schema change jobs
 

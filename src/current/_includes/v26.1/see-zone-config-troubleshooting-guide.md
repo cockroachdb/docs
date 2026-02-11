@@ -1,0 +1,1 @@
+For instructions showing how to troubleshoot replication zones that may be misconfigured, see [Troubleshoot Replication Zone Configurations]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %}).

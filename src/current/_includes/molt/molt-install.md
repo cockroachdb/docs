@@ -1,24 +1,30 @@
 To install MOLT, download the binary that matches your architecture and source database:
 
-| Operating System | Architecture |                                 PostgreSQL/MySQL                                |                                   Oracle (Preview)                                   |
-|------------------|--------------|---------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| Windows          | AMD 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.windows-amd64.tgz) | N/A                                                                                  |
-|                  | ARM 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.windows-arm64.tgz) | N/A                                                                                  |
-| Linux            | AMD 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64-oracle.tgz) |
-|                  | ARM 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-arm64.tgz)   | N/A                                                                                  |
-| Mac              | AMD 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz)  | N/A                                                                                  |
-|                  | ARM 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz)  | N/A                                                                                  |
+| Operating System | Architecture |                                 PostgreSQL/MySQL                                |                                         Oracle                                        |
+|------------------|--------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| Windows          | AMD 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.windows-amd64.tgz) | N/A                                                                                   |
+|                  | ARM 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.windows-arm64.tgz) | N/A                                                                                   |
+| Linux            | AMD 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64-oracle.tgz)  |
+|                  | ARM 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-arm64.tgz)   | N/A                                                                                   |
+| Mac              | AMD 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64-oracle.tgz) |
+|                  | ARM 64-bit   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64-oracle.tgz) |
 
-The following binaries are included:
+The download package includes the following:
 
-- `molt`
-- `replicator`
+- `molt` binary.
+- `replicator` binary.
+- Grafana dashboard JSON files for MOLT Fetch (`grafana_dashboard.json`) and Replicator (`replicator_grafana_dashboard.json`) metrics.  Each bundled dashboard is compatible with its corresponding binary version.
+	- Oracle downloads also include the Oracle-specific Replicator dashboard (`replicator_oracle_grafana_dashboard.json`).
 
 {{site.data.alerts.callout_success}}
 For ease of use, keep both `molt` and `replicator` in your current working directory.
 {{site.data.alerts.end}}
 
 To display the current version of each binary, run `molt --version` and `replicator --version`.
+
+{{site.data.alerts.callout_info}}
+`molt` is bundled with the latest `replicator` version available at the time of the MOLT release. This means that the MOLT download always contains the latest released version of [MOLT Replicator]({% link molt/molt-replicator.md %}). To verify that the `molt` and `replicator` versions match, run `molt --version` and `replicator --version`.
+{{site.data.alerts.end}}
 
 For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). {% if page.name != "molt.md" %}For release details, refer to the [MOLT changelog]({% link releases/molt.md %}).{% endif %}
 

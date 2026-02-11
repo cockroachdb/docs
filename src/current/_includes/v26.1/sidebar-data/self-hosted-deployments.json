@@ -1,0 +1,868 @@
+{
+    "title": "Self-Hosted Deployments",
+    "is_top_level": true,
+    "items": [
+        {
+            "title": "Production Checklist",
+            "urls": [
+              "/${VERSION}/recommended-production-settings.html"
+            ]
+        },
+        {
+            "title": "Deployment and Operations Skills Taxonomy",
+            "urls": [
+              "/${VERSION}/deployment-operations-skills-taxonomy.html"
+            ]
+        },
+        {
+            "title": "Deploy Locally",
+            "items": [
+              {
+                "title": "Deploy from Binary",
+                "urls": [
+                  "/${VERSION}/secure-a-cluster.html",
+                  "/${VERSION}/start-a-local-cluster.html"
+                ]
+              },
+              {
+                "title": "Deploy in Kubernetes",
+                "urls": [
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html",
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
+                ]
+              },
+              {
+                "title": "Deploy in Docker",
+                "urls": [
+                  "/${VERSION}/start-a-local-cluster-in-docker-mac.html",
+                  "/${VERSION}/start-a-local-cluster-in-docker-linux.html",
+                  "/${VERSION}/start-a-local-cluster-in-docker-windows.html"
+                ]
+              },
+              {
+                "title": "Simulate a Multi-Region Cluster Locally",
+                "urls": [
+                  "/${VERSION}/simulate-a-multi-region-cluster-on-localhost.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Deploy Manually",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/manual-deployment.html"
+                ]
+              },
+              {
+                "title": "Deploy On-Premises",
+                "urls": [
+                  "/${VERSION}/deploy-cockroachdb-on-premises.html",
+                  "/${VERSION}/deploy-cockroachdb-on-premises-insecure.html"
+                ]
+              },
+              {
+                "title": "Deploy on AWS",
+                "urls": [
+                  "/${VERSION}/deploy-cockroachdb-on-aws.html",
+                  "/${VERSION}/deploy-cockroachdb-on-aws-insecure.html"
+                ]
+              },
+              {
+                "title": "Deploy on Azure",
+                "urls": [
+                  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html",
+                  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure-insecure.html"
+                ]
+              },
+              {
+                "title": "Deploy on Google Cloud Platform GCE",
+                "urls": [
+                  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html",
+                  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform-insecure.html"
+                ]
+              },
+              {
+                "title": "Deploy on Digital Ocean",
+                "urls": [
+                  "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html",
+                  "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Deploy in Kubernetes with CockroachDB Operator (Recommended)",
+            "items": [
+                {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/cockroachdb-operator-overview.html"
+                    ]
+                  },
+                  {
+                    "title": "CockroachDB Operator Deployment Guide",
+                    "urls": [
+                      "/${VERSION}/deploy-cockroachdb-with-cockroachdb-operator.html"
+                    ]
+                  },
+                  {
+                    "title": "Migrate from Other Kubernetes Deployments",
+                    "items": [
+                    {
+                        "title": "Migrate from Helm StatefulSet",
+                        "urls": [
+                        "/${VERSION}/migrate-cockroachdb-kubernetes-helm.html"
+                        ]
+                    },
+                    {
+                        "title": "Migrate from {{ site.data.products.public-operator }}",
+                        "urls": [
+                        "/${VERSION}/migrate-cockroachdb-kubernetes-operator.html"
+                        ]
+                    }
+                    ]
+                  },
+                  {
+                      "title": "Operate CockroachDB with Kubernetes",
+                      "items": [
+                      {
+                          "title": "Pod Scheduling",
+                          "urls": [
+                          "/${VERSION}/schedule-cockroachdb-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Resource Management",
+                          "urls": [
+                          "/${VERSION}/configure-cockroachdb-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Certificate Management",
+                          "urls": [
+                          "/${VERSION}/secure-cockroachdb-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Cluster Scaling",
+                          "urls": [
+                          "/${VERSION}/scale-cockroachdb-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Cluster Monitoring",
+                          "urls": [
+                          "/${VERSION}/monitor-cockroachdb-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Cluster Upgrades",
+                          "urls": [
+                          "/${VERSION}/upgrade-cockroachdb-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Override Templates",
+                          "urls": [
+                          "/${VERSION}/override-templates-cockroachdb-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Kubernetes Performance",
+                          "urls": [
+                          "/${VERSION}/cockroachdb-operator-performance.html"
+                          ]
+                      }
+                      ]
+                  }
+            ]
+          },
+          {
+            "title": "Deploy on Kubernetes with Other Technologies",
+            "items": [
+                {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/kubernetes-overview.html"
+                    ]
+                  },
+                  {
+                    "title": "Single-Cluster Deployment",
+                    "urls": [
+                      "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
+                      "/${VERSION}/deploy-cockroachdb-with-kubernetes-insecure.html"
+                    ]
+                  },
+                  {
+                    "title": "OpenShift Deployment",
+                    "urls": [
+                      "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
+                    ]
+                  },
+                  {
+                    "title": "Multi-Cluster Deployment",
+                    "urls": [
+                      "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html"
+                    ]
+                  },
+                {
+                    "title": "Operate on Kubernetes",
+                    "items": [
+                    {
+                        "title": "Pod Scheduling",
+                        "urls": [
+                        "/${VERSION}/schedule-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Resource Management",
+                        "urls": [
+                        "/${VERSION}/configure-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Certificate Management",
+                        "urls": [
+                        "/${VERSION}/secure-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Cluster Scaling",
+                        "urls": [
+                        "/${VERSION}/scale-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Cluster Monitoring",
+                        "urls": [
+                        "/${VERSION}/monitor-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Cluster Upgrades",
+                        "urls": [
+                        "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Kubernetes Performance",
+                        "urls": [
+                        "/${VERSION}/kubernetes-performance.html"
+                        ]
+                    }
+                    ]
+                }
+            ]
+          },
+          {
+            "title": "Multi-Region for Self-Hosted Deployments",
+            "items": [
+                {
+                    "title": "Topology Patterns Overview",
+                    "urls": [
+                    "/${VERSION}/topology-patterns.html"
+                    ]
+                },
+                {
+                    "title": "Development Topology",
+                    "urls": [
+                    "/${VERSION}/topology-development.html"
+                    ]
+                },
+                {
+                    "title": "Basic Production Topology",
+                    "urls": [
+                    "/${VERSION}/topology-basic-production.html"
+                    ]
+                },
+                {
+                  "title": "Follower Reads Topology",
+                  "urls": [
+                  "/${VERSION}/topology-follower-reads.html"
+                  ]
+              },
+              {
+                  "title": "Follow-the-Workload Topology",
+                  "urls": [
+                  "/${VERSION}/topology-follow-the-workload.html"
+                  ]
+              },
+                {
+                    "title": "Regional Tables",
+                    "urls": [
+                    "/${VERSION}/regional-tables.html"
+                    ]
+                },
+                {
+                    "title": "Global Tables",
+                    "urls": [
+                    "/${VERSION}/global-tables.html"
+                    ]
+                }
+            ]
+          },
+          {
+            "title": "Security",
+            "items": [
+                {
+                    "title": "Certificates",
+                    "items": [
+                      {
+                        "title": "Use the CockroachDB CLI to provision a development cluster",
+                        "urls": [
+                          "/${VERSION}/manage-certs-cli.html"
+                        ]
+                      },
+                      {
+                        "title": "Manage PKI certificates with HashiCorp Vault",
+                        "urls": [
+                          "/${VERSION}/manage-certs-vault.html"
+                        ]
+                      },
+                      {
+                        "title": "Create Security Certificates using OpenSSL",
+                        "urls": [
+                          "/${VERSION}/create-security-certificates-openssl.html"
+                        ]
+                      },
+                      {
+                        "title": "Use Online Certificate Status Protocol (OCSP)",
+                        "urls": [
+                          "/${VERSION}/manage-certs-revoke-ocsp.html"
+                        ]
+                      },
+                      {
+                        "title": "Certificate-based authentication using multiple values from the X.509 SUBJECT field",
+                        "urls": [
+                          "/${VERSION}/certificate-based-authentication-using-the-x509-subject-field.html"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title": "Authentication",
+                    "urls": [
+                      "/${VERSION}/authentication.html"
+                    ]
+                  },
+                  {
+                    "title": "Encryption",
+                    "urls": [
+                      "/${VERSION}/encryption.html"
+                    ]
+                  },
+                  {
+                    "title": "Authorization",
+                    "urls": [
+                      "/${VERSION}/authorization.html"
+                    ]
+                  },
+                  {
+                    "title": "Table-based SQL Audit Logging",
+                    "urls": [
+                      "/${VERSION}/sql-audit-logging.html"
+                    ]
+                  },
+                  {
+                    "title": "Role-based SQL Audit Logging",
+                    "urls": [
+                      "/${VERSION}/role-based-audit-logging.html"
+                    ]
+                  },
+                  {
+                    "title": "LDAP Authentication",
+                    "urls": [
+                      "/${VERSION}/ldap-authentication.html"
+                    ]
+                  },
+                  {
+                    "title": "LDAP Authorization",
+                    "urls": [
+                      "/${VERSION}/ldap-authorization.html"
+                    ]
+                  },
+                  {
+                    "title": "GSSAPI Authentication",
+                    "urls": [
+                      "/${VERSION}/gssapi_authentication.html"
+                    ]
+                  },
+                  {
+                    "title": "Cluster SSO using JWT",
+                    "urls": [
+                      "/${VERSION}/sso-sql.html"
+                    ]
+                  },
+                  {
+                    "title": "JWT Authorization",
+                    "urls": [
+                      "/${VERSION}/jwt-authorization.html"
+                    ]
+                  },
+                  {
+                    "title": "DB Console SSO",
+                    "urls": [
+                      "/${VERSION}/sso-db-console.html"
+                    ]
+                  },
+                  {
+                    "title": "OIDC Authorization",
+                    "urls": [
+                      "/${VERSION}/oidc-authorization.html"
+                    ]
+                  },
+                  {
+                    "title": "Rotate Security Certificates",
+                    "urls": [
+                      "/${VERSION}/rotate-certificates.html"
+                    ]
+                  },
+                  {
+                    "title": "Security Tutorials",
+                    "items": [
+                        {
+                            "title": "Use Hashicorp Vault's Dynamic Secrets",
+                            "urls": [
+                                "/${VERSION}/vault-db-secrets-tutorial.html"
+                            ]
+                        }
+                    ]
+                  }
+            ]
+          },
+          {
+            "title": "Monitoring and Alerting",
+            "items": [
+                {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/monitoring-and-alerting.html"
+                    ]
+                  },
+                  {
+                    "title": "Common Issues to Monitor",
+                    "urls": [
+                      "/${VERSION}/common-issues-to-monitor.html"
+                    ]
+                  },
+                  {
+                    "title": "Enable the Node Map",
+                    "urls": [
+                      "/${VERSION}/enable-node-map.html"
+                    ]
+                  },
+                  {
+                    "title": "Prometheus Endpoint",
+                    "urls": [
+                      "/${VERSION}/prometheus-endpoint.html"
+                    ]
+                  },
+                  {
+                    "title": "Use Prometheus and Alertmanager",
+                    "urls": [
+                      "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
+                    ]
+                  },
+                  {
+                    "title": "Monitor CockroachDB {{ site.data.products.core }} with Datadog",
+                    "urls": [
+                      "/${VERSION}/datadog.html"
+                    ]
+                  },
+                  {
+                    "title": "Monitor CockroachDB {{ site.data.products.core }} with DBmarlin",
+                    "urls": [
+                      "/${VERSION}/dbmarlin.html"
+                    ]
+                  },
+                  {
+                    "title": "Monitor CockroachDB {{ site.data.products.core }} with Kibana",
+                    "urls": [
+                      "/${VERSION}/kibana.html"
+                    ]
+                  },
+                  {
+                    "title": "Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-metrics-self-hosted.html"
+                    ]
+                  },
+                  {
+                    "title": "Essential Alerts for CockroachDB {{ site.data.products.core }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-alerts-self-hosted.html"
+                    ]
+                  }
+            ]
+          },
+          {
+            "title": "Administration",
+            "items": [
+                {
+                  "title": "DB Console Overview",
+                  "urls": [
+                    "/${VERSION}/ui-overview.html"
+                  ]
+                },
+                {
+                  "title": "Cluster Overview Page",
+                  "urls": [
+                    "/${VERSION}/ui-cluster-overview-page.html"
+                  ]
+                },
+                {
+                  "title": "Metrics Dashboards",
+                  "items": [
+                    {
+                      "title": "Overview",
+                      "urls": [
+                        "/${VERSION}/ui-overview-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Hardware",
+                      "urls": [
+                        "/${VERSION}/ui-hardware-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Runtime",
+                      "urls": [
+                        "/${VERSION}/ui-runtime-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Networking",
+                      "urls": [
+                        "/${VERSION}/ui-networking-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "SQL",
+                      "urls": [
+                        "/${VERSION}/ui-sql-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Storage",
+                      "urls": [
+                        "/${VERSION}/ui-storage-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Replication",
+                      "urls": [
+                        "/${VERSION}/ui-replication-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Distributed",
+                      "urls": [
+                        "/${VERSION}/ui-distributed-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Queues",
+                      "urls": [
+                        "/${VERSION}/ui-queues-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Slow Requests",
+                      "urls": [
+                        "/${VERSION}/ui-slow-requests-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Changefeeds",
+                      "urls": [
+                        "/${VERSION}/ui-cdc-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Overload",
+                      "urls": [
+                        "/${VERSION}/ui-overload-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "TTL",
+                      "urls": [
+                        "/${VERSION}/ui-ttl-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Physical Cluster Replication",
+                      "urls": [
+                        "/${VERSION}/ui-physical-cluster-replication-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Logical Data Replication",
+                      "urls": [
+                        "/${VERSION}/ui-logical-data-replication-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Custom Chart",
+                      "urls": [
+                        "/${VERSION}/ui-custom-chart-debug-page.html"
+                      ]
+                    }
+                        ]
+                      },
+                      {
+                        "title": "Databases Page",
+                        "urls": [
+                          "/${VERSION}/ui-databases-page.html"
+                        ]
+                      },
+                      {
+                        "title": "Sessions Page",
+                        "urls": [
+                          "/${VERSION}/ui-sessions-page.html"
+                        ]
+                      },
+                      {
+                        "title": "Statements Page",
+                        "urls": [
+                          "/${VERSION}/ui-statements-page.html"
+                        ]
+                      },
+                      {
+                        "title": "Transactions Page",
+                        "urls": [
+                          "/${VERSION}/ui-transactions-page.html"
+                        ]
+                      },
+                      {
+                        "title": "Insights Page",
+                        "urls": [
+                          "/${VERSION}/ui-insights-page.html"
+                        ]
+                      },
+                      {
+                        "title": "Network Page",
+                        "urls": [
+                          "/${VERSION}/ui-network-latency-page.html"
+                        ]
+                      },
+                      {
+                        "title": "Top Ranges Page",
+                        "urls": [
+                          "/${VERSION}/ui-top-ranges-page.html"
+                        ]
+                      },
+                      {
+                        "title": "Jobs Page",
+                        "urls": [
+                          "/${VERSION}/ui-jobs-page.html"
+                        ]
+                      },
+                      {
+                        "title": "Schedules Page",
+                        "urls": [
+                          "/${VERSION}/ui-schedules-page.html"
+                        ]
+                      },
+                      {
+                        "title": "Advanced Debug Page",
+                        "urls": [
+                          "/${VERSION}/ui-debug-pages.html"
+                        ]
+                      },
+                      {
+                       "title": "Key Visualizer",
+                       "urls": [
+                         "/${VERSION}/ui-key-visualizer.html"
+                       ]
+                      },
+                      {
+                        "title": "WAL Failover",
+                        "urls": [
+                          "/${VERSION}/wal-failover.html"
+                        ]
+                      }
+               ]
+          },
+          {
+            "title": "Backups and Restores",
+            "items": [
+                {
+                "title": "Overview",
+                "urls": [
+                    "/${VERSION}/backup-and-restore-overview.html"
+                ]
+                },
+                {
+                "title": "Full and Incremental Backups",
+                "urls": [
+                    "/${VERSION}/take-full-and-incremental-backups.html"
+                ]
+                },
+                {
+                "title": "Backups with Revision History and Point-in-time Restore",
+                "urls": [
+                    "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
+                ]
+                },
+                {
+                "title": "Encrypted Backup and Restore",
+                "urls": [
+                    "/${VERSION}/take-and-restore-encrypted-backups.html"
+                ]
+                },
+                {
+                "title": "Locality-restricted Backup Execution",
+                "urls": [
+                    "/${VERSION}/take-locality-restricted-backups.html"
+                ]
+                },
+                {
+                "title": "Locality-aware Backup and Restore",
+                "urls": [
+                    "/${VERSION}/take-and-restore-locality-aware-backups.html"
+                ]
+                },
+                {
+                "title": "Scheduled Backups",
+                "urls": [
+                    "/${VERSION}/manage-a-backup-schedule.html"
+                ]
+                },
+                {
+                "title": "Backup Validation",
+                "urls": [
+                    "/${VERSION}/backup-validation.html"
+                ]
+                },
+                {
+                "title": "Expire Past Backups",
+                "urls": [
+                    "/${VERSION}/expire-past-backups.html"
+                ]
+                },
+                {
+                "title": "Backup and Restore Monitoring",
+                "urls": [
+                    "/${VERSION}/backup-and-restore-monitoring.html"
+                ]
+                }
+            ]
+          },
+          {
+            "title": "File Storage",
+            "items": [
+             {
+                "title": "Cloud Storage",
+                "urls": [
+                    "/${VERSION}/use-cloud-storage.html"
+                ]
+                },
+                {
+                "title": "Cloud Storage Authentication",
+                "urls": [
+                    "/${VERSION}/cloud-storage-authentication.html"
+                ]
+                },
+              {
+                "title": "Userfile Storage",
+                "urls": [
+                  "/${VERSION}/use-userfile-storage.html"
+                ]
+              },
+              {
+                "title": "Local File Server",
+                "urls": [
+                  "/${VERSION}/use-a-local-file-server.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Cluster Maintenance",
+            "items": [
+              {
+                "title": "Upgrade CockroachDB",
+                "urls": [
+                  "/${VERSION}/upgrade-cockroach-version.html"
+                ]
+              },
+              {
+                "title": "Disaster Recovery Planning",
+                "urls": [
+                  "/${VERSION}/disaster-recovery-planning.html"
+                ]
+              },
+              {
+                "title": "Restoring Backups Across Versions",
+                "urls": [
+                  "/${VERSION}/restoring-backups-across-versions.html"
+                ]
+              },
+              {
+                "title": "Manage Long-Running Queries",
+                "urls": [
+                  "/${VERSION}/manage-long-running-queries.html"
+                ]
+              },
+              {
+                "title": "Node Shutdown",
+                "urls": [
+                  "/${VERSION}/node-shutdown.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Logs",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/logging-overview.html"
+                ]
+              },
+              {
+                "title": "Configure Logs",
+                "urls": [
+                  "/${VERSION}/configure-logs.html"
+                ]
+              },
+              {
+                "title": "Logging Use Cases",
+                "urls": [
+                  "/${VERSION}/logging-use-cases.html"
+                ]
+              },
+              {
+                "title": "Log SQL Activity to Datadog",
+                "urls": [
+                  "/${VERSION}/log-sql-activity-to-datadog.html"
+                ]
+              },
+              {
+                "title": "Logging Best Practices",
+                "urls": [
+                  "/${VERSION}/logging-best-practices.html"
+                ]
+              },
+              {
+                "title": "Critical Log Messages",
+                "urls": [
+                  "/${VERSION}/critical-log-messages.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Cluster API",
+            "urls": [
+              "/${VERSION}/cluster-api.html"
+            ]
+          }
+    ]
+}

@@ -70,7 +70,7 @@ After you [size your cluster](#sizing), you can determine the amount of RAM, sto
 
 This hardware guidance is meant to be platform agnostic and can apply to bare-metal, containerized, and orchestrated deployments. Also see our [cloud-specific](#cloud-specific-recommendations) recommendations.
 
-{% capture cap_per_vcpu %}{% include_cached v22.1/prod-deployment/provision-storage.md %}{% endcapture %}
+{% capture cap_per_vcpu %}{% include_cached {{ page.version.version }}/prod-deployment/provision-storage.md %}{% endcapture %}
 
 <table>
 <thead>
@@ -151,6 +151,8 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
 - Use [zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
     This is especially recommended if you are using local disks rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster]({% link {{ page.version.version }}/configure-replication-zones.md %}#edit-the-default-replication-zone) or for specific [databases]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-database), [tables]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-table), or [rows]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-partition).
+
+- Do not run CockroachDB on top of distributed file systems (for example, Ceph.io) when deploying on-premises. CockroachDB already handles [data distribution]({% link {{ page.version.version }}/architecture/distribution-layer.md %}), [replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}), and fault tolerance using [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft). Adding a distributed file system underneath creates a second, uncoordinated layer that can cause duplicate replication, higher and more variable latency, and more complex failures. Use the recommended Linux filesystems instead.
 
 {{site.data.alerts.callout_info}}
 Under-provisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a [ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [storage issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#storage-issues).
@@ -340,7 +342,9 @@ For details about available backup and restore types in CockroachDB, see [Backup
 
 CockroachDB manages its own memory caches, independently of the operating system. These are configured via the [`--cache`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) and [`--max-sql-memory`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) flags.
 
-Each node has a default cache size of `128MiB` that is passively consumed. The default was chosen to facilitate development and testing, where users are likely to run multiple CockroachDB nodes on a single machine. Increasing the cache size will generally improve the node's read performance.
+The default cache size is per-node and is passively consumed; it was chosen to facilitate development and testing, where users are likely to run multiple CockroachDB nodes on a single machine. Increasing the cache size will generally improve the node's read performance. Production systems should always configure this setting.
+
+The [`--cache`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) flag controls the [Pebble storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble) block cache, which holds uncompressed blocks of persisted [key-value data]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#overview) in memory. If a read misses within the block cache, the storage engine reads the file via the operating system's page cache, which may hold the relevant block in-memory in its compressed form. Otherwise, the read is served from the storage device. The block cache fills to the configured size and is then recycled using a least-recently-used (LRU) policy.
 
 Each node has a default SQL memory size of `25%`. This memory is used as-needed by active operations to store temporary data for SQL queries.
 

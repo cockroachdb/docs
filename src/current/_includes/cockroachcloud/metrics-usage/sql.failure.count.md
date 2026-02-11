@@ -1,1 +1,0 @@
-This metric is a high-level indicator of workload and application degradation with query failures. Use the [<b>Insights</b> page]({% link cockroachcloud/insights-page.md %}) to find failed executions with their error code to troubleshoot or use application-level logs, if instrumented, to determine the cause of error.

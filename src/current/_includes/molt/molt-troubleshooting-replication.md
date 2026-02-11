@@ -6,7 +6,7 @@ If MOLT Replicator appears hung or performs poorly:
 
 1. Enable trace logging with `-vv` to get more visibility into the replicator's state and behavior.
 
-1. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets. Replace `{host}` and `{metrics-port}` with your Replicator host and the port specified by `--metricsAddr`:
+1. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets. Replace `{host}` and `{metrics-port}` with your Replicator host and the port specified by [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr):
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -73,7 +73,7 @@ SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
 ##### Could not connect to PostgreSQL
 
 ~~~
-could not connect to source database: failed to connect to `user=migration_user database=source_database`
+could not connect to source database: failed to connect to `user=migration_user database=migration_db`
 ~~~
 
 **Resolution:** Verify the connection details including user, host, port, and database name. Ensure the database name in your `--sourceConn` connection string matches exactly where you created the publication and slot. Verify you're connecting to the same host and port where you ran the `CREATE PUBLICATION` and `SELECT pg_create_logical_replication_slot()` commands. Check if TLS certificates need to be included in the connection URI.
@@ -239,7 +239,7 @@ Indicates source and target schemas are mismatched:
 WARNING: schema drift detected in "database"."table" at payload object offset 0: unexpected columns: column_name
 ~~~
 
-**Resolution:** Align schemas or use userscripts to transform data.
+**Resolution:** Align schemas or [use userscripts to transform data]({% link molt/userscript-cookbook.md %}#filter-columns).
 
 ##### Apply flow failures
 

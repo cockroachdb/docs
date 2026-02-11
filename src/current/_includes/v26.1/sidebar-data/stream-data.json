@@ -1,0 +1,168 @@
+{
+    "title": "Stream Data",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Change Data Capture Overview",
+        "urls": [
+          "/${VERSION}/change-data-capture-overview.html"
+        ]
+      },
+      {
+        "title": "Get Started with Changefeeds",
+        "items": [
+          {
+            "title": "Create and Configure Changefeeds",
+            "urls": [
+              "/${VERSION}/create-and-configure-changefeeds.html"
+            ]
+          },
+          {
+            "title": "Changefeed Best Practices",
+            "urls": [
+              "/${VERSION}/changefeed-best-practices.html"
+            ]
+          },
+          {
+            "title": "Changefeed Messages",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/changefeed-messages.html"
+                ]
+              },
+              {
+                  "title": "Message Envelope",
+                  "urls":[
+                      "/${VERSION}/changefeed-message-envelopes.html"
+                  ]
+              }
+          ]
+          },
+          {
+            "title": "Changefeed Sinks",
+            "urls": [
+              "/${VERSION}/changefeed-sinks.html"
+            ]
+          },
+          {
+            "title": "Changefeed Examples",
+            "urls": [
+              "/${VERSION}/changefeed-examples.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Monitor Changefeeds",
+        "items": [
+          {
+              "title": "Overview",
+              "urls": [
+                  "/${VERSION}/monitor-and-debug-changefeeds.html"
+              ]
+          },
+          {
+              "title": "Monitoring Guide",
+              "urls": [
+              "/${VERSION}/changefeed-monitoring-guide.html"
+              ]
+          },
+          {
+            "title": "Protect Changefeed Data",
+            "urls": [
+              "/${VERSION}/protect-changefeed-data.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Optimize Changefeeds",
+        "items": [
+          {
+            "title": "Change Data Capture Queries",
+            "urls": [
+              "/${VERSION}/cdc-queries.html"
+            ]
+          },
+          {
+            "title": "Changefeeds on Tables with Column Families",
+            "urls": [
+              "/${VERSION}/changefeeds-on-tables-with-column-families.html"
+            ]
+          },
+          {
+            "title": "Export Data with Changefeeds",
+            "urls": [
+              "/${VERSION}/export-data-with-changefeeds.html"
+            ]
+          },
+          {
+            "title": "Changefeeds in Multi-Region Deployments",
+            "urls": [
+              "/${VERSION}/changefeeds-in-multi-region-deployments.html"
+            ]
+          }
+        ]
+      },
+      {
+      "title": "Changefeed Tutorials",
+      "items": [
+        {
+          "title": "Stream a Changefeed to an Amazon MSK Cluster",
+          "items": [
+            {
+              "title": "Amazon MSK",
+              "urls": [
+                "/${VERSION}/stream-a-changefeed-to-amazon-msk.html"
+              ]
+            },
+            {
+              "title": "Amazon MSK Serverless",
+              "urls": [
+                "/${VERSION}/stream-a-changefeed-to-amazon-msk-serverless.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Connect to a Changefeed Kafka Sink with OAuth Using Okta",
+          "urls": [
+            "/${VERSION}/connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.html"
+          ]
+        },
+        {
+          "title": "Stream a Changefeed from CockroachDB Cloud to Snowflake",
+          "urls": [
+            "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
+          ]
+        },
+        {
+          "title": "Stream a Changefeed to a Confluent Cloud Kafka Cluster",
+          "urls": [
+            "/${VERSION}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Technical Overview",
+      "items": [
+          {
+            "title": "How Does a Changefeed Work?",
+            "urls": [
+              "/${VERSION}/how-does-a-changefeed-work.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Advanced Changefeed Configuration",
+        "urls": [
+          "/${VERSION}/advanced-changefeed-configuration.html"
+        ]
+      }
+    ]
+  }
+  

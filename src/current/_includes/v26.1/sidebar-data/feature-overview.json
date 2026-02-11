@@ -1,0 +1,65 @@
+{
+    "title": "Feature Overview",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "CockroachDB Basics",
+        "items": [
+          {
+            "title": "Why CockroachDB?",
+            "urls": [
+              "/${VERSION}/why-cockroachdb.html"
+            ]
+          },
+          {
+            "title": "Replication & Rebalancing",
+            "urls": [
+              "/${VERSION}/demo-replication-and-rebalancing.html"
+            ]
+          },
+          {
+            "title": "CockroachDB Resilience",
+            "urls": [
+              "/${VERSION}/demo-cockroachdb-resilience.html"
+            ]
+          },
+          {
+            "title": "Serializable Transactions",
+            "urls": [
+              "/${VERSION}/demo-serializable.html"
+            ]
+          },
+          {
+            "title": "Multi-Active Availability",
+            "urls": [
+              "/${VERSION}/multi-active-availability.html"
+            ]
+          }
+        ]
+      },
+      {
+          "title": "CockroachDB SQL",
+          "items": [
+            {
+              "title": "PostgreSQL Compatibility",
+              "urls": [
+                "/${VERSION}/postgresql-compatibility.html"
+              ]
+            },
+            {
+              "title": "SQL Features",
+              "urls": [
+                "/${VERSION}/sql-feature-support.html"
+              ]
+            },
+            {
+              "title": "SQL FAQs",
+              "urls": [
+                "/${VERSION}/sql-faqs.html"
+              ]
+            }
+          ]
+      }
+    ]
+}  
+  

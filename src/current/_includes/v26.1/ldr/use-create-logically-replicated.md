@@ -1,0 +1,1 @@
+If your table does not contain any user-defined types or [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies, use the [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) syntax to start the stream for a fast, offline initial scan and automatic destination table setup.

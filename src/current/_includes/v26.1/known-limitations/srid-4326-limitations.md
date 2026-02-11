@@ -1,0 +1,1 @@
+Defining a custom SRID by inserting rows into [`spatial_ref_sys`]({% link {{ page.version.version }}/architecture/glossary.md %}#spatial_ref_sys) is not currently supported. [#55903](https://github.com/cockroachdb/cockroach/issues/55903)

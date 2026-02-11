@@ -1,1 +1,0 @@
-If you are creating an {% if page.name == "create-external-connection.md" %}external connection{% else %}[external connection](create-external-connection.html){% endif %} with [`BACKUP` query parameters](backup.html#query-parameters), you must pass them in uppercase otherwise you will receive an `unknown query parameters` error.

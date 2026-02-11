@@ -1,0 +1,1 @@
+Cockroach Labs supports Azure's General Purpose v2 Standard storage account type. For more details, refer to the Azure [Storage Account documentation](https://learn.microsoft.com/azure/storage/blobs/storage-blobs-introduction#storage-accounts).

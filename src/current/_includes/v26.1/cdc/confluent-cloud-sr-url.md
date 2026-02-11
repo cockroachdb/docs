@@ -1,0 +1,1 @@
+To connect to Confluent Cloud, use the following URL structure: `'https://{API_KEY_ID}:{API_SECRET_URL_ENCODED}@{CONFLUENT_REGISTRY_URL}:443'`. See the [Stream a Changefeed to a Confluent Cloud Kafka Cluster]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %}#step-8-create-a-changefeed) tutorial for further detail.

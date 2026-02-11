@@ -63,7 +63,7 @@ Pebble uses a Log-structured Merge-tree (hereafter _LSM tree_ or _LSM_) to manag
 
 SSTs are an on-disk representation of sorted lists of key-value pairs. Conceptually, they look something like this (intentionally simplified) diagram:
 
-<img src="{{ 'images/v21.2/sst.png' | relative_url }}" alt="Structure of an SST file" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/sst.png" alt="Structure of an SST file" style="max-width:100%" />
 
 SST files are immutable; they are never modified, even during the [compaction process](#compaction).
 
@@ -78,7 +78,7 @@ The SSTs within each level are guaranteed to be non-overlapping: for example, if
 - To allow LSM-based storage engines like Pebble to support ingesting large amounts of data, such as when using the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement.
 - To allow for easier and more efficient flushes of [memtables](#memtable-and-write-ahead-log).
 
-<img src="{{ 'images/v21.2/lsm-with-ssts.png' | relative_url }}" alt="LSM tree with SST files" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/lsm-with-ssts.png" alt="LSM tree with SST files" style="max-width:100%" />
 
 ##### Compaction
 
@@ -128,7 +128,7 @@ Another file on disk called the write-ahead log (hereafter _WAL_) is associated 
 
 The relationship between the memtable, the WAL, and the SST files is shown in the diagram below. New values are written to the WAL at the same time as they are written to the memtable. From the memtable they are eventually written to SST files on disk for longer-term storage.
 
-<img src="{{ 'images/v21.2/memtable-wal-sst.png' | relative_url }}" alt="Relationship between memtable, WAL, and SSTs" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/memtable-wal-sst.png" alt="Relationship between memtable, WAL, and SSTs" style="max-width:100%" />
 
 ##### LSM design tradeoffs
 

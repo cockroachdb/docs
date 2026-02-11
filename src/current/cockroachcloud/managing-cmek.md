@@ -11,15 +11,14 @@ This page shows how to enable [Customer-Managed Encryption Keys (CMEK)]({% link 
 
 ## Prerequisites
 
-To enable CMEK for a cluster, you need:
-
-- A CockroachDB {{ site.data.products.advanced }} [private cluster]({% link cockroachcloud/private-clusters.md %}) with [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) enabled. Advanced security features can be enabled only during cluster creation. Complete the steps in this guide before inserting data into the cluster.
-- A [CockroachDB {{ site.data.products.cloud }} service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and a [CockroachDB Cloud API key]({% link cockroachcloud/managing-access.md %}#create-api-keys) for the service account to authenticate to the CockroachDB Cloud API.
+To enable CMEK for a cluster, you need a CockroachDB {{ site.data.products.advanced }} [private cluster]({% link cockroachcloud/private-clusters.md %}) with [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) enabled. Advanced security features can be enabled only during cluster creation. Complete the steps in this guide before inserting data into the cluster.
 
 This guide will walk you through creating the necessary cloud identities and encryption keys:
 
 - An IAM role in your AWS account, a cross-tenant service account in your GCP project, or admin consent for CockroachDB Cloud to access your Azure Key Vault. CockroachDB Cloud will use this identity to encrypt and decrypt using the CMEK.
 - A CMEK key for your cluster stored in AWS KMS, GCP KMS, or Azure Key Vault. CockroachDB Cloud never has access to the CMEK itself. You can use an existing key or create a new one following the instructions in this guide.
+
+The instructions on this page describe how to enable and manage CMEK using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) which requires a service account and corresponding access token. As an alternative to the API, you can use the CMEK UI [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview) in the {{ site.data.products.cloud }} Console.
 
 ## Enable CMEK
 
@@ -42,7 +41,7 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{YOUR_CLUSTER_ID} \
-      --header 'Authorization: Bearer {YOUR_API_KEY}' | jq .account_id
+      --header "Authorization: Bearer {YOUR_API_KEY}" | jq .account_id
     ~~~
 
     In the response, verify that the `id` field matches the cluster ID you specified, then make a note of the `account_id`, which is the ID for the cross-account IAM role.
@@ -129,7 +128,7 @@ Follow these steps to create a cross-account IAM role and give it permission to 
     ~~~shell
     curl --request GET \
          --url https://cockroachlabs.cloud/api/v1/clusters/{YOUR_CLUSTER_ID} \
-         --header 'Authorization: Bearer {YOUR_API_KEY}'
+         --header "Authorization: Bearer {YOUR_API_KEY}"
     ~~~
 
     In the response, the ID is stored in the `account_id` field.
@@ -383,7 +382,7 @@ Make a note of the key ring name.
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
-For these instructions, you can use an existing Azure Key Vault, or create a new key vault using the [Azure portal](https://learn.microsoft.com/en-us/azure/key-vault/general/quick-create-portal) or [CLI](https://learn.microsoft.com/en-us/azure/key-vault/general/quick-create-cli).
+For these instructions, you can use an existing Azure Key Vault, or create a new key vault using the [Azure portal](https://learn.microsoft.com/azure/key-vault/general/quick-create-portal) or [CLI](https://learn.microsoft.com/azure/key-vault/general/quick-create-cli).
 
 1. In the Azure portal, navigate to your Key Vault.
 1. On the Key Vault left-hand sidebar, select **Objects** then select **Keys**.
@@ -526,7 +525,7 @@ API_KEY= #{ your API key }
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID}/cmek \
   --header "Authorization: Bearer ${API_KEY}" \
-  --header 'content-type: application/json' \
+  --header "content-type: application/json" \
   --data "@cmek_config.json"
 ~~~
 
@@ -562,7 +561,7 @@ To rotate a CMEK key:
     curl --request PUT \
       --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID}/cmek \
       --header "Authorization: Bearer ${API_KEY}" \
-      --header 'content-type: application/json' \
+      --header "content-type: application/json" \
       --data "@cmek_config.json"
     ~~~
 
@@ -579,9 +578,9 @@ To add a region to a cluster that already has CMEK enabled:
     CLUSTER_ID= #{ your cluster ID }
     API_KEY= #{ your API key }
     curl --request PATCH \
-      --url "https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID}" \
+      --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID} \
       --header "Authorization: Bearer ${API_KEY}" \
-      --header 'content-type: application/json' \
+      --header "content-type: application/json" \
       --data "@cmek_config.json"
     ~~~
 
@@ -606,7 +605,7 @@ Within your KMS, **do not revoke** access to a CMEK that is in use by one or mor
     curl --request PATCH \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
       --header "Authorization: Bearer ${API_KEY}" \
-      --header 'content-type: application/json' \
+      --header "content-type: application/json" \
       --data '{"action":"REVOKE"}'
     ~~~
 

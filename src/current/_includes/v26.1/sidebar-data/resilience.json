@@ -1,0 +1,18 @@
+{
+    "title": "Data Resilience",
+    "is_top_level": true,
+    "items": [
+        {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/data-resilience.html"
+            ]
+        },
+        {
+            "title": "Disaster Recovery",
+            "urls": [
+              "/${VERSION}/disaster-recovery-overview.html"
+            ]
+          }
+    ]
+}

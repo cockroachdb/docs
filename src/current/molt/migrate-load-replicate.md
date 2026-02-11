@@ -40,10 +40,9 @@ Perform the initial load of the source data.
 	molt fetch \
 	--source $SOURCE \
 	--target $TARGET \
-	--schema-filter 'migration_schema' \
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
-	--table-handling truncate-if-exists \
+	--table-handling truncate-if-exists
 	~~~
 	</section>
 
@@ -59,7 +58,7 @@ Perform the initial load of the source data.
 	--schema-filter 'migration_schema' \
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
-	--table-handling truncate-if-exists \
+	--table-handling truncate-if-exists
 	~~~
 	</section>
 
@@ -76,11 +75,17 @@ Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and
 When you run `replicator`, you can configure the following options for replication:
 
 - [Replication connection strings](#replication-connection-strings): Specify URL-encoded source and target database connections.
-- [Replication flags](#replication-flags): Specify required and optional flags to configure replicator behavior.
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
 <section class="filter-content" markdown="1" data-scope="postgres oracle">
 - [Tuning parameters](#tuning-parameters): Optimize replication performance and resource usage.
 </section>
 - [Replicator metrics](#replicator-metrics): Monitor replication progress and performance.
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
 
 ### Replication connection strings
 
@@ -122,7 +127,7 @@ For Oracle Multitenant databases, also specify `--sourcePDBConn` with the PDB co
 Follow best practices for securing connection strings. Refer to [Secure connections](#secure-connections).
 {{site.data.alerts.end}}
 
-### Replication flags
+### Replicator flags
 
 {% include molt/replicator-flags-usage.md %}
 
@@ -132,7 +137,25 @@ Follow best practices for securing connection strings. Refer to [Secure connecti
 {% include molt/optimize-replicator-performance.md %}
 </section>
 
-{% include molt/replicator-metrics.md %}
+### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+~~~ 
+--metricsAddr :30005
+~~~
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=postgres).
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=mysql).
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}?filters=oracle).
+</section>
 
 ## Start Replicator
 
@@ -143,16 +166,17 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-1. Run the `replicator` command, using the same slot name that you specified with `--pglogical-replication-slot-name` in the [Fetch command](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
+1. Run the `replicator` command, using the same slot name that you specified with `--pglogical-replication-slot-name` and the publication name created by `--pglogical-publication-and-slot-drop-and-recreate` in the [Fetch command](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	replicator pglogical \
 	--sourceConn $SOURCE \
 	--targetConn $TARGET \
-	--targetSchema defaultdb.public \
+	--targetSchema defaultdb.migration_schema \
 	--slotName molt_slot \
-	--stagingSchema _replicator \
+	--publicationName molt_fetch \
+	--stagingSchema defaultdb._replicator \
 	--stagingCreateSchema \
 	--metricsAddr :30005 \
 	-v
@@ -160,7 +184,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-1. Run the `replicator` command, specifying the GTID from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
+1. Run the `replicator` command, specifying the GTID from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) and specify the path with `--userscript`.
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -169,7 +193,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	--targetConn $TARGET \
 	--targetSchema defaultdb.public \
 	--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29 \
-	--stagingSchema _replicator \
+	--stagingSchema defaultdb._replicator \
 	--stagingCreateSchema \
 	--metricsAddr :30005 \
 	--userscript table_filter.ts \
@@ -177,12 +201,12 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	~~~
 
 	{{site.data.alerts.callout_success}}
-	For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON source_database.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
+	For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON migration_db.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
 	{{site.data.alerts.end}}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-1. Run the `replicator` command, specifying the backfill and starting SCN from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
+1. Run the `replicator` command, specifying the backfill and starting SCN from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication]({% link molt/userscript-cookbook.md %}#filter-multiple-tables) and specify the path with `--userscript`.
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -190,11 +214,11 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	--sourceConn $SOURCE \
 	--sourcePDBConn $SOURCE_PDB \
 	--targetConn $TARGET \
-	--sourceSchema migration_schema \
-	--targetSchema defaultdb.public \
+	--sourceSchema MIGRATION_USER \
+	--targetSchema defaultdb.migration_schema \
 	--backfillFromSCN 26685444 \
 	--scn 26685786 \
-	--stagingSchema _replicator \
+	--stagingSchema defaultdb._replicator \
 	--stagingCreateSchema \
 	--metricsAddr :30005 \
 	--userscript table_filter.ts \
@@ -202,7 +226,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	~~~
 
 	{{site.data.alerts.callout_info}}
-	When filtering out tables in a schema with a userscript, replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
+	When [filtering out tables in a schema with a userscript]({% link molt/userscript-cookbook.md %}#filter-multiple-tables), replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
 	{{site.data.alerts.end}}
 </section>
 
@@ -267,7 +291,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 
 1. Repeat [Verify the data load](#verify-the-data-load) to verify the updated data.
 
-## Modify the CockroachDB schema
+## Add constraints and indexes
 
 {% include molt/migration-modify-target-schema.md %}
 

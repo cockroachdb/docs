@@ -52,8 +52,8 @@ For details on how LTS impacts support in CockroachDB {{ site.data.products.core
 
 | Major Release Type | Frequency | Required upgrade | LTS releases and extended support |
 | :---: | :---: | :---: | :---: |
-| Regular (e.g. v24.1) | 2x/year | Yes | Yes |
-| Innovation (e.g. v24.2) | 2x/year | on Basic only | No<sup style="font-size: 0.9em; vertical-align: -0.3em;">*</sup> |
+| Innovation (e.g. v25.1) | 2x/year | on Basic only | No<sup style="font-size: 0.9em; vertical-align: -0.3em;">*</sup> |
+| Regular (e.g. v25.2) | 2x/year | Yes | Yes |
 <small>* Column does not apply to CockroachDB Basic, where clusters are automatically upgraded when a new major version or a patch release is available, ensuring continuous support.</small>
 
 For a given CockroachDB {{ site.data.products.core }}, CockroachDB {{ site.data.products.standard }}, or CockroachDB {{ site.data.products.advanced }} cluster, customers may choose to exclusively install or upgrade to Regular Releases to benefit from longer testing and support lifecycles, or to also include Innovation Releases, and benefit from earlier access to new features. This choice does not apply to CockroachDB {{ site.data.products.basic }}, where every major release is an automatic upgrade.
@@ -109,7 +109,9 @@ A cluster that is upgraded to an alpha binary of CockroachDB or a binary that wa
 
 | Version | Release Type | GA date |
 | :---: | :---: | :---: |
-| [v25.3](#v25-3) | Innovation | 2025-08-04 |
+| [v26.1](#v26-1) | Innovation | 2026-02-02 |
+| [v25.4](#v25-4) | Regular | 2025-11-03 |
+| [v25.3]({% link releases/unsupported-versions.md %}#v25-3) | Innovation | 2025-08-04 |
 | [v25.2](#v25-2) | Regular | 2025-05-12 |
 | [v25.1]({% link releases/unsupported-versions.md %}#v25-1) | Innovation | 2025-02-18 |
 | [v24.3](#v24-3) | Regular | 2024-11-18 |
@@ -123,8 +125,6 @@ The following releases and their descriptions represent proposed plans that are 
 
 | Version | Release Type | Expected GA date |
 | :---: | :---: | :---: |
-| v25.4 | Regular    | 2025 Q4    |
-| v26.1 | Innovation | 2026 Q1    |
 | v26.2 | Regular    | 2026 Q2    |
 
 ## Downloads

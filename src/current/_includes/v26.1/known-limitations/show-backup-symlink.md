@@ -1,0 +1,1 @@
+[`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) does not support listing backups if the [`nodelocal`]({% link {{ page.version.version }}/cockroach-nodelocal-upload.md %}) storage location is a symlink. [#70260](https://github.com/cockroachdb/cockroach/issues/70260)

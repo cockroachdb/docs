@@ -1,7 +1,0 @@
-- `word_similarity()` built-in function.
-- `strict_word_similarity()` built-in function.
-- `%>` and `<%` comparisons and acceleration.
-- `<<%` and `%>>` comparisons and acceleration.
-- `<->`, `<<->`, `<->>`, `<<<->`, and `<->>>` comparisons.
-- Acceleration on [regex string matching](scalar-expressions.html#string-matching-using-posix-regular-expressions).
-- `%` comparisons, `show_trgm`, and trigram index creation on [collated strings](collate.html).
