@@ -1,4 +1,5 @@
 #!/bin/bash
+set -o pipefail  # Ensure pipeline exits with first failed command's exit code
 
 echo "🚀 NETLIFY BUILD SCRIPT WITH RETRY LOGIC"
 echo "========================================"
@@ -12,12 +13,23 @@ echo ""
 MAX_RETRIES=${MAX_RETRIES:-3}
 BASE_RETRY_DELAY=${BASE_RETRY_DELAY:-30}
 
+# Testing: Simulate network errors to verify retry logic
+# Set SIMULATE_NETWORK_ERROR=1 to test retry behavior
+# Set SIMULATE_NETWORK_ERROR_ATTEMPTS=N to fail first N attempts (default: 1)
+SIMULATE_NETWORK_ERROR=${SIMULATE_NETWORK_ERROR:-0}
+SIMULATE_NETWORK_ERROR_ATTEMPTS=${SIMULATE_NETWORK_ERROR_ATTEMPTS:-1}
+
 if [[ $MAX_RETRIES -gt 1 ]]; then
     echo "🔄 RETRY LOGIC ENABLED"
     echo "Max retries: ${MAX_RETRIES}"
     echo "Base retry delay: ${BASE_RETRY_DELAY}s (exponential backoff)"
 else
     echo "📋 SINGLE ATTEMPT BUILD"
+fi
+
+if [[ "$SIMULATE_NETWORK_ERROR" == "1" ]]; then
+    echo "🧪 TESTING MODE: Network error simulation enabled"
+    echo "   Will simulate failure for first ${SIMULATE_NETWORK_ERROR_ATTEMPTS} attempt(s)"
 fi
 
 echo ""
@@ -65,11 +77,24 @@ function log_attempt() {
 function build_with_monitoring {
     local config=$1
     local build_log="build_${ATTEMPT_COUNT}.log"
-    
+
     echo "📝 Starting Jekyll build with config: $config"
     echo "⏰ Build start: $(date)"
     echo "📄 Build log: $build_log"
-    
+
+    # Testing: Simulate network error if enabled
+    if [[ "$SIMULATE_NETWORK_ERROR" == "1" && $ATTEMPT_COUNT -le $SIMULATE_NETWORK_ERROR_ATTEMPTS ]]; then
+        echo "🧪 TESTING: Simulating network error (attempt $ATTEMPT_COUNT of $SIMULATE_NETWORK_ERROR_ATTEMPTS simulated failures)"
+        echo "Liquid Exception: Failed to open TCP connection to raw.githubusercontent.com:443 (getaddrinfo: Temporary failure in name resolution)" | tee "$build_log"
+        echo "⏰ Build end: $(date)"
+        echo "❌ Jekyll build failed with exit code: 1 (simulated)"
+        echo "🔍 Analyzing build errors for retry eligibility..."
+        echo "🌐 Transient network error detected - eligible for retry"
+        echo "📋 Network error details:"
+        grep -iE "(temporary failure in name resolution|failed to open tcp connection)" "$build_log" | head -3
+        return 2  # Retryable error
+    fi
+
     # Capture Jekyll output for error analysis
     if bundle exec jekyll build --trace --config _config_base.yml,$config 2>&1 | tee "$build_log"; then
         echo "⏰ Build end: $(date)"

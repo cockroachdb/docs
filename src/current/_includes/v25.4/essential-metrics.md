@@ -17,8 +17,24 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
   {% assign metrics_datadog = site.data[version].metrics.datadog-crdb-dedicated %}
   {% assign datadog_link = "https://docs.datadoghq.com/integrations/cockroach-cloud/#metrics" %}
   {% assign datadog_prefix = "crdb_dedicated" %}
-{% comment %} Removed NETWORKING category for advanced deployment {% endcomment %}
-  {% assign category_order = "HARDWARE,STORAGE,OVERLOAD,DISTRIBUTED,REPLICATION,SQL,CHANGEFEEDS,TTL,CROSS_CLUSTER_REPLICATION,LOGICAL_DATA_REPLICATION,UNSET," %}
+{% comment %} Removed NETWORKING AND LOGICAL_DATA_REPLICATION categories for advanced deployment {% endcomment %}
+  {% assign category_order = "HARDWARE,STORAGE,OVERLOAD,DISTRIBUTED,REPLICATION,SQL,CHANGEFEEDS,TTL,CROSS_CLUSTER_REPLICATION,UNSET," %}
+
+  {% comment %} Build list of allowed metrics from export YAML files {% endcomment %}
+  {% assign crdb_metrics = site.data[version].metrics.export.crdb_metrics.metrics %}
+  {% assign shared_metrics = site.data[version].metrics.export.shared_metrics.metrics %}
+
+  {% comment %} Extract metric names into a combined string for lookup {% endcomment %}
+  {% assign advanced_allowed_metrics = "|" %}
+  {% for metric_pair in crdb_metrics %}
+    {% assign metric_name = metric_pair[0] %}
+    {% assign advanced_allowed_metrics = advanced_allowed_metrics | append: metric_name | append: "|" %}
+  {% endfor %}
+  {% for metric_pair in shared_metrics %}
+    {% assign metric_name = metric_pair[0] %}
+    {% assign advanced_allowed_metrics = advanced_allowed_metrics | append: metric_name | append: "|" %}
+  {% endfor %}
+  {% comment %}DEBUG: advanced_allowed_metrics length = {{ advanced_allowed_metrics | size }}{% endcomment %}
 
 These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.advanced }} cluster. Use them to build custom dashboards with the following tools:
 
@@ -72,7 +88,7 @@ The **Usage** column explains why each metric is important to visualize and how 
       
       {% assign layer = layers | where_exp: "l", "l.name == layer_name" %}      
       {% assign category = layer[0].categories | where_exp: "c", "c.name == category_name" %}
-      {% assign essential_metrics = category[0].metrics | where: "essential", true %}     
+      {% assign essential_metrics = category[0].metrics | where_exp: "m", "m.essential == true or m.visibility == 'ESSENTIAL'" %}
       {% if essential_metrics.size > 0 %}
         {% comment %}DEBUG: 1 {{ layer_name }} 2 {{ layer[0].name }} 3 {{ category[0].name }} {{ essential_metrics.size }}{% endcomment %}
         {% assign essential_metrics_total = essential_metrics_total | plus: essential_metrics.size %}
@@ -116,13 +132,23 @@ The **Usage** column explains why each metric is important to visualize and how 
         
         {% assign layer = layers | where_exp: "l", "l.name == layer_name" %}
         {% assign category = layer[0].categories | where_exp: "c", "c.name == category_name" %}
-        {% assign essential_metrics = category[0].metrics | where: "essential", true %}     
+        {% assign essential_metrics = category[0].metrics | where_exp: "m", "m.essential == true or m.visibility == 'ESSENTIAL'" %}     
         {% comment %}DEBUG: 1 {{ layer_name }} 2 {{ layer[0].name }} 3 {{ category[0].name }}{% endcomment %} 
 
         {% for metric in essential_metrics %}
         {% comment %} STEP 4d. Exclude SQL metrics that will be placed in special categories {% endcomment %}
         {% unless category_name == SQL %}
-          {% unless metric.name contains "backup" or metric.name contains "BACKUP" or metric.name contains "create_stats" %}
+          {% comment %} For advanced deployment, only show metrics that exist in export YAML files {% endcomment %}
+          {% assign metric_normalized = metric.name | replace: ".", "_" | replace: "-", "_" %}
+          {% assign show_metric = false %}
+          {% if include.deployment == 'self-hosted' %}
+            {% assign show_metric = true %}
+          {% elsif advanced_allowed_metrics contains metric_normalized %}
+            {% assign show_metric = true %}
+          {% endif %}
+
+          {% if show_metric %}
+            {% unless metric.name contains "backup" or metric.name contains "BACKUP" or metric.name contains "create_stats" %}
 
           {% comment %} Transforms to match datadog_id {% endcomment %}
           {% assign input_metric = metric.name %}
@@ -162,7 +188,8 @@ The **Usage** column explains why each metric is important to visualize and how 
             <td>{{ metric.how_to_use }}</td>
         </tr>
 
-          {% endunless %}{% comment %}unless metric.name contains "backup" or metric.name contains "BACKUP" or metric.name contains "create_stats"{% endcomment %}
+            {% endunless %}{% comment %}unless metric.name contains "backup" or metric.name contains "BACKUP" or metric.name contains "create_stats"{% endcomment %}
+          {% endif %}{% comment %}if show_metric{% endcomment %}
         {% endunless %}{% comment %}unless category_name == SQL{% endcomment %}
         {% endfor %}{% comment %}for metric in essential_metrics{% endcomment %}
       {% endfor %}{% comment %}for layer in layer_names_array{% endcomment %}
@@ -176,8 +203,8 @@ The **Usage** column explains why each metric is important to visualize and how 
     {% if category_name == "SQL" %}
       {% assign layer = layers | where_exp: "l", "l.name == 'APPLICATION'" %}
       {% assign category = layer[0].categories | where_exp: "c", "c.name == category_name" %}
-      {% assign essential_metrics = category[0].metrics | where: "essential", true %}
-
+      {% assign essential_metrics = category[0].metrics | where_exp: "m", "m.essential == true or m.visibility == 'ESSENTIAL'" %}
+    {% if include.deployment == 'self-hosted' %}
 ## Table Statistics
 
 <table markdown="1">
@@ -193,6 +220,7 @@ The **Usage** column explains why each metric is important to visualize and how 
 
      {% for metric in essential_metrics %}
         {% if metric.name contains "create_stats" %}
+
           {% assign metric_link = metric.name | replace: "_", "-" | replace: ".", "-" %}
 
         <tr>
@@ -206,11 +234,12 @@ The **Usage** column explains why each metric is important to visualize and how 
             <td>{{ metric.how_to_use }}</td>
         </tr>
 
-        {% endif %}
+        {% endif %}{% comment %}if metric.name contains "create_stats"{% endcomment %}
       {% endfor %}
 
     </tbody>
 </table>
+    {% endif %}{% comment %}if include.deployment == 'self-hosted' {% endcomment %}
 
 ## Disaster Recovery
 
@@ -227,7 +256,16 @@ The **Usage** column explains why each metric is important to visualize and how 
 
      {% for metric in essential_metrics %}
         {% if metric.name contains "backup" or metric.name contains "BACKUP" %}
+          {% comment %} For advanced deployment, only show metrics that exist in export YAML files {% endcomment %}
+          {% assign metric_normalized = metric.name | replace: ".", "_" | replace: "-", "_" %}
+          {% assign show_metric = false %}
+          {% if include.deployment == 'self-hosted' %}
+            {% assign show_metric = true %}
+          {% elsif advanced_allowed_metrics contains metric_normalized %}
+            {% assign show_metric = true %}
+          {% endif %}
 
+          {% if show_metric %}
           {% assign metric_link = metric.name | replace: "_", "-" | replace: ".", "-" %}
 
         <tr>
@@ -241,7 +279,8 @@ The **Usage** column explains why each metric is important to visualize and how 
             <td>{{ metric.how_to_use }}</td>
         </tr>
 
-        {% endif %}
+          {% endif %}{% comment %}if show_metric{% endcomment %}
+        {% endif %}{% comment %}if metric.name contains "backup" or metric.name contains "BACKUP"{% endcomment %}
       {% endfor %}
 
     </tbody>

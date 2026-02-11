@@ -10,9 +10,15 @@ CockroachDB's online schema changes provide a simple way to update a table schem
 Benefits of online schema changes include:
 
 - Changes to your table schema happen while the database is running.
-- The schema change runs as a [background job][show-jobs] without holding locks on the underlying table data.
 - Your application's queries can run normally, with no effect on read/write latency. The schema is cached for performance.
 - Your data is kept in a safe, [consistent][consistent] state throughout the entire schema change process.
+- The schema change runs as a [background job][show-jobs] without holding locks on the underlying table data.
+  - {% include_cached new-in.html version="v26.1" %} As soon as the statement is accepted, CockroachDB returns a SQL `NOTICE` (as shown below) that includes the ID of the background job. To track the job's progress, use [`SELECT * FROM [SHOW JOBS] WHERE job_id = {job_id}`]({% link {{ page.version.version }}/show-jobs.md %}) or view the [DB Console **Jobs Page**]({% link {{ page.version.version }}/ui-jobs-page.md %}).
+
+    ~~~
+    NOTICE: waiting for job(s) to complete: 1145445286329516033
+    If the statement is canceled, jobs will continue in the background.
+    ~~~
 
 {{site.data.alerts.callout_danger}}
 Schema changes consume additional resources, and if they are run when the cluster is near peak capacity, latency spikes can occur. This is especially true for any schema change that adds columns, drops columns, or adds an index. We do not recommend doing more than one schema change at a time while in production.
@@ -65,6 +71,12 @@ If a schema change fails, the schema change job will be cleaned up automatically
 For advice about how to avoid running out of space during an online schema change, refer to [Estimate your storage capacity before performing online schema changes](#estimate-your-storage-capacity-before-performing-online-schema-changes).
 
 ## Best practices for online schema changes
+
+### Improve changefeed performance with `schema_locked`
+
+Set the [`schema_locked` table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#storage-parameter-schema-locked) to `true` to indicate that a schema change is not currently ongoing on a table. CockroachDB automatically unsets this parameter before performing a schema change and reapplies it when done. Enabling `schema_locked` can help [improve performance of changefeeds]({% link {{ page.version.version }}/create-changefeed.md %}#disallow-schema-changes-on-tables-to-improve-changefeed-performance) running on the table, which can reduce commit-to-emit latency.
+
+Use the [`create_table_with_schema_locked` session variable]({% link {{ page.version.version }}/set-vars.md %}#create_table_with_schema_locked) to set this storage parameter to `true` on every table created in the session. In v26.1 and later, it is enabled by default.
 
 ### Estimate your storage capacity before performing online schema changes
 

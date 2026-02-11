@@ -91,6 +91,10 @@ You can access the DB Console from every node at `http://<host>:<http-port>`, or
 
 For guidance on accessing the DB Console in the context of cluster deployment, see [Start a Local Cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) and [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}).
 
+{{site.data.alerts.callout_danger}}
+Accessing the DB Console for a secure cluster requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
+{{site.data.alerts.end}}
+
 ### Proxy DB Console
 
 If your CockroachDB cluster is behind a load balancer, you may wish to proxy your DB Console connection to a different node in the cluster from the node you first connect to. This is useful in deployments where a third-party load balancer otherwise determines which CockroachDB node you connect to in DB Console, or where web management access is limited to a subset of CockroachDB instances in a cluster.

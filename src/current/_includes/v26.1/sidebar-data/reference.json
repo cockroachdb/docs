@@ -185,6 +185,12 @@
             ]
           },
           {
+            "title": "<code>cockroach debug pebble db analyze-data</code>",
+            "urls": [
+              "/${VERSION}/cockroach-debug-pebble-db-analyze-data.html"
+            ]
+          },
+          {
            "title": "<code>cockroach debug tsdump</code>",
            "urls": [
              "/${VERSION}/cockroach-debug-tsdump.html"

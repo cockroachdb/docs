@@ -236,6 +236,10 @@ The limits are enforced after each statement of a transaction has been fully exe
 Enabling `transaction_rows_read_err` disables a performance optimization for mutation statements in implicit transactions where CockroachDB can auto-commit without additional network round trips.
 {{site.data.alerts.end}}
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/transaction-row-count-limitations.md %}
+
 ## See also
 
 - [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %})

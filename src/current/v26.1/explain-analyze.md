@@ -68,6 +68,7 @@ Property        | Description
 `execution time` | The time it took for the final statement plan to complete.
 `distribution` | Whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 `plan type` | The plan type used by the query: `generic, re-optimized`, `generic, reused`, or `custom`. For details, refer to [Query plan type]({% link {{ page.version.version }}/cost-based-optimizer.md %}#query-plan-type).
+`statement hints count` | <span class="version-tag">New in v26.1:</span> The number of [injected hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#hint-injection) from `system.statement_hints` applied to the statement. This field is only displayed when hints are applied.
 `vectorized` | Whether the [vectorized execution engine]({% link {{ page.version.version }}/vectorized-execution.md %}) was used in this statement.
 `rows decoded from KV` | The number of rows read from the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 `cumulative time spent in KV` | The total amount of time spent in the storage layer.
