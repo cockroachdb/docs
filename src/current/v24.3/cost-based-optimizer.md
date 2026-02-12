@@ -77,7 +77,7 @@ SET (sql_stats_automatic_collection_fraction_stale_rows = 0.1,
 sql_stats_automatic_collection_min_stale_rows = 2000);
 ~~~
 
-Automatic statistics rules are checked once per minute. While altered automatic statistics table settings take immediate effect for any subsequent DML statements on a table, running row mutations that started prior to modifying the table settings may still trigger statistics collection based on the settings that existed before you ran the `ALTER TABLE ... SET` statement.
+Automatic statistics rules are checked once per minute. Altered automatic statistics table settings take immediate effect for subsequent DML statements on a table. However, row mutations that started before you modified the table settings can still trigger statistics collection based on the previous settings.
 
 ##### Small versus large table examples
 
@@ -172,11 +172,11 @@ The current table settings are shown in the `WITH` clause output of `SHOW CREATE
 
 ### Configure non-default statistics retention
 
-By default, when CockroachDB refreshes statistics for a column, it deletes the previous statistics for the column (while leaving the most recent 4-5 historical statistics). When CockroachDB refreshes statistics, it also deletes the statistics for any "non-default" column sets, or columns for which statistics are not [collected by default](#table-statistics).
+By default, when CockroachDB refreshes statistics for a column, it deletes the previous statistics for the column while retaining the most recent four to five historical statistics. When CockroachDB refreshes statistics, it also deletes the statistics for any columns whose statistics are not [collected by default](#table-statistics).
 
-Historical statistics on non-default column sets should not be retained indefinitely, because they will not be refreshed automatically and could cause the optimizer to choose a suboptimal plan if they become stale. Such non-default historical statistics may exist because columns were deleted or removed from an index, and are therefore no longer part of a multi-column statistic.
+Do not retain historical statistics on non-default column sets indefinitely, because they are not refreshed automatically and can cause the optimizer to choose a suboptimal plan if they become stale. These non-default historical statistics can exist when columns are deleted or removed from an index and are no longer part of a multi-column statistic.
 
-CockroachDB deletes statistics on non-default columns according to the `sql.stats.non_default_columns.min_retention_period` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), which defaults to a 24-hour retention period.
+CockroachDB deletes statistics on non-default columns according to the `sql.stats.non_default_columns.min_retention_period` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), which defaults to 24 hours.
 
 ### Forecasted statistics
 
