@@ -307,6 +307,161 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 
 [Read more about userscript metrics]({% link molt/userscript-metrics.md %}).
 
+## Metrics snapshots
+
+When enabled, the metrics snapshotter periodically writes out a point-in-time snapshot of Replicator's Prometheus metrics to a file in the [Replicator data directory]({% link molt/replicator-flags.md %}#data-dir). This can help with debugging when direct access to the Prometheus server is not available. The snapshot includes all of the metrics on this page. 
+
+Metrics snapshotting is disabled by default, and can be enabled with the [`--metricsSnapshotPeriod`]({% link molt/replicator-flags.md %}#metrics-snapshot-period) Replicator flag. If enabled, the snapshot period must be at least 15 seconds. The recommended range for the snapshot period is 15-60 seconds.
+
+The retention policy for metrics snapshot files can be determined by [time]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-time) and by [file size]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-size). At least one retention policy must be configured. Snapshots can also be [compressed to a gzip file]({% link molt/replicator-flags.md %}#metrics-snapshot-compression).
+
+Changing the snapshotter's configuration requires restarting the Replicator binary with different flags.
+
+### Usage example
+
+The following is an example of a `replicator` command where snapshotting is configured:
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+    <button class="filter-button" data-scope="cockroachdb">CockroachDB</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+{% include_cached copy-clipboard.html %}
+~~~shell
+replicator pglogical \
+--targetConn postgres://postgres:postgres@localhost:5432/molt?sslmode=disable \
+--stagingConn postgres://root@localhost:26257/_replicator?sslmode=disable \
+--slotName molt_slot \
+--bindAddr 0.0.0.0:30004 \
+--stagingSchema _replicator \
+--stagingCreateSchema \
+--disableAuthentication \
+--tlsSelfSigned \
+--stageMode crdb \
+--bestEffortWindow 1s \
+--flushSize 1000 \
+--metricsAddr :30005 \
+--metricsSnapshotPeriod 15s \
+--metricsSnapshotCompression gzip \
+--metricsSnapshotRetentionTime 168h \
+-v
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+{% include_cached copy-clipboard.html %}
+~~~shell
+replicator mylogical \
+--targetConn postgres://postgres:postgres@localhost:5432/molt?sslmode=disable \
+--stagingConn postgres://root@localhost:26257/_replicator?sslmode=disable \
+--defaultGTIDSet '4c658ae6-e8ad-11ef-8449-0242ac140006:1-29' \
+--bindAddr 0.0.0.0:30004 \
+--stagingSchema _replicator \
+--stagingCreateSchema \
+--disableAuthentication \
+--tlsSelfSigned \
+--stageMode crdb \
+--bestEffortWindow 1s \
+--flushSize 1000 \
+--metricsAddr :30005 \
+--metricsSnapshotPeriod 15s \
+--metricsSnapshotCompression gzip \
+--metricsSnapshotRetentionTime 168h \
+-v
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+{% include_cached copy-clipboard.html %}
+~~~shell
+replicator oraclelogminer \
+--targetConn postgres://postgres:postgres@localhost:5432/molt?sslmode=disable \
+--stagingConn postgres://root@localhost:26257/_replicator?sslmode=disable \
+--scn 26685786 \
+--backfillFromSCN 26685444 \
+--bindAddr 0.0.0.0:30004 \
+--stagingSchema _replicator \
+--stagingCreateSchema \
+--disableAuthentication \
+--tlsSelfSigned \
+--stageMode crdb \
+--bestEffortWindow 1s \
+--flushSize 1000 \
+--metricsAddr :30005 \
+--metricsSnapshotPeriod 15s \
+--metricsSnapshotCompression gzip \
+--metricsSnapshotRetentionTime 168h \
+-v
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachdb">
+{% include_cached copy-clipboard.html %}
+~~~shell
+replicator start \
+--targetConn postgres://postgres:postgres@localhost:5432/molt?sslmode=disable \
+--stagingConn postgres://root@localhost:26257/_replicator?sslmode=disable \
+--bindAddr 0.0.0.0:30004 \
+--stagingSchema _replicator \
+--stagingCreateSchema \
+--disableAuthentication \
+--tlsSelfSigned \
+--stageMode crdb \
+--bestEffortWindow 1s \
+--flushSize 1000 \
+--metricsAddr :30005 \
+--metricsSnapshotPeriod 15s \
+--metricsSnapshotCompression gzip \
+--metricsSnapshotRetentionTime 168h \
+-v
+~~~
+</section>
+
+If successful, Replicator will start, and the console output will indicate that the snapshotter has started as well:
+
+~~~
+INFO   [Feb  2 10:20:32] Replicator starting
+...
+INFO   [Feb  2 10:20:32] metrics snapshotter started, writing to replicator-data/metrics-snapshots every 15s, retaining 168h0m0s
+~~~
+
+Upon interruption of Replicator, the snapshotter will be stopped:
+
+~~~                    
+INFO   [Feb  2 10:26:45] Interrupted                                  
+INFO   [Feb  2 10:26:45] metrics snapshotter stopped
+INFO   [Feb  2 10:26:45] Server shutdown complete
+~~~
+
+You can find the snapshot files in the [Replicator data directory]({% link molt/replicator-flags.md %}#data-dir):
+
+~~~shell
+cd replicator-data/metrics-snapshots && ls . | tail -n 5
+~~~
+
+~~~
+snapshot-20260202T152405.737Z.txt.gz
+snapshot-20260202T152420.736Z.txt.gz
+snapshot-20260202T152435.736Z.txt.gz
+snapshot-20260202T152450.735Z.txt.gz
+snapshot-20260202T152505.735Z.txt.gz
+~~~
+
+The uncompressed files list the metrics collected at that snapshot:
+
+~~~shell
+gzcat snapshot-20260202T152505.735Z.txt.gz | head -n 3
+~~~
+
+~~~
+# HELP cdc_resolved_timestamp_buffer_size Current size of the resolved timestamp buffer channel which is yet to be processed by Pebble Stager
+# TYPE cdc_resolved_timestamp_buffer_size gauge
+cdc_resolved_timestamp_buffer_size 0.0 1.770045905735e+09
+~~~
+
 ## See also
 
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
