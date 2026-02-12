@@ -678,7 +678,7 @@ MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by
 --metricsAddr :30005
 ~~~
 
-Metrics can additionally be written to snapshot files at repeated intervals. Metrics snapshotting is disabled by default, and can be enabled with the [`--metricsSnapshotPeriod`]({% link molt/replicator-flags.md %}#metrics-snapshot-period) flag. For example, the following flag enables metrics snapshotting every 15 seconds:
+Metrics can additionally be written to snapshot files at repeated intervals. Metrics snapshotting is disabled by default. If metrics have been enabled, metrics snapshotting can also be enabled with the [`--metricsSnapshotPeriod`]({% link molt/replicator-flags.md %}#metrics-snapshot-period) flag. For example, the following flag enables metrics snapshotting every 15 seconds:
 
 ~~~
 --metricsSnapshotPeriod 15s

@@ -311,9 +311,9 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 
 When enabled, the metrics snapshotter periodically writes out a point-in-time snapshot of Replicator's Prometheus metrics to a file in the [Replicator data directory]({% link molt/replicator-flags.md %}#data-dir). This can help with debugging when direct access to the Prometheus server is not available. The snapshot includes all of the metrics on this page. 
 
-Metrics snapshotting is disabled by default, and can be enabled with the [`--metricsSnapshotPeriod`]({% link molt/replicator-flags.md %}#metrics-snapshot-period) Replicator flag. If enabled, the snapshot period must be at least 15 seconds. The recommended range for the snapshot period is 15-60 seconds.
+Metrics snapshotting is disabled by default, and can be enabled with the [`--metricsSnapshotPeriod`]({% link molt/replicator-flags.md %}#metrics-snapshot-period) Replicator flag. [Replicator metrics must be enabled](#set-up-metrics) (with the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag) in order for metrics snapshotting to work.
 
-The retention policy for metrics snapshot files can be determined by [time]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-time) and by [file size]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-size). At least one retention policy must be configured. Snapshots can also be [compressed to a gzip file]({% link molt/replicator-flags.md %}#metrics-snapshot-compression).
+If snapshotting is enabled, the snapshot period must be at least 15 seconds. The recommended range for the snapshot period is 15-60 seconds. The retention policy for metrics snapshot files can be determined by [time]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-time) and by [file size]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-size). At least one retention policy must be configured. Snapshots can also be [compressed to a gzip file]({% link molt/replicator-flags.md %}#metrics-snapshot-compression).
 
 Changing the snapshotter's configuration requires restarting the Replicator binary with different flags.
 
