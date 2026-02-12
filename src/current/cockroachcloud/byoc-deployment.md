@@ -5,13 +5,13 @@ toc: true
 keywords: deployment, byoc
 ---
 
-CockroachDB {{ site.data.products.cloud }} supports a "bring your own cloud" (BYOC) deployment model, where a CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} deployment is hosted in your own account. This model allows you to take more control of security and take advantage of existing cloud service credits or discounts.
+CockroachDB {{ site.data.products.cloud }} supports a "bring your own cloud" (BYOC) deployment model, where CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} is hosted in your own account rather than in an account managed by Cockroach Labs. This model allows you to take more control of security and take advantage of existing cloud service credits or discounts.
 
 {{site.data.alerts.callout_info}}
 The BYOC {{ site.data.products.cloud }} deployment option is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}). BYOC deployments are only supported in Microsoft Azure.
 {{site.data.alerts.end}}
 
-This page describes how to prepare a cloud service account to host a BYOC CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} deployment in Microsoft Azure.
+This page describes how to prepare a cloud service account to host a BYOC deployment of CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} in Microsoft Azure.
 
 ## Shared responsibility model for BYOC
 
@@ -41,13 +41,13 @@ Billing     | Meter vCPUs consumed, charge for vCPU consumption at the per-minut
 
 ## Step 1. Create a new Azure subscription
 
-Provision a new Azure subscription with no existing infrastructure, dedicated to your CockroachDB {{ site.data.products.cloud }} deployment. This subscription can be reused for multiple CockroachDB clusters.
+Provision a new Azure subscription with no existing infrastructure, dedicated to your Cockroach {{ site.data.products.cloud }} deployment. The account configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this subscription, so this step is necessary to isolate these permissions from non-Cockroach Cloud resources. This subscription can be reused for multiple CockroachDB clusters.
 
 ## Step 2. Grant IAM permissions to Cockroach Labs
 
-When BYOC is enabled for your account, Cockroach Labs provisions a multi-tenant App Registration associated with your CockroachDB {{ site.data.products.cloud }} organization and provides you with a URL to grant tenant-wide admin consent to the application. Visit this URL with a user account that is [authorized to content on behalf of your organization](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal#prerequisites).
+When BYOC is enabled for your account, Cockroach Labs provisions a multi-tenant App Registration associated with your CockroachDB {{ site.data.products.cloud }} organization and provides you with a URL to grant tenant-wide admin consent to the application. Visit this URL with a user account that is [authorized to consent on behalf of your organization](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal#prerequisites).
 
-Once the Cockroach Labs App Registration has been granted admin content in the tenant, grant the following set of roles to the app:
+Once the Cockroach Labs App Registration has been granted admin consent in the tenant, grant the following set of roles to the app:
 
 - `Role Based Access Control Administrator`
 - `Azure Kubernetes Service Cluster User Role`

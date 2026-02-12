@@ -21,7 +21,7 @@
         ]
     },
     {
-        "title": "Prepare a BYOC Deployment",
+        "title": "BYOC Deployments (Preview)",
         "urls": [
             "/cockroachcloud/byoc-deployment.html"
         ]
