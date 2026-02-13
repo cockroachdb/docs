@@ -131,7 +131,7 @@ Before integrating AuthZed with CockroachDB, you will need to set up a dedicated
 
 The first step in developing an authorization relationship schema is defining one or more object types. For example, you could define the following object relationships:
 
-<img src="{{ 'images/v26.1/authzed_4.png' | relative_url }}" alt="TODO"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+<img src="{{ 'images/v26.1/authzed_schema.png' | relative_url }}" alt="AuthZed sample schema diagram"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 The main two items in this example are the `user` and `document` objects. The `user` can be a `viewer`, an `editor` or an `admin`. The definition gives the `remove` permission to the `admin` role only. To `edit` a file the user must be either an `editor` or an `admin`. The permission to `view` a document is set for the `viewer`, `editor` and `admin` roles. 
 
