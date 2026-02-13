@@ -1,131 +1,131 @@
-- metric_id: seconds.until.enterprise.license.expiry
+- name: seconds.until.enterprise.license.expiry
   description: Seconds until enterprise license expiry (0 if no license present or running without enterprise features)
   y-axis label: License Expiration
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-  essential: true
-- metric_id: security.certificate.expiration.ca
+  visibility: ESSENTIAL
+- name: security.certificate.expiration.ca
   labeled_name: 'security.certificate.expiration{certificate_type=ca}'
   description: Expiration for the CA certificate. 0 means no certificate or error.
   y-axis label: Certificate Expiration
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-  essential: true
-- metric_id: security.certificate.expiration.client-ca
+  visibility: ESSENTIAL
+- name: security.certificate.expiration.client-ca
   labeled_name: 'security.certificate.expiration{certificate_type=client-ca}'
   description: Expiration for the client CA certificate. 0 means no certificate or error.
   y-axis label: Certificate Expiration
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-  essential: true
-- metric_id: security.certificate.expiration.client
+  visibility: ESSENTIAL
+- name: security.certificate.expiration.client
   labeled_name: 'security.certificate.expiration{certificate_type=client}'
   description: Minimum expiration for client certificates, labeled by SQL user. 0 means no certificate or error.
   y-axis label: Certificate Expiration
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-  essential: true
-- metric_id: security.certificate.expiration.ui-ca
+  visibility: ESSENTIAL
+- name: security.certificate.expiration.ui-ca
   labeled_name: 'security.certificate.expiration{certificate_type=ui-ca}'
   description: Expiration for the UI CA certificate. 0 means no certificate or error.
   y-axis label: Certificate Expiration
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-  essential: true
-- metric_id: security.certificate.expiration.node
+  visibility: ESSENTIAL
+- name: security.certificate.expiration.node
   labeled_name: 'security.certificate.expiration{certificate_type=node}'
   description: Expiration for the node certificate. 0 means no certificate or error.
   y-axis label: Certificate Expiration
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-  essential: true
-- metric_id: security.certificate.expiration.node-client
+  visibility: ESSENTIAL
+- name: security.certificate.expiration.node-client
   labeled_name: 'security.certificate.expiration{certificate_type=node-client}'
   description: Expiration for the node's client certificate. 0 means no certificate or error.
   y-axis label: Certificate Expiration
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-  essential: true
-- metric_id: security.certificate.expiration.ui
+  visibility: ESSENTIAL
+- name: security.certificate.expiration.ui
   labeled_name: 'security.certificate.expiration{certificate_type=ui}'
   description: Expiration for the UI certificate. 0 means no certificate or error.
   y-axis label: Certificate Expiration
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-  essential: true
-- metric_id: security.certificate.expiration.ca-client-tenant
+  visibility: ESSENTIAL
+- name: security.certificate.expiration.ca-client-tenant
   labeled_name: 'security.certificate.expiration{certificate_type=ca-client-tenant}'
   description: Expiration for the Tenant Client CA certificate. 0 means no certificate or error.
   y-axis label: Certificate Expiration
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-  essential: true
-- metric_id: security.certificate.expiration.client-tenant
+  visibility: ESSENTIAL
+- name: security.certificate.expiration.client-tenant
   labeled_name: 'security.certificate.expiration{certificate_type=client-tenant}'
   description: Expiration for the Tenant Client certificate. 0 means no certificate or error.
   y-axis label: Certificate Expiration
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-  essential: true
-- metric_id: security.certificate.ttl.ca
+  visibility: ESSENTIAL
+- name: security.certificate.ttl.ca
   description: Seconds till expiration for the CA certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-- metric_id: security.certificate.ttl.client-ca
+- name: security.certificate.ttl.client-ca
   description: Seconds till expiration for the client CA certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-- metric_id: security.certificate.ttl.client
+- name: security.certificate.ttl.client
   description: Seconds till expiration for the client certificates, labeled by SQL user. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-- metric_id: security.certificate.ttl.ui-ca
+- name: security.certificate.ttl.ui-ca
   description: Seconds till expiration for the UI CA certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-- metric_id: security.certificate.ttl.node
+- name: security.certificate.ttl.node
   description: Seconds till expiration for the node certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-- metric_id: security.certificate.ttl.node-client
+- name: security.certificate.ttl.node-client
   description: Seconds till expiration for the node's client certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-- metric_id: security.certificate.ttl.ui
+- name: security.certificate.ttl.ui
   description: Seconds till expiration for the UI certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-- metric_id: security.certificate.ttl.ca-client-tenant
+- name: security.certificate.ttl.ca-client-tenant
   description: Seconds till expiration for the Tenant Client CA certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
-- metric_id: security.certificate.ttl.client-tenant
+- name: security.certificate.ttl.client-tenant
   description: Seconds till expiration for the Tenant Client certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
