@@ -293,7 +293,7 @@ The **Usage** column explains why each metric is important to visualize and how 
 
 {% comment %} STEP 5. Add category for metrics that are not in metrics.yaml{% endcomment %}
 {% if include.deployment == 'self-hosted' %}
-  {% assign essential_metrics = site.data[version].metrics.available-metrics-not-in-metrics-list | where: "essential", true %}
+  {% assign essential_metrics = site.data[version].metrics.available-metrics-not-in-metrics-list | where: "visibility", ESSENTIAL %}
 ## Expiration of license and certificates
 
 <table markdown="1">
@@ -309,14 +309,14 @@ The **Usage** column explains why each metric is important to visualize and how 
         
         {% for metric in essential_metrics %}
         
-          {% assign metric_link = metric.metric_id | replace: "_", "-" | replace: ".", "-" %}
+          {% assign metric_link = metric.name | replace: "_", "-" | replace: ".", "-" %}
 
         <tr>
-            <td><div id="{{ metric_link }}" class="anchored"><code>{{ metric.metric_id }}</code></div>
+            <td><div id="{{ metric_link }}" class="anchored"><code>{{ metric.name }}</code></div>
             {% comment %} For self-hosted, add labeled_name if exists. advanced does not yet support metrics endpoint {% endcomment %}
             <br>{% if include.deployment == 'self-hosted' %}{% if metric.labeled_name %}[<code>metrics</code> endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics):<br><code>{{ metric.labeled_name }}</code>{% endif %}{% endif %}
             </td>
-            <td><code>{{ metric.metric_id }}</code>
+            <td><code>{{ metric.name }}</code>
             </td>
             <td>{{ metric.description }}</td>
             <td>{{ metric.how_to_use }}</td>
