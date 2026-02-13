@@ -34,6 +34,8 @@ Flag | Description
 -----|-----------
 `--format` | The output format to write the collected diagnostic data. Valid options are `text`, `csv`, `tsv`, `raw`.<br><br>**Default:** `text`
 `--from` | The oldest timestamp to include (inclusive), in the format `YYYY-MM-DD [HH:MM[:SS]]`.<br><br>**Default:** `0001-01-01 00:00:00`
+`--metrics-list-file` | Path to a text file containing metric names or regex patterns to include in the dump (one per line). The prefixes `cr.node.`, `cr.store.`, and `cockroachdb.` are automatically stripped if present. When specified, only matching metrics are included. Blank lines and comment lines (starting with `#`) are ignored.<br><br>Useful for scenario-specific investigations (for example, contention, latency, or replication) or when you need a targeted subset of metrics. Refer to example [Generate a tsdump with specific metrics](#generate-a-tsdump-with-specific-metrics).<br><br>**Note:** Cannot be used with `--non-verbose`.
+`--non-verbose` | Dump only metrics tagged as `ESSENTIAL` or `SUPPORT`.<br><br>This provides a curated set of metrics needed for most escalations while significantly reducing file size and noise. Ideal for standard support escalations, routine health checks, and cases where you want to minimize output size. When this flag is not specified, all metrics are dumped (default behavior). Refer to example [Generate a tsdump with only essential and support metrics](#generate-a-tsdump-with-only-essential-and-support-metrics).<br><br>**Note:** Cannot be used with `--metrics-list-file`.
 `--to` | The newest timestamp to include (inclusive), in the format `YYYY-MM-DD [HH:MM[:SS]]`.<br><br>**Default:** Current timestamp plus 29 hours
 
 #### Available resolutions
@@ -115,6 +117,68 @@ Generate a tsdump `gob` file specifying a custom timestamp range to limit the da
 
 ~~~ shell
 $ cockroach debug tsdump --format=raw --from='2023-01-10 01:00:00' --to='2023-01-20 23:59:59' > tsdump.gob
+~~~
+
+### Generate a tsdump with only essential and support metrics
+
+Use the `--non-verbose` flag to dump only metrics tagged as `ESSENTIAL` and `SUPPORT`. This option is ideal for:
+
+- Standard support escalations
+- Routine health checks
+- Cases where you want to minimize file size and collection time
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach debug tsdump --format=raw --non-verbose --insecure > tsdump.gob
+~~~
+
+For a secure cluster:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach debug tsdump --format=raw --non-verbose --certs-dir=${HOME}/.cockroach-certs/ > tsdump.gob
+~~~
+
+### Generate a tsdump with specific metrics
+
+Use the `--metrics-list-file` flag to include only specific metrics in a tsdump by providing a file with metric names or regular expression patterns. This option is ideal for:
+
+- Scenario-specific investigations (for example, contention, latency, or replication issues)
+- Following runbooks for specific classes of issues
+- Investigating a targeted subset of metrics
+
+First, create a text file with the metrics you want to include. You can specify exact metric names or use regex patterns. Only metrics whose names match the patterns in the file are included in the output. Blank lines and comment lines (starting with `#`) are ignored:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cat > metrics.txt <<EOF
+# Example metrics list for investigating changefeed and transaction issues
+changefeed.commit_latency
+sql.txn.aborts
+
+# Match all logical_replication metrics
+logical_replication\..*
+
+# Match all metrics containing "capacity"
+.*capacity.*
+
+# Match all sql metrics
+sql.*
+EOF
+~~~
+
+Then generate the tsdump with only the specified metrics:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach debug tsdump --format=raw --metrics-list-file=metrics.txt --insecure > tsdump.gob
+~~~
+
+For a secure cluster:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach debug tsdump --format=raw --metrics-list-file=metrics.txt --certs-dir=${HOME}/.cockroach-certs/ > tsdump.gob
 ~~~
 
 ## See also

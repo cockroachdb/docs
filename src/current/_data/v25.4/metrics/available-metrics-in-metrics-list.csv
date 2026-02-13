@@ -492,3 +492,5 @@ admission.wait_durations.kv-stores
 storage.wal.fsync.latency
 sql.conn.failures
 sql.mem.sql.current
+cloud.read_bytes
+cloud.write_bytes
