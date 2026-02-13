@@ -293,7 +293,7 @@ The **Usage** column explains why each metric is important to visualize and how 
 
 {% comment %} STEP 5. Add category for metrics that are not in metrics.yaml{% endcomment %}
 {% if include.deployment == 'self-hosted' %}
-  {% assign essential_metrics = site.data[version].metrics.available-metrics-not-in-metrics-list | where: "visibility", ESSENTIAL %}
+  {% assign essential_metrics = site.data[version].metrics.available-metrics-not-in-metrics-list | where: "visibility", "ESSENTIAL" %}
 ## Expiration of license and certificates
 
 <table markdown="1">
