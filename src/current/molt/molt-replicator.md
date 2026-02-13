@@ -684,6 +684,8 @@ Metrics can additionally be written to snapshot files at repeated intervals. Met
 --metricsSnapshotPeriod 15s
 ~~~
 
+Metrics snapshots enable access to metrics when the Prometheus server is unavailable, and they can be sent to [CockroachDB support]({% link {{ site.current_cloud_version }}/support-resources.md %}) to help quickly resolve an issue.
+
 For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}).
 
 ### Logging
