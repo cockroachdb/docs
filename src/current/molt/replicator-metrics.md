@@ -309,11 +309,11 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 
 ## Metrics snapshots
 
-When enabled, the metrics snapshotter periodically writes out a point-in-time snapshot of Replicator's Prometheus metrics to a file in the [Replicator data directory]({% link molt/replicator-flags.md %}#data-dir). This can help with debugging when direct access to the Prometheus server is not available, and snapshots can be [bundled and sent to CockroachDB support](#bundle-and-send-metrics-snapshots) to help resolve an issue. A metrics snapshot includes all of the metrics on this page. 
+When enabled, the metrics snapshotter periodically writes out a point-in-time snapshot of Replicator's Prometheus metrics to a file in the [Replicator data directory]({% link molt/replicator-flags.md %}#data-dir). Metrics snapshots can help with debugging when direct access to the Prometheus server is not available, and you can [bundle snapshots and send them to CockroachDB support](#bundle-and-send-metrics-snapshots) to help resolve an issue. A metrics snapshot includes all of the metrics on this page. 
 
 Metrics snapshotting is disabled by default, and can be enabled with the [`--metricsSnapshotPeriod`]({% link molt/replicator-flags.md %}#metrics-snapshot-period) Replicator flag. [Replicator metrics must be enabled](#set-up-metrics) (with the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag) in order for metrics snapshotting to work.
 
-If snapshotting is enabled, the snapshot period must be at least 15 seconds. The recommended range for the snapshot period is 15-60 seconds. The retention policy for metrics snapshot files can be determined by [time]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-time) and by the [total size]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-size) of the snapshot data directory. At least one retention policy must be configured. Snapshots can also be [compressed to a gzip file]({% link molt/replicator-flags.md %}#metrics-snapshot-compression).
+If snapshotting is enabled, the snapshot period must be at least 15 seconds. The recommended range for the snapshot period is 15-60 seconds. The retention policy for metrics snapshot files can be determined by [time]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-time) and by the [total size]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-size) of the snapshot data subdirectory. At least one retention policy must be configured. Snapshots can also be [compressed to a gzip file]({% link molt/replicator-flags.md %}#metrics-snapshot-compression).
 
 Changing the snapshotter's configuration requires restarting the Replicator binary with different flags.
 
@@ -501,7 +501,7 @@ Running the script with two timestamps bundles all of the data in the snapshot d
 ./export-metrics-snapshots.sh ./replicator-data/metrics-snapshots 20260115T120000 20260115T140000
 ~~~
 
-The resulting output is a `.tar.gz` file placed in your working directory.
+The resulting output is a `.tar.gz` file placed in the directory from which you ran the script (or to a path specified as an optional argument).
 
 #### Step 3. Upload output file to a support ticket
 
