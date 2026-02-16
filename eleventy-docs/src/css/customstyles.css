@@ -1,0 +1,173 @@
+/* Custom Styles - Converted from Jekyll customstyles.scss */
+
+/* API Docs */
+.apidocs table {
+  border: none;
+}
+
+.apidocs table td {
+  border-right: 0px;
+  border-left: 0px;
+}
+
+.apidocs pre, .apidocs code {
+  line-height: 1.5em;
+  overflow-x: auto;
+}
+
+.apidocs code {
+  background-color: transparent;
+  color: #ffffff;
+}
+
+/* RedDoc JSON */
+.redoc-json ul,
+.redoc-json ol,
+.redoc-json li {
+  font-family: Courier, monospace;
+  font-size: 13px;
+  line-height: 1.5em;
+  margin-bottom: 1px;
+}
+
+/* Form Controls */
+.form-control:focus {
+  border-color: #6933FF;
+  box-shadow: none;
+}
+
+/* Comparison Chart */
+.comparison-chart td {
+  padding: 20px;
+  text-align: left;
+}
+
+/* Video Container */
+.widescreen-youtube-video__container {
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 34.25%;
+  padding-top: 30px;
+  position: relative;
+}
+
+.widescreen-youtube-video__container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Anchored Elements */
+td > div.anchored {
+  scroll-margin-top: 100px;
+}
+
+/* Tables */
+table {
+  overflow-x: auto;
+  width: 100%;
+  display: block;
+  border: none;
+}
+
+table tbody tr td strong {
+  line-height: 22px;
+}
+
+table tbody tr td ul {
+  font-size: inherit;
+  margin-top: 10px;
+}
+
+table tbody tr td strong,
+table tbody tr td b {
+  font-size: inherit;
+}
+
+/* Global Table Styles */
+table {
+  margin-bottom: 20px;
+  max-width: 100%;
+  background-color: transparent;
+  border-spacing: 0;
+  border-collapse: collapse;
+  overflow: auto;
+}
+
+table thead tr {
+  background: #ffffff;
+}
+
+/* Summary */
+.summary {
+  color: #808080;
+  border-left: 5px solid #ED1951;
+}
+
+/* Navigation */
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  background-color: #248ec2;
+  color: white;
+}
+
+.nav > li.active > a {
+  background-color: transparent;
+  color: #6933FF;
+}
+
+.nav > li.active > ul > li.active > a {
+  color: #6933FF;
+}
+
+.nav > li > a {
+  background-color: transparent;
+  color: #142848;
+}
+
+/* Tooltips */
+a[data-toggle="tooltip"],
+a:hover[data-toggle="tooltip"] {
+  color: #142848;
+  font-style: normal;
+  font-weight: bold;
+  cursor: default;
+}
+
+/* Print Styles */
+.printTitle {
+  color: #015CAE !important;
+}
+
+body.print h1 {
+  color: #015CAE !important;
+  font-size: 28px;
+}
+
+body.print h2 {
+  color: #595959 !important;
+  font-size: 24px;
+}
+
+body.print h3 {
+  color: #E50E51 !important;
+  font-size: 14px;
+}
+
+body.print h4 {
+  color: #679DCE !important;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Pre formatting */
+pre {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+/*# sourceMappingURL=customstyles.css.map */
