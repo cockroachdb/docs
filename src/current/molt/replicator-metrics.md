@@ -307,6 +307,206 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 
 [Read more about userscript metrics]({% link molt/userscript-metrics.md %}).
 
+## Metrics snapshots
+
+When enabled, the metrics snapshotter periodically writes out a point-in-time snapshot of Replicator's Prometheus metrics to a file in the [Replicator data directory]({% link molt/replicator-flags.md %}#data-dir). Metrics snapshots can help with debugging when direct access to the Prometheus server is not available, and you can [bundle snapshots and send them to CockroachDB support](#bundle-and-send-metrics-snapshots) to help resolve an issue. A metrics snapshot includes all of the metrics on this page. 
+
+Metrics snapshotting is disabled by default, and can be enabled with the [`--metricsSnapshotPeriod`]({% link molt/replicator-flags.md %}#metrics-snapshot-period) Replicator flag. [Replicator metrics must be enabled](#set-up-metrics) (with the [`--metricsAddr`]({% link molt/replicator-flags.md %}#metrics-addr) flag) in order for metrics snapshotting to work.
+
+If snapshotting is enabled, the snapshot period must be at least 15 seconds. The recommended range for the snapshot period is 15-60 seconds. The retention policy for metrics snapshot files can be determined by [time]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-time) and by the [total size]({% link molt/replicator-flags.md %}#metrics-snapshot-retention-size) of the snapshot data subdirectory. At least one retention policy must be configured. Snapshots can also be [compressed to a gzip file]({% link molt/replicator-flags.md %}#metrics-snapshot-compression).
+
+Changing the snapshotter's configuration requires restarting the Replicator binary with different flags.
+
+### Enable metrics snapshotting
+
+#### Step 1. Run Replicator with the snapshot flags
+
+The following is an example of a `replicator` command where snapshotting is configured:
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+    <button class="filter-button" data-scope="cockroachdb">CockroachDB</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+{% include_cached copy-clipboard.html %}
+~~~shell
+replicator pglogical \
+--targetConn postgres://postgres:postgres@localhost:5432/molt?sslmode=disable \
+--stagingConn postgres://root@localhost:26257/_replicator?sslmode=disable \
+--slotName molt_slot \
+--bindAddr 0.0.0.0:30004 \
+--stagingSchema _replicator \
+--stagingCreateSchema \
+--disableAuthentication \
+--tlsSelfSigned \
+--stageMode crdb \
+--bestEffortWindow 1s \
+--flushSize 1000 \
+--metricsAddr :30005 \
+--metricsSnapshotPeriod 15s \
+--metricsSnapshotCompression gzip \
+--metricsSnapshotRetentionTime 168h \
+-v
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+{% include_cached copy-clipboard.html %}
+~~~shell
+replicator mylogical \
+--targetConn postgres://postgres:postgres@localhost:5432/molt?sslmode=disable \
+--stagingConn postgres://root@localhost:26257/_replicator?sslmode=disable \
+--defaultGTIDSet '4c658ae6-e8ad-11ef-8449-0242ac140006:1-29' \
+--bindAddr 0.0.0.0:30004 \
+--stagingSchema _replicator \
+--stagingCreateSchema \
+--disableAuthentication \
+--tlsSelfSigned \
+--stageMode crdb \
+--bestEffortWindow 1s \
+--flushSize 1000 \
+--metricsAddr :30005 \
+--metricsSnapshotPeriod 15s \
+--metricsSnapshotCompression gzip \
+--metricsSnapshotRetentionTime 168h \
+-v
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+{% include_cached copy-clipboard.html %}
+~~~shell
+replicator oraclelogminer \
+--targetConn postgres://postgres:postgres@localhost:5432/molt?sslmode=disable \
+--stagingConn postgres://root@localhost:26257/_replicator?sslmode=disable \
+--scn 26685786 \
+--backfillFromSCN 26685444 \
+--bindAddr 0.0.0.0:30004 \
+--stagingSchema _replicator \
+--stagingCreateSchema \
+--disableAuthentication \
+--tlsSelfSigned \
+--stageMode crdb \
+--bestEffortWindow 1s \
+--flushSize 1000 \
+--metricsAddr :30005 \
+--metricsSnapshotPeriod 15s \
+--metricsSnapshotCompression gzip \
+--metricsSnapshotRetentionTime 168h \
+-v
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachdb">
+{% include_cached copy-clipboard.html %}
+~~~shell
+replicator start \
+--targetConn postgres://postgres:postgres@localhost:5432/molt?sslmode=disable \
+--stagingConn postgres://root@localhost:26257/_replicator?sslmode=disable \
+--bindAddr 0.0.0.0:30004 \
+--stagingSchema _replicator \
+--stagingCreateSchema \
+--disableAuthentication \
+--tlsSelfSigned \
+--stageMode crdb \
+--bestEffortWindow 1s \
+--flushSize 1000 \
+--metricsAddr :30005 \
+--metricsSnapshotPeriod 15s \
+--metricsSnapshotCompression gzip \
+--metricsSnapshotRetentionTime 168h \
+-v
+~~~
+</section>
+
+If successful, Replicator will start, and the console output will indicate that the snapshotter has started as well:
+
+~~~
+INFO   [Feb  2 10:20:32] Replicator starting
+...
+INFO   [Feb  2 10:20:32] metrics snapshotter started, writing to replicator-data/metrics-snapshots every 15s, retaining 168h0m0s
+~~~
+
+Upon interruption of Replicator, the snapshotter will be stopped:
+
+~~~                    
+INFO   [Feb  2 10:26:45] Interrupted                                  
+INFO   [Feb  2 10:26:45] metrics snapshotter stopped
+INFO   [Feb  2 10:26:45] Server shutdown complete
+~~~
+
+#### Step 2. Find the snapshot files in the data directory
+
+You can find the snapshot files in the [Replicator data directory]({% link molt/replicator-flags.md %}#data-dir):
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+cd replicator-data/metrics-snapshots && ls . | tail -n 5
+~~~
+
+~~~
+snapshot-20260202T152405.737Z.txt.gz
+snapshot-20260202T152420.736Z.txt.gz
+snapshot-20260202T152435.736Z.txt.gz
+snapshot-20260202T152450.735Z.txt.gz
+snapshot-20260202T152505.735Z.txt.gz
+~~~
+
+The uncompressed files list the metrics collected at that snapshot:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+gzcat snapshot-20260202T152505.735Z.txt.gz | head -n 3
+~~~
+
+~~~
+# HELP cdc_resolved_timestamp_buffer_size Current size of the resolved timestamp buffer channel which is yet to be processed by Pebble Stager
+# TYPE cdc_resolved_timestamp_buffer_size gauge
+cdc_resolved_timestamp_buffer_size 0.0 1.770045905735e+09
+~~~
+
+### Bundle and send metrics snapshots
+
+The following requires a Linux system that supports bash.
+
+#### Step 1. Download the export script
+
+Download the [metrics snapshot export script](https://replicator.cockroachdb.com/export-metrics-snapshots.sh). Ensure it's accessible and can be run by the current user.
+
+#### Step 2. Run a snapshot export
+
+Run an export, indicating the `metrics-snapshots` directory within your [Replicator data directory]({% link molt/replicator-flags.md %}#data-dir). You can also provide start and end timestamps to define a subset of metrics to bundle. Times are specified as UTC and should be of the format `YYYYMMDDTHHMMSS`.
+
+Running the script without timestamps bundles all of the data in the snapshot directory. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+./export-metrics-snapshots.sh ./replicator-data/metrics-snapshots
+~~~
+
+Running the script with one timestamp bundles all of the data in the snapshot directory beginning at that timestamp. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+./export-metrics-snapshots.sh ./replicator-data/metrics-snapshots 20260115T120000
+~~~
+
+Running the script with two timestamps bundles all of the data in the snapshot directory within the two timestamps. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+./export-metrics-snapshots.sh ./replicator-data/metrics-snapshots 20260115T120000 20260115T140000
+~~~
+
+The resulting output is a `.tar.gz` file placed in the directory from which you ran the script (or to a path specified as an optional argument).
+
+#### Step 3. Upload output file to a support ticket
+
+Include this bundled metrics snapshot file on a [support ticket]({% link {{ site.current_cloud_version }}/support-resources.md %}) to give support metrics information that's relevant to your issue.
+
 ## See also
 
 - [MOLT Replicator]({% link molt/molt-replicator.md %})

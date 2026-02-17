@@ -184,8 +184,8 @@ cockroachdb:
 ~~~
 
 Replace the following placeholder values:
-- `{node_secret_name}`: The name of the Kubernetes secret that contains the generated client certificate and key.
-- `{client_secret_name}`: The name of the Kubernetes secret that contains the generated node certificate and key.
+- `{node_secret_name}`: The name of the Kubernetes secret that contains the generated node certificate and key.
+- `{client_secret_name}`: The name of the Kubernetes secret that contains the generated client certificate and key.
 
 #### Example: Generate and sign custom certificates using `cockroach cert`
 
