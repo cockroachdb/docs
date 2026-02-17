@@ -3,15 +3,20 @@
     "is_top_level": true,
     "items": [
       {
-        "title": "AuthZed",
-        "urls": [
-          "/${VERSION}/authzed-integration-guide.html"
-        ]
-      },
-      {
         "title": "Ory",
-        "urls": [
-          "/${VERSION}/ory-integration-guide.html"
+        "items": [
+          {
+            "title": "Ory Overview",
+            "urls": [
+              "/${VERSION}/ory-overview.html"
+            ]
+          },
+          {
+            "title": "Integrate with Ory",
+            "urls": [
+              "/${VERSION}/ory-integration-guide.html"
+            ]
+          }
         ]
       }
     ]
