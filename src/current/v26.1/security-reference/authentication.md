@@ -78,17 +78,53 @@ Each rule definition contains up to 6 values.
   - `reject`: server unconditionally rejects connection without performing authentication.
   - `trust`: server unconditionally allows connection without performing authentication.
 
-## The unstated, unchangeable `root` access rule
+## The `root` access rule
 
-The `root` SQL user can always authenticate using username/password or certificate, as if the first rule of the configuration were:
+{{site.data.alerts.callout_info}}
+**Preview Feature**: As of v26.1, you can optionally disable root login using the `--disallow-root-login` flag on `cockroach start`. This feature is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#feature-availability-phases) and requires additional setup.
+{{site.data.alerts.end}}
+
+By default, the `root` SQL user can always authenticate using username/password or certificate, as if the first rule of the configuration were:
 
 ```
 # TYPE    DATABASE      USER           ADDRESS             METHOD
   host    all           root           all                 root
 ```
 
-This rule is not displayed in the configuration, and cannot be overridden.
+This rule is not displayed in the configuration, and cannot be overridden through HBA configuration alone.
 This ensures that access to the cluster can always be recovered, but it also means that access with root credentials cannot be restricted by IP range at the authentication configuration level.
+
+### Disabling root login (Preview)
+
+<span class="version-tag">New in v26.1:</span> For compliance requirements, you can disable root user login using the `--disallow-root-login` flag when starting nodes. When this flag is set:
+
+- Root user cannot authenticate via SQL or RPC connections
+- Any certificate with "root" in the CommonName or SubjectAlternativeName is rejected
+- Error messages indicate root login has been disallowed
+
+{{site.data.alerts.callout_danger}}
+**Important Prerequisites**:
+
+- Before disabling root, you must set up the `debug_user` for troubleshooting operations. See [Using debug_user for diagnostics](#using-debug-user-for-diagnostics).
+- Ensure no cluster or client certificates contain "root" in their SAN (Subject Alternative Name) fields, as these will be blocked.
+- The cluster does not validate that `debug_user` is configured before allowing root to be disabled.
+
+{{site.data.alerts.end}}
+
+For setup instructions, see [Disable root login and use debug_user](#disable-root-login-and-use-debug-user).
+
+### Using debug_user for diagnostics (Preview)
+
+<span class="version-tag">New in v26.1:</span> The `debug_user` is a special privileged user designed for collecting debug information when root is disabled. Unlike root, `debug_user`:
+
+- Must be explicitly enabled using the `--allow-debug-user` flag on `cockroach start`
+- Is disabled by default for security
+- Must be manually created using `CREATE USER debug_user`
+- Requires a certificate with "debug_user" in CommonName or SubjectAlternativeName
+- Has privileged access to `serverpb` admin and status endpoints required for debug zip collection
+- Can be audited using `SHOW USERS`
+
+The `debug_user` is not subject to the `--disallow-root-login` flag and provides a secure, auditable alternative for diagnostic operations.
 
 CockroachDB {{ site.data.products.advanced }} or CockroachDB {{ site.data.products.core }} customers can and should enforce network protections, preventing access attempts from any sources other than a valid ones such as application servers or a secure operations jumpbox.
 
@@ -130,3 +166,150 @@ CockroachDB {{ site.data.products.cloud }} uses a service user named `managed-sq
 # TYPE    DATABASE      USER                 ADDRESS        METHOD
   host    all           managed-sql-prober   all            cert
 ```
+
+## Disable root login and use debug_user
+
+This procedure shows how to configure a cluster to disable root login for compliance requirements while maintaining debugging capabilities.
+
+### Before you begin
+
+- You must have an existing CockroachDB cluster
+- You must have root access to create the `debug_user`
+- You must have access to the CA key to generate certificates
+
+### Step 1: Create debug_user
+
+1. Connect to the cluster as root:
+
+   {% include_cached copy-clipboard.html %}
+   ~~~ shell
+   cockroach sql --certs-dir=certs
+   ~~~
+
+1. Create the debug_user:
+
+   {% include_cached copy-clipboard.html %}
+   ~~~ sql
+   CREATE USER debug_user;
+   ~~~
+
+1. Grant admin privileges (optional, but recommended for full debug access):
+
+   {% include_cached copy-clipboard.html %}
+   ~~~ sql
+   GRANT admin TO debug_user;
+   ~~~
+
+### Step 2: Generate debug_user certificate
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach cert create-client debug_user \
+  --certs-dir=certs \
+  --ca-key=my-safe-directory/ca.key
+~~~
+
+This creates `client.debug_user.crt` and `client.debug_user.key` in the specified certs directory.
+
+### Step 3: Test debug_user access
+
+Before disabling root, verify that debug_user can collect debug information:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach debug zip test-debug.zip \
+  --certs-dir=certs \
+  --user=debug_user
+~~~
+
+If successful, you should see debug information being collected.
+
+### Step 4: Enable debug_user on all nodes
+
+Perform a rolling restart of all nodes with the `--allow-debug-user` flag:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start \
+  --certs-dir=certs \
+  --allow-debug-user \
+  [other existing flags...]
+~~~
+
+### Step 5: Disable root login
+
+After all nodes have been restarted with `--allow-debug-user`, perform another rolling restart with the `--disallow-root-login` flag:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start \
+  --certs-dir=certs \
+  --disallow-root-login \
+  --allow-debug-user \
+  [other existing flags...]
+~~~
+
+### Step 6: Verify configuration
+
+1. Verify root is blocked:
+
+   {% include_cached copy-clipboard.html %}
+   ~~~ shell
+   cockroach sql --certs-dir=certs --user=root
+   ~~~
+
+   ~~~
+   ERROR: certificate authentication failed for user "root"
+   ~~~
+
+1. Verify debug_user works:
+
+   {% include_cached copy-clipboard.html %}
+   ~~~ shell
+   cockroach sql --certs-dir=certs --user=debug_user -e "SELECT current_user();"
+   ~~~
+
+   ~~~
+     current_user
+   ----------------
+     debug_user
+   ~~~
+
+1. Verify debug zip collection:
+
+   {% include_cached copy-clipboard.html %}
+   ~~~ shell
+   cockroach debug zip production-debug.zip \
+     --certs-dir=certs \
+     --user=debug_user
+   ~~~
+
+### Security best practices
+
+- Only enable `--allow-debug-user` when debugging is actively needed
+- Monitor `debug_user` activity through audit logs
+- Consider disabling `debug_user` (removing `--allow-debug-user` flag) when not in use
+- Rotate `debug_user` certificates regularly
+- Ensure `debug_user` certificate files have appropriate permissions (mode 0700)
+
+### Troubleshooting
+
+**Error: "failed to perform RPC, as root login has been disallowed"**
+
+- Root login is disabled. Use `debug_user` or another administrative user.
+
+**Error: "failed to perform RPC, as debug_user login is not allowed"**
+
+- The `--allow-debug-user` flag is not set on the server. Restart the node with this flag.
+
+**Error: "certificate authentication failed for user 'debug_user'"**
+
+- Either the `debug_user` certificate is invalid or `--allow-debug-user` is not set.
+- Verify the certificate has "debug_user" in CommonName or SubjectAlternativeName.
+
+### See also
+
+- [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %})
+- [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#subcommands)
+- [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %})
+- [CREATE USER]({% link {{ page.version.version }}/create-user.md %})
