@@ -9,6 +9,8 @@ docs_area: Integrate
 
 SpiceDB is the core engine behind all AuthZed products. It is designed to be entirely agnostic to authentication solutions and identity providers. SpiceDB is a graph engine that centrally stores authorization data (relationships and permissions). Authorization requests (for example, checkPermission, lookupResources) are resolved via a dispatcher that traverses the permission graph.
 
+<img src="{{ 'images/v26.1/authzed_design.png' | relative_url }}" alt="AuthZed architecture design"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+
 SpiceDB is available in multiple forms depending on deployment and support needs:
 
 - [SpiceDB (Open Source)](https://authzed.com/spicedb): The foundational, community-driven version of the authorization engine, free to use and self-hosted under the Apache 2.0 license.
