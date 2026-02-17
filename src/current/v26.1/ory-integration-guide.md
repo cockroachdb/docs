@@ -5,19 +5,13 @@ toc: true
 docs_area: Integrate
 ---
 
-[Ory](https://www.ory.com/) is an open-source identity and access management (IAM) platform that provides modular components for authentication and authorization in distributed systems. Key components include:
+This tutorial demonstrates how to set up a CockroachDB environment that uses [Ory]({% link {{ page.version.version }}/ory-overview.md %}) for Identity and Access Management (IAM). This page describes the architecture of the integration, then walks through how to perform and test it. 
 
-- [Ory Hydra](https://www.ory.com/hydra) is a server implementation of the [OAuth 2.0 authorization framework](https://oauth.net/2/) and the [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0-final.html). It tracks clients, consent requests, and tokens with strong consistency to prevent replay attacks and duplicate authorizations.
-- [Ory Kratos](https://www.ory.com/kratos) stores user identity records, recovery flows, sessions, and login attempts in transactional tables.
-- [Ory Keto](https://www.ory.com/keto) provides scalable, relationship-based access control (ReBAC).
-
-The following diagram shows the relationship between Ory Hydra, Kratos and Keto:
-
-<img src="{{ 'images/v26.1/integrate-ory-architecture-overview.png' | relative_url }}" alt="Ory Architecture Overview"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+By the end of this tutorial, you will have a working environment where Ory’s services (Hydra, Kratos, and Keto) use a CockroachDB cluster for storage.
 
 ## Integration Architecture Overview
 
-This example environment integrates Ory Hydra, Ory Kratos, and Ory Keto.
+This example environment integrates [Ory Hydra]({% link {{ page.version.version }}/ory-overview.md %}#ory-hydra), [Ory Kratos]({% link {{ page.version.version }}/ory-overview.md %}#ory-kratos), and [Ory Keto]({% link {{ page.version.version }}/ory-overview.md %}#ory-keto).
 
 In a CockroachDB/Ory integration, each of these components relies on CockroachDB to store their state in a consistent and durable way, enabling them to function correctly even in the presence of partial outages or regional network partitions. Each Ory component is deployed as a stateless service, with its only persistence requirement being a backing SQL database.
 
@@ -45,9 +39,11 @@ In this example environment, both Ory and CockroachDB are deployed within the `u
 
 ## Set up a joint CockroachDB/Ory environment
 
-This tutorial walks you through the manual setup of a joint CockroachDB/Ory environment. By the end of this tutorial, you will have a working environment where Ory’s services (Hydra, Kratos, and Keto) use a CockroachDB cluster for storage.
+This tutorial walks you through the manual setup of a joint CockroachDB/Ory environment. 
 
 ### Before you begin
+
+Before starting this tutorial, read the [Ory overview]({% link {{ page.version.version }}/ory-overview.md %}). 
 
 To complete this tutorial, you will need:
 
@@ -89,9 +85,9 @@ CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simpli
 
 Before integrating Ory components with CockroachDB, you will need to set up separate databases for each service. Each Ory service manages its own schema and migrations:
 
-- Ory Hydra manages OAuth2 clients, consent sessions, access/refresh tokens
-- Ory Kratos handles identity, credentials, sessions, verification tokens
-- Ory Keto stores relation tuples (RBAC/ABAC data) for permissions
+- [Ory Hydra]({% link {{ page.version.version }}/ory-overview.md %}#ory-hydra) manages OAuth2 clients, consent sessions, access/refresh tokens
+- [Ory Kratos]({% link {{ page.version.version }}/ory-overview.md %}#ory-kratos) handles identity, credentials, sessions, verification tokens
+- [Ory Keto]({% link {{ page.version.version }}/ory-overview.md %}#ory-keto) stores relation tuples (RBAC/ABAC data) for permissions
 
 Keeping these in separate databases simplifies maintenance and ensures isolation between identity, OAuth2, and authorization data.
 
@@ -909,6 +905,7 @@ The tests above confirm that each Ory component in this deployment is properly c
 
 ## See also
 
+- [Ory Overview]({% link {{ page.version.version }}/ory-overview.md %})
 - [Deploy a Local Cluster from Binary (Secure)]({% link {{ page.version.version }}/secure-a-cluster.md %})
 - [Deploy CockroachDB on AWS EC2]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %})
 - [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %})
