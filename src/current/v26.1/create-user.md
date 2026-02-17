@@ -314,6 +314,24 @@ with_password              | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}     
 (11 rows)
 ~~~
 
+### Create debug_user for diagnostics (Preview)
+
+<span class="version-tag">New in v26.1:</span> The `debug_user` is a special privileged user for collecting diagnostic information when preferred over using the root user, or when root login is disabled.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE USER debug_user;
+~~~
+
+Optionally, grant admin privileges:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> GRANT admin TO debug_user;
+~~~
+
+For complete setup instructions including certificate generation and server configuration, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug-user).
+
 ## See also
 
 - [Authorization]({% link {{ page.version.version }}/authorization.md %})
