@@ -127,6 +127,8 @@ Before integrating AuthZed with CockroachDB, you will need to set up a dedicated
     service: v1.45.4
     ~~~ 
 
+You can interact with SpiceDB using the AuthZed CLI, with the [HTTP API](https://authzed.com/docs/spicedb/api/http-api) or with the [gRPC API](https://buf.build/authzed/api/docs/main:authzed.api.v1). The remaining instructions will demonstrate how to use both the AuthZed CLI and the HTTP API to complete the integration.
+
 ### Step 5. Define the authorization schema
 
 The first step in developing an authorization relationship schema is defining one or more object types. For example, you could define the following object relationships:
@@ -134,6 +136,8 @@ The first step in developing an authorization relationship schema is defining on
 <img src="{{ 'images/v26.1/authzed_schema.png' | relative_url }}" alt="AuthZed sample schema diagram"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
 
 The main two items in this example are the `user` and `document` objects. The `user` can be a `viewer`, an `editor` or an `admin`. The definition gives the `remove` permission to the `admin` role only. To `edit` a file the user must be either an `editor` or an `admin`. The permission to `view` a document is set for the `viewer`, `editor` and `admin` roles. 
+
+#### Use the AuthZed CLI
 
 1. Define the schema by writing the following file:
 
@@ -156,8 +160,6 @@ The main two items in this example are the `user` and `document` objects. The `u
 
 1. Apply the schema to SpiceDB, pointing to the saved `schema.zed` file. 
 
-    You can interact with SpiceDB using the zed CLI, with the [HTTP API](https://authzed.com/docs/spicedb/api/http-api) or with the [gRPC API](https://buf.build/authzed/api/docs/main:authzed.api.v1). These instructions will use the zed CLI.
-
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     zed schema write ./schema.zed
@@ -170,29 +172,112 @@ The main two items in this example are the `user` and `document` objects. The `u
     zed schema read
     ~~~
 
+#### Use the HTTP API
+
+Embed the schema definition within a [`WriteSchemaRequest`](https://authzed.com/docs/spicedb/api/http-api#/Schema/SchemaService_WriteSchema) body, making sure to replace the `{spicedb-ip}` placeholder with the IP of your SpiceDB instance, and the `{preshared-key}` placeholder with value defined in [Step 3](#step-3-install-and-configure-spicedb):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --location 'http://{spicedb-ip}:8443/v1/schema/write' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer {preshared-key}' \
+--data '{
+"schema": "definition user {} \n definition document { \n relation editor: user \n relation viewer: user \n relation admin: user \n permission view = viewer + editor + admin \n permission edit = editor + admin \n permission remove = admin \n}"
+}'
+~~~
+
+If successful, that request will return a response which includes a token:
+
+~~~
+{"writtenAt":{"token":"GhUKEzE3NTgxMjkyOTM0MDE2MDYxNDA="}}
+~~~
+
 ### Step 6. Define authorization relationships
 
 In SpiceDB, relationships are represented as tuples. Each tuple contains a _resource_, a _relation_ and a _subject_. In this example, the resource is the name of a `document`, the relation is either `admin`, `viewer` or `editor`, and the subject is the name of a `user`.
 
-Define a new relationship for a `document` called `doc1`. Use the following command to make `alice` an `admin` for `doc1`. This means that she can `view`, `edit`, and `remove` the document.
+In this scenario, make user `alice` an `admin` for `doc1`. This means that she can `view`, `edit`, and `remove` the document. Then make user `bob` a `viewer` for `doc1`. This means he can `view` the document.
+
+#### Use the AuthZed CLI
+
+Define a new relationship for a `document` called `doc1`. Use the following command to make `alice` an `admin` for `doc1`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 zed relationship touch document:doc1 admin user:alice
 ~~~
 
-Define a new relationship for `doc1`. Use the following command to make `bob` a `viewer` for `doc1`. This means that he can only `view` the document.
+Define a new relationship for `doc1`. Use the following command to make `bob` a `viewer` for `doc1`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 zed relationship touch document:doc1 viewer user:bob
 ~~~
 
+#### Use the HTTP API
+
+Define the relationships in a [`WriteRelationshipsRequest`](https://authzed.com/docs/spicedb/api/http-api#/Permissions/PermissionsService_WriteRelationships) body, making sure to replace the `{spicedb-ip}` placeholder with the IP of your SpiceDB instance, and the `{preshared-key}` placeholder with value defined in [Step 3](#step-3-install-and-configure-spicedb):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --location 'http://{spicedb-ip}:8443/v1/relationships/write' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer {preshared-key}' \
+--data '{
+    "updates": [
+        {
+            "operation": "OPERATION_TOUCH",
+            "relationship": {
+                "resource": {
+                    "objectType": "document",
+                    "objectId": "doc1"
+                },
+                "relation": "admin",
+                "subject": {
+                    "object": {
+                        "objectType": "user",
+                        "objectId": "alice"
+                    }
+                }
+            }
+        },
+        {
+            "operation": "OPERATION_TOUCH",
+            "relationship": {
+                "resource": {
+                    "objectType": "document",
+                    "objectId": "doc1"
+                },
+                "relation": "viewer",
+                "subject": {
+                    "object": {
+                        "objectType": "user",
+                        "objectId": "bob"
+                    }
+                }
+            }
+        }
+    ]
+}'
+~~~
+
+If successful, that request will return a response which includes a token:
+
+~~~
+{"writtenAt":{"token":"GhUKEzE3NTgxMjk3MDg2NTc4MDQ5ODk="}}
+~~~
+
 ## Test the CockroachDB/AuthZed Integration
 
 Once both CockroachDB and AuthZed are provisioned and configured, and the authorization relationships have been defined in SpiceDB, validate that the relationships are accessible in the CockroachDB data store.
 
-### Check user permissions with the AuthZed CLI
+### Check user permissions
+
+Verify that AuthZed has captured the authorization data that you have defined.
+
+#### Use the AuthZed CLI
 
 To check that our schema is working correctly, issue `check` requests. As `bob` is only a `viewer` for `doc1`, you can expect him to have the `view` permission but not the `edit` or `remove` permissions:
 
@@ -228,7 +313,45 @@ zed permission check document:doc1 edit user:alice
 # true
 ~~~
 
+#### Use the HTTP API
+
+Define the permission that you want to check within a [`CheckPermissionRequest`](https://authzed.com/docs/spicedb/api/http-api#/Permissions/PermissionsService_CheckPermission) body. This check includes a `user`, a `resource`, and an `action`. Make sure to replace the `{spicedb-ip}` placeholder with the IP of your SpiceDB instance, and the `{preshared-key}` placeholder with value defined in [Step 3](#step-3-install-and-configure-spicedb):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --location 'http://{spicedb-ip}:8443/v1/permissions/check' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer {preshared-key}' \
+--data '{
+  "consistency": {
+    "minimizeLatency": true
+  },
+  "resource": {
+    "objectType": "document",
+    "objectId": "doc1"
+  },
+  "permission": "view",
+  "subject": {
+    "object": {
+      "objectType": "user",
+      "objectId": "bob"
+    }
+  }
+}'
+~~~
+
+If successful, that request will return a response which includes a token. That token will include a `permissionship` item, that explains whether the given `user` has permission to perform the given `action` on the given `resource`:
+
+~~~
+{"checkedAt":{"token":"GhUKEzE3NTgxMjk5NTAwMDAwMDAwMDA="}, "permissionship":"PERMISSIONSHIP_NO_PERMISSION"}
+~~~
+
+Send another `CheckPermissionRequest` for each permission that you want to check.
+
 ### Access AuthZed data with CockroachDB SQL
+
+To demonstrate that CockroachDB is being used as the data store for this SpiceDB instance, access the same authorization data using CockroachDB SQL. 
 
 1. Go to your [CockroachDB SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}).
 
