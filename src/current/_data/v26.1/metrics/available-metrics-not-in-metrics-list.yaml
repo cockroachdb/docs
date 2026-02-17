@@ -83,51 +83,60 @@
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
+  visibility: SUPPORT
 - name: security.certificate.ttl.client-ca
   description: Seconds till expiration for the client CA certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
+  visibility: SUPPORT
 - name: security.certificate.ttl.client
   description: Seconds till expiration for the client certificates, labeled by SQL user. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
+  visibility: SUPPORT
 - name: security.certificate.ttl.ui-ca
   description: Seconds till expiration for the UI CA certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
+  visibility: SUPPORT
 - name: security.certificate.ttl.node
   description: Seconds till expiration for the node certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
+  visibility: SUPPORT
 - name: security.certificate.ttl.node-client
   description: Seconds till expiration for the node's client certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
+  visibility: SUPPORT
 - name: security.certificate.ttl.ui
   description: Seconds till expiration for the UI certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
+  visibility: SUPPORT
 - name: security.certificate.ttl.ca-client-tenant
   description: Seconds till expiration for the Tenant Client CA certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
+  visibility: SUPPORT
 - name: security.certificate.ttl.client-tenant
   description: Seconds till expiration for the Tenant Client certificate. 0 means expired, no certificate or error.
   y-axis label: Certificate TTL
   type: GAUGE
   unit: TIMESTAMP_SEC
   how_to_use: See Description.
+  visibility: SUPPORT
