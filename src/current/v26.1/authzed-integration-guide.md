@@ -9,7 +9,13 @@ docs_area: Integrate
 
 SpiceDB is the core engine behind all AuthZed products. It is designed to be entirely agnostic to authentication solutions and identity providers. SpiceDB is a graph engine that centrally stores authorization data (relationships and permissions).
 
+<<<<<<< HEAD
 CockroachDB's scalability and resiliency make it well-suited to serve as SpiceDB's [underlying datastore](https://authzed.com/docs/spicedb/concepts/datastores#cockroachdb). AuthZed has standardized its managed services on CockroachDB, and they recommend CockroachDB for self-hosted, multi-region deployments.
+=======
+<img src="{{ 'images/v26.1/authzed_design.png' | relative_url }}" alt="AuthZed architecture design"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+
+SpiceDB is available in multiple forms depending on deployment and support needs:
+>>>>>>> b19685809 (added authzed diagram)
 
 This page describes how to configure CockroachDB to work with AuthZed.
 
