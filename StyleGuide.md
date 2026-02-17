@@ -350,15 +350,11 @@ There are four fundamental content types:
 
 ### Concept
 
-A _concept_ topic explains how a particular feature works, or how a specific system is designed. Conceptual pages do not provide prescriptive guidance or instruction. For guidance or instruction, see [Tasks](#task) or [Guides](#guide).
+A _concept_ topic explains how a particular feature works, or how a specific system is designed. Conceptual pages do not provide prescriptive guidance or instruction. For guidance or instruction, refer to [Task](#task) or [Guide](#guide).
 
 - The first sentence answers the implicit question "what is a \<singular noun\>?" in the form **A _\<singular noun\>_ is ….**.
 
   **Example:** An _index_ is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure.
-
-- For simple conceptual pages, the title should be a plural noun representing the concepts or entities to be described, optionally followed by a page descriptor, such as **Overview**.
-
-  **Example:** Indexes.
 
 - Provide as much relevant information as you can, and then link to other pages as necessary. If there is a related [reference](#reference) topic, link to it from within the conceptual topic.
 
@@ -369,13 +365,13 @@ For templates that provide a starting point for writing concept topics, refer to
 - [Indexes](https://www.cockroachlabs.com/docs/stable/indexes.html)
 - [Architecture Overview](https://www.cockroachlabs.com/docs/stable/architecture/overview.html)
 - [SQL Layer](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html)
-- [Multi-Region Capabilities Overview](https://www.cockroachlabs.com/docs/stable/multiregion-overview.html)
 
 ### Task
 
 A _task_ topic provides step-by-step instructions to complete a specific goal. Tasks are discrete and action-based. Tasks have the following properties:
 
 - Answers the question "how do I do \<an action\>?" by describing precisely what to do and the order in which to do it.
+- Corresponds to a specific user journey as defined by Product.
 - The title or heading should state an actionable goal for the user, ideally of the form **\<Imperative verb\> [\<article\>|\<conjunction\>] \<noun\> or \<proper noun\>**.
 
   **Example:** Create an Index
@@ -389,7 +385,7 @@ A _task_ topic provides step-by-step instructions to complete a specific goal. T
 
   **Example:** Access DB Console, not DB Console Access.
 
-- Present the steps as an ordered list.
+- Present the steps as a list of numbered headings, e.g., "Step 1. ...".
 
 Tasks should **not** include concept or reference information; instead, a task should link to [Concept](#concept) and [Reference](#reference) topics as needed.
 
@@ -409,7 +405,7 @@ Reference topics typically document programming constructs, interface parameters
 
 Reference topics help users understand the precise meaning and effect of CockroachDB SQL language constructs, platforms, configuration options, API parameter values, etc.
 
-- The content should be comprehensive and accurate. This principle might apply to other pages types, but it is especially important for reference, as it is the ultimate source of truth for a particular feature or interface.
+- The content should be comprehensive and accurate. This principle might apply to other page types, but it is especially important for reference, as it is the ultimate source of truth for a particular feature or interface.
 - The content should be succinct. Details are often presented in table format. Prose is better suited for [Concept](#concept) topics.
 
 For templates that provide a starting point for writing reference topics, refer to the [reference templates](https://github.com/cockroachdb/docs/tree/main/templates/reference).
@@ -422,7 +418,7 @@ For templates that provide a starting point for writing reference topics, refer 
 
 ### Guide
 
-_Guides_ offer the reader a perspective on how to decide between a number of different ways of doing something. They are meant to provide "guidance" (it's in the name). 
+_Guides_ offer the reader a perspective on how to decide between a number of different ways of accomplishing a goal. They are meant to provide "guidance" (it's in the name) and should eventually lead the user to perform one or more [Tasks](#task).
 
 To accomplish this goal, guides often link to several different [Concept](#concept) topics and compare and contrast them. They can also link to multiple [Task](#task) topics.
 
