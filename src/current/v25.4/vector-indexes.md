@@ -220,13 +220,6 @@ In the following example, a vector index with a prefix column is used to optimiz
     cockroach sql --insecure
     ~~~
 
-1. [Enable vector indexes](#enable-vector-indexes) on the cluster:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING feature.vector_index.enabled = true;
-    ~~~
-
 1. Create an `items` table that includes a `VECTOR` column called `embedding`, along with a vector index that uses `customer_id` as the prefix column:
 
     {% include_cached copy-clipboard.html %}
