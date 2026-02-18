@@ -10482,3 +10482,37 @@
     docker_arm: true
     docker_arm_experimental: false
     docker_arm_limited_access: false
+
+- release_name: v26.1.0
+  major_version: v26.1
+  release_date: '2026-02-18'
+  release_type: Production
+  go_version: go1.25.5
+  sha: 434ba3ce6e0dd21f65dac8fd33d945c3f10986fc
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.1.0
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters. To request to upgrade
+      a CockroachDB self-hosted cluster to this version,
+      [contact support](https://support.cockroachlabs.com/hc/requests/new).
