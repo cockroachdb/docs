@@ -50,12 +50,12 @@ $(GITHOOKSDIR)/%: githooks/%
 
 .PHONY: cockroachdb-build
 cockroachdb-build: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
+	RUBY_YJIT_ENABLE=1 bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: cockroachdb
 cockroachdb: jekyll-action := serve --port 4000
 cockroachdb: bootstrap $(GITHOOKS)
-	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml$(extra-config) $(JEKYLLFLAGS)
+	RUBY_YJIT_ENABLE=1 bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: standard
 standard: cockroachdb
@@ -68,7 +68,7 @@ no-remote-cache: bootstrap
 # output the performance stats for the build using the --profile option
 .PHONY: profile
 profile: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --profile --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
+	RUBY_YJIT_ENABLE=1 bundle exec jekyll $(jekyll-action) --incremental --profile --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
 
 
 .PHONY: test

@@ -1,0 +1,82 @@
+{% comment %}
+JavaScript-based version-switcher for production mode
+Moves expensive logic to client-side to reduce server-side rendering time
+{% endcomment %}
+
+<div class="mt-3 mb-4">
+  <div id="version-switcher">
+    <ul class="nav">
+      <li class="tier-1">
+        <a href="#">
+          Version <span class="version-name" id="current-version-name">{{ page.version.name }}</span><span id="current-version-lts"></span>
+          <div class="arrow"></div>
+        </a>
+        <ul class="list-unstyled" style="display: none" id="version-list">
+          <!-- Populated by JavaScript -->
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+// Version data from Jekyll
+window.versionData = {
+  current: {
+    version: "{{ page.version.version }}",
+    name: "{{ page.version.name }}"
+  },
+  stable: "{{ site.versions.stable }}",
+  dev: "{{ site.versions.dev }}",
+  versions: {{ page.versions | jsonify }},
+  mappings: {{ site.data.version_mappings.versions | jsonify }}
+};
+
+// Initialize version switcher on page load
+document.addEventListener('DOMContentLoaded', function() {
+  initVersionSwitcherJS();
+});
+
+function initVersionSwitcherJS() {
+  const currentVersionData = window.versionData.mappings[window.versionData.current.version];
+  const currentVersionLts = document.getElementById('current-version-lts');
+  
+  // Set LTS badge for current version
+  if (currentVersionData && currentVersionData.is_lts) {
+    currentVersionLts.innerHTML = '&nbsp;LTS&nbsp;';
+  }
+  
+  // Build version list
+  const versionList = document.getElementById('version-list');
+  const versions = window.versionData.versions;
+  
+  versions.forEach(v => {
+    const vData = window.versionData.mappings[v.version.version];
+    if (vData && vData.has_releases) {
+      const li = document.createElement('li');
+      li.className = `tier-2 ${v.version.version === window.versionData.current.version ? 'active' : ''}`;
+      
+      const ltsText = vData.is_lts ? '&nbsp;LTS&nbsp;' : '';
+      const stableDevText = v.version.tag ? 
+        (v.version.version === window.versionData.stable ? ' (Stable)' : 
+         v.version.version === window.versionData.dev ? ' (Dev)' : '') : '';
+      
+      li.innerHTML = `
+        <a data-proofer-ignore 
+           ${v.url ? `href="${v.url.replace('/index.html', '').replace('.html', '').toLowerCase()}" class="version--mobile"` : 'class="version--mobile version--page-dne"'}>
+          ${v.version.name}${ltsText}${stableDevText}
+          ${!v.url ? `<span class="version-text--page-dne">This page does not exist in ${v.version.version}</span>` : ''}
+        </a>
+        <a data-proofer-ignore 
+           ${v.url ? `href="${v.url.replace('/index.html', '').replace('.html', '').toLowerCase()}" class="version--desktop"` : `class="version--desktop version--page-dne" data-tooltip data-placement="left" data-container="body" title="This page does not exist in ${v.version.version}."`}>
+          ${v.version.name}${ltsText}${v.version.tag ? stableDevText : ''}
+        </a>
+      `;
+      
+      versionList.appendChild(li);
+    }
+  });
+}
+</script>
+
+<script src="{{ 'js/initVersionSwitcher.js' | relative_url }}" async></script>
