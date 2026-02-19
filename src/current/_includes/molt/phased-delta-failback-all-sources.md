@@ -12,8 +12,6 @@ This approach is comparable to the [Delta Migration]({% link molt/migration-appr
 
 This approach is best for databases that are too large to migrate all at once, and in business cases where downtime must be minimal. It's also suitable for risk-averse situations in which a safe rollback path must be ensured. It can only be performed if your team can handle the complexity of this approach, and if your source database can easily be divided into the phases you need.
 
-{% include molt/crdb-to-crdb-migration.md %}
-
 This page describes an example scenario. While the commands provided can be copy-and-pasted, they may need to be altered or reconsidered to suit the needs of your specific environment.
 
 <div style="text-align: center;">

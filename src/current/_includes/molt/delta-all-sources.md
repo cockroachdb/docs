@@ -8,8 +8,6 @@ A [*Delta Migration*]({% link molt/migration-approach-delta.md %}) uses an initi
 
 This approach is best for production environments that need to minimize system downtime.
 
-{% include molt/crdb-to-crdb-migration.md %}
-
 This page describes an example scenario. While the commands provided can be copy-and-pasted, they may need to be altered or reconsidered to suit the needs of your specific environment.
 
 <div style="text-align: center;">

@@ -39,6 +39,8 @@ The following walkthroughs demonstrate how to use the MOLT tools to perform this
 - [Phased Bulk Load Migration from MySQL]({% link molt/phased-bulk-load-mysql.md %})
 - [Phased Bulk Load Migration from Oracle]({% link molt/phased-bulk-load-oracle.md %})
 
+{% include molt/crdb-to-crdb-migration.md %}
+
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})

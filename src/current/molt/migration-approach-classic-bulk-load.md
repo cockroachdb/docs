@@ -37,6 +37,8 @@ The following walkthroughs demonstrate how to use the MOLT tools to perform this
 - [Classic Bulk Load Migration from MySQL]({% link molt/classic-bulk-load-mysql.md %})
 - [Classic Bulk Load Migration from Oracle]({% link molt/classic-bulk-load-oracle.md %})
 
+{% include molt/crdb-to-crdb-migration.md %}
+
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})

@@ -15,8 +15,6 @@ A *Delta Migration* uses an initial data load, followed by [continuous replicati
 
 This approach is best for production environments that need to minimize system downtime.
 
-{% include molt/crdb-to-crdb-migration.md %}
-
 This page describes an example scenario. While the commands provided can be copy-and-pasted, they may need to be altered or reconsidered to suit the needs of your specific environment.
 
 <div style="text-align: center;">
@@ -38,6 +36,8 @@ The following walkthroughs demonstrate how to use the MOLT tools to perform this
 - [Delta Migration from PostgreSQL]({% link molt/delta-migration-postgres.md %})
 - [Delta Migration from MySQL]({% link molt/delta-migration-mysql.md %})
 - [Delta Migration from Oracle]({% link molt/delta-migration-oracle.md %})
+
+{% include molt/crdb-to-crdb-migration.md %}
 
 ## See also
 
