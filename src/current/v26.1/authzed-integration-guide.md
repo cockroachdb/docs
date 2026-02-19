@@ -5,357 +5,110 @@ toc: true
 docs_area: Integrate
 ---
 
-[AuthZed](https://authzed.com/) is a platform focused exclusively on *authorization*. In contrast to authentication, which verifies a user's identity, authorization decides a user's access rights for resources once their identity is known. AuthZed centralizes, unifies, and scales this core security layer so developers don’t have to implement their own permission logic in every application. 
+[AuthZed](https://authzed.com/) is an authorization platform. In contrast to authentication, which verifies a user's identity, authorization decides a user's access rights for resources once their identity is known. AuthZed centralizes, unifies, and scales this core security layer so that developers don’t have to implement their own permission logic in every application. 
 
-SpiceDB is the core engine behind all AuthZed products. It is designed to be entirely agnostic to authentication solutions and identity providers. SpiceDB is a graph engine that centrally stores authorization data (relationships and permissions). Authorization requests (for example, checkPermission, lookupResources) are resolved via a dispatcher that traverses the permission graph.
+SpiceDB is the core engine behind all AuthZed products. It is designed to be entirely agnostic to authentication solutions and identity providers. SpiceDB is a graph engine that centrally stores authorization data (relationships and permissions).
 
-<img src="{{ 'images/v26.1/authzed_design.png' | relative_url }}" alt="AuthZed architecture design"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
+CockroachDB's scalability and resiliency make it well-suited to serve as SpiceDB's [underlying datastore](https://authzed.com/docs/spicedb/concepts/datastores#cockroachdb). AuthZed has standardized its managed services on CockroachDB, and they recommend CockroachDB for self-hosted, multi-region deployments.
 
-SpiceDB is available in multiple forms depending on deployment and support needs:
+This page describes how to configure CockroachDB to work with AuthZed.
 
-- [SpiceDB (Open Source)](https://authzed.com/spicedb): The foundational, community-driven version of the authorization engine, free to use and self-hosted under the Apache 2.0 license.
-- [SpiceDB Enterprise](https://authzed.com/products/spicedb-enterprise): A self-managed enterprise edition that includes audit logging, fine-grained API control, FIPS-validated cryptography, and dedicated support.
-- [AuthZed Dedicated](https://authzed.com/products/authzed-dedicated): A fully managed, single-tenant SaaS offering that provides all enterprise features along with global, regionally distributed deployments and integrated APIs for permission filtering.
-- [AuthZed Cloud](https://authzed.com/products/authzed-cloud): A multi-tenant managed platform designed for teams that want to start quickly without operational overhead.
+## Before you begin
 
-Across all these tiers, CockroachDB provides resiliency and scalability as SpiceDB's underlying datastore.
+Before configuring CockroachDB for AuthZed, refer to the [AuthZed documentation](https://authzed.com/docs) to understand AuthZed's architecture and requirements.
 
-## Set up a joint CockroachDB/AuthZed environment
+You will need:
 
-Imagine that you’re building a global content management application that uses SpiceDB, as the access control system backed by CockroachDB across multiple regions. This tutorial walks you through the manual setup of a joint CockroachDB/AuthZed environment.
+- A [supported CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}) for client connections
+- Network access from your SpiceDB runtime to CockroachDB on port `26257` of your CockroachDB host.
 
-### Before you begin
-
-To complete this tutorial, you will need:
-
-- A local copy of a [supported CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}).
-- Network access from your SpiceDB runtime to port `26257`.
-
-### Step 1. Provision a CockroachDB cluster
+## Step 1. Provision a CockroachDB cluster
 
 First you need to provision the CockroachDB cluster that AuthZed will use for its services. Choose one of the following methods to create a new CockroachDB cluster, or use an existing cluster and skip to Step 2.
 
 Be sure to create a **secure** cluster. This is necessary for the user creation step of this tutorial.
 
-#### Create a secure cluster locally
-If you have the CockroachDB binary installed locally, you can manually deploy a multi-node, self-hosted CockroachDB cluster on your local machine.
+#### Deploy a CockroachDB Self-hosted cluster
+You can manually deploy a multi-node, self-hosted CockroachDB cluster, either on-premises or on various cloud platforms.
 
-Learn how to [deploy a CockroachDB cluster locally]({% link {{ page.version.version }}/secure-a-cluster.md %}).
+Learn how to [deploy a self-hosted CockroachDB cluster]({% link {{ page.version.version }}/manual-deployment.md %}).
 
-#### Create a CockroachDB Self-Hosted cluster on AWS
-You can manually deploy a multi-node, self-hosted CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load-balancing service to distribute client traffic.
-
-Learn how to [deploy a CockroachDB cluster on AWS]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %}).
-
-#### Create a CockroachDB Cloud cluster
+#### Deploy a CockroachDB Cloud cluster
 CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simplifies the deployment and management of CockroachDB.
 
 [Sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud) and [create a cluster]({% link cockroachcloud/create-your-cluster.md %}) using [trial credits]({% link cockroachcloud/free-trial.md %}).
 
-### Step 2. Create a database for AuthZed
+#### Deploy a cluster locally
+If you have the CockroachDB binary installed locally, you can manually deploy a multi-node, self-hosted CockroachDB cluster on your local machine.
 
-Before integrating AuthZed with CockroachDB, you will need to set up a dedicated database.
+Learn how to [deploy a CockroachDB cluster locally]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 
-1. Replace `{certs-dir}` with the certificates directory that you established during the cluster setup, and `{crdb-fqdn}` with your CockroachDB load balancer domain name. Then run the following command:
+## Step 2. Create a database and user for AuthZed
+
+1. Connect to your CockroachDB cluster using the SQL client. Replace `{certs-dir}` with your certificates directory and `{cluster-host}` with your cluster hostname:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    cockroach sql --certs-dir={certs-dir} --host={crdb-fqdn}:26257
+    cockroach sql --certs-dir={certs-dir} --host={cluster-host}:26257
     ~~~
 
-1. Once connected to the SQL shell, [create the following database]({% link {{page.version.version}}/create-database.md %}):
+1. [Create a database]({% link {{page.version.version}}/create-database.md %}) for AuthZed:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
     CREATE DATABASE spicedb;
     ~~~
 
-1. [Create a user]({% link {{page.version.version}}/create-user.md %}) `authz` and [grant them privileges]({% link {{page.version.version}}/grant.md %}) for the `spicedb` database:
+1. [Create a user]({% link {{page.version.version}}/create-user.md %}) for AuthZed and [grant privileges]({% link {{page.version.version}}/grant.md %}) on the database:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    CREATE USER authz WITH PASSWORD 'securepass';
-    GRANT ALL ON DATABASE spicedb TO authz;
+    CREATE USER authzed_user WITH PASSWORD 'your_secure_password';
+    GRANT ALL ON DATABASE spicedb TO authzed_user;
     ~~~
 
-### Step 3. Install and configure SpiceDB
+## Step 3. Configure the connection string
 
-1. Install the SpiceDB binary for your given system (supported systems include [macOS](https://authzed.com/docs/spicedb/getting-started/install/macos), [Docker](https://authzed.com/docs/spicedb/getting-started/install/docker), [Kubernetes](https://authzed.com/docs/spicedb/getting-started/install/kubernetes), [Ubuntu/Debian](https://authzed.com/docs/spicedb/getting-started/install/debian), [RHEL/CentOS](https://authzed.com/docs/spicedb/getting-started/install/rhel), and [Windows](https://authzed.com/docs/spicedb/getting-started/install/windows)).
+When configuring SpiceDB to use CockroachDB, you will need to provide a connection URI. The connection string format for CockroachDB is:
 
-2. Define your CockroachDB cluster as the datastore for SpiceDB. Replace the `{crdb-uri}` placeholder with your cluster URI, and replace the `{client-authz-cert}`, `{client-authz-key}`, and `{ca-cert}` placeholders with paths to the relevant certificate files in your certs directory:
+~~~
+postgres://authzed_user:your_secure_password@{cluster-host}:26257/spicedb?sslmode=verify-full&sslcert={client-cert}&sslkey={client-key}&sslrootcert={ca-cert}
+~~~
+
+Replace the following placeholders:
+
+- `{cluster-host}`: Your CockroachDB cluster hostname or load balancer address
+- `{client-cert}`: Path to the client certificate file
+- `{client-key}`: Path to the client key file
+- `{ca-cert}`: Path to the CA certificate file
+
+For CockroachDB {{ site.data.products.cloud }} clusters, refer to [Connect to a CockroachDB {{ site.data.products.cloud }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) for connection details.
+
+## Step 4. Install and configure SpiceDB
+
+For instructions on installing and configuring SpiceDB with CockroachDB as the datastore, refer to AuthZed's SpiceDB documentation:
+
+- Install SpiceDB ([macOS](https://authzed.com/docs/spicedb/getting-started/install/macos), [Docker](https://authzed.com/docs/spicedb/getting-started/install/docker), [Kubernetes](https://authzed.com/docs/spicedb/getting-started/install/kubernetes), [Ubuntu/Debian](https://authzed.com/docs/spicedb/getting-started/install/debian), [RHEL/CentOS](https://authzed.com/docs/spicedb/getting-started/install/rhel), [Windows](https://authzed.com/docs/spicedb/getting-started/install/windows))
+- [Configure SpiceDB to use CockroachDB](https://authzed.com/docs/spicedb/concepts/datastores#cockroachdb)
+- [Deploy SpiceDB with CockroachDB](https://authzed.com/docs/spicedb/concepts/datastores#deployment-process)
+
+Make sure to use the connection string defined in [Step 3](#step-3-configure-the-connection-string) in your SpiceDB configuration.
+
+
+## Step 5. Define authorization data
+
+Once SpiceDB is deployed with CockroachDB, you can use AuthZed's CLI and API endpoints to define authorization schemas, create relationships, and check permissions. To learn how to define this authorization data, refer to the [SpiceDB documentation](https://authzed.com/docs/spicedb/getting-started/first-steps).
+
+## Step 6. Verify the integration
+
+After configuring SpiceDB to use CockroachDB, and using AuthZed's tools to define authorization data, you can verify that the authorization data has been stored in CockroachDB:
+
+1. Connect to your CockroachDB cluster using the [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    spicedb datastore migrate head \
-    --datastore-engine=cockroachdb \
-    --datastore-conn-uri="postgres://authz:securepass@{crdb-uri}:26257/spicedb?sslmode=verify-full&sslcert={client-authz-cert}&sslkey={client-authz-key}&sslrootcert={ca-cert}"
+    ~~~shell
+    cockroach sql --certs-dir={certs-dir} --host={cluster-host}:26257
     ~~~
-
-3. Start the SpiceDB service pointing at your CockroachDB URI. Replace the same placeholders as those in the preceding command. In addition, define a `{preshared-key}`, to be used in further commands:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    spicedb serve \
-    --grpc-preshared-key="{preshared-key}" \
-    --http-enabled=true \
-    --datastore-engine=cockroachdb \
-    --datastore-conn-uri="postgres://authz:securepass@{crdb-uri}:26257/spicedb?sslmode=verify-full&sslcert={client-authz-cert}&sslkey={client-authz-key}&sslrootcert={ca-cert}"
-    ~~~
-
-### Step 4. Install the AuthZed CLI
-
-1. To interact with SpiceDB through the zed (AuthZed) CLI, [install the latest binary releases of zed](https://authzed.com/docs/spicedb/getting-started/installing-zed).
-
-2. Once installed, connect to the SpiceDB instance exposed in the client with the following command. For local development, you can use the `--insecure` flag to connect over plaintext. Be sure to use the same `{preshared-key}` that you used in the preceding step. Replace the `{spicedb-ip}` placeholder with the IP of your SpiceDB instance:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    zed context set my_context {spicedb-ip}:50051 {preshared-key} --insecure
-    ~~~
-
-3. Check that the command worked by running:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    zed version
-    ~~~
-
-    If the output indicates that the server version is `unknown`, then your CLI was unable to connect. You may need to verify the values in previous steps, such as the `{preshared-key}`, the IP or the port that your SpiceDB instance is running on. 
-
-    When successfully executed, `zed version` should output something similar to the following:
-
-    ~~~
-    client: zed v0.31.1
-    service: v1.45.4
-    ~~~ 
-
-You can interact with SpiceDB using the AuthZed CLI, with the [HTTP API](https://authzed.com/docs/spicedb/api/http-api) or with the [gRPC API](https://buf.build/authzed/api/docs/main:authzed.api.v1). The remaining instructions will demonstrate how to use both the AuthZed CLI and the HTTP API to complete the integration.
-
-### Step 5. Define the authorization schema
-
-The first step in developing an authorization relationship schema is defining one or more object types. For example, you could define the following object relationships:
-
-<img src="{{ 'images/v26.1/authzed_schema.png' | relative_url }}" alt="AuthZed sample schema diagram"  style="border:1px solid #eee;max-width:80%;margin:auto;display:block" />
-
-The main two items in this example are the `user` and `document` objects. The `user` can be a `viewer`, an `editor` or an `admin`. The definition gives the `remove` permission to the `admin` role only. To `edit` a file the user must be either an `editor` or an `admin`. The permission to `view` a document is set for the `viewer`, `editor` and `admin` roles. 
-
-#### Use the AuthZed CLI
-
-1. Define the schema by writing the following file:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~
-    definition user {}
-
-    definition document {
-        relation editor: user
-        relation viewer: user
-        relation admin: user
-
-        permission view = viewer + editor + admin
-        permission edit = editor + admin
-        permission remove = admin
-    }
-    ~~~
-
-    Save this file as `schema.zed`.
-
-1. Apply the schema to SpiceDB, pointing to the saved `schema.zed` file. 
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    zed schema write ./schema.zed
-    ~~~
-
-1. To verify that this has worked, run the following command, which should print the applied schema:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    zed schema read
-    ~~~
-
-#### Use the HTTP API
-
-Embed the schema definition within a [`WriteSchemaRequest`](https://authzed.com/docs/spicedb/api/http-api#/Schema/SchemaService_WriteSchema) body, making sure to replace the `{spicedb-ip}` placeholder with the IP of your SpiceDB instance, and the `{preshared-key}` placeholder with value defined in [Step 3](#step-3-install-and-configure-spicedb):
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl --location 'http://{spicedb-ip}:8443/v1/schema/write' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer {preshared-key}' \
---data '{
-"schema": "definition user {} \n definition document { \n relation editor: user \n relation viewer: user \n relation admin: user \n permission view = viewer + editor + admin \n permission edit = editor + admin \n permission remove = admin \n}"
-}'
-~~~
-
-If successful, that request will return a response which includes a token:
-
-~~~
-{"writtenAt":{"token":"GhUKEzE3NTgxMjkyOTM0MDE2MDYxNDA="}}
-~~~
-
-### Step 6. Define authorization relationships
-
-In SpiceDB, relationships are represented as tuples. Each tuple contains a _resource_, a _relation_ and a _subject_. In this example, the resource is the name of a `document`, the relation is either `admin`, `viewer` or `editor`, and the subject is the name of a `user`.
-
-In this scenario, make user `alice` an `admin` for `doc1`. This means that she can `view`, `edit`, and `remove` the document. Then make user `bob` a `viewer` for `doc1`. This means he can `view` the document.
-
-#### Use the AuthZed CLI
-
-Define a new relationship for a `document` called `doc1`. Use the following command to make `alice` an `admin` for `doc1`:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-zed relationship touch document:doc1 admin user:alice
-~~~
-
-Define a new relationship for `doc1`. Use the following command to make `bob` a `viewer` for `doc1`:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-zed relationship touch document:doc1 viewer user:bob
-~~~
-
-#### Use the HTTP API
-
-Define the relationships in a [`WriteRelationshipsRequest`](https://authzed.com/docs/spicedb/api/http-api#/Permissions/PermissionsService_WriteRelationships) body, making sure to replace the `{spicedb-ip}` placeholder with the IP of your SpiceDB instance, and the `{preshared-key}` placeholder with value defined in [Step 3](#step-3-install-and-configure-spicedb):
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl --location 'http://{spicedb-ip}:8443/v1/relationships/write' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer {preshared-key}' \
---data '{
-    "updates": [
-        {
-            "operation": "OPERATION_TOUCH",
-            "relationship": {
-                "resource": {
-                    "objectType": "document",
-                    "objectId": "doc1"
-                },
-                "relation": "admin",
-                "subject": {
-                    "object": {
-                        "objectType": "user",
-                        "objectId": "alice"
-                    }
-                }
-            }
-        },
-        {
-            "operation": "OPERATION_TOUCH",
-            "relationship": {
-                "resource": {
-                    "objectType": "document",
-                    "objectId": "doc1"
-                },
-                "relation": "viewer",
-                "subject": {
-                    "object": {
-                        "objectType": "user",
-                        "objectId": "bob"
-                    }
-                }
-            }
-        }
-    ]
-}'
-~~~
-
-If successful, that request will return a response which includes a token:
-
-~~~
-{"writtenAt":{"token":"GhUKEzE3NTgxMjk3MDg2NTc4MDQ5ODk="}}
-~~~
-
-## Test the CockroachDB/AuthZed Integration
-
-Once both CockroachDB and AuthZed are provisioned and configured, and the authorization relationships have been defined in SpiceDB, validate that the relationships are accessible in the CockroachDB data store.
-
-### Check user permissions
-
-Verify that AuthZed has captured the authorization data that you have defined.
-
-#### Use the AuthZed CLI
-
-To check that our schema is working correctly, issue `check` requests. As `bob` is only a `viewer` for `doc1`, you can expect him to have the `view` permission but not the `edit` or `remove` permissions:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-zed permission check document:doc1 view user:bob
-# true
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-zed permission check document:doc1 edit user:bob
-# false
-~~~
-
-Because `alice` is an `admin`, she has all permissions:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-zed permission check document:doc1 view user:alice
-# true
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-zed permission check document:doc1 remove user:alice
-# true
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-zed permission check document:doc1 edit user:alice
-# true
-~~~
-
-#### Use the HTTP API
-
-Define the permission that you want to check within a [`CheckPermissionRequest`](https://authzed.com/docs/spicedb/api/http-api#/Permissions/PermissionsService_CheckPermission) body. This check includes a `user`, a `resource`, and an `action`. Make sure to replace the `{spicedb-ip}` placeholder with the IP of your SpiceDB instance, and the `{preshared-key}` placeholder with value defined in [Step 3](#step-3-install-and-configure-spicedb):
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl --location 'http://{spicedb-ip}:8443/v1/permissions/check' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer {preshared-key}' \
---data '{
-  "consistency": {
-    "minimizeLatency": true
-  },
-  "resource": {
-    "objectType": "document",
-    "objectId": "doc1"
-  },
-  "permission": "view",
-  "subject": {
-    "object": {
-      "objectType": "user",
-      "objectId": "bob"
-    }
-  }
-}'
-~~~
-
-If successful, that request will return a response which includes a token. That token will include a `permissionship` item, that explains whether the given `user` has permission to perform the given `action` on the given `resource`:
-
-~~~
-{"checkedAt":{"token":"GhUKEzE3NTgxMjk5NTAwMDAwMDAwMDA="}, "permissionship":"PERMISSIONSHIP_NO_PERMISSION"}
-~~~
-
-Send another `CheckPermissionRequest` for each permission that you want to check.
-
-### Access AuthZed data with CockroachDB SQL
-
-To demonstrate that CockroachDB is being used as the data store for this SpiceDB instance, access the same authorization data using CockroachDB SQL. 
-
-1. Go to your [CockroachDB SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}).
 
 1. Run the following query to verify the accessibilty of the AuthZed schema in CockroachDB:
 
@@ -384,7 +137,7 @@ To demonstrate that CockroachDB is being used as the data store for this SpiceDB
     SELECT namespace, object_id, relation, userset_namespace, userset_object_id, timestamp, expires_at FROM public.relation_tuple;
     ~~~ 
 
-    The result set contains permissions data. Much of this data, including `object_id`, `relation`, and `userset_object_id`, should match that provided in the relation tuple in [Step 6](#step-6-define-authorization-relationships) of the setup instructions:
+    The result set contains permissions data. This data should match the authorization data you defined with AuthZed:
 
     ~~~
       namespace | object_id | relation | userset_namespace | userset_object_id |         timestamp          | expires_at
@@ -396,8 +149,13 @@ To demonstrate that CockroachDB is being used as the data store for this SpiceDB
     Time: 4ms total (execution 3ms / network 0ms)
     ~~~ 
 
-### Next steps
-These tests confirm that AuthZed is successfully using CockroachDB as its data store. If you get the expected results from these tests, then your integration is ready for use in your application. You can begin building authorization and access control features with CockroachDB and AuthZed.
+    In this example, user `alice` has been defined as an `admin` for `doc1`, and user `bob` has been defined as a `viewer` for `doc1`.
+
+If the Cockroach SQL result set matches the authorization data define in [Step 5](#step-5-define-authorization-data), you have verified that CockroachDB has successfully been deployed as the datastore for SpiceDB.
+
+## Next steps
+
+Your CockroachDB/AuthZed integration is ready for use in your application. You can begin building authorization and access control features with CockroachDB and AuthZed.
 
 ## See also
 
