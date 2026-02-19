@@ -10371,10 +10371,10 @@
 
 - release_name: v26.1.0
   major_version: v26.1
-  release_date: '2026-02-02'
+  release_date: '2026-02-18'
   release_type: Production
-  go_version: go1.25.3
-  sha: 6c9b2f778bd29895383d493a2fa4490323499ecf
+  go_version: go1.25.5
+  sha: 434ba3ce6e0dd21f65dac8fd33d945c3f10986fc
   has_sql_only: true
   has_sha256sum: true
   mac:
@@ -10394,14 +10394,7 @@
     docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
-  previous_release: v26.1.0-rc.1
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters, as part of our staged release
-      process, with binaries for self-hosted clusters available
-      a week afterward.
+  previous_release: v26.1.0
 
 
 - release_name: v25.4.4
@@ -10482,6 +10475,7 @@
     docker_arm: true
     docker_arm_experimental: false
     docker_arm_limited_access: false
+
 
 - release_name: v24.3.27
   major_version: v24.3
