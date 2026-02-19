@@ -9,7 +9,7 @@ docs_area: Integrate
 
 SpiceDB is the core engine behind all AuthZed products, designed to be entirely agnostic to authentication solutions and identity providers. SpiceDB is a graph engine that centrally stores authorization data (relationships and permissions).
 
-CockroachDB's scalability and resiliency make it well-suited to serve as SpiceDB's [underlying datastore](https://authzed.com/docs/spicedb/concepts/datastores#cockroachdb). AuthZed has standardized its managed services on CockroachDB, and they recommend CockroachDB for self-hosted, multi-region deployments.
+CockroachDB's scalability and resiliency make it well-suited to serve as SpiceDB's [underlying datastore](https://authzed.com/docs/spicedb/concepts/datastores#cockroachdb). AuthZed has standardized its managed services on CockroachDB and recommends CockroachDB for self-hosted, multi-region deployments.
 
 This page describes how to configure CockroachDB to work with AuthZed.
 
@@ -19,7 +19,7 @@ Refer to the [AuthZed documentation](https://authzed.com/docs) to understand Aut
 
 To deploy CockroachDB for AuthZed, you will need the following:
 
-- A [supported CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}) for client connections
+- A [supported CockroachDB SQL Shell binary]({% link {{ page.version.version }}/install-cockroachdb.md %}) for client connections.
 - Network access from your SpiceDB runtime to CockroachDB on port `26257` of your CockroachDB host.
 
 ## Step 1. Provision a CockroachDB cluster
@@ -97,7 +97,7 @@ Make sure to use the connection string defined in [Step 3](#step-3-configure-the
 
 ## Step 5. Define authorization data
 
-Once SpiceDB is deployed with CockroachDB, you can use AuthZed's CLI and API endpoints to define authorization schemas, create relationships, and check permissions. To learn how to define this authorization data, refer to the [SpiceDB documentation](https://authzed.com/docs/spicedb/getting-started/first-steps).
+Once SpiceDB is deployed with CockroachDB, you can use AuthZed's CLI and API endpoints to define authorization schemas, create relationships, and check permissions. To connect to SpiceDB with AuthZed tools and begin defining authorization data for your organization, refer to the [SpiceDB documentation](https://authzed.com/docs/spicedb/getting-started/first-steps).
 
 ## Step 6. Verify the integration
 
