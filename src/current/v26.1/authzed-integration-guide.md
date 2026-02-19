@@ -5,9 +5,9 @@ toc: true
 docs_area: Integrate
 ---
 
-[AuthZed](https://authzed.com/) is an authorization platform. In contrast to authentication, which verifies a user's identity, authorization decides a user's access rights for resources once their identity is known. AuthZed centralizes, unifies, and scales this core security layer so that developers don’t have to implement their own permission logic in every application. 
+[AuthZed](https://authzed.com/) is an authorization platform, controlling user's access rights for resources once their identity is known. AuthZed centralizes, unifies, and scales this core security layer so that developers don’t have to implement their own permission logic in every application. 
 
-SpiceDB is the core engine behind all AuthZed products. It is designed to be entirely agnostic to authentication solutions and identity providers. SpiceDB is a graph engine that centrally stores authorization data (relationships and permissions).
+SpiceDB is the core engine behind all AuthZed products, designed to be entirely agnostic to authentication solutions and identity providers. SpiceDB is a graph engine that centrally stores authorization data (relationships and permissions).
 
 CockroachDB's scalability and resiliency make it well-suited to serve as SpiceDB's [underlying datastore](https://authzed.com/docs/spicedb/concepts/datastores#cockroachdb). AuthZed has standardized its managed services on CockroachDB, and they recommend CockroachDB for self-hosted, multi-region deployments.
 
@@ -15,9 +15,9 @@ This page describes how to configure CockroachDB to work with AuthZed.
 
 ## Before you begin
 
-Before configuring CockroachDB for AuthZed, refer to the [AuthZed documentation](https://authzed.com/docs) to understand AuthZed's architecture and requirements.
+Refer to the [AuthZed documentation](https://authzed.com/docs) to understand AuthZed's architecture and requirements.
 
-You will need:
+To deploy CockroachDB for AuthZed, you will need the following:
 
 - A [supported CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}) for client connections
 - Network access from your SpiceDB runtime to CockroachDB on port `26257` of your CockroachDB host.
@@ -26,7 +26,7 @@ You will need:
 
 First you need to provision the CockroachDB cluster that AuthZed will use for its services. Choose one of the following methods to create a new CockroachDB cluster, or use an existing cluster and skip to Step 2.
 
-Be sure to create a **secure** cluster. This is necessary for the user creation step of this tutorial.
+Be sure to create a **secure** cluster that supports client connections with TLS. This is necessary for the user creation step of this tutorial.
 
 #### Deploy a CockroachDB Self-hosted cluster
 You can manually deploy a multi-node, self-hosted CockroachDB cluster, either on-premises or on various cloud platforms.
@@ -36,16 +36,16 @@ Learn how to [deploy a self-hosted CockroachDB cluster]({% link {{ page.version.
 #### Deploy a CockroachDB Cloud cluster
 CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simplifies the deployment and management of CockroachDB.
 
-[Sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud) and [create a cluster]({% link cockroachcloud/create-your-cluster.md %}) using [trial credits]({% link cockroachcloud/free-trial.md %}).
+[Sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud) and [create a cluster]({% link cockroachcloud/create-your-cluster.md %}), optionally using [trial credits]({% link cockroachcloud/free-trial.md %}).
 
 #### Deploy a cluster locally
-If you have the CockroachDB binary installed locally, you can manually deploy a multi-node, self-hosted CockroachDB cluster on your local machine.
+You can install the CockroachDB binary to manually deploy a multi-node, self-hosted CockroachDB cluster on your local machine.
 
 Learn how to [deploy a CockroachDB cluster locally]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 
 ## Step 2. Create a database and user for AuthZed
 
-1. Connect to your CockroachDB cluster using the SQL client. Replace `{certs-dir}` with your certificates directory and `{cluster-host}` with your cluster hostname:
+1. Connect to your CockroachDB cluster using the SQL Shell client. Replace `{certs-dir}` with your certificates directory and `{cluster-host}` with your cluster hostname:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -101,9 +101,9 @@ Once SpiceDB is deployed with CockroachDB, you can use AuthZed's CLI and API end
 
 ## Step 6. Verify the integration
 
-After configuring SpiceDB to use CockroachDB, and using AuthZed's tools to define authorization data, you can verify that the authorization data has been stored in CockroachDB:
+After configuring SpiceDB to use CockroachDB and storing authorization data, you can verify that the data has been stored correctly in CockroachDB:
 
-1. Connect to your CockroachDB cluster using the [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+1. Connect to your CockroachDB cluster using the [SQL Shell client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -155,7 +155,7 @@ If the Cockroach SQL result set matches the authorization data define in [Step 5
 
 ## Next steps
 
-Your CockroachDB/AuthZed integration is ready for use in your application. You can begin building authorization and access control features with CockroachDB and AuthZed.
+Your CockroachDB/AuthZed integration is ready for use in your application. You can begin building authorization and access control features with AuthZed.
 
 ## See also
 
