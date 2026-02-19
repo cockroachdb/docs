@@ -9,7 +9,7 @@ To improve observability and debugging in the field, [MOLT Replicator]({% link m
 
 All userscript metrics include a `script_` prefix and are automatically labeled with the relevant schema or table for each configured handler (for example, `schema="target.public"`). If a userscript defines both schema-level and table-level handlers, separate label values will be created for each.
 
-These metrics are part of the default [Replicator Prometheus metrics]({% link molt/replicator-metrics.md %}) set and can be visualized immediately using the provided [`replicator.json` Grafana dashboard file](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json).
+These metrics are part of the default [Replicator Prometheus metrics]({% link molt/replicator-metrics.md %}) set and can be visualized immediately using the provided [`replicator.json` Grafana dashboard file](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json). They are also included in [Replicator metrics snapshots]({% link molt/replicator-metrics.md %}#metrics-snapshots).
 
 Consider using these metrics to:
 
