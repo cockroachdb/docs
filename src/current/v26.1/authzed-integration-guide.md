@@ -28,7 +28,7 @@ First you need to provision the CockroachDB cluster that AuthZed will use for it
 
 Be sure to create a **secure** cluster that supports client connections with TLS. This is necessary for the user creation step of this tutorial.
 
-#### Deploy a CockroachDB Self-hosted cluster
+#### Deploy a CockroachDB self-hosted cluster
 You can manually deploy a multi-node, self-hosted CockroachDB cluster, either on-premises or on various cloud platforms.
 
 Learn how to [deploy a self-hosted CockroachDB cluster]({% link {{ page.version.version }}/manual-deployment.md %}).
@@ -82,18 +82,19 @@ Replace the following placeholders:
 - `{client-key}`: Path to the client key file
 - `{ca-cert}`: Path to the CA certificate file
 
+For more information about CockroachDB connection parameters, refer to [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %}).
+
 For CockroachDB {{ site.data.products.cloud }} clusters, refer to [Connect to a CockroachDB {{ site.data.products.cloud }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) for connection details.
 
 ## Step 4. Install and configure SpiceDB
 
 For instructions on installing and configuring SpiceDB with CockroachDB as the datastore, refer to AuthZed's SpiceDB documentation:
 
-- Install SpiceDB ([macOS](https://authzed.com/docs/spicedb/getting-started/install/macos), [Docker](https://authzed.com/docs/spicedb/getting-started/install/docker), [Kubernetes](https://authzed.com/docs/spicedb/getting-started/install/kubernetes), [Ubuntu/Debian](https://authzed.com/docs/spicedb/getting-started/install/debian), [RHEL/CentOS](https://authzed.com/docs/spicedb/getting-started/install/rhel), [Windows](https://authzed.com/docs/spicedb/getting-started/install/windows))
+- [Install SpiceDB](https://authzed.com/docs/spicedb/getting-started/install/docker)
 - [Configure SpiceDB to use CockroachDB](https://authzed.com/docs/spicedb/concepts/datastores#cockroachdb)
 - [Deploy SpiceDB with CockroachDB](https://authzed.com/docs/spicedb/concepts/datastores#deployment-process)
 
 Make sure to use the connection string defined in [Step 3](#step-3-configure-the-connection-string) in your SpiceDB configuration.
-
 
 ## Step 5. Define authorization data
 
@@ -117,7 +118,7 @@ After configuring SpiceDB to use CockroachDB and storing authorization data, you
     SELECT namespace, serialized_config FROM public.namespace_config;
     ~~~ 
 
-    The result set contains data about the permission:
+    The result set contains data about the permission. For example:
 
     ~~~
     -[ RECORD 1 ]
@@ -137,13 +138,13 @@ After configuring SpiceDB to use CockroachDB and storing authorization data, you
     SELECT namespace, object_id, relation, userset_namespace, userset_object_id, timestamp, expires_at FROM public.relation_tuple;
     ~~~ 
 
-    The result set contains permissions data. This data should match the authorization data you defined with AuthZed:
+    The result set contains permissions data. This data should match the authorization data that you defined with AuthZed:
 
     ~~~
       namespace | object_id | relation | userset_namespace | userset_object_id |         timestamp          | expires_at
     ------------+-----------+----------+-------------------+-------------------+----------------------------+-------------
       document  | doc1      | admin    | user              | alice             | 2026-01-06 18:28:21.12613  | NULL
-      document  | doc1      | viewer   | user              | bob              | 2026-01-06 18:28:23.226998 | NULL
+      document  | doc1      | viewer   | user              | bob               | 2026-01-06 18:28:23.226998 | NULL
     (2 rows)
 
     Time: 4ms total (execution 3ms / network 0ms)
@@ -151,7 +152,7 @@ After configuring SpiceDB to use CockroachDB and storing authorization data, you
 
     In this example, user `alice` has been defined as an `admin` for `doc1`, and user `bob` has been defined as a `viewer` for `doc1`.
 
-If the Cockroach SQL result set matches the authorization data define in [Step 5](#step-5-define-authorization-data), you have verified that CockroachDB has successfully been deployed as the datastore for SpiceDB.
+If the Cockroach SQL result set matches the authorization data defined in [Step 5](#step-5-define-authorization-data), you have verified that CockroachDB has successfully been deployed as the datastore for SpiceDB.
 
 ## Next steps
 
@@ -159,6 +160,8 @@ Your CockroachDB/AuthZed integration is ready for use in your application. You c
 
 ## See also
 
-- [Deploy a Local Cluster from Binary (Secure)]({% link {{ page.version.version }}/secure-a-cluster.md %})
-- [Deploy CockroachDB on AWS EC2]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %})
+- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
+- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [Optimize Statement Performance Overview]({% link {{ page.version.version }}/make-queries-fast.md %})
