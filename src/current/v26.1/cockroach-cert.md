@@ -334,7 +334,7 @@ total 40
 
 ### Create a debug_user client certificate (Preview)
 
-<span class="version-tag">New in v26.1:</span> To use the `debug_user` for collecting [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}) data when root is disabled:
+<span class="version-tag">New in v26.1:</span> To use `debug_user` for collecting [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}) data when root is disabled, generate a client certificate:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -351,12 +351,7 @@ This creates the following files:
 The certificate will contain "debug_user" in the CommonName field, which is required for `debug_user` authentication.
 
 {{site.data.alerts.callout_info}}
-Before using this certificate, you must:
-
-1. Create the `debug_user` SQL user: `CREATE USER debug_user;`
-1. Enable debug_user authentication by starting nodes with the [`--allow-debug-user`]({% link {{ page.version.version }}/cockroach-start.md %}#security) flag
-
-For complete setup instructions, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug_user).
+This certificate is only one part of the setup. For the complete procedure including user creation, privilege grants, and server configuration, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug_user).
 {{site.data.alerts.end}}
 
 ### List certificates and keys

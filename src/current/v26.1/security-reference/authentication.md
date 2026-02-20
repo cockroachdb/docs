@@ -218,6 +218,8 @@ This procedure shows how to configure a cluster to disable root login for compli
 
 ### Step 2: Generate debug_user certificate
 
+Generate a client certificate for debug_user. See [Create a debug_user client certificate]({% link {{ page.version.version }}/cockroach-cert.md %}#create-a-debug_user-client-certificate-preview) for detailed instructions.
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach cert create-client debug_user \
@@ -225,7 +227,7 @@ cockroach cert create-client debug_user \
   --ca-key=my-safe-directory/ca.key
 ~~~
 
-This creates `client.debug_user.crt` and `client.debug_user.key` in the specified certs directory.
+This creates `client.debug_user.crt` and `client.debug_user.key` in the `certs` directory.
 
 ### Step 3: Test debug_user access
 
