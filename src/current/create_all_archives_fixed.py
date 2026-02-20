@@ -6,6 +6,7 @@ with FIXED navigation that properly detects the version
 import subprocess
 import shutil
 import re
+import tempfile
 from pathlib import Path
 import time
 
@@ -26,10 +27,12 @@ def fix_navigation_in_archive(version):
         content = html_file.read_text()
         original = content
 
-        # Fix 1: JavaScript syntax error
-        content = content.replace(
-            f"url = url.replace(/^stable\\//, ).replace(/\\/stable\\//, '/{version}/');",
-            f"url = url.replace(/^stable\\//, '{version}/').replace(/\\/stable\\//, '/{version}/');"
+        # Fix 1: JavaScript syntax error — use flexible regex instead of exact string
+        # match to handle any whitespace variation in the empty replacement argument
+        content = re.sub(
+            r"url\.replace\(/\^stable\\\/\/, \s*\)\.replace\(/\\\/stable\\\/\/, '/" + re.escape(version) + r"/'\)",
+            f"url.replace(/^stable\\//, '{version}/').replace(/\\/stable\\//,'/{version}/')",
+            content
         )
 
         # Fix 2: Archive detection with nested directory handling
@@ -121,21 +124,29 @@ def create_version_archive(version):
     if Path("offline_snap").exists():
         shutil.rmtree("offline_snap")
 
-    # Step 1: Modify snapshot_relative.py for this version
+    # Step 1: Write a version-specific copy of snapshot_relative.py to a temp file
+    # so the checked-in source is never modified in-place.
     print(f"📝 Setting up for {version}...")
     snapshot_content = Path("snapshot_relative.py").read_text()
 
-    # Reset to a clean state first
     snapshot_content = re.sub(r'sidebar-v[\d.]+\.html', f'sidebar-{version}.html', snapshot_content)
     snapshot_content = re.sub(r'TARGET_VERSION = "[^"]*"', f'TARGET_VERSION = "{version}"', snapshot_content)
 
-    Path("snapshot_relative.py").write_text(snapshot_content)
+    tmp_snap = tempfile.NamedTemporaryFile(
+        mode='w', suffix='_snapshot.py', dir='.', delete=False
+    )
+    tmp_snap.write(snapshot_content)
+    tmp_snap.close()
+    tmp_snap_path = Path(tmp_snap.name)
 
     # Step 2: Run the 14-step process
     print(f"\n📚 Running the 14-step archive creation process for {version}...")
 
     # Step 1: Create base archive
-    run_cmd("python3 snapshot_relative.py", "Step 1: Creating base archive")
+    run_cmd(f"python3 {tmp_snap_path.name}", "Step 1: Creating base archive")
+
+    # Clean up the temp snapshot script now that step 1 is done
+    tmp_snap_path.unlink(missing_ok=True)
 
     # Step 2: Apply navigation fixes
     run_cmd("python3 fix_navigation_quick.py", "Step 2: Applying navigation fixes")
