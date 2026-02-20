@@ -23,6 +23,8 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 import argparse
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 # Configuration
 SCRIPT_DIR = Path(__file__).parent
@@ -36,7 +38,7 @@ ALL_VERSIONS = [
 ]
 
 # Current stable version (update as needed)
-STABLE_VERSION = "v25.3"
+STABLE_VERSION = "v26.1"
 
 # Directories to copy entirely
 ASSET_DIRS = ["css", "js", "images", "fonts", "_internal"]
@@ -77,6 +79,19 @@ class FullArchiveCreator:
         }.get(level, "[*]")
         print(f"[{timestamp}] {prefix} {message}")
 
+    @staticmethod
+    def _make_session(retries=3, backoff=0.5):
+        """Create a requests Session with automatic retry and exponential backoff."""
+        session = requests.Session()
+        retry = Retry(
+            total=retries,
+            backoff_factor=backoff,
+            status_forcelist=[429, 500, 502, 503, 504],
+        )
+        session.mount("https://", HTTPAdapter(max_retries=retry))
+        session.mount("http://", HTTPAdapter(max_retries=retry))
+        return session
+
     def clean_output_dir(self):
         """Remove existing output directory if it exists"""
         if self.output_dir.exists():
@@ -98,7 +113,7 @@ class FullArchiveCreator:
                 self.log(f"  {asset_dir}/ not found, skipping", "WARNING")
 
     def copy_tree_ignore_broken_symlinks(self, src, dst):
-        """Copy directory tree, ignoring broken/circular symlinks"""
+        """Copy directory tree, resolving symlinks to their targets (portable across platforms)."""
         dst.mkdir(parents=True, exist_ok=True)
 
         for item in src.iterdir():
@@ -107,24 +122,20 @@ class FullArchiveCreator:
 
             try:
                 if src_item.is_symlink():
-                    # Check if symlink is valid
                     try:
-                        src_item.resolve(strict=True)
-                        # Valid symlink - copy target or recreate link
-                        target = os.readlink(src_item)
-                        # Skip circular symlinks (symlink pointing to parent dir)
-                        if item.name in target or target.startswith('..'):
-                            continue
-                        os.symlink(target, dst_item)
+                        resolved = src_item.resolve(strict=True)
                     except (OSError, RuntimeError):
-                        # Broken/circular symlink - skip it
+                        # Broken or circular symlink — skip
                         continue
+                    if resolved.is_dir():
+                        self.copy_tree_ignore_broken_symlinks(resolved, dst_item)
+                    else:
+                        shutil.copy2(resolved, dst_item)
                 elif src_item.is_dir():
                     self.copy_tree_ignore_broken_symlinks(src_item, dst_item)
                 elif src_item.is_file():
                     shutil.copy2(src_item, dst_item)
-            except Exception as e:
-                # Skip any problematic items
+            except Exception:
                 continue
 
     def copy_version_dirs(self):
@@ -152,15 +163,13 @@ class FullArchiveCreator:
                 dst = self.output_dir / content_dir
                 try:
                     if src.is_symlink():
-                        # Resolve the symlink and copy the actual content
-                        # (zip files don't handle symlinks well across platforms)
-                        target = os.readlink(src)
-                        resolved_src = self.site_dir / target
-                        if resolved_src.exists():
-                            self.copy_tree_ignore_broken_symlinks(resolved_src, dst)
-                            self.log(f"  Copied {content_dir}/ (from {target})", "SUCCESS")
-                        else:
-                            self.log(f"  {content_dir} symlink target {target} not found", "WARNING")
+                        try:
+                            resolved = src.resolve(strict=True)
+                        except (OSError, RuntimeError):
+                            self.log(f"  {content_dir} symlink is broken, skipping", "WARNING")
+                            continue
+                        self.copy_tree_ignore_broken_symlinks(resolved, dst)
+                        self.log(f"  Copied {content_dir}/ (resolved symlink)", "SUCCESS")
                     else:
                         self.copy_tree_ignore_broken_symlinks(src, dst)
                         self.log(f"  Copied {content_dir}/", "SUCCESS")
@@ -194,11 +203,56 @@ class FullArchiveCreator:
         depth = self.get_file_depth(file_path)
         return "../" * depth if depth > 0 else ""
 
-    def fix_docs_home_url(self, content):
-        """Fix 1: Replace '/' with 'index.html' in sidebar nav JSON"""
+    def _rewrite_url(self, url, prefix):
+        """Rewrite a URL for offline use: strip /docs/ prefix and make it relative."""
+        if not url or re.match(r'^(https?://|mailto:|javascript:|data:|#)', url):
+            return url
+
+        # Strip /docs/ prefix
+        if url.startswith('/docs/'):
+            url = url[6:]
+            if not url:           # was '/docs/' exactly → root index
+                url = 'index.html'
+        elif url in ('/docs', '/docs/'):
+            return f'{prefix}index.html'
+
+        # /stable/ → actual stable version
+        url = re.sub(r'^/?stable/', f'{self.stable_version}/', url)
+
+        # Strip remaining leading slash
+        url = url.lstrip('/')
+
+        # Strip query strings from static asset URLs
+        url = re.sub(
+            r'^([^?]+\.(png|jpg|jpeg|svg|gif|webp|woff2?|ttf|eot|css|js))\?.*$',
+            r'\1', url
+        )
+
+        # Add .html extension to version page paths that lack an extension
+        for version in ALL_VERSIONS:
+            if url.startswith(f'{version}/'):
+                page = url[len(f'{version}/'):]
+                last_seg = page.split('/')[-1]
+                if last_seg and '.' not in last_seg:
+                    url = f'{version}/{page}.html'
+                break
+
+        # Prefix with relative path depth (skip if already relative)
+        if url and not url.startswith(('../', './')):
+            url = f'{prefix}{url}'
+
+        return url
+
+    def fix_asset_paths(self, content, prefix):
+        """Fix CSS url() expressions: convert absolute /docs/images/ paths to relative."""
         content = re.sub(
-            r'"urls":\s*\[\s*"/"\s*\]',
-            '"urls": ["index.html"]',
+            r'content:\s*url\(/docs/images/([^)]+)\)',
+            f'content:url({prefix}images/\\1)',
+            content
+        )
+        content = re.sub(
+            r'url\(["\']?/docs/images/([^)"\']+)["\']?\)',
+            f'url({prefix}images/\\1)',
             content
         )
         return content
@@ -225,78 +279,6 @@ class FullArchiveCreator:
     display: none !important;
 }
 '''
-
-    def fix_version_links(self, content, file_depth):
-        """Fix 3: Fix version switcher links to use correct relative paths"""
-        prefix = "../" * file_depth if file_depth > 0 else ""
-
-        def fix_version_link(match):
-            full_match = match.group(0)
-            href = match.group(1)
-            classes = match.group(2)
-
-            # Extract version and page from href
-            version_match = re.match(r'^(?:\.\./)*(?:/docs/)?(v\d+\.\d+)/(.+)$', href)
-            if version_match:
-                version = version_match.group(1)
-                page = version_match.group(2)
-                if not page.endswith('.html'):
-                    page = page + '.html'
-                return f'href="{prefix}{version}/{page}"{classes}'
-
-            # No version directory - check if it's a relative path without version
-            clean_href = re.sub(r'^(?:\.\./)+', '', href)
-            if clean_href and not clean_href.startswith(('http', '#', 'mailto', 'javascript')):
-                if not clean_href.endswith('.html') and '.' not in clean_href.split('/')[-1]:
-                    clean_href = clean_href + '.html'
-                return f'href="{prefix}{clean_href}"{classes}'
-
-            return full_match
-
-        # Fix version--mobile and version--desktop links
-        content = re.sub(
-            r'href="([^"]+)"(\s+[^>]*class="[^"]*version--(?:mobile|desktop)[^"]*")',
-            fix_version_link,
-            content
-        )
-
-        return content
-
-    def preserve_version_switcher(self, content):
-        """Fix 4: Preserve version-switcher (don't remove via JS or CSS)"""
-        # Change JS to only remove feedback-widget, not version-switcher
-        content = re.sub(
-            r"\$\('\.version-switcher,\s*#version-switcher,\s*\.feedback-widget'\)\.remove\(\);",
-            "$('.feedback-widget').remove(); // version-switcher preserved for offline",
-            content
-        )
-
-        # Change CSS to only hide feedback-widget, not version-switcher
-        content = re.sub(
-            r'\.version-switcher,\s*#version-switcher,\s*\.feedback-widget,',
-            '.feedback-widget,',
-            content
-        )
-
-        return content
-
-    def fix_asset_paths(self, content, prefix):
-        """Fix 5: Convert absolute asset paths to relative"""
-        # Fix /docs/images/ paths
-        content = re.sub(
-            r'content:\s*url\(/docs/images/([^)]+)\)',
-            f'content:url({prefix}images/\\1)',
-            content
-        )
-
-        # Fix other absolute image paths in CSS
-        content = re.sub(
-            r'url\(["\']?/docs/images/([^)"\']+)["\']?\)',
-            f'url({prefix}images/\\1)',
-            content
-        )
-
-        return content
 
     def get_offline_styles(self, prefix):
         """Get CSS styles for offline mode - comprehensive version matching reference archive"""
@@ -419,112 +401,114 @@ $(function(){
 </script>'''
 
     def process_html_file(self, file_path):
-        """Process a single HTML file with all offline fixes"""
+        """Process a single HTML file for offline use via BeautifulSoup."""
         try:
             content = file_path.read_text(encoding='utf-8')
             prefix = self.get_relative_prefix(file_path)
-            depth = self.get_file_depth(file_path)
 
-            # Apply all fixes
-            content = self.fix_docs_home_url(content)
-            content = self.fix_version_links(content, depth)
-            content = self.preserve_version_switcher(content)
-            content = self.fix_asset_paths(content, prefix)
+            soup = BeautifulSoup(content, 'html.parser')
 
-            # Fix various path patterns
-            # Remove /docs/ prefix from paths
-            content = re.sub(r'(href|src)="/docs/([^"]+)"', r'\1="\2"', content)
-            content = re.sub(r'(href|src)="docs/([^"]+)"', r'\1="\2"', content)
-            # Fix bare /docs/ link (navbar brand) - match reference archive pattern
-            content = re.sub(r'href="/docs/"', 'href=""', content)
-            content = re.sub(r'href="/docs"', 'href=""', content)
-            # Fix action attributes for search forms
-            content = re.sub(r'action="/docs/search"', f'action="{prefix}search.html"', content)
+            # Rewrite href attributes on all tags
+            for tag in soup.find_all(href=True):
+                tag['href'] = self._rewrite_url(tag['href'], prefix)
 
-            # Fix stable -> actual stable version
-            content = re.sub(r'(href|src)="stable/', f'\\1="{self.stable_version}/', content)
-            content = re.sub(r'(href|src)="/stable/', f'\\1="{self.stable_version}/', content)
+            # Rewrite src attributes on all tags
+            for tag in soup.find_all(src=True):
+                tag['src'] = self._rewrite_url(tag['src'], prefix)
 
-            # Fix absolute paths to relative for assets
-            for asset in ASSET_DIRS:
-                content = re.sub(
-                    rf'(src|href)="/{asset}/([^"]+)"',
-                    rf'\1="{prefix}{asset}/\2"',
-                    content
+            # Fix form actions for search
+            for form in soup.find_all('form', action=True):
+                if '/search' in form['action']:
+                    form['action'] = f'{prefix}search.html'
+
+            # Localize Google Fonts link tags
+            for link in soup.find_all('link', rel='stylesheet'):
+                if 'fonts.googleapis.com' in link.get('href', ''):
+                    link['href'] = f'{prefix}css/google-fonts.css'
+
+            # Localize CDN jQuery script tags
+            for script in soup.find_all('script', src=True):
+                src = script.get('src', '')
+                if 'cdn.jsdelivr.net' in src and 'jquery' in src.lower():
+                    script['src'] = f'{prefix}js/jquery.min.js'
+
+            # Fix inline script content (version-switcher, nav JSON, archive root detection)
+            for script in soup.find_all('script'):
+                txt = script.string
+                if not txt:
+                    continue
+                # Preserve version-switcher: only remove feedback-widget
+                if '.version-switcher' in txt and 'feedback-widget' in txt:
+                    txt = txt.replace(
+                        "$('.version-switcher, #version-switcher, .feedback-widget').remove();",
+                        "$('.feedback-widget').remove();"
+                    )
+                # Fix sidebar baseUrl: Jekyll sets it to "/docs", making every sidebar link
+                # resolve to file:///docs/... in a local file:// archive.
+                # Fix: set baseUrl to "" and patch the href generation to use archive-root
+                # detection instead of counting from the filesystem root.
+                if 'baseUrl: "/docs"' in txt:
+                    txt = txt.replace('baseUrl: "/docs"', 'baseUrl: ""')
+                    # Replace .attr("href", ...) with archive-root-aware relative path computation.
+                    # Detects the archive root by finding a path component followed by a known
+                    # archive subdirectory, then computes depth only relative to that root —
+                    # works correctly regardless of where the archive is placed on disk.
+                    txt = txt.replace(
+                        '.attr("href", urls[0] || "#")',
+                        '.attr("href", (function(u){'
+                        'if(!u||u==="#"||/^https?:/.test(u))return u||"#";'
+                        'if(!u.startsWith("/"))return u;'
+                        'var pp=window.location.pathname.split("/");'
+                        'var idx=-1;'
+                        'var kd=["cockroachcloud","molt","releases","advisories","stable","_internal","css","js","images","fonts"];'
+                        'for(var i=0;i<pp.length-1;i++){'
+                        'if(pp[i]&&((/^v\\d+\\.\\d+$/.test(pp[i+1]))||kd.indexOf(pp[i+1])!==-1))'
+                        '{idx=i;break;}'
+                        '}'
+                        'var depth=idx!==-1?pp.length-idx-2:0;'
+                        'var pfx="";for(var j=0;j<depth;j++)pfx+="../";'
+                        'var path=u.slice(1);'
+                        'if(!path||path==="/")return pfx+"index.html";'
+                        'if(!path.match(/\\.\\w{2,4}$/))path+=".html";'
+                        'return pfx+path;'
+                        '})(urls[0]))'
+                    )
+                # Fix archive root detection for older site builds that use archiveIndex approach:
+                # 'stable' is a valid top-level archive subdir but wasn't in the detection list.
+                if "(pathParts[i+1] === 'advisories') // Has advisories subfolder" in txt:
+                    txt = txt.replace(
+                        "(pathParts[i+1] === 'advisories') // Has advisories subfolder",
+                        "(pathParts[i+1] === 'advisories') || // Has advisories subfolder\n"
+                        "                        (pathParts[i+1] === 'stable') // Has stable subfolder"
+                    )
+                if txt != script.string:
+                    script.string = txt
+
+            # Fix CSS url() paths inside <style> tags (safe: CSS content, not HTML structure)
+            for style in soup.find_all('style'):
+                if style.string:
+                    style.string = self.fix_asset_paths(style.string, prefix)
+
+            # Fix CSS url() in inline style attributes
+            for tag in soup.find_all(style=True):
+                tag['style'] = self.fix_asset_paths(tag['style'], prefix)
+
+            # Inject offline nav assets and styles into <head>
+            if soup.head is not None:
+                soup.head.append(
+                    BeautifulSoup(self.get_nav_dependencies(prefix), 'html.parser')
                 )
-                content = re.sub(
-                    rf'(src|href)="{asset}/([^"]+)"',
-                    rf'\1="{prefix}{asset}/\2"',
-                    content
+                soup.head.append(
+                    BeautifulSoup(self.get_offline_styles(prefix), 'html.parser')
                 )
 
-            # Replace Google Fonts CDN with local
-            content = re.sub(
-                r'<link[^>]+fonts\.googleapis\.com[^>]+>',
-                f'<link rel="stylesheet" href="{prefix}css/google-fonts.css">',
-                content
-            )
+            # Inject nav init script before </body>
+            if soup.body is not None:
+                soup.body.append(
+                    BeautifulSoup(self.get_nav_init_script(), 'html.parser')
+                )
 
-            # Fix 1 (additional): CSS @import paths - convert absolute to relative
-            content = re.sub(
-                r'@import url\(["\']?/docs/([^)"\']+)["\']?\)',
-                f'@import url({prefix}\\1)',
-                content
-            )
-            content = re.sub(
-                r'@import url\(["\']?docs/([^)"\']+)["\']?\)',
-                f'@import url({prefix}\\1)',
-                content
-            )
-
-            # Fix 3: Clean up double-slash paths and remaining /docs/ references
-            content = re.sub(r'(href|src)="\.\.//docs/', r'\1="../', content)
-            content = re.sub(r'(href|src)="\.\.//+', r'\1="../', content)
-            content = re.sub(r'(href|src)="//+([^/])', r'\1="\2', content)
-
-            # Fix 4: Strip query parameters from local image URLs
-            content = re.sub(
-                r'(src="[^"?]+\.(png|jpg|jpeg|svg|gif|webp))\?[^"]*"',
-                r'\1"',
-                content
-            )
-            content = re.sub(
-                r'(href="[^"?]+\.(png|jpg|jpeg|svg|gif|webp|css))\?[^"]*"',
-                r'\1"',
-                content
-            )
-
-            # Fix 6: Replace CDN jQuery with local version
-            content = re.sub(
-                r'<script[^>]+cdn\.jsdelivr\.net[^>]+jquery[^>]*></script>',
-                f'<script src="{prefix}js/jquery.min.js"></script>',
-                content
-            )
-
-            # Inject navigation dependencies before </head>
-            nav_deps = self.get_nav_dependencies(prefix)
-            offline_styles = self.get_offline_styles(prefix)
-            content = re.sub(
-                r'</head>',
-                f'{nav_deps}\n{offline_styles}\n</head>',
-                content,
-                flags=re.IGNORECASE
-            )
-
-            # Inject navigation init script before </body>
-            nav_init = self.get_nav_init_script()
-            content = re.sub(
-                r'</body>',
-                f'{nav_init}\n</body>',
-                content,
-                flags=re.IGNORECASE
-            )
-
-            # Final cleanup: normalize any remaining double slashes in paths (but not in URLs)
-            content = re.sub(r'(href|src)="([^"]*[^:])//+([^"]*)"', r'\1="\2/\3"', content)
-
-            # Write processed content
-            file_path.write_text(content, encoding='utf-8')
+            file_path.write_text(str(soup), encoding='utf-8')
             self.processed_files += 1
 
         except Exception as e:
@@ -553,9 +537,10 @@ $(function(){
         css_dir = self.output_dir / "css"
         css_dir.mkdir(exist_ok=True)
 
+        session = self._make_session()
         try:
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-            css_response = requests.get(FONTS_CSS_URL, headers=headers, timeout=10)
+            css_response = session.get(FONTS_CSS_URL, headers=headers, timeout=10)
             css_response.raise_for_status()
             css_content = css_response.text
 
@@ -564,7 +549,7 @@ $(function(){
 
             for url in font_urls:
                 try:
-                    font_response = requests.get(url, headers=headers, timeout=10)
+                    font_response = session.get(url, headers=headers, timeout=10)
                     font_response.raise_for_status()
 
                     parsed = urlparse(url)
@@ -605,12 +590,13 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }'''
             ("jquery.navgoco.css", "https://raw.githubusercontent.com/tefra/navgoco/master/src/jquery.navgoco.css", css_dir),
         ]
 
+        session = self._make_session()
         for name, url, dest_dir in assets:
             dest_file = dest_dir / name
             if not dest_file.exists():
                 try:
                     self.log(f"  Downloading {name}...")
-                    response = requests.get(url, timeout=10)
+                    response = session.get(url, timeout=10)
                     response.raise_for_status()
                     dest_file.write_bytes(response.content)
                     self.log(f"  Downloaded {name}", "SUCCESS")
@@ -628,9 +614,9 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }'''
             self.log("index.html not found", "WARNING")
             return
 
-        content = index_path.read_text(encoding='utf-8')
+        soup = BeautifulSoup(index_path.read_text(encoding='utf-8'), 'html.parser')
 
-        banner_css = '''<style>
+        banner_style = BeautifulSoup('''<style>
 .archived-banner {
     background-color: #FFF3CD;
     border-bottom: 1px solid #FFEAA7;
@@ -658,19 +644,21 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }'''
 }
 body { padding-top: 32px; }
 .navbar.fixed-top { top: 32px !important; }
-</style>'''
+</style>''', 'html.parser')
 
-        banner_html = '''<div class="archived-banner">
+        banner_div = BeautifulSoup('''<div class="archived-banner">
 <p class="archived-banner-text">
 This is an archived version of the CockroachDB documentation.
 <a href="https://www.cockroachlabs.com/docs/stable/" class="archived-banner-link">View the latest documentation</a>
 </p>
-</div>'''
+</div>''', 'html.parser')
 
-        content = content.replace('</head>', banner_css + '\n</head>')
-        content = content.replace('<body>', '<body>\n' + banner_html)
+        if soup.head is not None:
+            soup.head.append(banner_style)
+        if soup.body is not None:
+            soup.body.insert(0, banner_div)
 
-        index_path.write_text(content, encoding='utf-8')
+        index_path.write_text(str(soup), encoding='utf-8')
         self.log("Added archived banner", "SUCCESS")
 
     def clean_macos_artifacts(self):
