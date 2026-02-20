@@ -62,7 +62,6 @@ Flag | Description
 `--insecure` | Use an insecure connection.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--user` | <span class="version-tag">New in v26.1:</span> The SQL user that will be used to connect to the cluster. Previously, `cockroach debug tsdump` always used the `root` user. Now, you can specify a different user such as `debug_user` when root login is disabled.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 <a name="sql-flag-url"></a> `--url` | A [connection URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) to use instead of the other arguments. To convert a connection URL to the syntax that works with your client driver, run [`cockroach convert-url`]({% link {{ page.version.version }}/connection-parameters.md %}#convert-a-url-for-different-drivers).<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
-`--user` |  The SQL user that will own the client session. Valid values are `root` and `debug_user`.<br><br>**Default:** `root`
 
 ### Logging
 
