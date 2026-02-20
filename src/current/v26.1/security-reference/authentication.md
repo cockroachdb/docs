@@ -115,16 +115,16 @@ For setup instructions, see [Disable root login and use debug_user](#disable-roo
 
 ### Using debug_user for diagnostics (Preview)
 
-<span class="version-tag">New in v26.1:</span> The `debug_user` is a special privileged user designed for collecting debug information when root is disabled. Unlike root, `debug_user`:
+<span class="version-tag">New in v26.1:</span> The `debug_user` is a special privileged user designed for collecting [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}) data when root is disabled. Unlike root, `debug_user`:
 
 - Must be explicitly enabled using the `--allow-debug-user` flag on `cockroach start`
 - Is disabled by default for security
 - Must be manually created using `CREATE USER debug_user`
 - Requires a certificate with "debug_user" in CommonName or SubjectAlternativeName
-- Has privileged access to `serverpb` admin and status endpoints required for debug zip collection
+- Has privileged access to `serverpb` admin and status endpoints required for debug zip and tsdump collection
 - Can be audited using `SHOW USERS`
 
-The `debug_user` is not subject to the `--disallow-root-login` flag and provides a secure, auditable alternative for diagnostic operations.
+The `debug_user` is not subject to the `--disallow-root-login` flag and provides a secure, auditable alternative for these diagnostic operations.
 
 CockroachDB {{ site.data.products.advanced }} or CockroachDB {{ site.data.products.core }} customers can and should enforce network protections, preventing access attempts from any sources other than a valid ones such as application servers or a secure operations jumpbox.
 
@@ -169,7 +169,7 @@ CockroachDB {{ site.data.products.cloud }} uses a service user named `managed-sq
 
 ## Disable root login and use debug_user
 
-This procedure shows how to configure a cluster to disable root login for compliance requirements while maintaining debugging capabilities.
+This procedure shows how to configure a cluster to disable root login for compliance requirements while maintaining the ability to collect debug zip and tsdump data.
 
 ### Before you begin
 
@@ -193,7 +193,9 @@ This procedure shows how to configure a cluster to disable root login for compli
    CREATE USER debug_user;
    ~~~
 
-1. Grant privileges for debug operations.
+1. Grant SQL privileges for debug zip collection.
+
+   These privileges are required for `cockroach debug zip` but are **not** required for `cockroach debug tsdump`.
 
    **Option 1**: Grant the `admin` role (simplest approach):
 
@@ -213,10 +215,6 @@ This procedure shows how to configure a cluster to disable root login for compli
    GRANT SYSTEM VIEWSYSTEMTABLE TO debug_user;
    GRANT SYSTEM REPAIRCLUSTER TO debug_user;
    ~~~
-
-   {{site.data.alerts.callout_info}}
-   **Note**: `cockroach debug tsdump` does not require any SQL privileges. Only debug zip collection requires the privileges above.
-   {{site.data.alerts.end}}
 
 ### Step 2: Generate debug_user certificate
 

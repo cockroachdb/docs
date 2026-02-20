@@ -334,7 +334,7 @@ total 40
 
 ### Create a debug_user client certificate (Preview)
 
-<span class="version-tag">New in v26.1:</span> To use the `debug_user` for diagnostic operations when root is disabled:
+<span class="version-tag">New in v26.1:</span> To use the `debug_user` for collecting [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}) data when root is disabled:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

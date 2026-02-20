@@ -316,14 +316,16 @@ with_password              | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}     
 
 ### Create debug_user for diagnostics (Preview)
 
-<span class="version-tag">New in v26.1:</span> The `debug_user` is a special privileged user for collecting diagnostic information when preferred over using the root user, or when root login is disabled.
+<span class="version-tag">New in v26.1:</span> The `debug_user` is a special privileged user for collecting [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}) data when preferred over using the root user, or when root login is disabled.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER debug_user;
 ~~~
 
-Grant privileges for debug operations. You can either grant the `admin` role (simplest):
+Grant SQL privileges for debug zip collection. These privileges are required for `cockroach debug zip` but are **not** required for `cockroach debug tsdump`.
+
+You can either grant the `admin` role (simplest):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -341,10 +343,6 @@ Or grant specific system privileges required for debug zip collection:
 > GRANT SYSTEM VIEWSYSTEMTABLE TO debug_user;
 > GRANT SYSTEM REPAIRCLUSTER TO debug_user;
 ~~~
-
-{{site.data.alerts.callout_info}}
-**Note**: `cockroach debug tsdump` does not require any SQL privileges. Only debug zip collection requires the privileges above.
-{{site.data.alerts.end}}
 
 For complete setup instructions including certificate generation and server configuration, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug_user).
 
