@@ -171,6 +171,10 @@ CockroachDB {{ site.data.products.cloud }} uses a service user named `managed-sq
 
 This procedure shows how to configure a cluster to disable root login for compliance requirements while maintaining the ability to collect debug zip and tsdump data.
 
+{{site.data.alerts.callout_info}}
+While it is possible to disable root login without first setting up `debug_user`, enabling `debug_user` later when diagnostic data is needed requires a rolling restart of all cluster nodes and at least one other admin user to create it. This can add significant delay during troubleshooting incidents. We recommend setting up `debug_user` before disabling root login to ensure diagnostic capabilities are immediately available when needed.
+{{site.data.alerts.end}}
+
 ### Before you begin
 
 - You must have an existing CockroachDB cluster
