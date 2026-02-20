@@ -105,7 +105,7 @@ This ensures that access to the cluster can always be recovered, but it also mea
 {{site.data.alerts.callout_danger}}
 **Important Prerequisites**:
 
-- Before disabling root, you must set up the `debug_user` for troubleshooting operations. See [Using debug_user for diagnostics](#using-debug_user-for-diagnostics).
+- Before disabling root, it is highly recommended to set up the `debug_user` for troubleshooting operations. See [Using debug_user for diagnostics](#using-debug_user-for-diagnostics).
 - Ensure no cluster or client certificates contain "root" in their SAN (Subject Alternative Name) fields, as these will be blocked.
 - The cluster does not validate that `debug_user` is configured before allowing root to be disabled.
 
