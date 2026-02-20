@@ -103,10 +103,6 @@ When cluster virtualization is enabled, certain low-level SQL APIs, such as (TOD
 
 [Replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) can be configured only in a virtual cluster, and are not applicable to the `system` virtual cluster.
 
-### Node draining
-
-When cluster virtualization is enabled, [draining a node]({% link {{ page.version.version }}/node-shutdown.md %}#drain-a-node-manually) can cause a temporary SQL latency spike.
-
 ## See also
 
 - [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %})

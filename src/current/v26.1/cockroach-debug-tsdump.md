@@ -61,6 +61,7 @@ Flag | Description
 `--host` | The server host and port number to connect to. This can be the address of any node in the cluster.<br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost:26257`
 `--insecure` | Use an insecure connection.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 <a name="sql-flag-url"></a> `--url` | A [connection URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) to use instead of the other arguments. To convert a connection URL to the syntax that works with your client driver, run [`cockroach convert-url`]({% link {{ page.version.version }}/connection-parameters.md %}#convert-a-url-for-different-drivers).<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
+`--user` |  The SQL user that will own the client session. Valid values are `root` and `debug_user`.<br><br>**Default:** `root`
 
 ### Logging
 
