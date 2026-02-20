@@ -179,7 +179,7 @@ This procedure shows how to configure a cluster to disable root login for compli
 
 ### Step 1: Create debug_user
 
-1. Connect to the cluster as root:
+1. Connect to the cluster as a user with admin privileges (such as `root`):
 
    {% include_cached copy-clipboard.html %}
    ~~~ shell
@@ -193,12 +193,30 @@ This procedure shows how to configure a cluster to disable root login for compli
    CREATE USER debug_user;
    ~~~
 
-1. Grant admin privileges (optional, but recommended for full debug access):
+1. Grant privileges for debug operations.
+
+   **Option 1**: Grant the `admin` role (simplest approach):
 
    {% include_cached copy-clipboard.html %}
    ~~~ sql
    GRANT admin TO debug_user;
    ~~~
+
+   **Option 2**: Grant specific system privileges required for debug zip collection:
+
+   {% include_cached copy-clipboard.html %}
+   ~~~ sql
+   GRANT SYSTEM VIEWACTIVITY TO debug_user;
+   GRANT SYSTEM VIEWACTIVITYREDACTED TO debug_user;
+   GRANT SYSTEM VIEWCLUSTERMETADATA TO debug_user;
+   GRANT SYSTEM VIEWCLUSTERSETTING TO debug_user;
+   GRANT SYSTEM VIEWSYSTEMTABLE TO debug_user;
+   GRANT SYSTEM REPAIRCLUSTER TO debug_user;
+   ~~~
+
+   {{site.data.alerts.callout_info}}
+   **Note**: `cockroach debug tsdump` does not require any SQL privileges. Only debug zip collection requires the privileges above.
+   {{site.data.alerts.end}}
 
 ### Step 2: Generate debug_user certificate
 

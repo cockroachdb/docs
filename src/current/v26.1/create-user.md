@@ -323,12 +323,28 @@ with_password              | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}     
 > CREATE USER debug_user;
 ~~~
 
-Optionally, grant admin privileges:
+Grant privileges for debug operations. You can either grant the `admin` role (simplest):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT admin TO debug_user;
 ~~~
+
+Or grant specific system privileges required for debug zip collection:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> GRANT SYSTEM VIEWACTIVITY TO debug_user;
+> GRANT SYSTEM VIEWACTIVITYREDACTED TO debug_user;
+> GRANT SYSTEM VIEWCLUSTERMETADATA TO debug_user;
+> GRANT SYSTEM VIEWCLUSTERSETTING TO debug_user;
+> GRANT SYSTEM VIEWSYSTEMTABLE TO debug_user;
+> GRANT SYSTEM REPAIRCLUSTER TO debug_user;
+~~~
+
+{{site.data.alerts.callout_info}}
+**Note**: `cockroach debug tsdump` does not require any SQL privileges. Only debug zip collection requires the privileges above.
+{{site.data.alerts.end}}
 
 For complete setup instructions including certificate generation and server configuration, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug_user).
 
