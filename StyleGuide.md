@@ -25,6 +25,11 @@ Included in this guide:
   - [Punctuation rules](#punctuation-rules)
 - [Vale](#vale)
 - [File conventions](#file-conventions)
+- [Content types](#content-types)
+  - [Concept](#concept)
+  - [Task](#task)
+  - [Reference](#reference)
+  - [Guide](#guide)
 - [Page components](#page-components)
   - [Code](#code)
   - [Callouts](#callouts)
@@ -333,6 +338,97 @@ File names in the CockroachDB docs repo should be lowercase with a dash between 
 
 - `this-is-a-doc.md`
 - `name-of-your-image.png`
+
+## Content types
+
+There are four fundamental content types:
+
+- [Concept](#concept)
+- [Task](#task)
+- [Reference](#reference)
+- [Guide](#guide)
+
+### Concept
+
+A _concept_ topic explains how a particular feature works, or how a specific system is designed. Conceptual pages do not provide prescriptive guidance or instruction. For guidance or instruction, refer to [Task](#task) or [Guide](#guide).
+
+- The first sentence answers the implicit question "what is a \<singular noun\>?" in the form **A _\<singular noun\>_ is ….**.
+
+  **Example:** An _index_ is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure.
+
+- Provide as much relevant information as you can, and then link to other pages as necessary. If there is a related [reference](#reference) topic, link to it from within the conceptual topic.
+
+For templates that provide a starting point for writing concept topics, refer to the [concept templates](https://github.com/cockroachdb/docs/tree/main/templates/concept).
+
+#### Examples
+
+- [Indexes](https://www.cockroachlabs.com/docs/stable/indexes.html)
+- [Architecture Overview](https://www.cockroachlabs.com/docs/stable/architecture/overview.html)
+- [SQL Layer](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html)
+
+### Task
+
+A _task_ topic provides step-by-step instructions to complete a specific goal. Tasks are discrete and action-based. Tasks have the following properties:
+
+- Answers the question "how do I do \<an action\>?" by describing precisely what to do and the order in which to do it.
+- Corresponds to a specific user journey as defined by Product.
+- The title or heading should state an actionable goal for the user, ideally of the form **\<Imperative verb\> [\<article\>|\<conjunction\>] \<noun\> or \<proper noun\>**.
+
+  **Example:** Create an Index
+
+- The verb ideally should be specific. Avoid generic verbs such as **Use**, **Manage** unless naming a page containing specific tasks.
+- Avoid **Your** because you may be using an object that you don't "own".
+
+  **Example:** Connect to a Cluster, not Connect to Your Cluster
+
+- Lead with the verb. Don't bury it at the end of the heading.
+
+  **Example:** Access DB Console, not DB Console Access.
+
+- Present the steps as a list of numbered headings, e.g., "Step 1. ...".
+
+Tasks should **not** include concept or reference information; instead, a task should link to [Concept](#concept) and [Reference](#reference) topics as needed.
+
+For templates that provide a starting point for writing task topics, refer to the [task templates](https://github.com/cockroachdb/docs/tree/main/templates/task).
+
+#### Examples
+
+- [Create a CockroachCloud Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster.html)
+- [Upgrade to CockroachDB vXY.Z](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version.html)
+- [Stream a Changefeed to Snowflake](https://www.cockroachlabs.com/docs/cockroachcloud/stream-changefeed-to-snowflake-aws)
+
+### Reference
+
+_Reference_ topics provide information about a specific CockroachDB function, feature, or interface. Reference topics are detail-oriented, and should include all of the information available on a specific topic, without providing prescriptive guidance. Prescriptive guidance is reserved for [Guide](#guide) topics.
+
+Reference topics typically document programming constructs, interface parameters, or facts about a product, but do not provide explanations of [concepts](#concept) or [tasks](#task).
+
+Reference topics help users understand the precise meaning and effect of CockroachDB SQL language constructs, platforms, configuration options, API parameter values, etc.
+
+- The content should be comprehensive and accurate. This principle might apply to other page types, but it is especially important for reference, as it is the ultimate source of truth for a particular feature or interface.
+- The content should be succinct. Details are often presented in table format. Prose is better suited for [Concept](#concept) topics.
+
+For templates that provide a starting point for writing reference topics, refer to the [reference templates](https://github.com/cockroachdb/docs/tree/main/templates/reference).
+
+#### Examples
+
+- SQL reference: [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html)
+- CLI reference: [`cockroach sql`](https://www.cockroachlabs.com/docs/stable/cockroach-sql.html)
+- API reference: [Cluster API](https://www.cockroachlabs.com/docs/api/cluster/v2)
+
+### Guide
+
+_Guides_ offer the reader a perspective on how to decide between a number of different ways of accomplishing a goal. They are meant to provide "guidance" (it's in the name) and should eventually lead the user to perform one or more [Tasks](#task).
+
+To accomplish this goal, guides often link to several different [Concept](#concept) topics and compare and contrast them. They can also link to multiple [Task](#task) topics.
+
+For templates that provide a starting point for writing guide topics, refer to the [guide templates](https://github.com/cockroachdb/docs/tree/main/templates/guide).
+
+#### Examples
+
+- [Migration Strategy](https://www.cockroachlabs.com/docs/molt/migration-strategy)
+- [Disaster Recovery Overview](https://www.cockroachlabs.com/docs/stable/disaster-recovery-overview)
+- [Multi-region Survival Goals](https://www.cockroachlabs.com/docs/stable/multiregion-survival-goals)
 
 ## Page components
 
