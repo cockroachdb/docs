@@ -195,14 +195,14 @@ To create [partial statistics]({% link {{ page.version.version }}/cost-based-opt
 CREATE INDEX ON rides (revenue);
 ~~~
 
-Partial statistics can target any subset of data matching specific conditions. For example, to create statistics on high-value rides:
+Partial statistics can target any subset of data that matches specific conditions. For example, to create statistics on high-value rides:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE STATISTICS high_value_rides_stats ON revenue FROM rides WHERE revenue > 50;
 ~~~
 
-This creates partial statistics covering only high-value rides.
+This statement creates partial statistics that cover only high-value rides.
 
 ### Delete statistics
 

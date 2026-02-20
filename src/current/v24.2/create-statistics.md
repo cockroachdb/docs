@@ -180,7 +180,7 @@ SET enable_create_stats_using_extremes = true;
 CREATE STATISTICS rides_extremes_stats FROM rides USING EXTREMES;
 ~~~
 
-This creates partial statistics on all single column prefixes of forward indexes in the `rides` table by scanning only the highest and lowest index values, rather than performing a full table scan.
+This creates partial statistics on all single-column prefixes of non-inverted indexes in the `rides` table by scanning only the highest and lowest index values, rather than performing a full table scan.
 
 You can also create extremes statistics on specific columns, provided there is an index with the specified column as the first key column:
 
