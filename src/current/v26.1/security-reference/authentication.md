@@ -199,7 +199,7 @@ While it is possible to disable root login without first setting up `debug_user`
 
 1. Grant SQL privileges for debug zip collection.
 
-   These privileges are required for `cockroach debug zip` but are **not** required for `cockroach debug tsdump`.
+   While `cockroach debug tsdump` does not require any SQL privileges, these privileges are required for `cockroach debug zip`. Cockroach Labs recommends granting them during initial setup to ensure debug zip capability is immediately available when needed. Another admin user can grant these privileges later if needed, but pre-configuring them avoids delays during troubleshooting.
 
    **Option 1**: Grant the `admin` role (simplest approach):
 
