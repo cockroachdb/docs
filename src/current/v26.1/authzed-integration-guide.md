@@ -24,7 +24,7 @@ To deploy CockroachDB for AuthZed, you will need the following:
 
 ## Step 1. Provision a CockroachDB cluster
 
-First you need to provision the CockroachDB cluster that AuthZed will use for its services. Choose one of the following methods to create a new CockroachDB cluster, or use an existing cluster and skip to [Step 2](#step-2-create-databases-for-ory-services).
+First you need to provision the CockroachDB cluster that AuthZed will use for its services. Choose one of the following methods to create a new CockroachDB cluster, or use an existing cluster and skip to [Step 2](#step-2-create-a-database-and-user-for-authzed).
 
 Be sure to create a **secure** cluster that supports client connections with TLS. This is necessary for the user creation step of this tutorial.
 
