@@ -296,7 +296,7 @@ $ cockroach debug zip debug.zip \
 --user=debug_user
 ~~~
 
-For setup instructions, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug-user).
+For setup instructions, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug_user).
 
 {{site.data.alerts.callout_info}}
 Secure examples assume you have the appropriate certificates in the certificate directory. The `debug_user` must have a certificate with "debug_user" in the CommonName or SubjectAlternativeName. See [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %}) for more information.

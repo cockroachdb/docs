@@ -194,7 +194,7 @@ $ cockroach debug tsdump \
 --user=debug_user > tsdump.gob
 ~~~
 
-For setup instructions, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug-user).
+For setup instructions, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug_user).
 
 ## See also
 

@@ -730,7 +730,7 @@ Clusters using this configuration with client certificate authentication may als
 For compliance requirements, you can disable root login and use `debug_user` for diagnostic operations.
 
 {{site.data.alerts.callout_info}}
-This example assumes you have already created the `debug_user` and generated its certificate. See [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug-user) for complete setup instructions.
+This example assumes you have already created the `debug_user` and generated its certificate. See [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug_user) for complete setup instructions.
 {{site.data.alerts.end}}
 
 Start each node with both the `--disallow-root-login` and `--allow-debug-user` flags:

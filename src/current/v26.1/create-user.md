@@ -330,7 +330,7 @@ Optionally, grant admin privileges:
 > GRANT admin TO debug_user;
 ~~~
 
-For complete setup instructions including certificate generation and server configuration, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug-user).
+For complete setup instructions including certificate generation and server configuration, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug_user).
 
 ## See also
 
