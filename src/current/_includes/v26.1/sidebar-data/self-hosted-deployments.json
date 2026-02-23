@@ -25,13 +25,6 @@
                 ]
               },
               {
-                "title": "Deploy in Kubernetes",
-                "urls": [
-                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html",
-                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
-                ]
-              },
-              {
                 "title": "Deploy in Docker",
                 "urls": [
                   "/${VERSION}/start-a-local-cluster-in-docker-mac.html",
