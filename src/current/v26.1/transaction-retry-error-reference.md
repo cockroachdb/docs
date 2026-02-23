@@ -192,7 +192,7 @@ See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for 
 ```
 TransactionRetryWithProtoRefreshError: ReadWithinUncertaintyIntervalError:
         read at time 1591009232.376925064,0 encountered previous write with future timestamp 1591009232.493830170,0 within uncertainty interval `t <= 1591009232.587671686,0`;
-        observed timestamps: [{1 1591009232.587671686,0} {5 1591009232.376925064,0}]
+        observed timestamps: [{1 1591009232.587671686,0} {5 1591009232.376925064,0}] meta={id=a3458962 key=/Table/9373/10/5293921467191001339/0 ...}
 ```
 
 **Error type:** Serialization error
@@ -220,6 +220,10 @@ Under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %
 Under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation:
 
 1. `ReadWithinUncertaintyIntervalError` errors are only returned in rare cases that can be avoided by adjusting the [result buffer size](#result-buffer-size).
+
+**Interpreting log messages:** 
+
+In CockroachDB {{ page.version.version }}, the `meta={... key=/Table/...}` field in log output for `ReadWithinUncertaintyIntervalError` and related serialization conflicts identifies the **actual contention key** (the key where the conflicting read or write occurred). Earlier versions could instead report the transaction's [anchor key]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-records), which made it harder to locate the true point of conflict. Contention events that are recorded when [`sql.contention.record_serialization_conflicts.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-contention-record-serialization-conflicts-enabled) is `true` use this contention key when populating the recorded conflict.
 
 {{site.data.alerts.callout_info}}
 Uncertainty errors are a sign of transaction conflict. For more information about transaction conflicts, see [Transaction conflicts]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-conflicts).
