@@ -72,7 +72,7 @@ Flag | Description
 `--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
 `--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`
 `--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`
-`--transformations-file` | Path to a JSON file that defines transformation rules applied during comparison to verify data that was transformed during [fetch]({% link molt/molt-fetch.md %}#transformations). Use the same transformation file from `molt fetch`. Refer to [Verify transformed data](#verify-transformed-data).
+`--transformations-file` | Path to a JSON file that defines transformation rules to be applied during comparison. If verifying data that was [transformed during a bulk load with MOLT Fetch]({% link molt/molt-fetch.md %}#transformations), use the same transformation file from that `molt fetch` run. Refer to [Verify transformed data](#verify-transformed-data).
 
 ## Usage
 
