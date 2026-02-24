@@ -120,7 +120,7 @@
               ${truncatedContent ? `<div class="result-snippet">${truncatedContent}</div>` : ''}
               <div class="result-meta">
                 ${docType ? `<span class="doc-type">${docType}</span>` : ''}
-                ${version ? `<span class="version">v${version}</span>` : ''}
+                ${version ? `<span class="version">${version}</span>` : ''}
               </div>
             </div>
           `;
