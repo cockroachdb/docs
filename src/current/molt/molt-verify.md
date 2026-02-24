@@ -72,7 +72,7 @@ Flag | Description
 `--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
 `--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`
 `--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`
-`--transformations-file` | Path to a JSON file that defines transformation rules to be applied during comparison. If verifying data that was [transformed during a bulk load with MOLT Fetch]({% link molt/molt-fetch.md %}#transformations), use the same transformation file from that `molt fetch` run. Refer to [Verify transformed data](#verify-transformed-data).
+`--transformations-file` | Path to a JSON file that defines transformation rules to be applied during comparison. If verifying data that was [transformed during a bulk load with MOLT Fetch]({% link molt/molt-fetch.md %}#transformations), use the same transformations from that `molt fetch` run. Refer to [Verify transformed data](#verify-transformed-data).
 
 ## Usage
 
@@ -96,6 +96,10 @@ molt verify \
   --target 'postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
 ~~~
 
+{{site.data.alerts.callout_info}}
+MySQL tables belong directly to the database, not to a separate schema. MOLT Verify compares MySQL databases with the CockroachDB `public` schema.
+{{site.data.alerts.end}}
+
 Use the optional [flags](#flags) to customize the verification results.
 
 When verification completes, the output displays a summary message like the following:
@@ -115,7 +119,7 @@ When verification completes, the output displays a summary message like the foll
 
 You can write filter rules to have `molt verify` compare only a subset of rows in specified tables. This allows you to verify specific data ranges or conditions without processing entire tables.
 
-Filter rules apply `WHERE` clauses to specified tables during verification. Columns referenced in filter expressions **must** be indexed.
+Filter rules apply `WHERE` clauses to specified source tables during verification. Columns referenced in filter expressions **must** be indexed.
 
 {{site.data.alerts.callout_info}}
 Selective data verification is only supported for PostgreSQL and MySQL sources.
@@ -123,7 +127,7 @@ Selective data verification is only supported for PostgreSQL and MySQL sources.
 
 #### Step 1. Create a filter rules file
 
-Create a JSON file that defines the filter rules. The following example defines filter rules on two tables, `public.filtertbl` and `public.filtertbl2`:
+Create a JSON file that defines the filter rules. The following example defines filter rules on two source tables, `public.filtertbl` and `public.filtertbl2`:
 
 ~~~ json
 {
@@ -150,7 +154,7 @@ Create a JSON file that defines the filter rules. The following example defines 
 - `resource_specifier`: Identifies which schemas and tables to filter. Schema and table names are case-insensitive.
 	- `schema`: Name of the schema containing the table.
 	- `table`: Name of the table to apply the filter to.
-- `expr`: SQL expression that applies to both source and target databases. The expression must be valid for both database dialects.
+- `expr`: SQL expression that applies to both source and target databases. The expression must be valid for both the source and target dialect.
 - `source_expr` and `target_expr`: SQL expressions that apply to the source and target databases, respectively. These must be defined together, and cannot be used with `expr`.
 
 #### Step 2. Run `molt verify` with the filter file
@@ -182,9 +186,9 @@ Only table and schema renames are supported.
 
 #### Step 1. Create a transformation file
 
-Create a JSON file that defines the transformation rules. MOLT Verify applies these transformations during comparison only and does not modify the source database.
+Create a JSON file that defines the transformation rules. Each rule can rename a source schema, table, or both. MOLT Verify applies these transformations during comparison only and does not modify the source database.
 
-The following example assumes that MOLT Fetch renamed table `t` to `t2` and schema `public` to `public2`. The same transformation rule is applied during verification:
+The following example assumes that MOLT Fetch renamed source table `t` to `t2` on the target, and source schema `public` to `public2` on the target. The same transformation rule is applied during verification:
 
 ~~~ json
 {
@@ -206,12 +210,12 @@ The following example assumes that MOLT Fetch renamed table `t` to `t2` and sche
 }
 ~~~
 
-- `resource_specifier`: Identifies which schemas and tables to transform. Schema and table names are case-insensitive.
-	- `schema`: Name of the schema containing the table.
-	- `table`: Table name to transform.
-- `table_rename_opts`: Rename the table on the target database.
+- `resource_specifier`: Identifies which source schemas and tables to transform. Schema and table names are case-insensitive.
+	- `schema`: Name of the source schema containing the table.
+	- `table`: Source table name to transform.
+- `table_rename_opts`: Rename the source table on the target database.
 	- `value`: The target table name to compare against.
-- `schema_rename_opts`: Rename the schema on the target database.
+- `schema_rename_opts`: Rename the source schema on the target database.
 	- `value`: The target schema name to compare against.
 
 #### Step 2. Run `molt verify` with the transformation file
@@ -240,7 +244,6 @@ When verification completes, the output displays a summary:
 ## Known limitations
 
 - MOLT Verify compares 20,000 rows at a time by default, and row values can change between batches, potentially resulting in temporary inconsistencies in data. To configure the row batch size, use the `--row_batch_size` [flag](#flags).
-- MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be `public`).
 - MOLT Verify checks for collation mismatches on [primary key]({% link {{site.current_cloud_version}}/primary-key.md %}) columns. This may cause validation to fail when a [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) is used as a primary key and the source and target databases are using different [collations]({% link {{site.current_cloud_version}}/collate.md %}).
 - MOLT Verify might give an error in case of schema changes on either the source or target database.
 - [Geospatial types]({% link {{site.current_cloud_version}}/spatial-data-overview.md %}#spatial-objects) cannot yet be compared.
