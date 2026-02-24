@@ -113,6 +113,15 @@ Statement | Usage
 [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %}) | Lists the users for all databases.
 [`SHOW DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/show-default-privileges.md %}) | Show the default privileges for objects created by specific roles/users in the current database.
 
+<a id="data-consistency-statements"></a>
+
+## Data consistency statements
+
+Statement | Usage
+----------|------------
+[`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) | Run data consistency validation checks against tables or databases.
+[`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}) | View issues detected by [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) data consistency validation jobs.
+
 <a id="transaction-management-statements"></a>
 
 ## Transaction control statements
@@ -164,6 +173,7 @@ Statement | Usage
 [`CREATE STATISTICS`]({% link {{ page.version.version }}/create-statistics.md %}) | Create table statistics for the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) to use.
 [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) | View debugging and analysis details for a statement that operates over tabular data.
 [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) | Execute the query and generate a physical query plan with execution statistics.
+[`SHOW STATEMENT HINTS`]({% link {{ page.version.version }}/show-statement-hints.md %}) | <span class="version-tag">New in v26.1:</span> List [injected hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#hint-injection) for a SQL statement fingerprint.
 [`SHOW STATISTICS`]({% link {{ page.version.version }}/show-statistics.md %}) | List table statistics used by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
 
 ## Job management statements

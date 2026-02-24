@@ -276,7 +276,15 @@ Encode client certificates for changefeed webhook URLs:
 
 You can use JSON Web Tokens (JWT) to authorize incoming changefeed connections and restrict writes to a subset of SQL databases or user-defined schemas in the target cluster.
 
-Replicator supports JWT claims that allow writes to specific databases, schemas, or all of them. JWT tokens must be signed using RSA or EC keys. HMAC and `None` signatures are automatically rejected.
+Replicator accepts any JWT token that meets the following requirements:
+
+- Tokens must be signed using RSA or EC keys. HMAC and `None` signatures are automatically rejected.
+- Tokens must include a `jti` (JWT ID) claim for revocation support.
+- Tokens must include a custom claim with the schema authorization list.
+
+{{site.data.alerts.callout_success}}
+You can generate tokens using the [`make-jwt` command](#generate-jwt-tokens).
+{{site.data.alerts.end}}
 
 To configure JWT authentication:
 
@@ -293,9 +301,31 @@ To pass the JWT token from the changefeed to the Replicator webhook sink, use th
 CREATE CHANGEFEED ... WITH webhook_auth_header='Bearer <encoded_token>';
 ~~~
 
+##### Generate JWT tokens
+
+The `make-jwt` command generates JWT tokens or claims for authorizing changefeed connections. It requires a signing key ([`-k`]({% link molt/replicator-flags.md %}#key)) and the database or schema to authorize ([`-a`]({% link molt/replicator-flags.md %}#allow)). You can output a signed token to a file ([`-o`]({% link molt/replicator-flags.md %}#out)) or generate an unsigned claim ([`--claim`]({% link molt/replicator-flags.md %}#claim)) for signing with an external JWT provider.
+
+The format of the `-a` argument depends on your target database. For CockroachDB and PostgreSQL, which have a schema concept, use the `database.schema` format:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator make-jwt -k ec.key -a database_name.schema_name -o out.jwt
+~~~
+
+For MySQL and Oracle, which do not have a schema concept, use only the database name:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+replicator make-jwt -k ec.key -a database_name -o out.jwt
+~~~
+
+{{site.data.alerts.callout_success}}
+You can repeat the [`-a`]({% link molt/replicator-flags.md %}#allow) flag to authorize multiple schemas.
+{{site.data.alerts.end}}
+
 ##### Token quickstart
 
-The following example uses `OpenSSL` to generate keys, but any PEM-encoded RSA or EC keys will work.
+The following example uses `OpenSSL` to generate keys, but any PEM-encoded RSA or EC keys will work. When using this example, ensure the `-a` argument format matches your target database as specified in [Generate JWT tokens](#generate-jwt-tokens).
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -320,11 +350,7 @@ replicator make-jwt -k ec.key -a ycsb.public -o out.jwt
 
 ##### External JWT providers
 
-The `make-jwt` command also supports a [`--claim`]({% link molt/replicator-flags.md %}#claim) flag, which prints a JWT claim that can be signed by your existing JWT provider. The PEM-formatted public key or keys for that provider must be inserted into the `_replicator.jwt_public_keys` table. The `iss` (issuers) and `jti` (token id) fields will likely be specific to your auth provider, but the custom claim must be retained in its entirety.
-
-{{site.data.alerts.callout_success}}
-You can repeat the [`-a`]({% link molt/replicator-flags.md %}#allow) flag to create a claim for multiple schemas.
-{{site.data.alerts.end}}
+To use an external JWT provider, generate a claim with the `--claim` flag. The PEM-formatted public key or keys for that provider must be inserted into the `_replicator.jwt_public_keys` table. The `iss` (issuers) and `jti` (token id) fields will likely be specific to your auth provider, but the custom claim must be retained in its entirety:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -651,6 +677,14 @@ MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by
 ~~~ 
 --metricsAddr :30005
 ~~~
+
+Metrics can additionally be written to snapshot files at repeated intervals. Metrics snapshotting is disabled by default. If metrics have been enabled, metrics snapshotting can also be enabled with the [`--metricsSnapshotPeriod`]({% link molt/replicator-flags.md %}#metrics-snapshot-period) flag. For example, the following flag enables metrics snapshotting every 15 seconds:
+
+~~~
+--metricsSnapshotPeriod 15s
+~~~
+
+Metrics snapshots enable access to metrics when the Prometheus server is unavailable, and they can be sent to [CockroachDB support]({% link {{ site.current_cloud_version }}/support-resources.md %}) to help quickly resolve an issue.
 
 For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}).
 

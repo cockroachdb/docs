@@ -3,5 +3,5 @@ current_cloud_version: v25.4
 destination: _site/docs
 homepage_title: CockroachDB Docs
 versions:
-  stable: v25.4
+  stable: v26.1
   dev: v26.1

@@ -102,7 +102,7 @@ This can be addressed in one of the following ways:
 - [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
 - [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
-- [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}#spatial-support-limitations)
+- [Known Limitations]({% link {{ page.version.version }}/spatial-data-overview.md %}#known-limitations)
 - [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
 - [POINT]({% link {{ page.version.version }}/point.md %})
 - [LINESTRING]({% link {{ page.version.version }}/linestring.md %})

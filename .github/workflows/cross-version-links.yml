@@ -1,0 +1,132 @@
+name: Cross-Version Link Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'src/current/**/*.md'
+      - 'src/current/_includes/**/*.md'
+
+jobs:
+  check-cross-version-links:
+    name: Check for cross-version links
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Need full history to get all changed files
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@cc08e170f4447237bcaf8acaacfa615b9cb86612  # v35
+        with:
+          files: |
+            src/current/**/*.md
+            src/current/_includes/**/*.md
+          separator: ' '
+
+      - name: Debug - List changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "Changed files:"
+          echo "${{ steps.changed-files.outputs.all_changed_files }}"
+
+      - name: Run cross-version link linter
+        if: steps.changed-files.outputs.any_changed == 'true'
+        id: lint
+        run: |
+          echo "Running cross-version link linter on changed files..."
+          python .github/scripts/cross_version_link_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
+        continue-on-error: true
+
+      - name: Post PR comment with violations
+        if: steps.changed-files.outputs.any_changed == 'true' && steps.lint.outcome == 'failure'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+
+            // Read the comment from the file created by the linter
+            let comment = '';
+            try {
+              comment = fs.readFileSync('pr-comment.md', 'utf8');
+            } catch (error) {
+              comment = '❌ **Cross-Version Link Check Failed**\n\nCross-version link violations were detected, but the detailed report could not be generated.';
+            }
+
+            // Check if we've already commented on this PR
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Cross-Version Link Check')
+            );
+
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+
+      - name: Post success comment if previously failed
+        if: steps.changed-files.outputs.any_changed == 'true' && steps.lint.outcome == 'success'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Check if we've previously commented with failures
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Cross-Version Link Check Failed')
+            );
+
+            if (botComment) {
+              // Update to success message
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: '✅ **Cross-Version Link Check Passed**\n\nAll cross-version link issues have been resolved. Good job!'
+              });
+            }
+
+      - name: Fail if violations found
+        if: steps.changed-files.outputs.any_changed == 'true' && steps.lint.outcome == 'failure'
+        run: |
+          echo "❌ Cross-version link violations were found. Please fix them before merging."
+          exit 1
+
+      - name: Success message
+        if: steps.changed-files.outputs.any_changed == 'true' && steps.lint.outcome == 'success'
+        run: |
+          echo "✅ No cross-version link violations found!"
