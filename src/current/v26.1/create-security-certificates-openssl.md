@@ -188,6 +188,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     [ distinguished_name ]
     organizationName = Cockroach
+    commonName = node
 
     [ extensions ]
     subjectAltName = critical,DNS:<node-hostname>,DNS:<node-domain>,IP:<IP Address>
