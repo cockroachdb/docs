@@ -7,7 +7,7 @@ docs_area: migrate
 
 A *Phased Delta Migration with Failback Replication* involves [migrating data to CockroachDB]({% link molt/migration-overview.md %}) in several phases. Data can be sliced per tenant, per service, per region, or per table to suit the needs of the migration. **For each given migration phase**, you use [MOLT Fetch]({% link molt/molt-fetch.md %}) to perform an initial bulk load of the data, you use [MOLT Replicator]({% link molt/molt-replicator.md %}) to update the target database via forward replication and to activate failback replication, and then you cut over application traffic to CockroachDB after schema finalization and data verification. This process is repeated for each phase of data.
 
-- Data is migrated to the target [in phases]({% link molt/migration-considerations-phases.md %}).
+- Data is migrated to the target [in phases]({% link molt/migration-considerations-granularity.md %}).
 
 - This approach utilizes [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
@@ -31,7 +31,7 @@ You have a moderately-sized (500GB) database that provides the data store for a 
 
 The application runs on a Kubernetes cluster with an NGINX Ingress Controller.
 
-**Estimated system downtime:** Less than 60 seconds per region.
+**Estimated system downtime:** 3-5 minutes per region.
 
 ## Step-by-step walkthroughs
 

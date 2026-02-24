@@ -1,6 +1,6 @@
 A [*Phased Delta Migration with Failback Replication*]({% link molt/migration-approach-phased-delta-failback.md %}) involves [migrating data to CockroachDB]({% link molt/migration-overview.md %}) in several phases. Data can be sliced per tenant, per service, per region, or per table to suit the needs of the migration. **For each given migration phase**, you use [MOLT Fetch]({% link molt/molt-fetch.md %}) to perform an initial bulk load of the data, you use [MOLT Replicator]({% link molt/molt-replicator.md %}) to update the target database via forward replication and to activate failback replication, and then you cut over application traffic to CockroachDB after schema finalization and data verification. This process is repeated for each phase of data.
 
-- Data is migrated to the target [in phases]({% link molt/migration-considerations-phases.md %}).
+- Data is migrated to the target [in phases]({% link molt/migration-considerations-granularity.md %}).
 
 - This approach utilizes [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
@@ -24,7 +24,9 @@ You have a moderately-sized (500GB) database that provides the data store for a 
 
 The application runs on a Kubernetes cluster with an NGINX Ingress Controller.
 
-**Estimated system downtime:** Less than 60 seconds per region.
+Your business could not accommodate major performance issues that could arise after the migration. Therefore, you want to enable failback replication so that you can easily return to using your original database with minimal interruption.
+
+**Estimated system downtime:** 3-5 minutes per region.
 
 ## Before the migration
 
@@ -542,6 +544,8 @@ spec:
 
 {{ site.data.alerts.callout_danger }}
 Application downtime begins now, for users in the given region.
+
+It is strongly recommended that you perform a dry run of this migration in a test environment. This will allow you to practice using the MOLT tools in real time, and it will give you an accurate sense of how long application downtime might last.
 {{ site.data.alerts.end }}
 
 ## Step 8: Stop forward replication

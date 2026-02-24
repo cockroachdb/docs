@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-A migration involves transfering data from a pre-existing **source** database onto a **target** CockroachDB cluster. Migrating data is a complex, multi-step process, and a data migration can take many different forms depending on your specific business and technical constraints.
+A migration involves transferring data from a pre-existing **source** database onto a **target** CockroachDB cluster. Migrating data is a complex, multi-step process, and a data migration can take many different forms depending on your specific business and technical constraints.
 
 Cockroach Labs provides a [MOLT (Migrate Off Legacy Technology)]({% link releases/molt.md %}) toolkit to aid in migrations.
 
@@ -59,13 +59,13 @@ MOLT [Fetch](#fetch), [Replicator](#replicator), and [Verify](#verify) are CLI-b
   <tr>
     <td class="comparison-chart__feature"><a href="#fetch"><b>Fetch</b></a></td>
     <td>Initial data load</td>
-    <td>PostgreSQL 11-16, MySQL 5.7-8.0+, Oracle Database 19c (Enterprise Edition) and 21c (Express Edition), CockroachDB</td>
+    <td>PostgreSQL 11-16, MySQL 5.7-8.0+, Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)</td>
     <td>GA</td>
   </tr>
   <tr>
     <td class="comparison-chart__feature"><a href="#replicator"><b>Replicator</b></a></td>
     <td>Continuous replication</td>
-    <td>CockroachDB, PostgreSQL 11-16, MySQL 5.7+ and 8.0+, Oracle Database 19c+</td>
+    <td>PostgreSQL 11-16, MySQL 5.7+ and 8.0+, Oracle Database 19c+, CockroachDB</td>
     <td>GA</td>
   </tr>
   <tr>
@@ -127,7 +127,7 @@ After data is migrated from the source into CockroachDB, you may choose to conti
 
 ### Data transformation strategy
 
-If there are discrepencies between the source and target schemas, the rules that determine necessary data transformations need to be defined. These transformations can be applied in the source database, in flight, or in the target database.
+If there are discrepancies between the source and target schemas, the rules that determine necessary data transformations need to be defined. These transformations can be applied in the source database, in flight, or in the target database.
 
 ### Validation strategy
 

@@ -43,25 +43,25 @@ A migration can be a long process, and depending on the choices made in designin
 
 It's often useful to find natural checkpoints in your migration flow to run validations, and to increase the rigor of those validations as you approach cutover.
 
-If performing a migration [in phases]({% link molt/migration-considerations-phases.md %}), the checkpoints below can be considered in the context of each individual phase. A rigorous validation approach might choose to run validations after each phase, while a more risk-tolerant approach might choose to run them after all of the phases have been migrated but before cutover.
+If performing a migration [in phases]({% link molt/migration-considerations-granularity.md %}), the checkpoints below can be considered in the context of each individual phase. A rigorous validation approach might choose to run validations after each phase, while a more risk-tolerant approach might choose to run them after all of the phases have been migrated but before cutover.
 
-#### Pre-migration (design and dry-run)
+### Pre-migration (design and dry-run)
 
 Validate converted schema and resolve type mapping issues. Run a dry-run migration on test data and begin query validation to catch behavioral differences early.
 
-#### After a bulk data load
+### After a bulk data load
 
 Run comprehensive validations to confirm schema and row-level parity before re-adding constraints and indexes that were dropped to accelerate load.
 
-#### During continuous replication
+### During continuous replication
 
 If using [continuous replication]({% link molt/migration-considerations-replication.md %}), run validation periodically to ensure the target converges with the source. Use live-aware validation to reduce false positives from in-flight changes. This gives you confidence that replication is working correctly.
 
-#### Before cutover
+### Before cutover
 
 Once replication has drained, run final validation on the complete cutover scope and verify critical application queries.
 
-#### After cutover
+### After cutover
 
 After traffic moves to CockroachDB, run targeted validation on critical tables and application smoke tests to confirm steady state.
 
@@ -96,7 +96,7 @@ Determine in advance whether mismatches will block cutover, trigger investigatio
 
 Other validations beyond those supported by MOLT Verify would need to be run by a third-party tool, but could be run in tandem with MOLT Verify.
 
-If performing a [phased migration]({% link molt/migration-considerations-phases.md %}), you can use MOLT Verify's `--schema-filter` and `--table-filter` flags to specify specific schemas or tables to run the validations on. 
+If performing a [phased migration]({% link molt/migration-considerations-granularity.md %}), you can use MOLT Verify's `--schema-filter` and `--table-filter` flags to specify specific schemas or tables to run the validations on. 
 
 If using [continuous replication]({% link molt/migration-considerations-replication.md %}), you can use MOLT Verify's `--continuous` and `--live` flags to enable continuous verification.
 
@@ -106,7 +106,7 @@ Check MOLT Verify's [known limitations]({% link molt/molt-verify.md %}#known-lim
 
 - [Migration Overview]({% link molt/migration-overview.md %})
 - [Migration Considerations]({% link molt/migration-considerations.md %})
-- [Migration Granularity]({% link molt/migration-considerations-phases.md %})
+- [Migration Granularity]({% link molt/migration-considerations-granularity.md %})
 - [Continuous Replication]({% link molt/migration-considerations-replication.md %})
 - [Data Transformation Strategy]({% link molt/migration-considerations-transformation.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})

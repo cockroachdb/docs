@@ -15,7 +15,7 @@ Learn more about each migration variable by clicking the links in the left-hand 
 
 | Variable | Description |
 |---|---|
-| [**Migration granularity**]({% link molt/migration-considerations-phases.md %}) <h3 id="migration-granularity" style="visibility:hidden;max-height:0;">Migration granularity</h3> | Do you want to migrate all of your data at once, or do you want to split your data up into phases and migrate one phase at a time? |
+| [**Migration granularity**]({% link molt/migration-considerations-granularity.md %}) <h3 id="migration-granularity" style="visibility:hidden;max-height:0;">Migration granularity</h3> | Do you want to migrate all of your data at once, or do you want to split your data up into phases and migrate one phase at a time? |
 | [**Continuous replication**]({% link molt/migration-considerations-replication.md %}) <h3 id="continuous-replication" style="visibility:hidden;max-height:0;">Continuous replication</h3> | After the initial data load (or after the initial load of each phase), do you want to stream further changes to that data from the source to the target? |
 | [**Data transformation strategy**]({% link molt/migration-considerations-transformation.md %}) <h3 id="data-transformation-strategy" style="visibility:hidden;max-height:0;">Data transformation strategy</h3> | If there are discrepancies between the source and target schema, how will you define those data transformations, and when will those transformations occur? |
 | [**Validation strategy**]({% link molt/migration-considerations-validation.md %}) <h3 id="validation-strategy" style="visibility:hidden;max-height:0;">Validation strategy</h3> | How and when will you verify that the data in CockroachDB matches the source database? |
@@ -29,9 +29,9 @@ When deciding on the options for each migration variable, consider the following
 
 ### Permissible downtime
 
-How much downtime can your application tolerate during the migration? This is one of the most critical factors in determining your migration approach, and it may influence your choices for [migration granularity]({% link molt/migration-considerations-phases.md %}), [continuous replication]({% link molt/migration-considerations-replication.md %}), and [cutover strategy]({% link molt/migration-considerations-cutover.md %}).
+How much downtime can your application tolerate during the migration? This is one of the most critical factors in determining your migration approach, and it may influence your choices for [migration granularity]({% link molt/migration-considerations-granularity.md %}), and [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
-- **Planned downtime** is made known to your users in advance. It involves taking the application offline, conducting the migration, and bginging the application back online on CockroachDB.
+- **Planned downtime** is made known to your users in advance. It involves taking the application offline, conducting the migration, and bringing the application back online on CockroachDB.
 
     To succeed, you should estimate the amount of downtime required to migrate your data, and ideally schedule the downtime outside of peak hours. Scheduling downtime is easiest if your application traffic is "periodic", meaning that it varies by the time of day, day of week, or day of month.
 
@@ -43,7 +43,7 @@ In addition to downtime duration, consider whether your application could suppor
 
 ### Migration timeframe and allowable complexity
 
-When do you need to complete the migration? How many team members can be allocated for this effort? How much complex orchestration can your team manage? These factors may influence your choices for [migration granularity]({% link molt/migration-considerations-phases.md %}), [continuous replication]({% link molt/migration-considerations-replication.md %}), and [cutover strategy]({% link molt/migration-considerations-cutover.md %}).
+When do you need to complete the migration? How many team members can be allocated for this effort? How much complex orchestration can your team manage? These factors may influence your choices for [migration granularity]({% link molt/migration-considerations-granularity.md %}), [continuous replication]({% link molt/migration-considerations-replication.md %}), and [rollback plan]({% link molt/migration-considerations-rollback.md %}).
 
 - Migrations with a short timeline, or which cannot accommodate high complexity, may want to migrate data all at once, without utilizing continuous replication, and requiring manual reconciliation in the event of migration failure.
 
@@ -51,7 +51,7 @@ When do you need to complete the migration? How many team members can be allocat
 
 ### Risk tolerance
 
-How much risk is your organization willing to accept during the migration? This may influence your choices for [migration granularity]({% link molt/migration-considerations-phases.md %}), [validation strategy]({% link molt/migration-considerations-validation.md %}), and [rollback plan]({% link molt/migration-considerations-rollback.md %}).
+How much risk is your organization willing to accept during the migration? This may influence your choices for [migration granularity]({% link molt/migration-considerations-granularity.md %}), [validation strategy]({% link molt/migration-considerations-validation.md %}), and [rollback plan]({% link molt/migration-considerations-rollback.md %}).
 
 - Risk-averse migrations should prefer phased migrations that limit the blast radius of any issues. Start with low-risk slices (e.g., a small cohort of tenants or a non-critical service), validate thoroughly, and progressively expand to higher-value workloads. These migrations may also prefer rollback plans that enable quick recovery in the event of migration issues.
 
@@ -65,7 +65,7 @@ These factors are only a subset of what you will want to consider in designing y
 
 - [Migration Overview]({% link molt/migration-overview.md %})
 - [Migration Best Practices]({% link molt/migration-strategy.md %})
-- [Bulk vs. Phased Migration]({% link molt/migration-considerations-phases.md %})
+- [Bulk vs. Phased Migration]({% link molt/migration-considerations-granularity.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})

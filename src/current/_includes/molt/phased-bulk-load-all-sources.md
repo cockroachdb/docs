@@ -1,6 +1,6 @@
 A [*Phased Bulk Load Migration*]({% link molt/migration-approach-phased-bulk-load.md %}) involves [migrating data to CockroachDB]({% link molt/migration-overview.md %}) in several phases. Data can be sliced per tenant, per service, per region, or per table to suit the needs of the migration. In this approach, you stop application traffic to the source database _only_ for the tables in a particular slice of data. You then migrate that phase of data to the target cluster using [MOLT Fetch]({% link molt/molt-fetch.md %}) during a **downtime window**. Application traffic is then cut over to those target tables after schema finalization and data verification. This process is repeated for each phase of data.
 
-- Data is migrated to the target [in phases]({% link molt/migration-considerations-phases.md %}).
+- Data is migrated to the target [in phases]({% link molt/migration-considerations-granularity.md %}).
 
 - This approach does not utilize [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
@@ -131,6 +131,8 @@ spec:
 
 {{ site.data.alerts.callout_danger }}
 Application downtime begins now, for users in the given region.
+
+It is strongly recommended that you perform a dry run of this migration in a test environment. This will allow you to practice using the MOLT tools in real time, and it will give you an accurate sense of how long application downtime might last.
 {{ site.data.alerts.end }}
 
 ## Step 4: Load data into CockroachDB

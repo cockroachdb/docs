@@ -1,6 +1,6 @@
 A [*Delta Migration*]({% link molt/migration-approach-delta.md %}) uses an initial data load, followed by [continuous replication]({% link molt/migration-considerations-replication.md %}), to [migrate data to CockroachDB]({% link molt/migration-overview.md %}). In this approach, you migrate most application data to the target using [MOLT Fetch]({% link molt/molt-fetch.md %}) **before** stopping application traffic to the source database. You then use [MOLT Replicator]({% link molt/molt-replicator.md %}) to keep the target database in sync with any changes in the source database (the migration _delta_), before finally halting traffic to the source and cutting over to the target after schema finalization and data verification.
 
-- All source data is migrated to the target [at once]({% link molt/migration-considerations-phases.md %}).
+- All source data is migrated to the target [at once]({% link molt/migration-considerations-granularity.md %}).
 
 - This approach utilizes [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
@@ -20,7 +20,7 @@ You have a small (300 GB) database that provides the data store for a web applic
 
 The application runs on a Kubernetes cluster.
 
-**Estimated system downtime:** Less than 60 seconds.
+**Estimated system downtime:** 3-5 minutes.
 
 ## Before the migration
 
@@ -500,6 +500,8 @@ kubectl scale deployment app --replicas=0
 
 {{ site.data.alerts.callout_danger }}
 Application downtime begins now.
+
+It is strongly recommended that you perform a dry run of this migration in a test environment. This will allow you to practice using the MOLT tools in real time, and it will give you an accurate sense of how long application downtime might last.
 {{ site.data.alerts.end }}
 
 ## Step 8: Stop forward replication

@@ -1,6 +1,6 @@
 A [*Classic Bulk Load Migration*]({% link molt/migration-approach-classic-bulk-load.md %}) is the simplest way of [migrating data to CockroachDB]({% link molt/migration-overview.md %}). In this approach, you stop application traffic to the source database and migrate data to the target cluster using [MOLT Fetch]({% link molt/molt-fetch.md %}) during a **significant downtime window**. Application traffic is then cut over to the target after schema finalization and data verification.
 
-- All source data is migrated to the target [at once]({% link molt/migration-considerations-phases.md %}).
+- All source data is migrated to the target [at once]({% link molt/migration-considerations-granularity.md %}).
 
 - This approach does not utilize [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
@@ -95,6 +95,8 @@ kubectl scale deployment app --replicas=0
 
 {{ site.data.alerts.callout_danger }}
 Application downtime begins now.
+
+It is strongly recommended that you perform a dry run of this migration in a test environment. This will allow you to practice using the MOLT tools in real time, and it will give you an accurate sense of how long application downtime might last.
 {{ site.data.alerts.end }}
 
 ## Step 4: Load data into CockroachDB

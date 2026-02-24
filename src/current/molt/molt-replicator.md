@@ -166,7 +166,7 @@ The staging database is used to:
 
 ### Consistency modes
 
-MOLT Replicator supports three consistency modes for balancing throughput and transactional guarantees:
+MOLT Replicator supports three consistency modes for [failback replication](#failback-replication), allowing you to balance throughput and transactional guarantees. [Forward replication](#forward-replication-after-initial-load) uses a fixed _immediate_ mode optimized for each source database. The three consistency modes that MOLT Replicator supports are:
 
 1. *Consistent* (failback mode only, default for CockroachDB sources): Preserves per-row order and source transaction atomicity. Concurrent transactions are controlled by [`--parallelism`]({% link molt/replicator-flags.md %}#parallelism).
 

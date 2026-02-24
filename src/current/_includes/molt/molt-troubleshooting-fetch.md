@@ -1,6 +1,6 @@
 ### Fetch issues
 
-##### Fetch exits early due to mismatches
+#### Fetch exits early due to mismatches
 
 When run in `none` or `truncate-if-exists` mode, `molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
 
@@ -59,7 +59,7 @@ If you receive `ORA-01950: no privileges on tablespace 'USERS'`, it means the Or
 ALTER USER migration_schema QUOTA UNLIMITED ON USERS;
 ~~~
 
-##### No tables to drop and recreate on target
+#### No tables to drop and recreate on target
 
 When expecting a bulk load but seeing `no tables to drop and recreate on the target`, ensure the migration user has `SELECT` and `FLASHBACK` privileges on each table to be migrated. For example:
 
@@ -69,11 +69,11 @@ GRANT SELECT, FLASHBACK ON migration_schema.payments TO C##MIGRATION_USER;
 GRANT SELECT, FLASHBACK ON migration_schema.orders TO C##MIGRATION_USER;
 ~~~
 
-##### Table or view does not exist
+#### Table or view does not exist
 
 If the Oracle migration user lacks privileges on certain tables, you may receive errors stating that the table or view does not exist. Either use `--table-filter` to {% if page.name contains "delta" %}[limit the tables to be migrated](#schema-and-table-filtering){% else %}[limit the tables to be migrated]({% link molt/molt-fetch.md %}#schema-and-table-selection){% endif %}, or grant the migration user `SELECT` privileges on all objects in the schema. Refer to {% if page.name contains "delta" %}[Create migration user on source database](#create-migration-user-on-source-database){% else %}[Create migration user on source database]({% link {{site.current_cloud_version}}/create-user.md %}){% endif %}.
 
-##### Oracle sessions remain open after forcefully stopping `molt` or `replicator`
+#### Oracle sessions remain open after forcefully stopping `molt` or `replicator`
 
 If you shut down `molt` or `replicator` unexpectedly (e.g., with `kill -9` or a system crash), Oracle sessions opened by these tools may remain active.
 

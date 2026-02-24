@@ -753,7 +753,9 @@ For Oracle:
 {"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":3,"tables":["migration_schema.employees"],"cdc_cursor":"backfillFromSCN=26685444,scn=26685786","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
 ~~~
 
-Use the `cdc_cursor` value as the checkpoint for MySQL or Oracle replication with [MOLT Replicator]({% link molt/molt-replicator.md %}#replication-checkpoints).
+This `cdc_cursor` value is also included in the output of a fetch task from a PostgreSQL source. However, in the case of a PostgreSQL source, you can instead enable replication with the [`--pglogical-replication-slot-name`]({% link molt/molt-fetch-commands-and-flags.md %}#pglogical-replication-slot-name) and [`--pglogical-publication-and-slot-drop-and-recreate`]({% link molt/molt-fetch-commands-and-flags.md %}#pglogical-publication-and-slot-drop-and-recreate) flags, which must be defined.
+
+Use the `cdc_cursor` value as the checkpoint for MySQL or Oracle replication with MOLT Replicator. Use the [`--pglogical-replication-slot-name`]({% link molt/molt-fetch-commands-and-flags.md %}#pglogical-replication-slot-name) value as the checkpoint for PostgreSQL replication with MOLT Replicator. Refer to [Replication checkpoints]({% link molt/molt-replicator.md %}#replication-checkpoints) in the MOLT Replicator documentation.
 
 You can also use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes from the source database to CockroachDB.
 
@@ -887,10 +889,11 @@ In a migration that utilizes [continuous replication]({% link  molt/migration-co
 The workflow is the same as [Bulk data load](#bulk-data-load), except:
 
 - Exclude [`--ignore-replication-check`]({% link molt/molt-fetch-commands-and-flags.md %}#ignore-replication-check). MOLT Fetch will query and record replication checkpoints.
-<section class="filter-content" markdown="1" data-scope="postgres">
-- You must include `--pglogical-replication-slot-name` and `--pglogical-publication-and-slot-drop-and-recreate` to automatically create the publication and replication slot during the data load.
-</section>
 - After the data load completes, check the [CDC cursor](#enable-replication) in the output for the checkpoint value to use with MOLT Replicator.
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+- You must include [`--pglogical-replication-slot-name`]({% link molt/molt-fetch-commands-and-flags.md %}#pglogical-replication-slot-name) and [`--pglogical-publication-and-slot-drop-and-recreate`]({% link molt/molt-fetch-commands-and-flags.md %}#pglogical-publication-and-slot-drop-and-recreate) to automatically create the publication and replication slot during the data load.
+</section>
 
 At minimum, the `molt fetch` command should include the source, target, and data path flags:
 

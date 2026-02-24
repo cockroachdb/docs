@@ -15,7 +15,7 @@ In general:
 
 - Choose a **hybrid approach (bulk load + continuous replication)** when you need to minimize downtime and keep the target synchronized with ongoing source database changes until cutover.
 
-- You can choose **continuous replication only** for tables with transient data, or in other contexts where you only need to capture ongoing changes and are not concerned with migrating a large initial dataset. While it's possible to only use continuous replication, this is less common for an entire migration.
+- You can choose **continuous replication only** for tables with transient data, or in other contexts where you only need to capture ongoing changes and are not concerned with migrating a large initial dataset. While it's possible to only use continuous replication, this is less common for an entire migration. This is because with large data volumes, streaming changes from the initial set of data can be much slower than bulk loading the dataset.
 
 ## Permissible downtime
 
@@ -25,7 +25,7 @@ If your migration can accommodate a window of **planned downtime** that's made k
 
 If your migration needs to **minimize downtime**, you will likely need to keep the source database live for as long as possible, continuing to allow write traffic to the source until cutover. In this case, an initial bulk load will need to be followed by a replication period, during which you stream incremental changes from the source to the target CockroachDB cluster. This is ideal for large datasets that are impractical to move within a narrow downtime window, or when you need validation time with a live, continuously synced target before switching traffic. The final downtime is minimized to a brief pause to let replication drain before switching traffic, with the pause length driven by write volume and observed replication lag.
 
-If you're migrating your data [in mulitple phases]({% link molt/migration-considerations-phases.md %}), consider the fact that each phase can have its own separate downtime window and cutover, and that migrating in phases can reduce the length of each individual downtime window.
+If you're migrating your data [in mulitple phases]({% link molt/migration-considerations-granularity.md %}), consider the fact that each phase can have its own separate downtime window and cutover, and that migrating in phases can reduce the length of each individual downtime window.
 
 ## Tradeoffs
 
@@ -79,7 +79,7 @@ When you run MOLT Fetch without [`--ignore-replication-check`]({% link molt/molt
 
 MOLT Fetch supports both `IMPORT INTO` (default, for highest throughput with offline tables) and `COPY FROM` (for online tables) loading methods. Because a hybrid approach will likely aim to have less downtime, you may need to use `COPY FROM` if your tables remain online. In this case, use the [`--use-copy`]({% link molt/molt-fetch-commands-and-flags.md %}#use-copy) flag. Learn more about Fetch's [data load modes]({% link molt/molt-fetch.md %}#import-into-vs-copy-from).
 
-MOLT Replicator replicates full tables by default. If you choose to combine continuous replication with a [phased migration]({% link molt/migration-considerations-phases.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/replicator-flags.md %}#userscript) to select rows to replicate.
+MOLT Replicator replicates full tables by default. If you choose to combine continuous replication with a [phased migration]({% link molt/migration-considerations-granularity.md %}), you will either need to select phases that include whole tables, or else use [userscripts]({% link molt/replicator-flags.md %}#userscript) to select rows to replicate.
 
 MOLT Replicator can be stopped after cutover, or it can remain online to continue streaming changes indefinitely.
 
@@ -91,7 +91,7 @@ If you're only interested in capturing recent changes, skip MOLT Fetch entirely 
 
 - [Migration Overview]({% link molt/migration-overview.md %})
 - [Migration Considerations]({% link molt/migration-considerations.md %})
-- [Migration Granularity]({% link molt/migration-considerations-phases.md %})
+- [Migration Granularity]({% link molt/migration-considerations-granularity.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})

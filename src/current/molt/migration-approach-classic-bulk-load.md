@@ -7,7 +7,7 @@ docs_area: migrate
 
 A *Classic Bulk Load Migration* is the simplest way of [migrating data to CockroachDB]({% link molt/migration-overview.md %}). In this approach, you stop application traffic to the source database and migrate data to the target cluster using [MOLT Fetch]({% link molt/molt-fetch.md %}) during a **significant downtime window**. Application traffic is then cut over to the target after schema finalization and data verification.
 
-- All source data is migrated to the target [at once]({% link molt/migration-considerations-phases.md %}).
+- All source data is migrated to the target [at once]({% link molt/migration-considerations-granularity.md %}).
 
 - This approach does not utilize [continuous replication]({% link molt/migration-considerations-replication.md %}).
 

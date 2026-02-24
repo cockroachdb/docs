@@ -13,7 +13,7 @@ In general:
 
 - Choose to migrate your data **all at once** if your data volume is modest, if you want to minimize migration complexity, or if you don't mind taking on a greater risk of something going wrong.
 
-- Choose a **phased migration** if your data volume is large, especially if you can naturally partition workload by tenant, service/domain, table/shard, geography, or time. A phased migration helps to reduce risk by limiting the workloads that would be adversely affected by a migration failure. It also helps to limit the downtime per phase, and allows the application to continue serving unaffected subsets of data during the migration of a phase.
+- Choose a **phased migration** if your data volume is large, especially if you can naturally partition workload by tenant, service/domain, table/shard, geography, or time. A phased migration helps to reduce risk by limiting the workloads that would be adversely affected by a migration failure. It also helps to limit the downtime per phase, and allows the application to continue serving unaffected subsets of data during the migration of a phase. However, breaking the migration into phases increases the time and complexity of the whole migration.
 
 ## How to divide migrations into phases
 

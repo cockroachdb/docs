@@ -41,7 +41,7 @@ Apply transformations in the CockroachDB cluster after data has been loaded. For
 
 Apply transformations within the migration pipeline, between the source and target databases. This allows the source database to remain as it is, and it allows the target database to be designed using CockroachDB best practices. It also enables testability by separating transformations from either database.
 
-However, in-flight transformations may require more complex tooling. Tranformation in-flight is largely supported by the [MOLT toolkit](#molt-toolkit-support).
+However, in-flight transformations may require more complex tooling. Transformation in-flight is largely supported by the [MOLT toolkit](#molt-toolkit-support).
 
 ## Decision framework
 
@@ -85,7 +85,7 @@ While not a part of the transformation process itself, the [MOLT Schema Conversi
 
 - [Migration Overview]({% link molt/migration-overview.md %})
 - [Migration Considerations]({% link molt/migration-considerations.md %})
-- [Migration Granularity]({% link molt/migration-considerations-phases.md %})
+- [Migration Granularity]({% link molt/migration-considerations-granularity.md %})
 - [Continuous Replication]({% link molt/migration-considerations-replication.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
