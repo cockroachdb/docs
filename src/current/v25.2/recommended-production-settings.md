@@ -28,6 +28,12 @@ Existing deployments that have THP enabled using the `always` option should chan
 
 The method for permanently changing the THP setting across reboots depends on the operating system. For Red Hat Enterprise Linux, refer to the [Red Hat documentation](https://access.redhat.com/solutions/46111).
 
+## Cluster settings
+
+This section lists cluster setting changes that are recommended for production deployments:
+
+- To prevent unnecessary queuing in [admission control]({% link {{ page.version.version }}/admission-control.md %}) CPU queues, set the `goschedstats.always_use_short_sample_period.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-goschedstats-always-use-short-sample-period-enabled) to `true` for any production cluster.
+
 ## Hardware
 
 {% include {{ page.version.version }}/prod-deployment/terminology-vcpu.md %}
