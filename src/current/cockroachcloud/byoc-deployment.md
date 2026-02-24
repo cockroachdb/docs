@@ -33,7 +33,7 @@ Billing     | Meter vCPUs consumed, [charge for vCPU consumption]({% link cockro
 
 - [Create a CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/create-an-account.md %}) if you do not already have one. 
 
-- The BYOC deployment option is not available by default and must be requested. Reach out to your account team to have BYOC enabled for your {{ site.data.products.cloud }} organization.
+- The BYOC deployment option is not available by default and must be requested. Reach out to your account team to express interest in BYOC.
 
 - Cluster creation and management for BYOC deployments is handled using the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}). Create a service account and [API key]({% link cockroachcloud/managing-access.md %}#api-access) if you do not have one.
 
