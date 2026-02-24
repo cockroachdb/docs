@@ -118,7 +118,7 @@ You can write filter rules to have `molt verify` compare only a subset of rows i
 Filter rules apply `WHERE` clauses to specified tables during verification. Columns referenced in filter expressions **must** be indexed.
 
 {{site.data.alerts.callout_info}}
-Only PostgreSQL and MySQL sources are supported for selective data verification.
+Selective data verification is only supported for PostgreSQL and MySQL sources.
 {{site.data.alerts.end}}
 
 #### Step 1. Create a filter rules file
@@ -148,8 +148,8 @@ Create a JSON file that defines the filter rules. The following example defines 
 ~~~
 
 - `resource_specifier`: Identifies which schemas and tables to filter. Schema and table names are case-insensitive.
-	- `schema`: Schema name containing the table.
-	- `table`: Table name to apply the filter to.
+	- `schema`: Name of the schema containing the table.
+	- `table`: Name of the table to apply the filter to.
 - `expr`: SQL expression that applies to both source and target databases. The expression must be valid for both database dialects.
 - `source_expr` and `target_expr`: SQL expressions that apply to the source and target databases, respectively. These must be defined together, and cannot be used with `expr`.
 
@@ -207,7 +207,7 @@ The following example assumes that MOLT Fetch renamed table `t` to `t2` and sche
 ~~~
 
 - `resource_specifier`: Identifies which schemas and tables to transform. Schema and table names are case-insensitive.
-	- `schema`: Schema name containing the table.
+	- `schema`: Name of the schema containing the table.
 	- `table`: Table name to transform.
 - `table_rename_opts`: Rename the table on the target database.
 	- `value`: The target table name to compare against.
