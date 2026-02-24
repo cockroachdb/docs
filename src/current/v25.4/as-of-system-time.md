@@ -22,6 +22,8 @@ The `AS OF SYSTEM TIME` clause is supported in multiple SQL contexts, including 
 - In [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), after the parameters of the `FROM` sub-clause.
 - In [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}), after the `BEGIN` keyword.
 - In [`SET`]({% link {{ page.version.version }}/set-transaction.md %}), after the `SET TRANSACTION` keyword.
+- In [`CREATE MATERIALIZED VIEW`]({% link {{ page.version.version }}/create-view.md %}), after the `AS select_stmt` clause.
+- In [`REFRESH MATERIALIZED VIEW`]({% link {{ page.version.version }}/refresh.md %}), after the view name.
 
 `AS OF SYSTEM TIME` cannot be used with:
 
