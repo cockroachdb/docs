@@ -11,7 +11,7 @@ A *Classic Bulk Load Migration* is the simplest way of [migrating data to Cockro
 
 - This approach does not utilize [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
-- [Rollback]({% link molt/migration-considerations-rollback.md %}) is manual, but in most cases it's simple, as the source database is preserved and write traffic begins on the target all at once.
+- [Rollback]({% link molt/migration-considerations-rollback.md %}) is manual, but in most cases it's simple, as the source database is preserved and write traffic begins on the target all at once. If you wish to roll back before the target has received any unique writes, nothing needs to be done. If you wish to roll back after the target has received unique writes, you must manually replicate these new rows on the source.
 
 This approach is best for small databases (<100 GB), internal tools, dev/staging environments, and production environments that can handle business disruption. It's a simple approach that guarantees full data consistency and is easy to execute with limited resources, but it can only be performed if your system can handle significant downtime.
 

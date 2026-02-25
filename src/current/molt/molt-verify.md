@@ -33,7 +33,7 @@ The following source databases are currently supported:
 
 {% include molt/molt-install.md %}
 
-# Setup
+## Setup
 
 Complete the following items before using MOLT Verify:
 
