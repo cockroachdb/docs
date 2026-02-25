@@ -14,6 +14,10 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## Feb 24, 2026
+
+CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} users can now run a built-in [fault tolerance demo]({% link {{ site.versions["stable"] }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud) that allows you to monitor query execition during a simulated failure and recovery. The fault tolerance demo is in [Preview]({% link {{ site.versions["stable"] }}/cockroachdb-feature-availability.md %}).
+
 ## Aug 5, 2025
 
 Console users with the [Billing Coordinator role]({% link cockroachcloud/authorization.md %}#billing-coordinator) can now [export invoices]({% link cockroachcloud/billing-management.md %}#export-invoices) in a PDF format, rendering billing information into a traditional invoice format for ease of distribution.
