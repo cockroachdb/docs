@@ -21,6 +21,8 @@ Use the following syntax to show the privileges granted to users on database obj
 SHOW GRANTS [ON [DATABASE | FUNCTION | SCHEMA | TABLE | TYPE | EXTERNAL CONNECTION] <targets...>] [FOR <users...>]
 ~~~
 
+The object-focused form (`ON ...`) shows only privileges granted directly on the object. It does not resolve privileges inherited through role membership. The principal-focused form (`FOR ...`) includes privileges inherited through role membership for the specified users and can be combined with `ON ...` to filter by object. For inherited privileges, the `grantee` column reports the role that carries the privilege. To inspect role memberships, use [`SHOW GRANTS ON ROLE`](#show-role-grants) or [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %}).
+
 When `DATABASE` is omitted, the schema, tables, and types in the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database) are listed.
 
 ### Show role grants
@@ -43,6 +45,8 @@ Parameter    | Description
 
 ### Privilege grants
 
+Results for `SHOW GRANTS ON ...` without `FOR` list only direct grants on the object. Results for `SHOW GRANTS ... FOR <users>` include privileges inherited through role membership for the specified users, and the `grantee` column can report roles that grant those privileges.
+
 The `SHOW GRANTS ON [DATABASE | FUNCTION | SCHEMA | TABLE | TYPE | EXTERNAL CONNECTION]` statement can return the following fields, depending on the target object specified:
 
 Field            | Description
@@ -53,7 +57,7 @@ Field            | Description
 `table_name`     | The name of the table.
 `type_name`      | The name of the user-defined type.
 `connection_name`| The name of the external connection.
-`grantee`        | The name of the user or role that was granted the [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges).
+`grantee`        | The name of the user or role that the row reports privileges for. When you omit `FOR`, this is the direct grantee on the object and has the listed [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges). When you use `FOR`, this can be a role that grants inherited privileges to the specified users.
 `privilege_type` | The name of the privilege.
 `is_grantable`   | `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 
@@ -197,6 +201,44 @@ To list all grants for all users and roles on the current database and its table
   database_name | schema_name | table_name | grantee | privilege_type | is_grantable
 ----------------+-------------+------------+---------+----------------+---------------
   movr          | public      | users      | max     | ALL            |      t
+(1 row)
+~~~
+
+### Show direct and inherited grants
+
+In this example, a role has `ALL` on a table and a user inherits that role. The object-focused form lists only the direct role grant, while the principal-focused form lists the inherited privileges for the user.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE ROLE analysts;
+> GRANT ALL ON TABLE users TO analysts;
+> CREATE USER priya;
+> GRANT analysts TO priya;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON TABLE users;
+~~~
+
+~~~
+  database_name | schema_name | table_name | grantee  | privilege_type | is_grantable
+----------------+-------------+------------+----------+----------------+---------------
+  movr          | public      | users      | admin    | ALL            |      t
+  movr          | public      | users      | analysts | ALL            |      f
+  movr          | public      | users      | root     | ALL            |      t
+(3 rows)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON TABLE users FOR priya;
+~~~
+
+~~~
+  database_name | schema_name | table_name | grantee  | privilege_type | is_grantable
+----------------+-------------+------------+----------+----------------+---------------
+  movr          | public      | users      | analysts | ALL            |      f
 (1 row)
 ~~~
 
