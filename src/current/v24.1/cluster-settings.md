@@ -28,6 +28,18 @@ These cluster settings have a broad impact on CockroachDB internals and affect a
 
 {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/settings/settings.html %}
 
+<a name="setting-goschedstats-always-use-short-sample-period-enabled"></a>
+
+<table>
+  <tr>
+    <td><code>goschedstats.always_use_short_sample_period.enabled</code></td>
+    <td>boolean</td>
+	<td>false</td>
+	<td>When set to true, the system uses a shorter sampling period of runnable queue lengths. This setting should always be enabled for <a href="recommended-production-settings.html">production clusters</a> to help prevent unnecessary queuing in the <a href="admission-control.html">admission control</a> subsystem.</td>
+    <td>Advanced/Self-Hosted</td>
+  </tr>
+</table>
+
 ## View current cluster settings
 
 Use the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) statement.
