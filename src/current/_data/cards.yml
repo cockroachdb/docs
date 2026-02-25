@@ -17,8 +17,6 @@ develop:
   - link: "/PREFIX/developer-basics.html"
     title: "Developer basics"
     text: "A quick overview of key concepts developers need to know about CockroachDB."
-  - link: "cockroachcloud/learn-cockroachdb-sql.html"
-    title: "Learn CockroachDB SQL"
     text: "Submit SQL queries to retrieve data from your cluster."
   - link: "/PREFIX/schema-design-overview.html"
     title: "Design a schema"
