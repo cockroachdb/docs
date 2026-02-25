@@ -72,7 +72,7 @@ Flag | Description
 `--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
 `--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`
 `--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`
-`--transformations-file` | Path to a JSON file that defines transformation rules to be applied during comparison. If verifying data that was [transformed during a bulk load with MOLT Fetch]({% link molt/molt-fetch.md %}#transformations), use the same transformations from that `molt fetch` run. Refer to [Verify transformed data](#verify-transformed-data).
+`--transformations-file` | Path to a JSON file that defines transformation rules to be applied during comparison. Refer to [Verify transformed data](#verify-transformed-data).
 
 ## Usage
 
@@ -178,7 +178,7 @@ When verification completes, the output displays a summary showing the number of
 
 ### Verify transformed data
 
-If you applied [transformations during `molt fetch`]({% link molt/molt-fetch.md %}#transformations), you can apply the same transformations with MOLT Verify to match source data with the transformed target data.
+If you applied [transformations with MOLT Fetch]({% link molt/molt-fetch.md %}#transformations), a [MOLT Replicator userscript]({% link molt/userscript-cookbook.md %}#rename-tables), or another tool, you can apply the same transformations with MOLT Verify to match source data with the transformed target data.
 
 {{site.data.alerts.callout_info}}
 Only table and schema renames are supported.
@@ -188,7 +188,7 @@ Only table and schema renames are supported.
 
 Create a JSON file that defines the transformation rules. Each rule can rename a source schema, table, or both. MOLT Verify applies these transformations during comparison only and does not modify the source database.
 
-The following example assumes that MOLT Fetch renamed source table `t` to `t2` on the target, and source schema `public` to `public2` on the target. The same transformation rule is applied during verification:
+The following example assumes that another process renamed source table `t` to `t2` on the target, and source schema `public` to `public2` on the target. The same transformation rule is applied during verification:
 
 ~~~ json
 {
