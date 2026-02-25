@@ -610,15 +610,21 @@
                 ]
               },
               {
-                "title": "CockroachDB Cloud API",
-                "urls": [
-                  "/cockroachcloud/cloud-api.html"
-                ]
-              },
-              {
                 "title": "<code>ccloud</code> CLI",
                 "urls": [
                   "/cockroachcloud/ccloud-get-started.html"
+                ]
+              },
+              {
+                "title": "MCP Server",
+                "urls": [
+                  "/cockroachcloud/mcp-server-get-started.html"
+                ]
+              },
+              {
+                "title": "CockroachDB Cloud API",
+                "urls": [
+                  "/cockroachcloud/cloud-api.html"
                 ]
               }
     ]
