@@ -180,10 +180,6 @@ When verification completes, the output displays a summary showing the number of
 
 If you applied [transformations with MOLT Fetch]({% link molt/molt-fetch.md %}#transformations), a [MOLT Replicator userscript]({% link molt/userscript-cookbook.md %}#rename-tables), or another tool, you can apply the same transformations with MOLT Verify to match source data with the transformed target data.
 
-{{site.data.alerts.callout_info}}
-Only table and schema renames are supported.
-{{site.data.alerts.end}}
-
 #### Step 1. Create a transformation file
 
 Create a JSON file that defines the transformation rules. Each rule can rename a source schema, table, or both. MOLT Verify applies these transformations during comparison only and does not modify the source database.
