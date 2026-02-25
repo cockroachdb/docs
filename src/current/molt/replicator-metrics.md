@@ -101,38 +101,43 @@ Use the Replicator Grafana dashboards [bundled with your binary]({% link molt/mo
 Monitor the following metrics to track the overall health of the [replication pipeline](#replication-pipeline):
 
 <section class="filter-content" markdown="1" data-scope="postgres mysql">
-- `core_source_lag_seconds`
+- <a id="core-source-lag-seconds"></a>`core_source_lag_seconds`
     - Description: Age of the most recently received checkpoint. This represents the time from source commit to `COMMIT` event processing.
     - Interpretation: If consistently increasing, Replicator is falling behind in reading source changes, and cannot keep pace with database changes.
 </section>
 <section class="filter-content" markdown="1" data-scope="cockroachdb">
-- `core_source_lag_seconds`
+- <a id="core-source-lag-seconds"></a>`core_source_lag_seconds`
     - Description: Age of the most recently received checkpoint. This represents the time elapsed since the latest received resolved timestamp.
     - Interpretation: If consistently increasing, Replicator is falling behind in reading source changes, and cannot keep pace with database changes.
 </section>
 <section class="filter-content" markdown="1" data-scope="postgres mysql cockroachdb">
-- `target_apply_mutation_age_seconds`
+- <a id="target-apply-mutation-age-seconds"></a>`target_apply_mutation_age_seconds`
     - Description: End-to-end replication lag per mutation from source commit to target apply. Measures the difference between current wall time and the mutation's [MVCC timestamp]({% link {{ site.current_cloud_version }}/architecture/storage-layer.md %}#mvcc).
     - Interpretation: Higher values mean that older mutations are being applied, and indicate end-to-end pipeline delays. Compare across tables to find bottlenecks.
 </section>
 <section class="filter-content" markdown="1" data-scope="postgres oracle">
-- `target_apply_queue_utilization_percent`
+- <a id="target-apply-queue-utilization-percent"></a>`target_apply_queue_utilization_percent`
     - Description: Percentage of target apply queue capacity utilization.
 	- Interpretation: Values above 90 percent indicate severe backpressure throughout the pipeline, and potential data processing delays. Increase [`--targetApplyQueueSize`]({% link molt/replicator-flags.md %}#target-apply-queue-size) or investigate target database performance.
 </section>
 <section class="filter-content" markdown="1" data-scope="mysql cockroachdb">
-- `target_apply_queue_utilization_percent`
+- <a id="target-apply-queue-utilization-percent"></a>`target_apply_queue_utilization_percent`
     - Description: Percentage of target apply queue capacity utilization.
 	- Interpretation: Values above 90 percent indicate severe backpressure throughout the pipeline, and potential data processing delays. Investigate target database performance.
 </section>
 
+### Replication lag
+Monitor the following metrics to track end-to-end replication lag:
+
+<section class="filter-content" markdown="1" data-scope="postgres mysql oracle cockroachdb">
+- <a id="source-commit-to-apply-lag-seconds"></a>`source_commit_to_apply_lag_seconds`
+	- Description: Time delta between writing a mutation to the source and writing it to the target.
+	- Interpretation: High values (often seconds or hundreds of milliseconds) indicate the steady state of replication. This may indicate the duration of a [minimum downtime window]({% link molt/migration-considerations-replication.md %}#permissible-downtime) due to drainage.
+</section>
+
 
 <section class="filter-content" markdown="1" data-scope="postgres mysql cockroachdb">
-### Replication lag
-
-Monitor the following metric to track end-to-end replication lag:
-
-- `target_apply_transaction_lag_seconds`
+- <a id="target-apply-transaction-lag-seconds"></a>`target_apply_transaction_lag_seconds`
     - Description: Age of the transaction applied to the target table, measuring time from source commit to target apply.
     - Interpretation: Consistently high values indicate bottlenecks in the pipeline. Compare with `core_source_lag_seconds` to determine if the delay is in source read or target apply.
 </section>
@@ -142,10 +147,10 @@ Monitor the following metric to track end-to-end replication lag:
 
 Monitor the following metrics to track checkpoint progress:
 
-- `target_applied_timestamp_seconds`
+- <a id="target-applied-timestamp-seconds"></a>`target_applied_timestamp_seconds`
 	- Description: Wall time (Unix timestamp) of the most recently applied resolved timestamp.
 	- Interpretation: Use to verify continuous progress. Stale values indicate apply stalls.
-- `target_pending_timestamp_seconds`
+- <a id="target-pending-timestamp-seconds"></a>`target_pending_timestamp_seconds`
 	- Description: Wall time (Unix timestamp) of the most recently received resolved timestamp.
 	- Interpretation: A gap between this metric and `target_applied_timestamp_seconds` indicates apply backlog, meaning that the pipeline cannot keep up with incoming changes.
 </section>
@@ -159,16 +164,16 @@ Monitor the following metrics to track checkpoint progress:
 <section class="filter-content" markdown="1" data-scope="cockroachdb">
 #### CockroachDB source
 
-- `checkpoint_committed_age_seconds`
+- <a id="checkpoint-committed-age-seconds"></a>`checkpoint_committed_age_seconds`
 	- Description: Age of the committed checkpoint.
 	- Interpretation: Increasing values indicate checkpoint commits are falling behind, which affects crash recovery capability.
-- `checkpoint_proposed_age_seconds`
+- <a id="checkpoint-proposed-age-seconds"></a>`checkpoint_proposed_age_seconds`
 	- Description: Age of the proposed checkpoint.
 	- Interpretation: A gap with `checkpoint_committed_age_seconds` indicates checkpoint commit lag.
-- `checkpoint_commit_duration_seconds`
+- <a id="checkpoint-commit-duration-seconds"></a>`checkpoint_commit_duration_seconds`
 	- Description: Amount of time taken to save the committed checkpoint to the staging database.
 	- Interpretation: High values indicate staging database bottlenecks due to write contention or performance issues.
-- `checkpoint_proposed_going_backwards_errors_total`
+- <a id="checkpoint-proposed-going-backwards-errors-total"></a>`checkpoint_proposed_going_backwards_errors_total`
 	- Description: Number of times an error condition occurred where the changefeed was restarted.
 	- Interpretation: Indicates source changefeed restart or time regression. Requires immediate investigation of source changefeed stability.
 </section>
@@ -180,56 +185,56 @@ Monitor the following metrics to track checkpoint progress:
 To visualize the following metrics, import the Oracle Grafana dashboard [bundled with your binary]({% link molt/molt-replicator-installation.md %}) (`replicator_oracle_grafana_dashboard.json`). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
 {{site.data.alerts.end}}
 
-- `oraclelogminer_scn_interval_size`
+- <a id="oraclelogminer-scn-interval-size"></a>`oraclelogminer_scn_interval_size`
 	- Description: Size of the interval from the start SCN to the current Oracle SCN.
 	- Interpretation: Values larger than the [`--scnWindowSize`]({% link molt/replicator-flags.md %}#scn-window-size) flag value indicate replication lag, or that replication is idle.
-- `oraclelogminer_time_per_window_seconds`
+- <a id="oraclelogminer-time-per-window-seconds"></a>`oraclelogminer_time_per_window_seconds`
 	- Description: Amount of time taken to fully process an SCN interval.
 	- Interpretation: Large values indicate Oracle slowdown, blocked replication loop, or slow processing.
-- `oraclelogminer_query_redo_logs_duration_seconds`
+- <a id="oraclelogminer-query-redo-logs-duration-seconds"></a>`oraclelogminer_query_redo_logs_duration_seconds`
 	- Description: Amount of time taken to query redo logs from LogMiner.
 	- Interpretation: High values indicate Oracle is under load or the SCN interval is too large.
-- `oraclelogminer_num_inflight_transactions_in_memory`
+- <a id="oraclelogminer-num-inflight-transactions-in-memory"></a>`oraclelogminer_num_inflight_transactions_in_memory`
 	- Description: Current number of in-flight transactions in memory.
 	- Interpretation: High counts indicate long-running transactions on source. Monitor for memory usage.
-- `oraclelogminer_num_async_checkpoints_in_queue`
+- <a id="oraclelogminer-num-async-checkpoints-in-queue"></a>`oraclelogminer_num_async_checkpoints_in_queue`
 	- Description: Checkpoints queued for processing against staging database.
 	- Interpretation: Values close to the `--checkpointQueueBufferSize` flag value indicate checkpoint processing cannot keep up with incoming checkpoints.
-- `oraclelogminer_upsert_checkpoints_duration`
+- <a id="oraclelogminer-upsert-checkpoints-duration"></a>`oraclelogminer_upsert_checkpoints_duration`
 	- Description: Amount of time taken to upsert checkpoint batch into staging database.
 	- Interpretation: High values indicate the staging database is under heavy load or batch size is too large.
-- `oraclelogminer_delete_checkpoints_duration`
+- <a id="oraclelogminer-delete-checkpoints-duration"></a>`oraclelogminer_delete_checkpoints_duration`
 	- Description: Amount of time taken to delete old checkpoints from the staging database.
 	- Interpretation: High values indicate staging database load or long-running transactions preventing checkpoint deletion.
-- `mutation_total`
-	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete). 
+- <a id="oracle-mutation-total"></a>`mutation_total`
+	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete).
     - Interpretation: Use to monitor replication throughput and identify traffic patterns.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
 #### MySQL source
 
-- `mylogical_dial_success_total`
+- <a id="mylogical-dial-success-total"></a>`mylogical_dial_success_total`
 	- Description: Number of times Replicator successfully started logical replication.
 	- Interpretation: Multiple successes may indicate reconnects. Monitor for connection stability.
-- `mylogical_dial_failure_total`
+- <a id="mylogical-dial-failure-total"></a>`mylogical_dial_failure_total`
 	- Description: Number of times Replicator failed to start logical replication.
 	- Interpretation: Nonzero values indicate connection issues. Check network connectivity and source database health.
-- `mutation_total`
-	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete). 
+- <a id="mysql-mutation-total"></a>`mutation_total`
+	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete).
     - Interpretation: Use to monitor replication throughput and identify traffic patterns.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="postgres">
 #### PostgreSQL source
 
-- `pglogical_dial_success_total`
+- <a id="pglogical-dial-success-total"></a>`pglogical_dial_success_total`
 	- Description: Number of times Replicator successfully started logical replication (executed `START_REPLICATION` command).
 	- Interpretation: Multiple successes may indicate reconnects. Monitor for connection stability.
-- `pglogical_dial_failure_total`
+- <a id="pglogical-dial-failure-total"></a>`pglogical_dial_failure_total`
 	- Description: Number of times Replicator failed to start logical replication (failure to execute `START_REPLICATION` command).
 	- Interpretation: Nonzero values indicate connection issues. Check network connectivity and source database health.
-- `mutation_total`
+- <a id="postgres-mutation-total"></a>`mutation_total`
 	- Description: Total number of mutations processed, labeled by source and mutation type (insert/update/delete).
     - Interpretation: Use to monitor replication throughput and identify traffic patterns.
 </section>
@@ -243,13 +248,13 @@ To visualize the following metrics, import the Oracle Grafana dashboard [bundled
 For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link molt/molt-replicator.md %}#terminology).
 {{site.data.alerts.end}}
 
-- `stage_commit_lag_seconds`
+- <a id="stage-commit-lag-seconds"></a>`stage_commit_lag_seconds`
 	- Description: Time between writing a mutation to source and writing it to staging.
 	- Interpretation: High values indicate delays in getting data into the staging layer.
-- `stage_mutations_total`
-	- Description: Number of mutations staged for each table. 
+- <a id="stage-mutations-total"></a>`stage_mutations_total`
+	- Description: Number of mutations staged for each table.
     - Interpretation: Use to monitor staging throughput per table.
-- `stage_duration_seconds`
+- <a id="stage-duration-seconds"></a>`stage_duration_seconds`
 	- Description: Amount of time taken to successfully stage mutations.
 	- Interpretation: High values indicate write performance issues on the staging database.
 </section>
@@ -259,16 +264,16 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 
 [Core sequencer](#replication-pipeline) metrics track mutation processing, ordering, and transaction coordination.
 
-- `core_sweep_duration_seconds`
+- <a id="core-sweep-duration-seconds"></a>`core_sweep_duration_seconds`
 	- Description: Duration of each schema sweep operation, which looks for and applies staged mutations.
 	- Interpretation: Long durations indicate that large backlogs, slow staging reads, or slow target writes are affecting throughput.
-- `core_sweep_mutations_applied_total`
+- <a id="core-sweep-mutations-applied-total"></a>`core_sweep_mutations_applied_total`
 	- Description: Total count of mutations read from staging and successfully applied to the target database during a sweep.
 	- Interpretation: Use to monitor processing throughput. A flat line indicates no mutations are being applied.
-- `core_sweep_success_timestamp_seconds`
+- <a id="core-sweep-success-timestamp-seconds"></a>`core_sweep_success_timestamp_seconds`
 	- Description: Wall time (Unix timestamp) at which a sweep attempt last succeeded.
 	- Interpretation: If this value stops updating and becomes stale, it indicates that the sweep has stopped.
-- `core_parallelism_utilization_percent`
+- <a id="core-parallelism-utilization-percent"></a>`core_parallelism_utilization_percent`
 	- Description: Percentage of the configured parallelism that is actively being used for concurrent transaction processing.
     - Interpretation: High utilization indicates bottlenecks in mutation processing.
 </section>
@@ -277,25 +282,25 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 
 [Target apply](#replication-pipeline) metrics track mutation application to the target database.
 
-- `target_apply_queue_size`
+- <a id="target-apply-queue-size"></a>`target_apply_queue_size`
 	- Description: Number of transactions waiting in the target apply queue.
 	- Interpretation: High values indicate target apply cannot keep up with incoming transactions.
-- `apply_duration_seconds`
+- <a id="apply-duration-seconds"></a>`apply_duration_seconds`
 	- Description: Amount of time taken to successfully apply mutations to a table.
 	- Interpretation: High values indicate target database performance issues or contention.
-- `apply_upserts_total`
-	- Description: Number of rows upserted to the target. 
+- <a id="apply-upserts-total"></a>`apply_upserts_total`
+	- Description: Number of rows upserted to the target.
     - Interpretation: Use to monitor write throughput. Should grow steadily during active replication.
-- `apply_deletes_total`
+- <a id="apply-deletes-total"></a>`apply_deletes_total`
 	- Description: Number of rows deleted from the target.
     - Interpretation: Use to monitor delete throughput. Compare with delete operations on the source database.
-- `apply_errors_total`
+- <a id="apply-errors-total"></a>`apply_errors_total`
 	- Description: Number of times an error was encountered while applying mutations.
 	- Interpretation: Growing error count indicates target database issues or constraint violations.
-- `apply_conflicts_total`
+- <a id="apply-conflicts-total"></a>`apply_conflicts_total`
 	- Description: Number of rows that experienced a compare-and-set (CAS) conflict.
 	- Interpretation: High counts indicate concurrent modifications or stale data conflicts. May require conflict resolution tuning.
-- `apply_resolves_total`
+- <a id="apply-resolves-total"></a>`apply_resolves_total`
 	- Description: Number of rows that experienced a compare-and-set (CAS) conflict and were successfully resolved.
     - Interpretation: Compare with `apply_conflicts_total` to verify conflict resolution is working. Should be close to or equal to conflicts.
 

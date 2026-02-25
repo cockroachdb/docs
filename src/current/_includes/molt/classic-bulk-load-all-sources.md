@@ -22,7 +22,6 @@ The application runs on a Kubernetes cluster.
 
 **Estimated system downtime:** 4 hours.
 
-
 ## Before the migration
 
 - Install the [MOLT (Migrate Off Legacy Technology)]({% link molt/molt-fetch-installation.md %}#installation) tools.
