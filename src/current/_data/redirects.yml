@@ -1069,16 +1069,14 @@
 
 # page deletion project
 
-- destination: /docs/stable/sql-statements.md
+- destination: stable/sql-statements.md
   sources: ['cockroachcloud/learn-cockroachdb-sql.md']
 
-- destination: /docs/cockroachcloud/client-certs-advanced.md
-  sources: ['security-reference/config-secure-hba.md']
-  versions: ['v26.1']
+- destination: cockroachcloud/client-certs-advanced.md
+  sources: ['v26.1/security-reference/config-secure-hba.md', 'stable/security-reference/config-secure-hba.md']
 
-- destination: /docs/cockroachcloud/security-overview.md
-  sources: ['satori-integration.md']
-  versions: ['v26.1']
+- destination: cockroachcloud/security-overview.md
+  sources: ['v26.1/satori-integration.md', 'stable/satori-integration.md']
 
 - destination: cockroachdb-operator-overview.md
   sources: ['orchestrate-a-local-cluster-with-kubernetes.md', 'orchestrate-a-local-cluster-with-kubernetes-insecure.md']
