@@ -140,6 +140,7 @@ Click **Create cluster**. Your cluster will be created in approximately 20-30 mi
 To start using your CockroachDB {{ site.data.products.advanced }} cluster, refer to:
 
 - [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
+- Run the [fault tolerance demo]({% link {{ site.versions["stable"] }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud)
 - [Manage access]({% link cockroachcloud/managing-access.md %})
 - [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})
 - For a multi-region cluster, it is important to choose the most appropriate [survival goal]({% link {{site.current_cloud_version}}/multiregion-survival-goals.md %}) for each database and the most appropriate [table locality]({% link {{site.current_cloud_version}}/table-localities.md %}) for each table. Otherwise, your cluster may experience unexpected latency and reduced resiliency. For more information, refer to [Multi-Region Capabilities Overview]({% link {{ site.current_cloud_version}}/multiregion-overview.md %}).
