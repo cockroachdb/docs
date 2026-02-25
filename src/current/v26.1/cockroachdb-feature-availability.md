@@ -108,6 +108,10 @@ The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %})
 
 CockroachDB {{ site.data.products.standard }} is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability. Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
 
+### Fault tolerance demo
+
+CockroachDB {{ site.data.products.advanced }} includes a [built-in fault tolerance demo]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud) that allows you to monitor query execution during a simulated failure and recovery. The fault tolerance demo is in Preview.
+
 ### CockroachDB Cloud Folders
 
 [Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
