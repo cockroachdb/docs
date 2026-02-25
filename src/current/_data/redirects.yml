@@ -1073,8 +1073,7 @@
   sources: ['cockroachcloud/learn-cockroachdb-sql.md']
 
 - destination: cockroachcloud/client-certs-advanced.md
-  sources: ['security-reference/config-secure-hba.md']
-  versions: ['v26.1']
+  sources: ['v26.1/security-reference/config-secure-hba.md', 'stable/security-reference/config-secure-hba.md']
 
 - destination: cockroachcloud/security-overview.md
   sources: ['v26.1/satori-integration.md', 'stable/satori-integration.md']
