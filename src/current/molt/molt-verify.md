@@ -178,7 +178,7 @@ When verification completes, the output displays a summary showing the number of
 
 ### Verify transformed data
 
-If you applied [transformations with MOLT Fetch]({% link molt/molt-fetch.md %}#transformations), a [MOLT Replicator userscript]({% link molt/userscript-cookbook.md %}#rename-tables), or another tool, you can apply the same transformations with MOLT Verify to match source data with the transformed target data.
+If you applied [transformations with MOLT Fetch]({% link molt/molt-fetch.md %}#define-transformations), a [MOLT Replicator userscript]({% link molt/userscript-cookbook.md %}#rename-tables), or another tool, you can apply the same transformations with MOLT Verify to match source data with the transformed target data.
 
 #### Step 1. Create a transformation file
 
