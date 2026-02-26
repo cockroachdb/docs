@@ -77,6 +77,8 @@ You can use the hosted [Google Kubernetes Engine (GKE)](#hosted-gke) service, ho
 
 {{site.data.alerts.callout_success}}
 Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on Kubernetes. You can use any cluster hardware with the minimum recommended Kubernetes version and at least 3 pods, each presenting sufficient resources to start a CockroachDB node. However, note that support for other deployments may vary.
+
+You can also evaluate a CockroachDB Kubernetes deployment on a local machine with [minikube](https://minikube.sigs.k8s.io/docs/start/).
 {{site.data.alerts.end}}
 
 ### Hosted GKE

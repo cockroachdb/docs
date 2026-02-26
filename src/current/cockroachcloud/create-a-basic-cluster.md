@@ -107,7 +107,7 @@ Click **Create cluster**. Your cluster will be created in a few seconds.
 
 - [Connect to your CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 - [Manage access]({% link cockroachcloud/managing-access.md %})
-- [Learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
+- Learn [CockroachDB SQL]({% link {{site.current_cloud_version}}/sql-statements.md %}).
 - Explore our [example apps]({% link {{site.current_cloud_version}}/example-apps.md %}) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
 - [Migrate your existing data]({% link molt/migration-overview.md %}).
 - Build a simple CRUD application in [Go]({% link {{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.md %}), [Java]({% link {{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.md %}), [Node.js]({% link {{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb.md %}), or [Python]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.md %}).
