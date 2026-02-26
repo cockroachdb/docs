@@ -37,7 +37,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 
 - Added support for Oracle's Large Object (`CLOB`, `NCLOB`, `BLOB`, `LONG`) and binary (`RAW`, `LONG RAW`) datatypes when failing back from CockroachDB to Oracle, within currently supported size limits.
 - Added support for failback replication with mismatched time types between CockroachDB and Oracle (for example, `TIMESTAMPTZ` to `TIMESTAMP`/`DATE`), and support for Oracle timestamp replication regardless of NLS format settings.
-- Replication from MySQL sources now supports core sequencer and the `--target-apply-queue-size` flag with core sequencer metrics, leading to improved throughput for MySQL-to-CockroachDB migrations.
+- Replication from MySQL sources now supports core sequencer and the `--target-apply-queue-size` flag with core sequencer metrics, leading to improved throughput for migrations from MySQL.
 - Added support for metrics snapshotting to aid in support investigations. This feature is off by default but can be configured to capture metrics dumps. Included `export-metrics-snapshots.sh` and `import-metrics-snapshots.sh` helper scripts to package metrics snapshots.
 - Added the `--dataDir` flag to configure the base data directory.
 </section>
