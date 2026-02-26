@@ -9,6 +9,7 @@ This page describes the support Cockroach Labs provides for restoring backups ac
 
 - [Support for restoring backups into a newer version](#support-for-restoring-backups-into-a-newer-version)
 - [Support for long-term backup archival](#support-for-long-term-backup-archival)
+- [See also](#see-also)
 
 {{site.data.alerts.callout_info}}
 Since CockroachDB considers the cluster version when running a backup, this page refers to versions in a "{{ page.version.version }}.x" format. For example, both {{ page.version.version }}.1 and {{ page.version.version }}.2 are considered as {{ page.version.version }} clusters for backup purposes.
@@ -33,7 +34,7 @@ Backup taken on version   | Restorable into version
 24.2.x (innovation)       | 24.2.x, 24.3.x
 24.3.x                    | 24.3.x, 25.1.x (innovation), 25.2.x
 
-Refer to [Recent releases]({% link releases/index.md %}#recent-releases) and [Upcoming releases]({% link releases/index.md %}#upcoming-releases).
+Refer to [Supported releases]({% link releases/index.md %}#supported-releases) and [Upcoming releases]({% link releases/index.md %}#upcoming-releases).
 
 When a cluster is in a mixed-version state during an upgrade, [full cluster restores]({% link {{ page.version.version }}/restore.md %}#restore-a-cluster) will fail. See the [Upgrade documentation]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) for the necessary steps to finalize your upgrade. For CockroachDB {{ site.data.products.cloud }} clusters, see the [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}) page.
 

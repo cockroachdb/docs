@@ -51,8 +51,8 @@ The following table describes currently-supported versions on {{ site.data.produ
 
 Version | Release Type | Release date | End-of-support (EOS) date
 :------:|:------------:|:------------:|:---------:
+v26.1   | Innovation   | 2026-02-02   | 2026-08-02
 v25.4   | Regular      | 2025-11-03   | 2026-11-03
-v25.3   | Innovation   | 2025-08-04   | 2026-02-04
 v25.2   | Regular      | 2025-05-09   | 2026-05-12
 v24.3   | Regular      | 2024-11-18   | 2026-05-05
 
@@ -75,6 +75,7 @@ The following table describes versions that have reached their EOS dates on {{ s
 
 Version | Release Type | Release date | End-of-support (EOS) date
 :------:|:------------:|:------------:|:--------:
+v25.3   | Innovation   | 2025-08-04   | 2026-02-04
 v25.1   | Innovation   | 2025-02-18   | 2025-08-18
 v24.1   | Regular      | 2024-05-20   | 2025-05-20
 v24.2   | Innovation   | 2024-08-12   | 2025-02-12
