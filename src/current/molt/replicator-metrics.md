@@ -132,7 +132,7 @@ Monitor the following metrics to track end-to-end replication lag:
 <section class="filter-content" markdown="1" data-scope="postgres mysql oracle cockroachdb">
 - <a id="source-commit-to-apply-lag-seconds"></a>`source_commit_to_apply_lag_seconds`
 	- Description: Time delta between writing a mutation to the source and writing it to the target.
-	- Interpretation: High values (often seconds or hundreds of milliseconds) indicate the steady state of replication. This may indicate the duration of a [minimum downtime window]({% link molt/migration-considerations-replication.md %}#permissible-downtime) due to drainage.
+	- Interpretation: This may indicate the duration of a [minimum downtime window]({% link molt/migration-considerations-replication.md %}#permissible-downtime) due to drainage. Low values (seconds or hundreds of milliseconds) would allow for minimal downtime on cutover.
 </section>
 
 

@@ -11,7 +11,7 @@ A *Phased Bulk Load Migration* involves [migrating data to CockroachDB]({% link 
 
 - This approach does not utilize [continuous replication]({% link molt/migration-considerations-replication.md %}).
 
-- [Rollback]({% link molt/migration-considerations-rollback.md %}) is manual. If you wish to roll back before the target has received any unique writes, nothing needs to be done. If you wish to roll back after the target has received unique writes, you must manually replicate these new rows on the source. Rollback should be considered on a per-phase basis.
+- [Rollback]({% link molt/migration-considerations-rollback.md %}) is manual. If you wish to roll back before the target has received any writes that are not present on the source database, nothing needs to be done. If you wish to roll back after the target has received writes that are not present on the source database, you must manually replicate these new rows on the source.
 
 This approach is comparable to the [Classic Bulk Load Migration]({% link molt/migration-approach-classic-bulk-load.md %}), but dividing the data into multiple phases allows each downtime window to be shorter, and it allows each phase of the migration to be less complex. Depending on how you divide the data, it also may allow your downtime windows to affect only a subset of users. For example, dividing the data per region could mean that, when migrating the data from Region A, application usage in Region B may remain unaffected. This approach may increase overall migration complexity: its duration is longer, you will need to do the work of partitioning the data, and you will have a longer period when you run both the source and the target database concurrently.
 
