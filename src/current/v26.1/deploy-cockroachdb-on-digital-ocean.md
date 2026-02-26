@@ -7,8 +7,6 @@ ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-you
 docs_area:
 ---
 
-{% include {{ page.version.version }}/filter-tabs/deploy-crdb-do.md %}
-
 This page shows you how to deploy a secure multi-node CockroachDB cluster on Digital Ocean, using Digital Ocean's managed load balancing service to distribute client traffic.
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.

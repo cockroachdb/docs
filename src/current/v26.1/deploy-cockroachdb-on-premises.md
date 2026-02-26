@@ -6,8 +6,6 @@ ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-key
 docs_area:
 ---
 
-{% include {{ page.version.version }}/filter-tabs/deploy-crdb-op.md %}
-
 This tutorial shows you how to manually deploy a secure multi-node CockroachDB cluster on multiple machines, using [HAProxy](http://www.haproxy.org/) load balancers to distribute client traffic.
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
