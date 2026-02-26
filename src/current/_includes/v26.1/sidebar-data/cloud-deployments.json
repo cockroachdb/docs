@@ -21,6 +21,12 @@
         ]
     },
     {
+        "title": "BYOC Deployments (Preview)",
+        "urls": [
+            "/cockroachcloud/byoc-deployment.html"
+        ]
+    },
+    {
         "title": "Basic Deployments",
         "items": [
             {

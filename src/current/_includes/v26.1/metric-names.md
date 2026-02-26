@@ -1,9 +1,27 @@
 {% assign version = page.version.version | replace: ".", "" %}
-{% assign list1 = site.data[version].metrics.available-metrics-in-metrics-list %}
-{% assign list2 = site.data[version].metrics.available-metrics-not-in-metrics-list %}
+
+{% comment %} Build list1 from metrics.yaml where visibility is ESSENTIAL or SUPPORT {% endcomment %}
+{% assign list1 = "" | split: "" %}
+{% for layer in site.data[version].metrics.metrics.layers %}
+  {% for category in layer.categories %}
+    {% for metric in category.metrics %}
+      {% if metric.visibility == 'ESSENTIAL' or metric.visibility == 'SUPPORT' %}
+        {% assign list1 = list1 | push: metric %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endfor %}
+
+{% comment %} Build list2 from available-metrics-not-in-metrics-list.yaml where visibility is ESSENTIAL or SUPPORT {% endcomment %}
+{% assign list2 = "" | split: "" %}
+{% for metric in site.data[version].metrics.available-metrics-not-in-metrics-list %}
+  {% if metric.visibility == 'ESSENTIAL' or metric.visibility == 'SUPPORT' %}
+    {% assign list2 = list2 | push: metric %}
+  {% endif %}
+{% endfor %}
 
 {% assign available_metrics_combined = list1 | concat: list2 %}
-{% assign available_metrics_sorted = available_metrics_combined | sort: "metric_id" %}
+{% assign available_metrics_sorted = available_metrics_combined | sort: "name" %}
 
 <table markdown="1">
     <thead>
@@ -15,32 +33,16 @@
             {%- if page.name != "ui-custom-chart-debug-page.md" -%}<th>Supported Deployments</th>{%- endif -%}
         </tr>
     </thead>
-    <tbody>    
+    <tbody>
     {% for m in available_metrics_sorted %} {% comment %} Iterate through the available_metrics. {% endcomment %}
-
-        {% assign metrics-yaml = site.data[version].metrics.metrics %}
-        {%- comment -%} Looks for a metric anywhere in the nested structure: layers -> categories -> metrics{%- endcomment -%}
-
-        {%- assign found = "" -%}
-
-        {%- for layer in metrics-yaml.layers -%}
-            {%- for category in layer.categories -%}
-                {%- assign metric = category.metrics | where: "name", m.metric_id | first -%}
-                {%- if metric -%}
-                    {%- assign found = metric -%}
-                {%- endif -%}
-            {%- endfor -%}
-        {%- endfor -%}
-
             <tr>
-            <td><div id="{{ m.metric_id }}" class="anchored"><code>{{ m.metric_id }}</code></div></td>
-            {% comment %} Use the found value from the metrics-yaml, if any, followed by the value in the available-metrics-not-in-metrics-list, if any. {% endcomment %}
-            <td>{{ found.description }}{{ m.description }}</td>
-            <td>{{ found.type }}{{ m.type }}</td>
-            <td>{{ found.unit }}{{ m.unit }}</td>
+            <td><div id="{{ m.name }}" class="anchored"><code>{{ m.name }}</code></div></td>
+            <td>{{ m.description }}</td>
+            <td>{{ m.type }}</td>
+            <td>{{ m.unit }}</td>
             {%- if page.name != "ui-custom-chart-debug-page.md" -%}
             <td>
-                {%- assign key = m.metric_id | replace: '.', '_'  | replace: '-', '_'-%}{%- comment -%} Replace periods and hyphens with underscores to normalize. {%- endcomment -%}
+                {%- assign key = m.name | replace: '.', '_'  | replace: '-', '_'-%}{%- comment -%} Replace periods and hyphens with underscores to normalize. {%- endcomment -%}
                 {%- comment -%}
                 - If in shared_metrics.yaml      -> "Standard/Advanced/self-hosted"
                 - Else if in crdb_metrics.yaml   -> "Advanced/self-hosted"
@@ -63,3 +65,6 @@
     {% endfor %} {% comment %} metrics {% endcomment %}
     </tbody>
 </table>
+
+{% assign total_metrics = available_metrics_sorted | size %}
+**Total metrics ({{ total_metrics }})**
