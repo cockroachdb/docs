@@ -98,7 +98,7 @@ Other validations beyond those supported by MOLT Verify would need to be run by 
 
 If performing a [phased migration]({% link molt/migration-considerations-granularity.md %}), you can use MOLT Verify's `--schema-filter` and `--table-filter` flags to specify specific schemas or tables to run the validations on.
 
-If using [continuous replication]({% link molt/migration-considerations-replication.md %}), you can utilize MOLT Verify's [selective data verification]({% %}) to validate replicated changes as they are written to the target.
+If using [continuous replication]({% link molt/migration-considerations-replication.md %}), you can utilize MOLT Verify's [selective data verification]({% link molt/molt-verify.md %}#verify-a-subset-of-data) to validate replicated changes as they are written to the target.
 
 Check MOLT Verify's [known limitations]({% link molt/molt-verify.md %}#known-limitations) to ensure the tool's suitability for your validation strategy.
 
