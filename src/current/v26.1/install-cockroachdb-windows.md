@@ -56,12 +56,11 @@ You can download and install CockroachDB for Windows in two ways. Either:
 
 </section>
 
-<section id="use-kubernetes" markdown="1" class="install-option">
-<h2 id="install-kubernetes">Use Kubernetes</h2>
+<div id="use-kubernetes" class="install-option">
+  <h2 id="install-kubernetes">Use Kubernetes</h2>
 
-To orchestrate CockroachDB locally using [Kubernetes](https://kubernetes.io/), either with configuration files or the [Helm](https://helm.sh/) package manager, refer to [Orchestrate a local cluster with Kubernetes]({% link {{ page.version.version}}/orchestrate-a-local-cluster-with-kubernetes.md %}).
-
-</section>
+  <p>To orchestrate CockroachDB using <a href="https://kubernetes.io/">Kubernetes</a>, use the official <a href="cockroachdb-operator-overview.html#cockroachdb-operator">CockroachDB operator</a>. <p>You can evaluate a CockroachDB Kubernetes deployment on a local machine with <a href="https://minikube.sigs.k8s.io/docs/start/" >minikube</a>.</p>
+</div>
 
 <div id="use-docker-windows" markdown="1" class="install-option">
 <h2 id="install-docker">Use Docker</h2>

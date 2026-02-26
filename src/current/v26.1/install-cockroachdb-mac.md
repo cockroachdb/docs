@@ -167,7 +167,7 @@ true
 <div id="use-kubernetes" class="install-option">
   <h2 id="install-kubernetes">Use Kubernetes</h2>
 
-  <p>To orchestrate CockroachDB locally using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, see <a href="orchestrate-a-local-cluster-with-kubernetes.html">Orchestrate CockroachDB Locally with Minikube</a>.</p>
+  <p>To orchestrate CockroachDB using <a href="https://kubernetes.io/">Kubernetes</a>, use the official <a href="cockroachdb-operator-overview.html#cockroachdb-operator">CockroachDB operator</a>. <p>You can evaluate a CockroachDB Kubernetes deployment on a local machine with <a href="https://minikube.sigs.k8s.io/docs/start/" >minikube</a>.</p></p>
 </div>
 
 <div id="use-docker" markdown="1" class="install-option">
