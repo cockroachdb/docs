@@ -539,6 +539,10 @@ replicator oraclelogminer \
 
 </section>
 
+## Known limitations
+
+{% include molt/molt-limitations-replicator.md %}
+
 ## See also
 
 - [MOLT Replicator Installation]({% link molt/molt-replicator-installation.md %})

@@ -945,6 +945,10 @@ For detailed walkthroughs of migrations that use `molt fetch` in this way, refer
 - [Delta Migration]({% link molt/migration-approach-delta.md %})
 - [Phased Delta Migration with Failback Replication]({% link molt/migration-approach-phased-delta-failback.md %})
 
+## Known limitations
+
+{% include molt/molt-limitations-fetch.md %}
+
 ## See also
 
 - [MOLT Fetch Installation]({% link molt/molt-fetch-installation.md %})
