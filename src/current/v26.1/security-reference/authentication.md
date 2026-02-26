@@ -94,7 +94,11 @@ By default, the `root` SQL user can always authenticate using username/password 
 This rule is not displayed in the configuration, and cannot be overridden through HBA configuration alone.
 This ensures that access to the cluster can always be recovered, but it also means that access with root credentials cannot be restricted by IP range at the authentication configuration level.
 
-### Disabling root login (Preview)
+### Disabling root login
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 <span class="version-tag">New in v26.1:</span> For compliance requirements, you can disable root user login using the `--disallow-root-login` flag when starting nodes. When this flag is set:
 
@@ -113,7 +117,11 @@ This ensures that access to the cluster can always be recovered, but it also mea
 
 For setup instructions, see [Disable root login and use debug_user](#disable-root-login-and-use-debug_user).
 
-### Using debug_user for diagnostics (Preview)
+### Using debug_user for diagnostics
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 <span class="version-tag">New in v26.1:</span> The `debug_user` is a special privileged user designed for collecting [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}) data when root is disabled. Unlike root, `debug_user`:
 

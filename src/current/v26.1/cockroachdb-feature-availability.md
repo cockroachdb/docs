@@ -53,6 +53,14 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
+### Disabling root login
+
+For compliance requirements, you can disable root user login using the `--disallow-root-login` flag when starting nodes. When this flag is set, the root user cannot authenticate via SQL or RPC connections, and any certificate with "root" in the CommonName or SubjectAlternativeName is rejected. For more information, refer to [Disabling root login]({% link {{ page.version.version }}/security-reference/authentication.md %}#disabling-root-login).
+
+### Using debug_user for diagnostics
+
+The `debug_user` is a special privileged user designed for collecting [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}) data when root is disabled. Unlike root, `debug_user` must be explicitly enabled using the `--allow-debug-user` flag on `cockroach start`, is disabled by default for security, and requires a certificate with "debug_user" in CommonName or SubjectAlternativeName. For more information, refer to [Using debug_user for diagnostics]({% link {{ page.version.version }}/security-reference/authentication.md %}#using-debug_user-for-diagnostics).
+
 ### `LTREE` data type
 
 The [`LTREE` data type]({% link {{ page.version.version }}/ltree.md %}) stores hierarchical tree-like structures. `LTREE` is useful for efficiently querying and managing hierarchical data without using recursive joins.
