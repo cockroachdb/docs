@@ -52,36 +52,31 @@
               {
                 "title": "Deploy On-Premises",
                 "urls": [
-                  "/${VERSION}/deploy-cockroachdb-on-premises.html",
-                  "/${VERSION}/deploy-cockroachdb-on-premises-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-on-premises.html"
                 ]
               },
               {
                 "title": "Deploy on AWS",
                 "urls": [
-                  "/${VERSION}/deploy-cockroachdb-on-aws.html",
-                  "/${VERSION}/deploy-cockroachdb-on-aws-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-on-aws.html"
                 ]
               },
               {
                 "title": "Deploy on Azure",
                 "urls": [
-                  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html",
-                  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html"
                 ]
               },
               {
                 "title": "Deploy on Google Cloud Platform GCE",
                 "urls": [
-                  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html",
-                  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html"
                 ]
               },
               {
                 "title": "Deploy on Digital Ocean",
                 "urls": [
-                  "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html",
-                  "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html"
                 ]
               }
             ]
