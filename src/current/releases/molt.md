@@ -23,6 +23,25 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
     <button class="filter-button" data-scope="replicator"><code>replicator</code></button>
 </div>
 
+### February 26, 2026
+
+<section class="filter-content" markdown="1" data-scope="molt">
+`molt` 1.3.6 is [available](#installation):
+
+- Added support for selective data verification on PostgreSQL and MySQL sources, allowing users to compare a subset of data from both source and target databases based on filter predicates.
+- Fixed an issue where MOLT Fetch failed to copy data from PostgreSQL when numeric arrays contained negative values.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="replicator">
+`replicator` 1.3.1 is [available](#installation):
+
+- Added support for Oracle's Large Object (`CLOB`, `NCLOB`, `BLOB`, `LONG`) and binary (`RAW`, `LONG RAW`) datatypes when failing back from CockroachDB to Oracle, within currently supported size limits.
+- Added support for failback replication with mismatched time types between CockroachDB and Oracle (for example, `TIMESTAMPTZ` to `TIMESTAMP`/`DATE`), and support for Oracle timestamp replication regardless of NLS format settings.
+- Replication from MySQL sources now supports core sequencer and the `--target-apply-queue-size` flag with core sequencer metrics, leading to improved throughput for migrations from MySQL.
+- Added support for metrics snapshotting to aid in support investigations. This feature is off by default but can be configured to capture metrics dumps. Included `export-metrics-snapshots.sh` and `import-metrics-snapshots.sh` helper scripts to package metrics snapshots.
+- Added the `--dataDir` flag to configure the base data directory for metrics snapshotting.
+</section>
+
 ### January 22, 2026
 
 <section class="filter-content" markdown="1" data-scope="molt">
