@@ -213,6 +213,12 @@
               ]
             },
             {
+                "title": "HashiCorp Vault Integration",
+                "urls": [
+                    "/${VERSION}/hashicorp-integration.html"
+                ]
+            },
+            {
               "title": "Customer-Managed Encryption Keys (CMEK)",
               "items": [
                   {
@@ -364,29 +370,6 @@
                         "title": "Export Logs From CockroachDB {{ site.data.products.advanced }}",
                         "urls": [
                         "/cockroachcloud/export-logs-advanced.html"
-                        ]
-                    }
-                ]
-            },
-            {
-                "title": "Security Tutorials",
-                "items": [
-                    {
-                        "title": "Configure SQL Authentication",
-                        "urls": [
-                            "/${VERSION}/security-reference/config-secure-hba.html"
-                        ]
-                    },
-                    {
-                        "title": "Satori",
-                        "urls": [
-                            "/${VERSION}/satori-integration.html"
-                        ]
-                    },
-                    {
-                        "title": "HashiCorp Vault",
-                        "urls": [
-                            "/${VERSION}/hashicorp-integration.html"
                         ]
                     }
                 ]
