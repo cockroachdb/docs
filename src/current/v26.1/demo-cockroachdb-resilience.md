@@ -1,17 +1,38 @@
 ---
 title: CockroachDB Resilience Demo
-summary: Use a local cluster to explore how CockroachDB remains available during, and recovers after, failure.
+summary: Run a demo to explore how CockroachDB remains available during a failure and recovery.
 toc: true
 docs_area: deploy
 ---
 
-This page guides you through a simple demonstration of how CockroachDB remains available during, and recovers after, failure. Starting with a 6-node local cluster with the default 3-way replication, you'll run a sample workload, terminate a node to simulate failure, and see how the cluster continues uninterrupted. You'll then leave that node offline for long enough to watch the cluster repair itself by re-replicating missing data to other nodes. You'll then prepare the cluster for 2 simultaneous node failures by increasing to 5-way replication, then take two nodes offline at the same time, and again see how the cluster continues uninterrupted.
+This page describes how to see a hands-on demonstration of how CockroachDB's fault-tolerant design allows services to remain available during a failure and recovery. 
 
-## Before you begin
+## Run a guided demo in CockroachDB {{ site.data.products.cloud }}
+
+CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} includes a built-in fault tolerance demo in the {{ site.data.products.cloud }} Console that automatically runs a sample workload and simulates a node failure on your cluster, showing real-time metrics of query latency and failure rate during the outage and recovery.
+
+{{ site.data.alerts.callout_info }}
+The CockroachDB {{ site.data.products.cloud }} fault tolerance demo is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+{{ site.data.alerts.end }}
+
+The following prerequisites are needed to run the fault tolerance demo:
+
+- A [CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) with at least three nodes.
+- All nodes are healthy.
+- The cluster's CPU utilization is below 30%. 
+- The cluster does not a custom [replication zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+
+To run the fault tolerance demo, open the {{ site.data.products.cloud }} Console and navigate to **Actions > Fault tolerance demo**. Follow the prompts to check that your cluster is eligible and begin the demo.
+
+## Run a manual demo on a local machine
+
+This guide walks you through a simple demonstration of CockroachDB's resilience on a local cluster deployment. Starting with a 6-node local cluster with the default 3-way replication, you'll run a sample workload, terminate a node to simulate failure, and see how the cluster continues uninterrupted. You'll then leave that node offline for long enough to watch the cluster repair itself by re-replicating missing data to other nodes. You'll then prepare the cluster for 2 simultaneous node failures by increasing to 5-way replication, then take two nodes offline at the same time, and again see how the cluster continues uninterrupted.
+
+### Before you begin
 
 Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 
-## Step 1. Start a 6-node cluster
+### Step 1. Start a 6-node cluster
 
 1. In separate terminal windows, use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start six nodes:
 
@@ -82,7 +103,7 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     $ cockroach init --insecure --host=localhost:26257
     ~~~
 
-## Step 2. Set up load balancing
+### Step 2. Set up load balancing
 
 In this tutorial, you run a sample workload to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to [spread requests evenly across nodes]({% link {{ page.version.version }}/recommended-production-settings.md %}#load-balancing). This section shows how to set up the open-source [HAProxy](http://www.haproxy.org/) load balancer.
 
@@ -133,7 +154,7 @@ In this tutorial, you run a sample workload to simulate multiple client connecti
     $ haproxy -f haproxy.cfg &
     ~~~
 
-## Step 3. Run a sample workload
+### Step 3. Run a sample workload
 
 Use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to run CockroachDB's built-in version of the YCSB benchmark, simulating multiple client connections, each performing mixed read/write operations.
 
@@ -179,7 +200,7 @@ Use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-work
 
     After the specified duration (20 minutes in this case), the workload will stop and you'll see totals printed to standard output.
 
-## Step 4. Check the workload
+### Step 4. Check the workload
 
 Initially, the workload creates a new database called `ycsb`, creates the table `public.usertable` in that database, and inserts rows into the table. Soon, the load generator starts executing approximately 95% reads and 5% writes.
 
@@ -207,7 +228,7 @@ Initially, the workload creates a new database called `ycsb`, creates the table 
 
     <img src="{{ 'images/v26.1/fault-tolerance-6.png' | relative_url }}" alt="DB Console Overview" style="border:1px solid #eee;max-width:100%" />
 
-## Step 5. Simulate a single node failure
+### Step 5. Simulate a single node failure
 
 When a node fails, the cluster waits for the node to remain offline for 5 minutes by default before considering it dead, at which point the cluster automatically repairs itself by re-replicating any of the replicas on the down nodes to other available nodes.
 
@@ -242,7 +263,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     kill -TERM 53708
     ~~~
 
-## Step 6. Check load continuity and cluster health
+### Step 6. Check load continuity and cluster health
 
 Go back to the DB Console, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite one of the nodes being unavailable and marked as **Suspect**:
 
@@ -250,7 +271,7 @@ Go back to the DB Console, click **Metrics** on the left, and verify that the cl
 
 This shows that when all ranges are replicated 3 times (the default), the cluster can tolerate a single node failure because the surviving nodes have a majority of each range's replicas (2/3).
 
-## Step 7. Watch the cluster repair itself
+### Step 7. Watch the cluster repair itself
 
 Click **Overview** on the left:
 
@@ -258,7 +279,7 @@ Click **Overview** on the left:
 
 Because you reduced the time it takes for the cluster to consider the down node dead, after 1 minute or so, the cluster will consider the down node "dead", and you'll see the replica count on the remaining nodes increase and the number of under-replicated ranges decrease to 0. This shows the cluster repairing itself by re-replicating missing replicas.
 
-## Step 8. Prepare for two simultaneous node failures
+### Step 8. Prepare for two simultaneous node failures
 
 At this point, the cluster has recovered and is ready to handle another failure. However, the cluster cannot handle two _near-simultaneous_ failures in this configuration. Failures are "near-simultaneous" if they are closer together than the `server.time_until_store_dead` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) plus the time taken for the number of replicas on the dead node to drop to zero. If two failures occurred in this configuration, some ranges would become unavailable until one of the nodes recovers.
 
@@ -290,7 +311,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     This shows the cluster up-replicating so that each range has 5 replicas, one on each node.
 
-## Step 9. Simulate two simultaneous node failures
+### Step 9. Simulate two simultaneous node failures
 
 Gracefully shut down **2 nodes**, specifying the [process IDs you retrieved earlier](#step-5-simulate-a-single-node-failure):
 
@@ -299,7 +320,7 @@ Gracefully shut down **2 nodes**, specifying the [process IDs you retrieved earl
 kill -TERM {process IDs}
 ~~~
 
-## Step 10. Check cluster status and service continuity
+### Step 10. Check cluster status and service continuity
 
 1. Click **Overview** on the left, and verify the state of the cluster:
 
@@ -343,7 +364,7 @@ kill -TERM {process IDs}
 
     This shows that when all ranges are replicated 5 times, the cluster can tolerate 2 simultaneous node outages because the surviving nodes have a majority of each range's replicas (3/5).
 
-## Step 11. Clean up
+### Step 11. Clean up
 
 1. In the terminal where the YCSB workload is running, press **CTRL + c**.
 
