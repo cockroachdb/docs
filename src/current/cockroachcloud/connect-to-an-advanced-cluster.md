@@ -180,7 +180,7 @@ To download a supported version of the SQL shell instead of the full binary, vis
     #
     ~~~
 
-    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link {{site.current_cloud_version}}/sql-statements.md %}).
 
   </section>
 

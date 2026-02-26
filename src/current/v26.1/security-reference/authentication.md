@@ -103,7 +103,7 @@ The default authentication configuration for CockroachDB {{ site.data.products.s
    host    all           all         all           password
 ```
 
-This is convenient for quick usage and experimentation, but is not suitable for clusters containing production data. It is a best practice to [configure SQL authentication for hardened CockroachDB cluster security]({% link {{ page.version.version }}/security-reference/config-secure-hba.md %}).
+This is convenient for quick usage and experimentation, but is not suitable for clusters containing production data. It is a best practice to configure SQL authentication for hardened CockroachDB cluster security.
 
 ### CockroachDB {{ site.data.products.advanced }}
 

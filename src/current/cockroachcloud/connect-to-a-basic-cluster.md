@@ -109,7 +109,7 @@ You can connect to your cluster with any [supported version]({% link releases/re
     #
     ~~~
 
-    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link {{site.current_cloud_version}}/sql-statements.md %}).
 
   </section>
 
