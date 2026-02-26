@@ -26,7 +26,7 @@ MOLT Replicator supports forward replication from PostgreSQL, MySQL, and Oracle,
 
 - Oracle source ([`oraclelogminer`]({% link molt/replicator-flags.md %}#commands)): MOLT Replicator uses [Oracle LogMiner](https://docs.oracle.com/en/database/oracle/oracle-database/21/sutil/oracle-logminer-utility.html) to capture change data from Oracle redo logs. Both Oracle Multitenant (CDB/PDB) and single-tenant Oracle architectures are supported. Replicator periodically queries LogMiner-populated views and processes transactional data in ascending SCN windows for reliable throughput while maintaining consistency.
 
-- Failback from CockroachDB ([`start`]({% link molt/replicator-flags.md %}#commands)): MOLT Replicator acts as an HTTP webhook sink for a single CockroachDB changefeed. Replicator receives mutations from source cluster nodes, can optionally buffer them in a CockroachDB staging cluster, and then applies time-ordered transactional batches to the target database. Mutations are applied as [`UPSERT`]({% link {{ site.current_cloud_version }}/upsert.md %}) or [`DELETE`]({% link {{ site.current_cloud_version }}/delete.md %}) statements while respecting [foreign-key]({% link {{ site.current_cloud_version }}/foreign-key.md %}) and table dependencies.
+- Failback from CockroachDB ([`start`]({% link molt/replicator-flags.md %}#commands)): MOLT Replicator acts as an HTTPS [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) for a single CockroachDB changefeed. Replicator receives mutations from source cluster nodes, can optionally buffer them in a CockroachDB staging cluster, and then applies time-ordered transactional batches to the target database. Mutations are applied as [`UPSERT`]({% link {{ site.current_cloud_version }}/upsert.md %}) or [`DELETE`]({% link {{ site.current_cloud_version }}/delete.md %}) statements while respecting [foreign-key]({% link {{ site.current_cloud_version }}/foreign-key.md %}) and table dependencies.
 
 ### Replicator commands
 
@@ -170,7 +170,7 @@ MOLT Replicator supports three consistency modes for [failback replication](#fai
 
 1. *Consistent* (failback mode only, default for CockroachDB sources): Preserves per-row order and source transaction atomicity. Concurrent transactions are controlled by [`--parallelism`]({% link molt/replicator-flags.md %}#parallelism).
 
-1. *BestEffort* (failback mode only): Relaxes atomicity across tables that do not have foreign key constraints between them (maintains coherence within FK-connected groups). Enable with [`--bestEffortOnly`]({% link molt/replicator-flags.md %}#best-effort-only) or allow auto-entry via [`--bestEffortWindow`]({% link molt/replicator-flags.md %}#best-effort-window) set to a positive duration (such as `1s`).
+1. *BestEffort* (failback mode only): Relaxes atomicity across tables that do not have foreign key constraints between them (maintains coherence within FK-connected groups). Enable with [`--bestEffortOnly`]({% link molt/replicator-flags.md %}#best-effort-only). You can also allow auto-entry via [`--bestEffortWindow`]({% link molt/replicator-flags.md %}#best-effort-window) set to a positive duration (such as `1s`). In this case, Replicator will switch from _Consistent_ to _BestEffort_ if the age of a mutation exceeds the duration of this window.
 
 	{{site.data.alerts.callout_info}}
 	For independent tables (with no foreign key constraints), BestEffort mode applies changes immediately as they arrive, without waiting for the resolved timestamp. This provides higher throughput for tables that have no relationships with other tables.
@@ -398,7 +398,7 @@ For detailed walkthroughs of migrations that use `replicator` in this way, refer
 
 ### Failback replication
 
-A migration that utilizes [failback replication]({% link molt/migration-considerations-rollback.md %}) replicates data from the CockroachDB cluster back to the source database. In this case, MOLT Replicator acts as a webhook sink for a CockroachDB changefeed.
+A migration that utilizes [failback replication]({% link molt/migration-considerations-rollback.md %}) replicates data from the CockroachDB cluster back to the source database. In this case, MOLT Replicator acts as an HTTPS [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) for a CockroachDB changefeed.
 
 Use the `start` command for failback:
 
