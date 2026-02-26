@@ -56,6 +56,12 @@ You can download and install CockroachDB for Windows in two ways. Either:
 
 </section>
 
+<div id="use-kubernetes" class="install-option">
+  <h2 id="install-kubernetes">Use Kubernetes</h2>
+
+  <p>To orchestrate CockroachDB using <a href="https://kubernetes.io/">Kubernetes</a>, use the official <a href="cockroachdb-operator-overview.html#cockroachdb-operator">CockroachDB operator</a>.</p>
+</div>
+
 <div id="use-docker-windows" markdown="1" class="install-option">
 <h2 id="install-docker">Use Docker</h2>
 
