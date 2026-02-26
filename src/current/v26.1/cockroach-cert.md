@@ -332,6 +332,28 @@ total 40
 -rw-------  1 maxroach  maxroach  1.6K Jul 10 14:17 node.key
 ~~~
 
+### Create a debug_user client certificate (Preview)
+
+<span class="version-tag">New in v26.1:</span> To use `debug_user` for collecting [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}) data when root is disabled, generate a client certificate:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach cert create-client debug_user \
+--certs-dir=certs \
+--ca-key=my-safe-directory/ca.key
+~~~
+
+This creates the following files:
+
+- `client.debug_user.crt`
+- `client.debug_user.key`
+
+The certificate will contain "debug_user" in the CommonName field, which is required for `debug_user` authentication.
+
+{{site.data.alerts.callout_info}}
+This certificate is only one part of the setup. For the complete procedure including user creation, privilege grants, and server configuration, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug_user).
+{{site.data.alerts.end}}
+
 ### List certificates and keys
 
 {% include_cached copy-clipboard.html %}
