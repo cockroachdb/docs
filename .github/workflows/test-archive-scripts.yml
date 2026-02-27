@@ -1,0 +1,41 @@
+name: Smoke test archive scripts
+
+on:
+  push:
+    branches:
+      - archive-creation-docs-v2
+    paths:
+      - "src/current/create_all_archives_fixed.py"
+      - "src/current/create_single_archive.py"
+      - "src/current/snapshot_relative.py"
+      - "src/current/test_archive_smoke.py"
+  pull_request:
+    paths:
+      - "src/current/create_all_archives_fixed.py"
+      - "src/current/create_single_archive.py"
+      - "src/current/snapshot_relative.py"
+      - "src/current/test_archive_smoke.py"
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/current
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install beautifulsoup4 requests
+
+      - name: Run smoke tests
+        run: python3 test_archive_smoke.py
+
+      - name: Verify snapshot_relative.py is unchanged
+        # Confirms the scripts never modify the checked-in source file.
+        run: git diff --exit-code src/current/snapshot_relative.py
