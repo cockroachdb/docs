@@ -28,12 +28,6 @@
             "/cockroachcloud/connect-to-your-cluster.html"
       	  ]
       	},
-      	{
-      	  "title": "Learn CockroachDB SQL",
-      	  "urls": [
-      	    "/cockroachcloud/learn-cockroachdb-sql.html"
-      	  ]
-      	},
         {
           "title": "Use the Cloud API",
           "urls": [
