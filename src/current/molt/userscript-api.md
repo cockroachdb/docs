@@ -13,7 +13,7 @@ The [userscript cookbook]({% link molt/userscript-cookbook.md %}) includes examp
 
 ## Access this API
 
-To access the userscript API, [install MOLT Replicator **v1.3.0 or later**]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library, which you should import at the top of your TypeScript file: `import * as api from "replicator@v2";`. The `replicator` library is included in the MOLT Replicator binary itself, so you do not need to install any external packages in order to run userscripts.
+To access the userscript API, [install MOLT Replicator **v1.3.0 or later**]({% link molt/molt-replicator-installation.md %}). The userscript API is accessible via the `replicator` library, which you should import at the top of your TypeScript file: `import * as api from "replicator@v2";`. The `replicator` library is included in the MOLT Replicator binary itself, so you do not need to install any external packages in order to run userscripts.
 
 In addition to importing the API from the `replicator` library, you can download the [userscript type definitions file](https://replicator.cockroachdb.com/userscripts/replicator@v2.d.ts) and the [tsconfig.json file](https://replicator.cockroachdb.com/userscripts/tsconfig.json). Place these files in your working directory to enable autocomplete, inline documentation, and real-time error detection directly in your IDE.
 

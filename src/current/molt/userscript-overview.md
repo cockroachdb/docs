@@ -21,7 +21,7 @@ Userscripts are [written in TypeScript]({% link molt/userscript-cookbook.md %}) 
 
 Userscripts act as a customizable processing layer within MOLT Replicator's live replication lifecycle. They are used to intercept, inspect, and modify the flow of data as it moves from the source database to the target database, enabling full control over how rows are transformed, filtered, or written; as well as providing the ability to run custom transactional logic against the target database.
 
-Userscripts are comparable to MOLT Fetch's [transformations]({% link molt/molt-fetch.md %}#transformations), which are used during the initial bulk load phase of a migration. However, userscripts provide much greater customizability. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency.
+Userscripts are comparable to MOLT Fetch's [transformations]({% link molt/molt-fetch.md %}#define-transformations), which are used during the initial bulk load phase of a migration. However, userscripts provide much greater customizability. When performing an [initial data load followed by live replication]({% link molt/molt-replicator.md %}#forward-replication-after-initial-load), **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency.
 
 The following diagram illustrates how userscripts fit into the replication pipeline:
 
@@ -47,7 +47,7 @@ Userscripts run in a sandboxed JavaScript runtime inside [MOLT Replicator]({% li
 
 ## Usage
 
-To have MOLT Replicator apply a userscript, include the [`--userscript`]({% link molt/replicator-flags.md %}#userscript) flag with any [Replicator command]({% link molt/molt-replicator.md %}#commands). The flag accepts a path to a TypeScript filename.
+To have MOLT Replicator apply a userscript, include the [`--userscript`]({% link molt/replicator-flags.md %}#userscript) flag with any [Replicator command]({% link molt/replicator-flags.md %}). The flag accepts a path to a TypeScript filename.
 
 {% include_cached copy-clipboard.html %}
 ~~~ 

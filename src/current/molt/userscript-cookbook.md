@@ -9,12 +9,12 @@ Userscripts allow you to define custom schema and table transformations. When sp
 
 This cookbook provides ready-to-use examples that demonstrate real-world uses of the [userscript API]({% link molt/userscript-api.md %}). You can copy and paste them into your own code, and you can adapt them for your specific use cases. 
 
-Userscripts are comparable to MOLT Fetch's [transformations]({% link molt/molt-fetch.md %}#transformations), which are used during the initial bulk load phase of a migration. When performing an [initial data load followed by live replication]({% link molt/migrate-load-replicate.md %}), **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency. Below each example, you will see the equivalent way of carrying out that transformation using MOLT Fetch, if it's possible to do so.
+Userscripts are comparable to MOLT Fetch's [transformations]({% link molt/molt-fetch.md %}#define-transformations), which are used during the initial bulk load phase of a migration. When performing an [initial data load followed by live replication]({% link molt/molt-replicator.md %}#forward-replication-after-initial-load), **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency. Below each example, you will see the equivalent way of carrying out that transformation using MOLT Fetch, if it's possible to do so.
 
 ## Before you begin
 
 - Make sure that you understand the [purpose and usage of userscripts]({% link molt/userscript-overview.md %}). Take a look at the [userscript API]({% link molt/userscript-api.md %}). Understand [what you cannot do]({% link molt/userscript-overview.md %}#unsupported-typescript-features) in a userscript.
-- [Install MOLT Replicator]({% link molt/molt-replicator.md %}#installation). The userscript API is accessible via the `replicator` library, which is already included in MOLT Replicator.
+- [Install MOLT Replicator]({% link molt/molt-replicator-installation.md %}). The userscript API is accessible via the `replicator` library, which is already included in MOLT Replicator.
 - [Install TypeScript](https://www.typescriptlang.org/download/), and install a TypeScript-compatible IDE (for example, VS Code).
 - Download the [userscript type definitions file](https://replicator.cockroachdb.com/userscripts/replicator@v2.d.ts) and the [tsconfig.json file](https://replicator.cockroachdb.com/userscripts/tsconfig.json). Place these files in your working directory to enable autocomplete, inline documentation, and real-time error detection directly in your IDE.
 
@@ -188,7 +188,7 @@ is_deleted STRING, ssn STRING, credit_card_number STRING
 
 #### MOLT Fetch equivalent
 
-You can selectively replicate data using the [`--filter-path`]({% link molt/molt-fetch.md %}#selective-data-movement) flag, which accepts a path to a JSON file that specifies row-level filter expressions.
+You can selectively replicate data using the [`--filter-path`]({% link molt/molt-fetch.md %}#select-data-to-migrate) flag, which accepts a path to a JSON file that specifies row-level filter expressions.
 
 **Make sure to replace the `/path/to/soft_delete_filter.json` placeholder with the path to your json file, and make sure that the source and target connection strings have been exported to the environment.**
 
@@ -266,7 +266,7 @@ is_deleted STRING, ssn STRING, credit_card_number STRING
 
 #### MOLT Fetch equivalent
 
-Filter columns using the [`--transformations-file`]({% link molt/molt-fetch.md %}#transformations) flag, which accepts a path to a JSON file that specifies column exclusions.
+Filter columns using the [`--transformations-file`]({% link molt/molt-fetch.md %}#define-transformations) flag, which accepts a path to a JSON file that specifies column exclusions.
 
 **Make sure to replace the `/path/to/exclude_qty_column.json` placeholder with the path to your json file, and make sure that the source and target connection strings have been exported to the environment.**
 
@@ -375,7 +375,7 @@ employee_id STRING, employee_name STRING, department STRING
 
 #### MOLT Fetch equivalent
 
-MOLT Fetch does not have direct support for column renaming. You may need to rename the column on the target database after the [initial data load from MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch).
+MOLT Fetch does not have direct support for column renaming. You may need to rename the column on the target database after the [initial data load from MOLT Fetch]({% link molt/migration-approach-delta.md %}).
 
 ### Rename primary keys
 
@@ -458,7 +458,7 @@ id1 STRING, id2 STRING, name STRING
 
 #### MOLT Fetch equivalent
 
-MOLT Fetch does not have direct support for primary key renaming. You may need to reconfigure the primary keys on the target database after the [initial data load from MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch).
+MOLT Fetch does not have direct support for primary key renaming. You may need to reconfigure the primary keys on the target database after the [initial data load from MOLT Fetch]({% link molt/migration-approach-delta.md %}).
 
 ### Route table partitions
 
@@ -571,7 +571,7 @@ api.configureTargetSchema(TARGET_SCHEMA_NAME, {
 
 #### MOLT Fetch equivalent
 
-Rename tables using the [`--transformations-file`]({% link molt/molt-fetch.md %}#transformations) flag, which accepts a path to a JSON file that specifies table mappings.
+Rename tables using the [`--transformations-file`]({% link molt/molt-fetch.md %}#define-transformations) flag, which accepts a path to a JSON file that specifies table mappings.
 
 **Make sure to replace the `/path/to/rename_tables.json` placeholder with the path to your json file, and make sure that the source and target connection strings have been exported to the environment.**
 
@@ -663,7 +663,7 @@ is_deleted STRING, ssn STRING, credit_card_number STRING
 
 #### MOLT Fetch equivalent
 
-Creating computed columns is not supported by MOLT Fetch transforms. MOLT Fetch can only preserve computed columns that exist on the source. You may need to calculate this column for the target database table after the [initial data load from MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch).
+Creating computed columns is not supported by MOLT Fetch transforms. MOLT Fetch can only preserve computed columns that exist on the source. You may need to calculate this column for the target database table after the [initial data load from MOLT Fetch]({% link molt/migration-approach-delta.md %}).
 
 ### Combine multiple transforms
 
@@ -738,8 +738,8 @@ is_deleted STRING
 
 To implement this transformation with MOLT Fetch, create:
 
-- A `soft_delete_filter.json` file (to be included via the [`--filter-path`]({% link molt/molt-fetch.md %}#selective-data-movement) flag).
-- A `pii_removal_transform.json` file (to be included via the [`--transformations-file`]({% link molt/molt-fetch.md %}#transformations) flag).
+- A `soft_delete_filter.json` file (to be included via the [`--filter-path`]({% link molt/molt-fetch.md %}#select-data-to-migrate) flag).
+- A `pii_removal_transform.json` file (to be included via the [`--transformations-file`]({% link molt/molt-fetch.md %}#define-transformations) flag).
 
 Run MOLT Fetch with both the `--filter-path` and `--transformations-file` flags.
 

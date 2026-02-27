@@ -4,7 +4,7 @@ Define the connection strings for the [source](#source-connection-string) and [t
 
 The `--source` flag specifies the connection string for the source database:
 
-{% if page.name != "migrate-bulk-load.md" %}
+{% if page.name contains "delta" %}
 {{site.data.alerts.callout_info}}
 The source connection **must** point to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
 {{site.data.alerts.end}}
