@@ -75,6 +75,18 @@ Increase the chance that CockroachDB can [automatically retry]({% link {{ page.v
 
 {% include {{ page.version.version }}/performance/increase-server-side-retries.md %}
 
+### Interpreting log messages
+
+In CockroachDB {{ page.version.version }}, the `meta={... key=/Table/...}` field that appears in log output for serialization conflicts identifies the transaction's [transaction record key]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-records) (also known as the _anchor key_), not necessarily the key where the conflict occurred. This anchor key is the first key written by the transaction and is where its record is stored.
+
+{% include_cached new-in.html version="v26.1" %} [Contention events]({% link {{ page.version.version }}/monitor-and-analyze-transaction-contention.md %}) that are recorded when [`sql.contention.record_serialization_conflicts.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-contention-record-serialization-conflicts-enabled) is `true` use the actual key where contention occurred (not the anchor key, as prior versions did) when populating the recorded conflict.
+
+Only the following error types may add a conflicting key to a contention event:
+
+- `TransactionRetryError`
+- `WriteTooOld`
+- `ExclusionViolationError`
+
 ## Transaction retry error reference
 
 Note that your application's retry logic does not need to distinguish between the different types of serialization errors. They are listed here for reference during [advanced troubleshooting]({% link {{ page.version.version }}/performance-recipes.md %}#transaction-contention).
@@ -192,7 +204,7 @@ See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for 
 ```
 TransactionRetryWithProtoRefreshError: ReadWithinUncertaintyIntervalError:
         read at time 1591009232.376925064,0 encountered previous write with future timestamp 1591009232.493830170,0 within uncertainty interval `t <= 1591009232.587671686,0`;
-        observed timestamps: [{1 1591009232.587671686,0} {5 1591009232.376925064,0}]
+        observed timestamps: [{1 1591009232.587671686,0} {5 1591009232.376925064,0}] meta={id=a3458962 key=/Table/9373/10/5293921467191001339/0 ...}
 ```
 
 **Error type:** Serialization error
