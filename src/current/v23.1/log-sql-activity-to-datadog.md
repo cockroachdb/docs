@@ -84,7 +84,7 @@ The `sql.telemetry.query_sampling.max_event_frequency` cluster setting and the `
 1. Navigate to [**Datadog > Logs**](https://app.datadoghq.com/logs).
 1. Filter by **OTHERS > channel: TELEMETRY** to see the logs for the query events that are emitted. For example:
 
-<img src="{{ 'images/v23.1/datadog-telemetry-logs.png' | relative_url }}" alt="Datadog Telemetry Logs" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/datadog-telemetry-logs.png" alt="Datadog Telemetry Logs" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
