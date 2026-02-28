@@ -20,26 +20,6 @@ CockroachDB vector indexes organize [vectors]({% link {{ page.version.version }}
 
 When a query uses a vector index, CockroachDB explores a subset of partitions based on their proximity to the query vector. It then retrieves and evaluates a candidate set of vectors using the [configured distance metric](#comparisons) and returns the top nearest results.
 
-## Enable vector indexes
-
-To enable the use of vector indexes, set the `feature.vector_index.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-feature-vector-index-enabled):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING feature.vector_index.enabled = true;
-~~~
-
-To enable the creation of vector indexes on non-empty tables, also disable the `sql_safe_updates` [session setting]({% link {{ page.version.version }}/session-variables.md %}#sql-safe-updates). This allows vector indexes to be backfilled on existing rows, during which **table writes are blocked** to ensure vector index consistency. This blocking behavior is a [known limitation](#known-limitations) that is currently being tracked.
-
-{{site.data.alerts.callout_danger}}
-Adding a vector index to a non-empty table can temporarily disrupt workloads that perform continuous writes.
-{{site.data.alerts.end}}
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET sql_safe_updates = false;
-~~~
-
 ## Create vector indexes
 
 To create a vector index, use the [`CREATE VECTOR INDEX`]({% link {{ page.version.version }}/create-index.md %}) statement:
@@ -238,13 +218,6 @@ In the following example, a vector index with a prefix column is used to optimiz
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure
-    ~~~
-
-1. [Enable vector indexes](#enable-vector-indexes) on the cluster:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING feature.vector_index.enabled = true;
     ~~~
 
 1. Create an `items` table that includes a `VECTOR` column called `embedding`, along with a vector index that uses `customer_id` as the prefix column:
