@@ -28,8 +28,9 @@ The user must be the [owner]({% link {{ page.version.version }}/alter-view.md %}
 `opt_concurrently` | `CONCURRENTLY` (Default behavior) This keyword has no effect. It is present for PostgreSQL compatibility. All materialized views are refreshed concurrently with other jobs.
 `view_name` | The name of the materialized view to refresh.
 `opt_clear_data` | `WITH DATA` (Default behavior) Refresh the stored query results. <br>`WITH NO DATA` Drop the query results of the materialized view from storage.
+`AS OF SYSTEM TIME` | {% include_cached new-in.html version="v25.2" %} Use historical data when refreshing the view. The timestamp must be within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds). This can reduce [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) by leveraging [follower reads]({% link {{ page.version.version }}/follower-reads.md %}). For more information, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
 
-## Example
+## Examples
 
 The following example uses the [sample `bank` database]({% link {{ page.version.version }}/cockroach-workload.md %}#bank-workload), populated with some workload values.
 
@@ -120,6 +121,30 @@ To update the materialized view's results, use a [`REFRESH`]({% link {{ page.ver
 (0 rows)
 ~~~
 
+### Refresh a materialized view with historical data using `AS OF SYSTEM TIME`
+
+{% include_cached new-in.html version="v25.2" %} You can refresh a materialized view using historical data with the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause. This is useful for reducing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) by performing a [follower read]({% link {{ page.version.version }}/follower-reads.md %}) when refreshing the view.
+
+{{site.data.alerts.callout_info}}
+Historical data is available only within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds).
+{{site.data.alerts.end}}
+
+Refresh a materialized view using [`follower_read_timestamp()`]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions) to use the most recent data that is available for [follower reads]({% link {{ page.version.version }}/follower-reads.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+REFRESH MATERIALIZED VIEW overdrawn_accounts
+  AS OF SYSTEM TIME follower_read_timestamp();
+~~~
+
+You can also specify an explicit timestamp:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+REFRESH MATERIALIZED VIEW overdrawn_accounts
+  AS OF SYSTEM TIME '-10s';
+~~~
+
 ## See also
 
 - [Materialized views]({% link {{ page.version.version }}/views.md %}#materialized-views)
@@ -127,3 +152,5 @@ To update the materialized view's results, use a [`REFRESH`]({% link {{ page.ver
 - [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
 - [`ALTER VIEW`]({% link {{ page.version.version }}/alter-view.md %})
 - [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})
+- [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %})
+- [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %})

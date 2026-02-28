@@ -33,6 +33,7 @@ Parameter | Description
 `view_name` | The name of the view to create, which must be unique within its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
 `name_list` | An optional, comma-separated list of column names for the view. If specified, these names will be used in the response instead of the columns specified in `AS select_stmt`.
 `AS select_stmt` | The [selection query]({% link {{ page.version.version }}/selection-queries.md %}) to execute when the view is requested.<br><br>Note that it is not currently possible to use `*` to select all columns from a referenced table or view; instead, you must specify specific columns.
+`AS OF SYSTEM TIME` | {% include_cached new-in.html version="v25.2" %} When used with `CREATE MATERIALIZED VIEW`, populates the materialized view using historical data. The timestamp must be within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds). This can reduce [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) by leveraging [follower reads]({% link {{ page.version.version }}/follower-reads.md %}). For more information, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
 `opt_temp` |  Defines the view as a session-scoped temporary view. For more information, see [Temporary Views]({% link {{ page.version.version }}/views.md %}#temporary-views).<br><br>**Support for temporary views is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#temporary-objects)**.
 
 ## Example
@@ -147,6 +148,36 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 (3 rows)
 ~~~
 
+### Create a materialized view with historical data using `AS OF SYSTEM TIME`
+
+{% include_cached new-in.html version="v25.2" %} You can create a materialized view using historical data with the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause. This is useful for reducing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) by performing a [follower read]({% link {{ page.version.version }}/follower-reads.md %}) when populating the view.
+
+{{site.data.alerts.callout_info}}
+Historical data is available only within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds).
+{{site.data.alerts.end}}
+
+The following example creates a materialized view using the most recent data that is available for [follower reads]({% link {{ page.version.version }}/follower-reads.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE MATERIALIZED VIEW overdrawn_accounts
+  AS SELECT id, balance
+  FROM bank
+  WHERE balance < 0
+  AS OF SYSTEM TIME follower_read_timestamp();
+~~~
+
+You can also specify an explicit timestamp:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE MATERIALIZED VIEW overdrawn_accounts
+  AS SELECT id, balance
+  FROM bank
+  WHERE balance < 0
+  AS OF SYSTEM TIME '-10s';
+~~~
+
 ## See also
 
 - [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
@@ -155,3 +186,5 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 - [`ALTER VIEW`]({% link {{ page.version.version }}/alter-view.md %})
 - [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %})
+- [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %})
