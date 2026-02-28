@@ -32,19 +32,19 @@ To work through this tutorial, take the following steps:
 
 1. Start DBeaver, and select **Database > New Connection** from the menu. In the dialog that appears, select **CockroachDB** from the list.
 
-    <img src="{{ 'images/v24.1/dbeaver-01-select-cockroachdb.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/dbeaver-01-select-cockroachdb.png" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
 1. Click **Next**. The **Connection Settings** dialog displays.
 
 1. In the **Database** field, enter `movr`.
 
-    <img src="{{ 'images/v24.1/dbeaver-02-cockroachdb-connection-settings.png' | relative_url }}" alt="DBeaver - CockroachDB connection settings" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/dbeaver-02-cockroachdb-connection-settings.png" alt="DBeaver - CockroachDB connection settings" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 2. Update the connection settings
 
 1. Click the **SSL** tab.
 
-    <img src="{{ 'images/v24.1/dbeaver-03-ssl-tab.png' | relative_url }}" alt="DBeaver - SSL tab" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/dbeaver-03-ssl-tab.png" alt="DBeaver - SSL tab" style="border:1px solid #eee;max-width:100%" />
 
 1. Check the **Use SSL** checkbox as shown, and fill in the text areas as follows:
     - **Root certificate**: Use the `ca.crt` file you generated for your secure cluster.
@@ -61,13 +61,13 @@ To work through this tutorial, take the following steps:
 
 1. Click **Test Connection ...**. If you need a driver, the following dialog displays:
 
-    <img src="{{ 'images/v24.1/dbeaver-06-download-driver.png' | relative_url }}" alt="DBeaver - download driver dialog" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/dbeaver-06-download-driver.png" alt="DBeaver - download driver dialog" style="border:1px solid #eee;max-width:100%" />
 
 1. Click **Download**.
 
     After the driver downloads, if the connection was successful, you will see a **Connected** dialog.
 
-    <img src="{{ 'images/v24.1/dbeaver-04-connection-success-dialog.png' | relative_url }}" alt="DBeaver - connection success dialog" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/dbeaver-04-connection-success-dialog.png" alt="DBeaver - connection success dialog" style="border:1px solid #eee;max-width:100%" />
 
 1. Click **OK** to dismiss the dialog.
 
@@ -75,7 +75,7 @@ To work through this tutorial, take the following steps:
 
 Expand the **movr** database node and navigate to the **rides** table.
 
-<img src="{{ 'images/v24.1/dbeaver-05-movr.png' | relative_url }}" alt="DBeaver - CockroachDB with the movr database" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/dbeaver-05-movr.png" alt="DBeaver - CockroachDB with the movr database" style="max-width:100%" />
 
 For more information about using DBeaver, see the [DBeaver documentation](https://dbeaver.io/docs/).
 
