@@ -60,7 +60,7 @@ The **Physical Cluster Replication** dashboard contains graphs for monitoring:
 
 ### Logical bytes
 
-<img src="{{ 'images/v23.2/ui-logical-bytes.png' | relative_url }}" alt="DB Console Logical Bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-logical-bytes.png" alt="DB Console Logical Bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
 
 The **Logical Bytes** graph shows you the throughput of the replicated bytes.
 
@@ -75,7 +75,7 @@ When you [start a replication stream]({% link {{ page.version.version }}/set-up-
 
 ### SST bytes
 
-<img src="{{ 'images/v23.2/ui-sst-bytes.png' | relative_url }}" alt="DB Console SST bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-sst-bytes.png" alt="DB Console SST bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
 
 The **SST Bytes** graph shows you the rate at which all [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes are sent to the [KV layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) by physical cluster replication jobs.
 

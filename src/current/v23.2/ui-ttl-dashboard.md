@@ -19,7 +19,7 @@ The **TTL** dashboard displays the following time series graphs:
 
 You can monitor the **Processing Rate** graph to see how many rows per second are being processed by [TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}#view-running-ttl-jobs).
 
-<img src="{{ 'images/v23.2/ttl-processing-rate.png' | relative_url }}" alt="TTL processing rate graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ttl-processing-rate.png" alt="TTL processing rate graph" style="border:1px solid #eee;max-width:100%" />
 
 | Metric        | Description                                 |
 |---------------+---------------------------------------------|
@@ -30,7 +30,7 @@ You can monitor the **Processing Rate** graph to see how many rows per second ar
 
 Monitor the **Estimated Rows** graph to see approximately how many rows are on the TTL table.
 
-<img src="{{ 'images/v23.2/ttl-estimated-rows.png' | relative_url }}" alt="TTL estimated rows graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ttl-estimated-rows.png" alt="TTL estimated rows graph" style="border:1px solid #eee;max-width:100%" />
 
 | Metric                             | Description                                                     |
 |------------------------------------+-----------------------------------------------------------------|
@@ -41,13 +41,13 @@ Monitor the **Estimated Rows** graph to see approximately how many rows are on t
 
 Monitor the **Job Latency** graph to see the latency of scanning and deleting within your cluster's [TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}#view-running-ttl-jobs).
 
-<img src="{{ 'images/v23.2/ttl-job-latency.png' | relative_url }}" alt="TTL job latency graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ttl-job-latency.png" alt="TTL job latency graph" style="border:1px solid #eee;max-width:100%" />
 
 ## Ranges in Progress
 
 Monitor the **Ranges in Progress** graph to see the number of ranges currently being processed by [TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}#view-running-ttl-jobs).
 
-<img src="{{ 'images/v23.2/ttl-ranges-in-progress.png' | relative_url }}" alt="TTL ranges in progress graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ttl-ranges-in-progress.png" alt="TTL ranges in progress graph" style="border:1px solid #eee;max-width:100%" />
 
 | Metric                           | Description                                                                                                                                             |
 |----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------|
