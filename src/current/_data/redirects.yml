@@ -422,7 +422,7 @@
     - show-transaction.md
   versions: [':version']
 
-- destination: stable/example-apps.md#python
+- destination: stable/build-a-python-app-with-cockroachdb-psycopg3
   sources:
     - v20.1/build-a-python-app-with-cockroachdb-pony.md
 
@@ -1082,5 +1082,9 @@
   sources: ['orchestrate-a-local-cluster-with-kubernetes.md', 'orchestrate-a-local-cluster-with-kubernetes-insecure.md']
   versions: ['v26.1']
 
+- destination: stable/developer-guide-overview.md
+  sources: ['cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md']
 
-
+- destination: developer-guide-overview.md
+  sources: ['example-apps.md', 'build-a-spring-app-with-cockroachdb-jdbc.md', 'build-a-spring-app-with-cockroachdb-jpa.md', 'movr-flask-use-case.md', 'movr-flask-database.md', 'movr-flask-setup.md', 'movr-flask-application.md', 'movr-flask-deployment.md']
+  versions: ['v26.1']

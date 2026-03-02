@@ -90,7 +90,6 @@ Other common tasks:
 - [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
 - [Optimize Statement Performance][fast]
 - [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
-- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
 {% comment %} Reference Links {% endcomment %}
 
