@@ -35,12 +35,8 @@ This page describes and provides usage guidelines for Replicator metrics, accord
 - [**Staging**](#staging): Buffers mutations for ordered processing and crash recovery.
 </section>
 
-<section class="filter-content" markdown="1" data-scope="postgres oracle cockroachdb">
+<section class="filter-content" markdown="1" data-scope="postgres mysql oracle cockroachdb">
 - [**Core sequencer**](#core-sequencer): Processes staged mutations, maintains ordering guarantees, and coordinates transaction application.
-</section>
-
-<section class="filter-content" markdown="1" data-scope="mysql">
-- **Core sequencer**: Processes staged mutations, maintains ordering guarantees, and coordinates transaction application.
 </section>
 
 - [**Target apply**](#target-apply): Applies mutations to the target database.
@@ -254,7 +250,7 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 	- Interpretation: High values indicate write performance issues on the staging database.
 </section>
 
-<section class="filter-content" markdown="1" data-scope="postgres oracle cockroachdb">
+<section class="filter-content" markdown="1" data-scope="postgres mysql oracle cockroachdb">
 ### Core sequencer
 
 [Core sequencer](#replication-pipeline) metrics track mutation processing, ordering, and transaction coordination.
