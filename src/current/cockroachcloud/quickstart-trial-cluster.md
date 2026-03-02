@@ -92,7 +92,7 @@ To download CockroachDB locally and configure it to connect to the cluster with 
     #
     ~~~
 
-1. You can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}):
+1. You can now run [CockroachDB SQL statements]({% link {{site.current_cloud_version}}/sql-statements.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -132,7 +132,7 @@ To download CockroachDB locally and configure it to connect to the cluster with 
 
 Learn more:
 
-- Use the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) to connect to your cluster and [learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
+- Use the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) to connect to your cluster and learn [CockroachDB SQL]({% link {{site.current_cloud_version}}/sql-statements.md %}).
 - Build a ["Hello World" app with the Django framework]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md %}), or [install a client driver]({% link {{site.current_cloud_version}}/install-client-drivers.md %}) for your favorite language.
 - Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair]({% link {{site.current_cloud_version}}/demo-cockroachdb-resilience.md %}).
 
