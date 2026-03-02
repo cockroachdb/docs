@@ -21,7 +21,7 @@ Use the following syntax to show the privileges granted to users on database obj
 SHOW GRANTS [ON [DATABASE | FUNCTION | SCHEMA | TABLE | TYPE | EXTERNAL CONNECTION] <targets...>] [FOR <users...>]
 ~~~
 
-The object-focused form (`ON ...`) shows only privileges granted directly on the object. It does not resolve privileges inherited through role membership. The principal-focused form (`FOR ...`) includes privileges inherited through role membership for the specified users and can be combined with `ON ...` to filter by object. For inherited privileges, the `grantee` column reports the role that carries the privilege. To inspect role memberships, use [`SHOW GRANTS ON ROLE`](#show-role-grants) or [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %}).
+The object-focused form (`ON ...`) shows only privileges granted directly on the object. It does not resolve privileges inherited through role membership. The principal-focused form (`FOR ...`) includes privileges inherited through role membership for the specified users and can be combined with `ON ...` to filter by object. For an example of inherited grants, refer to [Show direct and inherited grants](#show-direct-and-inherited-grants). For inherited privileges, the `grantee` column reports the role that carries the privilege. To inspect role memberships, use [`SHOW GRANTS ON ROLE`](#show-role-grants) or [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %}).
 
 When `DATABASE` is omitted, the schema, tables, and types in the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database) are listed.
 
@@ -204,44 +204,6 @@ To list all grants for all users and roles on the current database and its table
 (1 row)
 ~~~
 
-### Show direct and inherited grants
-
-In this example, a role has `ALL` on a table and a user inherits that role. The object-focused form lists only the direct role grant, while the principal-focused form lists the inherited privileges for the user.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE analysts;
-> GRANT ALL ON TABLE users TO analysts;
-> CREATE USER priya;
-> GRANT analysts TO priya;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW GRANTS ON TABLE users;
-~~~
-
-~~~
-  database_name | schema_name | table_name | grantee  | privilege_type | is_grantable
-----------------+-------------+------------+----------+----------------+---------------
-  movr          | public      | users      | admin    | ALL            |      t
-  movr          | public      | users      | analysts | ALL            |      f
-  movr          | public      | users      | root     | ALL            |      t
-(3 rows)
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW GRANTS ON TABLE users FOR priya;
-~~~
-
-~~~
-  database_name | schema_name | table_name | grantee  | privilege_type | is_grantable
-----------------+-------------+------------+----------+----------------+---------------
-  movr          | public      | users      | analysts | ALL            |      f
-(1 row)
-~~~
-
 **All tables, all users and roles:**
 
 {% include_cached copy-clipboard.html %}
@@ -279,6 +241,44 @@ In this example, a role has `ALL` on a table and a user inherits that role. The 
   database_name | schema_name | table_name | grantee | privilege_type | is_grantable
 ----------------+-------------+------------+---------+----------------+---------------
   movr          | public      | users      | max     | ALL            |      t
+(1 row)
+~~~
+
+### Show direct and inherited grants
+
+In this example, a role has `ALL` on a table and a user inherits that role. The object-focused form (`SHOW GRANTS ON ...`) lists only the direct role grant, while the principal-focused form (`SHOW GRANTS ... FOR <user>`) lists the inherited privileges for the user.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE ROLE analysts;
+GRANT ALL ON TABLE users TO analysts;
+CREATE USER priya;
+GRANT analysts TO priya;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW GRANTS ON TABLE users;
+~~~
+
+~~~
+  database_name | schema_name | table_name | grantee  | privilege_type | is_grantable
+----------------+-------------+------------+----------+----------------+---------------
+  movr          | public      | users      | admin    | ALL            |      t
+  movr          | public      | users      | analysts | ALL            |      f
+  movr          | public      | users      | root     | ALL            |      t
+(3 rows)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW GRANTS ON TABLE users FOR priya;
+~~~
+
+~~~
+  database_name | schema_name | table_name | grantee  | privilege_type | is_grantable
+----------------+-------------+------------+----------+----------------+---------------
+  movr          | public      | users      | analysts | ALL            |      f
 (1 row)
 ~~~
 
