@@ -407,7 +407,6 @@ ALTER TABLE system.public.tenant_usage CONFIGURE ZONE USING gc.ttlseconds = 7200
 
 - Running a local multi-node cluster:
     - [From Binary]({% link {{ page.version.version }}/start-a-local-cluster.md %})
-    - [In Kubernetes]({% link {{ page.version.version }}/orchestrate-a-local-cluster-with-kubernetes.md %})
     - [In Docker]({% link {{ page.version.version }}/start-a-local-cluster-in-docker-mac.md %})
 - Running a distributed multi-node cluster:
     - [From Binary]({% link {{ page.version.version }}/manual-deployment.md %})
