@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-This page describes how to see a hands-on demonstration of how CockroachDB's fault-tolerant design allows services to remain available during a failure and recovery. 
+This page describes how to perform a hands-on demonstration of CockroachDB's fault-tolerant design allowing services to remain available during a failure and recovery. 
 
 ## Run a guided demo in CockroachDB {{ site.data.products.cloud }}
 
@@ -20,9 +20,9 @@ The following prerequisites are needed to run the fault tolerance demo:
 - A [CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) with at least three nodes.
 - All nodes are healthy.
 - The cluster's CPU utilization is below 30%. 
-- The cluster does not a custom [replication zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+- The cluster is not currently in a locked state as a result of maintenance such as scaling.
 
-To run the fault tolerance demo, open the {{ site.data.products.cloud }} Console and navigate to **Actions > Fault tolerance demo**. Follow the prompts to check that your cluster is eligible and begin the demo.
+To run the fault tolerance demo, open the {{ site.data.products.cloud }} Console and navigate to **Actions > Fault tolerance demo**.
 
 ## Run a manual demo on a local machine
 
