@@ -71,7 +71,7 @@ For guidance on connecting to CockroachDB from an application deployment, see on
 - For connecting to managed, CockroachDB {{ site.data.products.cloud }} deployments, see [Connect to a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [Connect to a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}).
 - For connecting to other CockroachDB deployments, see [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) and [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 
-To limit the latency between the application and the database, each deployment of the application should communicate with the closest database deployment. For details on configuring database connections for individual application deployments, consult your cloud provider's documentation. For an example using Google Cloud services, see [Deploy a Global, Serverless Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
+To limit the latency between the application and the database, each deployment of the application should communicate with the closest database deployment. For details on configuring database connections for individual application deployments, consult your cloud provider's documentation.
 
 {{site.data.alerts.callout_info}}
 A multi-region application deployment does not require a multi-region database deployment. Deploying a global application in multiple regions can yield significant latency benefits for the end user, even if you have not yet scaled your database in multiple regions. For an example, see [Reducing Multi-Region Latency with Follower Reads](https://www.cockroachlabs.com/blog/follower-reads/#:~:text=Deployment%202%3A%20Global%20Application%20Deployment%2C%20No%20Follower%20reads).
@@ -81,7 +81,7 @@ If you do scale the application first, make sure that you reconfigure each appli
 
 ### Step 2. *(Optional)* Update the application code for multi-region
 
-For most table localities, including the default locality `LOCALITY REGIONAL BY TABLE IN PRIMARY REGION`, *you do not need to update your application code after migrating your database schema for multi-region*. CockroachDB automatically optimizes queries against multi-region databases, based on the regional locality of the node executing the query, and on the multi-region configuration of the database. For more details, see [Regional Tables]({% link {{ page.version.version }}/regional-tables.md %}#regional-by-row-tables). For an extended example, see [Develop and Deploy a Global Application: Create a Multi-Region Database Schema]({% link {{ page.version.version }}/movr-flask-database.md %}).
+For most table localities, including the default locality `LOCALITY REGIONAL BY TABLE IN PRIMARY REGION`, *you do not need to update your application code after migrating your database schema for multi-region*. CockroachDB automatically optimizes queries against multi-region databases, based on the regional locality of the node executing the query, and on the multi-region configuration of the database. For more details, see [Regional Tables]({% link {{ page.version.version }}/regional-tables.md %}#regional-by-row-tables).
 
 However, there are some scenarios in which you might need to update the SQL operations in your application. For example:
 
