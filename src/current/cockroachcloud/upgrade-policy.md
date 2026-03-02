@@ -15,7 +15,7 @@ A cluster running an unsupported CockroachDB version is not eligible for Cockroa
 
 ### Version and upgrade support by cloud plan
 
-[Major versions]({% link releases/index.md %}) of CockroachDB are labeled either as [Regular releases]({% link releases/index.md %}#major-releases) or [Innovation releases]({% link releases/index.md %}#major-releases).
+[Major versions]({% link releases/index.md %}) of CockroachDB are labeled either as [Regular releases]({% link releases/index.md %}#major-versions) or [Innovation releases]({% link releases/index.md %}#major-versions).
 
 - **Regular releases** are supported for 12 months from their initial production release date.
 - **Innovation releases** are supported for 6 months from their initial production release date.

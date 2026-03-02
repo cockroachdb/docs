@@ -21,7 +21,7 @@ Since CockroachDB considers the cluster version when running a backup, this page
 
 Cockroach Labs supports restoring a backup taken on a cluster on a specific major version into a cluster that is on the same version or the next major version. Therefore, when upgrading your cluster from version N to N+1, if you took a backup on major version N, you can restore it to your cluster on either major version N or N+1. 
 
-Additionally, you can skip an [innovation release]({% link releases/index.md %}#major-releases) version when restoring a backup. Innovation releases are intermediate releases that introduce new features, but are not long-term supported versions.
+Additionally, you can skip an [innovation release]({% link releases/index.md %}#major-versions) version when restoring a backup. Innovation releases are intermediate releases that introduce new features, but are not long-term supported versions.
 
 Other than skipping innovation releases, restoring backups outside major version N or N+1 is **not supported**.
 
