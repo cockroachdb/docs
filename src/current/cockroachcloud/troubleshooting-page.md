@@ -27,7 +27,7 @@ Failed running "sql"
 
 <h4>Solution</h4>
 
-Update to the latest [CockroachDB client]({% link releases/index.md %}#production-releases). You need to use v21.2.5 or later of the CockroachDB client to connect to your cluster without specifying the CA certificate path in the connection string.
+Update to the latest [CockroachDB client]({% link releases/index.md %}). You need to use v21.2.5 or later of the CockroachDB client to connect to your cluster without specifying the CA certificate path in the connection string.
 
 ### Certificate signed by unknown authority
 
