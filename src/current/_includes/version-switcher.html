@@ -25,14 +25,25 @@
       <a href="#">
 
         {% comment %}Display the page version we are currently viewing{% endcomment %}
-
-        Version <span class="version-name">{{ page.version.name }}</span>{% if current_version_is_lts == true %}&nbsp;LTS&nbsp;{% endif %}
+        {% comment %}Check if current version has any releases{% endcomment %}
+        {% assign current_version_releases = site.data.releases | where_exp: "rel", "rel.major_version == page.version.version" %}
+        {% if current_version_releases.size == 0 %}
+          {% comment %}No releases yet - show special text{% endcomment %}
+          Version <span class="version-name">{{ page.version.version }} (No testing releases available)</span>{% if current_version_is_lts == true %}&nbsp;LTS&nbsp;{% endif %}
+        {% else %}
+          {% comment %}Has releases - show normal text{% endcomment %}
+          Version <span class="version-name">{{ page.version.name }}</span>{% if current_version_is_lts == true %}&nbsp;LTS&nbsp;{% endif %}
+        {% endif %}
         <div class="arrow"></div>
       </a>
       <ul class="list-unstyled"  style="display: none">
         {% comment %}Build the list of versions of the page{% endcomment %}
 
         {% for v in page.versions %}
+          {% comment %}Check if this version has any releases{% endcomment %}
+          {% assign v_releases = site.data.releases | where_exp: "rel", "rel.major_version == v.version.version" %}
+          {% if v_releases.size > 0 %}
+            {% comment %}Only show versions that have releases{% endcomment %}
           {% assign v_is_lts = false %}
           {% comment %}Get major-version details for this version{% endcomment %}
           {% assign major_version_details = site.data.versions | where_exp: "pv", "pv.major_version == v.version.version" | sort: "release_date" | first %}
@@ -88,6 +99,7 @@
             {% if v.version.tag %}({% if v.version.version == site.versions["stable"] %}Stable{% elsif v.version.version == site.versions["dev"] %}Dev{% endif %}){% endif %}
           </a>
         </li>
+          {% endif %}
         {% endfor %}
       </ul>
     </li>

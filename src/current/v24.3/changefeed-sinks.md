@@ -263,7 +263,7 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 {{site.data.alerts.callout_info}}
 On CockroachDB {{ site.data.products.core }} clusters, you must create instances in the same VPC as the MSK or MSK Serverless cluster in order for the changefeed to authenticate successfully.
 
-If you would like to connect a CockroachDB {{ site.data.products.dedicated }} cluster to an Amazon MSK cluster, contact your Cockroach Labs account team.
+If you would like to connect a CockroachDB {{ site.data.products.advanced }} cluster to an Amazon MSK cluster, contact your Cockroach Labs account team.
 {{site.data.alerts.end}}
 
 Changefeeds can deliver messages to Amazon MSK clusters ([Amazon Managed Streaming for Apache Kafka](https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html)). Amazon MSK cluster types include: [MSK](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html) and [MSK Serverless](https://docs.aws.amazon.com/msk/latest/developerguide/serverless.html). Changefeeds support the following authentication methods for these MSK cluster types:

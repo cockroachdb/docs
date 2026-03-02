@@ -288,9 +288,9 @@ For detailed reference documentation for each supported constraint, see [the con
 
 To set default values on columns, use the `DEFAULT` constraint. Default values enable you to write queries without the need to specify values for every column.
 
-When combined with [supported SQL functions]({% link {{ page.version.version }}/functions-and-operators.md %}), default values can save resources in your application's persistence layer by offloading computation onto CockroachDB. For example, rather than using an application library to generate unique `UUID` values, you can set a default value to be an automatically-generated `UUID` value with the `gen_random_uuid()` SQL function. Similarly, you could use a default value to populate a `TIMESTAMP` column with the current time of day, using the `now()` function.
+When combined with [supported SQL functions]({% link {{ page.version.version }}/functions-and-operators.md %}), default values can save resources in your application's persistence layer by offloading computation onto CockroachDB. For example, rather than using an application library to generate unique [`UUID`]({% link {{ page.version.version }}/uuid.md %}) values, you can set a default value to be an automatically-generated `UUID` value with the `gen_random_uuid()` SQL function. Similarly, you could use a default value to populate a `TIMESTAMP` column with the current time of day, using the `now()` function.
 
-For example, in the `vehicles` table definition in `max_init.sql`, you added a `DEFAULT gen_random_uuid()` clause to the `id` column definition. This set the default value to a generated `UUID` value. Now, add a default value to the `creation_time` column:
+For example, in the `vehicles` table definition in `max_init.sql`, you added a `DEFAULT gen_random_uuid()` clause to the `id` column definition. This set the default value to a generated [`UUID`]({% link {{ page.version.version }}/uuid.md %}) value. Now, add a default value to the `creation_time` column:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

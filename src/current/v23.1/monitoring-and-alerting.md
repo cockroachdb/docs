@@ -203,10 +203,6 @@ The critical nodes status endpoint is used to:
 
 If you find under-replicated ranges or constraint violations, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 
-{{site.data.alerts.callout_info}}
-This HTTP status endpoint supersedes the deprecated [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}) SQL API. Due to architectural changes in CockroachDB, the SQL queries described on that page will not result in correct output.
-{{site.data.alerts.end}}
-
 #### Fields
 
 The JSON object returned by the critical nodes status endpoint contains the following top-level fields.

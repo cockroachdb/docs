@@ -23,22 +23,33 @@ The most important factor in determining the quality of a plan is cardinality (i
 
 The cost-based optimizer can often find more performant query plans if it has access to statistical data on the contents of your tables. This data needs to be generated from scratch for new tables, and [refreshed periodically](#control-statistics-refresh-rate) for existing tables.
 
-By default, CockroachDB automatically generates table statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}), and as they are [updated]({% link {{ page.version.version }}/update.md %}). It does this using a [background job]({% link {{ page.version.version }}/create-statistics.md %}#view-statistics-jobs) that automatically determines which columns to get statistics on. Specifically, the optimizer chooses:
+The optimizer can use three types of statistics to plan queries:
+
+- [Full statistics](#full-statistics)
+- [Partial statistics](#partial-statistics)
+- [Forecasted statistics](#forecasted-statistics)
+
+For best query performance, most users should leave automatic statistics enabled with the default settings. Advanced users can follow the steps provided in the following sections for performance tuning and troubleshooting.
+
+### Full statistics
+
+By default, CockroachDB automatically generates full statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}) and after [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). Full statistics for a table are automatically refreshed when approximately 20% of its rows are updated.
+
+A [background job]({% link {{ page.version.version }}/create-statistics.md %}#view-statistics-jobs) automatically determines which columns to get statistics on. Specifically, the optimizer chooses:
 
 - Columns that are part of the primary key or an index (in other words, all indexed columns).
 - Up to 100 non-indexed columns.
 
 By default, CockroachDB also automatically collects [multi-column statistics]({% link {{ page.version.version }}/create-statistics.md %}#create-statistics-on-multiple-columns) on columns that prefix an index.
 
-{{site.data.alerts.callout_info}}
-[Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) trigger automatic statistics collection for the affected table(s).
-{{site.data.alerts.end}}
+To control automatic collection of full statistics, use the following settings:
 
-For best query performance, most users should leave automatic statistics enabled with the default settings. Advanced users can follow the steps provided in this section for performance tuning and troubleshooting.
+- [`sql.stats.automatic_full_collection.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-automatic-full-collection-enabled): Cluster setting that enables automatic collection of full table statistics across all tables in the cluster.
+- [`sql_stats_automatic_full_collection_enabled`]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters): Table storage parameter that overrides the cluster setting when applied to a specific table.
 
-### Control statistics refresh rate
+#### Control statistics refresh rate
 
-Statistics are refreshed in the following cases:
+Full statistics are refreshed in the following cases:
 
 - When there are no statistics.
 - When it has been a long time since the last refresh, where "long time" is based on a moving average of the time across the last several refreshes.
@@ -55,9 +66,27 @@ Statistics are refreshed in the following cases:
     Because the formula for statistics refreshes is probabilistic, you will not see statistics update immediately after changing these settings, or immediately after exactly 500 rows have been updated.
     {{site.data.alerts.end}}
 
-#### Small versus large table examples
+The "stale row" cluster settings also have the table setting counterparts `sql_stats_automatic_collection_fraction_stale_rows` and `sql_stats_automatic_collection_min_stale_rows`. For example:
 
-Suppose the [clusters settings]({% link {{ page.version.version }}/cluster-settings.md %}) `sql.stats.automatic_collection.fraction_stale_rows` and `sql.stats.automatic_collection.min_stale_rows` have the default values .2 and 500 as shown in the preceding table.
+~~~ sql
+CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    balance DECIMAL)
+WITH (sql_stats_automatic_collection_enabled = true,
+sql_stats_automatic_collection_min_stale_rows = 1000000,
+sql_stats_automatic_collection_fraction_stale_rows= 0.05
+);
+
+ALTER TABLE accounts
+SET (sql_stats_automatic_collection_fraction_stale_rows = 0.1,
+sql_stats_automatic_collection_min_stale_rows = 2000);
+~~~
+
+Automatic statistics rules are checked once per minute. Altered automatic statistics table settings take immediate effect for subsequent DML statements on a table. However, row mutations that started before you modified the table settings can still trigger statistics collection based on the previous settings.
+
+##### Small versus large table examples
+
+Suppose the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) `sql.stats.automatic_collection.fraction_stale_rows` and `sql.stats.automatic_collection.min_stale_rows` have the default values .2 and 500 as shown in the preceding table.
 
 If a table has 100 rows and 20 became stale, a re-collection would not be triggered because, even though 20% of the rows are stale, they do not meet the 500-row minimum.
 
@@ -65,17 +94,54 @@ On the other hand, if a table has 1,500,000,000 rows, then 20% of that, or 300,0
 
 In such cases, we recommend that you use the [`sql_stats_automatic_collection_enabled` storage parameter](#enable-and-disable-automatic-statistics-collection-for-tables), which lets you configure automatic statistics collection on a per-table basis.
 
-#### Configure non-default statistics retention
+### Partial statistics
 
-By default, when CockroachDB refreshes statistics for a column, it deletes the previous statistics for the column (while leaving the most recent 4-5 historical statistics). When CockroachDB refreshes statistics, it also deletes the statistics for any "non-default" column sets, or columns for which statistics are not [collected by default](#table-statistics).
+*Partial statistics* are collected on a subset of table data without scanning the full table. Partial statistics can improve query performance in large tables where only a portion of rows are regularly updated or queried.
 
-Historical statistics on non-default column sets should not be retained indefinitely, because they will not be refreshed automatically and could cause the optimizer to choose a suboptimal plan if they become stale. Such non-default historical statistics may exist because columns were deleted or removed from an index, and are therefore no longer part of a multi-column statistic.
+Whereas [full statistics](#full-statistics) refresh infrequently and can allow stale rows to accumulate, partial statistics automatically refresh at a [lower threshold](#automatically-collect-partial-statistics) of stale rows. Partial statistics automatically collect on extreme index values, which is particularly valuable for timestamp indexes where workloads commonly access the most recent data. They can also be [collected manually](#manually-collect-partial-statistics).
 
-CockroachDB deletes statistics on non-default columns according to the `sql.stats.non_default_columns.min_retention_period` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), which defaults to a 24-hour retention period.
+Partial statistics have the following constraints:
 
-### Enable and disable automatic statistics collection for clusters
+- Partial statistics can only be collected if [full statistics](#full-statistics) already exist for the table.
+- Partial statistics created with `USING EXTREMES` and no `ON` clause are collected on all single-column prefixes of non-inverted indexes. Indexes that are [partial]({% link {{ page.version.version }}/partial-indexes.md %}), [hash-sharded]({% link {{ page.version.version }}/hash-sharded-indexes.md %}), or implicitly partitioned (such as in [`REGIONAL BY ROW` tables]({% link {{ page.version.version }}/regional-tables.md %}#regional-by-row-tables)) are excluded.
+- For [manual collection](#manually-collect-partial-statistics) with specific columns, an index must exist with a prefix matching those columns. If no matching index exists or if full statistics were not previously collected on the specified column, the statement returns an error.
 
-Automatic statistics collection is enabled by default. To disable automatic statistics collection, follow these steps:
+By default, the optimizer uses partial statistics for query planning. It merges partial statistics with existing full statistics to produce more accurate cardinality estimates.
+
+#### Automatically collect partial statistics
+
+Partial statistics are automatically collected on the highest and lowest index values when:
+
+- Automatic collection is enabled.
+- The number of stale rows in a table reaches a specified threshold.
+
+This is particularly beneficial for large tables where only a portion is regularly updated or queried, such as tables with timestamp columns where recent data is frequently accessed.
+
+To control automatic collection of partial statistics, use the following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) to configure behavior across all tables in the cluster:
+
+|                                                                                       Cluster setting                                                                                        |                                                                                            Description                                                                                             |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`sql.stats.automatic_partial_collection.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-automatic-partial-collection-enabled)                         | Enable automatic collection of partial table statistics.                                                                                                                                           |
+| [`sql.stats.automatic_partial_collection.min_stale_rows`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-automatic-partial-collection-min-stale-rows)           | Minimum number of stale rows that triggers partial statistics collection.                                                                                                                          |
+| [`sql.stats.automatic_partial_collection.fraction_stale_rows`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-automatic-partial-collection-fraction-stale-rows) | Target fraction of stale rows that triggers partial statistics collection. If lower than the `0.2` threshold for full statistics, partial statistics refresh more frequently than full statistics. |
+
+Override cluster settings for specific tables using the following [table storage parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters):
+
+|                                                             Table storage parameter                                                              |                                                                                                   Description                                                                                                   |
+|--------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`sql_stats_automatic_partial_collection_enabled`]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters)             | Enable automatic collection of partial statistics on the table.                                                                                                                                                 |
+| [`sql_stats_automatic_partial_collection_min_stale_rows`]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters)      | Minimum number of stale rows on the table that triggers partial statistics collection.                                                                                                                          |
+| [`sql_stats_automatic_partial_collection_fraction_stale_rows`]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters) | Target fraction of stale rows on the table that triggers partial statistics collection. If lower than the `0.2` threshold for full statistics, partial statistics refresh more frequently than full statistics. |
+
+#### Manually collect partial statistics
+
+You can manually create partial statistics on the highest and lowest index values, when [`enable_create_stats_using_extremes`]({% link {{ page.version.version }}/session-variables.md %}#enable-create-stats-using-extremes) session variable is enabled, using the `USING EXTREMES` clause: [`CREATE STATISTICS stats FROM table USING EXTREMES`]({% link {{ page.version.version }}/create-statistics.md %}#create-partial-statistics-using-extremes).
+
+### Toggle automatic statistics collection 
+
+#### Enable and disable automatic statistics collection for clusters
+
+Automatic statistics collection is enabled by default. To disable automatic [full](#full-statistics) and [partial](#partial-statistics) statistics collection, follow these steps:
 
 1. Set the `sql.stats.automatic_collection.enabled` cluster setting to `false`:
 
@@ -97,11 +163,11 @@ Automatic statistics collection is enabled by default. To disable automatic stat
 
 To learn how to manually generate statistics, see the [`CREATE STATISTICS` examples]({% link {{ page.version.version }}/create-statistics.md %}#examples).
 
-### Enable and disable automatic statistics collection for tables
+#### Enable and disable automatic statistics collection for tables
 
-Statistics collection can be expensive for large tables, and you may prefer to defer collection until after data is finished loading or during off-peak hours. Tables that are frequently updated, including small tables, may trigger statistics collection more often, which can lead to unnecessary overhead and unpredictable query plan changes.
+Automatic statistics collection can be expensive for large tables, and you may prefer to defer collection until after data is finished loading or during off-peak hours. Tables that are frequently updated, including small tables, may trigger statistics collection more often, which can lead to unnecessary overhead and unpredictable query plan changes.
 
-You can enable and disable automatic statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` storage parameter. This table setting **takes precedence** over the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) described in [Enable and disable automatic statistics collection for clusters](#enable-and-disable-automatic-statistics-collection-for-clusters).
+You can enable and disable automatic [full](#full-statistics) and [partial](#partial-statistics) statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` [storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters). This table setting **takes precedence** over the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) described in [Enable and disable automatic statistics collection for clusters](#enable-and-disable-automatic-statistics-collection-for-clusters).
 
 You can either configure this setting during table creation:
 
@@ -138,28 +204,22 @@ The current table settings are shown in the `WITH` clause output of `SHOW CREATE
 
 `ALTER TABLE accounts RESET (sql_stats_automatic_collection_enabled)` removes the table setting, in which case the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is in effect for the table.
 
-The "stale row" cluster settings discussed in [Control statistics refresh rate](#control-statistics-refresh-rate) have table
-setting counterparts `sql_stats_automatic_collection_fraction_stale_rows` and `sql_stats_automatic_collection_min_stale_rows`. For example:
+### Configure non-default statistics retention
 
-~~~ sql
-CREATE TABLE accounts (
-    id INT PRIMARY KEY,
-    balance DECIMAL)
-WITH (sql_stats_automatic_collection_enabled = true,
-sql_stats_automatic_collection_min_stale_rows = 1000000,
-sql_stats_automatic_collection_fraction_stale_rows= 0.05
-);
+By default, when CockroachDB refreshes statistics for a column, it deletes the previous statistics for the column while retaining the most recent four to five historical statistics. When CockroachDB refreshes statistics, it also deletes the statistics for any columns whose statistics are not [collected by default](#table-statistics).
 
-ALTER TABLE accounts
-SET (sql_stats_automatic_collection_fraction_stale_rows = 0.1,
-sql_stats_automatic_collection_min_stale_rows = 2000);
-~~~
+Do not retain historical statistics on non-default column sets indefinitely, because they are not refreshed automatically and can cause the optimizer to choose a suboptimal plan if they become stale. These non-default historical statistics can exist when columns are deleted or removed from an index and are no longer part of a multi-column statistic.
 
-Automatic statistics rules are checked once per minute. While altered automatic statistics table settings take immediate effect for any subsequent DML statements on a table, running row mutations that started prior to modifying the table settings may still trigger statistics collection based on the settings that existed before you ran the `ALTER TABLE ... SET` statement.
+CockroachDB deletes statistics on non-default columns according to the `sql.stats.non_default_columns.min_retention_period` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), which defaults to 24 hours.
 
-### Enable and disable forecasted statistics for tables
+### Forecasted statistics
 
-You can enable and disable [forecasted statistics]({% link {{ page.version.version }}/show-statistics.md %}#display-forecasted-statistics) collection for individual tables using the `sql_stats_forecasts_enabled` table parameter. This table setting **takes precedence** over the `sql.stats.forecasts.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+*Forecasted statistics* use a simple regression model that predicts how the statistics have changed since they were last collected. CockroachDB generates forecasted statistics when the following conditions are met:
+
+- There have been at least 3 historical statistics collections.
+- The historical statistics closely fit a linear pattern.
+
+You can enable and disable forecasted statistics collection for individual tables using the `sql_stats_forecasts_enabled` [table parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters). This table setting **takes precedence** over the `sql.stats.forecasts.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 You can either configure this setting during table creation:
 
@@ -195,8 +255,6 @@ The current table settings are shown in the `WITH` clause output of `SHOW CREATE
 ~~~
 
 `ALTER TABLE accounts RESET (sql_stats_forecasts_enabled)` removes the table setting, in which case the `sql.stats.forecasts.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is in effect for the table.
-
-For details on forecasted statistics, see [Display forecasted statistics]({% link {{ page.version.version }}/show-statistics.md %}#display-forecasted-statistics).
 
 ### Control histogram collection
 

@@ -1005,6 +1005,12 @@
               ]
             },
             {
+              "title": "<code>CITEXT</code>",
+              "urls": [
+                "/${VERSION}/citext.html"
+              ]
+            },
+            {
               "title": "<code>COLLATE</code>",
               "urls": [
                 "/${VERSION}/collate.html"

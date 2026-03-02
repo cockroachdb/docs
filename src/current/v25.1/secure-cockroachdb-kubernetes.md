@@ -46,8 +46,8 @@ spec:
 
 Replace:
 
-- `{node_secret_name}`: the name of the Kubernetes secret that contains the generated client certificate and key.
-- `{client_secret_name}`: the name of the Kubernetes secret that contains the generated node certificate and key.
+- `{node_secret_name}`: The name of the Kubernetes secret that contains the generated node certificate and key.
+- `{client_secret_name}`: The name of the Kubernetes secret that contains the generated client certificate and key.
 
 {{site.data.alerts.callout_info}}
 Currently, the Operator requires that the client and node secrets each contain the filenames `tls.crt` and `tls.key`.
@@ -73,8 +73,8 @@ tls:
 
 Replace:
 
-- `{node_secret_name}`: the name of the Kubernetes secret that contains the generated client certificate and key.
-- `{client_secret_name}`: the name of the Kubernetes secret that contains the generated node certificate and key.
+- `{node_secret_name}`: The name of the Kubernetes secret that contains the generated node certificate and key.
+- `{client_secret_name}`: The name of the Kubernetes secret that contains the generated client certificate and key.
 
 {% include {{ page.version.version }}/orchestration/apply-helm-values.md %}
 </section>

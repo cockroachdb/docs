@@ -1744,7 +1744,7 @@ For more information about production quality map routing software that uses Ope
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-There are multiple ways to do geocoding. You can use REST API-based services or do the geocoding yourself by processing [TIGER/LINE address data](https://www2.census.gov/geo/tiger/tigerua/) using a library for that purpose. For more information about some of the options available to you, see [this OpenStreetMap wiki page on geocoders](https://wiki.openstreetmap.org/wiki/Search_engines) or [this list of open source geocoding software](http://www.tsusiatsoftware.net/geocode.html).
+There are multiple ways to do geocoding. You can use REST API-based services or do the geocoding yourself by processing [TIGER/LINE address data](https://www2.census.gov/geo/tiger/tigerua/) using a library for that purpose. For more information about some of the options available to you, see [this OpenStreetMap wiki page on geocoders](https://wiki.openstreetmap.org/wiki/Search_engines) or [this list of geocoding software](http://www.tsusiatsoftware.net/geocode.html).
 {{site.data.alerts.end}}
 
 ##### The `roads` table

@@ -46,7 +46,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
-1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
+1. Download and extract the [Confluent platform](https://www.confluent.io/download/) (which includes Kafka).
 
 1. In a new terminal window, go to the extracted `confluent-<version>` directory and start Confluent:
 
@@ -185,7 +185,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     cockroach start-single-node --insecure --listen-addr=localhost
     ~~~
 
-1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
+1. Download and extract the [Confluent platform](https://www.confluent.io/download/) (which includes Kafka).
 
 1. Move into the extracted `confluent-<version>` directory and start Confluent:
 

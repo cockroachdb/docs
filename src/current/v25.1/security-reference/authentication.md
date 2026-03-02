@@ -122,3 +122,11 @@ CockroachDB {{ site.data.products.core }} deploys with the following default HBA
   local   all           all                        password
 ```
 
+### Access for SQL health monitoring
+
+CockroachDB {{ site.data.products.cloud }} uses a service user named `managed-sql-prober` that regularly runs `SELECT 1;` queries on the cluster to monitor and report issues with SQL availability. The default host-based authentication configurations allow this service user to run, but more restrictive HBA configurations may prevent SQL availability monitoring. To explicitly enable this service user to authenticate, add the following line to your HBA configuration:
+
+```
+# TYPE    DATABASE      USER                 ADDRESS        METHOD
+  host    all           managed-sql-prober   all            cert
+```

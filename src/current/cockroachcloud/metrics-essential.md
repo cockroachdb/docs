@@ -7,14 +7,14 @@ toc: true
 These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.standard }} cluster. The metrics are available on graphs on the tabs listed in the **Metrics tabs** column. Where **Custom** is listed, the metric may be graphed in a [**Custom Metrics Chart**]({% link cockroachcloud/custom-metrics-chart-page.md %}). The **Usage** column explains why each metric is important to visualize and how to make both practical and actionable use of the metric in a production deployment.
 
 {% assign version = site.current_cloud_version | replace: ".", "" %}
-{% assign types = site.data[version].metrics.metrics | map: "metric_type" | uniq %}
+{% assign types = site.data[version].metrics.metrics-cloud | map: "metric_type" | uniq %}
 {% comment %} Fetch the list of all metric types {% endcomment %}
 
 {% for t in types %} {% comment %} Iterate through the types. {% endcomment %}
 {% unless t contains "Request Units" %} {% comment %} Request Units is only for Basic tier. {% endcomment %}
 ## {{ t }}
 
-    {% assign metrics = site.data[version].metrics.metrics | where: "metric_type", t | sort: "metric_id" | where_exp: "metrics", "metrics.deploy_standard == true"%}
+    {% assign metrics = site.data[version].metrics.metrics-cloud | where: "metric_type", t | sort: "metric_id" | where_exp: "metrics", "metrics.deploy_standard == true"%}
     {% comment %} Fetch all metrics for that metric_type. {% endcomment %}
 
 <table markdown="1">
@@ -29,16 +29,29 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
     </thead>
     <tbody>    
     {% for m in metrics %} {% comment %} Iterate through the metrics. {% endcomment %}
-        {% assign metrics-list = site.data[version].metrics.metrics-list | where: "metric", m.metric_id %}
-        {% comment %} Get the row from the metrics-list with the given metric_id. {% endcomment %}
-        {% comment %} The metrics-list is generated using: cockroach gen metric-list --format=csv > metrics-list.csv and then changing the case of the headers to lowercase to work with liquid. {% endcomment %}
+        {% comment %} Get the row from the metrics.yaml with the given metric_id. {% endcomment %}
+
+        {% assign metrics-yaml = site.data[version].metrics.metrics %}
+        {%- comment -%} Looks for a metric anywhere in the nested structure: layers -> categories -> metrics{%- endcomment -%}
+
+        {%- assign found = "" -%}
+
+        {%- for layer in metrics-yaml.layers -%}
+            {%- for category in layer.categories -%}
+                {%- assign metric = category.metrics | where: "name", m.metric_id | first -%}
+                {%- if metric -%}
+                    {%- assign found = metric -%}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endfor -%}
+
         {% assign tab_array = m.metric_ui_tab | remove: '["' | remove: '"]'| split: "," %}
         
             <tr>
             <td><div id="{{ m.metric_id }}" class="anchored"><code>{{ m.metric_id }}</code></div></td>
             <td>{{ m.short_name }}</td>
-            <td>{{ metrics-list[0].description}}</td>
-            <td>{% include cockroachcloud/metrics-usage/{{ m.metric_id }}.md %}</td>
+            <td>{{ found.description}}</td>
+            <td>{{ found.how_to_use }}{{ m.how_to_use }}</td>
             <td>{% for t in tab_array %}
                     {% if t contains "Custom" %}
                         [{{ t | remove: '"' | strip }}]({% link cockroachcloud/custom-metrics-chart-page.md %}){%- unless forloop.last -%}, {% endunless %}

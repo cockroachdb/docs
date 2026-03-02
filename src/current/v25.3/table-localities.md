@@ -29,6 +29,8 @@ Table locality settings are used for optimizing latency under different read and
 
 {% include {{page.version.version}}/sql/regional-by-row-table-description.md %}
 
+To change the column or expression used to determine row locality for a regional by row table defined with `REGIONAL BY ROW AS {column}`, refer to [Modify the region column or its expression]({% link {{ page.version.version }}/alter-table.md %}#modify-rbr-region-column).
+
 ### Indexes on `REGIONAL BY ROW` tables
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}

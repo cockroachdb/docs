@@ -6,7 +6,7 @@ docs_area: manage
 ---
 
 {{site.data.alerts.callout_info}}
-CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+CockroachDB Standard is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 {% include cockroachcloud/filter-tabs/cluster-management.md %}
@@ -72,7 +72,7 @@ By default, major-version upgrades are automatically applied to CockroachDB {{ s
 When automatic upgrades are enabled and a new major version is available for CockroachDB {{ site.data.products.standard }}:
 
 - The cluster is automatically upgraded by Cockroach Labs to an early production patch release of the new major version, for example `vXX.Y.1`.
-- Each major version, whether a Regular release or Innovation release, is included.
+- Standard clusters are upgraded only to [Regular releases]({% link releases/index.md %}).
 - Each upgrade is finalized immediately, so it is not possible to roll back to the previous major version.
 
 When manual upgrades are enabled and a new major version is available for CockroachDB {{ site.data.products.standard }}:
@@ -132,7 +132,7 @@ To help prevent a cluster from being deleted by mistake, you can enable _deletio
 ## Delete cluster
 
 {{site.data.alerts.callout_danger}}
-Deleting a cluster will delete all cluster data.
+Deleting a cluster will delete all cluster data. Deleted clusters can not be restored.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

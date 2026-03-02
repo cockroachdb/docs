@@ -147,6 +147,73 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 (3 rows)
 ~~~
 
+### Create a view that references routines
+
+{% include_cached new-in.html version="v25.3" %} Views can call both scalar and set-returning [user-defined functions (UDFs)]({% link {{ page.version.version }}/user-defined-functions.md %}) in their `SELECT` statements.
+
+The following example builds a view over a table and two UDFs.
+
+Create and populate a table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE xy (x INT, y INT);
+INSERT INTO xy VALUES (1, 2), (3, 4), (5, 6);
+~~~
+
+Define a scalar and a set-returning UDF:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION f_scalar() RETURNS INT LANGUAGE SQL AS $$
+    SELECT count(*) FROM xy;
+  $$;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION f_setof() RETURNS SETOF xy LANGUAGE SQL AS $$
+    SELECT * FROM xy;
+  $$;
+~~~
+
+Create a view that references both functions:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE VIEW v_xy AS
+SELECT x, y, f_scalar() AS total_rows
+FROM f_setof();
+~~~
+
+Query the view:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM v_xy ORDER BY x;
+~~~
+
+~~~
+  x | y | total_rows
+----+---+-------------
+  1 | 2 |          3
+  3 | 4 |          3
+  5 | 6 |          3
+(3 rows)
+~~~
+
+Because the view depends on `f_scalar` and `f_setof`, attempting to rename either function returns an error:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER FUNCTION f_scalar RENAME TO f_scalar_renamed;
+~~~
+
+~~~
+ERROR: cannot rename function "f_scalar" because other functions or views ([movr.public.v_xy]) still depend on it
+SQLSTATE: 0A000
+~~~
+
 ## See also
 
 - [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})

@@ -63,12 +63,6 @@
         ]
       },
       {
-        "title": "Replication Reports",
-        "urls": [
-          "/${VERSION}/query-replication-reports.html"
-        ]
-      },
-      {
         "title": "Troubleshoot Replication Zones",
         "urls": [
           "/${VERSION}/troubleshoot-replication-zones.html"
@@ -111,6 +105,12 @@
         "title": "Automatic CPU Profiler",
         "urls": [
           "/${VERSION}/automatic-cpu-profiler.html"
+        ]
+      },
+      {
+        "title": "Automatic Go Execution Tracer",
+        "urls": [
+          "/${VERSION}/automatic-go-execution-tracer.html"
         ]
       }
     ]

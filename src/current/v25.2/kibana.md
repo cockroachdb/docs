@@ -8,7 +8,7 @@ docs_area: manage
 [Kibana](https://www.elastic.co/kibana/) is a platform that visualizes data on the [Elastic Stack](https://www.elastic.co/elastic-stack/). This page shows how to use the [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) to collect metrics exposed by your CockroachDB {{ site.data.products.core }} cluster's [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) in Elasticsearch and how to visualize those metrics with Kibana.
 
 {{site.data.alerts.callout_success}}
-To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/export-metrics.md %}) instead of this page.
+To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics.md %}) instead of this page.
 {{site.data.alerts.end}}
 
 In this tutorial, you will enable the CockroachDB module for Metricbeat and visualize the data in Kibana.
@@ -110,12 +110,6 @@ cockroach workload run movr --duration=5m 'postgresql://root@localhost:26257?ssl
 Click **Refresh**. The query metrics will appear on the dashboard:
 
 <img src="{{ 'images/v24.2/kibana-crdb-dashboard-sql.png' | relative_url }}" alt="CockroachDB Overview dashboard for Metricbeat with SQL metrics" style="border:1px solid #eee;max-width:100%" />
-
-## Step 5. Disable DB Console's local storage of metrics (optional)
-
-If you rely on external tools such as Kibana for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
-
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Kibana based on the data it is collecting from your cluster's Prometheus endpoint.
 
 ## See also
 

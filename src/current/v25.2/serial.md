@@ -242,3 +242,4 @@ When we insert rows without values in column `a` and display the new rows, we se
 
 - [FAQ: How do I auto-generate unique row IDs in CockroachDB?]({% link {{ page.version.version }}/sql-faqs.md %}#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
 - [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [`UUID`]({% link {{ page.version.version }}/uuid.md %})

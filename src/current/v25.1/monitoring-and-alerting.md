@@ -7,7 +7,7 @@ docs_area: manage
 
 In addition to CockroachDB's [built-in safeguards against failure]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-survive-failures), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
-This page describes the monitoring and observability tools that are built into CockroachDB {{ site.data.products.core }} and shows how to collect your cluster's metrics using external tools like Prometheus's AlertManager for event-based alerting. To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/export-metrics.md %}) instead of this page. For more details, refer to:
+This page describes the monitoring and observability tools that are built into CockroachDB {{ site.data.products.core }} and shows how to collect your cluster's metrics using external tools like Prometheus's AlertManager for event-based alerting. To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics.md %}) instead of this page. For more details, refer to:
 
 - [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %})
 - [Third-party Monitoring Tools]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})
@@ -158,7 +158,7 @@ The [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.
 
 ### Prometheus endpoint
 
-Every node of a CockroachDB cluster exports granular time-series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}), an open source tool for storing, aggregating, and querying time-series data. The Prometheus format is human-readable and can be processed to work with other third-party monitoring systems such as [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd). Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), collect metrics from a cluster's Prometheus endpoint.
+Every node of a CockroachDB cluster exports granular time-series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}), a tool for storing, aggregating, and querying time-series data. The Prometheus format is human-readable and can be processed to work with other third-party monitoring systems such as [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd). Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), collect metrics from a cluster's Prometheus endpoint.
 
 To access the Prometheus endpoint of a cluster running on `localhost:8080`:
 
@@ -200,10 +200,6 @@ The critical nodes status endpoint is used to:
 - Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) or [troubleshooting zone configurations]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}) generally.
 
 If you find under-replicated ranges or constraint violations, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
-
-{{site.data.alerts.callout_info}}
-This HTTP status endpoint supersedes the deprecated [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}) SQL API. Due to architectural changes in CockroachDB, the SQL queries described on that page will not result in correct output.
-{{site.data.alerts.end}}
 
 #### Fields
 
@@ -1040,7 +1036,7 @@ curl http://localhost:8080/_status/stores/1
 
 In addition to actively monitoring the overall health and performance of a cluster, it is also essential to configure alerting rules that promptly send notifications when CockroachDB experiences events that require investigation or intervention.
 
-Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), also support event-based alerting using metrics collected from a cluster's [Prometheus endpoint](#prometheus-endpoint). Refer to the documentation for an integration for more details. This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's open source [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) service.
+Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), also support event-based alerting using metrics collected from a cluster's [Prometheus endpoint](#prometheus-endpoint). Refer to the documentation for an integration for more details. This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) service.
 
 ### Alertmanager
 

@@ -11,7 +11,13 @@ You can use the keywords `ROLE` and `USER` interchangeably. [`ALTER USER`]({% li
 
 ## Considerations
 
-- Password creation and alteration is supported only in secure clusters.
+### Password management
+
+Password creation and alteration is supported only in secure clusters.
+
+### Session variable precedence
+
+{% include {{ page.version.version }}/sql/session-variable-precedence-order.md %}
 
 ## Required privileges
 

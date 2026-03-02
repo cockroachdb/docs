@@ -311,25 +311,25 @@ This can lead to disk utilization imbalance across nodes. **This is expected beh
 
 In this scenario, each range is replicated 3 times, with each replica on a different node:
 
-<div style="text-align: center;"><img src="{{ 'images/v24.1/decommission-scenario1.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="/docs/images/{{ page.version.version }}/decommission-scenario1.1.png" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 If you try to decommission a node, the process will hang indefinitely because the cluster cannot move the decommissioning node's replicas to the other 2 nodes, which already have a replica of each range:
 
-<div style="text-align: center;"><img src="{{ 'images/v24.1/decommission-scenario1.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="/docs/images/{{ page.version.version }}/decommission-scenario1.2.png" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 To successfully decommission a node in this cluster, you need to **add a 4th node**. The decommissioning process can then complete:
 
-<div style="text-align: center;"><img src="{{ 'images/v24.1/decommission-scenario1.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="/docs/images/{{ page.version.version }}/decommission-scenario1.3.png" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 #### 5-node cluster with 3-way replication
 
 In this scenario, like in the scenario above, each range is replicated 3 times, with each replica on a different node:
 
-<div style="text-align: center;"><img src="{{ 'images/v24.1/decommission-scenario2.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="/docs/images/{{ page.version.version }}/decommission-scenario2.1.png" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 If you decommission a node, the process will run successfully because the cluster will be able to move the node's replicas to other nodes without doubling up any range replicas:
 
-<div style="text-align: center;"><img src="{{ 'images/v24.1/decommission-scenario2.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
+<div style="text-align: center;"><img src="/docs/images/{{ page.version.version }}/decommission-scenario2.2.png" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
 </section>
 
@@ -834,7 +834,7 @@ On the **Cluster Overview** page of the DB Console, the [node status]({% link {{
 
 Most of the guidance in this page is most relevant to manual deployments that don't use Kubernetes. If you use Kubernetes to deploy CockroachDB, draining and decommissioning work the same way for the `cockroach` process, but Kubernetes handles them on your behalf. In a deployment without Kubernetes, an administrator initiates decommissioning or draining directly. In a Kubernetes deployment, an administrator modifies the desired configuration of the Kubernetes cluster and Kubernetes makes the required changes to the cluster, including decommissioning or draining nodes as required.
 
-- Whether you deployed a cluster using the CockroachDB Operator, Helm, or a manual StatefulSet, the resulting deployment is a StatefulSet. Due to the nature of StatefulSets, it's safe to decommission **only** the Cockroach node with the highest StatefulSet ordinal in preparation for scaling down the StatefulSet. If you think you need to decommission any other node, consider the following recommendations and [contact Support](https://support.cockroachlabs.com/hc/en-us) for assistance.
+- Whether you deployed a cluster using the {{ site.data.products.cockroachdb-operator }}, Helm, or a manual StatefulSet, the resulting deployment is a StatefulSet. Due to the nature of StatefulSets, it's safe to decommission **only** the Cockroach node with the highest StatefulSet ordinal in preparation for scaling down the StatefulSet. If you think you need to decommission any other node, consider the following recommendations and [contact Support](https://support.cockroachlabs.com/hc/en-us) for assistance.
 
     - If you deployed a cluster using the [CockroachDB Kubernetes Operator]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}), the best way to scale down a cluster is to update the specification for the Kubernetes deployment to reduce the value of `nodes:` and apply the change using a [rolling update](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/). Kubernetes will notice that there are now too many nodes and will reduce them and clean up their storage automatically.
 
@@ -854,7 +854,7 @@ After Kubernetes issues a termination request to the `cockroach` process on a cl
 
 If undefined, Kubernetes sets `terminationGracePeriodSeconds` to 30 seconds. This is too short for the `cockroach` process to stop gracefully before Kubernetes terminates it forcibly. Do not set `terminationGracePeriodSeconds` to `0`, which prevents Kubernetes from detecting and terminating a stuck pod.
 
-For clusters deployed using the CockroachDB Public Operator, `terminationGracePeriodSeconds` defaults to 300 seconds (5 minutes).
+For clusters deployed using the CockroachDB {{ site.data.products.public-operator }}, `terminationGracePeriodSeconds` defaults to 300 seconds (5 minutes).
 For clusters deployed using the CockroachDB Helm chart or a manual StatefulSet, the default depends upon the values file or manifest you used when you created the cluster.
 
 Cockroach Labs recommends that you:

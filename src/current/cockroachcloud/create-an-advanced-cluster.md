@@ -11,6 +11,10 @@ This page guides you through the process of creating a CockroachDB {{ site.data.
 
 Only [CockroachDB {{ site.data.products.cloud }} Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Organization Admin.
 
+{{site.data.alerts.callout_danger}}
+If you are creating a cluster for a [BYOC deployment]({% link cockroachcloud/byoc-deployment.md %}) you must use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to perform the actions described on this page.
+{{site.data.alerts.end}}
+
 ## Step 1. Start the cluster creation process
 
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_account" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>, then [log in](https://cockroachlabs.cloud/).
@@ -96,7 +100,7 @@ Click **Next: Security**.
 
 ## Step 6. Configure advanced security features
 
-You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. These features are not yet available for CockroachDB {{ site.data.products.advanced }} on Azure. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
+You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. These features are in Preview for CockroachDB {{ site.data.products.advanced }} on Azure. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
 {{site.data.alerts.callout_danger}}
 Advanced security features cannot be enabled or disabled after cluster creation.
@@ -125,14 +129,6 @@ The cluster is automatically given a randomly-generated name. If desired, change
 ## Step 8. Select the CockroachDB version
 
 When you create a new cluster, it uses the [latest CockroachDB {{ site.data.products.cloud }} production release](https://www.cockroachlabs.com/docs/releases/cloud) by default. All clusters are then upgraded automatically to each subsequent patch release of their major version as it becomes available. To learn more, refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
-
-Prior to the GA release of a new CockroachDB major version, a series of Beta and Release Candidate (RC) releases are made available for CockroachDB {{ site.data.products.advanced }} as [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. If available, the latest Pre-Production Preview release is listed as an option alongside the latest production release.
-
-{{site.data.alerts.callout_danger}}
-Testing releases, including Pre-Production Preview releases, are provided for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
-{{site.data.alerts.end}}
-
-If you install a Pre-Production Preview release, it will be upgraded to each subsequent beta or RC release automatically, before being upgraded to the GA and subsequent patch releases as they become available.
 
 To select the cluster version:
 

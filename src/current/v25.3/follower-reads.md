@@ -18,7 +18,7 @@ The following table summarizes the read types and how to accomplish them.
  | Strong Reads | Stale Reads
 -----|-----------|----------------------------------------------------------------
 Only From Leaseholder  | `SELECT` | N/A
-From Nearest Replica | `SELECT` on `GLOBAL` table	| `SELECT` with `AS OF SYSTEM TIME <historical-timestamp-function>`
+From Nearest Replica | `SELECT` on a `GLOBAL` table **or** a long-running `SELECT` whose read timestamp has fallen behind the [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) | `SELECT` with `AS OF SYSTEM TIME <historical-timestamp-function>`
 
 ## Stale follower reads
 
@@ -62,12 +62,6 @@ To see the current value of the follower read timestamp, execute the following q
 ~~~ sql
 SELECT now() - follower_read_timestamp();
 ~~~
-
-#### Exact staleness follower reads demo
-
-The following video describes and demonstrates [exact staleness](#exact-staleness-reads) follower reads.
-
-{% include_cached youtube.html video_id="V--skgN_JMo" %}
 
 #### Exact staleness follower reads in read-only transactions
 
@@ -257,6 +251,12 @@ For further details, see [An Epic Read on Follower Reads](https://www.cockroachl
 ### Known limitations
 
 {% include {{ page.version.version }}/known-limitations/follower-reads-limitations.md %}
+
+### Video demo
+
+For a demo of how to use follower reads to improve performance, watch the following video:
+
+{% include_cached youtube.html video_id="NzhhvgzHJj4" %}
 
 ## See also
 

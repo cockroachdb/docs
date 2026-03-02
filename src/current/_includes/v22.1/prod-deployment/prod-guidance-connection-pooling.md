@@ -1,1 +1,0 @@
-The total number of workload connections across all connection pools **should not exceed 4 times the number of vCPUs** in the cluster by a large amount.

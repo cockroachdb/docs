@@ -1,5 +1,7 @@
 ### Limitations
 
+#### Fetch limitations
+
 <section class="filter-content" markdown="1" data-scope="postgres">
 - `OID LOB` types in PostgreSQL are not supported, although similar types like `BYTEA` are supported.
 </section>
@@ -13,14 +15,12 @@
 - Only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded with [`--export-concurrency`]({% link molt/molt-fetch.md %}#best-practices).
 
 {% if page.name != "migrate-bulk-load.md" %}
-#### Replication limitations
+#### Replicator limitations
 
-<section class="filter-content" markdown="1" data-scope="postgres">
-- Replication modes require write access to the PostgreSQL primary instance. MOLT cannot create replication slots or run replication against a read replica.
-</section>
+- Replication modes require connection to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). MOLT cannot obtain replication checkpoints or transaction metadata from replicas.
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-- MySQL replication is supported only with GTID-based configurations. Binlog-based features that do not use GTID are not supported.
+- MySQL replication is supported only with [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html)-based configurations. Binlog-based features that do not use GTID are not supported.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">

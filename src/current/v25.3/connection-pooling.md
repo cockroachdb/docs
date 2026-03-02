@@ -43,17 +43,17 @@ Cockroach Labs recommends starting with a 5 minute maximum connection lifetime a
 
 Configure your connection pooling with [connection jitter](#avoid-spikes-in-new-connections) to prevent connection storms.
 
+### Set the maximum lifetime of idle connections
+
+Set the maximum lifetime of idle connections to the same value as the [maximum lifetime of connections](#set-the-maximum-lifetime-of-connections).
+
 ### Set the maximum number of open connections
 
 The maximum number of open connections should be set to a value that is greater than the maximum number of concurrent queries that your application worker expects to make. Doing so minimizes the need to establish new connections.
 
 ### Set the maximum number of idle connections
 
-Set the maximum number of idle connections to the same value as the maximum number of open connections.
-
-### Set the maximum lifetime of idle connections
-
-Set the maximum lifetime of idle connections to the same value as the maximum lifetime of connections.
+Set the maximum number of idle connections to the same value as the [maximum number of open connections](#set-the-maximum-number-of-open-connections).
 
 ## Optimize your connection pool
 
@@ -77,13 +77,13 @@ Validating connections is typically handled automatically by the connection pool
   <button class="filter-button page-level" data-scope="selfhosted"><strong>{{ site.data.products.core }}</strong></button>
 </div>
 
-If your connection pool is properly configured, the total number of connections to your cluster will typically be at least 100 times larger than the number of new connections per second to your cluster.
+If your connection pool is properly configured, the total number of open connections to your cluster will typically be at least 100 times larger than the number of new connections per second to your cluster.
 
 Idle connections in CockroachDB do not consume many resources compared to PostgreSQL. Unlike PostgreSQL, which has a hard limit of 5000 connections, CockroachDB can safely support tens of thousands of connections.
 
 <section class="filter-content" markdown="1" data-scope="shared">
 
-The [SQL Connection graph]({% link cockroachcloud/metrics-sql.md %}#sql-connections) shows how many new connections are being created each second. The [Open SQL Sessions graph]({% link cockroachcloud/metrics-sql.md %}#open-sql-sessions) shows the total number of SQL client connections across the cluster. To determine if your connection pool is correctly configured use the metrics from these graphs in the following formula:
+The [**SQL Connection** graph]({% link cockroachcloud/metrics-sql.md %}#sql-connections) shows how many new connections are being created each second. The [**Open SQL Sessions** graph]({% link cockroachcloud/metrics-sql.md %}#open-sql-sessions) shows the total number of SQL client connections across the cluster. To determine if your connection pool is correctly configured use the metrics from these graphs in the following formula:
 
 **SQL Connection Attempts < SQL Open Sessions/100**
 
@@ -99,17 +99,19 @@ Multi-region {{ site.data.products.basic }} and {{ site.data.products.standard }
 
 <section class="filter-content" markdown="1" data-scope="advanced selfhosted">
 
-Use the following formula to size the connection pool:
+Use the following formula as a starting point to size the connection pool:
 
-**connections = (number of cores * 4)**
+**active connections = (number of cores * 4)**
 
-If you have a large number of services connecting to the same cluster, make sure the number of concurrent active connections across all the services does not exceed this recommendation. If each service has its own connection pool, then you should make sure the sum of all the pool sizes is close to our maximum connections recommendation.
+If you have a large number of services connecting to the same cluster, make sure the number of [concurrent active connections](#monitor-active-connections) across all the services does not exceed this recommendation. If each service has its own connection pool, ensure the total number of concurrent active connections across all services stays within this limit.
 
-For multi-region clusters, create a connection pool per region, and size the maximum connection pool for each region in your cluster using the same formula as a single-region cluster.
+For multi-region clusters, create a connection pool per region, and apply the same active connection limits for each region in your cluster. For example, if you have 3 regions in your cluster, and each region has 12 vCPUs, the concurrent active connection limit **per region** is 48 (12 [processor cores] * 4).
 
-For example, if you have 3 regions in your cluster, and each region has 12 vCPUs, create a connection pool for each region, with each connection pool having a maximum pool size of 48 (12 [processor cores] * 4).
+{{site.data.alerts.callout_info}}
+[Connection pool sizes](#set-the-maximum-number-of-open-connections) can be much larger than the active connections limit, since most connections will be idle and have almost no overhead.
+{{site.data.alerts.end}}
 
-{% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
+{% include {{page.version.version}}/sql/server-side-connection-limit.md %}
 
 </section>
 
@@ -122,11 +124,11 @@ To validate that your connection pool is correctly configured, monitor the SQL c
 ### Monitor new connections
 
 <section class="filter-content" markdown="1" data-scope="advanced selfhosted">
-The [`sql.new_conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [SQL Connection Rate graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-connection-rate) expose the number of new SQL connections per second.
+The [`sql.new_conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [**SQL Connection Rate** graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-connection-rate) expose the number of new SQL connections per second.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="shared">
-The [SQL Connections graph]({% link cockroachcloud/metrics-sql.md %}#sql-connections) shows the number of new SQL connections per second.
+The [**SQL Connections** graph]({% link cockroachcloud/metrics-sql.md %}#sql-connections) shows the number of new SQL connections per second.
 </section>
 
 A misconfigured connection pool will result in most database operations requiring a new connection to be established, which will increase query latency.
@@ -135,23 +137,21 @@ A misconfigured connection pool will result in most database operations requirin
 
 <section class="filter-content" markdown="1" data-scope="advanced selfhosted">
 
-The [`sql.conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Open SQL Sessions graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#open-sql-sessions) show the number of open connections on your cluster or node.
+The [`sql.conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [**Open SQL Sessions** graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#open-sql-sessions) show the number of open connections on your cluster or node.
 
-The [`sql.statements.active` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Active SQL Statements graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#active-sql-statements) show the number of active connections on your cluster or node. A connection is "active" when it is actively executing a query.
+The [`sql.statements.active` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [**Active SQL Statements** graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#active-sql-statements) show the number of **active** connections on your cluster or node. A connection is "active" when it is actively executing a query.
 
 Using the following formula:
 
-**connections = (number of cores * 4)**
+**active connections = (number of cores * 4)**
 
-if the number of active connections exceeds 4 times the number of cores in your cluster your application is likely not achieving maximum throughput, and you should reduce the maximum number of connections in your connection pool, or scale the cluster by adding more nodes or cores per node.
-
-Reducing the number of active connections may increase overall throughput, possibly at the expense of increased tail latency for your queries.
+If the number of concurrent active connections exceeds 4 times the number of cores in your cluster, your application is likely not achieving maximum throughput. You should reduce the concurrent workload across your applications, or scale the cluster by adding more nodes or cores per node. Reducing the number of active connections may increase overall throughput, possibly at the expense of increased tail latency for your queries.
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="shared">
 
-The [Open SQL Sessions graph]({% link cockroachcloud/metrics-sql.md %}#open-sql-sessions) shows the number of open connections on your cluster.
+The [**Open SQL Sessions** graph]({% link cockroachcloud/metrics-sql.md %}#open-sql-sessions) shows the number of open connections on your cluster.
 
 </section>
 

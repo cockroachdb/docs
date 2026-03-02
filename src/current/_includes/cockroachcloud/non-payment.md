@@ -1,0 +1,3 @@
+If a {{ site.data.products.cloud }} organization with billing configured lapses in payment, non-payment reminders are sent the **Billing contact info** designated in the {{ site.data.products.cloud }} Console under **Billing** > **Settings**. By default this billing contact is set to the original Organization Admin of the {{ site.data.products.cloud }} organization.
+
+After sending multiple payment failure reminders with no acknowledgement or change in billing, all clusters in the organization are deleted including data. Deleted clusters cannot be restored.

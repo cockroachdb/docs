@@ -65,6 +65,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`SET {storage parameter}`](#set-storage-parameter) | Set a storage parameter on a table. | Yes
 [`SET LOCALITY`](#set-locality) |  Set the table locality for a table in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). | No
 [`SET SCHEMA`](#set-schema) |  Change the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a table. | No
+[`SCATTER`](#scatter) | Makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of a table or index. Note that it does not return an error even if replicas are not moved. | No
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the table. | No
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the table. | No
 [`VALIDATE CONSTRAINT`](#validate-constraint) | Check whether values in a column match a [constraint]({% link {{ page.version.version }}/constraints.md %}) on the column. | Yes
@@ -599,6 +600,32 @@ The user must have the `DROP` [privilege]({% link {{ page.version.version }}/sec
 Parameter | Description |
 ----------|-------------|
 `schema_name` | The name of the new schema for the table.
+
+For usage, see [Synopsis](#synopsis).
+
+### `SCATTER`
+
+`ALTER TABLE ... SCATTER` runs a specified set of ranges for a table or index through the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}) queue. If many ranges have been created recently, the replication queue may transfer some leases to other replicas to balance load across the cluster.
+
+Note that this statement makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of an index. It does not return an error even if replicas are not moved.
+
+{{site.data.alerts.callout_info}}
+`SCATTER` has the potential to result in data movement proportional to the size of the table or index being scattered, thus taking additional time and resources to complete.
+{{site.data.alerts.end}}
+
+For examples, see [Scatter tables](#scatter-tables).
+
+#### Required privileges
+
+The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table or index.
+
+#### Parameters
+
+Parameter | Description
+----------|-------------
+`table_name` | The name of the table that you want to scatter.
+`table_index_name` | The name of the index that you want to scatter.
+`expr_list` | A list of [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}) in the form of the primary key of the table or the specified index.
 
 For usage, see [Synopsis](#synopsis).
 
@@ -1176,71 +1203,87 @@ By default, referenced columns must be in the same database as the referencing f
 
 #### Drop and add a primary key constraint
 
-Suppose that you want to add `name` to the composite primary key of the `users` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key).
+Suppose that you want to add `creation_time` to the composite primary key of the `promo_codes` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key). To do so, use [`DROP CONSTRAINT`](#drop-constraint) and [`ADD CONSTRAINT`](#add-constraint) in a single `ALTER TABLE` statement.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE TABLE users;
-~~~
+1. View the details of the `promo_codes` table:
 
-~~~
-  table_name |                      create_statement
--------------+--------------------------------------------------------------
-  users      | CREATE TABLE users (
-             |     id UUID NOT NULL,
-             |     city VARCHAR NOT NULL,
-             |     name VARCHAR NULL,
-             |     address VARCHAR NULL,
-             |     credit_card VARCHAR NULL,
-             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
-             | )
-(1 row)
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SHOW CREATE TABLE promo_codes;
+	~~~
 
-1. Add a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint to the `name` column with [`ALTER COLUMN`](#alter-column).
+	~~~
+	  table_name  |                      create_statement
+	--------------+------------------------------------------------------------
+	  promo_codes | CREATE TABLE public.promo_codes (
+	              |     code VARCHAR NOT NULL,
+	              |     description VARCHAR NULL,
+	              |     creation_time TIMESTAMP NULL,
+	              |     expiration_time TIMESTAMP NULL,
+	              |     rules JSONB NULL,
+	              |     CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC)
+	              | ) WITH (schema_locked = true);
+	(1 row)
+	~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > ALTER TABLE users ALTER COLUMN name SET NOT NULL;
-    ~~~
-
-1. In the same transaction, `DROP` the old `"primary"` constraint and [`ADD`](#add-constraint) the new one:
+1. Add a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint to the `creation_time` column with [`ALTER COLUMN`](#alter-column):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > BEGIN;
-    > ALTER TABLE users DROP CONSTRAINT "primary";
-    > ALTER TABLE users ADD CONSTRAINT "primary" PRIMARY KEY (city, name, id);
-    > COMMIT;
+    ALTER TABLE promo_codes ALTER COLUMN creation_time SET NOT NULL;
     ~~~
 
-    ~~~
-    NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
-    ~~~
+1. The `promo_codes` table is schema-locked with the [`schema_locked` table parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters), and the `DROP CONSTRAINT` and `ADD CONSTRAINT` schema changes cannot automatically unset `schema_locked`. In this case, you must manually unlock the table with `schema_locked = false`, complete the schema change, and then lock the table again with `schema_locked = true`.
 
-1. View the table structure: 
+	Unlock the table:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	ALTER TABLE promo_codes SET (schema_locked = false);
+	~~~
+
+1. To issue the schema change atomically, use single statements as an implicit transaction. `DROP CONSTRAINT` and `ADD CONSTRAINT` can be combined in a single `ALTER TABLE` statement:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	ALTER TABLE promo_codes
+	  DROP CONSTRAINT promo_codes_pkey,
+	  ADD CONSTRAINT promo_codes_pkey PRIMARY KEY (code, creation_time);
+	~~~
+
+	{{site.data.alerts.callout_info}}
+	You should **not** execute the schema change with multiple statements within an explicit transaction. Refer to [Schema changes within transactions]({% link {{ page.version.version }}/online-schema-changes.md %}#schema-changes-within-transactions).
+	{{site.data.alerts.end}}
+
+1. Re-enable `schema_locked` on the table:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	ALTER TABLE promo_codes SET (schema_locked = true);
+	~~~
+
+1. View the updated table structure:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > SHOW CREATE TABLE users;
+    SHOW CREATE TABLE promo_codes;
     ~~~
 
     ~~~
-      table_name |                          create_statement
-    -------------+---------------------------------------------------------------------
-      users      | CREATE TABLE users (
-                |     id UUID NOT NULL,
-                |     city VARCHAR NOT NULL,
-                |     name VARCHAR NOT NULL,
-                |     address VARCHAR NULL,
-                |     credit_card VARCHAR NULL,
-                |     CONSTRAINT "primary" PRIMARY KEY (city ASC, name ASC, id ASC),
-                |     FAMILY "primary" (id, city, name, address, credit_card)
-                | )
-    (1 row)
+	  table_name  |                             create_statement
+	--------------+----------------------------------------------------------------------------
+	  promo_codes | CREATE TABLE public.promo_codes (
+	              |     code VARCHAR NOT NULL,
+	              |     description VARCHAR NULL,
+	              |     creation_time TIMESTAMP NOT NULL,
+	              |     expiration_time TIMESTAMP NULL,
+	              |     rules JSONB NULL,
+	              |     CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC, creation_time ASC)
+	              | ) WITH (schema_locked = true);
+	(1 row)
     ~~~
 
-Using [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
+Using [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) would have created a `UNIQUE` secondary index called `promo_codes_code_key`. Instead, there is just one index for the primary key constraint.
 
 #### Add a unique index to a `REGIONAL BY ROW` table
 
@@ -1836,10 +1879,6 @@ To unhide the column, run:
 
 ### Alter a primary key
 
-#### Demo
-
-{% include_cached youtube.html video_id="MPx-LXY2D-c" %}
-
 #### Alter a single-column primary key
 
 Suppose that you are storing the data for users of your application in a table called `users`, defined by the following `CREATE TABLE` statement:
@@ -1852,7 +1891,7 @@ Suppose that you are storing the data for users of your application in a table c
 );
 ~~~
 
-The primary key of this table is on the `name` column. This is a poor choice, as some users likely have the same name, and all primary keys enforce a `UNIQUE` constraint on row values of the primary key column. Per our [best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-functions-to-generate-unique-ids), you should instead use a `UUID` for single-column primary keys, and populate the rows of the table with generated, unique values.
+The primary key of this table is on the `name` column. This is a poor choice, as some users likely have the same name, and all primary keys enforce a `UNIQUE` constraint on row values of the primary key column. Per our [best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-functions-to-generate-unique-ids), you should instead use a [`UUID`]({% link {{ page.version.version }}/uuid.md %}) for single-column primary keys, and populate the rows of the table with generated, unique values.
 
 You can add a column and change the primary key with a couple of `ALTER TABLE` statements:
 
@@ -2571,6 +2610,10 @@ SELECT crdb_region, id FROM {table};
 UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 ~~~
 
+{{site.data.alerts.callout_success}}
+{% include_cached new-in.html version="v25.3" %} CockroachDB can also [infer a row's home region from a foreign key constraint](#infer-a-rows-home-region-from-a-foreign-key).
+{{site.data.alerts.end}}
+
 To add a new row to a regional by row table, you must choose one of the following options.
 
 - Let CockroachDB set the row's home region automatically. It will use the region of the [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) from which the row is inserted.
@@ -2614,6 +2657,174 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
+<a name="modify-rbr-region-column"></a>
+
+#### Modify the region column or its expression
+
+{% include {{ page.version.version }}/sql/modify-region-column-or-its-expression.md %}
+
+#### Infer a row's home region from a foreign key
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters) lets a [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) child table automatically set the hidden `crdb_region` column by looking up the referenced parent row. The parameter must be set to the name of a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraint on the child table that includes the `crdb_region` column.
+
+{{site.data.alerts.callout_info}}
+`infer_rbr_region_col_using_constraint` and [auto-rehoming](#turn-on-auto-rehoming-for-regional-by-row-tables) are mutually exclusive. Enable one mode per `REGIONAL BY ROW` table, not both.
+{{site.data.alerts.end}}
+
+1. Start a [multi-node, multi-region `cockroach demo` cluster]({% link {{ page.version.version }}/cockroach-demo.md %}#start-a-multi-region-demo-cluster):
+
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	cockroach demo --global --nodes 9 --insecure
+	~~~
+
+	The command opens an interactive SQL shell connected to the temporary, in-memory cluster that is running with three simulated regions.
+
+1. In the SQL shell, create a multi-region `demo` database:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	CREATE DATABASE demo PRIMARY REGION "us-east1" REGIONS "us-west1", "europe-west1";
+	USE demo;
+	~~~
+
+1. Verify the regions that are available to the `demo` database:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SHOW REGIONS FROM DATABASE demo;
+	~~~
+
+	~~~
+	  database |    region    | primary | secondary |  zones
+	-----------+--------------+---------+-----------+----------
+	  demo     | us-east1     |    t    |     f     | {b,c,d}
+	  demo     | europe-west1 |    f    |     f     | {b,c,d}
+	  demo     | us-west1     |    f    |     f     | {a,b,c}
+	(3 rows)
+	~~~
+
+1. Enable the following cluster setting:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SET CLUSTER SETTING feature.infer_rbr_region_col_using_constraint.enabled = true;
+	~~~
+
+1. Create a parent table that is `REGIONAL BY ROW`:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	CREATE TABLE parent (
+	  id INT PRIMARY KEY,
+	  data TEXT
+	) LOCALITY REGIONAL BY ROW;
+	~~~
+
+1. Create a child table whose rows should live in the same region as their parent rows. The table's foreign key **must** include `crdb_region`, and the `infer_rbr_region_col_using_constraint` parameter must be set to the name of the foreign key (in this example, `fk_parent`):
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	CREATE TABLE child (
+	  id INT PRIMARY KEY,
+	  parent_id INT,
+	  info TEXT,
+	  CONSTRAINT fk_parent FOREIGN KEY (crdb_region, parent_id) REFERENCES parent (crdb_region, id)
+	  ) WITH (infer_rbr_region_col_using_constraint = 'fk_parent')
+	  LOCALITY REGIONAL BY ROW;
+	~~~
+
+1. Insert a row into the parent table that lives in the primary region (`us-east1`):
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	INSERT INTO parent (id, data, crdb_region) VALUES (1, 'east row', 'us-east1');
+	~~~
+
+1. Run the following command to view IDs and connection strings for all nodes in the cluster:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ 
+	\demo ls
+	~~~
+
+	~~~
+	node 1:
+	   (webui)    http://127.0.0.1:8080
+
+	  Application tenant:
+	   (cli)      cockroach sql --insecure -d cluster:demoapp/movr
+	   (sql)      postgresql://root@127.0.0.1:26257/movr?options=-ccluster%3Ddemoapp&sslmode=disable
+	   (sql/jdbc) jdbc:postgresql://127.0.0.1:26257/movr?options=-ccluster%3Ddemoapp&sslmode=disable&user=root
+	   (sql/unix) postgresql://root:unused@/defaultdb?host=%2FUsers%2Fryankuo%2F.cockroach-demo&options=-ccluster%3Ddemoapp&port=26257
+	   (rpc)      127.0.0.1:26357
+
+	...
+
+	node 9:
+	   (webui)    http://127.0.0.1:8088
+
+	  Application tenant:
+	   (cli)      cockroach sql --insecure -p 26265 -d cluster:demoapp/movr
+	   (sql)      postgresql://root@127.0.0.1:26265/movr?options=-ccluster%3Ddemoapp&sslmode=disable
+	   (sql/jdbc) jdbc:postgresql://127.0.0.1:26265/movr?options=-ccluster%3Ddemoapp&sslmode=disable&user=root
+	   (sql/unix) postgresql://root:unused@/defaultdb?host=%2FUsers%2Fryankuo%2F.cockroach-demo&options=-ccluster%3Ddemoapp&port=26265
+	   (rpc)      127.0.0.1:26365
+	~~~
+
+1. Follow one of the `webui` URLs in the preceding output and open the [**Network Latency** Page]({% link {{ page.version.version }}/ui-network-latency-page.md %}) in the DB Console. This page displays the region associated with each node ID.
+
+	In a **new** terminal, connect to a node in a non-primary region (in this example, `us-west1` or `europe-west1`) using its connection string:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	cockroach sql --insecure -p 26265 -d cluster:demoapp/demo
+	~~~
+
+1. Verify that the node you're connected to is in a non-primary region:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SHOW LOCALITY;
+	~~~
+
+	~~~
+	          locality
+	----------------------------
+	  region=europe-west1,az=d
+	~~~
+
+1. Insert a row into the child table from the node you're connected to:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	INSERT INTO child (id, parent_id, info) VALUES (10, 1, 'hello from gateway');
+	~~~
+
+1. View the value of the hidden `crdb_region` column. Even though the row was inserted from a non-primary gateway region, CockroachDB uses the foreign-key constraint to look up and copy the parent row's region into the child row:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SELECT id, parent_id, crdb_region FROM child;
+	~~~
+
+	~~~
+	  id | parent_id | crdb_region
+	-----+-----------+--------------
+	  10 |         1 | us-east1
+	~~~
+
+1. If you later need to disable the behavior, [reset the storage parameter](#reset-storage-parameter):
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	ALTER TABLE child RESET (infer_rbr_region_col_using_constraint);
+	~~~
+
 #### Turn on auto-rehoming for `REGIONAL BY ROW` tables
 
 {{site.data.alerts.callout_info}}
@@ -2634,7 +2845,7 @@ SET enable_auto_rehoming = on;
 Once enabled, the auto-rehoming behavior described here has the following limitations:
 
 - It **will only apply to newly created `REGIONAL BY ROW` tables**, using an `ON UPDATE` expression that is added to the [`crdb_region`](#crdb_region) column. Existing `REGIONAL BY ROW` tables will not be auto-rehomed.
-- The [`crdb_region`](#crdb_region) column from a [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) table cannot be referenced as a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) from another table.
+- The [`crdb_region`](#crdb_region) column from a [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) table cannot be referenced as a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) from another table. This also means the [`infer_rbr_region_col_using_constraint` table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters) cannot be used to [infer a row's home region](#infer-a-rows-home-region-from-a-foreign-key).
 
 To enable auto-rehoming for an existing `REGIONAL BY ROW` table, manually update it using an [`ALTER TABLE ... ALTER COLUMN`](#alter-column) statement with an `ON UPDATE` expression:
 
@@ -2825,6 +3036,57 @@ Then, change the table's schema:
   public         | vehicle_location_histories | table |                1000
   public         | vehicles                   | table |                  15
 (6 rows)
+~~~
+
+### Scatter tables
+
+Before scattering, you can view the current replica and leaseholder distribution for a table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+~~~
+
+~~~
+  range_id | lease_holder | replicas
+-----------+--------------+-----------
+        94 |            2 | {2,5,9}
+        78 |            3 | {3,5,9}
+        77 |            2 | {2,4,9}
+        76 |            3 | {3,6,9}
+        95 |            3 | {3,5,9}
+        75 |            2 | {2,5,8}
+        87 |            4 | {2,4,7}
+        85 |            2 | {2,5,9}
+        86 |            7 | {3,4,7}
+(9 rows)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE movr.users SCATTER;
+~~~
+
+After scattering, recheck the leaseholder distribution:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+~~~
+
+~~~
+  range_id | lease_holder | replicas
+-----------+--------------+-----------
+        94 |            5 | {2,5,8}
+        78 |            1 | {1,5,9}
+        77 |            1 | {1,4,9}
+        76 |            1 | {1,6,9}
+        95 |            1 | {1,5,9}
+        75 |            1 | {1,5,8}
+        87 |            7 | {2,4,7}
+        85 |            1 | {1,5,9}
+        86 |            3 | {3,4,7}
+(9 rows)
 ~~~
 
 ### Split and unsplit tables

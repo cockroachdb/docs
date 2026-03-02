@@ -102,7 +102,7 @@ On this page, you can read about changes and find downloads for all production a
 {% comment %}Only show these bullet points if the version has been released{% endcomment %}
 {% if released == true %}
 {% comment %}v1.0 has no #v1-0-0 anchor, and before GA other releases also do not.{% endcomment %}
-- For key feature enhancements in {{ page.major_version }} and other upgrade considerations, refer to the notes for {% if include.major_version.release_date != 'N/A' and page.major_version != 'v1.0' %}[{{ page.major_version }}.0](#{{ page.major_version | replace: '.', '-' }}-0){% else %}{{ page.major_version }} on this page{% endif %}.
+- For key feature enhancements in {{ page.major_version }} and other upgrade considerations, refer to the notes for {% if include.major_version.release_date != 'N/A' and page.major_version != 'v1.0' and page.major_version != 'v19.2' %}[{{ page.major_version }}.0](#{{ page.major_version | replace: '.', '-' }}-0){% else %}{{ page.major_version }} on this page{% endif %}.
 {% endif %}
 {% endif %}{% comment %}End GA-only content{% endcomment %}
 - For details about release types, naming, and licensing, refer to the [Releases]({% link releases/index.md %}) page.

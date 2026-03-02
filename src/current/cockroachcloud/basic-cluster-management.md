@@ -115,7 +115,7 @@ Deleting a cluster will delete all cluster data.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Free CockroachDB {{ site.data.products.basic }} clusters are subject to deletion after 6 months of no activity.
+Free CockroachDB {{ site.data.products.basic }} clusters are subject to deletion after 6 months of no activity. Deleted clusters can not be restored.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:

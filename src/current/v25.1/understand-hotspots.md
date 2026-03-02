@@ -139,7 +139,7 @@ On this page, the phrase _index hotspot_ will be reserved for a hot by write hot
 
 #### Resolving index hotspots
 
-The resolution of the index hotspot often depends on your requirements for the data. If the sequential nature of the index serves no purpose, it is recommended to change the writes into the index to be randomly distributed. Ideally, primary keys in this instance would be set to `UUID`s, if your tolerance for swapover or even downtime allows it.
+The resolution of the index hotspot often depends on your requirements for the data. If the sequential nature of the index serves no purpose, it is recommended to change the writes into the index to be randomly distributed. Ideally, primary keys in this instance would be set to [`UUID`]({% link {{ page.version.version }}/uuid.md %})s, if your tolerance for swapover or even downtime allows it.
 
 If inserting in sequential order is important, the index itself can be [hash-sharded]({% link {{ page.version.version }}/hash-sharded-indexes.md %}), which means that it is still stored in order, albeit in some number of shards. Consider a `users` table, with a primary key `id INT`, which is hash-sharded with 4 shards, and a hashing function of modulo 4. The following image illustrates this example:
 

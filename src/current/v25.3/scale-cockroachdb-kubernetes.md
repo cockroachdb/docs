@@ -13,8 +13,12 @@ This article assumes you have already [deployed CockroachDB on a single Kubernet
 
 This page explains how to add and remove CockroachDB nodes on Kubernetes.
 
+This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Cluster Scaling with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/scale-cockroachdb-operator.md %}).
+
+{% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
+
 <div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="operator">Operator</button>
+    <button class="filter-button" data-scope="operator">{{ site.data.products.public-operator }}</button>
     <button class="filter-button" data-scope="manual">Manual Configs</button>
     <button class="filter-button" data-scope="helm">Helm</button>
 </div>
@@ -51,7 +55,7 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
   1. If you are adding nodes after previously [scaling down](#remove-nodes), and have not enabled [automatic PVC pruning](#automatic-pvc-pruning), you must first manually delete any persistent volumes that were orphaned by node removal.
 
         {{site.data.alerts.callout_info}}
-        Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/542), automatic pruning of PVCs is currently disabled by default. This means that after decommissioning and removing a node, the Operator will not remove the persistent volume that was mounted to its pod. 
+        Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/542), automatic pruning of PVCs is currently disabled by default. This means that after decommissioning and removing a node, the {{ site.data.products.public-operator }} will not remove the persistent volume that was mounted to its pod. 
         {{site.data.alerts.end}}
 
         View the PVCs on the cluster:
@@ -103,7 +107,7 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
         persistentvolumeclaim "datadir-cockroachdb-5" deleted
         ~~~
 
-1. Update `nodes` in the Operator's custom resource, which you downloaded when [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster), with the target size of the CockroachDB cluster. This value refers to the number of CockroachDB nodes, each running in one pod:
+1. Update `nodes` in the {{ site.data.products.public-operator }}'s custom resource, which you downloaded when [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster), with the target size of the CockroachDB cluster. This value refers to the number of CockroachDB nodes, each running in one pod:
 
     ~~~
     nodes: 6
@@ -157,13 +161,13 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 
 <section class="filter-content" markdown="1" data-scope="operator">
 {{site.data.alerts.callout_danger}}
-Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/542), automatic pruning of PVCs is currently disabled by default. This means that after decommissioning and removing a node, the Operator will not remove the persistent volume that was mounted to its pod. 
+Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/542), automatic pruning of PVCs is currently disabled by default. This means that after decommissioning and removing a node, the {{ site.data.products.public-operator }} will not remove the persistent volume that was mounted to its pod. 
 
 If you plan to eventually [scale up](#add-nodes) the cluster after scaling down, you will need to manually delete any PVCs that were orphaned by node removal before scaling up. For more information, see [Add nodes](#add-nodes).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-If you want to enable the Operator to automatically prune PVCs when scaling down, see [Automatic PVC pruning](#automatic-pvc-pruning). However, note that this workflow is currently unsupported.
+If you want to enable the {{ site.data.products.public-operator }} to automatically prune PVCs when scaling down, see [Automatic PVC pruning](#automatic-pvc-pruning). However, note that this workflow is currently unsupported.
 {{site.data.alerts.end}}
 
 Before scaling down CockroachDB, note the following [topology recommendation]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology):
@@ -179,7 +183,7 @@ If your nodes are distributed across 3 availability zones (as in our [deployment
     ~~~
 
     {{site.data.alerts.callout_info}}
-    Before removing a node, the Operator first decommissions the node. This lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+    Before removing a node, the {{ site.data.products.public-operator }} first decommissions the node. This lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
     {{site.data.alerts.end}}
 
 1. Apply the new settings to the cluster:
@@ -189,7 +193,7 @@ If your nodes are distributed across 3 availability zones (as in our [deployment
     $ kubectl apply -f example.yaml
     ~~~
 
-    The Operator will remove nodes from the cluster one at a time, starting from the pod with the highest number in its address.
+    The {{ site.data.products.public-operator }} will remove nodes from the cluster one at a time, starting from the pod with the highest number in its address.
     
 1. Verify that the pods were successfully removed:
 
@@ -208,7 +212,7 @@ If your nodes are distributed across 3 availability zones (as in our [deployment
 
 ### Automatic PVC pruning
 
-To enable the Operator to automatically remove persistent volumes when [scaling down](#remove-nodes) a cluster, turn on automatic PVC pruning through a feature gate.
+To enable the {{ site.data.products.public-operator }} to automatically remove persistent volumes when [scaling down](#remove-nodes) a cluster, turn on automatic PVC pruning through a feature gate.
 
 {{site.data.alerts.callout_danger}}
 This workflow is unsupported and should be enabled at your own risk.
@@ -216,28 +220,28 @@ This workflow is unsupported and should be enabled at your own risk.
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
-1. Download the Operator manifest:
+1. Download the {{ site.data.products.public-operator }} manifest:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
 
-1. Uncomment the following lines in the Operator manifest:
+1. Uncomment the following lines in the {{ site.data.products.public-operator }} manifest:
 
     ~~~ yaml
     - feature-gates
     - AutoPrunePVC=true
     ~~~
 
-1. Reapply the Operator manifest:
+1. Reapply the {{ site.data.products.public-operator }} manifest:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply -f operator.yaml
     ~~~
 
-1. Validate that the Operator is running:
+1. Validate that the {{ site.data.products.public-operator }} is running:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

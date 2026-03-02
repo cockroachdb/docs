@@ -57,12 +57,6 @@
         ]
       },
       {
-        "title": "Replication Reports",
-        "urls": [
-          "/${VERSION}/query-replication-reports.html"
-        ]
-      },
-      {
         "title": "Troubleshoot Replication Zones",
         "urls": [
           "/${VERSION}/troubleshoot-replication-zones.html"

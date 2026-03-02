@@ -1,5 +1,5 @@
 ---
-title: Known Limitations in CockroachDB v25.2
+title: Known Limitations in CockroachDB v25.3
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: limitations, known limitations, unsupported features, PostgreSQL compatibility
@@ -12,21 +12,25 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-### Vector indexes
+### Row-level security filtering
 
-{% include {{ page.version.version }}/known-limitations/vector-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/rls-update-set-where-returning.md %}
 
-### JSONPath
+### DistSQL
 
-{% include {{ page.version.version }}/known-limitations/jsonpath-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/distsql-heterogeneous-endianness.md %}
 
-### Security and privileges
+### Multi-region
 
-#### Row-level security
+{% include {{ page.version.version }}/known-limitations/enforce-home-region-limitations.md %}
 
-{% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %}
+### Geospatial
 
-{% include {{ page.version.version }}/known-limitations/rls-visibility-issue.md %}
+{% include {{ page.version.version }}/known-limitations/geospatial-heterogeneous-architectures.md %}
+
+### `CITEXT`
+
+{% include {{ page.version.version }}/known-limitations/citext-limitations.md %}
 
 ## Limitations from {{ previous_version }} and earlier
 
@@ -37,6 +41,10 @@ This section describes limitations from previous CockroachDB versions that still
 #### Syntax and behavior differences from PostgreSQL
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL]({% link {{ page.version.version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
+
+#### JSONPath limitations
+
+{% include {{ page.version.version }}/known-limitations/jsonpath-limitations.md %}
 
 #### `AS OF SYSTEM TIME` limitations
 
@@ -179,6 +187,10 @@ See: https://github.com/cockroachdb/cockroach/issues/46414
 {% include {{page.version.version}}/known-limitations/cannot-refresh-materialized-views-inside-transactions.md %}
 
 ### Schemas and indexes
+
+#### Vector index limitations
+
+{% include {{ page.version.version }}/known-limitations/vector-limitations.md %}
 
 #### Online schema change limitations
 
@@ -355,6 +367,12 @@ Refer to [`OID` best practices]({% link {{ page.version.version }}/oid.md %}#bes
 {% include {{ page.version.version }}/known-limitations/jsonb-limitations.md %}
 
 ### Security and privileges
+
+#### Row-level security
+
+{% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %}
+
+{% include {{ page.version.version }}/known-limitations/rls-visibility-issue.md %}
 
 #### `GRANT`/`REVOKE` limitations
 

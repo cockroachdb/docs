@@ -146,6 +146,15 @@ A table's meta and system ranges (detailed in the [distribution layer]({% link {
 
 However, unlike table data, system ranges cannot use epoch-based leases because that would create a circular dependency: system ranges are already being used to implement epoch-based leases for table data. Therefore, system ranges use expiration-based leases instead. Expiration-based leases expire at a particular timestamp (typically after a few seconds). However, as long as a node continues proposing Raft commands, it continues to extend the expiration of its leases. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
 
+#### Leader‑leaseholder splits
+
+[Epoch-based leases](#epoch-based-leases-table-data) are vulnerable to _leader-leaseholder splits_. These can occur when a leaseholder's Raft log has fallen behind other replicas in its group and it cannot acquire Raft leadership. Coupled with a [network partition]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition), this split can cause permanent unavailability of the range if (1) the stale leaseholder continues heartbeating the [liveness range](#epoch-based-leases-table-data) to hold its lease but (2) cannot reach the leader to propose writes.
+
+Symptoms of leader-leaseholder splits include a [stalled Raft log]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#requests-stuck-in-raft) on the leaseholder and [increased disk usage]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disks-filling-up) on follower replicas buffering pending Raft entries. Remediations include:
+
+- Restarting the affected nodes.
+- Fixing the network partition (or slow networking) between nodes.
+
 #### How leases are transferred from a dead node
 
 When the cluster needs to access a range on a leaseholder node that is dead, that range's lease must be transferred to a healthy node. This process is as follows:

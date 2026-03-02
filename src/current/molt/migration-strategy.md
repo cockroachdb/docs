@@ -41,7 +41,7 @@ It's important to fully [prepare the migration](#prepare-for-migration) in order
 
 - *Minimal downtime* impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), you can queue requests while the system is offline and process them after completing the migration to CockroachDB. 
 
-	MOLT enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using continuous replication of source changes to CockroachDB.
+	MOLT enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using [MOLT Replicator]({% link molt/molt-replicator.md %}) for continuous replication of source changes to CockroachDB.
 
 - *Reduced functionality* takes some, but not all, application functionality offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
 
@@ -112,7 +112,7 @@ Based on the error budget you [defined in your migration plan](#develop-a-migrat
 
 It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries). Refer to [Migration flows]({% link molt/migration-overview.md %}#migration-flows).
 
-MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch.md %}#data-movement) for loading data into CockroachDB:
+MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch.md %}#data-load-mode) for loading data into CockroachDB:
 
 - Use `IMPORT INTO` for maximum throughput when the target tables can be offline. For a bulk data migration, most users should use `IMPORT INTO` because the tables will be offline anyway, and `IMPORT INTO` can [perform the data import much faster]({% link {{ site.current_cloud_version }}/import-performance-best-practices.md %}) than `COPY FROM`.
 - Use `COPY FROM` (or `--direct-copy`) when the target must remain queryable during load.
@@ -151,7 +151,7 @@ Performing a dry run is highly recommended. In addition to demonstrating how lon
 
 *Cutover* is the process of switching application traffic from the source database to CockroachDB. Once the source data is fully migrated to CockroachDB, switch application traffic to the new database to end downtime.
 
-MOLT enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using continuous replication of source changes to CockroachDB.
+MOLT enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using [MOLT Replicator]({% link molt/molt-replicator.md %}) for continuous replication of source changes to CockroachDB.
 
 To safely cut over when using replication:
 

@@ -63,7 +63,7 @@ Pebble uses a Log-structured Merge-tree (hereafter _LSM tree_ or _LSM_) to manag
 
 SSTs are an on-disk representation of sorted lists of key-value pairs. Conceptually, they look something like this (intentionally simplified) diagram:
 
-<img src="{{ 'images/v21.2/sst.png' | relative_url }}" alt="Structure of an SST file" style="max-width:100%" />
+<img src="{{ 'images/v25.3/sst.png' | relative_url }}" alt="Structure of an SST file" style="max-width:100%" />
 
 SST files are immutable; they are never modified, even during the [compaction process](#compaction).
 
@@ -78,7 +78,47 @@ The SSTs within each level are guaranteed to be non-overlapping: for example, if
 - To allow LSM-based storage engines like Pebble to support ingesting large amounts of data, such as when using the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement.
 - To allow for easier and more efficient flushes of [memtables](#memtable-and-write-ahead-log).
 
-<img src="{{ 'images/v21.2/lsm-with-ssts.png' | relative_url }}" alt="LSM tree with SST files" style="max-width:100%" />
+<img src="{{ 'images/v25.3/lsm-with-ssts.png' | relative_url }}" alt="LSM tree with SST files" style="max-width:100%" />
+
+##### Write amplification
+
+_Write amplification_ measures the volume of data written to disk relative to the volume of data logically committed to the storage engine. When values are committed, CockroachDB writes them to the [write-ahead log (WAL)](#memtable-and-write-ahead-log) and then to [SSTables](#ssts) during flushes. [Compactions](#compaction) rewrite those SSTables multiple times over the value's lifetime. Most write amplification, and write bandwidth more broadly, originates from compactions.
+
+This tradeoff between compactions and write amplification is necessary, because if the storage engine performs too few compactions, the size of [L0](#lsm-levels) will get too large and an inverted LSM will result, which also has ill effects. In contrast, writes to the WAL are a small fraction of a [store]({% link {{ page.version.version }}/cockroach-start.md %}#store)'s overall write bandwidth and IOPS.
+
+##### Read amplification
+
+_Read amplification_ measures the number of SSTable files consulted to satisfy a logical read. High read amplification occurs when value lookups must search multiple LSM levels or SST files, such as in an inverted LSM state. Keeping read and [write amplification](#write-amplification) in balance is critical for optimal storage engine performance.
+
+Read amplification is high [when the LSM is inverted](#inverted-lsms). In the inverted LSM state, reads need to start in higher levels and "look down" through a lot of SSTs to read a key's correct (freshest) value.
+
+Read amplification can be especially bad if a large [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) is overloading the cluster (due to insufficient CPU and/or IOPS) and the storage engine has to consult many small SSTs in L0 to determine the most up-to-date value of the keys being read (e.g., using a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})).
+
+A certain amount of read amplification is expected in a normally functioning CockroachDB cluster. For example, a read amplification factor less than 10 as shown in the [**Read Amplification** graph on the **Storage** dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}#other-graphs) is considered healthy.
+
+##### Value separation
+
+{% include feature-phases/preview.md %}
+
+{% include_cached new-in.html version="v25.3" %} The storage engine can optimize performance using _value separation_. When the engine encounters a key-value pair with a sufficiently large value component, it stores the key in the [LSM](#log-structured-merge-trees) alongside a pointer to the value's location in a _blob file_ that is located outside the LSM. This indirection allows [compactions](#compaction) of the LSM to skip rewriting large values over and over; instead, compactions can copy a pointer to the large value's location.
+
+Value separation is especially beneficial for workloads with large values relative to key size (for example, [Raft log]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) entries). It reduces [write amplification](#write-amplification) by about 50%, at the cost of about 20% in [space amplification]({% link {{ page.version.version }}/operational-faqs.md %}#space-amplification). In practice, value separation causes the storage engine to use far fewer [IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) and storage bandwidth overall, which are expensive, at the cost of an increase in storage capacity, which is much cheaper.
+
+To enable value separation, set the following [cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING storage.value_separation.enabled = true;
+~~~
+
+To monitor this feature, use the following metrics:
+
+| CockroachDB Metric Name | Description | Usage |
+|-------------------------|-------------|-------|
+| `storage.value_separation.blob_files.count` | The number of blob files that are used to store [separated values]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) within the storage engine. | Use this metric to track how many values (of key-value pairs) are being stored outside of the [LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) by the storage engine due to their large size. |
+| `storage.value_separation.blob_files.size` | The size of the physical blob files that are used to store [separated values]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) within the storage engine. This value is the physical post-compression sum of the `storage.value_separation.value_bytes.referenced` and `storage.value_separation.value_bytes.unreferenced` metrics. | Use this metric to see how much of your physical storage capacity is being used by separated values in blob files. |
+| `storage.value_separation.value_bytes.referenced` | The size of storage engine value bytes (pre-compression) that are [stored separately in blob files]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) and referenced by a live [SSTable]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts). | Use this metric to see how much live (i.e., not yet eligible for compaction) blob storage is in use by separated values. |
+| `storage.value_separation.value_bytes.unreferenced` | The size of storage engine value bytes (pre-compression) that are [stored separately in blob files]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) and not referenced by any live [SSTable]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts). These bytes are garbage that could be reclaimed by a [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction). | Use this metric to see how much blob storage is no longer in use and waiting to be compacted. |
 
 ##### Compaction
 
@@ -102,19 +142,6 @@ During normal operation, the LSM should look like this: ◣. An inverted LSM loo
 
 An inverted LSM will have degraded read performance.
 
-<a name="read-amplification"></a>
-
-Read amplification is high when the LSM is inverted. In the inverted LSM state, reads need to start in higher levels and "look down" through a lot of SSTs to read a key's correct (freshest) value. When the storage engine needs to read from multiple SST files in order to service a single logical read, this state is known as _read amplification_.
-
-Read amplification can be especially bad if a large [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) is overloading the cluster (due to insufficient CPU and/or IOPS) and the storage engine has to consult many small SSTs in L0 to determine the most up-to-date value of the keys being read (e.g., using a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})).
-
-A certain amount of read amplification is expected in a normally functioning CockroachDB cluster. For example, a read amplification factor less than 10 as shown in the [**Read Amplification** graph on the **Storage** dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}#other-graphs) is considered healthy.
-
-<a name="write-amplification"></a>
-
-_Write amplification_ measures the volume of data written to disk, relative to the volume of data logically committed to the storage engine. When a value is committed to the storage engine, CockroachDB writes it once to the [write-ahead log (WAL)](#memtable-and-write-ahead-log). CockroachDB writes the value again when flushing it to an [SSTable](#ssts). CockroachDB subsequently writes the value multiple times as part of [compactions](#compaction) over the lifetime of the value. Most write amplification, and write bandwidth more broadly, originates from compactions. This is a necessary tradeoff, because if the storage engine performs too few compactions, the size of [L0](#lsm-levels) will get too large and an inverted LSM will result, which also has ill effects. In contrast, writes to the WAL are a small fraction of a [store]({% link {{ page.version.version }}/cockroach-start.md %}#store)'s overall write bandwidth and IOPs.
-
-Read amplification and write amplification are key metrics for LSM performance. Neither is inherently "good" or "bad", but they must not occur in excess, and for optimum performance they must be kept in balance. That balance involves tradeoffs.
 
 Inverted LSMs also have excessive compaction debt. In this state, the storage engine has a large backlog of [compactions](#compaction) to do to return the inverted LSM to a normal, non-inverted state.
 
@@ -128,7 +155,7 @@ Another file on disk called the write-ahead log (hereafter _WAL_) is associated 
 
 The relationship between the memtable, the WAL, and the SST files is shown in the diagram below. New values are written to the WAL at the same time as they are written to the memtable. From the memtable they are eventually written to SST files on disk for longer-term storage.
 
-<img src="{{ 'images/v21.2/memtable-wal-sst.png' | relative_url }}" alt="Relationship between memtable, WAL, and SSTs" style="max-width:100%" />
+<img src="{{ 'images/v25.3/memtable-wal-sst.png' | relative_url }}" alt="Relationship between memtable, WAL, and SSTs" style="max-width:100%" />
 
 ##### LSM design tradeoffs
 

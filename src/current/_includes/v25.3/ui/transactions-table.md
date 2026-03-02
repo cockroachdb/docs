@@ -17,7 +17,7 @@ CPU Time | Average CPU time spent executing within the specified time interval. 
 Max Memory | Maximum memory used by this transaction at any time during its execution within the time interval. <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean.
 Network | Amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for this transaction within the time interval. <br><br>If this value is 0, the transaction was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean.
 Retries | Cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of this transaction within the time interval.
-Regions/Nodes | The region and nodes in which the transaction was executed. <br><br>Nodes are not visible for CockroachDB {{ site.data.products.serverless }} clusters.
+Regions/Nodes | The region and nodes in which the transaction was executed. <br><br>Nodes are not visible for CockroachDB {{ site.data.products.basic }} clusters.
 Statements | Number of SQL statements in the transaction.
 Transaction Fingerprint ID | The ID of the transaction fingerprint.
 

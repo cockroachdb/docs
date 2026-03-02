@@ -66,7 +66,11 @@ This role can be assigned only at the organization scope.
 
 ### Billing Coordinator
 
-The **Billing Coordinator** role allows users to [manage billing for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
+The **Billing Coordinator** role allows users to [manage and view billing details, invoices, and usage for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
+
+### Billing Viewer
+
+The **Billing Viewer** role allows users to [view billing details, invoices, and usage for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
 
 ### Cluster Operator
 
@@ -132,9 +136,28 @@ This role can be assigned at the scope of the organization or on a folder. If as
 
 ### Cluster Developer
 
-The **Cluster Developer** role allows users view cluster details and access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console), allowing them to [export a connection string from the cluster page UI]({% link cockroachcloud/authentication.md %}#the-connection-string), although they will still need a Cluster Admin to [provision their SQL credentials]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster) for the cluster.
+The **Cluster Developer** role allows users to view cluster details and access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console), allowing them to [export a connection string from the cluster page UI]({% link cockroachcloud/authentication.md %}#the-connection-string), although they will still need a Cluster Admin to [provision their SQL credentials]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster) for the cluster.
 
 This role can be assigned at the scope of the organization, on an individual cluster, or on a folder. If assigned to a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
+### Cluster Monitor
+
+The **Cluster Monitor** role provides read‑only visibility into SQL activity and workload health without broader administrative privileges. Users with this role can view the SQL Activity pages ([Sessions]({% link cockroachcloud/sessions-page.md %}), [Statements]({% link cockroachcloud/statements-page.md %}), and [Transactions]({% link cockroachcloud/transactions-page.md %})), the [Jobs page]({% link cockroachcloud/jobs-page.md %}), and the [Insights page]({% link cockroachcloud/insights-page.md %}).
+
+This role can be assigned at the scope of the organization, on an individual cluster, or on a folder. If assigned to a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
+### Metrics Viewer
+
+The **Metrics Viewer** role grants read‑only access to observability metrics for a cluster without any administrative or data‑manipulation privileges.
+
+- Users with this role can view a cluster's Metrics from the [Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
+- Service accounts with this role can access the [metrics export API]({% link cockroachcloud/export-metrics.md %}#the-metricexport-endpoint) and the [log export API]({% link cockroachcloud/export-logs.md %}#the-logexport-endpoint) to integrate with external observability systems.
+
+This role can be assigned at the scope of the organization, on an individual cluster, or on a folder. If assigned to a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
+{{site.data.alerts.callout_info}}
+To give a developer the ability to both connect to a cluster and monitor performance with least privilege, combine [**Cluster Developer**](#cluster-developer) with **Metrics Viewer** (and optionally [**Cluster Monitor**](#cluster-monitor)).
+{{site.data.alerts.end}}
 
 ### Folder Admin
 

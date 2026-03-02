@@ -1,0 +1,30 @@
+{
+        "title": "Connect to an Application",
+        "is_top_level": true,
+        "items": [
+          {
+            "title": "Install a Driver or ORM Framework",
+            "urls": [
+              "/${VERSION}/install-client-drivers.html"
+            ]
+          },
+          {
+            "title": "Connect to a Cluster",
+            "urls": [
+              "/${VERSION}/connect-to-the-database.html"
+            ]
+          },
+          {
+            "title": "Client Connection Parameters",
+            "urls": [
+              "/${VERSION}/connection-parameters.html"
+            ]
+          },
+          {
+            "title": "Connection Pooling",
+            "urls": [
+              "/${VERSION}/connection-pooling.html"
+            ]
+          }
+    ]
+}

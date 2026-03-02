@@ -75,7 +75,6 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CALL`]({% link {{ page.version.version }}/call.md %}) | Call a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) | Create a new table in a database using the results from a [selection query]({% link {{ page.version.version }}/selection-queries.md %}).
 [`COPY FROM`]({% link {{ page.version.version }}/copy.md %}) | Copy data from a third-party client to a CockroachDB cluster.<br>For compatibility with PostgreSQL drivers and ORMs, CockroachDB supports `COPY FROM` statements issued from third-party clients. To import data from files, use an [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement instead.
 [`DELETE`]({% link {{ page.version.version }}/delete.md %}) | Delete specific rows from a table.
@@ -116,6 +115,7 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %})| Initiate a [transaction]({% link {{ page.version.version }}/transactions.md %}).
+[`CALL`]({% link {{ page.version.version }}/call.md %}) | Call a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) | Commit the current [transaction]({% link {{ page.version.version }}/transactions.md %}).
 [`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %}) | Start a [nested transaction]({% link {{ page.version.version }}/transactions.md %}#nested-transactions).
 [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %}) | Commit a [nested transaction]({% link {{ page.version.version }}/transactions.md %}#nested-transactions).

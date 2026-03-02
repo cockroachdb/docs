@@ -14,7 +14,7 @@ In this tutorial, you will set up [**logical data replication (LDR)**]({% link {
 
 For more details on use cases, refer to the [Logical Data Replication Overview]({% link {{ page.version.version }}/logical-data-replication-overview.md %}).
 
-<image src="{{ 'images/v24.3/bidirectional-stream.svg' | relative_url }}" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:70%" />
+<image src="/docs/images/{{ page.version.version }}/bidirectional-stream.svg" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:70%" />
 
 ## Tutorial overview
 
@@ -195,6 +195,10 @@ In this step, you'll start the LDR job from the destination cluster. You can rep
     ~~~
 
     If you're setting up bidirectional LDR, both clusters will have a history retention job and an LDR job running.
+
+{{site.data.alerts.callout_info}}
+You cannot pause an LDR job for longer than 24 hours. LDR jobs paused for longer than 24 hours fail and cannot be recovered.
+{{site.data.alerts.end}}
 
 1. Move on to [Step 4](#step-4-optional-set-up-bidirectional-ldr) to set up a second LDR job. Or, once you have set up your required LDR jobs, refer to [Step 5](#step-5-monitor-the-ldr-jobs) to monitor the jobs in the DB Console.
 

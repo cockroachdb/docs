@@ -20,9 +20,7 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 {% include {{ page.version.version }}/known-limitations/jsonpath-limitations.md %}
 
-### Security and privileges
-
-#### Row-level security
+### Row-level security
 
 {% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %}
 

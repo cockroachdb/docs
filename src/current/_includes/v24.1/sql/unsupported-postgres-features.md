@@ -1,3 +1,13 @@
+### `CREATE DOMAIN`
+
+CockroachDB does not support `CREATE DOMAIN`. Tracking issue: [cockroachdb/cockroach#108659](https://github.com/cockroachdb/cockroach/issues/108659).
+
+### PostgreSQL range types
+
+CockroachDB does not support PostgreSQL range types. Tracking issue: [cockroachdb/cockroach#128638](https://github.com/cockroachdb/cockroach/issues/128638).
+
+### Other unsupported features
+
 - Triggers. These must be implemented in your application logic.
 - Events.
 - Drop primary key.

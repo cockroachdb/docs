@@ -100,7 +100,7 @@ For more information about how replication admission control works, refer to [Re
 
 ## Blocked Replication Streams
 
-This graph shows the blocked replication streams per node in replication [admission control]({% link {{ page.version.version }}/admission-control.md %}), separated by admission priority {regular, elastic}, as tracked by the `kvadmission.flow_controller.regular_blocked_stream_count` and the `kvadmission.flow_controller.elastic_blocked_stream_count` metrics. There are separate lines for blocked regular streams and blocked elastic (background) streams.
+This graph shows the blocked replication streams per node in replication [admission control]({% link {{ page.version.version }}/admission-control.md %}), separated by admission priority {regular, elastic}, as tracked by the `kvflowcontrol.streams.eval.regular.blocked_count` and the `kvflowcontrol.streams.eval.elastic.blocked_count` metrics. There are separate lines for blocked regular streams and blocked elastic (background) streams.
  
 - In the node view, the graph shows the number of blocked regular streams and blocked elastic streams on the selected node.
 - In the cluster view, the graph shows the number of blocked regular streams and blocked elastic streams across all nodes in the cluster.

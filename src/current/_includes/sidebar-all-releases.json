@@ -34,12 +34,6 @@
     "/releases/release-support-policy.html"
   ]
 },
-{
-  "title": "Known Limitations",
-  "urls": [
-    "/${VERSION}/known-limitations.html"
-  ]
-},
 {% assign advisories = site.pages | where_exp: "advisories", "advisories.path contains 'advisories'" | where_exp: "advisories", "advisories.index != 'true'" %}
 {
  "title": "Technical Advisories",
@@ -63,7 +57,7 @@
   ]
 },
 {
-  "title": "Kubernetes Operator",
+  "title": "Public Kubernetes Operator",
   "urls": [
     "/releases/kubernetes-operator.html"
   ]
@@ -72,5 +66,12 @@
   "title": "Unsupported Versions",
   "urls": [
     "/releases/unsupported-versions.html"
+  ]
+},
+{
+  "title": "Archived Documentation",
+  "urls": [
+   
+  "/releases/archived-documentation.html"
   ]
 }

@@ -93,7 +93,7 @@ As part of normal operation, CockroachDB continuously records [metrics]({% link 
 
 - [Export Metrics From a CockroachDB Standard Cluster]({% link cockroachcloud/export-metrics.md %})
 - [Export Metrics From a CockroachDB Advanced Cluster]({% link cockroachcloud/export-metrics-advanced.md %})
-- [Prometheus endpoint for a self-hosted cluster]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint)
+- [Prometheus endpoint for a self-hosted cluster]({% link {{ page.version.version }}/prometheus-endpoint.md %})
 
 The following metrics related to contention are available across all deployment types:
 

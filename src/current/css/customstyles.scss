@@ -101,6 +101,10 @@ td > div.anchored
    scroll-margin-top: 100px;
 }
 
+a[name] {
+  scroll-margin-top: 100px;
+}
+
 table {
   overflow-x: auto;
   width: 100%;

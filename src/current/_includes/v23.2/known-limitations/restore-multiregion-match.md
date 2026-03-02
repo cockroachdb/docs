@@ -1,4 +1,4 @@
-[`REGIONAL BY TABLE`]({% link {{ page.version.version }}/table-localities.md %}#regional-tables) and [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables can be restored **only** if the regions of the backed-up table match those of the target database. All of the following must be true for `RESTORE` to be successful:
+[`REGIONAL BY TABLE`]({% link {{ page.version.version }}/table-localities.md %}#regional-tables) and [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables can be restored **only** if the regions of the backed-up table match those of the destination database. All of the following must be true for `RESTORE` to be successful:
 
     * The [regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) of the source database and the regions of the destination database have the same set of regions.
     * The regions were added to each of the databases in the same order.

@@ -17,8 +17,8 @@ Type | Description | Example
 [`BYTES`]({% link {{ page.version.version }}/bytes.md %}) | A string of binary characters. | `b'\141\061\142\062\143\063'`
 [`COLLATE`]({% link {{ page.version.version }}/collate.md %}) | The `COLLATE` feature lets you sort [`STRING`]({% link {{ page.version.version }}/string.md %}) values according to language- and country-specific rules, known as collations.  | `'a1b2c3' COLLATE en`
 [`DATE`]({% link {{ page.version.version }}/date.md %}) | A date.  | `DATE '2016-01-25'`
-[`ENUM`]({% link {{ page.version.version }}/enum.md %}) |  A user-defined data type comprised of a set of static values. | `ENUM ('club, 'diamond', 'heart', 'spade')`
 [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) | An exact, fixed-point number.  | `1.2345`
+[`ENUM`]({% link {{ page.version.version }}/enum.md %}) |  A user-defined data type comprised of a set of static values. | `ENUM ('club, 'diamond', 'heart', 'spade')`
 [`FLOAT`]({% link {{ page.version.version }}/float.md %}) | A 64-bit, inexact, floating-point number.  | `1.2345`
 [`INET`]({% link {{ page.version.version }}/inet.md %}) | An IPv4 or IPv6 address.  | `192.168.0.1`
 [`INT`]({% link {{ page.version.version }}/int.md %}) | A signed integer, up to 64 bits. | `12345`

@@ -655,9 +655,9 @@
                     ]
                   },
                   {
-                    "title": "Cut Over from a Primary to a Standby Cluster",
+                    "title": "Fail Over from a Primary to a Standby Cluster",
                     "urls": [
-                      "/${VERSION}/cutover-replication.html"
+                      "/${VERSION}/failover-replication.html"
                     ]
                   },
                   {

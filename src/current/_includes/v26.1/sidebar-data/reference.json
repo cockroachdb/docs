@@ -1,0 +1,447 @@
+{
+    "title": "Reference",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Glossary",
+        "urls": [
+          "/${VERSION}/architecture/glossary.html"
+        ]
+      },
+      {
+        "title": "Architecture",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/architecture/overview.html"
+            ]
+          },
+          {
+            "title": "SQL Layer",
+            "urls": [
+              "/${VERSION}/architecture/sql-layer.html"
+            ]
+          },
+          {
+            "title": "Transaction Layer",
+            "urls": [
+              "/${VERSION}/architecture/transaction-layer.html"
+            ]
+          },
+          {
+            "title": "Distribution Layer",
+            "urls": [
+              "/${VERSION}/architecture/distribution-layer.html"
+            ]
+          },
+          {
+            "title": "Replication Layer",
+            "urls": [
+              "/${VERSION}/architecture/replication-layer.html"
+            ]
+          },
+          {
+            "title": "Storage Layer",
+            "urls": [
+              "/${VERSION}/architecture/storage-layer.html"
+            ]
+          },
+          {
+            "title": "Backups",
+            "urls": [
+              "/${VERSION}/backup-architecture.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Cloud API",
+        "urls": [
+          "https://www.cockroachlabs.com/docs/api/cloud/v1"
+        ]
+      },
+      {
+        "title": "Cluster API",
+        "urls": [
+          "https://www.cockroachlabs.com/docs/api/cluster/v2"
+        ]
+      },
+      {
+        "title": "Docs MCP Server",
+        "urls": [
+          "/${VERSION}/docs-mcp-integration.html"
+        ]
+      },
+      {
+        "title": "Cluster Settings",
+        "urls": [
+          "/${VERSION}/cluster-settings.html"
+        ]
+      },
+      {
+        "title": "Cockroach Commands",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/cockroach-commands.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach start</code>",
+            "urls": [
+              "/${VERSION}/cockroach-start.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach init</code>",
+            "urls": [
+              "/${VERSION}/cockroach-init.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach start-single-node</code>",
+            "urls": [
+              "/${VERSION}/cockroach-start-single-node.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach cert</code>",
+            "urls": [
+              "/${VERSION}/cockroach-cert.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach sql</code>",
+            "urls": [
+              "/${VERSION}/cockroach-sql.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach sqlfmt</code>",
+            "urls": [
+              "/${VERSION}/cockroach-sqlfmt.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach node</code>",
+            "urls": [
+              "/${VERSION}/cockroach-node.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach nodelocal upload</code>",
+            "urls": [
+              "/${VERSION}/cockroach-nodelocal-upload.html"
+            ]
+          },
+          {
+           "title": "<code>cockroach auth-session</code>",
+           "urls": [
+             "/${VERSION}/cockroach-auth-session.html"
+           ]
+          },
+          {
+            "title": "<code>cockroach demo</code>",
+            "urls": [
+              "/${VERSION}/cockroach-demo.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach debug ballast</code>",
+            "urls": [
+              "/${VERSION}/cockroach-debug-ballast.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach debug encryption-active-key</code>",
+            "urls": [
+              "/${VERSION}/cockroach-debug-encryption-active-key.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach debug encryption-decrypt</code>",
+            "urls": [
+              "/${VERSION}/cockroach-debug-encryption-decrypt.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach debug job-trace</code>",
+            "urls": [
+              "/${VERSION}/cockroach-debug-job-trace.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach debug list-files</code>",
+            "urls": [
+              "/${VERSION}/cockroach-debug-list-files.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach debug merge-logs</code>",
+            "urls": [
+              "/${VERSION}/cockroach-debug-merge-logs.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach debug pebble db analyze-data</code>",
+            "urls": [
+              "/${VERSION}/cockroach-debug-pebble-db-analyze-data.html"
+            ]
+          },
+          {
+           "title": "<code>cockroach debug tsdump</code>",
+           "urls": [
+             "/${VERSION}/cockroach-debug-tsdump.html"
+           ]
+          },
+          {
+            "title": "<code>cockroach debug zip</code>",
+            "urls": [
+              "/${VERSION}/cockroach-debug-zip.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach statement-diag</code>",
+            "urls": [
+              "/${VERSION}/cockroach-statement-diag.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach gen</code>",
+            "urls": [
+              "/${VERSION}/cockroach-gen.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach userfile upload</code>",
+            "urls": [
+              "/${VERSION}/cockroach-userfile-upload.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach userfile list</code>",
+            "urls": [
+              "/${VERSION}/cockroach-userfile-list.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach userfile get</code>",
+            "urls": [
+              "/${VERSION}/cockroach-userfile-get.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach userfile delete</code>",
+            "urls": [
+              "/${VERSION}/cockroach-userfile-delete.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach version</code>",
+            "urls": [
+              "/${VERSION}/cockroach-version.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach workload</code>",
+            "urls": [
+              "/${VERSION}/cockroach-workload.html"
+            ]
+          },
+          {
+            "title": "The <code>cockroach-sql</code> command",
+            "urls": [
+              "/${VERSION}/cockroach-sql-binary.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Diagnostics Reporting",
+        "urls": [
+          "/${VERSION}/diagnostics-reporting.html"
+        ]
+      },
+      {
+        "title": "Logs",
+        "items": [
+          {
+            "title": "Logging Levels and Channels",
+            "urls": [
+              "/${VERSION}/logging.html"
+            ]
+          },
+          {
+            "title": "Log Formats",
+            "urls": [
+              "/${VERSION}/log-formats.html"
+            ]
+          },
+          {
+            "title": "Notable Event Types",
+            "urls": [
+              "/${VERSION}/eventlog.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Metrics",
+        "items": [
+          {
+            "title": "Available Metrics",
+            "urls": [
+              "/${VERSION}/metrics.html"
+            ]
+          },
+          {
+            "title": "Multi-Dimensional Metrics",
+            "urls": [
+              "/${VERSION}/multi-dimensional-metrics.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Policies",
+        "items": [
+          {
+            "title": "CockroachDB Feature Availability",
+            "urls": [
+              "/${VERSION}/cockroachdb-feature-availability.html"
+            ]
+          },
+          {
+            "title": "API Support Policy",
+            "urls": [
+              "/${VERSION}/api-support-policy.html"
+            ]
+          },
+          {
+            "title": "Telemetry Collected by CockroachDB",
+            "urls": [
+              "/${VERSION}/telemetry.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Third-Party Support",
+        "items": [
+          {
+            "title": "Supported Tools",
+            "urls": [
+              "/${VERSION}/third-party-database-tools.html"
+            ]
+          },
+          {
+            "title": "Monitoring Integrations",
+            "urls": [
+              "/${VERSION}/third-party-monitoring-tools.html"
+            ]
+          },
+          {
+            "title": "Community-supported Tools",
+            "urls": [
+              "/${VERSION}/community-tooling.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Security",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/security-reference/security-overview.html"
+            ]
+          },
+          {
+            "title": "Authentication",
+            "items": [
+              {
+                "title": "SQL Authentication",
+                "urls": [
+                  "/${VERSION}/security-reference/authentication.html"
+                ]
+              },
+              {
+                "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
+                "urls": [
+                  "/${VERSION}/security-reference/scram-authentication.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Authorization",
+            "urls": [
+              "/${VERSION}/security-reference/authorization.html"
+            ]
+          },
+          {
+            "title": "Encryption",
+            "urls": [
+              "/${VERSION}/security-reference/encryption.html"
+            ]
+          },
+          {
+            "title": "Column Level Encryption",
+            "urls": [
+              "/${VERSION}/column-level-encryption.html"
+            ]
+          },
+          {
+            "title": "Row-level Security",
+            "urls": [
+              "/${VERSION}/row-level-security.html"
+            ]
+          },
+          {
+            "title": "PKI and TLS",
+            "urls": [
+              "/${VERSION}/security-reference/transport-layer-security.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "System Catalogs",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/system-catalogs.html"
+                ]
+          },
+          {
+            "title": "<code>crdb_internal</code>",
+            "urls": [
+              "/${VERSION}/crdb-internal.html"
+            ]
+          },
+          {
+            "title": "<code>information_schema</code>",
+            "urls": [
+              "/${VERSION}/information-schema.html"
+            ]
+          },
+          {
+            "title": "<code>pg_catalog</code>",
+            "urls": [
+              "/${VERSION}/pg-catalog.html"
+            ]
+          },
+          {
+            "title": "<code>pg_extension</code>",
+            "urls": [
+              "/${VERSION}/pg-extension.html"
+            ]
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,18 @@
+- [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %})
+- [How to Choose a Multi-Region Configuration]({% link {{ page.version.version }}/choosing-a-multi-region-configuration.md %})
+- [When to Use `ZONE` vs. `REGION` Survival Goals]({% link {{ page.version.version }}/multiregion-survival-goals.md %}#when-to-use-zone-vs-region-survival-goals)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables]({% link {{ page.version.version }}/table-localities.md %}#when-to-use-regional-vs-global-tables)
+- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
+- [Migrate to Multi-Region SQL]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %})
+- [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions)
+- [`ALTER DATABASE ... SET SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-secondary-region)
+- [`ALTER DATABASE ... DROP SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#drop-secondary-region)
+- [Topology Patterns Overview]({% link {{ page.version.version }}/topology-patterns.md %})
+  - Single-region patterns
+      - [Development]({% link {{ page.version.version }}/topology-development.md %})
+      - [Basic Production]({% link {{ page.version.version }}/topology-basic-production.md %})
+  - Multi-region patterns
+      - [`REGIONAL` Tables]({% link {{ page.version.version }}/regional-tables.md %})
+      - [`GLOBAL` Tables]({% link {{ page.version.version }}/global-tables.md %})
+      - [Follower Reads]({% link {{ page.version.version }}/topology-follower-reads.md %})
+      - [Follow-the-Workload]({% link {{ page.version.version }}/topology-follow-the-workload.md %})

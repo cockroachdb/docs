@@ -215,7 +215,7 @@ Along with the [common sink parameters](#common-sink-parameters), each Fluentd s
 |-----------|--------------------------------------------------------------------------------------------------------------------|
 | `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging channel selection](#logging-channel-selection). |
 | `address` | Network address and port of the log collector.                                                                     |
-| `net`     | Network protocol to use. Can be `tcp`, `tcp4`, `tcp6`, `udp`, `udp4`, `udp6`, or `unix`.<br><br>**Default:** `tcp` |
+| `net`     | Network protocol to use. Options are `tcp`, `tcp4`, `tcp6`, `udp`, `udp4`, `udp6`, or `unix`.<br><br>**Default:** `tcp`<br><br>**Note:** In most cases, use the default of `tcp` rather than `udp`. The UDP/IP protocol has a ~65 KB (65,507 bytes) limit per datagram. This limit is enforced by the operating system. Log lines that exceed this limit return a `message too long` error. |
 | `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. Default: `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
 
 For an example network logging configuration, see [Logging use cases]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging).
@@ -292,6 +292,8 @@ By default, `cockroach start` and `cockroach start-single-node` do not print any
 {{site.data.alerts.end}}
 
 ### Logging channel selection
+
+{% include {{ page.version.version }}/log-channel-note.md %}
 
 For each sink, multiple channels can be selected. Note that:
 

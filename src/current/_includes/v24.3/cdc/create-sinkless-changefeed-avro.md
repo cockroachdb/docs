@@ -10,7 +10,7 @@ In this example, you'll set up a basic changefeed for a single-node cluster that
     --background
     ~~~
 
-1. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/).
+1. Download and extract the [Confluent platform](https://www.confluent.io/download/).
 
 1. Move into the extracted `confluent-<version>` directory and start Confluent:
 

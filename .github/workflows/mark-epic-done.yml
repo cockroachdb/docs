@@ -1,0 +1,29 @@
+name: Mark Epic as Done
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  mark-epic-done:
+    # Only run if PR was merged and title contains "Release notes for"
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.title, 'Release notes for')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Mark Epic as Done
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          API_ENDPOINT: ${{ secrets.EPIC_API_ENDPOINT }}
+        run: |
+          echo "Marking epic as done for PR: $PR_TITLE"
+          
+          curl -X POST "$API_ENDPOINT/epic/complete" \
+            -H "Content-Type: application/json" \
+            -d "{\"pr_title\": \"$PR_TITLE\"}" \
+            --fail-with-body || {
+              echo "Failed to mark epic as done"
+              exit 1
+            }
+          
+          echo "Successfully marked epic as done"

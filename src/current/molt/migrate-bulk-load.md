@@ -5,15 +5,17 @@ toc: true
 docs_area: migrate
 ---
 
-Use `data-load` mode to perform a one-time bulk load of source data into CockroachDB.
+Perform a one-time bulk load of source data into CockroachDB.
+
+{% include molt/crdb-to-crdb-migration.md %}
 
 {% include molt/molt-setup.md %}
 
-## Load data into CockroachDB
+## Start Fetch
 
 Perform the bulk load of the source data.
 
-1. Run the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to move the source data into CockroachDB, specifying [`--mode data-load`]({% link molt/molt-fetch.md %}#fetch-mode) to perform a one-time data load. This example command passes the source and target connection strings [as environment variables](#secure-connections), writes [intermediate files](#intermediate-file-storage) to S3 storage, and uses the `truncate-if-exists` [table handling mode](#table-handling-mode) to truncate the target tables before loading data. It limits the migration to a single schema and filters for three specific tables. The [data load mode](#data-load-mode) defaults to `IMPORT INTO`.
+1. Run the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to move the source data into CockroachDB. This example command passes the source and target connection strings [as environment variables](#secure-connections), writes [intermediate files](#intermediate-file-storage) to S3 storage, and uses the `truncate-if-exists` [table handling mode](#table-handling-mode) to truncate the target tables before loading data. It limits the migration to a single schema and filters for three specific tables. The [data load mode](#data-load-mode) defaults to `IMPORT INTO`. Include the `--ignore-replication-check` flag to skip replication checkpoint queries, which eliminates the need to configure the source database for logical replication.
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
 	{% include_cached copy-clipboard.html %}
@@ -25,7 +27,7 @@ Perform the bulk load of the source data.
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
 	--table-handling truncate-if-exists \
-	--mode data-load
+	--ignore-replication-check
 	~~~
 	</section>
 
@@ -35,11 +37,10 @@ Perform the bulk load of the source data.
 	molt fetch \
 	--source $SOURCE \
 	--target $TARGET \
-	--schema-filter 'migration_schema' \
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
 	--table-handling truncate-if-exists \
-	--mode data-load
+	--ignore-replication-check
 	~~~
 	</section>
 
@@ -56,7 +57,7 @@ Perform the bulk load of the source data.
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
 	--table-handling truncate-if-exists \
-	--mode 'data-load'
+	--ignore-replication-check
 	~~~
 	</section>
 
@@ -66,7 +67,7 @@ Perform the bulk load of the source data.
 
 {% include molt/verify-output.md %}
 
-## Modify the CockroachDB schema
+## Add constraints and indexes
 
 {% include molt/migration-modify-target-schema.md %}
 
@@ -74,7 +75,9 @@ Perform the bulk load of the source data.
 
 Perform a cutover by resuming application traffic, now to CockroachDB.
 
-{% include molt/molt-troubleshooting.md %}
+## Troubleshooting
+
+{% include molt/molt-troubleshooting-fetch.md %}
 
 ## See also
 

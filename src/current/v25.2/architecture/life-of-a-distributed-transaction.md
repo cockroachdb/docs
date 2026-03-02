@@ -96,7 +96,7 @@ In this case, the `DistSender` must look up the current leaseholder using the [c
 
 ##### Success
 
-Once the node that contains the leaseholder of the range receives the `BatchRequest`, it begins processing it, and progresses onto checking the timestamp cache.
+Once the node that contains the leaseholder of the range receives the `BatchRequest`, it begins processing it, and progresses onto checking the [timestamp cache](#timestamp-cache).
 
 ### Timestamp cache
 
@@ -134,7 +134,7 @@ If an operation encounters a write intent for a key, it attempts to "resolve" th
   	- If the push succeeds, the operation continues.
   	- If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
 - `MISSING`, the resolver consults the write intent's timestamp.
-	- If it was created within the transaction liveness threshold, it treats the transaction record as exhibiting the `PENDING` behavior, with the addition of tracking the push in the range's timestamp cache, which will inform the transaction that its timestamp was pushed once the transaction record gets created.
+    - If it was created within the transaction liveness threshold, it treats the transaction record as exhibiting the `PENDING` behavior, with the addition of tracking the push in the range's [timestamp cache](#timestamp-cache), which will inform the transaction that its timestamp was pushed once the transaction record gets created.
 	- If the write intent is older than the transaction liveness threshold, the resolution exhibits the `ABORTED` behavior.
 
     Note that transaction records might be missing because we've avoided writing the record until the transaction commits. For more information, see [Transaction Layer: Transaction records]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-records).
@@ -147,7 +147,7 @@ If the read doesn't encounter a write intent and the key-value operation is mean
 
 The leaseholder aggregates all read responses into a `BatchResponse` that will get returned to the gateway node's `DistSender`.
 
-As we mentioned before, each read operation also updates the timestamp cache.
+As we mentioned before, each read operation also updates the [timestamp cache](#timestamp-cache).
 
 ### Write Operations
 
@@ -177,7 +177,7 @@ Now that we have followed an operation all the way down from the SQL client to t
  it sends an commit acknowledgment to the gateway node's `DistSender`, which was waiting for this signal (having already received the provisional acknowledgment from the leaseholder's evaluator).
 1. The gateway node's `DistSender` aggregates commit acknowledgments from all of the write operations in the `BatchRequest`, as well as any values from read operations that should be returned to the client.
 1. Once all operations have successfully completed (i.e., reads have returned values and write intents have been committed), the `DistSender` tries to record the transaction's success in the transaction record (which provides a durable mechanism of tracking the transaction's state), which can cause a few situations to arise:
-    - It checks the timestamp cache of the range where the first write occurred to see if its timestamp got pushed forward. If it did, the transaction performs a [read refresh]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) to see if any values it needed have been changed. If the read refresh is successful, the transaction can commit at the pushed timestamp. If the read refresh fails, the transaction must be restarted.
+    - It checks the [timestamp cache](#timestamp-cache) of the range where the first write occurred to see if its timestamp got pushed forward. If it did, the transaction performs a [read refresh]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) to see if any values it needed have been changed. If the read refresh is successful, the transaction can commit at the pushed timestamp. If the read refresh fails, the transaction must be restarted.
 	- If the transaction is in an `ABORTED` state, the `DistSender` sends a response indicating as much, which ends up back at the SQL interface.
 
 	Upon passing these checks the transaction record is either written for the first time with the `COMMITTED` state, or if it was in a `PENDING` state, it is moved to `COMMITTED`. Only at this point is the transaction considered committed.

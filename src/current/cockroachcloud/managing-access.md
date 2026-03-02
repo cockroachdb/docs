@@ -394,4 +394,4 @@ Once you have [connected to the cluster]({% link cockroachcloud/connect-to-your-
 ## See also
 
 - [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
-- [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
+- [Connect to Your CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})

@@ -170,3 +170,4 @@ You can specify a different `bucket_count` via a storage parameter on a hash-sha
 
 - [Indexes]({% link {{ page.version.version }}/indexes.md %})
 - [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
+- [`UUID`]({% link {{ page.version.version }}/uuid.md %})

@@ -183,7 +183,7 @@ The [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or
     curl --request POST \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
       --header "Authorization: Bearer ${API_KEY}" \
-      --header 'content-type: application/json' \
+      --header "content-type: application/json" \
       --data "@cockroach_client_ca_cert.json"
     ~~~
 
@@ -263,7 +263,7 @@ The [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or
     curl --request PATCH \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
       --header "Authorization: Bearer ${API_KEY}" \
-      --header 'content-type: application/json' \
+      --header "content-type: application/json" \
       --data "@cockroach_client_ca_cert.json"
     ~~~
 

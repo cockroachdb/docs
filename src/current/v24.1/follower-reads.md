@@ -65,12 +65,6 @@ To see the current value of the follower read timestamp, execute the following q
 SELECT now() - follower_read_timestamp();
 ~~~
 
-#### Exact staleness follower reads demo
-
-The following video describes and demonstrates [exact staleness](#exact-staleness-reads) follower reads.
-
-{% include_cached youtube.html video_id="V--skgN_JMo" %}
-
 #### Exact staleness follower reads in read-only transactions
 
 You can set the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause's value for all operations in a read-only [transaction]({% link {{ page.version.version }}/transactions.md %}):
@@ -192,6 +186,12 @@ For further details, see [An Epic Read on Follower Reads](https://www.cockroachl
 ### Known limitations
 
 {% include {{ page.version.version }}/known-limitations/follower-reads-limitations.md %}
+
+### Video demo
+
+For a demo of how to use follower reads to improve performance, watch the following video:
+
+{% include_cached youtube.html video_id="NzhhvgzHJj4" %}
 
 ## See also
 

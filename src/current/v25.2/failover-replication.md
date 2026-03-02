@@ -5,13 +5,9 @@ toc: true
 key: cutover-replication.html
 ---
 
-{{site.data.alerts.callout_info}}
-Physical cluster replication is supported in CockroachDB {{ site.data.products.core }} clusters.
-{{site.data.alerts.end}}
+_Failover_ in [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to move application traffic from the active primary cluster to the passive standby cluster. When you complete the replication stream to initiate a failover, the job stops replicating data from the primary, sets the standby [virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) to a point in time (in the past or future) where all ingested data is consistent, and then makes the standby virtual cluster ready to accept traffic.
 
-_Failover_ in [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to switch from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication stream to initiate a failover, the job stops replicating data from the primary, sets the standby [virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) to a point in time (in the past or future) where all ingested data is consistent, and then makes the standby virtual cluster ready to accept traffic.
-
-_Failback_ in PCR switches operations back to the original primary cluster (or a new cluster) after a failover event. When you initiate a failback, the job ensures the original primary is up to date with writes from the standby that happened after failover. The original primary cluster is then set as ready to accept application traffic once again.
+After a failover event, you may want to return your operations to the original primary cluster (or a new cluster). _Failback_ in PCR does this by replicating new application traffic back onto the original primary cluster. When you initiate a failback, the job ensures the original primary is up to date with writes from the standby that happened after failover. The original primary cluster is then set as ready to accept application traffic once again.
 
 This page describes:
 
@@ -21,8 +17,8 @@ This page describes:
     - After the PCR stream used an existing cluster as the primary cluster.
 - [**Job management**](#job-management) after a failover or failback.
 
-{{site.data.alerts.callout_danger}}
-Failover and failback do **not** redirect traffic automatically to the standby cluster. Once the failover or failback is complete, you must redirect application traffic to the standby (new) cluster. If you do not redirect traffic manually, writes to the primary (original) cluster may be lost.
+{{site.data.alerts.callout_info}}
+Failover and failback do **not** redirect traffic automatically to the standby cluster. Once the failover or failback is complete, you must redirect application traffic to the standby cluster.
 {{site.data.alerts.end}}
 
 ## Failover
@@ -38,16 +34,19 @@ During PCR, jobs running on the primary cluster will replicate to the standby cl
 
 ### Step 1. Initiate the failover
 
-To initiate a failover to the standby cluster, you can specify the point in time for the standby's promotion in the following ways. That is, the standby cluster's live data at the point of failover. Refer to the following sections for steps:
+To initiate a failover to the standby cluster, specify the point in time for its promotion. At failover, the standby cluster’s data will reflect the state of the primary at the specified moment. Refer to the following sections for steps:
 
-- [`LATEST`](#fail-over-to-the-most-recent-replicated-time): The most recent replicated timestamp.
+- [`LATEST`](#fail-over-to-the-most-recent-replicated-time): The most recent replicated timestamp. This minimizes any data loss from the replication lag in asynchronous replication.
 - [Point-in-time](#fail-over-to-a-point-in-time):
-    - Past: A past timestamp within the [failover window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process).
+    - Past: A past timestamp within the [failover window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) of up to 4 hours in the past.
+    {{site.data.alerts.callout_success}}
+    Failing over to a past point in time is useful if you need to recover from a recent human error
+    {{site.data.alerts.end}}
     - Future: A future timestamp for planning a failover.
 
 #### Fail over to the most recent replicated time
 
-To initiate a failover to the most recent replicated timestamp, you can specify `LATEST` when you start the failover. The latest replicated time may be behind the actual time if there is [_replication lag_]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) in the stream. Replication lag is the time between the most up-to-date replicated time and the actual time.
+To initiate a failover to the most recent replicated timestamp, specify `LATEST`. Due to [_replication lag_]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process), the most recent replicated time may be behind the current actual time. Replication lag is the time difference between the most recent replicated time and the actual time.
 
 1. To view the current replication timestamp, use:
 
@@ -95,7 +94,7 @@ You can control the point in time that the PCR stream will fail over to.
     SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
     ~~~
 
-    The `retained_time` response provides the earliest time to which you can fail over.
+    The `retained_time` response provides the earliest time to which you can fail over. This is up to four hours in the past.
 
     ~~~
     id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time     | replication_lag | failover_time |   status
@@ -174,10 +173,10 @@ To enable PCR again, from the new primary to the original primary (or a complete
 
 ## Failback
 
-After failing over to the standby cluster, you may need to fail back to the original primary-standby cluster setup cluster to serve your application. Depending on the configuration of the primary cluster in the original PCR stream, use one of the following workflows:
+After failing over to the standby cluster, you may want to return to your original configuration by failing back to the original primary-standby cluster setup. Depending on the configuration of the primary cluster in the original PCR stream, use one of the following workflows:
 
-- [From the original standby cluster (after it was promoted during failover) to the original primary cluster](#fail-back-to-the-original-primary-cluster).
-- [After the PCR stream used an existing cluster as the primary cluster](#fail-back-after-pcr-from-an-existing-cluster).
+- [From the original standby cluster (after it was promoted during failover) to the original primary cluster](#fail-back-to-the-original-primary-cluster). If this failback is initiated within 24 hours of the failover, PCR replicates the net-new changes from the standby cluster to the primary cluster, rather than fully replacing the existing data in the primary cluster.
+- [After the PCR stream used an existing cluster as the primary cluster](#fail-back-after-replicating-from-an-existing-primary-cluster).
 
 {{site.data.alerts.callout_info}}
 To move back to a different cluster that was not involved in the original PCR stream, set up a new PCR stream following the PCR [setup]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) guide.
@@ -208,7 +207,7 @@ This section illustrates the steps to fail back to the original primary cluster 
     ALTER VIRTUAL CLUSTER {cluster_a} STOP SERVICE;
     ~~~
 
-1. Open another terminal window and generate a connection string for **Cluster B** using `cockroach encode-uri`:
+1. Open another terminal window and generate a connection string for **Cluster B** using [`cockroach encode-uri`]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-3-manage-cluster-certificates-and-generate-connection-strings):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -279,7 +278,7 @@ This section illustrates the steps to fail back to the original primary cluster 
     ALTER VIRTUAL CLUSTER {cluster_a} COMPLETE REPLICATION TO LATEST;
     ~~~
 
-    The `failover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any replicated data above this timestamp to ensure that the standby is consistent with the primary at that timestamp:
+    After the failover has successfully completed, it returns a `failover_time` timestamp, representing the time at which the replicated data is consistent. Note that the cluster reverts any replicated data above the `failover_time` to ensure that the standby is consistent with the primary at that time:
 
     ~~~
                failover_time
@@ -302,13 +301,13 @@ This section illustrates the steps to fail back to the original primary cluster 
     SET CLUSTER SETTING server.controller.default_target_cluster='{cluster_a}';
     ~~~
 
-At this point, **Cluster A** is once again the primary and **Cluster B** is once again the standby. The clusters are entirely independent. To direct application traffic to the primary (**Cluster A**), you will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to **Cluster A**. To enable PCR again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+At this point, **Cluster A** has caught up to **Cluster B**. The clusters are entirely independent. To enable PCR again from the primary to the standby, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
-### Fail back after PCR from an existing cluster
+### Fail back after replicating from an existing primary cluster
 
 You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. For instructions on setting up a PCR in this way, refer to [Set up PCR from an existing cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#set-up-pcr-from-an-existing-cluster).
 
-After a [failover](#failover) to the standby cluster, you may want to then set up PCR from the original standby cluster, which is now the primary, to another cluster, which will become the standby. There are couple of ways to set up a new standby, and some considerations.
+After a [failover](#failover) to the standby cluster, you may want to set up PCR from the original standby cluster, which is now the primary, to another cluster, which will become the standby. There are multiple ways to set up a new standby, and some considerations.
 
 In the example, the clusters are named for reference:
 
@@ -324,11 +323,11 @@ In the example, the clusters are named for reference:
 
 ## Job management
 
-During PCR, jobs running on the primary cluster will replicate to the standby cluster. Once you have [completed a failover](#step-2-complete-the-failover) (or a [failback](#failback)), refer to the following sections for details on resuming jobs on the promoted cluster.
+During PCR, jobs running on the primary cluster replicate to the standby cluster. Once you have [completed a failover](#step-2-complete-the-failover) (or a [failback](#failback)), refer to the following sections for details on resuming jobs on the promoted cluster.
 
 ### Backup schedules
 
-[Backup schedules]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) will pause after failover on the promoted cluster. Take the following steps to resume jobs:
+[Backup schedules]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) pause after failover on the promoted standby cluster. Take the following steps to resume jobs:
 
 1. Verify that there are no other schedules running backups to the same [collection of backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections), i.e., the schedule that was running on the original primary cluster.
 1. [Resume]({% link {{ page.version.version }}/resume-schedules.md %}) the backup schedule on the promoted cluster.
