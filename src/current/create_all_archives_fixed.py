@@ -61,9 +61,12 @@ def fix_navigation_in_archive(version):
                     r"/\\/\(\[\^/\]\+\)\\/\(docs\|v[\d\.\\]+\|releases\|advisories\|cockroachcloud\|molt\)\\//\);",
                 )
                 if old_archive_match.search(txt):
+                    # Pre-compute escaped version outside the f-string to stay
+                    # compatible with Python < 3.12 (no backslashes inside {}).
+                    ver_escaped = version.replace(".", "\\.")
                     txt = old_archive_match.sub(
                         f"var archiveMatch = currentPath.match("
-                        f"/\\/([^\\/]+)\\/(docs|{version.replace('.', '\\.')}|releases|advisories|cockroachcloud|molt)\\//);",
+                        f"/\\/([^\\/]+)\\/(docs|{ver_escaped}|releases|advisories|cockroachcloud|molt)\\//);",
                         txt,
                     )
 
