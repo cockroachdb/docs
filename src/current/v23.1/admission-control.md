@@ -8,14 +8,14 @@ docs_area: develop
 CockroachDB supports an admission control system to maintain cluster performance and availability when some nodes experience high load. When admission control is enabled, CockroachDB sorts request and response operations into work queues by priority, giving preference to higher priority operations. Internal operations critical to node health, like [node liveness heartbeats]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues), are high priority. The admission control system also prioritizes transactions that hold [locks]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_locks), to reduce [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) and release locks earlier.
 
 {{site.data.alerts.callout_info}}
-Admission control is not available for CockroachDB {{ site.data.products.serverless }} clusters.
+Admission control is not available for CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }} clusters.
 {{site.data.alerts.end}}
 
 ## Use cases for admission control
 
 A well-provisioned CockroachDB cluster may still encounter performance bottlenecks at the node level, as stateful nodes can develop [hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots) that last until the cluster rebalances itself. When hot spots occur, they should not cause failures or degraded performance for important work.
 
-This is particularly important for CockroachDB {{ site.data.products.serverless }}, where one user tenant cluster experiencing high load should not degrade the performance or availability of a different, isolated tenant cluster running on the same host.
+This is particularly important for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }}, where one user tenant cluster experiencing high load should not degrade the performance or availability of a different, isolated tenant cluster running on the same host.
 
 Admission control can help if your cluster has degraded performance due to the following types of node overload scenarios:
 
@@ -50,7 +50,7 @@ The transaction start time is used within the priority queue and gives preferenc
 
 ### Set quality of service level for a session
 
-In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable]({% link {{ page.version.version }}/set-vars.md %}). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
+In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
 
 To increase the priority of subsequent SQL requests, run:
 
@@ -71,6 +71,18 @@ To reset the priority to the default session setting (in between background and 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET default_transaction_quality_of_service=regular;
+~~~
+
+### Set quality of service level for a transaction
+
+To set the quality of service level for a single [transaction]({% link {{ page.version.version }}/transactions.md %}), set the [`default_transaction_quality_of_service` session variable]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service) for just that transaction using the [`SET LOCAL`]({% link {{ page.version.version }}/set-vars.md %}#set-a-variable-for-the-duration-of-a-single-transaction) statement inside a [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) ... [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) block as shown below. The valid values are `critical`, `background`, and `regular`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+SET LOCAL default_transaction_quality_of_service = 'regular'; -- Edit to desired level
+-- Statements to run in this transaction go here
+COMMIT;
 ~~~
 
 ## Limitations

@@ -5,10 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-Encrypted [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) without an Enterprise license.
-{{site.data.alerts.end}}
-
 This doc provides information about how to take and restore encrypted backups in the following ways:
 
 - [Using AWS Key Management Service (KMS)](#aws-kms-uri-format)
@@ -20,13 +16,15 @@ This doc provides information about how to take and restore encrypted backups in
 
 ## Use Key Management Service
 
-You can encrypt full or incremental backups with AWS KMS, Google Cloud KMS, or Azure Key Vault by using the [`kms` option]({% link {{ page.version.version }}/backup.md %}#options). Files written by the backup (`BACKUP` manifest and data files) are encrypted using a 256-bit crypto-random generated data key. This data key is encrypted with the provided KMS URI(s) and stored alongside the `BACKUP` data in an `ENCRYPTION_INFO` file, which is used when restoring the backed-up data.
+You can encrypt [full or incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) with AWS KMS, Google Cloud KMS, or Azure Key Vault by using the [`kms` option]({% link {{ page.version.version }}/backup.md %}#options).
 
-On [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), CockroachDB reads the `ENCRYPTION_INFO` file and attempts to decrypt the encrypted data key using the KMS URI provided in the `RESTORE` statement. Once CockroachDB successfully obtains the unencrypted data key, the `BACKUP` manifest and data files will be decrypted and the restoration will proceed. Similarly, the same KMS URI is needed to decrypt the file to list the contents of the backup when using [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}#show-an-encrypted-backup).
+During the [backup process]({% link {{ page.version.version }}/backup-architecture.md %}), a cryptographically secure 32-byte (256-bit) key is generated. Individual data files are encrypted with the backup-specific random key using AES-GCM-256. This backup-specific random key is then encrypted using the Key Management Service (KMS) APIs provided by the relevant cloud provider—AWS KMS, Google Cloud KMS, or Azure Key Vault. The resulting encrypted version of the random key is then stored within the backup metadata in the `ENCRYPTION_INFO` file.
 
-When used with [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups), the `kms` option is applied to all the [backup file URLs]({% link {{ page.version.version }}/backup.md %}#backup-file-urls), which means each incremental must include at least one of the KMS URIs used to take the full backup. It can be any subset of the original URIs, but you cannot include any new KMS URIs. Similarly, when used with [locality-aware backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}), the KMS URI provided is applied to files in all localities.
+Note that the encryption algorithm for the random key is determined by the specific cloud provider. [AWS](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#symmetric-cmks) and [GCP](https://cloud.google.com/kms/docs/algorithms#symmetric_encryption_algorithms) use symmetric encryption with [AES-GCM-256](https://en.wikipedia.org/wiki/Galois/Counter_Mode). [Azure](https://learn.microsoft.com/en-us/azure/security/fundamentals/encryption-atrest) uses asymmetric encryption with RSA-OAEP-256.
 
-For more information about AWS KMS, see the [documentation](https://aws.amazon.com/kms/). For more information about Google Cloud KMS, see the [documentation](https://cloud.google.com/kms/docs).
+During a restore job, CockroachDB retrieves the encrypted random key from the backup metadata and attempts to decrypt it using the KMS URI specified in the [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) statement. Once successfully decrypted, CockroachDB uses this key to decrypt the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) manifest and data files. Similarly, the same KMS URI is required for decrypting the files when listing the backup contents using [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}).
+
+When incremental backups are in use, the `kms` option is applied to all backup file URLs. Therefore, each incremental backup must include at least one of the KMS URIs used during the full backup. This subset can consist of any combination of the original URIs, but you cannot introduce new KMS URIs. Likewise, when taking [locality-aware backups](#locality-aware-backup-with-kms-encryption), the specified KMS URI is applied to files across all localities.
 
 ### Generate a KMS key
 
@@ -36,7 +34,7 @@ Before you can use a KMS to encrypt a CockroachDB backup, you must first generat
 
 CockroachDB also supports [kms encryption](#take-a-locality-aware-backup-with-kms-encryption) for your locality-aware backup. At the time of `BACKUP`, you can [provide multiple KMS URIs](#aws-kms-uri-format), each referencing a KMS key in a different region. This allows CockroachDB to save multiple versions of the encrypted data key used to encrypt the backup data, one per KMS URI. With these encrypted versions of the data key stored alongside the encrypted backup data, a user can `RESTORE` the encrypted data using any one of the KMS URIs that were supplied during backup. In the case of a single KMS region outage, the data can be decrypted with any of the KMS keys from the other regions.
 
-#### Add a new KMS key to an existing backup
+### Add a new KMS key to an existing backup
 
 To add a new KMS key to an existing backup, use the [`ALTER BACKUP`]({% link {{ page.version.version }}/alter-backup.md %}) statement. `ALTER BACKUP` allows for new KMS encryption keys to be applied to an existing chain of encrypted backups (full and incremental). Once completed, subsequent `BACKUP`, `RESTORE`, and [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) statements can use any of the existing or new KMS URIs to decrypt the backup.
 
@@ -60,6 +58,7 @@ The AWS URI **requires** the following:
 `{key}`                     | The key identifiers used to reference the KMS key that should be used to encrypt or decrypt. For information about the supported formats, see the [AWS KMS docs](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id).
 `AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, you must provide access keys in the URI parameters (e.g., `AWS_ACCESS_KEY_ID=<key_id>&AWS_SECRET_ACCESS_KEY=<secret_key>`). If you use `AUTH=implicit`, the access keys can be omitted and the [credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/). For details on setting up and using the different authentication types, see [Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
 `REGION=<region>`           | The region of the KMS key.
+(optional) `AWS_ENDPOINT` | A custom endpoint for Amazon S3. Use to define a particular region or a Virtual Private Cloud (VPC) endpoint. Use with `specified` or `implicit` [authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
 
 See AWS's [KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html) documentation for guidance on creating an AWS KMS key.
 
@@ -154,7 +153,7 @@ BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 
 #### Take a locality-aware backup with kms encryption
 
-To take a [locality-aware backup with kms encryption](#locality-aware-backup-with-kms-encryption), use the `kms` option to specify a comma-separated list of KMS URIs:
+To take a [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) with kms encryption, use the `kms` option to specify a comma-separated list of KMS URIs:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -224,7 +223,7 @@ RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+BACKUP INTO 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH kms = 'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
 ~~~
 
@@ -234,7 +233,7 @@ BACKUP INTO 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+BACKUP INTO 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH KMS=(
       'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}',
       'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
@@ -247,7 +246,7 @@ To view a [kms encrypted locality-aware backup](#use-key-management-service), us
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUP FROM '2023/07/14-211406.03' IN 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+SHOW BACKUP FROM '2023/07/14-211406.03' IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH KMS=(
       'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}',
       'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
@@ -286,7 +285,7 @@ database_name | parent_schema_name |      object_name       | object_type | back
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE FROM LATEST IN 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+RESTORE FROM LATEST IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
     WITH kms = 'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
 ~~~
 
@@ -408,7 +407,7 @@ To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({%
 - [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
 - [Take and Restore Locality-aware Backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %})
 - [Take Backups with Revision History and Restore from a Point-in-time]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 

@@ -54,33 +54,15 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Low estimated Request Units are rounded to zero
 
-The [Request Units](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
+The [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
-
-### Statistics for deleted tables in `system.table_statistics` do not get removed
-
-When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
-
-### Collection of statistics for virtual computed columns
-
-CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}).
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
 
 ### `AS OF SYSTEM TIME` does not support placeholders
 
 CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
-
-### Declarative schema changer does not track rows in `system.privileges`
-
-The [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) does not track rows in the `system.privileges` table, which prevents the declarative schema changer from successfully running the [`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) statement.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88149)
 
 ### `null_ordered_last` does not produce correct results with tuples
 
@@ -104,6 +86,10 @@ There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` i
 This is because the state flip is effected by the CLI program at the end. Only the CLI (or its underlying API call) is able to finalize the "decommissioned" state. If the command is interrupted, or `--wait=none` is used, the state will only flip to "decommissioned" when the CLI program is run again after decommissioning has done all its work.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94430)
+
+### Execution locality in changefeeds
+
+- {% include {{ page.version.version }}/known-limitations/cdc-execution-locality.md %}
 
 ## Unresolved limitations
 
@@ -140,6 +126,10 @@ The following are not currently allowed within the body of a [UDF]({% link {{ pa
 - References to other user-defined functions.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+
+### Table-level restore will not restore user-defined functions
+
+{% include {{ page.version.version }}/known-limitations/restore-udf.md %}
 
 ### Incorrect query plans for partitions with `NULL` values
 
@@ -401,9 +391,12 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
-### Automatic statistics refresher may not refresh after upgrade
+### Statistics limitations
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+{% include {{ page.version.version }}/known-limitations/forecasted-stats-limitations.md %}
+- When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
+- CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
@@ -455,7 +448,7 @@ CockroachDB supports efficiently storing and querying [spatial data]({% link {{ 
 
 - CockroachDB does not support using [schema name prefixes]({% link {{ page.version.version }}/sql-name-resolution.md %}#how-name-resolution-works) to refer to [data types]({% link {{ page.version.version }}/data-types.md %}) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`).
 
-    Note that, in [`IMPORT PGDUMP`]({% link {{ page.version.version }}/migrate-from-postgres.md %}) output, [`GEOMETRY` and `GEOGRAPHY`]({% link {{ page.version.version }}/export-spatial-data.md %}) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
+    Note that, in [`IMPORT PGDUMP`]({% link molt/migrate-to-cockroachdb.md %}) output, [`GEOMETRY` and `GEOGRAPHY`]({% link {{ page.version.version }}/export-spatial-data.md %}) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56492)
 
@@ -466,6 +459,10 @@ The [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) statemen
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
+
+### `SHOW BACKUP` does not support symlinks for nodelocal
+
+{% include {{page.version.version}}/known-limitations/show-backup-symlink.md %}
 
 ### DB Console may become inaccessible for secure clusters
 
@@ -699,6 +696,10 @@ If you think a rollback of a column-dropping schema change has occurred, check t
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
 
+### Secondary regions and regional by row tables
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+
 ### Row-Level TTL limitations
 
 {% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
@@ -709,3 +710,6 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}

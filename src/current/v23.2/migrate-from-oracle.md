@@ -6,10 +6,10 @@ docs_area: migrate
 ---
 
 {{site.data.alerts.callout_danger}}
-The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data]({% link {{ page.version.version }}/aws-dms.md %}) from Oracle to CockroachDB. You can also [migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %}).
-{{site.data.alerts.end}}
+The instructions on this page are outdated. Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=oracle) to convert an Oracle schema into a compatible CockroachDB schema, and a tool such as [AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %}) or [Qlik]({% link {{ page.version.version }}/qlik.md %}) to migrate data from Oracle to CockroachDB.
 
-This page has instructions for migrating data from Oracle into CockroachDB by [importing]({% link {{ page.version.version }}/import.md %}) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
+Note that `IMPORT` is deprecated. To move data into CockroachDB, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy.md %}).
+{{site.data.alerts.end}}
 
 To illustrate this process, we use the following sample data and tools:
 
@@ -388,8 +388,8 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
 - [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
-- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
-- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
+- [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)
+- [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %})
 - [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

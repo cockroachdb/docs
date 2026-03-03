@@ -22,6 +22,18 @@ For optimal cluster performance, Cockroach Labs recommends that all nodes use th
 
 We recommend running a [glibc](https://www.gnu.org/software/libc/)-based Linux distribution and Linux kernel version from the last 5 years, such as [Ubuntu](https://ubuntu.com/), [Red Hat Enterprise Linux (RHEL)](https://www.redhat.com/technologies/linux-platforms/enterprise-linux), [CentOS](https://www.centos.org/), or [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs).
 
+We have observed increased memory usage in rare cases due to [transparent huge pages (THP)](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html) being enabled (i.e., set to `always`). New deployments should configure THP with the `madvise` option.
+
+Existing deployments that have THP enabled using the `always` option should change it to `madvise` unless they are currently running with a comfortable memory usage margin.
+
+The method for permanently changing the THP setting across reboots depends on the operating system. For Red Hat Enterprise Linux, refer to the [Red Hat documentation](https://access.redhat.com/solutions/46111).
+
+## Cluster settings
+
+This section lists cluster setting changes that are recommended for production deployments:
+
+- To prevent unnecessary queuing in [admission control]({% link {{ page.version.version }}/admission-control.md %}) CPU queues, set the `goschedstats.always_use_short_sample_period.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-goschedstats-always-use-short-sample-period-enabled) to `true` for any production cluster.
+
 ## Hardware
 
 {% include {{ page.version.version }}/prod-deployment/terminology-vcpu.md %}
@@ -50,6 +62,10 @@ In general, distribute your total vCPUs into the **largest possible nodes and sm
 
 - For cluster stability, Cockroach Labs recommends a _minimum_ of {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='minimum' %}, and strongly recommends no fewer than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='absolute_minimum' %} per node. In a cluster with too few CPU resources, foreground client workloads will compete with the cluster's background maintenance tasks. For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues).
 
+    {{site.data.alerts.callout_info}}
+    Clusters deployed in CockroachDB {{ site.data.products.cloud }} can be created with a minimum of 2 vCPUs per node on AWS and GCP or 4 vCPUs per node on Azure.
+    {{site.data.alerts.end}}
+
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
 - Cockroach Labs does not extensively test clusters with more than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='maximum' %} per node. This is the recommended _maximum_ threshold.
@@ -60,7 +76,7 @@ After you [size your cluster](#sizing), you can determine the amount of RAM, sto
 
 This hardware guidance is meant to be platform agnostic and can apply to bare-metal, containerized, and orchestrated deployments. Also see our [cloud-specific](#cloud-specific-recommendations) recommendations.
 
-{% capture cap_per_vcpu %}{% include_cached v22.1/prod-deployment/provision-storage.md %}{% endcapture %}
+{% capture cap_per_vcpu %}{% include_cached {{ page.version.version }}/prod-deployment/provision-storage.md %}{% endcapture %}
 
 <table>
 <thead>
@@ -110,7 +126,7 @@ The benefits to having more RAM decrease as the [number of vCPUs](#sizing) incre
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}
 
-- {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see [Cache and SQL memory size](#cache-and-sql-memory-size).
+- To help guard against [out-of-memory (OOM) crashes]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash), consider tuning the cache and SQL memory for cluster nodes. Refer to the section [Cache and SQL memory size](#cache-and-sql-memory-size).
 
 - Monitor [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu-usage) and [memory]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#database-memory-usage) usage. Ensure that they remain within acceptable limits.
 
@@ -140,10 +156,16 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
 
 - Use [zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
-    This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster]({% link {{ page.version.version }}/configure-replication-zones.md %}#edit-the-default-replication-zone) or for specific [databases]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-database), [tables]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-table), or [rows]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-partition) (Enterprise-only).
+    This is especially recommended if you are using local disks rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster]({% link {{ page.version.version }}/configure-replication-zones.md %}#edit-the-default-replication-zone) or for specific [databases]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-database), [tables]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-table), or [rows]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-partition).
+
+- Do not run CockroachDB on top of distributed file systems (for example, Ceph.io) when deploying on-premises. CockroachDB already handles [data distribution]({% link {{ page.version.version }}/architecture/distribution-layer.md %}), [replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}), and fault tolerance using [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft). Adding a distributed file system underneath creates a second, uncoordinated layer that can cause duplicate replication, higher and more variable latency, and more complex failures. Use the recommended Linux filesystems instead.
 
 {{site.data.alerts.callout_info}}
 Under-provisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a [ballast file]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [storage issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#storage-issues).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
 {{site.data.alerts.end}}
 
 ##### Disk I/O
@@ -155,8 +177,6 @@ Disks must be able to achieve {% include {{ page.version.version }}/prod-deploym
 - Use [sysbench](https://github.com/akopytov/sysbench) to benchmark IOPS on your cluster. If IOPS decrease, add more nodes to your cluster to increase IOPS.
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-lvm.md %}
-
-- The optimal configuration for striping more than one device is [RAID 10](https://wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
 
 {{site.data.alerts.callout_info}}
 Disk I/O especially affects [performance on write-heavy workloads]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#network-and-i-o-bottlenecks). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
@@ -179,8 +199,6 @@ Results:
 | Data per RAM          | ~135 GiB / GiB  |
 
 ### Cloud-specific recommendations
-
-{% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
 
 Based on our internal testing, we recommend the following cloud-specific configurations. Before using configurations not recommended here, be sure to test them exhaustively. Also consider the following workload-specific observations:
 
@@ -316,7 +334,7 @@ CockroachDB is purpose-built to be fault-tolerant and to recover automatically, 
 
 Taking regular backups of your data in production is an operational best practice. You can create [full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) or [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) and enabling [object locking]({% link {{ page.version.version }}/use-cloud-storage.md %}#immutable-storage) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
 
-For details about available backup and restore types in CockroachDB, see [Backup and restore types]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-product-support).
+For details about available backup and restore types in CockroachDB, see [Backup and restore types]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-support).
 
 ## Clock synchronization
 
@@ -343,14 +361,12 @@ To manually increase a node's cache size and SQL memory size, start the node usi
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --cache=.35 --max-sql-memory=.35 {other start flags}
+cockroach start --cache=.35 --max-sql-memory=.35 {other start flags}
 ~~~
 
-{{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %}
 
-Because CockroachDB manages its own memory caches, disable Linux memory swapping or allocate sufficient RAM to each node to prevent the node from running low on memory.
-{{site.data.alerts.end}}
+Because CockroachDB manages its own memory caches, Cockroach Labs recommends that you disable Linux memory swapping or allocate sufficient RAM to each node to prevent the node from running low on memory. Writing to swap is significantly less performant than writing to memory.
 
 ## Dependencies
 
@@ -569,62 +585,71 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
     session    required   pam_limits.so
     ~~~
 
-1.  Edit `/etc/security/limits.conf` and append the following lines to the file:
+1.  Set a limit for the number of open file descriptors. The specific limit you set depends on your workload and the hardware and configuration of your nodes.
+    - **If you use `systemd`**, manually-set limits set using the `ulimit` command or a configuration file like `/etc/limits.conf` are ignored for services started by `systemd`. To limit the number of open file descriptors, add a line like the following to the service definition for the `cockroach` process. To allow an unlimited number of files, you can optionally set `LimitNOFILE` to `INFINITY`. Cockroach Labs recommends that you carefully test this configuration with a realistic workload before deploying it in production.
 
-    ~~~
-    *              soft     nofile          35000
-    *              hard     nofile          35000
-    ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ none
+        LimitNOFILE=35000
+        ~~~
 
-    Note that `*` can be replaced with the username that will be running the CockroachDB server.
+        Reload `systemd` for the new limit to take effect:
 
-1.  Save and close the file.
+        ~~~ shell
+        systemctl daemon-reload
+        ~~~
+    - **If you do not use `systemd`**: Edit `/etc/security/limits.conf` and append the following lines to the file:
 
-1.  Restart the system for the new limits to take effect.
+        ~~~
+        *              soft     nofile          35000
+        *              hard     nofile          35000
+        ~~~
 
-1.  Verify the new limits:
+        The `*` can be replaced with the username that will start CockroachDB.
 
-    ~~~ shell
-    $ ulimit -a
-    ~~~
+        Save and close the file, then restart the system for the new limits to take effect.
+        After the system restarts, verify the new limits:
 
-Alternately, if you're using [Systemd](https://wikipedia.org/wiki/Systemd):
-
-1.  Edit the service definition to configure the maximum number of open files:
-
-    ~~~ ini
-    [Service]
-    ...
-    LimitNOFILE=35000
-    ~~~
-
-    {{site.data.alerts.callout_success}}
-    To set the file descriptor limit to "unlimited" in the Systemd service definition file, use `LimitNOFILE=infinity`.
-    {{site.data.alerts.end}}
-
-1.  Reload Systemd for the new limit to take effect:
-
-    ~~~ shell
-    $ systemctl daemon-reload
-    ~~~
+        ~~~ shell
+        ulimit -a
+        ~~~
 
 #### System-Wide Limit
 
 You should also confirm that the file descriptors limit for the entire Linux system is at least 10 times higher than the per-process limit documented above (e.g., at least 150000).
 
-1. Check the system-wide limit:
+1. **If you use `systemd`**, add a line like the following to the service definition for the `Manager` service. To allow an unlimited number of files, set `LimitNOFILE` to `INFINITY`.
 
-    ~~~ shell
-    $ cat /proc/sys/fs/file-max
+    {% include_cached copy-clipboard.html %}
+    ~~~ none
+    LimitNOFILE=35000
     ~~~
 
-1. If necessary, increase the system-wide limit in the `proc` file system:
+    Reload `systemd` for the new limit to take effect:
 
     ~~~ shell
-    $ echo 150000 > /proc/sys/fs/file-max
+    systemctl daemon-reload
     ~~~
+
+1. **If you do not use `systemd`**:
+    1. Check the system-wide limit:
+
+        ~~~ shell
+        cat /proc/sys/fs/file-max
+        ~~~
+    1. If necessary, increase the system-wide limit in the `proc` file system:
+
+        ~~~ shell
+        echo 150000 > /proc/sys/fs/file-max
+        ~~~
 
 </section>
+<section id="windowsinstall" markdown="1">
+
+CockroachDB for Windows is experimental and not supported in production. To learn about configuring limits on Windows, refer to the Microsoft community blog post [Pushing the Limits of Windows: Handles](https://techcommunity.microsoft.com/t5/windows-blog-archive/pushing-the-limits-of-windows-handles/ba-p/723848).
+
+</section>
+
 <section id="windowsinstall" markdown="1">
 
 CockroachDB does not yet provide a Windows binary. Once that's available, we will also provide documentation on adjusting the file descriptors limit on Windows.

@@ -9,6 +9,12 @@
             ]
         },
         {
+            "title": "Deployment and Operations Skills Taxonomy",
+            "urls": [
+              "/${VERSION}/deployment-operations-skills-taxonomy.html"
+            ]
+        },
+        {
             "title": "Deploy Locally",
             "items": [
               {
@@ -209,7 +215,7 @@
                     "/${VERSION}/global-tables.html"
                     ]
                 }
-            ] 
+            ]
           },
           {
             "title": "Security",
@@ -224,7 +230,7 @@
                         ]
                       },
                       {
-                        "title": "Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault",
+                        "title": "Manage PKI certificates with HashiCorp Vault",
                         "urls": [
                           "/${VERSION}/manage-certs-vault.html"
                         ]
@@ -236,7 +242,7 @@
                         ]
                       },
                       {
-                        "title": "Using Online Certificate Status Protocol (OCSP) with CockroachDB",
+                        "title": "Use Online Certificate Status Protocol (OCSP)",
                         "urls": [
                           "/${VERSION}/manage-certs-revoke-ocsp.html"
                         ]
@@ -301,7 +307,7 @@
                     "title": "Security Tutorials",
                     "items": [
                         {
-                            "title": "Using Hashicorp Vault's Dynamic Secrets for Enhanced Database Credential Security",
+                            "title": "Use Hashicorp Vault's Dynamic Secrets",
                             "urls": [
                                 "/${VERSION}/vault-db-secrets-tutorial.html"
                             ]
@@ -680,9 +686,9 @@
                 ]
               },
               {
-                "title": "Log SQL Statistics to Datadog",
+                "title": "Log SQL Activity to Datadog",
                 "urls": [
-                  "/${VERSION}/log-sql-statistics-to-datadog.html"
+                  "/${VERSION}/log-sql-activity-to-datadog.html"
                 ]
               }
             ]

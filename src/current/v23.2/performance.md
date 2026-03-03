@@ -6,7 +6,7 @@ toc_not_nested: true
 docs_area: reference.benchmarking
 ---
 
-CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Labs's extensive testing using industry-standard benchmarks like TPC-C and Sysbench.
+CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Labs's extensive testing using the TPC-C industry-standard benchmark.
 
 For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-large.md %}). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design.
 
@@ -18,7 +18,7 @@ This document is about CockroachDB performance on benchmarks. For guidance on tu
 
 TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. During testing, CockroachDB v21.1 processed **1.68M tpmC with 140,000 warehouses, resulting in an efficiency score of 95%.** As shown in the following chart, this was a 40% improvement over the results from CockroachDB 19.2.
 
-For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used).
+For a refresher on what exactly TPC-C is and how it is measured, see [Benchmark details](#benchmark-details).
 
 CockroachDB achieves this performance in [`SERIALIZABLE` isolation]({% link {{ page.version.version }}/demo-serializable.md %}), the strongest isolation level in the SQL standard.
 
@@ -51,25 +51,17 @@ This chart shows that adding nodes increases throughput linearly while holding p
 
 ## Throughput
 
-Cockroach Labs believes TPC-C provides the most realistic and objective measure for OLTP throughput. In the real world, applications generate transactional workloads that consist of a combination of reads and writes, possibly with concurrency and likely without all data being loaded into memory. If you see benchmark results quoted in QPS, take them with a grain of salt, because anything as simple as a “query” is unlikely to be representative of the workload you need to run in practice.
-
-With that in mind, however, you can use [Sysbench](https://github.com/akopytov/sysbench) for straight-forward throughput benchmarking. For example, on a 3-node cluster of AWS `c5d.9xlarge` machines across AWS’s `us-east-1` region (availability zones `a`, `b`, and `c`), CockroachDB can achieve 118,000 inserts per second on the `oltp_insert` workload and 336,000 reads per second on the `oltp_point_select` workload. We used a concurrency of 480 on the `oltp_insert` workload and a concurrency of 216 on the `oltp_point_select` workload to generate these numbers.
-
-<img src="{{ 'images/v23.2/sysbench-throughput.png' | relative_url }}" alt="Sysbench Throughput" style="max-width:100%" />
+Cockroach Labs believes TPC-C provides the most realistic and objective measure for OLTP throughput. In the real world, applications generate transactional workloads that consist of a combination of reads and writes, possibly with concurrency and likely without all data being loaded into memory. Approach benchmark results quoted in QPS with caution, because anything as simple as a “query” is unlikely to be representative of the workload you need to run in practice.
 
 ## Latency
 
 CockroachDB returns single-row **reads in 1 ms** and processes single-row **writes in 2 ms** within a single availability zone. As you expand out to multiple availability zones or multiple regions, latency can increase due to distance and the limitation of the speed of light.
 
-For benchmarking latency, again, Cockroach Labs believes TPC-C provides the most realistic and objective measure, since it encompasses the latency distribution, including tail performance. However, you can use [Sysbench](https://github.com/akopytov/sysbench) for straight-forward latency benchmarking.
-
-For example, when running Sysbench on a 3-node cluster of AWS `c5d.9xlarge` machines across AWS `us-east-1` region (availability zones `a`, `b`, and `c`), CockroachDB can achieve an average of 4.3ms on the `oltp_insert` workload and 0.7ms on the `oltp_point_select` workload.
-
-<img src="{{ 'images/v23.2/sysbench-latency.png' | relative_url }}" alt="Sysbench Latency" style="max-width:100%" />
+For benchmarking latency, again, Cockroach Labs believes TPC-C provides the most realistic and objective measure, since it encompasses the latency distribution, including tail performance.
 
 CockroachDB provides a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes]({% link {{ page.version.version }}/indexes.md %}) and various [data topologies]({% link {{ page.version.version }}/topology-patterns.md %}) to achieve low latency.
 
-## Benchmarks used
+## Benchmark details
 
 ### TPC-C
 
@@ -87,10 +79,6 @@ TPC-C specifies restrictions on the maximum throughput achievable per warehouse.
 
 Because TPC-C is constrained to a maximum amount of throughput per warehouse, we often discuss TPC-C performance as the **maximum number of warehouses for which a database can maintain the maximum throughput per minute.** For a full description of the benchmark, see [TPC BENCHMARK™ C Standard Specification Revision 5.11](http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-c_v5.11.0.pdf).
 
-### Sysbench
-
-[Sysbench](https://github.com/akopytov/sysbench) is a popular tool that allows for basic throughput and latency testing. Cockroach Labs prefers the more complex TPC-C, but Sysbench’s `oltp_insert` and `oltp_point_select` workloads are reasonable alternatives for understanding basic throughput and latency across different databases.
-
 ## Performance limitations
 
 CockroachDB has no theoretical limitations to scaling, throughput, latency, or concurrency other than the speed of light.
@@ -100,8 +88,6 @@ CockroachDB has no theoretical limitations to scaling, throughput, latency, or c
 - Hardware
 
     CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
-
-    {% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
 
 - Performance tuning
 

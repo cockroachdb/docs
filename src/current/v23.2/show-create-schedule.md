@@ -14,7 +14,7 @@ Only members of the [`admin` role]({% link {{ page.version.version }}/security-r
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/show_create_schedules.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_create_schedules.html %}
 </div>
 
 ## Parameters

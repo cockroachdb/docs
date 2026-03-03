@@ -6,12 +6,11 @@ toc_not_nested: true
 docs_area: deploy
 ---
 
-In contrast to most databases, CockroachDB offers `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
+In contrast to most databases, CockroachDB offers `SERIALIZABLE` isolation by default, which is the strongest of the four [transaction isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
 
-In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness.
+In this tutorial, you'll work through a hypothetical scenario that demonstrates the effectiveness of `SERIALIZABLE` isolation for maintaining data correctness.
 
 1. You'll start by reviewing the scenario and its schema.
-1. You'll then execute the scenario at one of the weaker isolation levels, `READ COMMITTED`, observing the write skew anomaly and its implications. Because CockroachDB offers `SERIALIZABLE` isolation, you'll run this portion of the tutorial on PostgreSQL, which defaults to `READ COMMITTED`.
 1. You'll finish by executing the scenario at `SERIALIZABLE` isolation, observing how it guarantees correctness. You'll use CockroachDB for this portion.
 
 {{site.data.alerts.callout_info}}
@@ -25,7 +24,7 @@ For a deeper discussion of transaction isolation and the write skew anomaly, see
 - A hospital has an application for doctors to manage their on-call shifts.
 - The hospital has a rule that at least one doctor must be on call at any one time.
 - Two doctors are on-call for a particular shift, and both of them try to request leave for the shift at approximately the same time.
-- In PostgreSQL, with the default `READ COMMITTED` isolation level, the [write skew](#write-skew) anomaly results in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
+- In PostgreSQL, with the default [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation level, the [write skew](#write-skew) anomaly results in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
 - In CockroachDB, with the `SERIALIZABLE` isolation level, write skew is prevented, one doctor is allowed to book leave and the other is left on-call, and lives are saved.
 
 #### Write skew
@@ -242,7 +241,7 @@ To check this, in either terminal, run:
 (2 rows)
 ~~~
 
-Again, this anomaly is the result of PostgreSQL's default isolation level of `READ COMMITTED`, but note that this would happen with any isolation level except `SERIALIZABLE` and some implementations of `REPEATABLE READ`:
+Again, this anomaly is the result of PostgreSQL's default isolation level of [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}), but note that this would happen with any isolation level except `SERIALIZABLE` and some implementations of `REPEATABLE READ`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -457,7 +456,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     ~~~
     ERROR: restart transaction: TransactionRetryWithProtoRefreshError: TransactionRetryError: retry txn (RETRY_SERIALIZABLE - failed preemptive refresh due to encountered recently written committed value /Table/105/1/20001/1/0 @1700513356.063385000,2): "sql txn" meta={id=10f4abbc key=/Table/105/1/20001/2/0 iso=Serializable pri=0.00167708 epo=0 ts=1700513366.194063000,2 min=1700513327.262632000,0 seq=1} lock=true stat=PENDING rts=1700513327.262632000,0 wto=false gul=1700513327.762632000,0
     SQLSTATE: 40001
-    HINT: See: https://www.cockroachlabs.com/docs/v23.2/transaction-retry-error-reference.html#retry_serializable
+    HINT: See: https://www.cockroachlabs.com/docs/{{ page.version.version }}/transaction-retry-error-reference.html#retry_serializable
     ~~~
 
     {{site.data.alerts.callout_success}}
@@ -539,7 +538,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 ## What's next?
 
-Explore other core CockroachDB benefits and features:
+Explore other CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 

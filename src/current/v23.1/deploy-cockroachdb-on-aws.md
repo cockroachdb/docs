@@ -18,7 +18,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 {{site.data.alerts.callout_info}}
-If you need a license to use [{{ site.data.products.enterprise }} features]({% link {{ page.version.version }}/enterprise-licensing.md %}), obtain a private offer link on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ph5bx6fhm4nlq) or see [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) to learn about custom pricing.
+You need a license to use CockroachDB; obtain a private offer link on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ph5bx6fhm4nlq) or see [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) to learn about custom pricing.
 {{site.data.alerts.end}}
 
 ## Before you begin

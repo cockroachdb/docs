@@ -1,0 +1,1 @@
+- The `sql.guardrails.max_row_size_err` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows. [#69540](https://github.com/cockroachdb/cockroach/issues/69540)

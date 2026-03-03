@@ -63,7 +63,7 @@ Pebble uses a Log-structured Merge-tree (hereafter _LSM tree_ or _LSM_) to manag
 
 SSTs are an on-disk representation of sorted lists of key-value pairs. Conceptually, they look something like this (intentionally simplified) diagram:
 
-<img src="{{ 'images/v21.2/sst.png' | relative_url }}" alt="Structure of an SST file" style="max-width:100%" />
+<img src="{{ 'images/v23.1/sst.png' | relative_url }}" alt="Structure of an SST file" style="max-width:100%" />
 
 SST files are immutable; they are never modified, even during the [compaction process](#compaction).
 
@@ -78,7 +78,7 @@ The SSTs within each level are guaranteed to be non-overlapping: for example, if
 - To allow LSM-based storage engines like Pebble to support ingesting large amounts of data, such as when using the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement.
 - To allow for easier and more efficient flushes of [memtables](#memtable-and-write-ahead-log).
 
-<img src="{{ 'images/v21.2/lsm-with-ssts.png' | relative_url }}" alt="LSM tree with SST files" style="max-width:100%" />
+<img src="{{ 'images/v23.1/lsm-with-ssts.png' | relative_url }}" alt="LSM tree with SST files" style="max-width:100%" />
 
 ##### Compaction
 
@@ -108,7 +108,7 @@ A certain amount of read amplification is expected in a normally functioning Coc
 
 <a name="write-amplification"></a>
 
-_Write amplification_ is more complicated than read amplification, but can be defined broadly as: "how many physical files am I rewriting during compactions?" For example, if the storage engine is doing a lot of [compactions](#compaction) in L5, it will be rewriting SST files in L5 over and over again. This is a tradeoff, since if the engine doesn't perform compactions often enough, the size of L0 will get too large, and an inverted LSM will result, which also has ill effects.
+_Write amplification_ measures the volume of data written to disk, relative to the volume of data logically committed to the storage engine. When a value is committed to the storage engine, CockroachDB writes it once to the [write-ahead log (WAL)](#memtable-and-write-ahead-log). CockroachDB writes the value again when flushing it to an [SSTable](#ssts). CockroachDB subsequently writes the value multiple times as part of [compactions](#compaction) over the lifetime of the value. Most write amplification, and write bandwidth more broadly, originates from compactions. This is a necessary tradeoff, because if the storage engine performs too few compactions, the size of [L0](#lsm-levels) will get too large and an inverted LSM will result, which also has ill effects. In contrast, writes to the WAL are a small fraction of a [store]({% link {{ page.version.version }}/cockroach-start.md %}#store)'s overall write bandwidth and IOPs.
 
 Read amplification and write amplification are key metrics for LSM performance. Neither is inherently "good" or "bad", but they must not occur in excess, and for optimum performance they must be kept in balance. That balance involves tradeoffs.
 
@@ -124,7 +124,7 @@ Another file on disk called the write-ahead log (hereafter _WAL_) is associated 
 
 The relationship between the memtable, the WAL, and the SST files is shown in the diagram below. New values are written to the WAL at the same time as they are written to the memtable. From the memtable they are eventually written to SST files on disk for longer-term storage.
 
-<img src="{{ 'images/v21.2/memtable-wal-sst.png' | relative_url }}" alt="Relationship between memtable, WAL, and SSTs" style="max-width:100%" />
+<img src="{{ 'images/v23.1/memtable-wal-sst.png' | relative_url }}" alt="Relationship between memtable, WAL, and SSTs" style="max-width:100%" />
 
 ##### LSM design tradeoffs
 
@@ -175,4 +175,4 @@ The storage layer commits writes from the Raft log to disk, as well as returns r
 
 ## What's next?
 
-Now that you've learned about our architecture, [start up a CockroachDB {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) or [local cluster]({% link {{ page.version.version }}/install-cockroachdb.md %}) and start [building an app with CockroachDB]({% link {{ page.version.version}}/example-apps.md %}).
+Now that you've learned about our architecture, [start up a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) or [local cluster]({% link {{ page.version.version }}/install-cockroachdb.md %}) and start [building an app with CockroachDB]({% link {{ page.version.version}}/example-apps.md %}).

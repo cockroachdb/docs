@@ -1,6 +1,6 @@
 ---
-title: Use the Schema Conversion Tool
-summary: Use the Schema Conversion Tool to begin a database migration to CockroachDB.
+title: MOLT Schema Conversion Tool
+summary: Use the MOLT Schema Conversion Tool to begin a database migration to CockroachDB.
 toc: true
 cloud: true
 docs_area: migrate
@@ -8,17 +8,24 @@ docs_area: migrate
 
 {% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
-The **Migrations** page on the CockroachDB {{ site.data.products.cloud }} Console features a **Schema Conversion Tool** that helps you:
+The **Migrations** page on the CockroachDB {{ site.data.products.cloud }} Console features the MOLT Schema Conversion Tool. This tool helps you:
 
 - Convert a schema from a PostgreSQL, MySQL, Oracle, or Microsoft SQL Server database for use with CockroachDB.
-- [Export the converted schema.](#export-the-schema) {% include cockroachcloud/migration/sct-self-hosted.md %}
 - Migrate directly to a CockroachDB {{ site.data.products.cloud }} database that uses the converted schema. You specify the target database and database owner when [migrating the schema](#migrate-the-schema).
+- [Export the converted schema.](#export-the-schema) {% include cockroachcloud/migration/sct-self-hosted.md %}
 
     {{site.data.alerts.callout_info}}
-    The **Migrations** page is used to convert a schema for use with CockroachDB and to create a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see the [Migration Overview]({% link {{version_prefix}}migration-overview.md %}).
+    The **Migrations** page is used to convert a schema for use with CockroachDB and to create a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see the [Migration Overview]({% link molt/migration-strategy.md %}).
     {{site.data.alerts.end}}
 
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Migration** in the **Data** section of the left side navigation.
+
+## Required permissions
+
+To access the **Migrations** page, as user must have either of the following roles:
+
+- [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin)
+- [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
 
 ## Convert a schema
 
@@ -44,24 +51,24 @@ The steps to convert your schema depend on your source dialect.
 
 <ul>
 <section class="filter-content" markdown="1" data-scope="postgres">
-<li><b>INT type conversion</b>: On CockroachDB, <code>INT</code> is an alias for <code>INT8</code>, which creates 64-bit signed integers. On PostgreSQL, <code>INT</code> defaults to <code>INT4</code>. For details, see <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/migration-overview#schema-design-best-practices">Schema design best practices</a>.</li> 
+<li><b>INT type conversion</b>: On CockroachDB, <code>INT</code> is an alias for <code>INT8</code>, which creates 64-bit signed integers. On PostgreSQL, <code>INT</code> defaults to <code>INT4</code>. For details, see <a href="{% link molt/migration-strategy.md %}#schema-design-best-practices">Schema design best practices</a>.</li> 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql oracle mssql">
-<li><b>Casing of Identifiers:</b> Select <b>Keep case sensitivity</b> to enclose identifiers in double quotes, and <b>Make case insensitive</b> to convert identifiers to lowercase. For details on how CockroachDB handles identifiers, see <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/keywords-and-identifiers#identifiers">Identifiers</a>.</li>
+<li><b>Casing of Identifiers:</b> Select <b>Keep case sensitivity</b> to enclose identifiers in double quotes, and <b>Make case insensitive</b> to convert identifiers to lowercase. For details on how CockroachDB handles identifiers, see <a href="{% link {{site.current_cloud_version}}/keywords-and-identifiers.md %}#identifiers">Identifiers</a>.</li>
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-<li><b>AUTO_INCREMENT Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/migration-overview#schema-design-best-practices">Schema design best practices</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/sql-faqs#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
-<li><b>Enum Preferences:</b> On CockroachDB, <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/enum"><code>ENUMS</code></a> are a standalone type. On MySQL, they are part of column definitions. You can select to either deduplicate the <code>ENUM</code> definitions or create a separate type for each column.</li>
+<li><b>AUTO_INCREMENT Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="{% link molt/migration-strategy.md %}#schema-design-best-practices">Schema design best practices</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="{% link {{site.current_cloud_version}}/sql-faqs.md %}#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
+<li><b>Enum Preferences:</b> On CockroachDB, <a href="{% link {{site.current_cloud_version}}/enum.md %}"><code>ENUMS</code></a> are a standalone type. On MySQL, they are part of column definitions. You can select to either deduplicate the <code>ENUM</code> definitions or create a separate type for each column.</li>
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-<li><b>GENERATED AS IDENTITY Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/migration-overview#schema-design-best-practices">Schema design best practices</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/sql-faqs#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
+<li><b>GENERATED AS IDENTITY Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="{% link molt/migration-strategy.md %}#schema-design-best-practices">Schema design best practices</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="{% link {{site.current_cloud_version}}/sql-faqs.md %}#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mssql">
-<li><b>IDENTITY Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/migration-overview#schema-design-best-practices">Schema design best practices</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/sql-faqs#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
+<li><b>IDENTITY Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="{% link molt/migration-strategy.md %}#schema-design-best-practices">Schema design best practices</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="{% link {{site.current_cloud_version}}/sql-faqs.md %}#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
 </section>
 </ul>
 
@@ -102,10 +109,6 @@ The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be 
 <section class="filter-content" markdown="1" data-scope="postgres mysql">
 ### Use Credentials
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 The Schema Conversion Tool can connect directly to a PostgreSQL or MySQL database to obtain the schema. To add a schema using credentials:
 
 1. In step 2 of the **Add SQL Schema** dialog, click **Use Credential**. Select the credentials to use. If the list is empty, this is because no credentials have been created for the selected database type. You can [add credentials](#add-database-credentials) directly from the pulldown menu.
@@ -125,7 +128,9 @@ Credentials can be added for PostgreSQL and MySQL databases.
 1. Provide the following information:
     - A **Credential Name** to associate with the credentials.
     - The **Dialect** of the database you are connecting to. Currently, PostgreSQL and MySQL are supported.
-    - The **Host** for accessing the database. For example, `migrations.cockroachlabs.com`. Local hosts such as `localhost` and `127.0.0.1` are not allowed.
+    - The **Host** (i.e., hostname or IP address) for accessing the database, excluding the protocol (e.g., `tcp://`). For example, `migrations.cockroachlabs.com`. The following are not allowed:
+        - Local hosts such as `localhost` and `127.0.0.1`.
+        - Private IPs, including `127.0.0.0/8`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.0.0/16`, `::1/128`, `fe80::/10`, and `fc00::/7`.
     - The **Port** for accessing the database.
     - A valid **Username** and **Password** for accessing the database.
     - The **Database Name** to access. The Schema Conversion Tool will obtain the schema for this database.
@@ -161,7 +166,7 @@ The banner at the top of the page displays:
 <li>The number of <b>Compatibility Notes</b> on differences in SQL syntax. Although these statements do not block schema migration, you should [update](#update-the-schema) them before migrating the schema.</li>
 </section>
 
-<li>The number of <b>Suggestions</b> regarding <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/migration-overview#schema-design-best-practices">CockroachDB best practices</a>.</li>
+<li>The number of <b>Suggestions</b> regarding <a href="{% link molt/migration-strategy.md %}#schema-design-best-practices">CockroachDB best practices</a>.</li>
 </ul>
 
 ### Summary Report
@@ -193,7 +198,7 @@ After updating the schema, click [**Retry Migration**](#retry-the-migration). If
 |        Column       |                                                                                                                                                                                                                                                                                                            Description                                                                                                                                                                                                                                                                                                             |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description         | A summary of the error type.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Category            | The category of error:<ul><li>**Unimplemented Feature:** A statement that uses an [unimplemented feature]({% link {{version_prefix}}migration-overview.md %}#unimplemented-features-and-syntax-incompatibilities).</li><li>**Uncreated User:** A statement that references a nonexistent user.</li><li>**Incompatibility:** (Non-PostgreSQL schemas) A statement that could not be converted because it has no equivalent syntax on CockroachDB.</li><li>**Uncategorized:** A statement that the tool did not or could not execute.</li><li>**Incidental:** A statement that failed because another SQL statement encountered one of the preceding error types.</ul> |
+| Category            | The category of error:<ul><li>**Unimplemented Feature:** A statement that uses an [unimplemented feature]({% link molt/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities).</li><li>**Uncreated User:** A statement that references a nonexistent user.</li><li>**Incompatibility:** (Non-PostgreSQL schemas) A statement that could not be converted because it has no equivalent syntax on CockroachDB.</li><li>**Uncategorized:** A statement that the tool did not or could not execute.</li><li>**Incidental:** A statement that failed because another SQL statement encountered one of the preceding error types.</ul> |
 | Complexity          | The estimated difficulty of addressing the error.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | Remaining Instances | The number of times the error still occurs on the provided schema. This number will change as you [update the schema](#update-the-schema) to fix errors. Click the `+` icon on the row to view up to 20 individual statements where this occurs.                                                                                                                                                                                                                                                                                                                                                                                   |
 | Actions             | The option to **Add User** to add a missing SQL user, or **Delete** all statements that contain the error type. This cannot be undone after you [retry the migration](#retry-the-migration).                                                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -211,11 +216,11 @@ After updating the schema, click [**Retry Migration**](#retry-the-migration). If
 
 #### Suggestions
 
-**Suggestions** relate to [schema design best practices]({% link {{version_prefix}}migration-overview.md %}#schema-design-best-practices). They do not block [schema migration](#migrate-the-schema).
+**Suggestions** relate to [schema design best practices]({% link molt/migration-strategy.md %}#schema-design-best-practices). They do not block [schema migration](#migrate-the-schema).
 
 |    Column   |                                                                                                                                                                                                                                                                                                                                                                                                          Description                                                                                                                                                                                                                                                                                                                                                                                                          |
 |-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Description | One of the following suggestion types:<br><ul><li> **Sequences:** A statement that uses a sequence to define a primary key column. [Using a sequence for a primary key column is not recommended.]({% link {{version_prefix}}create-sequence.md %}#considerations)</li><li>**Missing Primary Key:** A statement that does not define an explicit primary key for a table. [Defining an explicit primary key on every table is recommended.](https://www.cockroachlabs.com/docs/{{version_prefix}}schema-design-table#select-primary-key-columns)</li><li>**Index Set On Timestamp Related Column:** A statement that creates an index on a [`TIMESTAMP`/`TIMESTAMPTZ`](https://www.cockroachlabs.com/docs/{{version_prefix}}timestamp) column. [Indexing on sequential keys can negatively affect performance.](https://www.cockroachlabs.com/docs/{{version_prefix}}schema-design-indexes#best-practices)</li></ul> |
+| Description | One of the following suggestion types:<br><ul><li> **Sequences:** A statement that uses a sequence to define a primary key column. [Using a sequence for a primary key column is not recommended.]({% link {{version_prefix}}create-sequence.md %}#considerations)</li><li>**Missing Primary Key:** A statement that does not define an explicit primary key for a table. [Defining an explicit primary key on every table is recommended.]({% link {{version_prefix}}schema-design-table.md %}#select-primary-key-columns)</li><li>**Index Set On Timestamp Related Column:** A statement that creates an index on a [`TIMESTAMP`/`TIMESTAMPTZ`]({% link {{version_prefix}}timestamp.md %}) column. [Indexing on sequential keys can negatively affect performance.]({% link {{version_prefix}}schema-design-indexes.md %}#best-practices)</li></ul> |
 | Complexity  | The estimated difficulty of addressing the suggestion.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | Instances   | The number of times the suggestion occurs on the provided schema. Click the `+` icon on the row to view up to 20 individual statements where this occurs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | Actions     | The option to **Acknowledge** all instances of the suggestion. This is not required for schema migration.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -293,7 +298,7 @@ To update the schema:
 
 |                   Category                   |                                                                                                                                                                                                          Solution                                                                                                                                                                                                         |   Bulk Actions   | Required for schema migration? |
 |----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|--------------------------------|
-| Unimplemented feature                        | The feature does not yet exist on CockroachDB. Implement a workaround by editing the statement and adding statements. Otherwise, remove the statement from the schema. If a link to a tracking issue is included, click the link for further context. For more information about unimplemented features, see the [Migration Overview]({% link {{version_prefix}}migration-overview.md %}#unimplemented-features-and-syntax-incompatibilities). | Delete           | Yes                            |
+| Unimplemented feature                        | The feature does not yet exist on CockroachDB. Implement a workaround by editing the statement and adding statements. Otherwise, remove the statement from the schema. If a link to a tracking issue is included, click the link for further context. For more information about unimplemented features, see the [Migration Overview]({% link molt/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities). | Delete           | Yes                            |
 | Uncreated user                               | Click the **Add User** button next to the error message. You must be a member of the [`admin` role]({% link cockroachcloud/managing-access.md %}). This adds the missing user to the cluster.                                                                                                                                                                                                                                                     | Add User, Delete | Yes                            |
 | Incidental                                   | Resolve the error in the earlier failed statement that caused the incidental error.                                                                                                                                                                                                                                                                                                                                       | Delete           | Yes                            |
 | Incompatibility (non-PostgreSQL schemas)    | There is no equivalent syntax on CockroachDB. Implement a workaround by replacing the statement. Otherwise, remove the statement from the schema. Then check **Acknowledge**.                                                                                                                                                                                                                                             | Delete           | Yes                            |
@@ -322,7 +327,7 @@ To migrate the schema, click **Migrate Schema** when viewing the **Summary Repor
 1. Name the new database and select a SQL user to own the database. 
 1. Click **Migrate**.
 
-After migrating the schema and creating the new database, you can [load some test data]({% link {{version_prefix}}migration-overview.md %}#load-test-data) and [validate your queries]({% link {{version_prefix}}migration-overview.md %}#validate-queries).
+After migrating the schema and creating the new database, you can [load some test data]({% link molt/migration-strategy.md %}#load-test-data) and [validate your queries]({% link molt/migration-strategy.md %}#validate-queries).
 
 ## Schemas table
 
@@ -354,4 +359,6 @@ To delete or verify a set of credentials, select the appropriate option in the *
 
 ## See also
 
-- [Migration Overview]({% link {{version_prefix}}migration-overview.md %})
+- [Migration Overview]({% link molt/migration-strategy.md %})
+- [MOLT Fetch]({% link molt/molt-fetch.md %})
+- [MOLT Verify]({% link molt/molt-verify.md %})

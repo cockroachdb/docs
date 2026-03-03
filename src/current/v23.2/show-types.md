@@ -7,10 +7,6 @@ docs_area: reference.sql
 
  The `SHOW TYPES` statement lists the user-defined [data types]({% link {{ page.version.version }}/data-types.md %}) in the current database.
 
-{{site.data.alerts.callout_info}}
-CockroachDB currently only supports [enumerated user-defined types]({% link {{ page.version.version }}/enum.md %}). As a result, [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}) and `SHOW TYPES` return the same results.
-{{site.data.alerts.end}}
-
 ## Syntax
 
 ~~~
@@ -41,10 +37,10 @@ The following example creates a [user-defined type]({% link {{ page.version.vers
 ~~~
 
 ~~~
-  schema |  name   |                  value
----------+---------+-------------------------------------------
-  public | weekday | monday|tuesday|wednesday|thursday|friday
-  public | weekend | sunday|saturday
+  schema |  name   | owner
+---------+---------+--------
+  public | weekday | root
+  public | weekend | root
 (2 rows)
 ~~~
 

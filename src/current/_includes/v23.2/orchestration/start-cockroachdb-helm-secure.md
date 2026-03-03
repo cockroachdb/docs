@@ -55,6 +55,8 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
         By default, the Helm chart will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Certificate management](/docs/{{ page.version.version }}/secure-cockroachdb-kubernetes.html?filters=helm#use-a-custom-ca).
         {{site.data.alerts.end}}
 
+    Refer to the [CockroachDB Helm chart's `values.yaml` template](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml).
+
 1. Install the CockroachDB Helm chart, specifying your custom values file.
 
     Provide a "release" name to identify and track this particular deployment of the chart, and override the default values with those in `my-values.yaml`.

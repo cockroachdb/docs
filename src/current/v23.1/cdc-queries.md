@@ -6,7 +6,7 @@ docs_area: stream
 key: cdc-transformations.html
 ---
 
-{% include enterprise-feature.md %}
+
 
 Change data capture queries allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}).
 
@@ -54,6 +54,8 @@ For a SQL diagram of the CDC query syntax, see the [`CREATE CHANGEFEED`]({% link
 ## Limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
 
 ## CDC query function support
 
@@ -63,7 +65,7 @@ Function                  | Description
 --------------------------+----------------------
 `changefeed_creation_timestamp()` | Returns the decimal MVCC timestamp when the changefeed was created.
 `event_op()`              | Returns a string describing the type of event. If a changefeed is running with the [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff-opt) option, then this function returns `'insert'`, `'update'`, or `'delete'`. If a changefeed is running without the `diff` option, it is not possible to determine an update from an insert, so `event_op()` returns [`'upsert'`](https://www.cockroachlabs.com/blog/sql-upsert/) or `'delete'`.
-`event_schema_timestamp()` | Returns the timestamp of the [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) event.
+`event_schema_timestamp()` | Returns the timestamp of [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) events that cause a [changefeed message]({% link {{ page.version.version }}/changefeed-messages.md %}) to emit. When the schema change event does not result in a table backfill or scan, `event_schema_timestamp()` will return the event's timestamp. When the schema change event does result in a table backfill or scan, `event_schema_timestamp()` will return the timestamp at which the backfill/scan is read — the [high-water mark time]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) of the changefeed.
 
 You can also use the following functions in CDC queries:
 
@@ -107,12 +109,6 @@ CDC queries allow you to customize your changefeed for particular scenarios. Thi
 Depending on how you are filtering or adapting the message envelope with a CDC query and which sink you're emitting to, message output may vary from some of the example cases in this section.
 
 Refer to [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) for examples on using the foundational syntax to create a changefeed. For information on sinks, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page.
-
-{{site.data.alerts.callout_success}}
-To optimize the `SELECT` query you run in your changefeed statement, use the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) statement to view a statement plan.
-
-Note that `EXPLAIN` does not have access to [`cdc_prev`](#emit-the-previous-state-of-a-row), therefore you will receive an error if your `SELECT` query contains `cdc_prev`.
-{{site.data.alerts.end}}
 
 ### Filter columns
 

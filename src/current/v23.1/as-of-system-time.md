@@ -15,14 +15,20 @@ Historical data is available only within the garbage collection window, which is
 
 ## Synopsis
 
-The `AS OF SYSTEM TIME` clause is supported in multiple SQL contexts,
-including but not limited to:
+The `AS OF SYSTEM TIME` clause is supported in multiple SQL contexts, including but not limited to:
 
-- In [`SELECT` clauses]({% link {{ page.version.version }}/select-clause.md %}), at the very end of the `FROM` sub-clause.
+- In [`SELECT` clauses]({% link {{ page.version.version }}/select-clause.md %}), at the very end of the `FROM` sub-clause. The [`FOR`]({% link {{ page.version.version }}/select-for-update.md %}) locking clause is **not** allowed with `AS OF SYSTEM TIME`.
 - In [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), after the parameters of the `TO` sub-clause.
 - In [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), after the parameters of the `FROM` sub-clause.
 - In [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}), after the `BEGIN` keyword.
 - In [`SET`]({% link {{ page.version.version }}/set-transaction.md %}), after the `SET TRANSACTION` keyword.
+
+`AS OF SYSTEM TIME` cannot be used with:
+
+- [Locking reads]({% link {{ page.version.version }}/select-for-update.md %}) (`SELECT ... FOR UPDATE`).
+- [Mutation statements]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements) (such as [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`DELETE`]({% link {{ page.version.version }}/delete.md %})).
+
+The preceding statements return an error: `cannot execute {SQL STATEMENT} in a read-only transaction`.
 
 ## Parameters
 
@@ -33,7 +39,7 @@ Format | Notes
 [`INT`]({% link {{ page.version.version }}/int.md %}) | Nanoseconds since the Unix epoch.
 negative [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | Added to `statement_timestamp()`, and thus must be negative.
 [`STRING`]({% link {{ page.version.version }}/string.md %}) | A [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), [`INT`]({% link {{ page.version.version }}/int.md %}) of nanoseconds, or negative [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}).
-`follower_read_timestamp()`| A [function]({% link {{ page.version.version }}/functions-and-operators.md %}) that returns the [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) `statement_timestamp() - 4.8s`. Using this function will set the time as close as possible to the present time while remaining safe for [exact staleness follower reads]({% link {{ page.version.version }}/follower-reads.md %}#exact-staleness-reads).
+`follower_read_timestamp()`| A [function]({% link {{ page.version.version }}/functions-and-operators.md %}) that returns the [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) `statement_timestamp() - 4.2s`. Using this function will set the time as close as possible to the present time while remaining safe for [exact staleness follower reads]({% link {{ page.version.version }}/follower-reads.md %}#exact-staleness-reads).
 `with_min_timestamp(TIMESTAMPTZ, [nearest_only])` |  The minimum [timestamp]({% link {{ page.version.version }}/timestamp.md %}) at which to perform the [bounded staleness read]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads). The actual timestamp of the read may be equal to or later than the provided timestamp, but cannot be before the provided timestamp. This is useful to request a read from nearby followers, if possible, while enforcing causality between an operation at some point in time and any dependent reads. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
 `with_max_staleness(INTERVAL, [nearest_only])` |  The  maximum staleness interval with which to perform the [bounded staleness read]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads). The timestamp of the read can be at most this stale with respect to the current time. This is useful to request a read from nearby followers, if possible, while placing some limit on how stale results can be. Note that `with_max_staleness(INTERVAL)` is equivalent to `with_min_timestamp(now() - INTERVAL)`. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
 

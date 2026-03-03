@@ -8,7 +8,7 @@ keywords: authentication, ldap, kerberos, gssapi
 
 CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos authentication. Although CockroachDB does not support communicating directly with an LDAP service, GSSAPI with Kerberos can be configured to communicate with your LDAP service to authenticate users.
 
-{% include enterprise-feature.md %}
+
 
 ## Requirements
 

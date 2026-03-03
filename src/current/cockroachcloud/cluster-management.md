@@ -1,220 +1,148 @@
 ---
-title: Manage a CockroachDB Dedicated Cluster
+title: Manage a CockroachDB Standard Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
 docs_area: manage
 ---
 
+{{site.data.alerts.callout_info}}
+CockroachDB Standard is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
+
 {% include cockroachcloud/filter-tabs/cluster-management.md %}
 
-This page describes the cluster management and cluster deletion workflows for CockroachDB {{ site.data.products.dedicated }}.
+This page describes the cluster management and cluster deletion workflows for CockroachDB {{ site.data.products.standard }}.
 
 ## Planning your cluster
 
-Before making any changes to your cluster's nodes or regions, review the [requirements and recommendations]({% link cockroachcloud/plan-your-cluster.md %}) for CockroachDB {{ site.data.products.cloud }} cluster configuration.
+Before making any changes to your cluster's regions, review the [requirements and recommendations]({% link cockroachcloud/plan-your-cluster.md %}) for CockroachDB {{ site.data.products.cloud }} cluster configuration.
 
 ## View Clusters page
 
-On [logging in to the CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.
-
-For each cluster, the following details display:
-
-- The cluster's **Name**
-- The cluster's **Plan Type** (Serverless, Dedicated standard, or Dedicated advanced)
-- The date and time the cluster was **Created**
-- The cluster's current **State**
-- The cluster's **Cloud** provider, GCP, AWS, or Azure
-- The **Version** of CockroachDB the cluster is running
-- The **Action** button, which is used to:
-    - [**Add or remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster)
-    - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
-    - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
-    - [**Upgrade major version**]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %})
-    {% comment %}- [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster){% endcomment %}
-    - [**Delete cluster**](#delete-cluster)
+After you [log in to the CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
 
 ## View cluster overview
 
-The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}?filter=dedicated) displays details about the selected CockroachDB {{ site.data.products.cloud }} cluster:
+The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) displays details about the selected CockroachDB {{ site.data.products.cloud }} cluster.
 
-The cluster's **Configuration** shows details about the cluster, its deployment environment, and its nodes, such as the cluster's cloud provider, plan type, regions, and each node's status, compute, and storage.
+From the **Overview** page, you can connect to your cluster. For more information, refer to [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
-The **Cluster upgrades** section shows the cluster's [**Upgrade window**](#set-a-maintenance-window) for patch upgrades and the current value for the [**Delay patch upgrades**](#set-a-maintenance-window) setting.
+## Edit labels
 
-- The **PCI Ready** section shows the status of features required for PCI DSS. Requires CockroachDB {{ site.data.products.dedicated }} advanced.
+You can [organize CockroachDB {{ site.data.products.cloud }} clusters using labels]({% link cockroachcloud/labels.md %}).
 
-- The status of security features required for [PCI readiness](#configure-pci-ready-features-dedicated-advanced).
-
-From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
-
-## Scale your cluster
-
-These sections show how to scale a {{ site.data.products.dedicated }} cluster horizontally by adding or removing nodes or vertically by changing each node's storage and compute resources.
-
-### Add or remove nodes from a cluster
-
-You can add or remove nodes from your cluster through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
-
-{{site.data.alerts.callout_info}}
-You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-a-cluster) your cluster and [restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#restore-a-cluster) it into a new single-node cluster.
-{{site.data.alerts.end}}
-
-To add or remove nodes from your cluster:
+## Add a region to your cluster
 
 1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
 
-    The **Edit cluster** page displays.
+    The **Edit Cluster** page displays.
 
-1. From the **Nodes** dropdown, select the number of nodes you want in each region.
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Payment**.
-1. On the **Summary** page, verify your new cluster configuration.
-1. Click **Update**.
+1. On the **Regions** page, click Add Region and select the desired new region.
+1. In the sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Capacity** and then **Update cluster**.
 
-### Increase storage for a cluster
+## Edit cluster capacity
+
+The price-performance characteristics of CockroachDB {{ site.data.products.standard }} vary significantly depending on the workload. It can be difficult to estimate a workload's compute requirements in advance. To increase or decrease a cluster's provisioned capacity:
+
+To edit your cluster's capacity:
+
+1. Navigate to the cluster's **Overview** page.
+1. In the **Capacity** section, click **Update capacity**.
+    The **Capacity** page displays.
+1. Enter the desired number of request units per second or use the slider to increase or decrease the request units per second.
+
+    {{site.data.alerts.callout_success}}
+    You can decrease the provisioned capacity only three times within a 7-day period. You can increase the provisioned capacity at any time.
+    {{site.data.alerts.end}}
+
+1. In the sidebar, verify the new estimated cost for the cluster and click **Update cluster**.
+
+To learn more, refer to [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %}#provisioned-capacity).
+
+## Manage cluster upgrades
+
+### Set major-version upgrades to automatic or manual
+
+By default, major-version upgrades are automatically applied to CockroachDB {{ site.data.products.standard }} clusters. For each cluster, you have the option to enable manual upgrades, instead.
+
+When automatic upgrades are enabled and a new major version is available for CockroachDB {{ site.data.products.standard }}:
+
+- The cluster is automatically upgraded by Cockroach Labs to an early production patch release of the new major version, for example `vXX.Y.1`.
+- Standard clusters are upgraded only to [Regular releases]({% link releases/index.md %}).
+- Each upgrade is finalized immediately, so it is not possible to roll back to the previous major version.
+
+When manual upgrades are enabled and a new major version is available for CockroachDB {{ site.data.products.standard }}:
+
+- You will need to [manually upgrade the cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) during its support window, to maintain support.
+- Once the initial production patch release for the new major version is made available to CockroachDB {{ site.data.products.standard }}, you can upgrade at any time to the latest available patch release for that major version.
+- You can choose to skip Innovation releases and upgrade directly to the subsequent major verison.
+- The upgrade is finalized after a 72-hour window, within which you can choose to roll back to the previous major version.
+
+{{site.data.alerts.callout_info}}
+For clusters that have the default setting to receive automatic major version upgrades, each upgrade is finalized immediately and cannot be rolled back.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-AWS disks can only be scaled once every six hours.
+If you disable automatic major-version upgrades for a cluster, to maintain support for the cluster, you must manually upgrade it to a supported major version before its current version reaches [End of Support (EOS)]({% link cockroachcloud/upgrade-policy.md %}). If you have not upgraded a cluster's major version for more than one year, it will be upgraded automatically.
 {{site.data.alerts.end}}
 
-1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+To disable automatic major-version upgrades for a CockroachDB {{ site.data.products.standard }} cluster:
 
-    The **Edit cluster** page displays.
+1. On the [**Cluster Overview** page for the cluster](#view-cluster-overview), click **Actions**, then select **Manual upgrade settings**.
+1. Read the information provided, then set **Manual upgrades** to **on**.
+1. Click **Apply**.
 
-1. Navigate to the **Storage** dropdown in the **Hardware per node** section.
-1. Select the new amount of storage per node.
+For manual upgrades to a newer major version of CockroachDB, refer to [Upgrade a cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 
-    {{site.data.alerts.callout_danger}}
-    Storage space cannot be removed due to cloud provider limitations.
-    {{site.data.alerts.end}}
+### Automatic major-version upgrades
 
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Payment**.
-1. On the **Summary** page, verify your new cluster configuration.
-1. Click **Update**.
+When Manual upgrades is set to Off, a CockroachDB {{ site.data.products.standard }} cluster will automatically upgrade to a new major version. The version will be a production patch release (likely vXX.Y.1) that is made available soon after the initial GA release (vXX.Y.0).
 
-### Change compute for a cluster
+Before an upgrade is set to occur, a banner displayed in the Console informing you of the version to which the cluster will be upgraded.
 
-1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+When the upgrade occurs, your cluster status will be listed as `Available (Maintenance)` and will remain operational. When the upgrade is complete, the new version will be indicated in the CockroachDB Cloud Console and you will receive an email notification.
 
-    The **Edit cluster** page displays.
+### Upgrade the major version manually
 
-1. Navigate to the **Compute** dropdown in the **Hardware per node** section.
-1. Select the new amount of vCPUs per node.
+For manual upgrades to a newer major version of CockroachDB, refer to [Upgrade a cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 
-    {{site.data.alerts.callout_info}}
-    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node.
-    {{site.data.alerts.end}}
+## Change a cluster's plan
 
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Next: Payment**.
-1. On the **Summary** page, verify your new cluster configuration.
-1. Click **Update**.
+To change your cluster's plan between {{ site.data.products.basic }} and {{ site.data.products.standard }}, refer to [Change a Cluster's Plan Between Standard and Basic]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}).
 
-## Add or remove regions from a cluster
-
-You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster, and it will take about 30 minutes to add or remove each region. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding. 
-
-### Add a region to your cluster
-
-You can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
-
-1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
-
-    The **Edit cluster** page displays.
-
-1. Click **Add a region**.
-
-    If you have a GCP cluster with [VPC peering]({% link cockroachcloud/network-authorization.md %}) enabled, the IP range will be automatically populated for added regions.
-
-1. In the **Regions & Nodes** section, select the desired new region and specify the number of nodes for it.
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Update**.
-
-### Remove a region from your cluster
-
-When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/node-shutdown?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-replication-dashboard#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region. 
-
-{{site.data.alerts.callout_info}}
-If your [zone configurations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) are set to pin range replicas to a specific region, you cannot remove that region.
-{{site.data.alerts.end}}
-
-To remove a region from your cluster:
-
-1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
-
-    The **Edit cluster** page displays.
-
-1. Click the **X** button next to each region you want to remove.
-    {{site.data.alerts.callout_info}}
-    If you remove one region from a three-region cluster, CockroachDB Cloud will automatically reduce it to a single-region configuration by deleting two regions.
-    {{site.data.alerts.end}}
-1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Update**.
-
-## Set a maintenance window
-
-From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. If no maintenance window is set, your cluster will be automatically upgraded as soon as new patch versions are available, and other cluster maintenance occurs as needed. Refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
-
-{{site.data.alerts.callout_info}}
-Maintenance operations that are critical for cluster security or stability may be applied outside of the maintenance window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
-{{site.data.alerts.end}}
-
-To set a maintenance window:
-
-1. Click the pencil icon next to **Cluster maintenance** to edit the maintenance window.
-1. From the **Day** dropdown, select the day of the week during which maintenance may be applied.
-1. From the **Start of window** dropdown, select a start time for your maintenance window in UTC.
-
-    The window will last for 6 hours from the start time.
-
-1. (Optional) If you want to delay automatic patch upgrades for 60 days, switch **Delay patch upgrades** to **On**.
-
-    Enable this setting for production clusters to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch versions and not to other kinds of upgrades.
+To change from {{ site.data.products.standard }} to {{ site.data.products.advanced }}, refer to [Migrate from Standard or Basic to Advanced]({% link cockroachcloud/migrate-from-standard-to-advanced.md %}).
 
 ## Restore data from a backup
 
-Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. See the [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated#ways-to-restore-data) page for ways to restore data from your cluster's automatic backups in the Console.
+Refer to [Managed Backups]({% link cockroachcloud/managed-backups.md %}) for instructions to restore your cluster from an automatic cluster backup.
 
-Additionally, you can [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.dedicated }} cluster manually. For detail on taking backups to your cloud storage, see [Take and Restore Customer-Owned Backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-data).
+You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
 
-{{site.data.alerts.callout_info}}
-All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
-{{site.data.alerts.end}}
+## Enable deletion protection
 
-## Configure PCI ready features (Dedicated advanced)
+To help prevent a cluster from being deleted by mistake, you can enable _deletion protection_. Before you can delete a cluster with deletion protection enabled, you must disable deletion protection. A user with permission to delete a cluster can enable deletion protection on the same cluster.
 
-CockroachDB {{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
-
-- [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
-- [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
-- [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
-- Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
-- [Network security]({% link cockroachcloud/network-authorization.md %})
-
-You can also check the status of these features on the [**PCI ready**]({% link cockroachcloud/cluster-overview-page.md %}?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.
-
+1. Navigate to the **Overview** page for the cluster you want to protect.
+1. If deletion protection is disabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
 
 ## Delete cluster
 
 {{site.data.alerts.callout_danger}}
-Deleting a cluster will delete all cluster data.
+Deleting a cluster will delete all cluster data. Deleted clusters can not be restored.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-You will only be billed for a CockroachDB {{ site.data.products.dedicated }} cluster while it is running. You can delete a cluster at any time to stop charges from accumulating.
+You will be billed only for a CockroachDB {{ site.data.products.standard }} cluster while it is running. You can delete a cluster at any time to prevent charges from accumulating.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:
 
 1. Navigate to the **Overview** page for the cluster you want to delete.
+1. If [deletion protection](#enable-deletion-protection) is enabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
 1. Click the **Actions** button in the top right corner.
 1. Select **Delete cluster**.
 1. In the confirmation window, enter the name of the cluster.

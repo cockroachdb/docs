@@ -7,10 +7,12 @@ docs_area: manage
 
 In addition to CockroachDB's [built-in safeguards against failure]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-survive-failures), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
-This page describes the monitoring and observability tools that are built into CockroachDB {{ site.data.products.core }} and shows how to collect your cluster's metrics using external tools like Prometheus's AlertManager for event-based alerting. To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) instead of this page. For more details, refer to:
+This page describes the monitoring and observability tools that are built into CockroachDB {{ site.data.products.core }} and shows how to collect your cluster's metrics using external tools like Prometheus's AlertManager for event-based alerting. For more details, refer to:
 
 - [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %})
 - [Third-party Monitoring Tools]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})
+
+To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}) instead of this page.
 
 {% include {{ page.version.version }}/prod-deployment/cluster-unavailable-monitoring.md %}
 
@@ -138,10 +140,12 @@ Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
 ### Raw status endpoints
 
 {{site.data.alerts.callout_info}}
-These endpoints are deprecated in favor of the [Cluster API](#cluster-api).
+The JSON endpoints are deprecated in favor of the [Cluster API](#cluster-api).
+
+The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecated. For more information, refer to [Prometheus endpoint](#prometheus-endpoint).
 {{site.data.alerts.end}}
 
-Several endpoints return raw status metrics in JSON at `http://<host>:<http-port>/#/debug`. Feel free to investigate and use these endpoints, but note that they are subject to change.
+Several endpoints return raw status meta information in JSON at `http://<host>:<http-port>/#/debug`. You can investigate and use these endpoints, but note that they are subject to change.
 
 <img src="{{ 'images/v23.1/raw-status-endpoints.png' | relative_url }}" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
 
@@ -158,7 +162,7 @@ The [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.
 
 Every node of a CockroachDB cluster exports granular time-series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}), an open source tool for storing, aggregating, and querying time-series data. The Prometheus format is human-readable and can be processed to work with other third-party monitoring systems such as [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd). Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), collect metrics from a cluster's Prometheus endpoint.
 
-To access the Prometheus of a cluster running on `localhost:8080`:
+To access the Prometheus endpoint of a cluster running on `localhost:8080`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -195,11 +199,9 @@ The critical nodes status endpoint is used to:
 
 - Check if any of your nodes are in a critical state.  A node is _critical_ if that node becoming unreachable would cause [replicas to become unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status).
 - Check if any ranges are [under-replicated or unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status). This is useful when determining whether a node is ready for [decommissioning]({% link {{ page.version.version }}/node-shutdown.md %}#decommissioning).
-- Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}).
+- Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) or [troubleshooting zone configurations]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}) generally.
 
-{{site.data.alerts.callout_info}}
-This HTTP status endpoint supersedes the deprecated [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}) SQL API. Due to architectural changes in CockroachDB, the SQL queries described on that page will not result in correct output.
-{{site.data.alerts.end}}
+If you find under-replicated ranges or constraint violations, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 
 #### Fields
 
@@ -349,7 +351,9 @@ In other words, this tells the ranges that "where you are now is exactly where y
 The critical nodes endpoint should now report a constraint violation in the `violatingConstraints` field of the response, similar to the one shown below.
 
 {{site.data.alerts.callout_success}}
-You can also use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the ranges that are in violation of constraints.
+Use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the ranges that are in violation of constraints.
+
+In a real life constraint violation scenario, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -679,6 +683,13 @@ ALTER TABLE rides CONFIGURE ZONE USING num_replicas=128;
 
 The critical nodes endpoint should now report that all of the cluster's nodes are critical by listing them in the `criticalNodes` field of the response.
 
+{{site.data.alerts.callout_success}}
+Use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the ranges in critical localities.
+
+In a real life critical localities scenario, you may need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
+{{site.data.alerts.end}}
+
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl -X POST http://localhost:8080/_status/critical_nodes
@@ -985,6 +996,8 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule definition:** Use the `StoreDiskLow` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
+{% include {{page.version.version}}/storage/free-up-disk-space.md %}
+
 #### Node is not executing SQL
 
 - **Rule:** Send an alert when a node is not executing SQL despite having connections.
@@ -1061,3 +1074,4 @@ Currently, not all events listed have corresponding alert rule definitions avail
 - [Local Deployment]({% link {{ page.version.version }}/start-a-local-cluster.md %})
 - [Third-Party Monitoring Integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %})

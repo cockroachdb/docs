@@ -81,9 +81,9 @@ Type | Details
 
 ### Infinity `TIMESTAMP` casts
 
-CockroachDB does not support an `infinity`/`-infinity` representation for `TIMESTAMP` casts. Instead, `infinity::TIMESTAMP` evaluates to `294276-12-31 23:59:59.999999+00:00`, the maximum `TIMESTAMP` value supported, and `-infinity::TIMESTAMP` evaluates to `-4713-11-24 00:00:00+00:00`, the minimum `TIMESTAMP` value supported.
+CockroachDB does not support an `infinity`/`-infinity` representation for `TIMESTAMP` casts. Instead, `infinity::TIMESTAMP` evaluates to `294276-12-31 23:59:59.999999+00:00`, the maximum `TIMESTAMP` value supported, and `-infinity::TIMESTAMP` evaluates to `-4714-11-24 00:00:00+00:00`, the minimum `TIMESTAMP` value supported.
 
-Note that this behavior differs from PostgreSQL, for which `infinity` is higher than any allowable `TIMESTAMP` value (including `294276-12-31 23:59:59.999999+00:00`), and `-infinity` is lower than any allowable `TIMESTAMP` value (including `-4713-11-24 00:00:00+00:00`).
+Note that this behavior differs from PostgreSQL, for which `infinity` is higher than any allowable `TIMESTAMP` value (including `294276-12-31 23:59:59.999999+00:00`), and `-infinity` is lower than any allowable `TIMESTAMP` value (including `-4714-11-24 00:00:00+00:00`).
 
 ## Examples
 

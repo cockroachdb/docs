@@ -6,7 +6,7 @@ docs_area: reference.cli
 ---
 
 {{site.data.alerts.callout_danger}}
-The statements on this page are **deprecated** as of v23.1 and will be removed in a future release. To move data into CockroachDB, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}).
+The statements on this page are **deprecated** as of v23.1 and will be removed in a future release. To move data into CockroachDB, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy.md %}).
 {{site.data.alerts.end}}
 
 The `cockroach import` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) imports a database or table from a local dump file into a running cluster. This command [uploads a userfile]({% link {{ page.version.version }}/cockroach-userfile-upload.md %}), imports its data, then [deletes the userfile]({% link {{ page.version.version }}/cockroach-userfile-delete.md %}). `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
@@ -37,8 +37,8 @@ $ cockroach import --help
 
 ## Supported Formats
 
-- [`pgdump`]({% link {{ page.version.version }}/migrate-from-postgres.md %})
-- [`mysqldump`]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [`pgdump`]({% link molt/migrate-to-cockroachdb.md %})
+- [`mysqldump`]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)
 
 ## Flags
 
@@ -110,5 +110,5 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
-- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
-- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %})
+- [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)

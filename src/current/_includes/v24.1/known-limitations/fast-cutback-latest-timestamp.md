@@ -1,0 +1,1 @@
+{% include {{ page.version.version }}/physical-replication/fast-cutback-latest-timestamp.md %} [#117984](https://github.com/cockroachdb/cockroach/issues/117984)

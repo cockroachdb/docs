@@ -3,7 +3,7 @@ title: Deploy CockroachDB on Red Hat OpenShift
 summary: Deploy a 3-node CockroachDB cluster on the OpenShift platform.
 toc: true
 secure: true
-docs_area: 
+docs_area:
 ---
 
 This page shows you how to start and stop a secure 3-node CockroachDB cluster on the Red Hat OpenShift platform, using the [CockroachDB Kubernetes Operator](https://marketplace.redhat.com/en-us/products/cockroachdb-operator).
@@ -15,7 +15,7 @@ You must have the following set up before proceeding with this tutorial:
 - A running OpenShift cluster
 
 {{site.data.alerts.callout_info}}
-This article assumes you have already installed the OpenShift Container Platform as your Kubernetes cluster. For details on this, see the [OpenShift documentation](https://docs.openshift.com/container-platform/4.7/installing/index.html).
+This article assumes you have already installed the OpenShift Container Platform as your Kubernetes cluster. For details on this, see the [OpenShift documentation](https://docs.openshift.com/container-platform/).
 {{site.data.alerts.end}}
 
 ## Step 1. Create a CockroachDB namespace
@@ -215,7 +215,7 @@ spec:
 
 {% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
 
-**Note:** If you cannot access the SQL client, this may be related to your `--certs-dir` or `--host` flags. 
+**Note:** If you cannot access the SQL client, this may be related to your `--certs-dir` or `--host` flags.
 
 1. Shell into the client pod and check for the necessary certs in the `--certs-dir` directory:
 
@@ -331,7 +331,7 @@ This will delete the CockroachDB cluster being run by the Operator. It will *not
 
 - The persistent volumes that were attached to the pods. This can be done by deleting the PVCs via **Storage** > **Persistent Volume Claims**.
 - The opaque secrets used to authenticate the cluster. This can be done via **Workloads** > **Secrets**.
- 
+
 {{site.data.alerts.callout_danger}}
 If you want to delete the persistent volumes and free up the storage used by CockroachDB, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).
 {{site.data.alerts.end}}

@@ -303,6 +303,6 @@ At first, the replica count will be lower for nodes 4 and 5. Very soon, however,
 
 ## What's next?
 
-Explore other core CockroachDB benefits and features:
+Explore other CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}

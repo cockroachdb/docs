@@ -54,7 +54,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`DROP CONSTRAINT`](#drop-constraint) | Remove constraints from columns. | Yes
 [`EXPERIMENTAL_AUDIT`](#experimental_audit) | Enable per-table audit logs, for security purposes. | Yes
 [`OWNER TO`](#owner-to) |  Change the owner of the table. | No
-[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition a table. ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).) | Yes
+[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition a table. | Yes
 [`RENAME COLUMN`](#rename-column) | Change the names of columns. | Yes
 [`RENAME CONSTRAINT`](#rename-constraint) | Change constraints columns. | Yes
 [`RENAME TO`](#rename-to) | Change the names of tables. | No
@@ -181,6 +181,7 @@ You cannot alter the data type of a column if:
 - The column is part of an [index]({% link {{ page.version.version }}/indexes.md %}).
 - The column has [`CHECK` constraints]({% link {{ page.version.version }}/check.md %}).
 - The column owns a [sequence]({% link {{ page.version.version }}/create-sequence.md %}).
+- The column has a [`DEFAULT` expression]({% link {{ page.version.version }}/default-value.md %}). This will result in an `ERROR: ... column ... cannot also have a DEFAULT expression` with `SQLSTATE: 42P16`.
 - The `ALTER COLUMN TYPE` statement is part of a combined `ALTER TABLE` statement.
 - The `ALTER COLUMN TYPE` statement is inside an [explicit transaction]({% link {{ page.version.version }}/begin-transaction.md %}).
 
@@ -232,6 +233,8 @@ For usage, see [Synopsis](#synopsis).
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
 For examples, see [Replication Controls](#configure-replication-zones).
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
 #### Required privileges
 
@@ -367,8 +370,6 @@ For usage, see [Synopsis](#synopsis).
 #### Required privileges
 
 `ALTER TABLE ... PARTITION BY` is used to partition, re-partition, or un-partition a table. After defining partitions, [`CONFIGURE ZONE`](#configure-zone) is used to control the replication and placement of partitions.
-
-{% include enterprise-feature.md %}
 
 For examples, see [Define partitions](#define-partitions).
 

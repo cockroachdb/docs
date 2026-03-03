@@ -28,19 +28,18 @@ CockroachDB returns single-row reads in 2ms or less and single-row writes in 4ms
 
 ### How easy is it to get started with CockroachDB?
 
-You can get started with CockroachDB with just a few clicks. Sign up for a CockroachDB {{ site.data.products.cloud }} account to create a free CockroachDB {{ site.data.products.serverless }} cluster. For more details, see [Quickstart](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart).
+You can get started with CockroachDB with just a few clicks. Sign up for a CockroachDB {{ site.data.products.cloud }} account to create a CockroachDB {{ site.data.products.standard }} cluster. For more details, see [Quickstart]({% link cockroachcloud/quickstart.md %}).
 
 Alternatively, you can download a binary or run our official Kubernetes configurations or Docker image. For more details, see [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 
 ### How do I know which CockroachDB deployment option is right for my project?
 
-There are three way to use and deploy CockroachDB:
+There are four ways to use and deploy CockroachDB:
 
-- **CockroachDB {{ site.data.products.serverless }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs, in a single region and cloud (AWS or GCP). CockroachDB {{ site.data.products.serverless }} lets you create and start clusters instantly. This deployment option is good for starter projects and evaluations.
-- **CockroachDB {{ site.data.products.dedicated }}**: A single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP). This deployment option is good for mission-critical databases and projects that require [Enterprise features]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-- **CockroachDB {{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment option is good if you require complete control over the database environment and require [Enterprise features]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-
-For more details, see [Choose a Deployment Option]({% link {{ page.version.version }}/choose-a-deployment-option.md %}).
+- **CockroachDB {{ site.data.products.basic }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs. CockroachDB {{ site.data.products.basic }} provides highly available database clusters that scale instantly and automatically for small production and dev/test workloads.
+- **CockroachDB {{ site.data.products.standard }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs. CockroachDB {{ site.data.products.standard }} allows you to consolidate a variety of production workloads while optimizing cost.
+- **CockroachDB {{ site.data.products.advanced }}**: A single tenant CockroachDB deployment, managed by Cockroach Labs. CockroachDB {{ site.data.products.advanced }} provides dedicated hardware to support stringent regulatory requirements and enhanced compliance, targeting production workloads with advanced Enterprise requirements.
+- **CockroachDB {{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment option is good if you require complete control over the database environment.
 
 ## About the database
 
@@ -54,8 +53,7 @@ When your cluster spans multiple nodes (physical machines, virtual machines, or 
 
 For more information about scaling a CockroachDB cluster, see the following docs:
 
-- [Plan Your Serverless Cluster - Cluster scaling](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster#cluster-scaling)
-- [Manage Your Dedicated Cluster - Scale your cluster](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster?filters=dedicated#cluster-scaling)
+- [Manage Your Advanced Cluster - Scale your cluster]({% link cockroachcloud/advanced-cluster-management.md %}#scale-your-cluster)
 - [`cockroach start` - Add a node to a cluster]({% link {{ page.version.version }}/cockroach-start.md %}#add-a-node-to-a-cluster)
 
 ### How does CockroachDB survive failures?
@@ -151,7 +149,7 @@ Note, however, that the protocol used doesn't significantly impact how easy it i
 
 ### Can a PostgreSQL or MySQL application be migrated to CockroachDB?
 
-Yes. Most users should be able to follow the instructions in [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}) or [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}). Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB. Check those pages for details.
+Yes. Most users should be able to follow the instructions in [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %}) or [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql). Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB. Check those pages for details.
 
 We also fully support [importing your data via CSV]({% link {{ page.version.version }}/migrate-from-csv.md %}).
 
@@ -169,13 +167,11 @@ For more details, see our [Security Overview]({% link {{ page.version.version }}
 
 While all of these databases support SQL syntax, CockroachDB is the only one that scales easily (without the manual complexity of sharding), rebalances and repairs itself automatically, and distributes transactions seamlessly across your cluster.
 
-For more insight, see [CockroachDB in Comparison]({% link {{ page.version.version }}/cockroachdb-in-comparison.md %}).
 
 ### How does CockroachDB compare to Cassandra, HBase, MongoDB, or Riak?
 
 While all of these are distributed databases, only CockroachDB supports distributed transactions and provides strong consistency. Also, these other databases provide custom APIs, whereas CockroachDB offers standard SQL with extensions.
 
-For more insight, see [CockroachDB in Comparison]({% link {{ page.version.version }}/cockroachdb-in-comparison.md %}).
 
 ## Have questions that weren’t answered?
 

@@ -6,6 +6,10 @@ toc: true
 
 A cursor is a placeholder into a selection query that allows you to iterate over subsets of the rows returned by that query.
 
+{{site.data.alerts.callout_success}}
+This document describes cursor usage within SQL transactions. For information about using cursors in PL/pgSQL functions and procedures, see [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables).
+{{site.data.alerts.end}}
+
 Cursors differ from [keyset pagination]({% link {{ page.version.version }}/pagination.md %}) and [`LIMIT`/`OFFSET`]({% link {{ page.version.version }}/limit-offset.md %}) in that:
 
 - Each cursor is a stateful SQL object that is referred to by a unique name.

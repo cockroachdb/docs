@@ -7,15 +7,17 @@ docs_area: manage
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+
+Physical cluster replication is supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
+{% include_cached new-in.html version="v23.2" %} In this tutorial, you will set up [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
 
-The unit of replication is a _virtual cluster_, which is part of the underlying infrastructure in the primary and standby clusters.
+The unit of replication is a [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}), which is part of the underlying infrastructure in the primary and standby clusters.
 
 In this tutorial, you will connect to:
 
-- The _system interface_ for administration tasks in both clusters, and starting the replication stream from the standby cluster.
+- The _system virtual cluster_ for administration tasks in both clusters, and starting the replication stream from the standby cluster.
 - The application _virtual cluster_ on the primary cluster to work with databases, tables, workloads, and so on.
 
 ## Overview
@@ -31,19 +33,17 @@ The high-level steps in this tutorial are:
 
 ## Before you begin
 
-{% include enterprise-feature.md %}
-
-- Two separate CockroachDB clusters (primary and standby) with a minimum of three nodes each, and each using the same CockroachDB {{page.version.version}} version.
+- Two separate CockroachDB clusters (primary and standby) with a minimum of three nodes each, and each using the same CockroachDB {{page.version.version}} version. The standby cluster should be the same version or one version ahead of the primary cluster. The primary and standby clusters must be configured with similar hardware profiles, number of nodes, and overall size. Significant discrepancies in the cluster configurations may result in degraded performance.
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you start each node in your cluster with the `cockroach start` command, you **must** pass the `--config-profile` flag with a `replication` value. Refer to cluster creation steps for the [primary cluster](#start-the-primary-cluster) and for the [standby cluster](#start-the-standby-cluster) for details.
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
 - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Copy certificates](#step-3-copy-certificates).
-- An [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary **and** standby clusters. You must use the system interface on the primary and standby clusters to enable your {{ site.data.products.enterprise }} license.
+- The primary and standby clusters **must have the same [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
 
 ## Step 1. Create the primary cluster
 
 ### Start the primary cluster
 
-To enable physical cluster replication, it is necessary to start each node with the appropriate _configuration profile_ set with the `--config-profile` flag. A configuration profile applies a custom configuration to the server at initialization time. When using physical cluster replication, the `replication-source` and `replication-target` configuration profiles are used to create a virtualized cluster with a system interface and an application virtual cluster.
+To enable PCR, it is necessary to start each node with the appropriate _configuration profile_ set with the `--config-profile` flag. A configuration profile applies a custom configuration to the server at initialization time. When using PCR, the `replication-source` and `replication-target` configuration profiles are used to create a virtualized cluster with a system virtual cluster and an application virtual cluster.
 
 The primary cluster requires the following value:
 
@@ -66,37 +66,26 @@ cockroach start \
 --config-profile replication-source
 ~~~
 
-Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up physical cluster replication.
+Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up PCR.
 
-### Connect to the primary cluster system interface
+### Connect to the primary cluster system virtual cluster
 
-Connect to your primary cluster's system interface using [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}).
+Connect to your primary cluster's system virtual cluster using [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}).
 
-1. To connect to the system interface, pass the `options=-ccluster=system` parameter in the URL:
+1. To connect to the system virtual cluster, pass the `options=-ccluster=system` parameter in the URL:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url \
-    "postgresql://root@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" \
+    "postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
     --certs-dir "certs"
     ~~~
 
-    The prompt will include `system` when you are connected to the system interface.
+    The prompt will include `system` when you are connected to the system virtual cluster.
 
     {{site.data.alerts.callout_info}}
-    You should only connect to the system interface for cluster administration. To work with databases, tables, or workloads, connect to the application virtual cluster.
+    You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to the application virtual cluster.
     {{site.data.alerts.end}}
-
-1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING cluster.organization = 'your organization';
-    ~~~
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING enterprise.license = 'your enterprise license';
-    ~~~
 
 1. Confirm the status of your virtual cluster: {% comment %}Link to SQL ref page here{% endcomment %}
 
@@ -120,9 +109,9 @@ Connect to your primary cluster's system interface using [`cockroach sql`]({% li
 
 ### Create a replication user and password
 
-The standby cluster connects to the primary cluster's system interface using an identity with the `REPLICATION` privilege. Connect to the primary cluster's system interface and create a user with a password:
+The standby cluster connects to the primary cluster's system virtual cluster using an identity with the `REPLICATION` privilege. Connect to the primary cluster's system virtual cluster and create a user with a password:
 
-1. From the primary's system interface SQL shell, create a user and password:
+1. From the primary's system virtual cluster SQL shell, create a user and password:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -146,15 +135,15 @@ The standby cluster connects to the primary cluster's system interface using an 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach workload init movr "postgresql://root@{node_advertise_address}:{node_advertise_port}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
+    cockroach workload init movr "postgresql://root@{node_advertise_address}:{node_advertise_port}?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
 
-    Replace `{node_advertise_address}` and `{node_advertise_port}` with a node's [`--advertise-address`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-advert-addr) IP address or hostname and port.
+    Replace `{node_advertise_address}` and `{node_advertise_port}` with a node's [`--advertise-addr`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-advert-addr) IP address or hostname and port.
 
     {% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %} As a result, for the example in this tutorial, you will need:
     - `options=-ccluster=application`
     - `sslmode=verify-full`
-    - `sslrootcert={path}/certs/ca.crt`: the path to the CA certifcate.
+    - `sslrootcert={path}/certs/ca.crt`: the path to the CA certificate.
     - `sslcert={path}/certs/client.root.crt`: the path to the client certificate.
     - `sslkey={path}/certs/client.root.key`: the path to the client private key.
 
@@ -164,7 +153,7 @@ The standby cluster connects to the primary cluster's system interface using an 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach workload run movr --duration=5m "postgresql://root@{node_advertise_address}:{node_advertise_port}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
+    cockroach workload run movr --duration=5m "postgresql://root@{node_advertise_address}:{node_advertise_port}?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"
     ~~~
 
 1. To connect to the primary cluster's application virtual cluster, use the `ccluster=application` parameter:
@@ -172,7 +161,7 @@ The standby cluster connects to the primary cluster's system interface using an 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url \
-    "postgresql://root@{node IP or hostname}:26257/?options=-ccluster=application&sslmode=verify-full" \
+    "postgresql://root@{node IP or hostname}:26257?options=-ccluster=application&sslmode=verify-full" \
     --certs-dir "certs"
     ~~~
 
@@ -191,14 +180,7 @@ The standby cluster connects to the primary cluster's system interface using an 
 
 ### Start the standby cluster
 
-Similarly to the primary cluster, each node on the standby cluster must be started with the `--config-profile` flag set to `replication-target`. This creates a _virtualized cluster_ with a system interface and an application virtual cluster, and sets up all the required configuration for starting a replication stream.
-
-To start the standby cluster, run:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
---config-profile replication-target
-~~~
+Similarly to the primary cluster, each node on the standby cluster must be started with the `--config-profile` flag set to `replication-target`. This creates a _virtualized cluster_ with a system virtual cluster and an application virtual cluster, and sets up all the required configuration for starting a replication stream.
 
 For example, a `cockroach start` command according to the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-3-start-nodes):
 
@@ -214,24 +196,24 @@ cockroach start \
 --config-profile replication-target
 ~~~
 
-Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up physical cluster replication.
+Ensure that you follow the [prerequisite deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}#step-4-initialize-the-cluster) to initialize your cluster before continuing to set up PCR.
 
-### Connect to the standby cluster system interface
+### Connect to the standby cluster system virtual cluster
 
-Connect to your standby cluster's system interface using [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}).
+Connect to your standby cluster's system virtual cluster using [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}).
 
-1. To connect to the system interface, pass the `options=-ccluster=system` parameter in the URL:
+1. To connect to the system virtual cluster, pass the `options=-ccluster=system` parameter in the URL:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url \
-    "postgresql://root@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full" \
+    "postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
     --certs-dir "certs"
     ~~~
 
-    The prompt will include `system` when you are connected to the system interface.
+    The prompt will include `system` when you are connected to the system virtual cluster.
 
-1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
+1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}) to the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -303,7 +285,7 @@ You need to add the `ca.crt` from the standby cluster to the `certs` directory o
 
 ## Step 4. Start replication
 
-The system interface in the standby cluster initiates and controls the replication stream by pulling from the primary cluster. In this section, you will connect to the primary from the standby to initiate the replication stream.
+The system virtual cluster in the standby cluster initiates and controls the replication stream by pulling from the primary cluster. In this section, you will connect to the primary from the standby to initiate the replication stream.
 
 1. From the **standby** cluster, use your connection string to the primary.
 
@@ -314,59 +296,65 @@ The system interface in the standby cluster initiates and controls the replicati
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE VIRTUAL CLUSTER standbyapplication LIKE template
+    CREATE VIRTUAL CLUSTER application LIKE template
     FROM REPLICATION OF application
-    ON 'postgresql://{replication user}:{password}@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
+    ON 'postgresql://{replication user}:{password}@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
     ~~~
 
     {% include {{ page.version.version }}/physical-replication/like-description.md %}
 
     Once the standby cluster has made a connection to the primary cluster, the standby will pull the topology of the primary cluster and will distribute the replication work across all nodes in the primary and standby.
 
-1. To view the virtual clusters on the standby, run:
+1. To view all virtual clusters on the standby, run:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW VIRTUAL CLUSTERS;
     ~~~
 
-    The standby cluster will show the `standbyapplication` virtual cluster is in a `replicating` state.
+    The standby cluster will show the `application` virtual cluster is in a `replicating` state.
 
     ~~~
     id |        name        |     data_state     | service_mode
     ---+--------------------+--------------------+---------------
      1 | system             | ready              | shared
      2 | template           | ready              | none
-     3 | standbyapplication | replicating        | none
+     3 | application        | replicating        | none
     (3 rows)
     ~~~
 
-    The standby cluster's virtual cluster is offline while the replication stream is running. The virtual cluster will be online once you explicitly [start its service after cutover]({% link {{ page.version.version }}/cutover-replication.md %}#step-2-complete-the-cutover).
+    The standby cluster's virtual cluster is offline while the replication stream is running. To bring it online, you must explicitly [start its service after cutover]({% link {{ page.version.version }}/cutover-replication.md %}#step-2-complete-the-cutover).
 
 1. To manage the replication stream, you can [pause and resume]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) the replication stream as well as [show]({% link {{ page.version.version }}/show-virtual-cluster.md %}) the current details for the job:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER standbyapplication PAUSE REPLICATION;
+    ALTER VIRTUAL CLUSTER application PAUSE REPLICATION;
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER standbyapplication RESUME REPLICATION;
+    ALTER VIRTUAL CLUSTER application RESUME REPLICATION;
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SHOW VIRTUAL CLUSTER standbyapplication WITH REPLICATION STATUS;
+    SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    id |        name        |     data_state     | service_mode | source_tenant_name |                                                     source_cluster_uri                                               | replication_job_id |        replicated_time        |         retained_time         | cutover_time
-    ---+--------------------+--------------------+--------------+--------------------+----------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
-    3  | standbyapplication | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
+    id |        name        |     data_state     | service_mode | source_tenant_name |                                                     source_cluster_uri                                              | replication_job_id |        replicated_time        |         retained_time         | cutover_time
+    ---+--------------------+--------------------+--------------+--------------------+---------------------------------------------------------------------------------------------------------------------+--------------------+-------------------------------+-------------------------------+---------------
+    3  | application        | replicating        | none         | application        | postgresql://{user}:{password}@{hostname}:26257?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 899090689449132033 | 2023-09-11 22:29:35.085548+00 | 2023-09-11 16:51:43.612846+00 |     NULL
     (1 row)s
     ~~~
+
+    With the replication stream running, you can monitor the job via the DB Console, SQL shell, or Prometheus. You can also verify data is correct on the standby cluster at a specific point in time. For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
+
+    {{site.data.alerts.callout_info}}
+    You cannot pause a PCR job for longer than 24 hours. PCR jobs paused for longer than 24 hours fail and cannot be recovered.
+    {{site.data.alerts.end}}
 
 ## Connection reference
 
@@ -376,9 +364,9 @@ For additional detail on the standard CockroachDB connection parameters, refer t
 
 Cluster | Interface | Usage | URL and Parameters
 --------+-----------+-------+------------+----
-Primary | System | Set up a replication user and view running virtual clusters. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
-Primary | Application | Add and run a workload with [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}). | `"postgresql://root@{node IP or hostname}:{26257}/?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"`<br><br>{% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %} As a result, for the example in this tutorial, you will need:<br><br><ul><li>`options=-ccluster=application`</li><li>`sslmode=verify-full`</li><li>`sslrootcert={path}/certs/ca.crt`</li><li>`sslcert={path}/certs/client.root.crt`</li><li>`sslkey={path}/certs/client.root.key`</li></ul>
-Standby | System | Manage the replication stream. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
+Primary | System | Set up a replication user and view running virtual clusters. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full"`<ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
+Primary | Application | Add and run a workload with [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}). | `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=application&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"`<br><br>{% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %} As a result, for the example in this tutorial, you will need:<ul><li>`options=-ccluster=application`</li><li>`sslmode=verify-full`</li><li>`sslrootcert={path}/certs/ca.crt`</li><li>`sslcert={path}/certs/client.root.crt`</li><li>`sslkey={path}/certs/client.root.key`</li></ul>
+Standby | System | Manage the replication stream. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full"`<ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
 
 ## What's next
 

@@ -1,17 +1,17 @@
 ---
-title: Monitor CockroachDB Self-Hosted with Datadog
+title: Monitor CockroachDB Self-Hosted Clusters with Datadog
 summary: The CockroachDB integration with Datadog enables data visualization and alerting on CockroachDB metrics.
 toc: true
 docs_area: manage
 ---
 
-[Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The CockroachDB {{ site.data.products.core }} integration with Datadog enables data collection and alerting on selected [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
+[Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The integration of your CockroachDB {{ site.data.products.core }} cluster with Datadog enables data collection and alerting on selected [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
 
 {{site.data.alerts.callout_success}}
-This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Datadog. For the CockroachDB {{ site.data.products.dedicated }} integration with Datadog, refer to [Monitor CockroachDB Dedicated with Datadog](https://www.cockroachlabs.com/docs/cockroachcloud/tools-page#monitor-cockroachdb-dedicated-with-datadog) instead of this page.
+This tutorial explores the integration of your CockroachDB {{ site.data.products.core }} cluster with Datadog. For the CockroachDB {{ site.data.products.cloud }} integration with Datadog, refer to [Monitor CockroachDB {{ site.data.products.cloud }} with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) instead of this page.
 {{site.data.alerts.end}}
 
-The CockroachDB {{ site.data.products.core }} integration with Datadog is powered by the [Datadog Agent](https://app.datadoghq.com/account/settings#agent), and supported by Datadog directly:
+The integration of your CockroachDB {{ site.data.products.core }} cluster with Datadog is powered by the [Datadog Agent](https://app.datadoghq.com/account/settings#agent), and supported by Datadog directly:
 
 - For more information about the integration, see the [Datadog blog post](https://www.datadoghq.com/blog/monitor-cockroachdb-performance-metrics-with-datadog/).
 - For more information about using Datadog, see the [Datadog documentation](https://docs.datadoghq.com/).
@@ -24,7 +24,7 @@ In this tutorial, you will enable the CockroachDB integration in Datadog, config
 Before you can follow the steps presented in this tutorial, you must have:
 
 - Downloaded and installed the [Datadog Agent](https://app.datadoghq.com/account/settings#agent).
-- Started a [secure CockroachDB Self-Hosted cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).
+- Started a [secure CockroachDB {{ site.data.products.core }} cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 
 ## Step 1. Enable CockroachDB integration
 
@@ -170,12 +170,6 @@ The example alert below will trigger when [a node has less than 15% of storage c
 The timeseries graph at the top of the page indicates the configured metric and threshold:
 
 <img src="{{ 'images/v23.2/datadog-crdb-storage-alert.png' | relative_url }}" alt="CockroachDB Threshold Alert in Datadog" style="border:1px solid #eee;max-width:100%" />
-
-## Step 7. Disable DB Console's local storage of metrics (optional)
-
-If you rely on external tools such as Datadog for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
-
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Datadog based on the data it is collecting from your cluster's Prometheus endpoint.
 
 ## Limitations
 

@@ -33,7 +33,7 @@ Exercise caution when batch deleting rows from tables with foreign key constrain
 
 Before reading this page, do the following:
 
-- [Create a CockroachDB {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) or [start a local cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart?filters=local).
+- [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
 - [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
 - [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 - [Insert data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to delete.
@@ -159,7 +159,7 @@ public class App {
             deleteData(connection);
         } catch (SQLException e) {
             e.printStackTrace();
-        } 
+        }
     }
 }
 ~~~
@@ -209,7 +209,7 @@ namespace Cockroach
           Console.WriteLine("Deleting data from warehouse <= to " + warehouseId);
           using var cmd = new NpgsqlCommand("DELETE FROM new_order WHERE no_w_id <= (@p1) ORDER BY no_w_id DESC LIMIT 5000 RETURNING no_w_id", connection)
           {
-            Parameters = 
+            Parameters =
             {
               // using a prepared statement and the current warehouse ID
               new("p1", warehouseId)
@@ -225,13 +225,13 @@ namespace Cockroach
                 // the warehouse ID of the final row of this batch.
                 warehouseId = reader.GetInt32(0);
               }
-              Console.WriteLine("Warehouse ID is now " + warehouseId); 
+              Console.WriteLine("Warehouse ID is now " + warehouseId);
             }
             else {
               // All the rows have been deleted, so break out of the loop
               cont = false;
             }
-            Console.WriteLine("Deleted " + reader.RecordsAffected + " rows.");           
+            Console.WriteLine("Deleted " + reader.RecordsAffected + " rows.");
           }
         } while (cont);
       }
@@ -396,7 +396,7 @@ public class KeyFields {
     public Int32 hwid;
     public Guid rowId;
 
-    public override String ToString() 
+    public override String ToString()
     {
         return "( " + hwid.ToString() + ", '" + rowId.ToString() + "' )";
     }
@@ -441,7 +441,7 @@ static void DeleteRows(string connString)
                     if (size > 5000)
                     {
                         lastIndex = 5000;
-                    } else 
+                    } else
                     {
                         lastIndex = size;
                     }
@@ -543,7 +543,7 @@ In C# the code would look similar to this:
 
 {% include_cached copy-clipboard.html %}
 ~~~ csharp
-static void TruncateTable(string connString) 
+static void TruncateTable(string connString)
 {
     using var dataSource = NpgsqlDataSource.Create(connString);
     using var connection = dataSource.OpenConnection();

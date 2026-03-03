@@ -16,11 +16,17 @@ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-c
 
 - Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 - For quick SQL testing or app development, consider [running a single-node cluster]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) instead.
-- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) or [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %}), and review the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
+- Running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, refer to [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) or [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %}), and review the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
+
+{{site.data.alerts.callout_danger}}
+Reusing a previously initialized store when starting a new cluster is not recommended. If the store is incompatible with either the new CockroachDB binary or the new cluster configuration, this can lead to panics or other problems when starting a cluster. Instead, either move or delete the previous store directory before starting the `cockroach` process. An example of an incompatible configuration is if the new cluster is started with the `--start-single-node` flag, which disables replication, when the cluster configuration in the store has replication enabled.
+
+The store directory is `cockroach-data/` in the same directory as the `cockroach` command by default, or the location passed to the `--store` flag otherwise. For details about configuring the store location, refer to [cockroach start]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+{{site.data.alerts.end}}
 
 ## Step 1. Start the cluster
 
-This section shows how to start a cluster interactively. In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link v23.1/deploy-cockroachdb-on-premises.md %}?filters=systemd).
+This section shows how to start a cluster interactively. In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}?filters=systemd).
 
 1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start `node1` in the foreground:
 
@@ -37,7 +43,7 @@ This section shows how to start a cluster interactively. In production, operator
     {{site.data.alerts.callout_info}}
     The `--background` flag is not recommended. If you decide to start nodes in the background, you must also pass the `--pid-file` argument. To stop a `cockroach` process running in the background, extract the process ID from the PID file and pass it to the command to [stop the node](#step-7-stop-the-cluster).
 
-    In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link v23.1/deploy-cockroachdb-on-premises.md %}?filters=systemd).
+    In production, operators usually use a process manager like `systemd` to start and manage the `cockroach` process on each node. Refer to [Deploy CockroachDB On-Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}?filters=systemd).
     {{site.data.alerts.end}}
 
     You'll see a message like the following:

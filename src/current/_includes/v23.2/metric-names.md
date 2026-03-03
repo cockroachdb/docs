@@ -269,6 +269,8 @@ Name | Description
 `sql.txn.begin.count` | Number of SQL transaction BEGIN statements
 `sql.txn.commit.count` | Number of SQL transaction COMMIT statements
 `sql.txn.contended.count` | Number of SQL transactions that experienced contention
+`sql.txn.isolation.executed_at.read_committed` | Number of times a [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transaction was executed.
+`sql.txn.isolation.upgraded_from.read_committed` | Number of times a [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transaction was automatically upgraded to a stronger isolation level.
 `sql.txn.rollback.count` | Number of SQL transaction ROLLBACK statements
 `sql.update.count` | Number of SQL UPDATE statements
 `storage.l0-level-score` | Compaction score of level 0

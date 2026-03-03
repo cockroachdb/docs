@@ -44,11 +44,15 @@ Before you enable Cloud Organization SSO, notify your members about what to expe
 - Which authentication methods they can use and whether they have autoprovisioning enabled.
 - Some members may need to be re-added to your organization:
   - All members of your CockroachDB {{ site.data.products.cloud }} organization who were using [Basic SSO]({% link cockroachcloud/cloud-org-sso.md %}#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
-  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited or [provisioned using SCIM]({% link cockroachcloud/configure-scim-provisioning.md %}). If a re-invited member previously had the [org admin]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role, it must be granted to them again.
+  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited or [provisioned using SCIM]({% link cockroachcloud/configure-scim-provisioning.md %}). If a re-invited member previously had the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role, it must be assigned to them again.
 
 During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
 
 ### Ensure that at least one organization admin belongs to no other CockroachDB {{ site.data.products.cloud }} organization
+
+{{site.data.alerts.callout_success}}
+You can now use [Folders]({% link cockroachcloud/folders.md %}) (Limited Access) to group, organize, and manage access to clusters in a hierarchy within a single CockroachDB Cloud organization. Compared with managing multiple CockroachDB Cloud organizations, folders simplify billing and centralize cluster administration and observability. To learn more, contact your Cockroach Labs account team.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
 If your migration fails with the error: `Cloud Organization SSO cannot be enabled`, confirm that the admin who is enabling CockroachDB {{ site.data.products.cloud }} Organization SSO is not a member of any other CockroachDB {{ site.data.products.cloud }} organization.
@@ -56,13 +60,13 @@ If your migration fails with the error: `Cloud Organization SSO cannot be enable
 
 For your migration to succeed, you must ensure that at least one admin belongs to no other CockroachDB {{ site.data.products.cloud }} organization than the one to be migrated. If all admins belong to multiple organizations, the migration will fail with the generic error `Cloud Organization SSO cannot be enabled`.
 
-If all of your administrators belong to multiple organizations, you can create a temporary user in your SSO provider or directly in CockroachDB {{ site.data.products.cloud }}. Grant the [**Org Administrator** role]({% link cockroachcloud/authorization.md %}#org-administrator) to the temporary user, and use this temporary admin to enable Cloud Organization SSO. After migration, you should delete this temporary user or revoke the **Org Administrator** role.
+If all of your administrators belong to multiple organizations, you can create a temporary user in your SSO provider or directly in CockroachDB {{ site.data.products.cloud }}. Assign the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin) to the temporary user, and use this temporary admin to enable Cloud Organization SSO. After migration, you should delete this temporary user or revoke the **Organization Admin** role.
 
 ## Enable Cloud Organization SSO
 
 To enable Cloud Organization SSO:
 
-1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as an user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as an user with the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Enable Authentication**, click **Enable**.
 1. In the dialog, configure the custom URL your members will use to sign in. This value must be unique across CockroachDB {{ site.data.products.cloud }}. For more details, refer to [Update the custom URL](#update-the-custom-url).
@@ -104,7 +108,7 @@ When you enable or disable an authentication method, a notification is displayed
 
 To enable or disable an authentication method:
 
-1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as user with the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role.
 1. Go to **Organization** > **Authentication**.
 1. To configure an authentication method, click its name.
 1. To enable or disable the authentication method, toggle **Enable**.
@@ -127,7 +131,7 @@ The following sections describe the advanced settings you can configure for an S
 
 By default, members can access your CockroachDB {{ site.data.products.cloud }} organization from any email domain. To restrict access to a specific list of email domains:
 
-1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role.
 1. Go to **Organization** > **Authentication**.
 1. To configure an authentication method, click its name.
 1. At the top of the page, click **Edit**.
@@ -136,17 +140,17 @@ By default, members can access your CockroachDB {{ site.data.products.cloud }} o
 
 ### Autoprovisioning
 
-Autoprovisioning allows members to sign up for an account without waiting for an invitation. By default, autoprovisioning is disabled, and a member must exist in the SSO provider and must be [invited by a user with the **Org Administrator (legacy)** role]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) before they can create an account. When autoprovisioning is enabled, no invitation is required.
+Autoprovisioning allows members to sign up for an account without waiting for an invitation. By default, autoprovisioning is disabled, and a member must exist in the SSO provider and must be [invited by a user with the **Organization Admin** role]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) before they can create an account. When autoprovisioning is enabled, no invitation is required.
 
-Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator (legacy)** role]({% link cockroachcloud/authorization.md %}#org-administrator-legacy).
+Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which adds no permissions to perform cluster or organization actions. Additional roles can be assigned by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
 
-If a member's identity is removed from the SSO provider, they can no longer log in to CockroachDB {{ site.data.products.cloud }}, but their account is not automatically deprovisioned. If you require automatic deprovisioning or other centralized account automation features, refer to [SCIM Pprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
+If a member's identity is removed from the SSO provider, they can no longer log in to CockroachDB {{ site.data.products.cloud }}, but their account is not automatically deprovisioned. If you require automatic deprovisioning or other centralized account automation features, refer to [SCIM Provisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
 
 Cockroach Labs does not recommend enabling both autoprovisioning and SCIM provisioning for the same authentication method.
 
 To enable autoprovisioning for an SSO authentication method:
 
-1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role.
 1. Go to **Organization** > **Authentication**.
 1. Click the name of an authentication method.
 1. Click **Advanced Settings**.
@@ -154,49 +158,121 @@ To enable autoprovisioning for an SSO authentication method:
 
 ## Add a custom authentication method
 
-You can add a custom authentication method to connect to any IdP that supports [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language) or [OpenID Connect (OIDC)](https://openid.net/connect/).
+You can add a custom authentication method to connect to any IdP that supports [OpenID Connect (OIDC)](https://openid.net/connect/) or [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language).
 
 ### OIDC
 
-To configure a custom OIDC authentication method:
+#### Supported features
 
-1. Log in to your IdP and gather the following information, which you will use to configure CockroachDB {{ site.data.products.cloud }} SSO:<ul><li>Issuer URL</li><li>Client ID</li><li>Client secret</li><li>Callback URL</li></ul>
-1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+* IdP-initiated SSO
+* SP-initiated SSO
+* Just-In-Time provisioning
+
+#### Configuration steps
+
+To configure a custom OIDC authentication method, you need the following information from your IdP:
+
+- Issuer URL
+- Client ID
+- Client secret
+
+These instructions work for Okta. If you use a different IdP, refer to its documentation for configuring OIDC.
+
+1. Log in to Okta as a user with the Admin role.
+1. In the Admin Console, click **Applications**, then click **Browse Catalog**.
+1. Search for "Cockroach Labs", then click **Add integration**.
+1. Set **Application label** to a name for the integration. Set **Entity ID** and **ACS URL** to `none`. These fields are ignored.
+1. Click **Next**.
+1. In **Sign-On Options**, select **OpenID Connect**. SAML is selected by default.
+1. Set **Application username format** to **Email**.
+1. Click **Done**. The app integration's details appear.
+1. Assign at least one Okta identity to the application, such as the identity you already use to sign in to CockroachDB {{ site.data.products.cloud }}. Click **Assignments**, then click **Assign to People**. Find the identity, click **Assign**, then click **Save and go back**. Click **Done** to close the assignment dialog.
+1. Click the **Sign-On** tab. Find the link for **OpenID Provider Metadata**. Right-click and copy the URL. This is your issuer URL, which you will provide to CockroachDB {{ site.data.products.cloud }}.
+1. Keep this tab open so that you can copy the Client ID and Client Secret to CockroachDB {{ site.data.products.cloud }}.
+1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
-1. Set **Configuration** to **OIDC (OpenID Connect)**.
-1. Set **Provider Name** to a display name for the connection.
-1. Click **Next**.
-1. The **Provider Details** page displays.
-1. To edit the connection, click **Edit**.
-1. Paste the values from your IdP for the **Issuer URL**, **Client ID**, **Client Secret**, and **Callback URL**.
+1. Set **Configuration** to **OIDC (OpenID Connect)** and provide a name for the connection. This name will appear on your custom sign-in page.
+1. Click **Submit**. The authentication method's details are displayed. Click **Edit**.
+1. Set **Issuer URL** to the issuer URL you copied from Okta, beginning with `https://` and ending with `/openid-configuration`.
+1. Copy the **Client ID** and **Client Secret** from the Okta browser tab.
+1. Test the connection. This is recommended before enabling the method. Click **Test**, then follow the prompts. If you get an error, review your configuration details, then try again. When the test is successful, the test status changes to **Verified**.
 1. Click **Save**.
 1. The authentication method has been added but is disabled. To enable it, toggle **Enable**.
-1. Click **Test**. If errors are shown, edit the configuration to fix the problems and try again.
 1. Optionally, [configure advanced settings](#configure-advanced-settings) for the new authentication method.
+
+#### SP-initiated SSO
+1. Navigate to CockroachDB Cloud Console via your organization's vanity URL.
+2. Select the appropriate login method which uses OIDC. You will be redirected to your IdP (e.g. Okta).
+3. Log in using your IdP credentials.
+4. You will then be automatically redirected and logged into your CockroachDB Cloud Console organization.
 
 ### SAML
 
-To configure a custom SAML authentication method:
+#### Supported features
 
-1. Log in to your IdP and gather the following information, which you will use to configure CockroachDB {{ site.data.products.cloud }} SSO:<ul><li>Sign-in URL</li><li>Signing certificate</li></ul>
-1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) role.
+* IdP-initiated SSO
+* SP-initiated SSO
+* Just-In-Time provisioning
+
+#### Supported SAML Attributes
+
+   CockroachDB Cloud expects the following SAML attribute mappings from your IdP:
+   
+| Name  | Value             |
+|-------|-------------------|
+| email | `user.email`      |
+| name  | `user.displayName`|
+
+
+
+#### Configuration steps
+
+To configure a custom SAML authentication method, you need the following information from your IdP:
+
+- Sign On URL
+- Signing certificate
+
+These instructions work for Okta. If you use a different IdP, refer to its documentation for configuring SAML.
+
+1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
 1. Set **Configuration** to **SAML**.
 1. Set **Provider Name** to a display name for the connection.
-1. Click **Next**.
-1. The **Provider Details** page displays.
-1. To edit the connection, click **Edit**.
-1. Set **Sign-in URL** to the sign-in URL from your IdP.
-1. Next to **Signing Certificate**, paste the entire certificate from your IdP, including the lines `-begin certificate-` and `-end certificate`.
+1. Click **Next**. The **Provider Details** page opens.
+1. To edit the connection, click **Edit**. Keep this browser tab open.
+1. In a separate browser tab, log in to Okta as a user with the Admin role.
+1. In the Admin Console, click **Applications**, then click **Browse Catalog**.
+1. Search for "Cockroach Labs", Click **Add integration**.
+1. SAML is selected by default. Provide a name for the connection. This name will appear on your custom sign-in page.
+1. Click **Submit**. The authentication method's details are displayed.
+1. To download the metadata you will need to provide to Okta, click **Download**. The metadata is downloaded in XML format.
+1. Open the metadata file. Make a note of the following:
+    - Entity ID: The `entityID` attribute of the `<EntityDescriptor>` tag.
+    - ACS URL: The `location` attribute of the `<AssertionConsumerService>` tag.
+
+    Close the metadata file. Keep the browser tab open.
+1. Next to **Sign On Certificate**, click **Download**. Do not click **Copy**. Open the downloaded file in a text editor.
+1. In the browser tab for CockroachDB {{ site.data.products.cloud }}, click **Edit**.
+1. Set **Sign-in URL** to the Sign on URL from Okta.
+1. Copy the entire contents of the certificate from your text editor into **Signing Certificate**, including the `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----` lines, and paste it into the Signing Certificate field.
+1. Test the connection. This is recommended before enabling the method. Click **Test**, then follow the prompts. If you get an error, review your configuration details, then try again. When the test is successful, the test status changes to **Verified**.
 1. Click **Save**.
-1. Click **Test**. If errors are shown, edit the configuration to fix the problems and try again.
-1. Optionally, [configure advanced settings](#configure-advanced-settings) for the new authentication method.
-1. Download metadata required by your IdP. Click **Download**. Open the file and make a note of the following values:<ul><li><b>Entity ID</b>: The <code>entityID</code> attribute of the <code>&lt;EntityDescriptor&gt;</code> tag.</li><li><b>Login URL</b>: The <code>location</code> attribute of the <code>&lt;AssertionConsumerService&gt;</code> tag.</li></ul>
-1. In the browser where you are logged in to your IdP, update the authentication configuration to use the Entity ID and Login URL from the metadata file.
-1. Configure the SAML assertions that your IdP sends to CockroachDB {{ site.data.products.cloud }}. Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. Refer to the documentation for your IdP.
-1. (Optional) To configure SCIM provisioning, refer to [Configure SCIM autoprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
+1. The authentication method has been added but is disabled. To enable it, toggle **Enable**.
+1. (Optional) [Configure SCIM autoprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
+
+After SAML is configured, your users can sign in to the CockroachDB {{ site.data.products.cloud }} Console in two different ways:
+
+- **Service provider-initiated flow**: Users sign in to the CockroachDB {{ site.data.products.cloud }} Console directly, using your custom sign-in URL.
+- **Identity provider-initiated flow**: Users sign in to the CockroachDB {{ site.data.products.cloud }} Console from within your IdP (for example, by accessing its tile in Okta).
+
+#### SP-initiated SSO
+1. Navigate to CockroachDB Cloud Console via your organization's vanity URL.
+2. Select the appropriate login method which uses SAML. You will be redirected to your IdP (e.g. Okta).
+3. Log in using your IdP credentials.
+4. You will then be automatically redirected and logged into your CockroachDB Cloud Console organization.
+
 
 ## Require SSO
 

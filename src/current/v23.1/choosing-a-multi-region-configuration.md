@@ -7,7 +7,7 @@ docs_area: deploy
 
 This page has high-level information about how to configure a [multi-region cluster's]({% link {{ page.version.version }}/multiregion-overview.md %}) [survival goals]({% link {{ page.version.version }}/multiregion-overview.md %}#survival-goals) and [table localities]({% link {{ page.version.version }}/multiregion-overview.md %}#table-localities).
 
-{% include enterprise-feature.md %}
+
 
 ## Multi-region configuration options
 

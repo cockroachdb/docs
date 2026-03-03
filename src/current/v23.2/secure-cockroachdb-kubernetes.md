@@ -11,7 +11,7 @@ docs_area: deploy
 This article assumes you have already [deployed CockroachDB securely on a single Kubernetes cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}) using the Operator or Helm. However, it's possible to configure these settings before starting CockroachDB on Kubernetes.
 {{site.data.alerts.end}}
 
-By default, self-signed certificates are used when using the Operator or Helm to securely [deploy CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}). However, the recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS](#deploy-cert-manager-for-mtls).
+By default, self-signed certificates are used when using the Operator or Helm to securely [deploy CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}). However, the recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS](?filters=helm#deploy-cert-manager-for-mtls).
 
 This page explains how to:
 
@@ -20,7 +20,7 @@ This page explains how to:
 - [Secure the webhooks](#secure-the-webhooks) (Operator)
 
 {{site.data.alerts.callout_danger}}
-If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. The recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS](#deploy-cert-manager-for-mtls).
+If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. The recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS](?filters=helm#deploy-cert-manager-for-mtls).
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">

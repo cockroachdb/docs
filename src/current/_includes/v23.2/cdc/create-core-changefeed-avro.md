@@ -1,4 +1,4 @@
-In this example, you'll set up a core changefeed for a single-node cluster that emits Avro records. CockroachDB's Avro binary encoding convention uses the [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html) to store Avro schemas.
+In this example, you'll set up a basic changefeed for a single-node cluster that emits Avro records. CockroachDB's Avro binary encoding convention uses the [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html) to store Avro schemas.
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
@@ -53,7 +53,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
     > INSERT INTO bar VALUES (0);
     ~~~
 
-1. Start the core changefeed:
+1. Start the basic changefeed:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -72,13 +72,13 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
     $ cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
     ~~~
 
-1. Back in the terminal where the core changefeed is streaming, the output will appear:
+1. Back in the terminal where the basic changefeed is streaming, the output will appear:
 
     ~~~
     bar,\000\000\000\000\001\002\002,\000\000\000\000\002\002\002\002
     ~~~
 
-    Note that records may take a couple of seconds to display in the core changefeed.
+    Note that records may take a couple of seconds to display in the basic changefeed.
 
 1. To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
 

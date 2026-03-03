@@ -20,14 +20,10 @@ function renderTOC() {
   });
 
   // Set class on top level elements
-  if(document.getElementById('toc-right') && (document.getElementById('toc-right').children.length > 0)){
-    var list = document.getElementById('toc-right').children[0].childNodes;
-    for (let li of list) {
-      li.classList.add('toc-li-top');
-    }
-  }
+  var list = document.querySelectorAll('#toc-right > ul > li');
+list.forEach(li => li.classList.add('toc-li-top'));
 }
-
+document.addEventListener('DOMContentLoaded', renderTOC);
 var $versionSwitcher, versionSwitcherBottom = Infinity;
 
 const cockroachDomains = [
@@ -240,9 +236,8 @@ $(function() {
     // find the filter set with this scope
     $('[data-scope].current').each(function(index) {
       // console.log("data-scope is: " + $(this).attr('data-scope'));
-      // if the target scope is in the same group as the current scope for that 
+      // if the target scope is in the same group as the current scope for that
       // group, remove the current class
-      
       const sectionScopes = $(this).attr('data-scope').split(" ");
       // multiple scopes can be set, so try each scope, but stop after removing current
       sectionScopes.every(v => {
@@ -443,6 +438,18 @@ $(function() {
   clipboard.on('success', function(e) {
     $(e.trigger).addClass('copy-clipboard--copied');
     // $(e.trigger).find('.copy-clipboard__text').text('copied');
+
+    // On successful copy, send an event to Segment. This event will be used to
+    // track the text that was copied and the URL of the page where the copy.
+    try {
+      // Wrap the event submission in a try-catch block to handle cases of
+      // `window.analytics` not yet being defined yet (on load of the page).
+      window.analytics.track("copied_terminal_text", {
+        text: e.text,
+      });
+    } catch (e) {
+      console.error("Error submitting event", e);
+    }
   });
 
   $('[data-tooltip]').tooltip();
@@ -481,9 +488,20 @@ $(function() {
 
     return this.hostname && this.hostname !== location.hostname && cockroachDomains.includes(this.hostname);
   }).addClass('external').attr("target","_blank").attr("rel","noopener");
+
+  // Attach a binary-link click event listener to all binary links on the page.
+  // This event listener will send an event to Segment when a binary link is clicked.
+  document.querySelectorAll("a.binary-link").forEach(link => {
+    link.addEventListener("click", function() {
+      const href = this.getAttribute('href');
+
+      try {
+        window.analytics.track("binary_link_clicked", {
+          binaryUrl: href,
+        });
+      } catch (error) {
+        console.error("Error submitting event", error);
+      }
+    });
+  });
 });
-
-
-// $('.nav-docs-mobile').on('click', function(){
-//   $('#sidebarMenu').collapse();
-// });

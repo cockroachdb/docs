@@ -101,6 +101,10 @@ td > div.anchored
    scroll-margin-top: 100px;
 }
 
+a[name] {
+  scroll-margin-top: 100px;
+}
+
 table {
   overflow-x: auto;
   width: 100%;
@@ -113,7 +117,12 @@ table {
           line-height: 22px;
         }
         ul {
-          font-size: 14px;
+          font-size: inherit;
+          margin-top: 10px;
+        }
+        strong,
+        b {
+          font-size: inherit;
         }
       }
     }

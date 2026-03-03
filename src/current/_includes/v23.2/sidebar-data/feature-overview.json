@@ -34,12 +34,6 @@
             "urls": [
               "/${VERSION}/multi-active-availability.html"
             ]
-          },
-          {
-            "title": "Enterprise Features",
-            "urls": [
-              "/${VERSION}/enterprise-licensing.html"
-            ]
           }
         ]
       },
@@ -64,12 +58,6 @@
                 "/${VERSION}/sql-faqs.html"
               ]
             }
-          ]
-      },    
-      {
-          "title": "CockroachDB in Comparison",
-          "urls": [
-            "/${VERSION}/cockroachdb-in-comparison.html"
           ]
       }
     ]

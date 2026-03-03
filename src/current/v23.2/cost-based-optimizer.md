@@ -23,22 +23,31 @@ The most important factor in determining the quality of a plan is cardinality (i
 
 The cost-based optimizer can often find more performant query plans if it has access to statistical data on the contents of your tables. This data needs to be generated from scratch for new tables, and [refreshed periodically](#control-statistics-refresh-rate) for existing tables.
 
-By default, CockroachDB automatically generates table statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}), and as they are [updated]({% link {{ page.version.version }}/update.md %}). It does this using a [background job]({% link {{ page.version.version }}/create-statistics.md %}#view-statistics-jobs) that automatically determines which columns to get statistics on. Specifically, the optimizer chooses:
+The optimizer can use two types of statistics to plan queries:
+
+- [Full statistics](#full-statistics)
+- [Forecasted statistics](#forecasted-statistics)
+
+For best query performance, most users should leave automatic statistics enabled with the default settings. Advanced users can follow the steps provided in this section for performance tuning and troubleshooting.
+
+### Full statistics
+
+By default, CockroachDB automatically generates full statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}) and after [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). Full statistics for a table are automatically refreshed when approximately 20% of its rows are updated.
+
+{{site.data.alerts.callout_success}}
+You can manually collect *partial statistics* on a subset of table data without scanning the full table. Refer to [Create partial statistics using extremes]({% link {{ page.version.version }}/create-statistics.md %}#create-partial-statistics-using-extremes).
+{{site.data.alerts.end}}
+
+A [background job]({% link {{ page.version.version }}/create-statistics.md %}#view-statistics-jobs) automatically determines which columns to get statistics on. Specifically, the optimizer chooses:
 
 - Columns that are part of the primary key or an index (in other words, all indexed columns).
 - Up to 100 non-indexed columns.
 
 By default, CockroachDB also automatically collects [multi-column statistics]({% link {{ page.version.version }}/create-statistics.md %}#create-statistics-on-multiple-columns) on columns that prefix an index.
 
-{{site.data.alerts.callout_info}}
-[Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) trigger automatic statistics collection for the affected table(s).
-{{site.data.alerts.end}}
+#### Control statistics refresh rate
 
-For best query performance, most users should leave automatic statistics enabled with the default settings. Advanced users can follow the steps provided in this section for performance tuning and troubleshooting.
-
-### Control statistics refresh rate
-
-Statistics are refreshed in the following cases:
+Full statistics are refreshed in the following cases:
 
 - When there are no statistics.
 - When it has been a long time since the last refresh, where "long time" is based on a moving average of the time across the last several refreshes.
@@ -55,7 +64,7 @@ Statistics are refreshed in the following cases:
     Because the formula for statistics refreshes is probabilistic, you will not see statistics update immediately after changing these settings, or immediately after exactly 500 rows have been updated.
     {{site.data.alerts.end}}
 
-#### Small versus large table examples
+##### Small versus large table examples
 
 Suppose the [clusters settings]({% link {{ page.version.version }}/cluster-settings.md %}) `sql.stats.automatic_collection.fraction_stale_rows` and `sql.stats.automatic_collection.min_stale_rows` have the default values .2 and 500 as shown in the preceding table.
 
@@ -65,15 +74,9 @@ On the other hand, if a table has 1,500,000,000 rows, then 20% of that, or 300,0
 
 In such cases, we recommend that you use the [`sql_stats_automatic_collection_enabled` storage parameter](#enable-and-disable-automatic-statistics-collection-for-tables), which lets you configure automatic statistics collection on a per-table basis.
 
-#### Configure non-default statistics retention
+### Toggle automatic statistics collection
 
-By default, when CockroachDB refreshes statistics for a column, it deletes the previous statistics for the column (while leaving the most recent 4-5 historical statistics). When CockroachDB refreshes statistics, it also deletes the statistics for any "non-default" column sets, or columns for which statistics are not [collected by default](#table-statistics).
-
-Historical statistics on non-default column sets should not be retained indefinitely, because they will not be refreshed automatically and could cause the optimizer to choose a suboptimal plan if they become stale. Such non-default historical statistics may exist because columns were deleted or removed from an index, and are therefore no longer part of a multi-column statistic.
-
-CockroachDB deletes statistics on non-default columns according to the `sql.stats.non_default_columns.min_retention_period` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), which defaults to a 24-hour retention period.
-
-### Enable and disable automatic statistics collection for clusters
+#### Enable and disable automatic statistics collection for clusters
 
 Automatic statistics collection is enabled by default. To disable automatic statistics collection, follow these steps:
 
@@ -97,11 +100,11 @@ Automatic statistics collection is enabled by default. To disable automatic stat
 
 To learn how to manually generate statistics, see the [`CREATE STATISTICS` examples]({% link {{ page.version.version }}/create-statistics.md %}#examples).
 
-### Enable and disable automatic statistics collection for tables
+#### Enable and disable automatic statistics collection for tables
 
 Statistics collection can be expensive for large tables, and you may prefer to defer collection until after data is finished loading or during off-peak hours. Tables that are frequently updated, including small tables, may trigger statistics collection more often, which can lead to unnecessary overhead and unpredictable query plan changes.
 
-You can enable and disable automatic statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` storage parameter. This table setting **takes precedence** over the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) described in [Enable and disable automatic statistics collection for clusters](#enable-and-disable-automatic-statistics-collection-for-clusters).
+You can enable and disable automatic statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` [table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters). This table setting **takes precedence** over the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) described in [Enable and disable automatic statistics collection for clusters](#enable-and-disable-automatic-statistics-collection-for-clusters).
 
 You can either configure this setting during table creation:
 
@@ -138,28 +141,22 @@ The current table settings are shown in the `WITH` clause output of `SHOW CREATE
 
 `ALTER TABLE accounts RESET (sql_stats_automatic_collection_enabled)` removes the table setting, in which case the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is in effect for the table.
 
-The "stale row" cluster settings discussed in [Control statistics refresh rate](#control-statistics-refresh-rate) have table
-setting counterparts `sql_stats_automatic_collection_fraction_stale_rows` and `sql_stats_automatic_collection_min_stale_rows`. For example:
+### Configure non-default statistics retention
 
-~~~ sql
-CREATE TABLE accounts (
-    id INT PRIMARY KEY,
-    balance DECIMAL)
-WITH (sql_stats_automatic_collection_enabled = true,
-sql_stats_automatic_collection_min_stale_rows = 1000000,
-sql_stats_automatic_collection_fraction_stale_rows= 0.05
-);
+By default, when CockroachDB refreshes statistics for a column, it deletes the previous statistics for the column while retaining the most recent four to five historical statistics. When CockroachDB refreshes statistics, it also deletes the statistics for any columns whose statistics are not [collected by default](#table-statistics).
 
-ALTER TABLE accounts
-SET (sql_stats_automatic_collection_fraction_stale_rows = 0.1,
-sql_stats_automatic_collection_min_stale_rows = 2000);
-~~~
+Do not retain historical statistics on non-default column sets indefinitely, because they are not refreshed automatically and can cause the optimizer to choose a suboptimal plan if they become stale. These non-default historical statistics can exist when columns are deleted or removed from an index and are no longer part of a multi-column statistic.
 
-Automatic statistics rules are checked once per minute. While altered automatic statistics table settings take immediate effect for any subsequent DML statements on a table, running row mutations that started prior to modifying the table settings may still trigger statistics collection based on the settings that existed before you ran the `ALTER TABLE ... SET` statement.
+CockroachDB deletes statistics on non-default columns according to the `sql.stats.non_default_columns.min_retention_period` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), which defaults to 24 hours.
 
-### Enable and disable forecasted statistics for tables
+### Forecasted statistics
 
-You can enable and disable [forecasted statistics]({% link {{ page.version.version }}/show-statistics.md %}#display-forecasted-statistics) collection for individual tables using the `sql_stats_forecasts_enabled` table parameter. This table setting **takes precedence** over the `sql.stats.forecasts.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+*Forecasted statistics* use a simple regression model that predicts how the statistics have changed since they were last collected. CockroachDB generates forecasted statistics when the following conditions are met:
+
+- There have been at least 3 historical statistics collections.
+- The historical statistics closely fit a linear pattern.
+
+You can enable and disable forecasted statistics collection for individual tables using the `sql_stats_forecasts_enabled` [table parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters). This table setting **takes precedence** over the `sql.stats.forecasts.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 You can either configure this setting during table creation:
 
@@ -232,21 +229,19 @@ Even if you have [secondary indexes]({% link {{ page.version.version }}/schema-d
 
 You can disable statement plans that perform full table scans with the [`disallow_full_table_scans` session variable]({% link {{ page.version.version }}/set-vars.md %}#disallow-full-table-scans).
 
-If you disable full scans, you can set the [`large_full_scan_rows` session variable]({% link {{ page.version.version }}/set-vars.md %}#large-full-scan-rows) to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
-
-If you disable full scans, and you provide an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) will be updated.
+{% include {{ page.version.version }}/sql/disallow-full-table-scans.md %}
 
 ## Control whether the optimizer uses an index
 
-You can specify [whether an index is visible]({% link {{ page.version.version }}/alter-index.md %}#not-visible) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection). 
+You can specify [whether an index is visible]({% link {{ page.version.version }}/alter-index.md %}#not-visible) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection). This allows you to create an index and check for query plan changes without affecting production queries. For an example, refer to [Set an index to be not visible]({% link {{ page.version.version }}/alter-index.md %}#set-an-index-to-be-not-visible).
 
-This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible]({% link {{ page.version.version }}/alter-index.md %}#set-an-index-to-be-not-visible).
+You can also set an index as [partially visible]({% link {{ page.version.version }}/alter-index.md %}#visibility) within a range of `0.0` to `1.0`, where `0.0` means not visible and `1.0` means visible. Any value between `0.0` and `1.0` means that an index is visible to the specified fraction of queries. {% include {{ page.version.version }}/sql/partially-visible-indexes.md %}
 
 {{site.data.alerts.callout_info}}
 Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}). For more considerations, see [Index visibility considerations]({% link {{ page.version.version }}/alter-index.md %}#not-visible).
 {{site.data.alerts.end}}
 
-You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
+You can instruct the optimizer to use indexes marked as not visible with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
 
 ## Locality optimized search in multi-region clusters
 
@@ -279,27 +274,87 @@ Only tables with `ZONE` [survivability]({% link {{ page.version.version }}/multi
 
 ## Query plan cache
 
-CockroachDB uses a cache for the query plans generated by the optimizer. This can lead to faster query execution since the database can reuse a query plan that was previously calculated, rather than computing a new plan each time a query is executed.
+CockroachDB caches some of the query plans generated by the optimizer. The query plan cache is used for the following types of statements:
+
+- Prepared statements.
+- Non-prepared statements using identical constant values.
+
+Caching query plans leads to faster query execution: rather than generating a new plan each time a query is executed, CockroachDB reuses a query plan that was previously generated.
 
 The query plan cache is enabled by default. To disable it, execute the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET CLUSTER SETTING sql.query_cache.enabled = false;
+SET CLUSTER SETTING sql.query_cache.enabled = false;
 ~~~
 
-Only the following statements use the plan cache:
+The following statements can use the plan cache: [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}), and [`DELETE`]({% link {{ page.version.version }}/delete.md %}).
 
-- [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
-- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
-- [`UPDATE`]({% link {{ page.version.version }}/update.md %})
-- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
-- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
+Two types of plans can be cached: custom and generic. Refer to [Query plan type](#query-plan-type).
 
-The optimizer can use cached plans if they are:
+### Query plan type
 
-- Prepared statements.
-- Non-prepared statements using identical constant values.
+Two types of plans can be cached:
+
+- *Custom* query plans are generated for a given query structure and optimized for specific placeholder values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans. Custom plans are included in the [plan cache](#query-plan-cache).
+- {% include_cached new-in.html version="v23.2.12" %} *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning. For example:
+
+    ~~~ sql
+    PREPARE p AS SELECT ...;
+    SET plan_cache_mode = force_generic_plan;
+    EXECUTE p; -- The query plan is generated and optimized.
+    EXECUTE p; -- The query plan is reused without re-optimizing.
+    EXECUTE p; -- The query plan is reused without re-optimizing.
+    ~~~
+
+    Generic plans are **not** included in the plan cache, but are cached per session. This means that they must still be re-optimized each time a session prepares a statement using a generic plan. To reuse generic query plans for maximum performance, a prepared statement should be executed multiple times instead of prepared and executed once.
+
+    This feature is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) and is subject to change.
+
+    {{site.data.alerts.callout_success}}
+    Generic query plans will only benefit workloads that use prepared statements, which are issued via explicit `PREPARE` statements or by client libraries using the [PostgreSQL extended wire protocol](https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY). Generic query plans are most beneficial for queries with high planning times, such as queries with many [joins]({% link {{ page.version.version }}/joins.md %}). For more information on reducing planning time for such queries, refer to [Reduce planning time for queries with many joins](#reduce-planning-time-for-queries-with-many-joins).
+    {{site.data.alerts.end}}
+
+To change the type of plan that is cached, use the [`plan_cache_mode`]({% link {{ page.version.version }}/session-variables.md %}#plan-cache-mode) session setting. This setting applies when a statement is executed, not when it is prepared. Statements are therefore not associated with a specific query plan type when they are prepared.
+
+The following modes can be set:
+
+- `force_custom_plan` (default): Force the use of custom plans.
+- `force_generic_plan`: Force the use of generic plans.
+- `auto`: Automatically determine whether to use custom or generic query plans for prepared statements. Custom plans are used for the first five statement executions. Subsequent executions use a generic plan if its estimated cost is not significantly higher than the average cost of the preceding custom plans.
+
+{{site.data.alerts.callout_info}}
+Generic plans are always used for non-prepared statements that do not contain placeholders or [stable functions]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility), regardless of the `plan_cache_mode` setting.
+{{site.data.alerts.end}}
+
+In some cases, generic query plans are less efficient than custom plans. For this reason, Cockroach Labs recommends setting `plan_cache_mode` to `auto` instead of `force_generic_plan`. Under the `auto` setting, the optimizer avoids bad generic plans by falling back to custom plans. For example:
+
+Set `plan_cache_mode` to `auto` at the session level:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET plan_cache_mode = auto
+~~~
+
+At the [database level]({% link {{ page.version.version }}/alter-database.md %}#set-session-variable):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE db SET plan_cache_mode = auto;
+~~~
+
+At the [role level]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-a-role):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER ROLE db_user SET plan_cache_mode = auto;
+~~~
+
+To verify the plan type used by a query, check the [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) output for the query.
+
+- If a generic query plan is optimized for the current execution, the `plan type` in the output is `generic, re-optimized`.
+- If a generic query plan is reused for the current execution without performing optimization, the `plan type` in the output is `generic, reused`.
+- If a custom query plan is used for the current execution, the `plan type` in the output is `custom`.
 
 ## Join reordering
 
@@ -311,7 +366,7 @@ To change this setting, which is controlled by the `reorder_joins_limit` [sessio
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET reorder_joins_limit = 0;
+SET reorder_joins_limit = 0;
 ~~~
 
 To disable this feature, set the variable to `0`. You can configure the default `reorder_joins_limit` session setting with the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `sql.defaults.reorder_joins_limit`, which has a default value of `8`.
@@ -330,6 +385,7 @@ The cost-based optimizer explores multiple join orderings to find the lowest-cos
 
 - To limit the size of the subtree that can be reordered, set the `reorder_joins_limit` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to a lower value, for example:
 
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET reorder_joins_limit = 2;
     ~~~
@@ -452,7 +508,8 @@ If you have an index named `FORCE_ZIGZAG` and use the hint `table@{FORCE_ZIGZAG}
 
 ## Known limitations
 
-* {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+{% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+{% include {{ page.version.version }}/known-limitations/forecasted-stats-limitations.md %}
 
 ## See also
 

@@ -27,7 +27,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege]({% link {{ page.v
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - Using the [`cockroach nodelocal upload`]({% link {{ page.version.version }}/cockroach-nodelocal-upload.md %}) command.
 
-No special privilege is required for: 
+No special privilege is required for:
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - Using [Userfile]({% link {{ page.version.version }}/use-userfile-storage.md %}) storage.
@@ -47,6 +47,7 @@ Parameter | Description
 `SHOW BACKUPS IN collectionURI` | List the backup paths in the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
 `SHOW BACKUP FROM subdirectory IN collectionURI` | Show the details of backups in the subdirectory at the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). Also, use `FROM LATEST in collectionURI` to show the most recent backup. [See the example](#show-the-most-recent-backup).
 `SHOW BACKUP SCHEMAS FROM subdirectory IN collectionURI` | Show the schema details of the backup in the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). [See the example](#show-a-backup-with-schemas).
+`collectionURI` | The URI for the [backup storage]({% link {{ page.version.version }}/use-cloud-storage.md %}). <br>Note that `SHOW BACKUP` does not support listing backups if the [`nodelocal`]({% link {{ page.version.version }}/cockroach-nodelocal-upload.md %}) storage location is a symlink. Cockroach Labs recommends using remote storage for backups.
 `kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
 ### Options
@@ -57,7 +58,7 @@ Option        | Value | Description
 `check_files` |  N/A  | Validate that all files belonging to a backup are in the expected location in storage. See [Validate a backup's files](#validate-a-backups-files) for an example.
 `debug_ids` |  N/A  |  [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The passphrase used to [encrypt the files]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) that the `BACKUP` statement generates (the data files and its manifest, containing the backup's metadata).
-`kms`                                                            | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to [take and restore encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#examples). Refer to [URI Formats]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#uri-formats). 
+`kms`                                                            | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to [take and restore encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#examples). Refer to [URI Formats]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#uri-formats).
 `incremental_location` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | [List the details of an incremental backup](#show-a-backup-taken-with-the-incremental-location-option) taken with the [`incremental_location` option]({% link {{ page.version.version }}/backup.md %}#incr-location).
 `privileges`  | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
 
@@ -90,7 +91,7 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 ### View a list of the available full backup subdirectories
 
-<a name="show-backups-in"></a>To view a list of the available [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) subdirectories, use the following command: 
+<a name="show-backups-in"></a>To view a list of the available [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) subdirectories, use the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

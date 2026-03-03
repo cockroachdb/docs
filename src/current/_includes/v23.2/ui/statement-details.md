@@ -10,8 +10,8 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 
  Attribute | Description
 -----------|-------------
-**Nodes** | The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
-**Regions** | The regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
+**Nodes** | The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.standard }} clusters.
+**Regions** | The regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.standard }} clusters.
 **Database** | The database on which the statements executed.
 **Application Name** | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
 **Fingerprint ID** | The ID of the statement fingerprint in hexadecimal format. It may be used to query the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#fingerprint_id-column) table.
@@ -89,9 +89,9 @@ Average Rows Read | The average number of rows read when the plan was executed.
 Full Scan | Whether the execution performed a full scan of the table.
 Min Latency | The lowest latency value for all statement executions with this Explain Plan.
 Max Latency | The highest latency value for all statement executions with this Explain Plan.
-P50 Latency | The 50th latency percentile for sampled statement executions with this Explain Plan.
-P90 Latency | The 90th latency percentile for sampled statement executions with this Explain Plan.
-P99 Latency | The 99th latency percentile for sampled statement executions with this Explain Plan.
+P50 Latency | The 50th latency percentile for sampled statement executions with this Explain Plan.<br><br><strong>Note:</strong> Latency percentiles are calculated from a different set of executions than other statistics, so they may be inconsistent with the minimum, maximum, and average values. This data is provided for reference only.
+P90 Latency | The 90th latency percentile for sampled statement executions with this Explain Plan.<br><br><strong>Note:</strong> Latency percentiles are calculated from a different set of executions than other statistics, so they may be inconsistent with the minimum, maximum, and average values. This data is provided for reference only.
+P99 Latency | The 99th latency percentile for sampled statement executions with this Explain Plan.<br><br><strong>Note:</strong> Latency percentiles are calculated from a different set of executions than other statistics, so they may be inconsistent with the minimum, maximum, and average values. This data is provided for reference only.
 Distributed | Whether the execution was distributed.
 Vectorized | Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
 
@@ -124,9 +124,11 @@ If you click **Apply** to create the index and then execute the statement again,
 The **Diagnostics** tab allows you to activate and download diagnostics for a SQL statement fingerprint.
 
 {{site.data.alerts.callout_info}}
+The **Diagnostics** tab is only visible to [`admin` users]({{ link_prefix }}security-reference/authorization.html#admin-role) or SQL users with the [`VIEWACTIVITY` system privilege]({{ link_prefix }}security-reference/authorization.html#viewactivity).
+
 The **Diagnostics** tab is not visible:
 
-- On CockroachDB {{ site.data.products.serverless }} clusters.
+- On CockroachDB {{ site.data.products.standard }} clusters.
 - For roles with the `VIEWACTIVITYREDACTED` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}security-reference/authorization.html#role-options)) defined.
 {{site.data.alerts.end}}
 
@@ -153,6 +155,9 @@ To activate diagnostics collection:
 1. Choose whether to:
    1. trace and collect diagnostics at the default sampled rate of 1% (or specify a different rate) when the statement execution latency exceeds the default time of 100 milliseconds (or specify a different time), or
    1. trace and collect diagnostics on the next statement execution.
+1. Choose whether to collect diagnostics:
+   1. For all plan gists, or
+   1. For a particular plan gist (select one from the dropdown list).
 1. Choose whether the request should expire after 15 minutes, or after a different time, or disable automatic expiration by deselecting the checkbox. Executions of the same statement fingerprint will run slower while diagnostics are activated, so it is recommended to set an expiration time if collecting according to a latency threshold.
 1. Click **Activate**.
 

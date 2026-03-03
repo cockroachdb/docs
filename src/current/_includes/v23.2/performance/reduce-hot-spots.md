@@ -2,17 +2,23 @@
 
 - Place parts of the records that are modified by different transactions in different tables. That is, increase [normalization](https://wikipedia.org/wiki/Database_normalization). However, there are benefits and drawbacks to increasing normalization.
 
-    - Benefits:
+    - Benefits of increasing normalization:
 
+        - Can improve performance for write-heavy workloads. This is because, with increased normalization, a given business fact must be written to one place rather than to multiple places.  
         - Allows separate transactions to modify related underlying data without causing [contention](#transaction-contention).
-        - Can improve performance for read-heavy workloads.
+        - Reduces the chance of data inconsistency, since a given business fact must be written only to one place.
+        - Reduces or eliminates data redundancy.
+        - Uses less disk space.
 
-    - Drawbacks:
+    - Drawbacks of increasing normalization:
 
+        - Can reduce performance for read-heavy workloads. This is because increasing normalization results in more joins, and can make the SQL more complicated in other ways.
         - More complex data model.
-        - Increases the chance of data inconsistency.
-        - Increases data redundancy.
-        - Can degrade performance for write-heavy workloads.
+
+    - In general:
+
+        - Increase normalization for write-intensive and read/write-intensive transactional workloads.
+        - Do not increase normalization for read-intensive reporting workloads.
 
 - If the application strictly requires operating on very few different index keys, consider using [`ALTER ... SPLIT AT`]({% link {{ page.version.version }}/alter-table.md %}#split-at) so that each index key can be served by a separate group of nodes in the cluster.
 

@@ -5,4 +5,4 @@
   {% assign link_version = page.version.version %}
 {% endif %}
 
-**This feature is in [preview]({{base_url}}{{link_version}}/cockroachdb-feature-availability.html).** This feature is subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+**This feature is in [preview]({{base_url}}{{link_version}}/cockroachdb-feature-availability.html)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).

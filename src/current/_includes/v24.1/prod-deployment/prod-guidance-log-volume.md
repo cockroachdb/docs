@@ -1,0 +1,1 @@
+Store CockroachDB <a href="{% link {{ page.version.version }}/configure-logs.md %}#logging-directory">log files</a> in a separate volume from the main data store so that logging is not impacted by I/O throttling.

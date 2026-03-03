@@ -8,7 +8,7 @@ docs_area: deploy
 Before you [create a CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/create-your-cluster.md %}), you must first create a CockroachDB {{ site.data.products.cloud }} account. You can register for CockroachDB {{ site.data.products.cloud }} using a GitHub, Google, or Microsoft account or an email address and password.
 
 {{site.data.alerts.callout_info}}
-If your organization uses [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy). If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is enabled for your organization.
+If your organization uses [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with an [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin). If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is enabled for your organization.
 {{site.data.alerts.end}}
 
 ## Choose an authentication method
@@ -28,8 +28,7 @@ To register a new account, navigate to the [CockroachDB {{ site.data.products.cl
 <p></p>
 
 <section class="filter-content" markdown="1" data-scope="github">
-
-1. Click **Sign up with...** for your chosen SSO Provider.
+1. On the [registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account), click **Sign up with...** for your chosen SSO Provider.
 1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [privacy policy](https://www.cockroachlabs.com/privacy).
 1. Log in to your account with your SSO provider and respond to the email or other notification inviting you to  **Authorize CockroachDB {{ site.data.products.cloud }} by Cockroach Labs**
 
@@ -39,17 +38,12 @@ We highly recommend enabling multi-factor authentication (MFA) with your SSO pro
 </section>
 
 <section class="filter-content" markdown="1" data-scope="email">
-1. Enter your **Email address**.
-1. Enter your **Name**.
-1. Enter a **Password**.
-1. Enter your **Organization name (optional)**.
-
-    This can be [changed](#change-your-organization-name) later.
-
-1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [privacy policy](https://www.cockroachlabs.com/privacy).
-1. Click **Get Started**.
-
-    A confirmation email will be sent. Click **Verify email** in the email to confirm your account.
+1. On the [registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account), click **Sign up with email**.
+1. Enter an email address and password for CockroachDB Cloud.
+1. Accept the [Terms of Service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [Privacy Policy](https://www.cockroachlabs.com/privacy), then click **Get Started**.
+1. Check your email for a message from Cockroach Labs. In the email, click **Verify my email** to confirm your account and continue registering on the CockroachDB Cloud site.
+1. Enter your name and company details, and then click **Next step**.
+1. Answer the onboarding survey questions and click **Finish Setup**.
 </section>
 
 ## Log in to your account
@@ -77,12 +71,6 @@ We highly recommend enabling multi-factor authentication (MFA) with your SSO pro
 </section>
 
 ## Change your account details
-
-- [Change your account name](#change-your-account-name)
-- [Change your email](#change-your-email)
-- [Change your account password](#change-your-account-password)
-- [Change your organization name](#change-your-organization-name)
-- [Change your login method](#change-your-login-method)
 
 ### Change your account name
 
@@ -122,7 +110,7 @@ Changing your account password will _not_ change your [SQL user]({% link cockroa
 
 ### Change your organization name
 
-If you are an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy), you can change your organization name:
+If you are an [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin), you can change your organization name:
 
 1. Navigate to the **Settings** page.
 
@@ -136,4 +124,4 @@ If you are an [Org Administrator]({% link cockroachcloud/authorization.md %}#org
 
 You can change your method of login authentication (email/password or SSO with a specific provider), in the [**My Account** page in the CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/account/profile).
 
-Once you have changed your authentication method, you will receive a confirmation email."
+Once you have changed your authentication method, you will receive a confirmation email.

@@ -29,12 +29,12 @@ For more details about how the admission control system works, see:
 
 A well-provisioned CockroachDB cluster may still encounter performance bottlenecks at the node level, as stateful nodes can develop [hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots) that last until the cluster rebalances itself. When hot spots occur, they should not cause failures or degraded performance for important work.
 
-This is particularly important for CockroachDB {{ site.data.products.serverless }}, where one user tenant cluster experiencing high load should not degrade the performance or availability of a different, isolated tenant cluster running on the same host.
+This is particularly important for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }}, where one user tenant cluster experiencing high load should not degrade the performance or availability of a different, isolated tenant cluster running on the same host.
 
 Admission control can help if your cluster has degraded performance due to the following types of node overload scenarios:
 
 - The node has more than 32 runnable goroutines per CPU, visible in the **Runnable goroutines per CPU** graph in the [**Overload** dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#runnable-goroutines-per-cpu).
-- The node has a high number of files in level 0 of the Pebble LSM tree, visible in the **LSM L0 Health** graph in the [**Overload** dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#lsm-l0-health).
+- The node has a high amount of overload in the Pebble LSM tree, visible in the **IO Overload** graph in the [**Overload** dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#io-overload).
 - The node has high CPU usage, visible in the **CPU percent** graph in the [**Overload** dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#cpu-percent).
 - The node is experiencing out-of-memory errors, visible in the **Memory Usage** graph in the [**Hardware** dashboard]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#memory-usage). Even though admission control does not explicitly target controlling memory usage, it can reduce memory usage as a side effect of delaying the start of operation execution when the CPU is overloaded.
 
@@ -46,6 +46,7 @@ Almost all database operations that use CPU or perform storage IO are controlled
 - [Bulk data imports]({% link {{ page.version.version }}/import-into.md %}).
 - [Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
 - [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), including index and column backfills (on both the [leaseholder replica]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
+- [`COPY`]({% link {{ page.version.version }}/copy.md %}) statements.
 - [Deletes]({% link {{ page.version.version }}/delete-data.md %}) (including deletes initiated by [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}); the [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) performed by TTL jobs are also subject to CPU admission control).
 - [Follower replication work]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 - [Raft log entries being written to disk]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
@@ -80,7 +81,7 @@ The transaction start time is used within the priority queue and gives preferenc
 
 ### Set quality of service level for a session
 
-In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable]({% link {{ page.version.version }}/set-vars.md %}). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
+In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the [`default_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service) session variable. The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
 
 To increase the priority of subsequent SQL requests, run:
 
@@ -103,6 +104,30 @@ To reset the priority to the default session setting (in between background and 
 SET default_transaction_quality_of_service=regular;
 ~~~
 
+<a id="copy-qos"></a>
+
+The quality of service for [`COPY`]({% link {{ page.version.version }}/copy.md %}) statements is configured separately with the [`copy_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#copy-transaction-quality-of-service) session variable, which defaults to `background`.
+
+To increase the priority of subsequent `COPY` statements, run:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET copy_transaction_quality_of_service=critical;
+~~~
+
+### Set quality of service level for a transaction
+
+To set the quality of service level for a single [transaction]({% link {{ page.version.version }}/transactions.md %}), set the [`default_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#default-transaction-quality-of-service) and/or [`copy_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#copy-transaction-quality-of-service) session variable for just that transaction using the [`SET LOCAL`]({% link {{ page.version.version }}/set-vars.md %}#set-a-variable-for-the-duration-of-a-single-transaction) statement inside a [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) ... [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) block, as shown in the following example. The valid values are `critical`, `background`, and `regular`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+SET LOCAL default_transaction_quality_of_service = 'regular'; -- Edit transaction QoS to desired level
+SET LOCAL copy_transaction_quality_of_service = 'regular'; -- Edit COPY QoS to desired level
+-- Statements to run in this transaction go here
+COMMIT;
+~~~
+
 ## Limitations
 
 Admission control works on the level of each node, not at the cluster level. The admission control system queues requests until the operations are processed or the request exceeds the timeout value (for example by using [`SET statement_timeout`]({% link {{ page.version.version }}/set-vars.md %}#supported-variables)). If you specify aggressive timeout values, the system may operate correctly but have low throughput as the operations exceed the timeout value while only completing part of the work. There is no mechanism for preemptively rejecting requests when the work queues are long.
@@ -110,6 +135,8 @@ Admission control works on the level of each node, not at the cluster level. The
 Organizing operations by priority can mean that higher priority operations consume all the available resources while lower priority operations remain in the queue until the operation times out.
 
 ## Considerations
+
+To prevent unnecessary queuing in admission control CPU queues, set the `goschedstats.always_use_short_sample_period.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-goschedstats-always-use-short-sample-period-enabled) to `true` for any [production cluster]({% link {{ page.version.version }}/recommended-production-settings.md %}).
 
 [Client connections]({% link {{ page.version.version }}/connection-parameters.md %}) are not managed by the admission control subsystem. Too many connections per [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) can also lead to cluster overload. 
 

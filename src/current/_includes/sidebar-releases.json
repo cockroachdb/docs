@@ -10,6 +10,18 @@
   "title": "CockroachDB",
   "items": [
     {
+      "title": "Latest Production Release",
+      "urls": [
+        "/releases/{{ site.versions["stable"] }}.html"
+      ]
+    }{% unless site.versions["stable"] == site.versions["dev"] %},
+    {
+      "title": "Latest Testing Release",
+      "urls": [
+        "/releases/{{ site.versions["dev"] }}.html"
+      ]
+    }{% endunless %},
+    {
       "title": "All Releases",
       "urls": [
         "/releases/index.html"
@@ -37,12 +49,6 @@
       "urls": [
         "/releases/release-support-policy.html"
       ]
-    },
-    {
-      "title": "Known Limitations",
-      "urls": [
-        "/${VERSION}/known-limitations.html"
-      ]
     }
   ]
 },
@@ -53,7 +59,7 @@
   ]
 },
 {
-  "title": "CockroachDB Kubernetes Operator",
+  "title": "Public Kubernetes Operator",
   "urls": [
     "/releases/kubernetes-operator.html"
   ]
@@ -67,4 +73,11 @@
     ,"{{ x.url }}"
    {% endfor %}
  ]
+},
+{
+  "title": "Unsupported Versions",
+  "urls": [
+    "/releases/unsupported-versions.html"
+  ]
 }
+

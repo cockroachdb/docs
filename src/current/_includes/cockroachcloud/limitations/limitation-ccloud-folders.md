@@ -1,0 +1,1 @@
+- It is not possible to use the `ccloud` command to view the {% if page.name == 'ccloud-get-started.md' %} [folder]({% link cockroachcloud/folders.md %}){% else %}folder{% endif %} structure, move a cluster or folder into or out of a folder, or assign the `FOLDER_ADMIN` or `FOLDER_MOVER` roles.

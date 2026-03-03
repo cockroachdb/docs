@@ -1,1 +1,1 @@
-CockroachDB {{ site.data.products.cloud }} does not support scaling a multi-node cluster down to a single node.
+A multi-node cluster cannot be scaled down to a single node.

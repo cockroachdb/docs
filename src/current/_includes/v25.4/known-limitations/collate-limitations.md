@@ -1,0 +1,1 @@
+- Many string operations are not properly overloaded for [collated strings]({% link {{ page.version.version }}/collate.md %}). For example, the `||` concatenation operator works with regular strings but returns an error with collated strings. [#10679](https://github.com/cockroachdb/cockroach/issues/10679)

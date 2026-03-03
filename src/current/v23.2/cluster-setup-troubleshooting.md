@@ -170,26 +170,21 @@ W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293 grp
 
 ###### Excessive snapshot rebalance and recovery rates
 
-The `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) set the rate limits at which [snapshots]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) are sent to nodes. These settings can be temporarily increased to expedite replication during an outage or when scaling a cluster up or down.
+The `kv.snapshot_rebalance.max_rate` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-snapshot-rebalance-max-rate) sets the rate limit at which [snapshots]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) are sent to nodes. This setting can be temporarily increased to expedite replication during an outage or when scaling a cluster up or down.
 
-However, if the settings are too high when nodes are added to the cluster, this can cause degraded performance and node crashes. We recommend **not** increasing these values by more than 2 times their [default values]({% link {{ page.version.version }}/cluster-settings.md %}) without explicit approval from Cockroach Labs.
+However, if the setting is too high when nodes are added to the cluster, this can cause degraded performance and node crashes. We recommend **not** increasing this value by more than 2 times its [default value]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-snapshot-rebalance-max-rate) without explicit approval from Cockroach Labs.
 
-**Explanation:** If `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` are set too high for the cluster during scaling, this can cause nodes to experience ingestions faster than [compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) can keep up, and result in an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms).
+**Explanation:** If `kv.snapshot_rebalance.max_rate` is set too high for the cluster during scaling, this can cause nodes to experience ingestions faster than [compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) can keep up, and result in an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms).
 
 **Solution:** [Check LSM health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health). {% include {{ page.version.version }}/prod-deployment/resolution-inverted-lsm.md %}
 
-After [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) has completed, lower `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values]({% link {{ page.version.version }}/cluster-settings.md %}). As you add nodes to the cluster, slowly increase both cluster settings, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) and [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu).
+After [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) has completed, lower `kv.snapshot_rebalance.max_rate` to its [default value]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-snapshot-rebalance-max-rate). As you add nodes to the cluster, slowly increase the value of the cluster setting, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) and [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu).
 
-Outside of performing cluster maintenance, return `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values]({% link {{ page.version.version }}/cluster-settings.md %}).
+Outside of performing cluster maintenance, return `kv.snapshot_rebalance.max_rate` to its [default value]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-snapshot-rebalance-max-rate).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 RESET CLUSTER SETTING kv.snapshot_rebalance.max_rate;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESET CLUSTER SETTING kv.snapshot_recovery.max_rate;
 ~~~
 
 ## Client connection issues
@@ -237,9 +232,9 @@ If the DB Console
 
 then you might have a network partition.
 
-**Explanation:** A network partition occurs when two or more nodes are prevented from communicating with each other in one or both directions. A network partition can be caused by a network outage or a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is disrupted in both directions. In an asymmetric partition, nodes can communicate in one direction but not the other.
+**Explanation:**
 
-The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
+{% include common/network-partitions.md %}
 
 **Solution:**
 
@@ -306,7 +301,7 @@ The reason this happens is as follows:
 
 For more information about how lease transfers work when a node dies, see [How leases are transferred from a dead node]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
 
-The solution is to add connection retry logic to your application.
+The solution is to [use connection pooling]({% link {{ page.version.version }}/connection-pooling.md %}).
 
 ## Clock sync issues
 
@@ -390,7 +385,7 @@ Like any database system, if you run out of disk space the system will no longer
 - [What happens when a node runs out of disk space?]({% link {{ page.version.version }}/operational-faqs.md %}#what-happens-when-a-node-runs-out-of-disk-space)
 - [Why is memory usage increasing despite lack of traffic?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-memory-usage-increasing-despite-lack-of-traffic)
 - [Why is disk usage increasing despite lack of writes?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-disk-usage-increasing-despite-lack-of-writes)
-- [Can I reduce or disable the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data)
+- [Can I reduce the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-the-storage-of-time-series-data)
 
 ###### Automatic ballast files
 
@@ -423,7 +418,7 @@ Different filesystems may treat the ballast file differently. Make sure to test 
 
 #### Disk stalls
 
-A _disk stall_ is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as [`fsync(2)`](https://man7.org/linux/man-pages/man2/fdatasync.2.html) (aka `fdatasync`) taking a lot longer than expected (e.g., more than 60 seconds). The mitigation in almost all cases is to [restart the node]({% link {{ page.version.version }}/cockroach-start.md %}) with the stalled disk. CockroachDB's internal disk stall monitoring will attempt to shut down a node when it sees a disk stall that lasts longer than 60 seconds. At that point the node should be restarted by your [orchestration system]({% link {{ page.version.version }}/recommended-production-settings.md %}#orchestration-kubernetes).
+A _disk stall_ is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as [`fsync(2)`](https://man7.org/linux/man-pages/man2/fdatasync.2.html) (aka `fdatasync`) taking a lot longer than expected (e.g., more than 20 seconds). The mitigation in almost all cases is to [restart the node]({% link {{ page.version.version }}/cockroach-start.md %}) with the stalled disk. CockroachDB's internal disk stall monitoring will attempt to shut down a node when it sees a disk stall that lasts longer than 20 seconds. At that point the node should be restarted by your [orchestration system]({% link {{ page.version.version }}/recommended-production-settings.md %}#orchestration-kubernetes).
 
 Symptoms of disk stalls include:
 
@@ -441,7 +436,7 @@ CockroachDB's built-in disk stall detection works as follows:
 
 - Every 10 seconds, the CockroachDB storage engine checks the [_write-ahead log_](https://wikipedia.org/wiki/Write-ahead_logging), or _WAL_. If data has not been synced to disk (via `fsync`) within that interval, the log message `disk stall detected: unable to write to %s within %s %s warning log entry` is written to the [`STORAGE` logging channel]({% link {{ page.version.version }}/logging.md %}#storage). If this state continues for 20 seconds or more (configurable with the `COCKROACH_ENGINE_MAX_SYNC_DURATION` environment variable), the `cockroach` process is terminated.
 
-- Every time the storage engine writes to the main [`cockroach.log` file]({% link {{ page.version.version }}/logging.md %}#dev), the engine waits 30 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is terminated and the following message is written to `stderr` / `cockroach.log`, providing details regarding the type, size, and duration of the ongoing write:
+- Every time the storage engine writes to the main [`cockroach.log` file]({% link {{ page.version.version }}/logging.md %}#dev), the engine waits 20 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is terminated and the following message is written to `stderr` / `cockroach.log`, providing details regarding the type, size, and duration of the ongoing write:
 
     - `file write stall detected: %s`
 
@@ -518,10 +513,7 @@ CockroachDB memory usage has the following components:
 
     {% include {{ page.version.version }}/prod-deployment/healthy-crdb-memory.md %}
 
-    If you observe any of the following, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}):
-      - CGo Allocated is larger than the configured `--cache` size.
-      - RSS minus Go Total and CGo Total is larger than 100 MiB.
-      - Go Total or CGo Total fluctuates or grows steadily over time.
+    If you observe values not within the expected range for a healthy cluster, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
 
 #### Out-of-memory (OOM) crash
 
@@ -592,6 +584,18 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 1.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
 1. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}). Please be sure to include the full Range Report and error message when you submit the issue.
 
+#### Check for under-replicated or unavailable data
+
+To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Critical nodes endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint).
+
+#### Check for replication zone constraint violations
+
+To see if any of your cluster's [data placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) are being violated, follow the steps described in [Check for critical localities](#check-for-critical-localities).
+
+#### Check for critical localities
+
+To see which of your [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (if any) are critical, follow the steps described in the [Critical nodes endpoint documentation]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
+
 ## Node liveness issues
 
 "Node liveness" refers to whether a node in your cluster has been determined to be "dead" or "alive" by the rest of the cluster. This is achieved using checks that ensure that each node connected to the cluster is updating its liveness record. This information is shared with the rest of the cluster using an internal gossip protocol.
@@ -637,18 +641,6 @@ If you are running a version of CockroachDB that is affected by an issue describ
 If your cluster is in a partially-available state due to a recent node or network failure, the internal logging table `system.eventlog` might be unavailable. This can cause the logging of [notable events]({% link {{ page.version.version }}/eventlog.md %}) (e.g., the execution of SQL statements) to the `system.eventlog` table to fail to complete, contributing to cluster unavailability. If this occurs, you can set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `server.eventlog.enabled` to `false` to disable writing notable log events to this table, which may help to recover your cluster.
 
 Even with `server.eventlog.enabled` set to `false`, notable log events are still sent to configured [log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) as usual.
-
-## Check for under-replicated or unavailable data
-
-To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
-
-## Check for replication zone constraint violations
-
-To see if any of your cluster's [data placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) are being violated, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
-
-## Check for critical localities
-
-To see which of your [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (if any) are critical, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 
 ## Something else?
 

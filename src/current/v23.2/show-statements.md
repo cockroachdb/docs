@@ -28,7 +28,7 @@ In CockroachDB, the following are aliases for `SHOW STATEMENTS`:
 
 ## Required privileges
 
-All users can see their own currently active queries. All users belonging to the `admin` role can view all users' currently active queries.
+All users can see their own currently active queries. Users with the [`VIEWACTIVITY` or `VIEWACTIVITYREDACTED` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) can view see all users' currently active queries. `VIEWACTIVITYREDACTED` causes constants in queries being executed by other users to be redacted.
 
 ## Synopsis
 

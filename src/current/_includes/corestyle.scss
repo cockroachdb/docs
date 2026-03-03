@@ -43,7 +43,7 @@ strong {
   font-weight: 700;
 }
 
-p {
+p, .grid-item {
   @include paragraph-type;
   // color: $cl_blue;
 
@@ -63,7 +63,7 @@ h1, h2 {
 
   code {
     background-color: $neutral-100 !important;
-    color: $neutral-700 !important;    
+    color: $neutral-700 !important;
   }
 }
 
@@ -77,7 +77,7 @@ h3, h4, h5, h6 {
 
   code {
     background-color: $neutral-100 !important;
-    color: $neutral-700 !important;    
+    color: $neutral-700 !important;
   }
 }
 
@@ -284,6 +284,13 @@ caption {
   text-align: left;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 10px;
+  margin-bottom: -12px;
+}
+
 thead,
 tbody,
 tfoot,
@@ -298,6 +305,8 @@ th {
 th,
 td {
   padding: map-get($spacers, 1) map-get($spacers, 2);
+  hyphens: none;
+  word-break: normal;
 }
 
 
@@ -380,7 +389,8 @@ table td:first-child {
 
 
 table tr td {
-  hyphens: auto;
+  hyphens: none;
+  word-break: normal;
 }
 
 .filter-options {
@@ -463,6 +473,9 @@ section table tr.warning, table tr.testing, table tr.testing > td.sorting_1  {
 }
 section table tr.danger, table tr.preference, table tr.preference > td.sorting_1  {
   background-color: #f2dede !important;
+}
+section table tr.version {
+  background-color: rgba(105, 51, 255, 0.2);
 }
 
 .orange {
@@ -944,9 +957,46 @@ a.btn-primary {
   }
 }
 
+/* Used for feature highlights tables in .0 release pages and for release download tables in v23.1+ */
+div.os-tabs th,
+div#feature-highlights th {
+  background-color: #E6EAF0;
+}
+
+/* Used for feature highlights tables in .0 release pages */
+
+div#feature-highlights th,
+div#feature-highlights td {
+        border: none;
+        padding: 5px;
+        text-align: left;
+}
+
+div#feature-highlights .center-align {
+        text-align: center;
+        vertical-align: middle;
+}
+
+div#feature-highlights .icon-center {
+        text-align: center;
+}
+
+div#feature-highlights .table-icon {
+        width: 26px;
+        border: none;
+}
+
+div#feature-highlights .feature-summary {
+    font-weight: bold;
+}
+
+div#feature-highlights .feature-description {
+    margin-top: 5px;
+}
 
 @media (min-width: 700px) {
-	#os-tabs {
+
+  .os-tabs {
 		button {
 			&#mac {
 
@@ -1013,3 +1063,55 @@ a.btn-primary {
 		}
 	}
 }
+
+
+.sidebar__tag--new {
+  background: #6933ff;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+.roles-table {
+  table {
+    width: 100%;                // Let the table stretch to the full container width
+    table-layout: auto;         // Allow browser to size columns based on content
+    border-collapse: collapse;  // Merge borders between cells
+  }
+
+  // Style the first column (permission names)
+  th:first-child,
+  td:first-child {
+    width: 45%;                 // Allocate more space to the permission column
+    min-width: 250px;           // Prevent it from shrinking too much
+    text-align: left;           // Left-align permission text for readability
+    font-weight: 500;           // Slightly bold for emphasis
+  }
+
+  // Style all table cells
+  th,
+  td {
+    min-width: 65px;            // Prevent narrow columns from collapsing
+    padding: 8px;               // Add spacing inside cells
+    word-wrap: break-word;      // Allow long words to wrap
+    white-space: pre-wrap;      // Preserve line breaks from Markdown
+    vertical-align: top;        // Align content to the top of the cell
+    line-height: 1.4;           // Improve readability with line spacing
+    text-align: center;         // Center role cells by default
+  }
+
+  // Add zebra striping for even-numbered rows
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  // Style all columns except the first (role columns)
+  th:not(:first-child),
+  td:not(:first-child) {
+    max-width: 100px;           // Cap role column width to avoid overflow
+    width: 1%;                  // Hint browser to minimize these columns if possible
+  }
+}
+

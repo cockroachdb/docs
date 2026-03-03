@@ -7,7 +7,7 @@ docs_area: reference.sql
 
  The `DROP SCHEDULES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) can be used to remove [backup schedules]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) or [changefeed schedules]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}).
 
-When `DROP SCHEDULES` removes a [full backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#create-a-schedule-for-full-backups-only-core), it removes the associated [incremental backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#incremental-backup-schedules), if it exists. 
+When `DROP SCHEDULES` removes a [full backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#create-a-schedule-for-full-backups-only), it removes the associated [incremental backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#incremental-backup-schedules), if it exists. 
 
 {{site.data.alerts.callout_danger}}
 `DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs]({% link {{ page.version.version }}/cancel-job.md %}) first, as you will not be able to look up the job ID once the schedule is dropped.

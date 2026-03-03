@@ -167,7 +167,7 @@ To download FIPS-ready CockroachDB runtimes, use the following links.
     <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
         <td>
                 {% comment %}Version{% endcomment %}
-            <a href="https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}#{{ r.release_name | replace: '.', '-' }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+            <a href="{% link releases/{{ page.version.version }}.md %}#{{ r.release_name | replace: '.', '-' }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
                     {% if r.release_name == latest_hotfix.release_name %}
             <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                     {% endif %}
@@ -353,4 +353,4 @@ Default encryption provided by [Google Cloud](https://cloud.google.com/docs/secu
 ## See also
 
 - [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb-linux.md %})
-- [Releases](https://www.cockroachlabs.com/docs/releases)
+- [Releases]({% link releases/index.md %})

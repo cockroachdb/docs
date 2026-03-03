@@ -21,7 +21,7 @@ If you haven't already, we recommend reading the [Architecture Overview]({% link
 
 ## Overview
 
-Once CockroachDB has been [deployed](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart), developers need only a [connection string]({% link {{ page.version.version }}/connection-parameters.md %}) to the cluster, and they can start working with SQL statements.
+Once CockroachDB has been [deployed]({% link cockroachcloud/quickstart.md %}), developers need only a [connection string]({% link {{ page.version.version }}/connection-parameters.md %}) to the cluster, and they can start working with SQL statements.
 
 <a name="gateway-node"></a>
 

@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include enterprise-feature.md %}
+
 
 The `ALTER CHANGEFEED` statement modifies an existing [changefeed]({% link {{ page.version.version }}/change-data-capture-overview.md %}). You can use `ALTER CHANGEFEED` to do the following:
 
@@ -18,10 +18,20 @@ The statement will return a job ID and the new job description.
 
 It is necessary to [**pause**]({% link {{ page.version.version }}/pause-job.md %}) a changefeed before running the `ALTER CHANGEFEED` statement against it. For an example of a changefeed modification using `ALTER CHANGEFEED`, see [Modify a changefeed](#modify-a-changefeed).
 
+## Required privileges
+
+To alter a changefeed, the user must have one of the following:
+
+- `CHANGEFEED` privilege on the table.
+- `admin` role.
+- `CONTROLCHANGEFEED` role option + `SELECT` on the table. (**Deprecated**) The `CONTROLCHANGEFEED` role option will be removed in a future release. We recommend using the system-level privilege [`CHANGEFEED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
+
+For more details on the required privileges for changefeeds generally, refer to the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page.
+
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/alter_changefeed.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_changefeed.html %}
 </div>
 
 ## Parameters
@@ -56,10 +66,6 @@ Consider the following when specifying options with `ALTER CHANGEFEED`:
     ~~~
 
     Setting `initial_scan = 'yes'` will trigger an initial scan on the newly added table. You may also explicitly define `initial_scan = 'no'`, though this is already the default behavior. The changefeed does not track the application of this option post scan. This means that you will not see the option listed in output or after a `SHOW CHANGEFEED JOB` statement.
-
-## Required privileges
-
-To alter a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-control-changefeeds) parameter set.
 
 ## Examples
 
@@ -234,7 +240,7 @@ For further discussion on using the `FAMILY` keyword and `split_column_families`
 
 - It is necessary to [`PAUSE`]({% link {{ page.version.version }}/pause-job.md %}) the changefeed before performing any `ALTER CHANGEFEED` statement. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/77171)
 - `ALTER CHANGEFEED` will accept duplicate targets without sending an error. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/78285)
-- You cannot alter a changefeed that uses [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83033)
+- {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 - CockroachDB does not keep track of the [`initial_scan`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option applied to tables when it is set to `yes` or `only`. For example:
 
     ~~~ sql

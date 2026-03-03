@@ -15,10 +15,6 @@ In this tutorial, you will plan a vacation from New York City to the [Adirondack
 + Performing [joins]({% link {{ page.version.version }}/joins.md %}) on spatial data, and using [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) to make sure indexes are effective.
 + Visualizing the output of your queries using free tools like <https://geojson.io>
 
-<div class="clearfix">
-  <a class="btn btn-outline-primary" href="https://www.cockroachlabs.com/docs/tutorials/demo-spatial-tutorial-interactive" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
-</div>
-
 ## Step 1. Review the scenario
 
 You live in New York City and are an avid birdwatcher and reader of books. You are going on a vacation up to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State. Although you are interested in many bird species, you are most interested in seeing (and [hearing](https://macaulaylibrary.org/asset/107964)) the <a href="https://ebird.org/species/comloo" data-proofer-ignore>Common Loon</a>, a bird that can be found near the lakes and ponds of the north woods.
@@ -42,7 +38,7 @@ For more information about how this data set is put together, see the [Data set 
 
 ## Step 2. Start CockroachDB
 
-This tutorial can be accomplished in any CockroachDB cluster running [v20.2](https://www.cockroachlabs.com/docs/releases/v20.2#v20-2-0) or later.
+This tutorial can be accomplished in any CockroachDB cluster running [v20.2]({% link releases/v20.2.md %}#v20-2-0) or later.
 
 The simplest way to get up and running is with [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}), which starts a temporary, in-memory CockroachDB cluster and opens an interactive SQL shell:
 

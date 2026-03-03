@@ -9,8 +9,6 @@ The `DROP SCHEMA` [statement]({% link {{ page.version.version }}/sql-statements.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-{% include {{ page.version.version }}/misc/declarative-schema-changer-note.md %}
-
 ## Required privileges
 
 The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.

@@ -1,6 +1,5 @@
 - You can only apply CDC queries on a single table in each statement.
 - Some [stable functions]({% link {{ page.version.version }}/functions-and-operators.md %}#built-in-functions), notably functions that return MVCC timestamps, are overridden to return the MVCC timestamp of the event, e.g., `transaction_timestamp` or `statement_timestamp`. Additionally, some [time-based functions]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions), such as `now()` are not supported. We recommend using the `transaction_timestamp()` function or the {% if page.name == "cdc-queries.md" %} `crdb_internal_mvcc_timestamp` {% else %}[`crdb_internal_mvcc_timestamp`]({% link {{ page.version.version }}/cdc-queries.md %}#crdb-internal-mvcc-timestamp) {% endif %} column instead.
-- You cannot [alter]({% link {{ page.version.version }}/alter-changefeed.md %}) a changefeed that uses CDC queries. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83033)
 - The following are not permitted in CDC queries:
     - [Volatile functions]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility).
     - Sub-select queries.

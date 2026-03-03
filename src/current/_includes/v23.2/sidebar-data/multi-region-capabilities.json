@@ -63,6 +63,12 @@
                     "urls": [
                     "/${VERSION}/migrate-to-multiregion-sql.html"
                     ]
+                },
+                {
+                    "title": "Using GeoServer with CockroachDB",
+                    "urls": [
+                    "/${VERSION}/geoserver.html"
+                    ]
                 }
             ]
         }

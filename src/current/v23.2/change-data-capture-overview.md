@@ -19,14 +19,14 @@ The main feature of CockroachDB CDC is the _changefeed_, which targets an allowl
 
 ## Stream row-level changes with changefeeds
 
-Changefeeds are customizable _jobs_ that track row-level changes and send data in realtime in a preferred format to your specified destination, known as a _sink_. Each version of a row emitted to the sink are subject to an at-least-once delivery guarantee and are ordered by timestamp.
+Changefeeds are customizable _jobs_ that track row-level changes and send data in realtime in a preferred format to your specified destination, known as a _sink_. Every row change will be emitted at least once and the first emit of every event for the same key will be ordered by timestamp.
 
 CockroachDB has two implementations of changefeeds:
 
 <table class="comparison-chart">
   <tr>
     <th></th>
-    <th>Core changefeeds</th>
+    <th>Basic changefeeds</th>
     <th>Enterprise changefeeds</th>
   </tr>
 
@@ -43,7 +43,7 @@ CockroachDB has two implementations of changefeeds:
       <b>Product availability</b>
     </td>
     <td>All products</td>
-    <td>CockroachDB {{ site.data.products.dedicated }} or with an <a href="enterprise-licensing.html">{{ site.data.products.enterprise }} license</a> in CockroachDB {{ site.data.products.core }} or CockroachDB {{ site.data.products.serverless }}.</td>
+    <td>CockroachDB {{ site.data.products.basic }}, {{ site.data.products.standard }}, {{ site.data.products.advanced }}, or with an <a href="licensing-faqs.html#types-of-licenses">{{ site.data.products.enterprise }} license</a> in CockroachDB {{ site.data.products.core }}.</td>
   </tr>
 
   <tr>
@@ -124,7 +124,7 @@ CockroachDB has two implementations of changefeeds:
 
 To get started with changefeeds in CockroachDB, refer to:
 
-- [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}): Learn about the fundamentals of using SQL statements to create and manage Enterprise and Core changefeeds.
+- [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}): Learn about the fundamentals of using SQL statements to create and manage Enterprise and basic changefeeds.
 - [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}): The downstream system to which the changefeed emits changes. Learn about the supported sinks and configuration capabilities.
 - [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}): The change events that emit from the changefeed to your sink. Learn about how messages are ordered at your sink and the options to configure and format messages.
 - [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}): Step-by-step examples for connecting to each changefeed sink.

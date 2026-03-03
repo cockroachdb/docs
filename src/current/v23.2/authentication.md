@@ -21,7 +21,7 @@ Users may connect with CockroachDB {{ site.data.products.core }} clusters in 2 m
 
 ## Using digital certificates with CockroachDB
 
-Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.3 certificate. This certificate is multi-functional: the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes. Node certificates have the following requirements:
+Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.3 certificate. This certificate is multi-functional; the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes. Node certificates have the following requirements:
 
 - The hostname or address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in the **Common Name** or **Subject Alternative Names** fields of the certificate:
 
@@ -32,7 +32,7 @@ Each CockroachDB node in a secure cluster must have a **node certificate**, whic
 
 - CockroachDB must be configured to trust the certificate authority that signed the certificate.
 
-Based on your security setup, you can use the [`cockroach cert` commands]({% link {{ page.version.version }}/cockroach-cert.md %}), [Auto TLS]({% link {{ page.version.version }}/auto-tls.md %}), [`openssl` commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}), or a [custom CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}) to generate all the keys and certificates.
+Based on your security setup, you can use the [`cockroach cert` commands]({% link {{ page.version.version }}/cockroach-cert.md %}), [`openssl` commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}), or a [custom CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}) to generate all the keys and certificates.
 
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the DB Console. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
@@ -101,9 +101,9 @@ CockroachDB offers the following methods for client authentication:
     Enter password:
     ~~~
 
-- [**Single sign-on authentication to DB Console**]({% link {{ page.version.version }}/sso-db-console.md %}), which is available to [Enterprise users]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+- [**Single sign-on authentication to DB Console**]({% link {{ page.version.version }}/sso-db-console.md %}).
 
-- [**GSSAPI authentication**]({% link {{ page.version.version }}/gssapi_authentication.md %}), which is available to [Enterprise users]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+- [**GSSAPI authentication**]({% link {{ page.version.version }}/gssapi_authentication.md %}).
 
 ### Using `cockroach cert` or `openssl` commands
 
@@ -302,6 +302,18 @@ As discussed [earlier](#certificate-authority), the CA's public key is widely di
 ### How it all works together
 
 Let's see how the digital certificate is used in client-server communication: The client (e.g., a web browser) has the CA certificate (containing the CA's public key). When the client receives a server's certificate signed by the same CA, it can use the CA certificate to verify the server's certificate, thus validating the server's identity, and securely connect to the server. The important thing here is that the client needs to have the CA certificate. If you use your own organizational CA instead of a publicly established CA, you need to make sure you distribute the CA certificate to all the clients.
+
+## Supported cipher suites
+
+CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transport_Layer_Security) encryption for SQL clients. However, only cipher suites currently recommended by the IETF ([RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447)) are enabled by default. The environment variable `COCKROACH_TLS_ENABLE_OLD_CIPHER_SUITES` can be used to revert to the cipher suite configuration used prior to version 22.2. You should set this environment variable only if you cannot use one of the default cipher suites, but you can use one of the disabled ones.
+
+The following cipher suites are enabled by default:
+
+{% include common/tls-cipher-suites.md list='enabled' %}
+
+The following cipher suites are rejected by default because they are not recommended by the IETF ([RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447)):
+
+{% include common/tls-cipher-suites.md list='disabled' %}
 
 ## See also
 

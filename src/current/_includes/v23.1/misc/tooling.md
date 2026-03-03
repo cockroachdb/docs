@@ -66,8 +66,8 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 
 | IDE | Latest tested version | Support level | Tutorial |
 |-----+-----------------------+---------------+----------|
-| [DataGrip](https://www.jetbrains.com/datagrip/) | 2021.1 | Full | N/A
-| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | 2021.1 | Full | [Use IntelliJ IDEA with CockroachDB]({% link {{ page.version.version }}/intellij-idea.md %})
+| [DataGrip](https://www.jetbrains.com/datagrip/) | 2024.1 | Full | N/A
+| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | 2024.1 | Full | [Use IntelliJ IDEA with CockroachDB]({% link {{ page.version.version }}/intellij-idea.md %})
 
 ## Enhanced data security tools
 
@@ -104,4 +104,5 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 
 | Tool | Latest tested version | Support level | Tutorial |
 |-----+------------------------+---------------+----------|
+| [Delphix](https://www.delphix.com/) | 29.0.0.1 | Partner supported | [Provision, mask, and integrate data with Delphix (external)](https://www.delphix.com/blog/modern-database-meets-modern-devops-data-platform)
 | [Flowable](https://github.com/flowable/flowable-engine) | 6.4.2 | Full | [Getting Started with Flowable and CockroachDB (external)](https://blog.flowable.org/2019/07/11/getting-started-with-flowable-and-cockroachdb/)

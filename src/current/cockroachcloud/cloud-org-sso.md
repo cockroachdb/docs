@@ -30,7 +30,7 @@ Cloud Organization SSO allows you to customize your SSO configuration to meet yo
 
 - Members sign in using a custom URL that allows only the authentication methods that you have configured.
 - Members can sign in using any enabled authentication method, to help reduce the impact of an IdP outage. If a member signs in using a new method for the first time, they are prompted to optionally update their default method. **This is possible only as long as the members are using the same email address to sign in through each method**.
-- You can [enable multiple authentication methods]({% link cockroachcloud/configure-cloud-org-sso.md %}#enable-or-disable-an-authentication-method) simultaneously. You can even add custom authentication methods that connect to IdPs such as Okta or ActiveDirectory through the [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
+- You can [enable multiple authentication methods]({% link cockroachcloud/configure-cloud-org-sso.md %}#enable-or-disable-an-authentication-method) simultaneously. You can even add custom authentication methods that connect to IdPs such as Okta or ActiveDirectory through the [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols. If you use Okta, you can use the official [Cockroach Labs Okta app integration]({% link cockroachcloud/configure-cloud-org-sso.md %}#add-a-custom-authentication-method) to ease setup of custom SAML or OIDC authentication methods.
 - You can disable any authentication method. To enforce a requirement to use SSO, you can enable only SSO authentication methods and disable password authentication. If you disable password authentication, passwords are not retained.
 - You can [restrict the email domains]({% link cockroachcloud/configure-cloud-org-sso.md %}#allowed-email-domains) that are allowed to sign in using an SSO authentication method. By default, any email domain is allowed.
 - [Autoprovisioning](#autoprovisioning) can be enabled for SSO authentication methods, and automatically creates a CockroachDB {{ site.data.products.cloud }} organization account when a member successfully authenticates using an SSO authentication method for the first time, with no invitation required.
@@ -44,7 +44,7 @@ If your organization includes members whose identity you don't manage, such as p
 
 ### Autoprovisioning
 
-Autoprovisioning is a self-service mechanism that removes the need for a new user to be [invited by an Org Admin]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization). When it is enabled, the first time a user successfully authentications using that method, CockroachDB {{ site.data.products.cloud }} organization account is automatically created for them. Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator (legacy)** role]({% link cockroachcloud/authorization.md %}#org-administrator-legacy).
+Autoprovisioning is a self-service mechanism that removes the need for a new user to be [invited by an Organization Admin]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization). When it is enabled, the first time a user successfully authentications using that method, CockroachDB {{ site.data.products.cloud }} organization account is automatically created for them. Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which adds no permissions to perform cluster or organization actions. Additional roles can be assigned by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
 
 Autoprovisioning is disabled by default, but can be enabled per SSO authentication method.
 
@@ -90,7 +90,7 @@ A user can view their current authentication method by clicking **My Account** i
 
 No. With Basic SSO, only one authentication method can be active for each CockroachDB {{ site.data.products.cloud }} Console user. To view or update their active authentication method, a user can click **My Account** in the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) .
 
-#### Does this change to invite users?
+#### Does this change how to invite users?
 
 The [workflow for inviting team members]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) to your CockroachDB {{ site.data.products.cloud }} organization remains the same.
 
@@ -104,20 +104,20 @@ If Cloud Organization SSO is enabled, then deprovisioning a user at the level of
 
 To remove a user's access to CockroachDB {{ site.data.products.cloud }} manually (such as when a user changes teams but does not leave the organization entirely), you can [remove their CockroachDB {{ site.data.products.cloud }} user identity from your {{ site.data.products.db}} organization]({% link cockroachcloud/managing-access.md %}#remove-a-team-member).
 
-#### Can Org Administrators require a particular authentication method for their CockroachDB {{ site.data.products.cloud }} organization?
+#### Can Organization Admins require a particular authentication method for their CockroachDB {{ site.data.products.cloud }} organization?
 
 Yes. When Cloud Organization SSO is enabled for your CockroachDB {{ site.data.products.cloud }} organization, only the [authentication methods you have enabled]({% link cockroachcloud/configure-cloud-org-sso.md %}#enable-or-disable-an-authentication-method) are displayed to your users.
 
 #### Which SAML-based authentication flows are supported with Cloud Organization SSO?
 
-The following flows are supported:
+After SAML is configured, your users can sign in to the CockroachDB {{ site.data.products.cloud }} Console in two different ways:
 
-- The _service provider-initiated flow_, where you initiate configuration of Cloud Organization SSO through the CockroachDB {{ site.data.products.cloud }} Console.
-- An _identity provider-initiated flow_, where you initiate configuration through an IdP such as Okta.
+- **Service provider-initiated flow**: Users sign in to the CockroachDB {{ site.data.products.cloud }} Console directly, using your custom sign-in URL.
+- **Identity provider-initiated flow**: Users sign in to the CockroachDB {{ site.data.products.cloud }} Console from within your IdP (for example, by accessing its tile in Okta).
 
 #### What default role is assigned to users when autoprovisioning is enabled in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator (legacy)** role]({% link cockroachcloud/authorization.md %}#org-administrator-legacy).
+Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which adds no permissions to perform cluster or organization actions. Additional roles can be assigned by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
 
 ## What's next?
 - [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})

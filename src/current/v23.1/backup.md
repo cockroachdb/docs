@@ -32,8 +32,7 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 ## Considerations
 
-- Core users can only take [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups). To use the other backup features, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}). You can also use [CockroachDB {{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](https://www.cockroachlabs.com/docs/cockroachcloud/use-managed-service-backups).
-- [Full cluster backups](#back-up-a-cluster) include [Enterprise license keys]({% link {{ page.version.version }}/enterprise-licensing.md %}). When you [restore]({% link {{ page.version.version }}/restore.md %}) a full cluster backup that includes an Enterprise license, the Enterprise license is also restored.
+- [Full cluster backups](#back-up-a-cluster) include [Enterprise license keys]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses). When you [restore]({% link {{ page.version.version }}/restore.md %}) a full cluster backup that includes a license, the license is also restored.
 - [Zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore]({% link {{ page.version.version }}/restore.md %}#full-cluster) with the zone configurations from the [backed up cluster](#back-up-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - Exclude a table's row data from a backup using the [`exclude_data_from_backup`]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#exclude-a-tables-data-from-backups) parameter.
@@ -79,7 +78,7 @@ CockroachDB stores full backups in a backup collection. Each full backup in a co
 `targets` | Back up the listed [targets](#targets).
 `subdirectory` | The name of the specific backup (e.g., `2021/03/23-213101.37`) in the collection to which you want to add an [incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups). To view available backup subdirectories, use [`SHOW BACKUPS IN collectionURI`]({% link {{ page.version.version }}/show-backup.md %}). If the backup `subdirectory` is not provided, incremental backups will be stored in the default `/incrementals` directory at the root of the collection URI. See the [Create incremental backups](#create-incremental-backups) example.<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
-<a name="collectionURI-param"></a> `collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.)<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
+<a name="collectionURI-param"></a> `collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.) The storage URI for each [backup collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) must be unique. You will encounter an error if you run multiple backup collections to the same storage URI.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `localityURI`   | The URI containing the `COCKROACH_LOCALITY` parameter for a non-default locality that is part of a single locality-aware backup.
 `timestamp` | Back up data as it existed as of [`timestamp`]({% link {{ page.version.version }}/as-of-system-time.md %}). The `timestamp` must be more recent than your data's garbage collection TTL (which is controlled by the [`gc.ttlseconds` replication zone variable]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds)).
 `backup_options` | Control the backup behavior with a comma-separated list of [these options](#options).
@@ -97,6 +96,9 @@ N/A                                | Back up the cluster. For an example of a fu
 Query parameter | Value | Description
 ----------------+-------+------------
 `ASSUME_ROLE` | [`STRING`]({% link {{ page.version.version }}/string.md %}) |{% include {{ page.version.version }}/misc/assume-role-description.md %} Refer to [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for setup details.
+`AUTH` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
+`AWS_ENDPOINT` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specify a custom endpoint for Amazon S3 or S3-compatible services. Use to define a particular region or a Virtual Private Cloud (VPC) endpoint.
+`AWS_SESSION_TOKEN` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | (Optional) Use as part of temporary security credentials when accessing AWS S3. For more information, refer to Amazon's guide on [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html).
 `COCKROACH_LOCALITY` | Key-value pairs | Define a locality-aware backup with a list of URIs using `COCKROACH_LOCALITY`. The value is either `default` or a single locality key-value pair, such as `region=us-east`. At least one `COCKROACH_LOCALITY` must the `default` per locality-aware backup. Refer to [Take and Restore Locality-aware Backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) for more detail and examples.
 `S3_STORAGE_CLASS` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specify the Amazon S3 storage class for files created by the backup job. Refer to [Back up with an S3 storage class](#back-up-with-an-s3-storage-class) for the available classes and an example.
 
@@ -124,13 +126,7 @@ Backups support cloud object locking and [Amazon S3 storage classes](#back-up-wi
 
 ### Object dependencies
 
-Dependent objects must be backed up at the same time as the objects they depend on.
-
-Object | Depends On
--------|-----------
-Table with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore]({% link {{ page.version.version }}/restore.md %}#skip_missing_foreign_keys).
-Table with a [sequence]({% link {{ page.version.version }}/create-sequence.md %}) | The sequence it uses; however, this dependency can be [removed during the restore]({% link {{ page.version.version }}/restore.md %}#skip_missing_sequences).
-[Views]({% link {{ page.version.version }}/views.md %}) | The tables used in the view's `SELECT` statement.
+{% include {{ page.version.version }}/backups/object-dependency.md %}
 
 {{site.data.alerts.callout_info}}
 To exclude a table's row data from a backup, use the `exclude_data_from_backup` parameter with [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}#create-a-table-with-data-excluded-from-backup) or [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#exclude-a-tables-data-from-backups).
@@ -257,6 +253,10 @@ To take a [full backup]({% link {{ page.version.version }}/take-full-and-increme
 BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
+{% include {{ page.version.version }}/backups/backup-storage-collision.md %}
+
+{% include {{ page.version.version }}/backups/collision-restore.md %}
+
 ### Back up a database
 
 To take a [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) of a single database:
@@ -307,6 +307,8 @@ If a database and schema have the same name, such as `bank.bank`, running `BACKU
 See [Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %}) for more details on how naming hierarchy and name resolution work in CockroachDB.
 
 ### Create incremental backups
+
+{% include common/sql/incremental-location-warning.md %}
 
 When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) storage location.
 
@@ -386,3 +388,4 @@ To use an external connection URI to back up to cloud storage with an associated
 - [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
 - [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

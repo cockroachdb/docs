@@ -16,7 +16,7 @@ If reads can use stale data, use [stale follower reads]({% link {{ page.version.
 
 ## Before you begin
 
-{% include enterprise-feature.md %}
+
 
 ### Fundamentals
 

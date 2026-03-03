@@ -9,9 +9,7 @@ docs_area: reference.sql
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
-
-{% include_cached new-in.html version="v23.2" %} The `CREATE VIRTUAL CLUSTER` statement creates a new virtual cluster. It is supported only starting a [physical cluster replication job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+{% include_cached new-in.html version="v23.2" %} The `CREATE VIRTUAL CLUSTER` statement creates a new virtual cluster. It is supported only starting a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
@@ -20,7 +18,7 @@ docs_area: reference.sql
 `CREATE VIRTUAL CLUSTER` requires one of the following privileges:
 
 - The `admin` role.
-- The `MANAGEVIRTUALCLUSTER` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) allows the user to run all the related `VIRTUAL CLUSTER` SQL statements for physical cluster replication.
+- The `MANAGEVIRTUALCLUSTER` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) allows the user to run all the related `VIRTUAL CLUSTER` SQL statements for PCR.
 
 Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
 
@@ -40,24 +38,16 @@ GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
 Parameter | Description
 ----------+------------
 `virtual_cluster_name` | The name for the new virtual cluster.
-`LIKE virtual_cluster_spec` | Creates a virtual cluster with the same [capabilities](#capabilities) and settings as another virtual cluster.
 `primary_virtual_cluster` | The name of the primary's virtual cluster to replicate.
 `primary_connection_string` | The PostgreSQL connection string to the primary cluster. Refer to [Connection string](#connection-string) for more detail.
-`replication_options_list`| Options to modify the replication streams. Refer to [Options](#options).
-
-## Options
-
-Option | Description
--------+-------------
-`RETENTION` | Configure a [retention window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process) that will control how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to.
 
 ## Connection string
 
-When you [initiate a replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication) from the standby cluster, it is necessary to pass a connection string to the system interface on the primary cluster:
+When you [initiate a replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication) from the standby cluster, it is necessary to pass a connection string to the system virtual cluster on the primary cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-'postgresql://{replication user}:{password}@{node IP or hostname}:26257/?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt'
+'postgresql://{replication user}:{password}@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt'
 ~~~
 
 To form a connection string similar to the example, include the following values and query parameters. Replace values in `{...}` with the appropriate values for your configuration:
@@ -67,7 +57,7 @@ Value | Description
 `{replication user}` | The user on the primary cluster that has the `REPLICATION` system privilege. Refer to the [Create a replication user and password]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-replication-user-and-password) for more detail.
 `{password}` | The replication user's password.
 `{node ID or hostname}` | The node IP address or hostname of any node from the primary cluster.
-`options=ccluster=system` | The parameter to connect to the system interface on the primary cluster.
+`options=ccluster=system` | The parameter to connect to the system virtual cluster on the primary cluster.
 `sslmode=verify-full` | The `verify-full` secure connection type.
 `sslrootcert={primary cert}` | The path to the primary cluster's CA certificate on the standby cluster.
 
@@ -87,21 +77,10 @@ To start a replication stream to the standby of the primary's application virtua
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE VIRTUAL CLUSTER standbyapplication LIKE template FROM REPLICATION OF application ON 'postgresql://{connection string to primary}';
+CREATE VIRTUAL CLUSTER application LIKE template FROM REPLICATION OF application ON 'postgresql://{connection string to primary}';
 ~~~
 
-This will create a virtual cluster in the standby cluster that is based on the `template` virtual cluster, which is created during [cluster startup with `--config-profile`]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#start-the-primary-cluster). The standby's system interface will connect to the primary cluster to initiate the replication stream job. For detail on the replication stream, refer to the [Responses]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) for `SHOW VIRTUAL CLUSTER`.
-
-### Specify a retention window for a replication stream
-
-When you initiate a replication stream, you can specify a retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE VIRTUAL CLUSTER standbyapplication LIKE template FROM REPLICATION OF application ON 'postgresql://{connection string to primary}' WITH RETENTION '36h';
-~~~
-
-This will initiate a replication stream from the primary cluster into the standby cluster's new `standbyapplication` virtual cluster. The `RETENTION` option allows you to specify a timestamp up to 36 hours in the past for cutover to the standby cluster. After cutover, the `standbyapplication` will be transactionally consistent to any timestamp within that retention window.
+This will create a virtual cluster in the standby cluster that is based on the `template` virtual cluster, which is created during [cluster startup with `--config-profile`]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#start-the-primary-cluster). The standby's system virtual cluster will connect to the primary cluster to initiate the replication stream job. For detail on the replication stream, refer to the [Responses]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) for `SHOW VIRTUAL CLUSTER`.
 
 ## See also
 

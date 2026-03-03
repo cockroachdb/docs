@@ -36,7 +36,7 @@ body.sidenav-open{
     position: fixed;
     z-index: 10;
     background-color: $white;
-    top: 108px;
+    top: 130px;
     border-top: 1px solid $neutral-300;
     border-bottom: 1px solid $neutral-300;
     height: 60%;
@@ -60,7 +60,7 @@ body.sidenav-open{
 
 .nav-docs-mobile {
   position: fixed;
-  top: 54px;
+  top: 84px;
   z-index: 999;
   background: #fff;
   .h3 {

@@ -91,12 +91,13 @@ SHOW GRANTS ON DATABASE movr;
 ~~~
 
 ~~~
-  database_name | grantee | privilege_type  | is_grantable
-----------------+---------+-----------------+--------------
-  movr          | admin   | ALL             | true
-  movr          | max     | ALL             | true
-  movr          | root    | ALL             | true
-(3 rows)
+  database_name | grantee | privilege_type | is_grantable
+----------------+---------+----------------+---------------
+  movr          | admin   | ALL            |      t
+  movr          | max     | ALL            |      t
+  movr          | public  | CONNECT        |      f
+  movr          | root    | ALL            |      t
+(4 rows)
 ~~~
 
 ### Grant privileges on specific tables in a database
@@ -112,11 +113,11 @@ SHOW GRANTS ON TABLE rides;
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
-----------------+-------------+------------+---------+-----------------+--------------
-  movr          | public      | rides      | admin   | ALL             | true
-  movr          | public      | rides      | max     | DELETE          | false
-  movr          | public      | rides      | root    | ALL             | true
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  movr          | public      | rides      | admin   | ALL            |      t
+  movr          | public      | rides      | max     | DELETE         |      f
+  movr          | public      | rides      | root    | ALL            |      t
 (3 rows)
 ~~~
 
@@ -138,35 +139,27 @@ SHOW GRANTS ON TABLE movr.public.*;
   database_name | schema_name |         table_name         | grantee | privilege_type | is_grantable
 ----------------+-------------+----------------------------+---------+----------------+---------------
   movr          | public      | promo_codes                | admin   | ALL            |      t
-  movr          | public      | promo_codes                | demo    | ALL            |      t
   movr          | public      | promo_codes                | max     | ALL            |      f
   movr          | public      | promo_codes                | root    | ALL            |      t
   movr          | public      | rides                      | admin   | ALL            |      t
-  movr          | public      | rides                      | demo    | ALL            |      t
   movr          | public      | rides                      | max     | ALL            |      f
-  movr          | public      | rides                      | max     | UPDATE         |      t
   movr          | public      | rides                      | root    | ALL            |      t
   movr          | public      | user_promo_codes           | admin   | ALL            |      t
-  movr          | public      | user_promo_codes           | demo    | ALL            |      t
   movr          | public      | user_promo_codes           | max     | ALL            |      f
   movr          | public      | user_promo_codes           | root    | ALL            |      t
   movr          | public      | users                      | admin   | ALL            |      t
-  movr          | public      | users                      | demo    | ALL            |      t
   movr          | public      | users                      | max     | ALL            |      f
   movr          | public      | users                      | root    | ALL            |      t
   movr          | public      | vehicle_location_histories | admin   | ALL            |      t
-  movr          | public      | vehicle_location_histories | demo    | ALL            |      t
   movr          | public      | vehicle_location_histories | max     | ALL            |      f
   movr          | public      | vehicle_location_histories | root    | ALL            |      t
   movr          | public      | vehicles                   | admin   | ALL            |      t
-  movr          | public      | vehicles                   | demo    | ALL            |      t
   movr          | public      | vehicles                   | max     | ALL            |      f
-  movr          | public      | vehicles                   | public  | SELECT         |      f
   movr          | public      | vehicles                   | root    | ALL            |      t
-(26 rows)
+(18 rows)
 ~~~
 
-To ensure that anytime a new table is created, all the privileges on that table are granted to a user, use [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}):
+To ensure that any time a new table is created, all the privileges on that table are granted to a user, use [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -191,10 +184,9 @@ SHOW GRANTS ON TABLE usertable;
   database_name | schema_name | table_name | grantee | privilege_type | is_grantable
 ----------------+-------------+------------+---------+----------------+---------------
   movr          | public      | usertable  | admin   | ALL            |      t
-  movr          | public      | usertable  | demo    | ALL            |      t
   movr          | public      | usertable  | max     | ALL            |      f
   movr          | public      | usertable  | root    | ALL            |      t
-(4 rows)
+(3 rows)
 ~~~
 
 ### Grant system-level privileges on the entire cluster
@@ -203,16 +195,11 @@ SHOW GRANTS ON TABLE usertable;
 
 `root` and [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) users have system-level privileges by default, and are capable of granting it to other users and roles using the `GRANT` statement.
 
-For example, the following statement allows the user `maxroach` to use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement by assigning the `MODIFYCLUSTERSETTING` system privilege:
+For example, the following statement allows the user `max` (created in a [previous example](#grant-privileges-on-databases)) to use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement by assigning the `MODIFYCLUSTERSETTING` system privilege:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE USER IF NOT EXISTS maxroach WITH PASSWORD 'setecastronomy';
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-GRANT SYSTEM MODIFYCLUSTERSETTING TO maxroach;
+GRANT SYSTEM MODIFYCLUSTERSETTING TO max;
 ~~~
 
 ### Make a table readable to every user in the system
@@ -228,12 +215,12 @@ SHOW GRANTS ON TABLE vehicles;
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
-----------------+-------------+------------+---------+-----------------+--------------
-  movr          | public      | vehicles   | admin   | ALL             | true
-  movr          | public      | vehicles   | max     | SELECT          | false
-  movr          | public      | vehicles   | public  | SELECT          | false
-  movr          | public      | vehicles   | root    | ALL             | true
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  movr          | public      | vehicles   | admin   | ALL            |      t
+  movr          | public      | vehicles   | max     | ALL            |      f
+  movr          | public      | vehicles   | public  | SELECT         |      f
+  movr          | public      | vehicles   | root    | ALL            |      t
 (4 rows)
 ~~~
 
@@ -255,11 +242,11 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
 
 ~~~
-  database_name |  schema_name   | grantee | privilege_type  | is_grantable
-----------------+----------------+---------+-----------------+--------------
-  movr          | cockroach_labs | admin   | ALL             | true
-  movr          | cockroach_labs | max     | ALL             | true
-  movr          | cockroach_labs | root    | ALL             | true
+  database_name |  schema_name   | grantee | privilege_type | is_grantable
+----------------+----------------+---------+----------------+---------------
+  movr          | cockroach_labs | admin   | ALL            |      t
+  movr          | cockroach_labs | max     | ALL            |      t
+  movr          | cockroach_labs | root    | ALL            |      t
 (3 rows)
 ~~~
 
@@ -269,7 +256,7 @@ To grant privileges on [user-defined types]({% link {{ page.version.version }}/c
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE TYPE IF NOT EXISTS status AS ENUM ('available', 'unavailable');
+CREATE TYPE IF NOT EXISTS status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -283,14 +270,13 @@ SHOW GRANTS ON TYPE status;
 ~~~
 
 ~~~
-  database_name | schema_name | type_name | grantee | privilege_type  | is_grantable
-----------------+-------------+-----------+---------+-----------------+--------------
-  movr          | public      | status    | admin   | ALL             | true
-  movr          | public      | status    | demo    | ALL             | false
-  movr          | public      | status    | max     | ALL             | true
-  movr          | public      | status    | public  | USAGE           | false
-  movr          | public      | status    | root    | ALL             | true
-(5 rows)
+  database_name | schema_name | type_name | grantee | privilege_type | is_grantable
+----------------+-------------+-----------+---------+----------------+---------------
+  movr          | public      | status    | admin   | ALL            |      t
+  movr          | public      | status    | max     | ALL            |      t
+  movr          | public      | status    | public  | USAGE          |      f
+  movr          | public      | status    | root    | ALL            |      t
+(4 rows)
 ~~~
 
 ### Grant the privilege to manage the replication zones for a database or table
@@ -325,9 +311,9 @@ SHOW GRANTS ON ROLE developer;
 ~~~
 
 ~~~
-  role_name | member | is_admin  | is_grantable
-------------+--------+-----------+-----------
-  developer | abbey  |  false    | false
+  role_name | member | is_admin
+------------+--------+-----------
+  developer | abbey  |    f
 (1 row)
 ~~~
 
@@ -344,9 +330,9 @@ SHOW GRANTS ON ROLE developer;
 ~~~
 
 ~~~
-  role_name | member | is_admin  | is_grantable
-------------+--------+-----------+-----------
-  developer | abbey  |   true    | true
+  role_name | member | is_admin
+------------+--------+-----------
+  developer | abbey  |    t
 (1 row)
 ~~~
 
@@ -363,12 +349,13 @@ SHOW GRANTS ON TABLE rides;
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
-----------------+-------------+------------+---------+-----------------+--------------
-  movr          | public      | rides      | admin   | ALL             | true
-  movr          | public      | rides      | max     | UPDATE          | true
-  movr          | public      | rides      | root    | ALL             | true
-(3 rows)
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  movr          | public      | rides      | admin   | ALL            |      t
+  movr          | public      | rides      | max     | ALL            |      f
+  movr          | public      | rides      | max     | UPDATE         |      t
+  movr          | public      | rides      | root    | ALL            |      t
+(4 rows)
 ~~~
 
 ## See also

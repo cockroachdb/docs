@@ -58,7 +58,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 
     Password creation is supported only in secure clusters.
 
-- [GSSAPI authentication]({% link {{ page.version.version }}/gssapi_authentication.md %}), which is available to [Enterprise users]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+- [GSSAPI authentication]({% link {{ page.version.version }}/gssapi_authentication.md %}).
 
 ## Examples
 

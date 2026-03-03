@@ -67,12 +67,10 @@ sinks:
 capture-stray-errors: ... # parameters for the stray error capture system
 ~~~
 
-{{site.data.alerts.callout_info}}
 Providing a logging configuration is optional. Any fields included in the YAML payload will override the same fields in the [default logging configuration](#default-logging-configuration).
-{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-You can view your current settings by running `cockroach debug check-log-config`, which returns the YAML definitions and a URL to a visualization of the current logging configuration.
+You can view the default settings by running `cockroach debug check-log-config`, which returns the YAML definitions and a URL to a visualization of the default logging configuration.
 {{site.data.alerts.end}}
 
 ## Configure log sinks
@@ -216,7 +214,7 @@ Along with the [common sink parameters](#common-sink-parameters), each Fluentd s
 | `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging channel selection](#logging-channel-selection). |
 | `address` | Network address and port of the log collector.                                                                     |
 | `net`     | Network protocol to use. Can be `tcp`, `tcp4`, `tcp6`, `udp`, `udp4`, `udp6`, or `unix`.<br><br>**Default:** `tcp` |
-| `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<br><br><ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. Default: `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
+| `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. Default: `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
 
 For an example network logging configuration, see [Logging use cases]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging).
 
@@ -256,9 +254,9 @@ Along with the [common sink parameters](#common-sink-parameters), each HTTP serv
 | `disable-keep-alives` | When `true`, disallows reuse of the server connection across requests.<br><br>**Default:** `false` (reuses connections)                                                                                                                                                                                                                                            |
 | `compression` | Compression method for the HTTP request body. Valid values `gzip` or `none`.<br><br>**Default:** `gzip` Prior to [v23.1.4]({% link releases/v23.1.md %}#v23-1-4-operational-changes), requests were not compressed by default. |
 | `headers` | Map of key-value string pairs which will be appended to every request as custom HTTP headers. |
-| `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<br><br><ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. Default: `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [HTTP](#output-to-http-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
+| `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. Default: `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [HTTP](#output-to-http-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
 
-For an example network logging configuration, see [Logging use cases]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging). For an example that uses `compression` and `headers` parameters, see [Configure an HTTP network collector for Datadog]({% link {{ page.version.version }}/log-sql-statistics-to-datadog.md %}#step-2-configure-an-http-network-collector-for-datadog).
+For an example network logging configuration, see [Logging use cases]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging). For an example that uses `compression` and `headers` parameters, see [Configure an HTTP network collector for Datadog]({% link {{ page.version.version }}/log-sql-activity-to-datadog.md %}#step-2-configure-an-http-network-collector-for-datadog).
 
 ### Output to `stderr`
 
@@ -276,7 +274,7 @@ sinks:
 Along with the [common sink parameters](#common-sink-parameters), `stderr` accepts the following additional parameters:
 
 {{site.data.alerts.callout_info}}
-The `format` parameter for `stderr` is set to [`crdb-v2-tty`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2-tty) and cannot be changed.
+The `format` parameter for `stderr` can be set to any one of the valid [log formats]({% link {{ page.version.version }}/log-formats.md %}). It is set to [`crdb-v2-tty`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2-tty) by default.
 {{site.data.alerts.end}}
 
 | Parameter  | Description                                                       |

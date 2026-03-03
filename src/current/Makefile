@@ -85,6 +85,7 @@ linkcheck: cockroachdb-build
 vale:
 	vale $(subst $(\n), $( ), $(shell git status --porcelain | cut -c 4- | egrep "\.md"))
 
+.PHONY: vendor
 vendor:
 	gem install bundler
 	bundle install
@@ -103,3 +104,70 @@ clean-site:
 
 clean-cache:
 	rm -rf .jekyll-cache
+
+# =============================================================================
+# Docker-based builds
+# =============================================================================
+# These targets use the hermetic docs-builder Docker image for consistent builds
+# across all environments. See ci/README.md for more details.
+
+DOCKER_REGISTRY := us-docker.pkg.dev/release-notes-automation-stag/docs-builder
+DOCKER_IMAGE := docs-builder
+DOCKER_TAG := latest
+# Run as current user to avoid permission issues with mounted volumes
+DOCKER_USER := $(shell id -u):$(shell id -g)
+
+# Build the Docker image locally
+.PHONY: docker-build
+docker-build:
+	docker build -t $(DOCKER_IMAGE):local .
+
+# Serve documentation using Docker (with live reload)
+.PHONY: docker-serve
+docker-serve:
+	docker run -it --rm \
+		--dns 8.8.8.8 \
+		--user $(DOCKER_USER) \
+		-p 4000:4000 \
+		-v "$(CURDIR)":/docs \
+		-e JEKYLL_ENV=development \
+		-e HOME=/tmp \
+		$(DOCKER_IMAGE):local \
+		bundle exec jekyll serve --host 0.0.0.0 --port 4000 --incremental --trace \
+		--config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml
+
+# Build documentation using Docker (no serve)
+.PHONY: docker-build-site
+docker-build-site:
+	docker run -it --rm \
+		--dns 8.8.8.8 \
+		--user $(DOCKER_USER) \
+		-v "$(CURDIR)":/docs \
+		-e JEKYLL_ENV=production \
+		-e HOME=/tmp \
+		$(DOCKER_IMAGE):local \
+		bundle exec jekyll build --trace \
+		--config _config_base.yml,_config_cockroachdb.yml
+
+# Interactive shell in the Docker container
+.PHONY: docker-shell
+docker-shell:
+	docker run -it --rm \
+		--dns 8.8.8.8 \
+		--user $(DOCKER_USER) \
+		-v "$(CURDIR)":/docs \
+		-e HOME=/tmp \
+		$(DOCKER_IMAGE):local \
+		/bin/bash
+
+# Pull the latest pre-built image from GCP Artifact Registry
+.PHONY: docker-pull
+docker-pull:
+	docker pull $(DOCKER_REGISTRY)/$(DOCKER_IMAGE):$(DOCKER_TAG)
+	docker tag $(DOCKER_REGISTRY)/$(DOCKER_IMAGE):$(DOCKER_TAG) $(DOCKER_IMAGE):local
+
+# Push image to GCP Artifact Registry (requires gcloud auth)
+.PHONY: docker-push
+docker-push:
+	docker tag $(DOCKER_IMAGE):local $(DOCKER_REGISTRY)/$(DOCKER_IMAGE):$(DOCKER_TAG)
+	docker push $(DOCKER_REGISTRY)/$(DOCKER_IMAGE):$(DOCKER_TAG)

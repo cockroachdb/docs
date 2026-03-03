@@ -36,7 +36,7 @@ To follow along with the example below, you will need the following prerequisite
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget http://web.archive.org/web/20201018170120/https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip
+    curl -o 1950-2018-torn-initpoint.zip http://web.archive.org/web/20201018170120/https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip
     ~~~
 
 1. Unzip the data file:
@@ -114,9 +114,9 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql') WITH ignore_unsupport
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
 - [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
 - [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Migrate from MySQL][mysql]
-- [Migrate from PostgreSQL][postgres]
+- [Migration Overview]({% link molt/migration-overview.md %})
+- [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)
+- [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %})
 - [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

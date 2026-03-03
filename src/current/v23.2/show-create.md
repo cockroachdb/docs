@@ -96,7 +96,7 @@ To return just the `create_statement` value:
 ~~~
 
 {{site.data.alerts.callout_info}}
-`SHOW CREATE TABLE` also lists any partitions and zone configurations defined on primary and secondary indexes of a table. If partitions are defined, but no zones are configured, the `SHOW CREATE TABLE` output includes a warning.
+`SHOW CREATE TABLE` also lists any partitions and [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) defined on primary and secondary indexes of a table. If partitions are defined, but no zones are configured, the `SHOW CREATE TABLE` output includes a warning.
 {{site.data.alerts.end}}
 
 ### Show the `CREATE TABLE` statement for a table with a hidden column
@@ -270,7 +270,7 @@ For more information, see [`COMMENT ON`]({% link {{ page.version.version }}/comm
 
 Use the `SHOW CREATE TABLE` command to view [multi-region-defined]({% link {{ page.version.version }}/multiregion-overview.md %}) table localities.
 
-{% include enterprise-feature.md %}
+
 
 To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region) statement:
 

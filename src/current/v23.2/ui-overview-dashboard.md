@@ -9,13 +9,13 @@ The **Overview** dashboard lets you monitor important SQL performance, replicati
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
 
-The time-series data displayed in DB Console graphs is stored within the CockroachDB cluster and steadily increases for the first several days of a cluster's life, before an automatic job begins to prune it. By default, time-series data is stored for at 10-second resolution for 10 days, and at 30-minute resolution for 90 days. For details about managing this process, see this [How Can I Reduce or Disable the Storage of Time-series Data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data). In a new cluster, you will observe a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster.
+The time-series data displayed in DB Console graphs is stored within the CockroachDB cluster and steadily increases for the first several days of a cluster's life, before an automatic job begins to prune it. By default, time-series data is stored for at 10-second resolution for 10 days, and at 30-minute resolution for 90 days. For details about managing this process, see [Can I reduce the storage of time-series data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-the-storage-of-time-series-data). In a new cluster, you will observe a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster.
 
 ## Dashboard navigation
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
-The **Overview** dashboard displays the following time series graphs. All timestamps in the DB Console are shown in 24-hour Coordinated Universal Time (UTC).
+The **Overview** dashboard displays the following time series graphs.
 
 ## SQL Statements
 
@@ -24,6 +24,18 @@ The **Overview** dashboard displays the following time series graphs. All timest
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
 See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) for more details on the cluster's SQL statements.
+
+Metrics: `sql.select.count`, `sql.update.count`, `sql.insert.count`, `sql.delete.count`
+
+The following SQL statements update the `INSERT` metric (`sql.insert.count`):
+
+- [`INSERT ... ON CONFLICT DO UPDATE ...`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause): Even when the `DO UPDATE` clause is actually executed, the root of the [abstract syntax tree (AST)]({% link {{ page.version.version }}/architecture/sql-layer.md %}#parsing) is used to increment the metric, rather than the actual execution details.
+
+- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
+
+{{site.data.alerts.callout_info}}
+[Data manipulation statements]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements) other than  `SELECT`/`INSERT`/`UPDATE`/`DELETE`/`UPSERT` update the `sql.misc.count` metric, which is *not* displayed on this graph.
+{{site.data.alerts.end}}
 
 ## Service Latency: SQL, 99th percentile
 

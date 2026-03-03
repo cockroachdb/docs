@@ -17,21 +17,15 @@
       	{
       	  "title": "Create a CockroachDB Cloud Cluster",
       	  "urls": [
-      	    "/cockroachcloud/create-a-serverless-cluster.html",
+      	    "/cockroachcloud/create-a-basic-cluster.html",
             "/cockroachcloud/create-your-cluster.html"
       	  ]
       	},
         {
       	  "title": "Connect to Your Cluster",
       	  "urls": [
-      	    "/cockroachcloud/connect-to-a-serverless-cluster.html",
+      	    "/cockroachcloud/connect-to-a-basic-cluster.html",
             "/cockroachcloud/connect-to-your-cluster.html"
-      	  ]
-      	},
-      	{
-      	  "title": "Learn CockroachDB SQL",
-      	  "urls": [
-      	    "/cockroachcloud/learn-cockroachdb-sql.html"
       	  ]
       	},
         {
@@ -48,7 +42,7 @@
         {
           "title": "Manage Your Cluster",
           "urls": [
-            "/cockroachcloud/serverless-cluster-management.html",
+            "/cockroachcloud/basic-cluster-management.html",
             "/cockroachcloud/cluster-management.html"
           ]
         },
@@ -134,15 +128,9 @@
       	    {
       	      "title": "Migration Overview",
       	      "urls": [
-      		      "/{{site.current_cloud_version}}/migration-overview.html"
+      		      "/molt/migration-overview.html"
       	      ]
       	    },
-            {
-              "title": "Migrate from Serverless to Dedicated",
-              "urls": [
-                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
-              ]
-            },
             {
       	      "title": "Migrate from Oracle",
       	      "urls": [
@@ -152,13 +140,13 @@
       	    {
       	      "title": "Migrate from PostgreSQL",
       	      "urls": [
-      		      "/{{site.current_cloud_version}}/migrate-from-postgres.html"
+      		      "/molt/migrate-to-cockroachdb.html"
       	      ]
       	    },
       	    {
       	      "title": "Migrate from MySQL",
       	      "urls": [
-      		      "/{{site.current_cloud_version}}/migrate-from-mysql.html"
+      		      "/molt/migrate-to-cockroachdb.html?filters=mysql"
       	      ]
       	    },
       	    {
@@ -254,13 +242,13 @@
         {
           "title": "Take and Restore Customer-Owned Backups",
           "urls": [
-            "/cockroachcloud/take-and-restore-customer-owned-backups.html"
+            "/cockroachcloud/take-and-restore-self-managed-backups.html"
           ]
         },
       	{
       	  "title": "Use Managed-Service Backups",
       	  "urls": [
-      	    "/cockroachcloud/use-managed-service-backups.html"
+      	    "/cockroachcloud/managed-backups.html"
       	  ]
       	},
       	{
@@ -272,30 +260,12 @@
       		       "/cockroachcloud/upgrade-policy.html"
       	      ]
       	    },
-            {
-              "title": "Upgrade to v21.2",
-              "urls": [
-                 "/cockroachcloud/upgrade-to-v21.2.html"
-              ]
-            },
-            {
-      	      "title": "Upgrade to v21.1",
-      	      "urls": [
-      		       "/cockroachcloud/upgrade-to-v21.1.html"
-      	      ]
-      	    },
-      	    {
-      	      "title": "Upgrade to v20.2",
-      	      "urls": [
-      		       "/cockroachcloud/upgrade-to-v20.2.html"
-      	      ]
-      	    },
-      	    {
-      	      "title": "Upgrade to v20.1",
-      	      "urls": [
-      		       "/cockroachcloud/upgrade-to-v20.1.html"
-      	      ]
-      	    }
+						{
+								"title": "Upgrade a cluster",
+								"urls": [
+										"/cockroachcloud/upgrade-cockroach-version.html"
+								]
+						}
       	  ]
       	}
       ]
@@ -304,12 +274,6 @@
       "title": "Manage Billing",
       "urls": [
          "/cockroachcloud/billing-management.html"
-      ]
-    },
-    {
-      "title": "Architecture",
-      "urls": [
-         "/cockroachcloud/architecture.html"
       ]
     },
     {
@@ -327,13 +291,6 @@
       	    "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
       	  ]
       	}
-      ]
-    },
-    {
-      "title": "FAQs",
-      "urls": [
-        "/cockroachcloud/serverless-faqs.html",
-        "/cockroachcloud/frequently-asked-questions.html"
       ]
     },
     {

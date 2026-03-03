@@ -8,6 +8,8 @@ docs_area: manage
 
 {% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
+Viewing the Statements page requires the [Cluster Monitor]({% link cockroachcloud/authorization.md %}#cluster-monitor), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role.
+
 {% include {{version_prefix}}ui/statements-views.md %}
 
 {% include {{version_prefix}}ui/statements-filter.md %}
@@ -16,7 +18,7 @@ docs_area: manage
 
 {% include {{version_prefix}}ui/statistics.md %}
 
-{% include common/ui/statements-page.md %}
+{% include {{version_prefix}}ui/statement-fingerprints.md %}
 
 {% include {{version_prefix}}ui/statements-table.md %}
 

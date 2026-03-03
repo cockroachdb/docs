@@ -9,7 +9,7 @@ Use the `SHOW PARTITIONS` [statement]({% link {{ page.version.version }}/sql-sta
 
 {% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
 
-{% include enterprise-feature.md %}
+
 
 {% include {{page.version.version}}/sql/crdb-internal-partitions.md %}
 

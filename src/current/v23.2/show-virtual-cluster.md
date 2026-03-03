@@ -9,9 +9,7 @@ docs_area: reference.sql
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
-
-{% include_cached new-in.html version="v23.2" %} The `SHOW VIRTUAL CLUSTER` statement lists the virtual clusters running in a CockroachDB cluster. `SHOW VIRTUAL CLUSTER` only supports inspecting virtual cluster status as part of the [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
+{% include_cached new-in.html version="v23.2" %} The `SHOW VIRTUAL CLUSTER` statement lists all virtual clusters running in a CockroachDB cluster. `SHOW VIRTUAL CLUSTER` supports inspecting virtual cluster status only as part of the [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
@@ -57,7 +55,7 @@ This table lists all possible responses from the different `SHOW VIRTUAL CLUSTER
 
 ### Show all virtual clusters
 
-List all of the virtual clusters:
+List all virtual clusters:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -66,18 +64,18 @@ SHOW VIRTUAL CLUSTERS;
 
 ### Show a virtual cluster
 
-To show more details about a particular virtual cluster:
+To show more details about the `application` virtual cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW VIRTUAL CLUSTER {standbyapplication};
+SHOW VIRTUAL CLUSTER application;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~
   id |     name           | data_state  | service_mode | source_tenant_name |                                                  source_cluster_uri                                                   | replication_job_id |       replicated_time        |         retained_time         | cutover_time
 -----+--------------------+-------------+--------------+--------------------+-----------------------------------------------------------------------------------------------------------------------+--------------------+------------------------------+-------------------------------+---------------
-   5 | standbyapplication | replicating | none         | application        | postgresql://user:redacted@host/?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 911803003607220225 | 2023-10-26 17:36:52.27978+00 | 2023-10-26 14:36:52.279781+00 |         NULL
+   5 | application        | replicating | none         | application        | postgresql://user:redacted@host?options=-ccluster%3Dsystem&sslmode=verify-full&sslrootcert=redacted | 911803003607220225 | 2023-10-26 17:36:52.27978+00 | 2023-10-26 14:36:52.279781+00 |         NULL
 ~~~
 
 ### Show replication status
@@ -90,11 +88,11 @@ To show the replication status of all virtual clusters:
 SHOW VIRTUAL CLUSTERS WITH REPLICATION STATUS;
 ~~~
 
-To show the replication status of a particular virtual cluster:
+To show the replication status of the `application` virtual cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW VIRTUAL CLUSTER {standbyapplication} WITH REPLICATION STATUS;
+SHOW VIRTUAL CLUSTER application WITH REPLICATION STATUS;
 ~~~
 
 ## See also

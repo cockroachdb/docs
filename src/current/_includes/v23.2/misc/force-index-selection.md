@@ -135,11 +135,8 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 ##### Prevent full scan
 
-To prevent the optimizer from planning a full scan for a table, specify the `NO_FULL_SCAN` index hint. For example:
+{% include {{ page.version.version }}/sql/no-full-scan.md %}
 
-~~~sql
-SELECT * FROM table_name@{NO_FULL_SCAN};
-~~~
-
-To prevent a full scan of a [partial index](#force-partial-index-scan), you must specify `NO_FULL_SCAN` _in combination with_ the partial index using `FORCE_INDEX=index_name`.
-If you specify only `NO_FULL_SCAN`, a full scan of a partial index may be planned.
+{{site.data.alerts.callout_success}}
+For other ways to prevent full table scans, refer to [Prevent the optimizer from planning full scans]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#prevent-the-optimizer-from-planning-full-scans).
+{{site.data.alerts.end}}

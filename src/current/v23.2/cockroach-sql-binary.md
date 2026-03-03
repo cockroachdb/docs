@@ -23,65 +23,19 @@ The output of `cockroach-sql` when used non-interactively is part of a stable in
     <button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>
 </div>
 
-Download the binary and copy it into your `PATH`.
+1. Visit [Releases]({% link releases/index.md %}) and download the SQL Shell binary for CockroachDB.
 
 <section class="filter-content" markdown="1" data-scope="linux">
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version }}.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ page.release_info.version }}.linux-amd64/cockroach-sql /usr/local/bin/ && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
-~~~
-
-If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
-
+1. Follow the instructions to [install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}) on your local system. The resulting `cockroach` binary supports only `cockroach sql` subcommands.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mac">
-
-You can install `cockroach-sql` using either Homebrew or by downloading the binary.
-
-### Use Homebrew
-
-1. [Install Homebrew](http://brew.sh/).
-1. Install using the `cockroach-sql` tap:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    brew install cockroachdb/tap/cockroach-sql
-    ~~~
-
-### Download the Binary
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version }}.darwin-10.9-amd64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach-sql /usr/local/bin && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
-~~~
-
-Use the ARM 64 binary if you have an M-series Mac:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version }}.darwin-11.0-arm64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ page.release_info.version }}.darwin-11.0-arm64/cockroach-sql /usr/local/bin && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
-~~~
-
-If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
-
+1. Follow the instructions to [install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}) on your local system. The resulting `cockroach` binary supports only `cockroach sql` subcommands.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
-
-Open a PowerShell terminal as an Administrator, then run the following command:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version }}.windows-6.2-amd64.zip -OutFile cockroach-sql.zip; Expand-Archive -Force -Path cockroach-sql.zip; Copy-Item -Force "cockroach-sql/cockroach-sql-{{ page.release_info.version }}.windows-6.2-amd64/cockroach-sql.exe" -Destination $env:appdata/cockroach; $Env:PATH += ";$env:appdata/cockroach"; if (!(Test-Path "$env:appdata/cockroach/cockroach.exe")) { New-Item -ItemType SymbolicLink -Path $env:appdata/cockroach/cockroach.exe -Target $env:appdata/cockroach/cockroach-sql.exe }
-~~~
-
-If you don't have an existing `cockroach` binary in `$env:appdata/cockroach/` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
-
+1. Follow the instructions to [install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}) on your local system. The resulting `cockroach.exe` binary supports only `cockroach sql` subcommands.
 </section>
-
-Or you can download the [binary from the releases page](https://www.cockroachlabs.com/docs/releases/{{ page.version.version }}) and install it manually.
 
 ## Before you begin
 

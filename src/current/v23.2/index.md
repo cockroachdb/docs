@@ -90,7 +90,7 @@ docs_area:
       <p class="landing-column-title">Deploy</p>
       <ul>
         <li><a href="recommended-production-settings.html">Production Checklist</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">CockroachDB Cloud Deployment</a></li>
+        <li><a href="{% link cockroachcloud/create-your-cluster.md %}">CockroachDB Cloud Deployment</a></li>
         <li><a href="kubernetes-overview.html">Kubernetes Overview</a></li>
         <li><a href="performance.html">Performance Profiles</a></li>
         <li><a href="upgrade-cockroach-version.html">Cluster Maintenance</a></li>
@@ -99,11 +99,11 @@ docs_area:
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Migrate</p>
       <ul>
-        <li><a href="migration-overview.html">Migration Overview</a></li>
+        <li><a href="{% link molt/migration-overview.md %}">Migration Overview</a></li>
+        <li><a href="{% link molt/migrate-to-cockroachdb.md %}">Migrate from PostgreSQL</a></li>
+        <li><a href="{% link molt/migrate-to-cockroachdb.md %}?filters=mysql">Migrate from MySQL</a></li>
         <li><a href="migrate-from-oracle.html">Migrate from Oracle</a></li>
-        <li><a href="migrate-from-postgres.html">Migrate from PostgreSQL</a></li>
-        <li><a href="migrate-from-mysql.html">Migrate from MySQL</a></li>
-        <li><a href="migrate-from-csv.html">Migrate from CSV</a></li>
+        <li><a href="{% link molt/molt-fetch.md %}">MOLT Fetch</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">
@@ -133,15 +133,14 @@ docs_area:
         <li><a href="sql-faqs.html">SQL FAQs</a></li>
         <li><a href="operational-faqs.html">Operational FAQs</a></li>
         <li><a href="licensing-faqs.html">Licensing FAQs</a></li>
-        <li><a href="cockroachdb-in-comparison.html">DB Comparisons</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Releases</p>
       <ul>
-        <li><a href="https://www.cockroachlabs.com/docs/releases/{{page.version.version}}">{{page.version.version}} Release</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/releases">All Releases</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/releases/release-support-policy">Release Support Policy</a></li>
+        <li><a href="{% link releases/{{page.version.version}}.md %}">{{page.version.version}} Release</a></li>
+        <li><a href="{% link releases/index.md %}">All Releases</a></li>
+        <li><a href="{% link releases/release-support-policy.md %}">Release Support Policy</a></li>
         <li><a href="known-limitations.html">Known Limitations</a></li>
       </ul>
     </div>

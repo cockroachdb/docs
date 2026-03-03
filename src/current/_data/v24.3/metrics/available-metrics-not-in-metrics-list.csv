@@ -1,0 +1,19 @@
+metric_id,description,y-axis label,type,unit
+"security.certificate.expiration.ca","Expiration for the CA certificate. 0 means no certificate or error.","Certificate Expiration",GAUGE,TIMESTAMP_SEC
+"security.certificate.expiration.client-ca","Expiration for the client CA certificate. 0 means no certificate or error.","Certificate Expiration",GAUGE,TIMESTAMP_SEC
+"security.certificate.expiration.client","Minimum expiration for client certificates, labeled by SQL user. 0 means no certificate or error.","Certificate Expiration",GAUGE,TIMESTAMP_SEC
+"security.certificate.expiration.ui-ca","Expiration for the UI CA certificate. 0 means no certificate or error.","Certificate Expiration",GAUGE,TIMESTAMP_SEC
+"security.certificate.expiration.node","Expiration for the node certificate. 0 means no certificate or error.","Certificate Expiration",GAUGE,TIMESTAMP_SEC
+"security.certificate.expiration.node-client","Expiration for the node's client certificate. 0 means no certificate or error.","Certificate Expiration",GAUGE,TIMESTAMP_SEC
+"security.certificate.expiration.ui","Expiration for the UI certificate. 0 means no certificate or error.","Certificate Expiration",GAUGE,TIMESTAMP_SEC
+"security.certificate.expiration.ca-client-tenant","Expiration for the Tenant Client CA certificate. 0 means no certificate or error.","Certificate Expiration",GAUGE,TIMESTAMP_SEC
+"security.certificate.expiration.client-tenant","Expiration for the Tenant Client certificate. 0 means no certificate or error.","Certificate Expiration",GAUGE,TIMESTAMP_SEC
+"security.certificate.ttl.ca","Seconds till expiration for the CA certificate. 0 means expired, no certificate or error.","Certificate TTL",GAUGE,TIMESTAMP_SEC
+"security.certificate.ttl.client-ca","Seconds till expiration for the client CA certificate. 0 means expired, no certificate or error.","Certificate TTL",GAUGE,TIMESTAMP_SEC
+"security.certificate.ttl.client","Seconds till expiration for the client certificates, labeled by SQL user. 0 means expired, no certificate or error.","Certificate TTL",GAUGE,TIMESTAMP_SEC
+"security.certificate.ttl.ui-ca","Seconds till expiration for the UI CA certificate. 0 means expired, no certificate or error.","Certificate TTL",GAUGE,TIMESTAMP_SEC
+"security.certificate.ttl.node","Seconds till expiration for the node certificate. 0 means expired, no certificate or error.","Certificate TTL",GAUGE,TIMESTAMP_SEC
+"security.certificate.ttl.node-client","Seconds till expiration for the node's client certificate. 0 means expired, no certificate or error.","Certificate TTL",GAUGE,TIMESTAMP_SEC
+"security.certificate.ttl.ui","Seconds till expiration for the UI certificate. 0 means expired, no certificate or error.","Certificate TTL",GAUGE,TIMESTAMP_SEC
+"security.certificate.ttl.ca-client-tenant","Seconds till expiration for the Tenant Client CA certificate. 0 means expired, no certificate or error.","Certificate TTL",GAUGE,TIMESTAMP_SEC
+"security.certificate.ttl.client-tenant","Seconds till expiration for the Tenant Client certificate. 0 means expired, no certificate or error.","Certificate TTL",GAUGE,TIMESTAMP_SEC

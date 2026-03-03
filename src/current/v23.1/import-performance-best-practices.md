@@ -7,7 +7,7 @@ docs_area: migrate
 
 This page provides best practices for optimizing [import]({% link {{ page.version.version }}/import-into.md %}) performance in CockroachDB.
 
-`IMPORT INTO` is the fastest method to ingest data into CockroachDB but it requires taking the target table offline for the duration of the import. `IMPORT INTO` is a good choice for initial data migrations and data migrations that can tolerate table downtime. If you cannot tolerate table unavailability, we recommend using [`COPY FROM`](copy-from.html) instead.
+`IMPORT INTO` is the fastest method to ingest data into CockroachDB but it requires taking the target table offline for the duration of the import. `IMPORT INTO` is a good choice for initial data migrations and data migrations that can tolerate table downtime. If you cannot tolerate table unavailability, we recommend using [`COPY FROM`]({% link {{ page.version.version }}/copy.md %}) instead.
 
 Import performance primarily depends on the amount of data that you want to import. However, there are three actions you should take before importing that have a significant impact on the amount of time it takes to run an import:
 
@@ -37,7 +37,7 @@ When importing into a new table, split your dump data into two files:
 1. A SQL file containing the table schema.
 1. A CSV, delimited, or AVRO file containing the table data.
 
-Convert the schema-only file using the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page). The Schema Conversion Tool automatically creates a new CockroachDB {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
+Convert the schema-only file using the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}). The Schema Conversion Tool automatically creates a new CockroachDB {{ site.data.products.cloud }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
 Then use the [`IMPORT INTO`](import-into.html) statement to import the CSV data into the newly created table:
 
@@ -162,9 +162,9 @@ If you cannot both split and sort your dataset, the performance of either split 
 ## See also
 
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Migrate from Oracle]({% link {{ page.version.version }}/migrate-from-oracle.md %})
-- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
-- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %})
+- [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)
 - [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
 - [Migrate from Avro]({% link {{ page.version.version }}/migrate-from-avro.md %})

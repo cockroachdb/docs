@@ -1,0 +1,625 @@
+{
+    "title": "Cloud Deployments",
+    "is_top_level": true,
+    "items": [
+    {
+        "title": "Overview",
+        "urls": [
+            "/cockroachcloud/index.html"
+        ]
+    },
+    {
+        "title": "Create an Account",
+        "urls": [
+            "/cockroachcloud/create-an-account.html"
+        ]
+    },
+    {
+        "title": "CockroachDB Cloud Costs",
+        "urls": [
+            "/cockroachcloud/costs.html"
+        ]
+    },
+    {
+        "title": "Basic Deployments",
+        "items": [
+            {
+                "title": "Plan a Basic Cluster",
+                "urls": [
+                    "/cockroachcloud/plan-your-cluster-basic.html"
+                ]
+            },
+            {
+                "title": "Create a Basic Cluster",
+                "urls": [
+                    "/cockroachcloud/create-a-basic-cluster.html"
+                ]
+            },
+            {
+                "title": "Connect to a Basic Cluster",
+                "urls": [
+                    "/cockroachcloud/connect-to-a-basic-cluster.html"
+                ]
+            },
+            {
+                "title": "Understand your Resource Usage",
+                "urls": [
+                    "/cockroachcloud/resource-usage-basic.html"
+                ]
+            },
+            {
+            "title": "Manage a Basic Cluster",
+            "urls": [
+                "/cockroachcloud/basic-cluster-management.html"
+                    ]
+            },
+            {
+                "title": "Use the Terraform provider",
+                "urls": [
+                    "/cockroachcloud/provision-a-cluster-with-terraform.html"
+                ]
+            },
+            {
+                "title": "Change a Cluster's Plan Between Basic and Standard",
+                "urls": [
+                    "/cockroachcloud/change-plan-between-basic-and-standard.html"
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Standard Deployments (Preview)",
+        "items": [
+            {
+            "title": "Plan a Standard Cluster",
+            "urls": [
+                "/cockroachcloud/plan-your-cluster.html"
+            ]
+            },
+            {
+            "title": "Create a Standard Cluster",
+            "urls": [
+                "/cockroachcloud/create-your-cluster.html"
+            ]
+            },
+            {
+            "title": "Connect to a Standard Cluster",
+            "urls": [
+                "/cockroachcloud/connect-to-your-cluster.html"
+            ]
+            },
+            {
+                "title": "Understand your Resource Usage",
+                "urls": [
+                    "/cockroachcloud/resource-usage.html"
+                ]
+            },
+            {
+            "title": "Manage a Standard Cluster",
+            "urls": [
+                "/cockroachcloud/cluster-management.html"
+            ]
+            },
+            {
+            "title": "Move into Production",
+            "urls": [
+                "/cockroachcloud/production-checklist.html"
+            ]
+            },
+            {
+            "title": "Provision a Standard Cluster with Terraform",
+            "urls": [
+                "/cockroachcloud/provision-a-cluster-with-terraform.html"
+            ]
+            },
+            {
+            "title": "Migrate from Standard to Advanced",
+            "urls": [
+                "/cockroachcloud/migrate-from-standard-to-advanced.html"
+            ]
+            },
+            {
+                "title": "Change a Cluster's Plan Between Basic and Standard",
+                "urls": [
+                    "/cockroachcloud/change-plan-between-basic-and-standard.html"
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Advanced Deployments",
+        "items": [
+            {
+            "title": "Plan an Advanced Cluster",
+            "urls": [
+                "/cockroachcloud/plan-your-cluster-advanced.html"
+            ]
+            },
+            {
+            "title": "Create an Advanced Cluster",
+            "urls": [
+                "/cockroachcloud/create-an-advanced-cluster.html"
+            ]
+            },
+            {
+            "title": "Connect to an Advanced Cluster",
+            "urls": [
+                "/cockroachcloud/connect-to-an-advanced-cluster.html"
+            ]
+            },
+            {
+            "title": "Manage an Advanced Cluster",
+            "urls": [
+                "/cockroachcloud/advanced-cluster-management.html"
+            ]
+            },
+            {
+            "title": "Move into Production",
+            "urls": [
+                "/cockroachcloud/production-checklist.html"
+            ]
+            },
+            {
+            "title": "Provision an Advanced Cluster with Terraform",
+            "urls": [
+                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=advanced"
+            ]
+            },
+            {
+            "title": "CockroachDB Advanced on Azure",
+            "urls": [
+                "/cockroachcloud/cockroachdb-advanced-on-azure.html"
+            ]
+            },
+            {
+            "title": "Migrate from Standard to Advanced",
+            "urls": [
+                "/cockroachcloud/migrate-from-standard-to-advanced.html"
+            ]
+            }
+        ]
+    },
+    {
+        "title": "CockroachDB Cloud Regions",
+        "urls": [
+            "/cockroachcloud/regions.html"
+        ]
+    },
+    {
+        "title": "Security",
+        "items": [
+            {
+                "title": "Overview",
+                "urls": [
+                "/cockroachcloud/security-overview.html"
+                ]
+            },
+            {
+              "title": "Manage AWS PrivateLink",
+              "urls": [
+                  "/cockroachcloud/aws-privatelink.html"
+              ]
+            },
+            {
+              "title": "Egress Private Endpoints",
+              "urls": [
+                  "/cockroachcloud/egress-private-endpoints.html"
+              ]
+            },
+            {
+              "title": "Customer-Managed Encryption Keys (CMEK)",
+              "items": [
+                  {
+                  "title": "Overview",
+                  "urls": [
+                      "/cockroachcloud/cmek.html"
+                  ]
+                  },
+                  {
+                  "title": "Manage CMEK",
+                  "urls": [
+                      "/cockroachcloud/managing-cmek.html"
+                  ]
+                  }
+              ]
+            },
+            {
+              "title": "Compliance",
+              "items": [
+                  {
+                      "title": "Compliance in Advanced",
+                      "urls": [
+                        "/cockroachcloud/compliance.html"
+                      ]
+                    },
+                  {
+                  "title": "PCI DSS",
+                  "urls": [
+                      "/cockroachcloud/pci-dss.html"
+                  ]
+                  }
+              ]
+            },
+            {
+              "title": "Authentication",
+                "items": [
+                    {
+                        "title": "Overview",
+                        "urls": [
+                            "/cockroachcloud/authentication.html"
+                        ]
+                    },
+                    {
+                        "title": "SSO for Cloud Organizations",
+                        "urls": [
+                            "/cockroachcloud/cloud-org-sso.html"
+                        ]
+                    },
+                    {
+                        "title": "Configure Cloud Organization SSO",
+                        "urls": [
+                            "/cockroachcloud/configure-cloud-org-sso.html"
+                        ]
+                    },
+                    {
+                        "title": "Configure SCIM Provisioning",
+                        "urls": [
+                            "/cockroachcloud/configure-scim-provisioning.html"
+                        ]
+                    },
+                    {
+                        "title": "Cluster SSO using the Cloud Console",
+                        "urls": [
+                        "/cockroachcloud/cloud-sso-sql.html"
+                        ]
+                    },
+                    {
+                        "title": "SQL Client Certificate Authentication for Advanced Clusters",
+                        "urls": [
+                        "/cockroachcloud/client-certs-advanced.html"
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Authorization",
+                "items": [
+                    {
+                        "title": "Overview",
+                        "urls": [
+                            "/cockroachcloud/authorization.html"
+                        ]
+                    },
+                    {
+                        "title": "Manage Users, Roles, and Service Accounts",
+                        "urls": [
+                            "/cockroachcloud/managing-access.html"
+                        ]
+                    },
+                    {
+                        "title": "Organize CockroachDB Cloud Clusters Using Folders",
+                        "urls": [
+                            "/cockroachcloud/folders.html"
+                        ]
+                    },
+                    {
+                        "title": "Organize CockroachDB Cloud Resources Using Labels",
+                        "urls": [
+                            "/cockroachcloud/labels.html"
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Network Authorization",
+                "items": [
+                    {
+                        "title": "Overview",
+                        "urls": [
+                            "/cockroachcloud/network-authorization.html"
+                        ]
+                    },
+                    {
+                        "title": "Create Private Clusters",
+                        "urls": [
+                            "/cockroachcloud/private-clusters.html"
+                        ]
+                        },
+                    {
+                        "title": "Egress Perimeter Controls",
+                        "urls": [
+                            "/cockroachcloud/egress-perimeter-controls.html"
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Audit Logs",
+                "items": [
+                    {
+                        "title": "SQL Audit Logging",
+                        "urls": [
+                            "/cockroachcloud/sql-audit-logging.html"
+                        ]
+                    },
+                    {
+                        "title": "Export Cloud Organization Audit Logs",
+                        "urls": [
+                        "/cockroachcloud/cloud-org-audit-logs.html"
+                        ]
+                    },
+                    {
+                        "title": "Export Logs From CockroachDB {{ site.data.products.standard }}",
+                        "urls": [
+                        "/cockroachcloud/export-logs.html"
+                        ]
+                    },
+                    {
+                        "title": "Export Logs From CockroachDB {{ site.data.products.advanced }}",
+                        "urls": [
+                        "/cockroachcloud/export-logs-advanced.html"
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Security Tutorials",
+                "items": [
+                    {
+                        "title": "Configure SQL Authentication",
+                        "urls": [
+                            "/${VERSION}/security-reference/config-secure-hba.html"
+                        ]
+                    },
+                    {
+                        "title": "Satori",
+                        "urls": [
+                            "/${VERSION}/satori-integration.html"
+                        ]
+                    },
+                    {
+                        "title": "HashiCorp Vault",
+                        "urls": [
+                            "/${VERSION}/hashicorp-integration.html"
+                        ]
+                    }
+                ]
+            }
+            ]
+        },
+        {
+            "title": "Monitoring and Alerting",
+                "items": [
+                  {
+                    "title": "Cluster Overview Page",
+                    "urls": [
+                      "/cockroachcloud/cluster-overview-page.html"
+                    ]
+                  },
+                  {
+                    "title": "Alerts Page",
+                    "urls": [
+                      "/cockroachcloud/alerts-page.html"
+                    ]
+                  },
+                  {
+                    "title": "Tools Page",
+                    "urls": [
+                      "/cockroachcloud/tools-page.html"
+                    ]
+                  },
+                  {
+                    "title": "Metrics",
+                        "items": [
+                            {
+                                "title": "Metrics Overview",
+                                "urls": [
+                                "/cockroachcloud/metrics.html"
+                                ]
+                            },
+                            {
+                                "title": "Overview tab",
+                                "urls": [
+                                "/cockroachcloud/metrics-overview.html"
+                                ]
+                            },
+                            {
+                                "title": "SQL",
+                                "urls": [
+                                "/cockroachcloud/metrics-sql.html"
+                                ]
+                            },
+                            {
+                                "title": "Changefeeds",
+                                "urls": [
+                                "/cockroachcloud/metrics-changefeeds.html"
+                                ]
+                            },
+                            {
+                                "title": "Row-Level TTL",
+                                "urls": [
+                                "/cockroachcloud/metrics-row-level-ttl.html"
+                                ]
+                            },
+                            {
+                                "title": "Request Units",
+                                "urls": [
+                                "/cockroachcloud/metrics-request-units.html"
+                                ]
+                            },
+                            {
+                                "title": "Custom",
+                                "urls": [
+                                "/cockroachcloud/custom-metrics-chart-page.html"
+                                ]
+                            },
+                            {
+                                "title": "Export Metrics from {{ site.data.products.standard }}",
+                                "urls": [
+                                  "/cockroachcloud/export-metrics.html"
+                                ]
+                            },
+                            {
+                                "title": "Export Metrics from {{ site.data.products.advanced }}",
+                                "urls": [
+                                  "/cockroachcloud/export-metrics-advanced.html"
+                                ]
+                            },
+                            {
+                                "title": "Essential Metrics for {{ site.data.products.standard }}",
+                                "urls": [
+                                "/cockroachcloud/metrics-essential.html"
+                                ]
+                            },
+                            {
+                                "title": "Essential Metrics for {{ site.data.products.advanced }}",
+                                "urls": [
+                                  "/${VERSION}/essential-metrics-advanced.html"
+                                ]
+                            },
+                            {
+                              "title": "Essential Alerts for CockroachDB {{ site.data.products.advanced }} Deployments",
+                              "urls": [
+                                "/${VERSION}/essential-alerts-advanced.html"
+                              ]
+                            }
+                        ]
+                  },
+                  {
+                    "title": "SQL Activity Page",
+                        "items": [
+                            {
+                                "title": "Statements Page",
+                                "urls": [
+                                "/cockroachcloud/statements-page.html"
+                                ]
+                            },
+                            {
+                                "title": "Sessions Page",
+                                "urls": [
+                                "/cockroachcloud/sessions-page.html"
+                                ]
+                            },
+                            {
+                                "title": "Transactions Page",
+                                "urls": [
+                                "/cockroachcloud/transactions-page.html"
+                                ]
+                            }
+                        ]
+                  },
+                  {
+                    "title": "Insights Page",
+                    "urls": [
+                      "/cockroachcloud/insights-page.html"
+                    ]
+                  },
+                  {
+                    "title": "Databases Page",
+                    "urls": [
+                      "/cockroachcloud/databases-page.html"
+                    ]
+                  },
+                  {
+                    "title": "Jobs Page",
+                    "urls": [
+                      "/cockroachcloud/jobs-page.html"
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "Backups and Restores",
+                "items": [
+                    {
+                        "title": "Overview",
+                        "urls": [
+                          "/cockroachcloud/backup-and-restore-overview.html"
+                        ]
+                    },
+                    {
+                        "title": "Managed Backups",
+                        "items": [
+                            {
+                                "title": "Managed Backups for Basic Clusters",
+                                "urls": [
+                                  "/cockroachcloud/managed-backups-basic.html"
+                                ]
+                            },
+                            {
+                                "title": "Managed Backups for Standard Clusters",
+                                "urls": [
+                                  "/cockroachcloud/managed-backups.html"
+                                ]
+                            },
+                            {
+                                "title": "Managed Backups for Advanced Clusters",
+                                "urls": [
+                                  "/cockroachcloud/managed-backups-advanced.html"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Take and Restore Self-Managed Backups",
+                        "urls": [
+                          "/cockroachcloud/take-and-restore-self-managed-backups.html"
+                        ]
+                    },
+                    {
+                        "title": "Monitoring",
+                        "urls": [
+                          "/cockroachcloud/backup-and-restore-monitoring.html"
+                        ]
+                    }
+                ]
+              },
+              {
+                "title": "Physical Cluster Replication",
+                "urls": [
+                    "/cockroachcloud/physical-cluster-replication.html"
+                ]
+              },
+              {
+                "title": "Billing Management",
+                "urls": [
+                   "/cockroachcloud/billing-management.html"
+                ]
+              },
+              {
+                "title": "Upgrade",
+                "items": [
+                    {
+                        "title": "CockroachDB Cloud Upgrade Policy",
+                        "urls": [
+                            "/cockroachcloud/upgrade-policy.html"
+                        ]
+                    },
+                    {
+                        "title": "Upgrade a cluster",
+                        "urls": [
+                            "/cockroachcloud/upgrade-cockroach-version.html"
+                        ]
+                    }
+                ]
+              },
+              {
+                "title": "SQL Shell",
+                "urls": [
+                  "/cockroachcloud/sql-shell.html"
+                ]
+              },
+              {
+                "title": "CockroachDB Cloud API",
+                "urls": [
+                  "/cockroachcloud/cloud-api.html"
+                ]
+              },
+              {
+                "title": "<code>ccloud</code> CLI",
+                "urls": [
+                  "/cockroachcloud/ccloud-get-started.html"
+                ]
+              }
+    ]
+}

@@ -71,7 +71,7 @@ To rotate a node certificate, you create a new node certificate and key and relo
     pkill -SIGHUP -x cockroach
     ~~~
 
-    The `SIGHUP` signal must be sent by the same user running the process (e.g., run with `sudo` if the `cockroach` process is running under user `root`).
+    The `SIGHUP` signal must be sent by the same user running the process or by a user with adequate privileges to send signals to processes owned by another user, such as a user with `sudo` access.
 
 1. Verify that certificate rotation was successful using the **Local Node Certificates** page in the DB Console: `https://<address of node with new certs>:8080/#/reports/certificates/local`.
 

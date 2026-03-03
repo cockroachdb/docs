@@ -11,7 +11,7 @@
               ]
             },
             {
-              "title": "<code>ALTER BACKUP</code> (Enterprise)",
+              "title": "<code>ALTER BACKUP</code>",
               "urls": [
                 "/${VERSION}/alter-backup.html"
               ]
@@ -23,7 +23,7 @@
               ]
             },
             {
-              "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
+              "title": "<code>ALTER CHANGEFEED</code>",
               "urls": [
                 "/${VERSION}/alter-changefeed.html"
               ]
@@ -53,9 +53,15 @@
               ]
             },
             {
-              "title": "<code>ALTER PARTITION</code> (Enterprise)",
+              "title": "<code>ALTER PARTITION</code>",
               "urls": [
                 "/${VERSION}/alter-partition.html"
+              ]
+            },
+            {
+              "title": "<code>ALTER PROCEDURE</code>",
+              "urls": [
+                "/${VERSION}/alter-procedure.html"
               ]
             },
             {
@@ -125,6 +131,12 @@
               ]
             },
             {
+              "title": "<code>CALL</code>",
+              "urls": [
+                "/${VERSION}/call.html"
+              ]
+            },
+            {
               "title": "<code>CANCEL JOB</code>",
               "urls": [
                 "/${VERSION}/cancel-job.html"
@@ -155,13 +167,13 @@
               ]
             },
             {
-              "title": "<code>COPY FROM</code>",
+              "title": "<code>COPY</code>",
               "urls": [
-                "/${VERSION}/copy-from.html"
+                "/${VERSION}/copy.html"
               ]
             },
             {
-              "title": "<code>CREATE CHANGEFEED</code> (Enterprise)",
+              "title": "<code>CREATE CHANGEFEED</code>",
               "urls": [
                 "/${VERSION}/create-changefeed.html"
               ]
@@ -188,6 +200,12 @@
               "title": "<code>CREATE INDEX</code>",
               "urls": [
                 "/${VERSION}/create-index.html"
+              ]
+            },
+            {
+              "title": "<code>CREATE PROCEDURE</code>",
+              "urls": [
+                "/${VERSION}/create-procedure.html"
               ]
             },
             {
@@ -302,6 +320,12 @@
               "title": "<code>DROP INDEX</code>",
               "urls": [
                 "/${VERSION}/drop-index.html"
+              ]
+            },
+            {
+              "title": "<code>DROP PROCEDURE</code>",
+              "urls": [
+                "/${VERSION}/drop-procedure.html"
               ]
             },
             {
@@ -503,7 +527,7 @@
               ]
             },
             {
-              "title": "<code>SELECT FOR UPDATE</code>",
+              "title": "<code>FOR UPDATE</code> and <code>FOR SHARE</code>",
               "urls": [
                 "/${VERSION}/select-for-update.html"
               ]
@@ -617,7 +641,7 @@
               ]
             },
             {
-              "title": "<code>SHOW PARTITIONS</code> (Enterprise)",
+              "title": "<code>SHOW PARTITIONS</code>",
               "urls": [
                 "/${VERSION}/show-partitions.html"
               ]
@@ -835,6 +859,12 @@
               "title": "User-Defined Functions",
               "urls": [
                 "/${VERSION}/user-defined-functions.html"
+              ]
+            },
+            {
+              "title": "Stored Procedures",
+              "urls": [
+                "/${VERSION}/stored-procedures.html"
               ]
             },
             {
@@ -1188,6 +1218,12 @@
           "title": "Session Variables",
           "urls": [
             "/${VERSION}/session-variables.html"
+          ]
+        },
+        {
+          "title": "PL/pgSQL",
+          "urls": [
+            "/${VERSION}/plpgsql.html"
           ]
         }
       ]

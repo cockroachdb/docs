@@ -1,0 +1,1 @@
+{% include_cached new-in.html version="v23.2" %} To prevent changefeeds from emitting deletes issued by all TTL jobs on a cluster, set the `sql.ttl.changefeed_replication.disabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.

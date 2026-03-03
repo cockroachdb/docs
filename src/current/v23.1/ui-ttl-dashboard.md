@@ -21,7 +21,7 @@ You can monitor the **Processing Rate** graph to see how many rows per second ar
 
 | Metric        | Description                                 |
 |---------------+---------------------------------------------|
-| rows selected | The number of rows selected by the TTL job. |
+| rows selected | The number of rows selected for deletion by the TTL job. |
 | rows deleted  | The number of rows deleted by the TTL job.  |
 
 ## Estimated Rows

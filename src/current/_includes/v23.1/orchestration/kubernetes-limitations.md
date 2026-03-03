@@ -2,9 +2,9 @@
 
 To deploy CockroachDB {{page.version.version}}, Kubernetes 1.18 or higher is required. Cockroach Labs strongly recommends that you use a Kubernetes version that is [eligible for patch support by the Kubernetes project](https://kubernetes.io/releases/).
 
-#### Kubernetes Operator
+#### Public kubernetes Operator
 
-- The CockroachDB Kubernetes Operator currently deploys clusters in a single region. For multi-region deployments using manual configs, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}).
+- The {{ site.data.products.public-operator }} currently deploys clusters in a single region. For multi-region deployments using manual configs, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}).
 
 - Using the Operator, you can give a new cluster an arbitrary number of [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/). However, a cluster's labels cannot be modified after it is deployed. To track the status of this limitation, refer to [#993](https://github.com/cockroachdb/cockroach-operator/issues/993) in the Operator project's issue tracker.
 
@@ -34,4 +34,4 @@ When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB
 
 #### Storage
 
-At this time, orchestrations of CockroachDB with Kubernetes use external persistent volumes that are often replicated by the provider. Because CockroachDB already replicates data automatically, this additional layer of replication is unnecessary and can negatively impact performance. High-performance use cases on a private Kubernetes cluster may want to consider using [local volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local).
+Kubernetes deployments use external persistent volumes that are often replicated by the provider. CockroachDB replicates data automatically, and this redundant layer of replication can impact performance. Using [local volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local) may improve performance.

@@ -79,6 +79,18 @@ Workload | Description
 {% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %}
 {{site.data.alerts.end}}
 
+### All workloads
+
+All workloads support the following flags:
+
+Flag | Description
+-----|------------
+`--max-conn-lifetime` | The maximum duration of a connection. Default: `300s`
+`--max-conn-lifetime-jitter` | The maximum jitter when tearing down a connection. Default: `30s`
+`--max-conn-idle-time` | The maximum idle time for a connection. Default: `150s`
+`--conn-healthcheck-period` | The connection health check interval. Default: `30s`
+`--min-conns` | The minimum number of connections in the connection pool. Default: `0`
+
 ### `bank` workload
 
 Flag | Description

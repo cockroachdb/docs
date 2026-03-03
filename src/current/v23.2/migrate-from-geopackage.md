@@ -27,7 +27,7 @@ To follow along with the example below, you will need the following prerequisite
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_dnr/env_mn_springs_inventory/gpkg_env_mn_springs_inventory.zip
+    curl -o gpkg_env_mn_springs_inventory.zip https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_dnr/env_mn_springs_inventory/gpkg_env_mn_springs_inventory.zip
     ~~~
 
 1. Unzip the file:
@@ -104,9 +104,9 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
 - [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Migrate from MySQL][mysql]
-- [Migrate from PostgreSQL][postgres]
+- [Migration Overview]({% link molt/migration-overview.md %})
+- [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)
+- [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %})
 - [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

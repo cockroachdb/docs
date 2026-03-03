@@ -1,4 +1,4 @@
-In this example, you'll set up a core changefeed for a single-node cluster.
+In this example, you'll set up a basic changefeed for a single-node cluster.
 
 1. In a terminal window, start `cockroach`:
 
@@ -44,7 +44,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
     > INSERT INTO foo VALUES (0);
     ~~~
 
-1. Start the core changefeed:
+1. Start the basic changefeed:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -62,13 +62,13 @@ In this example, you'll set up a core changefeed for a single-node cluster.
     $ cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
     ~~~
 
-1. Back in the terminal where the core changefeed is streaming, the following output has appeared:
+1. Back in the terminal where the basic changefeed is streaming, the following output has appeared:
 
     ~~~
     foo,[1],"{""after"": {""a"": 1}}"
     ~~~
 
-    Note that records may take a couple of seconds to display in the core changefeed.
+    Note that records may take a couple of seconds to display in the basic changefeed.
 
 1. To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
 
