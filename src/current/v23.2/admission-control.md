@@ -136,6 +136,8 @@ Organizing operations by priority can mean that higher priority operations consu
 
 ## Considerations
 
+To prevent unnecessary queuing in admission control CPU queues, set the `goschedstats.always_use_short_sample_period.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-goschedstats-always-use-short-sample-period-enabled) to `true` for any [production cluster]({% link {{ page.version.version }}/recommended-production-settings.md %}).
+
 [Client connections]({% link {{ page.version.version }}/connection-parameters.md %}) are not managed by the admission control subsystem. Too many connections per [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) can also lead to cluster overload. 
 
 {% include {{page.version.version}}/sql/server-side-connection-limit.md %}

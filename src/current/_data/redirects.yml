@@ -1067,3 +1067,20 @@
     - v24.3/cockroachdb-in-comparison.md
     - v25.1/cockroachdb-in-comparison.md
 
+# page deletion project
+
+- destination: stable/sql-statements.md
+  sources: ['cockroachcloud/learn-cockroachdb-sql.md']
+
+- destination: cockroachcloud/client-certs-advanced.md
+  sources: ['v26.1/security-reference/config-secure-hba.md', 'stable/security-reference/config-secure-hba.md']
+
+- destination: cockroachcloud/security-overview.md
+  sources: ['v26.1/satori-integration.md', 'stable/satori-integration.md']
+
+- destination: cockroachdb-operator-overview.md
+  sources: ['orchestrate-a-local-cluster-with-kubernetes.md', 'orchestrate-a-local-cluster-with-kubernetes-insecure.md']
+  versions: ['v26.1']
+
+
+
