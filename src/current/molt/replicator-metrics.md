@@ -87,7 +87,7 @@ Use the Replicator Grafana dashboard [bundled with your binary]({% link molt/mol
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-Use the Replicator Grafana dashboards [bundled with your binary]({% link molt/molt-replicator.md %}#installation) to visualize metrics. The general Replicator dashboard (`replicator_grafana_dashboard.json`) displays overall replication metrics, and the Oracle-specific dashboard (`replicator_oracle_grafana_dashboard.json`) displays [Oracle source metrics](#oracle-source). The bundled dashboards match your binary version. Alternatively, you can download the latest dashboards for [Replicator](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) and [Oracle source metrics](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
+Use the Replicator Grafana dashboards [bundled with your binary]({% link molt/molt-replicator.md %}#installation) to visualize metrics. The general Replicator dashboard (`replicator_grafana_dashboard.json`) displays overall replication metrics, and the Oracle-specific dashboard (`replicator_oracle_grafana_dashboard.json`) displays [Oracle source metrics](#source-read). The bundled dashboards match your binary version. Alternatively, you can download the latest dashboards for [Replicator](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) and [Oracle source metrics](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
 </section>
 
 ## Overall replication metrics
