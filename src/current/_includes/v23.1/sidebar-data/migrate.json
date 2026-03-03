@@ -9,36 +9,42 @@
       ]
     },
     {
-      "title": "Migration Strategy",
-      "urls": [
-        "/molt/migration-strategy.html"
-      ]
-    },
-    {
-      "title": "Migration Flows",
+      "title": "Migration Considerations",
       "items": [
         {
-          "title": "Bulk Load",
+          "title": "Overview",
           "urls": [
-            "/molt/migrate-bulk-load.html"
+            "/molt/migration-considerations.html"
           ]
         },
         {
-          "title": "Load and Replicate Separately",
+          "title": "Migration Granularity",
           "urls": [
-            "/molt/migrate-load-replicate.html"
+            "/molt/migration-considerations-granularity.html"
           ]
         },
         {
-          "title": "Resume Replication",
+          "title": "Continuous Replication",
           "urls": [
-            "/molt/migrate-resume-replication.html"
+            "/molt/migration-considerations-replication.html"
           ]
         },
         {
-          "title": "Failback",
+          "title": "Data Transformation Strategy",
           "urls": [
-            "/molt/migrate-failback.html"
+            "/molt/migration-considerations-transformation.html"
+          ]
+        },
+        {
+          "title": "Validation Strategy",
+          "urls": [
+            "/molt/migration-considerations-validation.html"
+          ]
+        },
+        {
+          "title": "Rollback Plan",
+          "urls": [
+            "/molt/migration-considerations-rollback.html"
           ]
         }
       ]
@@ -46,7 +52,7 @@
     {
       "title": "MOLT Tools",
       "items": [
-        {
+{
           "title": "Schema Conversion Tool",
           "urls": [
             "/cockroachcloud/migrations-page.html"
@@ -54,8 +60,43 @@
         },
         {
           "title": "Fetch",
-          "urls": [
-            "/molt/molt-fetch.html"
+          "items": [
+            {
+              "title": "Guide",
+              "urls": [
+                "/molt/molt-fetch.html"
+              ]
+            },
+            {
+              "title": "Installation",
+              "urls": [
+                "/molt/molt-fetch-installation.html"
+              ]
+            },
+            {
+              "title": "Commands and Flags",
+              "urls": [
+                "/molt/molt-fetch-commands-and-flags.html"
+              ]
+            },
+            {
+              "title": "Metrics",
+              "urls": [
+                "/molt/molt-fetch-monitoring.html"
+              ]
+            },
+            {
+              "title": "Best Practices",
+              "urls": [
+                "/molt/molt-fetch-best-practices.html"
+              ]
+            },
+            {
+              "title": "Troubleshooting",
+              "urls": [
+                "/molt/molt-fetch-troubleshooting.html"
+              ]
+            }
           ]
         },
         {
@@ -68,15 +109,68 @@
               ]
             },
             {
-              "title": "Flags",
+              "title": "Installation",
+              "urls": [
+                "/molt/molt-replicator-installation.html"
+              ]
+            },
+            {
+              "title": "Commands and Flags",
               "urls": [
                 "/molt/replicator-flags.html"
+              ]
+            },
+            {
+              "title": "Userscripts",
+              "items": [
+                {
+                  "title": "Overview",
+                  "urls": [
+                    "/molt/userscript-overview.html"
+                  ]
+                },
+                {
+                  "title": "Quickstart",
+                  "urls": [
+                    "/molt/userscript-quickstart.html"
+                  ]
+                },
+                {
+                  "title": "API",
+                  "urls": [
+                    "/molt/userscript-api.html"
+                  ]
+                },
+                {
+                  "title": "Cookbook",
+                  "urls": [
+                    "/molt/userscript-cookbook.html"
+                  ]
+                },
+                {
+                  "title": "Metrics",
+                  "urls": [
+                    "/molt/userscript-metrics.html"
+                  ]
+                }
               ]
             },
             {
               "title": "Metrics",
               "urls": [
                 "/molt/replicator-metrics.html"
+              ]
+            },
+            {
+              "title": "Best Practices",
+              "urls": [
+                "/molt/molt-replicator-best-practices.html"
+              ]
+            },
+            {
+              "title": "Troubleshooting",
+              "urls": [
+                "/molt/molt-replicator-troubleshooting.html"
               ]
             }
           ]
@@ -85,6 +179,127 @@
           "title": "Verify",
           "urls": [
             "/molt/molt-verify.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Common Migration Approaches",
+      "items": [
+        {
+          "title": "Classic Bulk Load Migration",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/migration-approach-classic-bulk-load.html"
+              ]
+            },
+            {
+              "title": "From PostgreSQL",
+              "urls": [
+                "/molt/classic-bulk-load-postgres.html"
+              ]
+            },
+            {
+              "title": "From MySQL",
+              "urls": [
+                "/molt/classic-bulk-load-mysql.html"
+              ]
+            },
+            {
+              "title": "From Oracle",
+              "urls": [
+                "/molt/classic-bulk-load-oracle.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Phased Bulk Load Migration",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/migration-approach-phased-bulk-load.html"
+              ]
+            },
+            {
+              "title": "From PostgreSQL",
+              "urls": [
+                "/molt/phased-bulk-load-postgres.html"
+              ]
+            },
+            {
+              "title": "From MySQL",
+              "urls": [
+                "/molt/phased-bulk-load-mysql.html"
+              ]
+            },
+            {
+              "title": "From Oracle",
+              "urls": [
+                "/molt/phased-bulk-load-oracle.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Delta Migration",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/migration-approach-delta.html"
+              ]
+            },
+            {
+              "title": "From PostgreSQL",
+              "urls": [
+                "/molt/delta-migration-postgres.html"
+              ]
+            },
+            {
+              "title": "From MySQL",
+              "urls": [
+                "/molt/delta-migration-mysql.html"
+              ]
+            },
+            {
+              "title": "From Oracle",
+              "urls": [
+                "/molt/delta-migration-oracle.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Phased Delta Migration with Failback Replication",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/molt/migration-approach-phased-delta-failback.html"
+              ]
+            },
+            {
+              "title": "From PostgreSQL",
+              "urls": [
+                "/molt/phased-delta-failback-postgres.html"
+              ]
+            },
+            {
+              "title": "From MySQL",
+              "urls": [
+                "/molt/phased-delta-failback-mysql.html"
+              ]
+            },
+            {
+              "title": "From Oracle",
+              "urls": [
+                "/molt/phased-delta-failback-oracle.html"
+              ]
+            }
           ]
         }
       ]
