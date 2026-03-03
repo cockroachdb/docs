@@ -1082,5 +1082,22 @@
   sources: ['orchestrate-a-local-cluster-with-kubernetes.md', 'orchestrate-a-local-cluster-with-kubernetes-insecure.md']
   versions: ['v26.1']
 
+- destination: deploy-cockroachdb-on-premises.md
+  sources: ['deploy-cockroachdb-on-premises-insecure.md']
+  versions: ['v26.1']
 
+- destination: deploy-cockroachdb-on-aws.md
+  sources: ['deploy-cockroachdb-on-aws-insecure.md']
+  versions: ['v26.1']
 
+- destination: deploy-cockroachdb-on-microsoft-azure.md
+  sources: ['deploy-cockroachdb-on-microsoft-azure-insecure.md']
+  versions: ['v26.1']
+
+- destination: deploy-cockroachdb-on-google-cloud-platform.md
+  sources: ['deploy-cockroachdb-on-google-cloud-platform-insecure.md']
+  versions: ['v26.1']
+
+- destination: deploy-cockroachdb-on-digital-ocean.md
+  sources: ['deploy-cockroachdb-on-digital-ocean-insecure.md']
+  versions: ['v26.1']
