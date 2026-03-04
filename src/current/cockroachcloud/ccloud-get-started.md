@@ -591,7 +591,7 @@ To update the backup configuration:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster backup config update blue-dog --enabled true --frequency-minutes 120 --retention-days 60
+ccloud cluster backup config update blue-dog --enabled true --frequency 120 --retention 60
 ~~~
 
 ~~~
@@ -601,7 +601,7 @@ Success! Updated backup configuration
 
 ## Restore from a backup using `ccloud cluster restore`
 
-Use the `ccloud cluster restore` commands to list and create restores from backups.
+Use the `ccloud cluster restore` commands to list and create restore operations from backups.
 
 To list restores for a cluster:
 
@@ -612,22 +612,38 @@ ccloud cluster restore list blue-dog
 
 ~~~
 ∙∙∙ Retrieving restores...
-ID                                    STATUS     STARTED AT            FINISHED AT           BACKUP ID
-c3d4e5f6-a7b8-9012-cdef-123456789012  COMPLETE   2026-03-01 12:00:00Z  2026-03-01 12:15:00Z  a1b2c3d4-e5f6-7890-abcd-ef1234567890
+ID                                    BACKUP ID                             TYPE     STATUS     COMPLETION %  CREATED AT
+c3d4e5f6-a7b8-9012-cdef-123456789012  a1b2c3d4-e5f6-7890-abcd-ef1234567890  CLUSTER  COMPLETE   100%          2026-03-01 12:00:00Z
 ~~~
 
-To restore from a specific backup:
+To restore from a specific backup to a destination cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster restore create blue-dog a1b2c3d4-e5f6-7890-abcd-ef1234567890
+ccloud cluster restore create blue-dog --backup-id a1b2c3d4-e5f6-7890-abcd-ef1234567890
 ~~~
 
 ~~~
 ∙∙∙ Creating restore...
-Success! Created restore
- id: d4e5f6a7-b8c9-0123-defa-234567890123
- backup: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Successfully initiated restore
+Restore ID: d4e5f6a7-b8c9-0123-defa-234567890123
+Backup ID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Type: CLUSTER
+Status: RUNNING
+~~~
+
+If you are restoring from a different cluster, specify the source cluster ID:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster restore create blue-dog --source-cluster-id a1b2c3d4-e5f6-7890-abcd-ef1234567890
+~~~
+
+You can also specify the restore type (`CLUSTER`, `DATABASE`, or `TABLE`) using the `--type` flag:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster restore create blue-dog --backup-id a1b2c3d4-e5f6-7890-abcd-ef1234567890 --type DATABASE
 ~~~
 
 ## List available CockroachDB versions using `ccloud cluster versions`
@@ -670,14 +686,16 @@ To set the deferral policy:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster version-deferral set blue-dog FIXED_DEFERRAL
+ccloud cluster version-deferral set blue-dog --policy DEFERRAL_60_DAYS
 ~~~
 
 ~~~
 ∙∙∙ Setting version deferral...
 Success! Set version deferral policy
- policy: FIXED_DEFERRAL
+ policy: DEFERRAL_60_DAYS
 ~~~
+
+Valid deferral policies are `NOT_DEFERRED`, `DEFERRAL_30_DAYS`, `DEFERRAL_60_DAYS`, and `DEFERRAL_90_DAYS`.
 
 ## Manage blackout windows using `ccloud cluster blackout-window`
 
@@ -726,7 +744,7 @@ Success! Deleted blackout window
 
 ## Manage maintenance windows using `ccloud cluster maintenance`
 
-Use the `ccloud cluster maintenance` commands to configure the preferred maintenance window for a CockroachDB {{ site.data.products.advanced }} cluster. The maintenance window determines when automatic maintenance operations are performed.
+Use the `ccloud cluster maintenance` commands to configure the preferred maintenance window for a CockroachDB {{ site.data.products.advanced }} cluster. The maintenance window determines when automatic maintenance operations are performed. The window duration must be at least 6 hours and less than 1 week.
 
 To get the current maintenance window:
 
@@ -737,22 +755,31 @@ ccloud cluster maintenance get blue-dog
 
 ~~~
 ∙∙∙ Retrieving maintenance window...
-DAY   HOUR (UTC)
-MON   3
+Cluster: blue-dog
+Window Start: Tuesday 02:00 UTC
+Window Duration: 6h
 ~~~
 
-To set a maintenance window:
+To set a maintenance window using `--day` and `--hour`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster maintenance set blue-dog --day MON --hour 3
+ccloud cluster maintenance set blue-dog --day tuesday --hour 2 --duration 6h
 ~~~
 
 ~~~
 ∙∙∙ Setting maintenance window...
 Success! Set maintenance window
- day: MON
- hour: 3
+Cluster: blue-dog
+Window Start: Tuesday 02:00 UTC
+Window Duration: 6h
+~~~
+
+Alternatively, you can specify the window start time as a raw offset from Monday 00:00 UTC using `--offset`:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster maintenance set blue-dog --offset 26h --duration 6h
 ~~~
 
 To delete (reset) the maintenance window:
@@ -764,14 +791,14 @@ ccloud cluster maintenance delete blue-dog
 
 ~~~
 ∙∙∙ Deleting maintenance window...
-Success! Deleted maintenance window
+Success! Deleted maintenance window for cluster blue-dog
 ~~~
 
-## Manage disruption budget using `ccloud cluster disruption`
+## Simulate cluster disruptions using `ccloud cluster disruption`
 
-Use the `ccloud cluster disruption` commands to manage the disruption budget for a CockroachDB {{ site.data.products.advanced }} cluster. The disruption budget controls the maximum number of nodes that can be unavailable simultaneously during maintenance operations.
+Use the `ccloud cluster disruption` commands to simulate cluster disruptions for disaster recovery testing on a CockroachDB {{ site.data.products.advanced }} cluster. Disruptions allow you to test how your applications behave when parts of your cluster become unavailable.
 
-To get the current disruption budget:
+To get the current disruption status:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -779,25 +806,30 @@ ccloud cluster disruption get blue-dog
 ~~~
 
 ~~~
-∙∙∙ Retrieving disruption budget...
-MAX UNAVAILABLE
-1
+∙∙∙ Retrieving disruption status...
+No disruptions active
 ~~~
 
-To set the disruption budget:
+To disrupt an entire region:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster disruption set blue-dog --max-unavailable 2
+ccloud cluster disruption set blue-dog --region us-east-1 --whole-region
 ~~~
 
 ~~~
-∙∙∙ Setting disruption budget...
-Success! Set disruption budget
- max unavailable: 2
+∙∙∙ Setting disruption...
+Successfully set disruption for region us-east-1
 ~~~
 
-To clear the disruption budget and reset it to the default:
+To disrupt specific availability zones within a region:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster disruption set blue-dog --region us-east-1 --azs us-east-1a,us-east-1b
+~~~
+
+To clear all disruptions and restore normal operation:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -805,8 +837,8 @@ ccloud cluster disruption clear blue-dog
 ~~~
 
 ~~~
-∙∙∙ Clearing disruption budget...
-Success! Cleared disruption budget
+∙∙∙ Clearing disruptions...
+Successfully cleared all disruptions
 ~~~
 
 ## View CMEK configuration using `ccloud cluster cmek`
@@ -837,20 +869,26 @@ ccloud cluster log-export get blue-dog
 
 ~~~
 ∙∙∙ Retrieving log export configuration...
-STATUS    TYPE             AUTH PRINCIPAL                         LOG GROUP
-ENABLED   AWS_CLOUDWATCH   arn:aws:iam::123456789:role/log-role  /cockroachdb/blue-dog
+Cluster: blue-dog
+Log Export Status: ENABLED
+Type: AWS_CLOUDWATCH
+Log Name: cockroach-logs
+Auth Principal: arn:aws:iam::123456789:role/CockroachCloudLogExport
 ~~~
 
 To enable log export to AWS CloudWatch:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster log-export enable blue-dog --type AWS_CLOUDWATCH --auth-principal arn:aws:iam::123456789:role/log-role --log-group /cockroachdb/blue-dog --region us-east-1
+ccloud cluster log-export enable blue-dog --type AWS_CLOUDWATCH --auth-principal arn:aws:iam::123456789:role/CockroachCloudLogExport --log-name cockroach-logs
 ~~~
 
 ~~~
 ∙∙∙ Enabling log export...
 Success! Enabled log export
+Cluster: blue-dog
+Type: AWS_CLOUDWATCH
+Status: ENABLING
 ~~~
 
 To disable log export:
@@ -862,7 +900,7 @@ ccloud cluster log-export disable blue-dog
 
 ~~~
 ∙∙∙ Disabling log export...
-Success! Disabled log export
+Success! Disabled log export for cluster blue-dog
 ~~~
 
 ## Configure metric export using `ccloud cluster metric-export`
@@ -960,23 +998,25 @@ ccloud cluster networking egress-rule list blue-dog
 
 ~~~
 ∙∙∙ Retrieving egress rules...
-ID                                    NAME           TYPE  DESTINATION        STATE
-f6a7b8c9-d0e1-2345-fab0-456789012345  allow-s3       FQDN  s3.amazonaws.com   ACTIVE
-a7b8c9d0-e1f2-3456-ab01-567890123456  allow-subnet   CIDR  10.0.0.0/8         ACTIVE
+ID                                    NAME           TYPE  DESTINATION        DESCRIPTION
+f6a7b8c9-d0e1-2345-fab0-456789012345  allow-s3       FQDN  s3.amazonaws.com   Allow S3 access
+a7b8c9d0-e1f2-3456-ab01-567890123456  allow-subnet   CIDR  10.0.0.0/8         Internal network
 ~~~
 
 To create an egress rule:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking egress-rule create blue-dog --name allow-s3 --type FQDN --destination s3.amazonaws.com --ports 443
+ccloud cluster networking egress-rule create blue-dog --name allow-s3 --type FQDN --destination s3.amazonaws.com --description "Allow S3 access"
 ~~~
 
 ~~~
 ∙∙∙ Creating egress rule...
-Success! Created egress rule
- id: f6a7b8c9-d0e1-2345-fab0-456789012345
- name: allow-s3
+Successfully created egress rule
+ID: f6a7b8c9-d0e1-2345-fab0-456789012345
+Name: allow-s3
+Type: FQDN
+Destination: s3.amazonaws.com
 ~~~
 
 To delete an egress rule:
@@ -988,13 +1028,12 @@ ccloud cluster networking egress-rule delete blue-dog f6a7b8c9-d0e1-2345-fab0-45
 
 ~~~
 ∙∙∙ Deleting egress rule...
-Success! Deleted egress rule
- id: f6a7b8c9-d0e1-2345-fab0-456789012345
+Successfully deleted egress rule 'f6a7b8c9-d0e1-2345-fab0-456789012345'
 ~~~
 
 ## Manage egress private endpoints using `ccloud cluster networking egress-private-endpoint`
 
-Use the `ccloud cluster networking egress-private-endpoint` commands to manage egress private endpoint connections from a CockroachDB {{ site.data.products.advanced }} cluster.
+Use the `ccloud cluster networking egress-private-endpoint` commands to manage egress private endpoint connections from a CockroachDB {{ site.data.products.advanced }} cluster. Egress private endpoints allow your cluster to connect to external services using private network connectivity.
 
 To list egress private endpoints:
 
@@ -1005,8 +1044,8 @@ ccloud cluster networking egress-private-endpoint list blue-dog
 
 ~~~
 ∙∙∙ Retrieving egress private endpoints...
-ID                                    NAME          STATUS   SERVICE NAME
-b8c9d0e1-f2a3-4567-b012-678901234567  my-endpoint   ACTIVE   com.amazonaws.vpce.us-east-1.vpce-svc-012345abcdef
+ID                                    REGION       STATE    TARGET SERVICE
+b8c9d0e1-f2a3-4567-b012-678901234567  us-east-1    ACTIVE   com.amazonaws.vpce.us-east-1.vpce-svc-012345abcdef
 ~~~
 
 To get details of an egress private endpoint:
@@ -1016,19 +1055,33 @@ To get details of an egress private endpoint:
 ccloud cluster networking egress-private-endpoint get blue-dog b8c9d0e1-f2a3-4567-b012-678901234567
 ~~~
 
+~~~
+∙∙∙ Retrieving egress private endpoint...
+ID: b8c9d0e1-f2a3-4567-b012-678901234567
+Region: us-east-1
+State: ACTIVE
+Target Service Type: PRIVATE_SERVICE
+Target Service Identifier: com.amazonaws.vpce.us-east-1.vpce-svc-012345abcdef
+Endpoint Address: 10.0.1.5
+Endpoint Connection ID: vpce-0abc123def456789
+~~~
+
 To create an egress private endpoint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking egress-private-endpoint create blue-dog --name my-endpoint --service-name com.amazonaws.vpce.us-east-1.vpce-svc-012345abcdef
+ccloud cluster networking egress-private-endpoint create blue-dog --region us-east-1 --target-service-identifier com.amazonaws.vpce.us-east-1.vpce-svc-012345abcdef --target-service-type PRIVATE_SERVICE
 ~~~
 
 ~~~
 ∙∙∙ Creating egress private endpoint...
-Success! Created egress private endpoint
- id: b8c9d0e1-f2a3-4567-b012-678901234567
- name: my-endpoint
+Successfully created egress private endpoint
+ID: b8c9d0e1-f2a3-4567-b012-678901234567
+Region: us-east-1
+State: CREATING
 ~~~
+
+Valid target service types are `PRIVATE_SERVICE`, `MSK_SASL_SCRAM`, `MSK_SASL_IAM`, and `MSK_TLS`.
 
 To delete an egress private endpoint:
 
@@ -1039,8 +1092,7 @@ ccloud cluster networking egress-private-endpoint delete blue-dog b8c9d0e1-f2a3-
 
 ~~~
 ∙∙∙ Deleting egress private endpoint...
-Success! Deleted egress private endpoint
- id: b8c9d0e1-f2a3-4567-b012-678901234567
+Successfully deleted egress private endpoint 'b8c9d0e1-f2a3-4567-b012-678901234567'
 ~~~
 
 ## Manage client CA certificates using `ccloud cluster networking client-ca-cert`
@@ -1102,60 +1154,120 @@ Success! Deleted client CA certificate
 
 Use the `ccloud cluster networking private-endpoint` commands to manage private endpoint connectivity for a CockroachDB {{ site.data.products.advanced }} cluster. Private endpoints provide private connectivity using AWS PrivateLink, GCP Private Service Connect, or Azure Private Link.
 
+### Manage private endpoint services
+
 To list available private endpoint services for a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking private-endpoint services blue-dog
+ccloud cluster networking private-endpoint service list blue-dog
 ~~~
 
 ~~~
 ∙∙∙ Retrieving private endpoint services...
-REGION       STATUS      SERVICE NAME                                           AVAILABILITY
-us-east-1    AVAILABLE   com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef  STABLE
+REGION       SERVICE ID                                                     CLOUD  STATUS      AVAILABILITY ZONES
+us-east-1    com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef         AWS    AVAILABLE   us-east-1a,us-east-1b,us-east-1c
 ~~~
 
-To create private endpoint services:
+To create private endpoint services for all regions in a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking private-endpoint create-services blue-dog
+ccloud cluster networking private-endpoint service create blue-dog
 ~~~
 
 ~~~
 ∙∙∙ Creating private endpoint services...
-Success! Created private endpoint services
+Success! Created private endpoint services:
+
+REGION       SERVICE ID                                                     CLOUD  STATUS
+us-east-1    com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef         AWS    CREATING
 ~~~
+
+### Manage private endpoint connections
 
 To list connections:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking private-endpoint connections blue-dog
+ccloud cluster networking private-endpoint connection list blue-dog
 ~~~
 
-To add a connection:
+~~~
+∙∙∙ Retrieving private endpoint connections...
+ENDPOINT ID                  SERVICE ID                                                     REGION       CLOUD  STATUS
+vpce-0123456789abcdef0       com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef         us-east-1    AWS    AVAILABLE
+~~~
+
+To add a connection using your cloud provider's private endpoint identifier:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking private-endpoint add-connection blue-dog --endpoint-id vpce-0123456789abcdef0 --cloud-provider AWS
+ccloud cluster networking private-endpoint connection add blue-dog vpce-0123456789abcdef0
 ~~~
 
 ~~~
 ∙∙∙ Adding private endpoint connection...
 Success! Added private endpoint connection
+ Endpoint ID: vpce-0123456789abcdef0
+ Service ID: com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef
+ Status: PENDING
 ~~~
 
-To delete a connection:
+To remove a connection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking private-endpoint delete-connection blue-dog {connection-id}
+ccloud cluster networking private-endpoint connection remove blue-dog vpce-0123456789abcdef0
 ~~~
 
 ~~~
-∙∙∙ Deleting private endpoint connection...
-Success! Deleted private endpoint connection
+∙∙∙ Removing private endpoint connection...
+Success! Removed private endpoint connection vpce-0123456789abcdef0
+~~~
+
+### Manage trusted owners
+
+Trusted owners control which cloud provider accounts are allowed to establish private endpoint connections to your cluster.
+
+To list trusted owners:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster networking private-endpoint trusted-owner list blue-dog
+~~~
+
+~~~
+∙∙∙ Retrieving trusted owners...
+ID                                    EXTERNAL OWNER ID  TYPE
+a1b2c3d4-e5f6-7890-abcd-ef1234567890  123456789012       AWS_ACCOUNT_ID
+~~~
+
+To add a trusted owner:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster networking private-endpoint trusted-owner add blue-dog 123456789012 --type AWS_ACCOUNT_ID
+~~~
+
+~~~
+∙∙∙ Adding trusted owner...
+Success! Added trusted owner
+ ID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+ External Owner ID: 123456789012
+ Type: AWS_ACCOUNT_ID
+~~~
+
+To remove a trusted owner:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster networking private-endpoint trusted-owner remove blue-dog a1b2c3d4-e5f6-7890-abcd-ef1234567890
+~~~
+
+~~~
+∙∙∙ Removing trusted owner...
+Success! Removed trusted owner a1b2c3d4-e5f6-7890-abcd-ef1234567890
 ~~~
 
 </section>
@@ -1258,9 +1370,9 @@ ccloud folder list
 
 ~~~
 ∙∙∙ Retrieving folders...
-ID                                    NAME          PARENT ID
-f2a3b4c5-d6e7-8901-2345-678901abcdef  Production
-a3b4c5d6-e7f8-9012-3456-789012abcdef  Staging       f2a3b4c5-d6e7-8901-2345-678901abcdef
+ID                                    NAME          PARENT PATH  TYPE
+f2a3b4c5-d6e7-8901-2345-678901abcdef  Production                 FOLDER
+a3b4c5d6-e7f8-9012-3456-789012abcdef  Staging       /Production  FOLDER
 ~~~
 
 To get details of a specific folder:
@@ -1497,17 +1609,17 @@ Success! Deleted JWT issuer
 
 Use the `ccloud replication` commands to manage [physical cluster replication (PCR)]({% link {{site.current_cloud_version}}/physical-cluster-replication-overview.md %}) between CockroachDB Cloud clusters.
 
-To list replication streams:
+To list replication streams for a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud replication list
+ccloud replication list prod-east
 ~~~
 
 ~~~
 ∙∙∙ Retrieving replication streams...
-ID                                    SOURCE CLUSTER  TARGET CLUSTER  STATUS    REPLICATED TIME
-f8a9b0c1-d2e3-4567-8901-234567abcdef  prod-east       dr-west         ACTIVE    2026-03-04 12:00:00Z
+ID                                    PRIMARY CLUSTER                       STANDBY CLUSTER                       STATUS
+f8a9b0c1-d2e3-4567-8901-234567abcdef  a1b2c3d4-e5f6-7890-abcd-ef1234567890  b2c3d4e5-f6a7-8901-bcde-f12345678901  REPLICATING
 ~~~
 
 To get details of a replication stream:
@@ -1517,32 +1629,59 @@ To get details of a replication stream:
 ccloud replication get f8a9b0c1-d2e3-4567-8901-234567abcdef
 ~~~
 
+~~~
+∙∙∙ Retrieving replication stream...
+ID: f8a9b0c1-d2e3-4567-8901-234567abcdef
+Primary Cluster: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Standby Cluster: b2c3d4e5-f6a7-8901-bcde-f12345678901
+Status: REPLICATING
+Created At: 2026-02-15 10:30:00Z
+Replicated Time: 2026-03-04 12:00:00Z
+Replication Lag: 5 seconds
+~~~
+
 To create a replication stream:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud replication create --source-cluster prod-east --target-cluster dr-west
+ccloud replication create --primary-cluster prod-east --standby-cluster dr-west
 ~~~
 
 ~~~
 ∙∙∙ Creating replication stream...
-Success! Created replication stream
- id: f8a9b0c1-d2e3-4567-8901-234567abcdef
- source: prod-east
- target: dr-west
+Successfully created replication stream
+ID: f8a9b0c1-d2e3-4567-8901-234567abcdef
+Primary Cluster: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Standby Cluster: b2c3d4e5-f6a7-8901-bcde-f12345678901
+Status: INITIALIZING
 ~~~
 
-To initiate a cutover (failover to the target cluster):
+To initiate a failover to the standby cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud replication update f8a9b0c1-d2e3-4567-8901-234567abcdef --cutover
+ccloud replication update f8a9b0c1-d2e3-4567-8901-234567abcdef --status FAILING_OVER
 ~~~
 
 ~~~
 ∙∙∙ Updating replication stream...
-Success! Initiated cutover for replication stream
- id: f8a9b0c1-d2e3-4567-8901-234567abcdef
+Successfully updated replication stream
+ID: f8a9b0c1-d2e3-4567-8901-234567abcdef
+Status: FAILING_OVER
+~~~
+
+To schedule a failover for a specific time:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud replication update f8a9b0c1-d2e3-4567-8901-234567abcdef --status FAILING_OVER --failover-at 2026-03-05T00:00:00Z
+~~~
+
+To cancel a replication stream:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud replication update f8a9b0c1-d2e3-4567-8901-234567abcdef --status CANCELED
 ~~~
 
 ## Turn off telemetry events for `ccloud`
