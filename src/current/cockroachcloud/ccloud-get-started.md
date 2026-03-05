@@ -483,7 +483,13 @@ ccloud cluster connection-string blue-dog
 
 ~~~
 ∙∙∙ Retrieving cluster info...
+Connection String:
 postgresql://blue-dog-5bct.gcp-us-east4.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full
+
+Parameters:
+  Host: blue-dog-5bct.gcp-us-east4.cockroachlabs.cloud
+  Port: 26257
+  Database: defaultdb
 ~~~
 
 To specify a database and SQL user:
@@ -495,7 +501,13 @@ ccloud cluster connection-string blue-dog --database myapp --sql-user maxroach
 
 ~~~
 ∙∙∙ Retrieving cluster info...
+Connection String:
 postgresql://maxroach@blue-dog-5bct.gcp-us-east4.cockroachlabs.cloud:26257/myapp?sslmode=verify-full
+
+Parameters:
+  Host: blue-dog-5bct.gcp-us-east4.cockroachlabs.cloud
+  Port: 26257
+  Database: myapp
 ~~~
 
 ## Create a SQL user using `ccloud cluster user create`
@@ -539,8 +551,7 @@ ccloud cluster database create blue-dog myapp
 
 ~~~
 ∙∙∙ Creating database...
-Success! Created database
- name: myapp
+Successfully created database 'myapp'
 ~~~
 
 To delete a database:
@@ -552,8 +563,7 @@ ccloud cluster database delete blue-dog myapp
 
 ~~~
 ∙∙∙ Deleting database...
-Success! Deleted database
- name: myapp
+Successfully deleted database 'myapp'
 ~~~
 
 ## Manage backups using `ccloud cluster backup`
@@ -569,7 +579,7 @@ ccloud cluster backup list blue-dog
 
 ~~~
 ∙∙∙ Retrieving backups...
-BACKUP ID                             POINT IN TIME (UTC)
+BACKUP ID                             AS OF TIME
 a1b2c3d4-e5f6-7890-abcd-ef1234567890  2026-03-01 10:30:00Z
 b2c3d4e5-f6a7-8901-bcde-f12345678901  2026-02-28 10:30:00Z
 ~~~
@@ -583,8 +593,10 @@ ccloud cluster backup config get blue-dog
 
 ~~~
 ∙∙∙ Retrieving backup configuration...
-ENABLED  FREQUENCY (MIN)  RETENTION (DAYS)
-true     60               30
+Cluster: blue-dog
+Backups Enabled: Yes
+Frequency: Every 60 minutes
+Retention: 30 days
 ~~~
 
 To update the backup configuration:
@@ -597,6 +609,10 @@ ccloud cluster backup config update blue-dog --enabled true --frequency 120 --re
 ~~~
 ∙∙∙ Updating backup configuration...
 Success! Updated backup configuration
+Cluster: blue-dog
+Backups Enabled: Yes
+Frequency: Every 120 minutes
+Retention: 60 days
 ~~~
 
 ## Restore from a backup using `ccloud cluster restore`
@@ -613,7 +629,7 @@ ccloud cluster restore list blue-dog
 ~~~
 ∙∙∙ Retrieving restores...
 ID                                    BACKUP ID                             TYPE     STATUS     COMPLETION %  CREATED AT
-c3d4e5f6-a7b8-9012-cdef-123456789012  a1b2c3d4-e5f6-7890-abcd-ef1234567890  CLUSTER  COMPLETE   100%          2026-03-01 12:00:00Z
+c3d4e5f6-a7b8-9012-cdef-123456789012  a1b2c3d4-e5f6-7890-abcd-ef1234567890  CLUSTER  SUCCESS    100%          2026-03-01 12:00:00Z
 ~~~
 
 To restore from a specific backup to a destination cluster:
@@ -629,7 +645,7 @@ Successfully initiated restore
 Restore ID: d4e5f6a7-b8c9-0123-defa-234567890123
 Backup ID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
 Type: CLUSTER
-Status: RUNNING
+Status: PENDING
 ~~~
 
 If you are restoring from a different cluster, specify the source cluster ID:
@@ -657,10 +673,10 @@ ccloud cluster versions
 
 ~~~
 ∙∙∙ Retrieving versions...
-VERSION  RELEASE DATE  END OF SUPPORT
-v25.2    2025-11-18    2026-11-18
-v25.1    2025-05-19    2026-05-19
-v24.3    2024-11-18    2025-11-18
+VERSION  RELEASE TYPE  SUPPORT STATUS  SUPPORT END  ALLOWED UPGRADES
+v25.2    REGULAR       SUPPORTED       2026-11-18
+v25.1    REGULAR       SUPPORTED       2026-05-19   v25.2
+v24.3    REGULAR       SUPPORTED       2025-11-18   v25.1, v25.2
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
@@ -678,8 +694,7 @@ ccloud cluster version-deferral get blue-dog
 
 ~~~
 ∙∙∙ Retrieving version deferral...
-DEFERRAL POLICY
-NOT_DEFERRED
+Deferral Policy: NOT_DEFERRED
 ~~~
 
 To set the deferral policy:
@@ -691,8 +706,8 @@ ccloud cluster version-deferral set blue-dog --policy DEFERRAL_60_DAYS
 
 ~~~
 ∙∙∙ Setting version deferral...
-Success! Set version deferral policy
- policy: DEFERRAL_60_DAYS
+Successfully set version deferral
+Deferral Policy: DEFERRAL_60_DAYS
 ~~~
 
 Valid deferral policies are `NOT_DEFERRED`, `DEFERRAL_30_DAYS`, `DEFERRAL_60_DAYS`, and `DEFERRAL_90_DAYS`.
@@ -738,8 +753,7 @@ ccloud cluster blackout-window delete blue-dog e5f6a7b8-c9d0-1234-efab-345678901
 
 ~~~
 ∙∙∙ Deleting blackout window...
-Success! Deleted blackout window
- id: e5f6a7b8-c9d0-1234-efab-345678901234
+Successfully deleted blackout window 'e5f6a7b8-c9d0-1234-efab-345678901234'
 ~~~
 
 ## Manage maintenance windows using `ccloud cluster maintenance`
@@ -852,8 +866,13 @@ ccloud cluster cmek get blue-dog
 
 ~~~
 ∙∙∙ Retrieving CMEK configuration...
-STATUS    KEY                                                              REGION
-ENABLED   arn:aws:kms:us-east-1:123456789:key/a1b2c3d4-e5f6-7890-abcd-ef  us-east-1
+Cluster: blue-dog
+CMEK Status: ENABLED
+
+Region Keys:
+  Region: us-east-1
+    Key URI: arn:aws:kms:us-east-1:123456789:key/a1b2c3d4-e5f6-7890-abcd-ef
+    Status: ENABLED
 ~~~
 
 ## Configure log export using `ccloud cluster log-export`
@@ -967,8 +986,8 @@ ccloud cluster metric-export prometheus enable blue-dog
 ~~~
 
 ~~~
-∙∙∙ Enabling Prometheus metric export...
-Success! Enabled Prometheus metric export
+∙∙∙ Enabling Prometheus metric scrape endpoint...
+Success! Enabled Prometheus metric scrape endpoint
 ~~~
 
 To get the Prometheus scrape endpoint:
@@ -1044,8 +1063,8 @@ ccloud cluster networking egress-private-endpoint list blue-dog
 
 ~~~
 ∙∙∙ Retrieving egress private endpoints...
-ID                                    REGION       STATE    TARGET SERVICE
-b8c9d0e1-f2a3-4567-b012-678901234567  us-east-1    ACTIVE   com.amazonaws.vpce.us-east-1.vpce-svc-012345abcdef
+ID                                    REGION       STATE      TARGET SERVICE
+b8c9d0e1-f2a3-4567-b012-678901234567  us-east-1    AVAILABLE  com.amazonaws.vpce.us-east-1.vpce-svc-012345abcdef
 ~~~
 
 To get details of an egress private endpoint:
@@ -1059,11 +1078,12 @@ ccloud cluster networking egress-private-endpoint get blue-dog b8c9d0e1-f2a3-456
 ∙∙∙ Retrieving egress private endpoint...
 ID: b8c9d0e1-f2a3-4567-b012-678901234567
 Region: us-east-1
-State: ACTIVE
+State: AVAILABLE
 Target Service Type: PRIVATE_SERVICE
 Target Service Identifier: com.amazonaws.vpce.us-east-1.vpce-svc-012345abcdef
 Endpoint Address: 10.0.1.5
 Endpoint Connection ID: vpce-0abc123def456789
+Domain Names: example.com
 ~~~
 
 To create an egress private endpoint:
@@ -1078,7 +1098,7 @@ ccloud cluster networking egress-private-endpoint create blue-dog --region us-ea
 Successfully created egress private endpoint
 ID: b8c9d0e1-f2a3-4567-b012-678901234567
 Region: us-east-1
-State: CREATING
+State: PENDING
 ~~~
 
 Valid target service types are `PRIVATE_SERVICE`, `MSK_SASL_SCRAM`, `MSK_SASL_IAM`, and `MSK_TLS`.
@@ -1108,10 +1128,11 @@ ccloud cluster networking client-ca-cert get blue-dog
 
 ~~~
 ∙∙∙ Retrieving client CA certificate...
-STATUS   X509 CERTIFICATE
-ACTIVE   -----BEGIN CERTIFICATE-----
-         MIIBxTCCAWugAwIBAgIRAJ...
-         -----END CERTIFICATE-----
+Status: IS_SET
+Certificate:
+-----BEGIN CERTIFICATE-----
+MIIBxTCCAWugAwIBAgIRAJ...
+-----END CERTIFICATE-----
 ~~~
 
 To set a client CA certificate from a PEM-encoded file:
@@ -1147,7 +1168,7 @@ ccloud cluster networking client-ca-cert delete blue-dog
 
 ~~~
 ∙∙∙ Deleting client CA certificate...
-Success! Deleted client CA certificate
+Successfully deleted client CA certificate
 ~~~
 
 ## Manage private endpoints using `ccloud cluster networking private-endpoint`
@@ -1302,10 +1323,10 @@ ccloud organization get
 
 ~~~
 ∙∙∙ Retrieving organization...
-Organization info
- name: my-organization
- id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
- created at: 2024-01-15 10:30:00Z
+ID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Name: my-organization
+Label: my-org
+Created At: 2024-01-15 10:30:00Z
 ~~~
 
 ## View audit logs using `ccloud audit list`
@@ -1345,9 +1366,9 @@ ccloud billing invoice list
 
 ~~~
 ∙∙∙ Retrieving invoices...
-INVOICE ID                            PERIOD START          PERIOD END            AMOUNT     STATUS
-d0e1f2a3-b4c5-6789-0123-456789abcdef  2026-02-01 00:00:00Z  2026-02-28 23:59:59Z  $1,234.56  PAID
-e1f2a3b4-c5d6-7890-1234-567890abcdef  2026-01-01 00:00:00Z  2026-01-31 23:59:59Z  $1,100.00  PAID
+INVOICE ID                            PERIOD START          PERIOD END            STATUS     TOTAL
+d0e1f2a3-b4c5-6789-0123-456789abcdef  2026-02-01 00:00:00Z  2026-02-28 23:59:59Z  FINALIZED  1,234.56 USD
+e1f2a3b4-c5d6-7890-1234-567890abcdef  2026-01-01 00:00:00Z  2026-01-31 23:59:59Z  FINALIZED  1,100.00 USD
 ~~~
 
 To get details of a specific invoice:
@@ -1386,21 +1407,21 @@ To create a folder:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud folder create --name Production
+ccloud folder create Production
 ~~~
 
 ~~~
 ∙∙∙ Creating folder...
 Success! Created folder
- id: f2a3b4c5-d6e7-8901-2345-678901abcdef
- name: Production
+ ID: f2a3b4c5-d6e7-8901-2345-678901abcdef
+ Name: Production
 ~~~
 
 To create a subfolder, use the `--parent-id` flag:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud folder create --name Staging --parent-id f2a3b4c5-d6e7-8901-2345-678901abcdef
+ccloud folder create Staging --parent-id f2a3b4c5-d6e7-8901-2345-678901abcdef
 ~~~
 
 To update a folder name:
@@ -1413,6 +1434,8 @@ ccloud folder update f2a3b4c5-d6e7-8901-2345-678901abcdef --name "Prod Environme
 ~~~
 ∙∙∙ Updating folder...
 Success! Updated folder
+ ID: f2a3b4c5-d6e7-8901-2345-678901abcdef
+ Name: Prod Environment
 ~~~
 
 To delete a folder:
@@ -1424,8 +1447,7 @@ ccloud folder delete f2a3b4c5-d6e7-8901-2345-678901abcdef
 
 ~~~
 ∙∙∙ Deleting folder...
-Success! Deleted folder
- id: f2a3b4c5-d6e7-8901-2345-678901abcdef
+Success! Deleted folder f2a3b4c5-d6e7-8901-2345-678901abcdef
 ~~~
 
 To list the contents of a folder:
@@ -1437,9 +1459,9 @@ ccloud folder contents f2a3b4c5-d6e7-8901-2345-678901abcdef
 
 ~~~
 ∙∙∙ Retrieving folder contents...
-RESOURCE ID                           RESOURCE TYPE
-041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  CLUSTER
-a3b4c5d6-e7f8-9012-3456-789012abcdef  FOLDER
+ID                                    NAME        TYPE     PARENT PATH
+041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  my-cluster  CLUSTER  /Production
+a3b4c5d6-e7f8-9012-3456-789012abcdef  Staging     FOLDER   /Production
 ~~~
 
 ## Manage service accounts using `ccloud service-account`
@@ -1455,8 +1477,8 @@ ccloud service-account list
 
 ~~~
 ∙∙∙ Retrieving service accounts...
-ID                                    NAME          DESCRIPTION        CREATOR              CREATED AT
-b4c5d6e7-f8a9-0123-4567-890123abcdef  ci-pipeline   CI/CD automation   user@example.com     2026-01-15 10:30:00Z
+ID                                    NAME          DESCRIPTION        CREATED AT
+b4c5d6e7-f8a9-0123-4567-890123abcdef  ci-pipeline   CI/CD automation   2026-01-15 10:30:00Z
 ~~~
 
 To get details of a specific service account:
@@ -1470,14 +1492,14 @@ To create a service account:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud service-account create --name ci-pipeline --description "CI/CD automation"
+ccloud service-account create ci-pipeline --description "CI/CD automation"
 ~~~
 
 ~~~
 ∙∙∙ Creating service account...
 Success! Created service account
- id: b4c5d6e7-f8a9-0123-4567-890123abcdef
- name: ci-pipeline
+ ID: b4c5d6e7-f8a9-0123-4567-890123abcdef
+ Name: ci-pipeline
 ~~~
 
 To delete a service account:
@@ -1489,8 +1511,7 @@ ccloud service-account delete b4c5d6e7-f8a9-0123-4567-890123abcdef
 
 ~~~
 ∙∙∙ Deleting service account...
-Success! Deleted service account
- id: b4c5d6e7-f8a9-0123-4567-890123abcdef
+Success! Deleted service account b4c5d6e7-f8a9-0123-4567-890123abcdef
 ~~~
 
 ### Manage API keys for service accounts
@@ -1501,45 +1522,42 @@ To list API keys:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud service-account api-key list b4c5d6e7-f8a9-0123-4567-890123abcdef
+ccloud service-account api-key list --service-account-id b4c5d6e7-f8a9-0123-4567-890123abcdef
 ~~~
 
 ~~~
 ∙∙∙ Retrieving API keys...
-ID                                    NAME          CREATED AT
-c5d6e7f8-a9b0-1234-5678-901234abcdef  deploy-key    2026-01-15 10:30:00Z
+ID                                    NAME          SERVICE ACCOUNT ID                    CREATED AT
+c5d6e7f8-a9b0-1234-5678-901234abcdef  deploy-key    b4c5d6e7-f8a9-0123-4567-890123abcdef  2026-01-15 10:30:00Z
 ~~~
 
 To create an API key:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud service-account api-key create b4c5d6e7-f8a9-0123-4567-890123abcdef --name deploy-key
+ccloud service-account api-key create b4c5d6e7-f8a9-0123-4567-890123abcdef deploy-key
 ~~~
 
 ~~~
 ∙∙∙ Creating API key...
 Success! Created API key
- id: c5d6e7f8-a9b0-1234-5678-901234abcdef
- name: deploy-key
- secret: CCDB1_ABCDEFghijklmnopqrstuvwxyz0123456789...
-~~~
+ ID: c5d6e7f8-a9b0-1234-5678-901234abcdef
+ Name: deploy-key
+ Secret: CCDB1_ABCDEFghijklmnopqrstuvwxyz0123456789...
 
-{{site.data.alerts.callout_info}}
-The API key secret is only shown once when the key is created. Store it securely.
-{{site.data.alerts.end}}
+IMPORTANT: Save this secret now. It will not be shown again.
+~~~
 
 To delete an API key:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud service-account api-key delete b4c5d6e7-f8a9-0123-4567-890123abcdef c5d6e7f8-a9b0-1234-5678-901234abcdef
+ccloud service-account api-key delete c5d6e7f8-a9b0-1234-5678-901234abcdef
 ~~~
 
 ~~~
 ∙∙∙ Deleting API key...
-Success! Deleted API key
- id: c5d6e7f8-a9b0-1234-5678-901234abcdef
+Success! Deleted API key c5d6e7f8-a9b0-1234-5678-901234abcdef
 ~~~
 
 ## Manage JWT issuers using `ccloud jwt-issuer`
@@ -1555,9 +1573,9 @@ ccloud jwt-issuer list
 
 ~~~
 ∙∙∙ Retrieving JWT issuers...
-ID                                    ISSUER URL                              AUDIENCE       CLAIM
-d6e7f8a9-b0c1-2345-6789-012345abcdef  https://accounts.google.com             my-app         email
-e7f8a9b0-c1d2-3456-7890-123456abcdef  https://login.microsoftonline.com/...   my-app-azure   preferred_username
+ID                                    ISSUER URL                              AUDIENCE
+d6e7f8a9-b0c1-2345-6789-012345abcdef  https://accounts.google.com             my-app
+e7f8a9b0-c1d2-3456-7890-123456abcdef  https://login.microsoftonline.com/...   my-app-azure
 ~~~
 
 To get details of a JWT issuer:
@@ -1576,8 +1594,10 @@ ccloud jwt-issuer create --issuer-url https://accounts.google.com --audience my-
 
 ~~~
 ∙∙∙ Creating JWT issuer...
-Success! Created JWT issuer
- id: d6e7f8a9-b0c1-2345-6789-012345abcdef
+Successfully created JWT issuer
+ID: d6e7f8a9-b0c1-2345-6789-012345abcdef
+Issuer URL: https://accounts.google.com
+Audience: my-app
 ~~~
 
 To update a JWT issuer:
@@ -1589,7 +1609,10 @@ ccloud jwt-issuer update d6e7f8a9-b0c1-2345-6789-012345abcdef --audience my-app-
 
 ~~~
 ∙∙∙ Updating JWT issuer...
-Success! Updated JWT issuer
+Successfully updated JWT issuer
+ID: d6e7f8a9-b0c1-2345-6789-012345abcdef
+Issuer URL: https://accounts.google.com
+Audience: my-app-v2
 ~~~
 
 To delete a JWT issuer:
@@ -1601,8 +1624,7 @@ ccloud jwt-issuer delete d6e7f8a9-b0c1-2345-6789-012345abcdef
 
 ~~~
 ∙∙∙ Deleting JWT issuer...
-Success! Deleted JWT issuer
- id: d6e7f8a9-b0c1-2345-6789-012345abcdef
+Successfully deleted JWT issuer 'd6e7f8a9-b0c1-2345-6789-012345abcdef'
 ~~~
 
 ## Manage physical cluster replication using `ccloud replication`
@@ -1653,7 +1675,7 @@ Successfully created replication stream
 ID: f8a9b0c1-d2e3-4567-8901-234567abcdef
 Primary Cluster: a1b2c3d4-e5f6-7890-abcd-ef1234567890
 Standby Cluster: b2c3d4e5-f6a7-8901-bcde-f12345678901
-Status: INITIALIZING
+Status: STARTING
 ~~~
 
 To initiate a failover to the standby cluster:
