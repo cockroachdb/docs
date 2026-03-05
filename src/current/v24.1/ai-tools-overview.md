@@ -17,4 +17,3 @@ The pages in this section have information about AI tools and integrations that 
 - [How CockroachDB's AI Assistance Boosts Developer Productivity](https://www.cockroachlabs.com/blog/cockroachdb-ai-assistance-for-developers/)
 - [Tutorial: Augment your AI use case with RAG on CockroachDB](https://www.cockroachlabs.com/blog/tutorial-rag-with-cockroachdb/)
 - [Real-Time Indexing for Billions of Vectors: How we built fast, fresh vector indexing at scale in CockroachDB](https://www.cockroachlabs.com/blog/cspann-real-time-indexing-billions-vectors/)
-- [Vector indexes]({% link {{ page.version.version }}/vector-indexes.md %})
