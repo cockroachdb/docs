@@ -41,6 +41,10 @@ These sections show how to scale a {{ site.data.products.advanced }} cluster hor
 
 You can add or remove nodes from your cluster through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
+{{site.data.alerts.callout_danger}}
+Do not add nodes if your cluster's disks are nearly full. Adding nodes triggers rebalancing that can temporarily increase disk usage and worsen disk pressure. Instead, increase storage per node (vertical scaling) to create headroom. Refer to [Increase storage for a cluster](#increase-storage-for-a-cluster).
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_info}}
 You cannot scale a multi-node cluster down to a single-node cluster.
 {{site.data.alerts.end}}
