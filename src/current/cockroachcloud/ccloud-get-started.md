@@ -936,6 +936,8 @@ ccloud cluster metric-export cloudwatch enable blue-dog --role-arn arn:aws:iam::
 ~~~
 ∙∙∙ Enabling CloudWatch metric export...
 Success! Enabled CloudWatch metric export
+Cluster: blue-dog
+Status: ENABLING
 ~~~
 
 To get the current CloudWatch configuration:
@@ -956,12 +958,15 @@ ccloud cluster metric-export cloudwatch disable blue-dog
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster metric-export datadog enable blue-dog --site us5 --api-key your-datadog-api-key
+ccloud cluster metric-export datadog enable blue-dog --site US5 --api-key your-datadog-api-key
 ~~~
 
 ~~~
 ∙∙∙ Enabling Datadog metric export...
 Success! Enabled Datadog metric export
+Cluster: blue-dog
+Site: US5
+Status: ENABLING
 ~~~
 
 To get the current Datadog configuration:
@@ -986,8 +991,10 @@ ccloud cluster metric-export prometheus enable blue-dog
 ~~~
 
 ~~~
-∙∙∙ Enabling Prometheus metric scrape endpoint...
-Success! Enabled Prometheus metric scrape endpoint
+∙∙∙ Enabling Prometheus metric export...
+Success! Enabled Prometheus metric export
+Cluster: blue-dog
+Status: ENABLING
 ~~~
 
 To get the Prometheus scrape endpoint:
@@ -1144,7 +1151,8 @@ ccloud cluster networking client-ca-cert set blue-dog --cert-file /path/to/ca.cr
 
 ~~~
 ∙∙∙ Setting client CA certificate...
-Success! Set client CA certificate
+Successfully set client CA certificate
+Status: IS_SET
 ~~~
 
 To update the client CA certificate:
@@ -1156,7 +1164,8 @@ ccloud cluster networking client-ca-cert update blue-dog --cert-file /path/to/ne
 
 ~~~
 ∙∙∙ Updating client CA certificate...
-Success! Updated client CA certificate
+Successfully updated client CA certificate
+Status: IS_SET
 ~~~
 
 To delete the client CA certificate:
