@@ -20,7 +20,7 @@ Since CockroachDB considers the cluster version when running a backup, this page
 
 Cockroach Labs supports restoring a backup taken on a cluster on a specific major version into a cluster that is on the same version or the next major version. Therefore, when upgrading your cluster from version N to N+1, if you took a backup on major version N, you can restore it to your cluster on either major version N or N+1. 
 
-Additionally, you can skip an [innovation release]({% link releases/index.md %}#major-releases) version when restoring a backup. Innovation releases are intermediate releases that introduce new features, but are not long-term supported versions.
+Additionally, you can skip an [innovation release]({% link releases/index.md %}#major-versions) version when restoring a backup. Innovation releases are intermediate releases that introduce new features, but are not long-term supported versions.
 
 Other than skipping innovation releases, restoring backups outside major version N or N+1 is **not supported**.
 
@@ -33,7 +33,7 @@ Backup taken on version   | Restorable into version
 24.2.x (innovation)       | 24.2.x, 24.3.x
 24.3.x                    | 24.3.x, 25.1.x (innovation), 25.2.x
 
-Refer to [Recent releases]({% link releases/index.md %}#recent-releases) and [Upcoming releases]({% link releases/index.md %}#upcoming-releases).
+Refer to [Supported releases]({% link releases/index.md %}#supported-releases) and [Upcoming releases]({% link releases/index.md %}#upcoming-releases).
 
 When a cluster is in a mixed-version state during an upgrade, [full cluster restores]({% link {{ page.version.version }}/restore.md %}#restore-a-cluster) will fail. See the [Upgrade documentation]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) for the necessary steps to finalize your upgrade. For CockroachDB {{ site.data.products.cloud }} clusters, see the [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}) page.
 
