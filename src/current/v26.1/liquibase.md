@@ -495,7 +495,7 @@ Liquibase does not automatically retry transactions. To handle transaction failu
 
 ## Liquibase integrations
 
-You can run Liquibase in the context of a Java application framework, like Spring Boot. For examples of using Liquibase for schema management in a Spring Boot application built on CockroachDB, see [Build a Spring App with CockroachDB and JDBC]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md %}) and [Build a Spring App with CockroachDB and JPA]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jpa.md %}).
+You can run Liquibase in the context of a Java application framework, like Spring Boot.
 
 For documentation on running Liquibase with other tooling, see [the Liquibase documentation site](https://docs.liquibase.com/workflows/liquibase-community/running.html).
 
@@ -515,5 +515,3 @@ If you run into problems, please file an issue on the [Liquibase issue tracker](
 + [Client connection parameters]({% link {{ page.version.version }}/connection-parameters.md %})
 + [Third-Party Database Tools]({% link {{ page.version.version }}/third-party-database-tools.md %})
 + [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
-+ [Build a Spring App with CockroachDB and JDBC]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md %})
-+ [Build a Spring App with CockroachDB and JPA]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jpa.md %})

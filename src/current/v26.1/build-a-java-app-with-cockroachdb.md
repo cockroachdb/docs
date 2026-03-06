@@ -13,10 +13,6 @@ This tutorial shows you how to build a simple CRUD Java application with Cockroa
 
 {% include {{page.version.version}}/app/java-version-note.md %}
 
-{{site.data.alerts.callout_success}}
-For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [Build a Spring App with CockroachDB and JDBC]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md %}).
-{{site.data.alerts.end}}
-
 ## Step 1. Start CockroachDB
 
 {% include {{ page.version.version }}/setup/sample-setup-jdbc.md %}

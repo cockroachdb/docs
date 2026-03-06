@@ -292,8 +292,6 @@ If you are using Maven, add the following to your `<dependencies>`:
 
 Where `{version}` is the latest stable version.
 
-For a complete example app that uses Maven for dependency management, see [Build a Spring App with CockroachDB and Spring Data JPA (Hibernate)]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jpa.md %}).
-
 You will also need to specify the CockroachDB dialect in your [Hibernate configuration file](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm).
 
 {% include {{page.version.version}}/app/hibernate-dialects-note.md %}
