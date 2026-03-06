@@ -314,6 +314,19 @@ with_password              | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}     
 (11 rows)
 ~~~
 
+### Create debug_user for diagnostics (Preview)
+
+<span class="version-tag">New in v26.1:</span> The `debug_user` is a special privileged user for collecting [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}) data. For complete setup including certificate generation and server configuration, see [Disable root login and use debug_user]({% link {{ page.version.version }}/security-reference/authentication.md %}#disable-root-login-and-use-debug_user).
+
+Basic user creation:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE USER debug_user;
+~~~
+
+For SQL privilege requirements (needed for debug zip only, not tsdump), see Step 1 in the [debug_user setup procedure]({% link {{ page.version.version }}/security-reference/authentication.md %}#step-1-create-debug_user).
+
 ## See also
 
 - [Authorization]({% link {{ page.version.version }}/authorization.md %})
