@@ -23,6 +23,8 @@ CockroachDB {{ site.data.products.cloud }} operations are split into logical lay
 - Control operations manage the CockroachDB cluster as a whole. These requests are handled by the **CockroachDB Cloud control plane** which communicates directly with cluster nodes as needed. These connections include access to the {{ site.data.products.cloud }} Console, DB Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}), [observability features]({% link cockroachcloud/metrics.md %}), and other cluster management tools.
 - Data operations involve connections between data applications and your underlying CockroachDB nodes, including SQL queries and responses. Each region has a network load balancer (NLB) that handles and distributes requests across CockroachDB nodes within the region. {{ site.data.products.advanced }} clusters can utilize [private connectivity]({% link cockroachcloud/private-clusters.md %}) across the cloud to limit the amount of network traffic that is sent over the public Internet.
 
+In a "bring your own cloud" (BYOC) deployment of CockroachDB {{ site.data.products.cloud }}, the data operations layer is hosted within your own cloud service account rather than an account managed by Cockroach Labs. To learn more, [read the BYOC deployment documentation]({% link cockroachcloud/byoc-deployment.md %}).
+
 ## Cluster topology
 
 ### Single-region clusters

@@ -1,0 +1,24 @@
+{
+  "title": "AI Tools",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Overview",
+      "urls": [
+        "/${VERSION}/ai-tools-overview.html"
+      ]
+    },
+    {
+      "title": "Agent Skills for CockroachDB",
+      "urls": [
+        "/${VERSION}/agent-skills.html"
+      ]
+    },
+    {
+      "title": "Docs MCP Server",
+      "urls": [
+        "/${VERSION}/docs-mcp-integration.html"
+      ]
+    }
+  ]
+}
