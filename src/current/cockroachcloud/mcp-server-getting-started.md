@@ -394,10 +394,10 @@ Show me the CREATE TABLE statement so that we can talk it through before you act
 
 ## See also
 
+- [Agent Skills for CockroachDB]({% link {{site.current_cloud_version}}/agent-skills.md %})
+- [Docs MCP Server]({% link {{site.current_cloud_version}}/docs-mcp-integration.md %})
 - [Schema Design Overview]({% link {{site.current_cloud_version}}/schema-design-overview.md %})
 - [Managing Access]({% link cockroachcloud/managing-access.md %})
 - [Authorization]({% link cockroachcloud/authorization.md %})
 - [`SELECT`]({% link {{site.current_cloud_version}}/select-clause.md %})
-- [`CREATE DATABASE`]({% link {{site.current_cloud_version}}/create-database.md %})
-- [`CREATE TABLE`]({% link {{site.current_cloud_version}}/create-table.md %})
 - [`EXPLAIN`]({% link {{site.current_cloud_version}}/explain.md %})

@@ -10,6 +10,7 @@ The pages in this section have information about AI tools and integrations that 
 ## In this section
 
 - [Agent Skills for CockroachDB]({% link {{ page.version.version }}/agent-skills.md %}): A public Git repository of Agent Skills for CockroachDB. These skills encode operational expertise so that AI agents, automation systems, and developer tools can perform production-grade CockroachDB operations.
+- [CockroachDB Cloud MCP Server]({% link cockroachcloud/mcp-server-getting-started.md %}): Connect AI assistants to a CockroachDB Cloud cluster using the Model Context Protocol (MCP). This enables AI tools to perform specific read/write operations on a cluster.
 - [CockroachDB Docs MCP Server]({% link {{ page.version.version }}/docs-mcp-integration.md %}): Connect AI assistants to CockroachDB documentation using the Model Context Protocol (MCP).
 
 ## See also
