@@ -28,7 +28,7 @@ The user must be the [owner]({% link {{ page.version.version }}/alter-view.md %}
 `opt_concurrently` | `CONCURRENTLY` (Default behavior) This keyword has no effect. It is present for PostgreSQL compatibility. All materialized views are refreshed concurrently with other jobs.
 `view_name` | The name of the materialized view to refresh.
 `opt_clear_data` | `WITH DATA` (Default behavior) Refresh the stored query results. <br>`WITH NO DATA` Drop the query results of the materialized view from storage.
-`AS OF SYSTEM TIME` | {% include_cached new-in.html version="v25.2" %} Use historical data when refreshing the view. The timestamp must be within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds). This can reduce [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) by leveraging [follower reads]({% link {{ page.version.version }}/follower-reads.md %}). For more information, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
+`AS OF SYSTEM TIME` | {% include_cached new-in.html version="v25.2" %} Use historical data when refreshing the view. This can reduce [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) by leveraging [follower reads]({% link {{ page.version.version }}/follower-reads.md %}). The timestamp must be within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds). For more information, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
 
 ## Examples
 
@@ -123,7 +123,7 @@ To update the materialized view's results, use a [`REFRESH`]({% link {{ page.ver
 
 ### Refresh a materialized view with historical data using `AS OF SYSTEM TIME`
 
-{% include_cached new-in.html version="v25.2" %} You can refresh a materialized view using historical data with the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause. This is useful for reducing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) by performing a [follower read]({% link {{ page.version.version }}/follower-reads.md %}) when refreshing the view.
+{% include_cached new-in.html version="v25.2" %} You can refresh a materialized view using historical data with the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}#parameters) clause. This is useful for reducing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) by performing a [follower read]({% link {{ page.version.version }}/follower-reads.md %}) when refreshing the view.
 
 {{site.data.alerts.callout_info}}
 Historical data is available only within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds).
