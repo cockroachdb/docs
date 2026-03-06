@@ -5,7 +5,7 @@ The requirement that a transaction must change affected data only in allowed way
 The degree to which a transaction may be affected by other transactions running at the same time. CockroachDB provides the [`SERIALIZABLE`](https://wikipedia.org/wiki/Serializability) and `READ COMMITTED` isolation levels. For more information, see [Isolation levels]({% link {{ page.version.version }}/transactions.md %}#isolation-levels).
 
 ### Consensus
-<a name="architecture-overview-consensus"></a> The process of reaching agreement on whether a transaction is committed or aborted. CockroachDB uses the [Raft consensus protocol](#architecture-raft). In CockroachDB, when a range receives a write, a quorum of nodes containing replicas of the range acknowledge the write. This means your data is safely stored and a majority of nodes agree on the database's current state, even if some of the nodes are offline.
+<a name="architecture-overview-consensus"></a> The process of reaching agreement on whether a transaction is committed or aborted. CockroachDB uses the [Raft consensus protocol](#architecture-raft). In CockroachDB, when a range receives a write, a [quorum](https://wikipedia.org/wiki/Quorum_%28distributed_computing%29) of nodes containing replicas of the range acknowledge the write. This means your data is safely stored and a majority of nodes agree on the database's current state, even if some of the nodes are offline.
 
 When a write does not achieve consensus, forward progress halts to maintain consistency within the cluster.
 
