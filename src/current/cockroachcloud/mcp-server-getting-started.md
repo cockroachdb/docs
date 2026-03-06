@@ -105,7 +105,7 @@ The following are instructions for how to update the configuration of some commo
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    claude mcp add cockroachdb-cloud https://cockroachlabs.cloud/mcp --transport http --header "mcp-cluster-id: {your-cluster-id}" --header "Authorization: Bearer {your-cluster-id}"
+    claude mcp add cockroachdb-cloud https://cockroachlabs.cloud/mcp --transport http --header "mcp-cluster-id: {your-cluster-id}" --header "Authorization: Bearer {your-service-account-api-key}"
     ~~~
 
 2. Paste the command in your terminal, replacing the `{your-cluster-id}` and `{your-service-account-api-key}` placeholders. Run the command.
