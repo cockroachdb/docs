@@ -605,12 +605,6 @@
                 ]
               },
               {
-                "title": "MCP Server",
-                "urls": [
-                  "/cockroachcloud/mcp-server-getting-started.html"
-                ]
-              },
-              {
                 "title": "CockroachDB Cloud API",
                 "urls": [
                   "/cockroachcloud/cloud-api.html"

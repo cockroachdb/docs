@@ -15,6 +15,12 @@
       ]
     },
     {
+      "title": "CockroachDB Cloud MCP Server",
+      "urls": [
+        "/cockroachcloud/mcp-server-getting-started.html"
+      ]
+    },
+    {
       "title": "Docs MCP Server",
       "urls": [
         "/${VERSION}/docs-mcp-integration.html"
