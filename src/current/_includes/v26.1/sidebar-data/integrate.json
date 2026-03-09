@@ -19,5 +19,11 @@
           }
         ]
       }
+      {
+        "title": "Integrate with Satori",
+        "urls": [
+        "/${VERSION}/satori-integration.html"
+        ]
+      }
     ]
   }
