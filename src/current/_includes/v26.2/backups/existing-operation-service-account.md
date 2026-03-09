@@ -1,0 +1,3 @@
+{{site.data.alerts.callout_info}}
+If you already have the service account that contains permissions for the operation, ensure that you give the identity service account access to this service account. Click on your service account and navigate to the **Permissions** tab. Then, use the process in [step 3](#step-3-give-the-identity-service-account-the-token-creator-role) to complete this. 
+{{site.data.alerts.end}}
