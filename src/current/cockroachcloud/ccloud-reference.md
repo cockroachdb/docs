@@ -165,7 +165,7 @@ Cluster info
 
 ## Connect to a cluster with a SQL client
 
-Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection to the specified cluster using the [cluster ID](#get-information-about-your-cluster-using-ccloud-cluster-info). If you haven't created a SQL user for the specified cluster, you will be prompted to create a new user and set the user password.
+Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection to the specified cluster using the [cluster ID](#list-clusters-in-an-organization). If you haven't created a SQL user for the specified cluster, you will be prompted to create a new user and set the user password.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
