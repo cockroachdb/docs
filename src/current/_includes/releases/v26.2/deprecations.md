@@ -4,7 +4,7 @@ The following deprecations are announced in v26.1.
 
     - To validate data consistency, use `INSPECT` instead of `EXPERIMENTAL SCRUB`
     - `INSPECT` supports a `DETACHED` option to run the operation without waiting for it
-    - For more information, see the [`INSPECT`]({% link v26.1/inspect.md %}) documentation
+    - For more information, see the [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) documentation
 
     [#][#]
 

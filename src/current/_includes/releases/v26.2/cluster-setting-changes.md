@@ -1,4 +1,4 @@
-Changes to [cluster settings]({% link v26.1/cluster-settings.md %}) should be reviewed prior to upgrading. New default cluster setting values will be used unless you have manually set a value for a setting. This can be confirmed by running the SQL statement `SELECT * FROM system.settings` to view the non-default settings.
+Changes to [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) should be reviewed prior to upgrading. New default cluster setting values will be used unless you have manually set a value for a setting. This can be confirmed by running the SQL statement `SELECT * FROM system.settings` to view the non-default settings.
 
 <h5>New cluster settings</h5>
 
