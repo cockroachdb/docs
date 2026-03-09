@@ -212,6 +212,8 @@ You can control leaseholder rebalancing through the `kv.allocator.load_based_lea
 
 Whenever there are changes to a cluster's number of nodes, the members of Raft groups change and, to ensure optimal survivability and performance, replicas need to be rebalanced. What that looks like varies depending on whether the membership change is nodes being added or going offline.
 
+CockroachDB does not always try to match the replica counts across nodes after [adding nodes]({% link {{ page.version.version }}/cockroach-start.md %}#add-a-node-to-a-cluster), [decommissioning and removing nodes]({% link {{ page.version.version}}/node-shutdown.md %}?filters=decommission#remove-nodes), or when there is a node outage. The replica allocator can keep replica counts uneven when that placement is needed to preserve survivability across [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) or to satisfy [replica placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints). For example, if a node is the only one in its availability zone in a 2-2-1 deployment across 3 AZs, that node may need to hold a replica for every range to preserve locality diversity, thus holding more replicas its peers.
+
 - **Nodes added**: The new node communicates information about itself to other nodes, indicating that it has space available. The cluster then rebalances some replicas onto the new node.
 
 - **Nodes going offline**: If a member of a Raft group ceases to respond, after 5 minutes, the cluster begins to rebalance by replicating the data the downed node held onto other nodes.
@@ -224,6 +226,8 @@ In addition to the rebalancing that occurs when nodes join or leave a cluster, r
 
 1. Replica count.
 1. CPU usage (if [`kv.allocator.load_based_rebalancing.objective`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-allocator-load-based-rebalancing-objective) is set to `cpu`, which is the default in CockroachDB v23.1 and later)
+
+The preceding load-based goals do not override [replica placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) or survivability requirements, so replica counts can remain uneven when CockroachDB needs a specific placement to respect placement constraints or preserve locality diversity.
 
 Note that disk utilization per node is not one of the rebalancing criteria. For more information, see [Disk utilization is different across nodes in the cluster]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-utilization-is-different-across-nodes-in-the-cluster).
 
