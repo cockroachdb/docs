@@ -1,0 +1,813 @@
+# metrics.yml is a manually curated file of metrics that are included in the Canned Metrics for Serverless deployment.
+# The metrics are in the order of appearance in the configuration file:
+# https://github.com/cockroachlabs/managed-service/pull/16129/files
+# console/assets/js/pages/clusterDetail/metrics/graphConfigs.tsx
+# The data for the metrics was also sourced from
+# https://github.com/cockroachdb/docs/blob/main/src/current/_includes/v23.2/essential-metrics.md
+# 
+# The corresponding metrics-list.csv file was generated using the v23.2.0 binary with the following command:
+# cockroach gen metric-list --format=csv > metrics-list.csv
+# Once generated, the metrics-list.csv was manually modified to change the case of the headers to lowercase to work with liquid comparison code.
+
+- metric_id: sql.new_conns
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Connections Per Second"
+  datadog_id_selfhosted: sql.new_conns.count
+  essential: true
+  metric_type: SQL 
+  metric_ui_tab: [ Overview, SQL ]
+  metric_ui_graph: "SQL Connections"
+
+- metric_id: sql.select.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Select"
+  datadog_id_selfhosted: sql.select.count
+  datadog_id_dedicated: sql.select.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ Overview, SQL ]
+  metric_ui_graph: "SQL Statements"
+
+- metric_id: sql.update.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Update"
+  datadog_id_selfhosted: sql.update.count
+  datadog_id_dedicated: sql.update.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ Overview, SQL ]
+  metric_ui_graph: "SQL Statements"
+
+- metric_id: sql.insert.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Insert"
+  datadog_id_selfhosted: sql.insert.count
+  datadog_id_dedicated: sql.insert.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ Overview, SQL ]
+  metric_ui_graph: "SQL Statements"
+
+- metric_id: sql.delete.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Delete"
+  datadog_id_selfhosted: sql.delete.count
+  datadog_id_dedicated: sql.delete.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ Overview, SQL ]
+  metric_ui_graph: "SQL Statements"
+
+- metric_id: sql.service.latency
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "P90, P99, P99.9, P99.99"
+  datadog_id_selfhosted: sql.service.latency
+  datadog_id_dedicated: sql.service.latency
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ Overview, SQL ]
+  metric_ui_graph: "Service Latency: SQL Statements"
+
+- metric_id: tenant.consumption.request_units
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "RU, Average RUs"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ Overview, "Request Units"]
+  metric_ui_graph: "Request Units"
+  how_to_use: 'The CPU and I/O resources being used by queries in the cluster. Simple queries consume few RUs, while complicated queries with many reads and writes consume more RUs. To learn more about how RUs are calculated, refer to Resource Usage.'
+
+- metric_id: livebytes
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Storage usage"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: Storage
+  metric_ui_tab: [ Overview ]
+  metric_ui_graph: Storage
+  how_to_use: 'The amount of data being stored in the cluster. In the Storage Used graph, this is the logical number of live bytes and does not account for compression or replication.'
+
+- metric_id: tenant.consumption.sql_pods_cpu_seconds
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Total amount of CPU used by SQL pods"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ "Request Units" ]
+  metric_ui_graph: "CPU"
+  how_to_use: |
+    The number of RUs consumed by CPU usage of SQL processes (not storage processes). The CPU seconds is converted to Request Units using this equivalency:
+    
+    1 RU = 3 milliseconds SQL CPU.
+    
+    Correlate this metric with Request Units (RUs) and determine if your workload is CPU-intensive. To learn more about how RUs are calculated, refer to Resource Usage.
+
+- metric_id: tenant.consumption.pgwire_egress_bytes
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Client traffic"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ "Request Units" ]
+  metric_ui_graph: "Egress"
+  how_to_use: |
+    The number of RUs consumed by byte traffic to the client. Egress bytes are converted to Request Units using this equivalency:
+    
+    1 RU = 1 KiB Network egress.
+    
+    Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
+
+- metric_id: tenant.consumption.external_io_egress_bytes
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Bulk I/O operations"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ "Request Units" ]
+  metric_ui_graph: "Egress"
+  how_to_use: |
+    The number of RUs consumed by byte traffic for cluster bulk I/O operations (e.g., CDC). Egress bytes are converted to Request Units using this equivalency:
+    
+    1 RU = 1 KiB Network egress.
+    
+    Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
+
+- metric_id: tenant.consumption.read_requests
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Requests"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ "Request Units" ]
+  metric_ui_graph: "Reads"
+  how_to_use: |
+    The number of RUs consumed by KV storage layer reads, broken down by requests. SQL statements are translated into lower-level KV read requests that are sent in batches. Batches may contain any number of requests. Requests can have a payload containing any number of bytes. Storage layer I/O is converted to Request Units using this equivalency:
+    
+    1 RU = 8 storage read requests
+    
+    Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
+
+- metric_id: tenant.consumption.read_batches
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Batches"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ "Request Units" ]
+  metric_ui_graph: "Reads"
+  how_to_use: |
+    The number of RUs consumed by KV storage layer reads, broken down by batches. SQL statements are translated into lower-level KV read requests that are sent in batches. Batches may contain any number of requests. Requests can have a payload containing any number of bytes. Storage layer I/O is converted to Request Units using this equivalency:
+    
+    1 RU = 2 storage read batches
+    
+    Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
+
+- metric_id: tenant.consumption.read_bytes
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Bytes"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ "Request Units" ]
+  metric_ui_graph: "Reads"
+  how_to_use: |
+    The number of RUs consumed by KV storage layer reads, broken down by bytes. SQL statements are translated into lower-level KV read requests that are sent in batches. Batches may contain any number of requests. Requests can have a payload containing any number of bytes. Storage layer I/O is converted to Request Units using this equivalency:
+    
+    1 RU = 64 KiB read request payload (prorated)
+    
+    Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
+
+- metric_id: tenant.consumption.write_requests
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Requests"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ "Request Units" ]
+  metric_ui_graph: "Writes"
+  how_to_use: |
+    The number of RUs consumed by KV writes, broken down by requests. SQL statements are translated into lower-level KV write requests that are sent in batches. Batches may contain any number of requests. Requests can have a payload containing any number of bytes. Write operations are replicated to multiple storage processes (3 by default), with each replica counted as a separate write operation. Storage layer I/O is converted to Request Units using this equivalency:
+    
+    1 RU = 1 storage write request
+    
+    Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
+ 
+- metric_id: tenant.consumption.write_batches
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Batches"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ "Request Units" ]
+  metric_ui_graph: "Writes"
+  how_to_use: |
+    The number of RUs consumed by KV writes, broken down by batches. SQL statements are translated into lower-level KV write requests that are sent in batches. Batches may contain any number of requests. Requests can have a payload containing any number of bytes. Write operations are replicated to multiple storage processes (3 by default), with each replica counted as a separate write operation. Storage layer I/O is converted to Request Units using this equivalency:
+    
+    1 RU = 1 storage write batch
+    
+    Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
+
+- metric_id: tenant.consumption.write_bytes
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Bytes"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ "Request Units" ]
+  metric_ui_graph: "Writes"
+  how_to_use: |
+    The number of RUs consumed by KV writes, broken down by bytes. SQL statements are translated into lower-level KV write requests that are sent in batches. Batches may contain any number of requests. Requests can have a payload containing any number of bytes. Write operations are replicated to multiple storage processes (3 by default), with each replica counted as a separate write operation. Storage layer I/O is converted to Request Units using this equivalency:
+
+    1 RU = 1 KiB write request payload (prorated)
+    
+    Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
+
+- metric_id: tenant.consumption.cross_region_network_ru
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Network traffic"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Request Units"
+  metric_ui_tab: [ "Request Units" ]
+  metric_ui_graph: "Cross-region Networking"
+  how_to_use: 'The number of RUs consumed by cross-region networking. Correlate these metrics with Request Units (RUs). For more information about multi-region clusters and networking, refer to Multi-region clusters.'
+
+- metric_id: sql.conn.latency
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "P90, P99"
+  datadog_id_selfhosted: sql.conn.latency
+  datadog_id_dedicated: sql.conn.latency
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Connection Latency"
+
+- metric_id: sql.conns
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Connections"
+  datadog_id_selfhosted: sql.conns
+  datadog_id_dedicated: sql.conns
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Open SQL Sessions"
+
+- metric_id: sql.txns.open
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Open Transactions"
+  datadog_id_selfhosted: sql.txns.open
+  datadog_id_dedicated: sql.txns.open
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Open SQL Transactions"
+
+- metric_id: sql.txn.begin.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Begin"
+  datadog_id_selfhosted: sql.txn.begin.count
+  datadog_id_dedicated: sql.txn.begin.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transactions"
+
+- metric_id: sql.txn.commit.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Commits"
+  datadog_id_selfhosted: sql.txn.commit.count
+  datadog_id_dedicated: sql.txn.commit.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transactions"
+
+- metric_id: sql.txn.rollback.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Rollbacks"
+  datadog_id_selfhosted: sql.txn.rollback.count
+  datadog_id_dedicated: sql.txn.rollback.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transactions"
+
+- metric_id: sql.txn.abort.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Aborts"
+  datadog_id_selfhosted: sql.txn.abort.count
+  datadog_id_dedicated: sql.txn.abort.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transactions"
+
+- metric_id: txn.restarts.writetooold
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Write Too Old"
+  datadog_id_selfhosted: txn.restarts.writetooold
+  datadog_id_dedicated: txn.restarts.writetooold
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transaction Restarts"
+
+- metric_id: txn.restarts.writetoooldmulti
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Write Too Old (multiple)"
+  datadog_id_selfhosted: txn.restarts.writetoooldmulti.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transaction Restarts"
+  how_to_use: 'This metric is one measure of the impact of contention conflicts on workload performance. For guidance on contention conflicts, review transaction contention best practices and performance tuning recipes. Tens of restarts per minute may be a high value, a signal of an elevated degree of contention in the workload, which should be investigated. For the specific error, refer to the transaction retry error reference for more details.'
+
+- metric_id: txn.restarts.serializable
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Forwarded Timestamp"
+  datadog_id_selfhosted: txn.restarts.serializable
+  datadog_id_dedicated: txn.restarts.serializable
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transaction Restarts"
+
+- metric_id: txn.restarts.asyncwritefailure
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Async Consensus Failure"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transaction Restarts"
+  how_to_use: 'This metric is one measure of the impact of contention conflicts on workload performance. For guidance on contention conflicts, review transaction contention best practices and performance tuning recipes. Tens of restarts per minute may be a high value, a signal of an elevated degree of contention in the workload, which should be investigated. For the specific error, refer to the transaction retry error reference for more details.'
+
+- metric_id: txn.restarts.readwithinuncertainty
+  deploy_selfhosted: false
+  deploy_dedicated: false
+  deploy_standard: true
+  short_name: "Read Within Uncertainty Interval"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transaction Restarts"
+  how_to_use: 'This metric is one measure of the impact of contention conflicts on workload performance. For guidance on contention conflicts, review transaction contention best practices and performance tuning recipes. Tens of restarts per minute may be a high value, a signal of an elevated degree of contention in the workload, which should be investigated. For the specific error, refer to the transaction retry error reference for more details.'
+
+- metric_id: txn.restarts.txnaborted
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Aborted"
+  datadog_id_selfhosted: txn.restarts.txnaborted.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transaction Restarts"
+
+- metric_id: txn.restarts.txnpush
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Push Failure"
+  datadog_id_selfhosted: txn.restarts.txnpush.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transaction Restarts"
+
+- metric_id: txn.restarts.unknown
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Unknown"
+  datadog_id_selfhosted: txn.restarts.unknown.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transaction Restarts"
+
+- metric_id: sql.txn.latency
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "P90, P99"
+  datadog_id_selfhosted: sql.txn.latency
+  datadog_id_dedicated: sql.txn.latency
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Transaction Latency"
+
+- metric_id: sql.statements.active
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Active Statements"
+  datadog_id_selfhosted: sql.statements.active
+  datadog_id_dedicated: sql.statements.active
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Active SQL Statements"
+
+- metric_id: sql.failure.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Errors"
+  datadog_id_selfhosted: sql.failure
+  datadog_id_dedicated: sql.failure.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "SQL Statement Errors"
+
+- metric_id: sql.distsql.contended_queries.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Contention"
+  datadog_id_selfhosted: sql.distsql.contended.queries
+  datadog_id_dedicated: sql.distsql.contended.queries
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "SQL Statement Contention"
+
+- metric_id: sql.full.scan.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Full scans"
+  datadog_id_selfhosted: sql.full.scan
+  datadog_id_dedicated: sql.full.scan.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Full Scans"
+
+- metric_id: sql.ddl.count
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "DDL Statements"
+  datadog_id_selfhosted: sql.ddl.count
+  datadog_id_dedicated: sql.ddl.count
+  essential: true
+  metric_type: SQL
+  metric_ui_tab: [ SQL ]
+  metric_ui_graph: "Schema Changes"
+
+- metric_id: jobs.auto_create_stats.currently_running
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Auto Create Statistics Running"
+  datadog_id_selfhosted: jobs.auto_create_stats.currently_running
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Table Statistics"
+  metric_ui_tab: [ SQL, Custom ]
+  metric_ui_graph: "Statistics Jobs"
+
+- metric_id: jobs.create_stats.currently_running
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Create Statistics Running"
+  datadog_id_selfhosted: jobs.create_stats.currently_running
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Table Statistics"
+  metric_ui_tab: [ SQL, Custom ]
+  metric_ui_graph: "Statistics Jobs"
+
+- metric_id: jobs.auto_create_stats.resume_failed
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Auto Create Statistics Failed"
+  datadog_id_selfhosted: jobs.auto.create.stats.resume_failed.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Table Statistics"
+  metric_ui_tab: [ SQL, Custom ]
+  metric_ui_graph: "Statistics Jobs"
+
+- metric_id: jobs.auto_create_stats.currently_paused
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Auto Create Statistics Paused"
+  datadog_id_selfhosted: jobs.auto.create.stats.currently_paused
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Table Statistics"
+  metric_ui_tab: [ SQL, Custom ]
+  metric_ui_graph: "Statistics Jobs"
+
+- metric_id: changefeed.running
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Running"
+  datadog_id_selfhosted: changefeed.running
+  datadog_id_dedicated: changefeed.running
+  essential: true
+  metric_type: Changefeeds
+  metric_ui_tab: [ Changefeeds, Custom ]
+  metric_ui_graph: "Changefeed Status"
+
+- metric_id: jobs.changefeed.currently_paused
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Paused"
+  datadog_id_selfhosted: jobs.changefeed.currently_paused
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: Changefeeds
+  metric_ui_tab: [ Changefeeds, Custom ]
+  metric_ui_graph: "Changefeed Status"
+
+- metric_id: changefeed.failures
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Failures"
+  datadog_id_selfhosted: changefeed.failures
+  datadog_id_dedicated: changefeed.failures
+  essential: true
+  metric_type: Changefeeds
+  metric_ui_tab: [ Changefeeds, Custom ]
+  metric_ui_graph: "Changefeed Status"
+
+- metric_id: changefeed.error_retries
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Errors"
+  datadog_id_selfhosted: changefeed.error_retries
+  datadog_id_dedicated: changefeed.error_retries
+  essential: true
+  metric_type: Changefeeds
+  metric_ui_tab: [ Changefeeds, Custom ]
+  metric_ui_graph: "Retryable Errors"
+
+- metric_id: changefeed.emitted_messages
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Emitted messages"
+  datadog_id_selfhosted: changefeed.emitted.messages
+  datadog_id_dedicated: changefeed.emitted.messages
+  essential: true
+  metric_type: Changefeeds
+  metric_ui_tab: [ Changefeeds, Custom ]
+  metric_ui_graph: "Emitted Messages"
+
+- metric_id: changefeed.emitted_bytes
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Emitted bytes"
+  datadog_id_selfhosted: changefeed.emitted_bytes.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: Changefeeds
+  metric_ui_tab: [ Changefeeds, Custom ]
+  metric_ui_graph: "Emitted Bytes"
+
+- metric_id: changefeed.commit_latency
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "P99, P90"
+  datadog_id_selfhosted: changefeed.commit_latency
+  datadog_id_dedicated: changefeed.commit_latency
+  essential: true
+  metric_type: Changefeeds
+  metric_ui_tab: [ Changefeeds, Custom ]
+  metric_ui_graph: "Commit Latency"
+
+- metric_id: jobs.changefeed.protected_age_sec
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Protected Timestamp Age"
+  datadog_id_selfhosted: jobs.changefeed.protected_age_sec
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: Changefeeds
+  metric_ui_tab: [ Changefeeds, Custom ]
+  metric_ui_graph: "Oldest Protected Timestamp"
+
+- metric_id: jobs.row_level_ttl.resume_completed
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Resume Completed"
+  datadog_id_selfhosted: jobs.row_level_ttl.resume_completed.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL", Custom ]
+  metric_ui_graph: "Row-Level TTL Jobs"
+
+- metric_id: jobs.row_level_ttl.currently_running
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Running"
+  datadog_id_selfhosted: jobs.row.level.ttl.currently_running
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL", Custom ]
+  metric_ui_graph: "Row-Level TTL Jobs"
+
+- metric_id: jobs.row_level_ttl.currently_paused
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Paused"
+  datadog_id_selfhosted: jobs.row_level_ttl.currently_paused
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL", Custom ]
+  metric_ui_graph: "Row-Level TTL Jobs"
+
+- metric_id: jobs.row_level_ttl.resume_failed
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Resume Failed"
+  datadog_id_selfhosted: jobs.row_level_ttl.resume_failed.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL", Custom ]
+  metric_ui_graph: "Row-Level TTL Jobs"
+
+- metric_id: schedules.scheduled-row-level-ttl-executor.failed
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Failed Schedules"
+  datadog_id_selfhosted: schedules.scheduled-row-level-ttl-executor.failed.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL", Custom ]
+  metric_ui_graph: "Row-Level TTL Jobs"
+
+- metric_id: jobs.row_level_ttl.rows_selected
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Rows selected"
+  datadog_id_selfhosted: jobs.row_level_ttl.rows_selected.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL", Custom ]
+  metric_ui_graph: "Processing Rate"
+
+- metric_id: jobs.row_level_ttl.rows_deleted
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Rows deleted"
+  datadog_id_selfhosted: jobs.row_level_ttl.rows_deleted.count
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL", Custom ]
+  metric_ui_graph: "Processing Rate"
+
+- metric_id: jobs.row_level_ttl.total_rows
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Total Rows"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL" ]
+  metric_ui_graph: "Estimated Rows"
+
+- metric_id: jobs.row_level_ttl.total_expired_rows
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Expired Rows"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL" ]
+  metric_ui_graph: "Estimated Rows"
+
+- metric_id: jobs.row_level_ttl.select_duration
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Select Latency (P90), Select Latency (P99)"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL" ]
+  metric_ui_graph: "Row-Level TTL Job Latency"
+
+- metric_id: jobs.row_level_ttl.delete_duration
+  deploy_selfhosted: true
+  deploy_dedicated: true
+  deploy_standard: true
+  short_name: "Delete Latency (P90), Delete Latency (P99)"
+  datadog_id_selfhosted: "NOT AVAILABLE"
+  datadog_id_dedicated: "NOT AVAILABLE"
+  essential: true
+  metric_type: "Row-Level TTL"
+  metric_ui_tab: [ "Row-Level TTL" ]
+  metric_ui_graph: "Row-Level TTL Job Latency"

@@ -1,0 +1,3 @@
+{{site.data.alerts.callout_info}}
+RLS applies to a table **only when explicitly enabled** using `ALTER TABLE ... ENABLE ROW LEVEL SECURITY`. Roles exempt from RLS policies include [admins]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles), [table owners]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) (unless the table is set to [`FORCE ROW LEVEL SECURITY`](#force-row-level-security)), and [roles with `BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls).
+{{site.data.alerts.end}}

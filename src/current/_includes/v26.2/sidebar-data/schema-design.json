@@ -1,0 +1,141 @@
+{
+    "title": "Schema Design",
+    "items": [
+      {
+        "title": "Database Schemas",
+        "urls": [
+          "/${VERSION}/schema-design-overview.html"
+        ]
+      },
+      {
+        "title": "Create a Database",
+        "urls": [
+          "/${VERSION}/schema-design-database.html"
+        ]
+      },
+      {
+        "title": "Create a User-defined Schema",
+        "urls": [
+          "/${VERSION}/schema-design-schema.html"
+        ]
+      },
+      {
+        "title": "Create a Table",
+        "urls": [
+          "/${VERSION}/schema-design-table.html"
+        ]
+      },
+      {
+        "title": "Computed Columns",
+        "urls": [
+          "/${VERSION}/computed-columns.html"
+        ]
+      },
+      {
+        "title": "Column Families",
+        "urls": [
+          "/${VERSION}/column-families.html"
+        ]
+      },
+      {
+        "title": "Scale to Multiple Regions",
+        "urls": [
+          "/${VERSION}/multiregion-scale-application.html"
+        ]
+      },
+      {
+        "title": "Indexes",
+        "items": [
+          {
+            "title": "Secondary Indexes",
+            "urls": [
+                "/${VERSION}/schema-design-indexes.html"
+            ]
+          },
+          {
+            "title": "Partial Indexes",
+            "urls": [
+              "/${VERSION}/partial-indexes.html"
+            ]
+          },
+          {
+            "title": "Hash-sharded Indexes",
+            "urls": [
+              "/${VERSION}/hash-sharded-indexes.html"
+            ]
+          },
+          {
+            "title": "Generalized Inverted Indexes",
+            "urls": [
+              "/${VERSION}/inverted-indexes.html"
+            ]
+          },
+          {
+            "title": "Full-Text Search",
+            "urls": [
+              "/${VERSION}/full-text-search.html"
+            ]
+          },
+          {
+            "title": "Trigram Indexes",
+            "urls": [
+              "/${VERSION}/trigram-indexes.html"
+            ]
+          },
+          {
+            "title": "Expression Indexes",
+            "urls": [
+              "/${VERSION}/expression-indexes.html"
+            ]
+          },
+          {
+            "title": "Spatial Indexes",
+            "urls": [
+              "/${VERSION}/spatial-indexes.html"
+            ]
+          },
+          {
+            "title": "Vector Indexes",
+            "urls": [
+              "/${VERSION}/vector-indexes.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Update a Database Schema",
+        "items": [
+          {
+            "title": "Change and Remove Objects",
+            "urls": [
+              "/${VERSION}/schema-design-update.html"
+            ]
+          },
+          {
+            "title": "Online Schema Changes",
+            "urls": [
+              "/${VERSION}/online-schema-changes.html"
+            ]
+          },
+          {
+            "title": "Use Alembic",
+            "urls": [
+              "/${VERSION}/alembic.html"
+            ]
+          },
+          {
+            "title": "Use Flyway",
+            "urls": [
+              "/${VERSION}/flyway.html"
+            ]
+          },
+          {
+            "title": "Use Liquibase",
+            "urls": [
+              "/${VERSION}/liquibase.html"
+            ]
+          }
+        ]
+      }
+    ]
+}
