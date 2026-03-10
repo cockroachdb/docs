@@ -7,8 +7,6 @@ ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 docs_area:
 ---
 
-{% include {{ page.version.version }}/filter-tabs/deploy-crdb-aws.md %}
-
 This page shows you how to manually deploy a multi-node, self-hosted CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load-balancing service to distribute client traffic.
 
 After setting up the AWS network, clock synchronization, and load balancing, it should take approximately 20 minutes to complete the deployment. This is based on initializing a three-node CockroachDB cluster in a single AWS region and running our sample workload.
