@@ -94,6 +94,18 @@ The following are instructions for how to update the configuration of some commo
 
 3. Find `"mcpServers"`. Include the JSON snippet in the list of MCP servers, replacing the `{your-cluster-id}` placeholder.
 
+    ~~~json
+    "mcpServers": {
+      "cockroachdb-cloud": {
+        "type": "http",
+        "url": "https://cockroachlabs.cloud/mcp",
+        "headers": {
+          "mcp-cluster-id": "{your-cluster-id}"
+        }
+      }
+    }
+    ~~~
+
 4. Restart Claude Code.
 
 </section>
@@ -130,6 +142,19 @@ The following are instructions for how to update the configuration of some commo
 
 3. Find `"mcpServers"`. Include the JSON snippet in the list of MCP servers, replacing the `{your-cluster-id}` and `{your-service-account-api-key}` placeholders.
 
+    ~~~json
+    "mcpServers": {
+      "cockroachdb-cloud": {
+        "type": "http",
+        "url": "https://cockroachlabs.cloud/mcp",
+        "headers": {
+          "mcp-cluster-id": "{your-cluster-id}",
+          "Authorization": "Bearer {your-service-account-api-key}"
+        }
+      }
+    }
+    ~~~
+
 4. Restart Claude Code.
 
 </section>
@@ -163,6 +188,17 @@ The following are instructions for how to update the configuration of some commo
 
 3. Find `"mcpServers"`. Include the JSON snippet in the list of MCP servers, replacing the `{your-cluster-id}` placeholder.
 
+    ~~~json
+    "mcpServers": {
+      "cockroachdb-cloud": {
+        "url": "https://cockroachlabs.cloud/mcp",
+        "headers": {
+          "mcp-cluster-id": "{your-cluster-id}"
+        }
+      }
+    }
+    ~~~
+
 4. Restart Cursor.
 </section>
 
@@ -183,6 +219,18 @@ The following are instructions for how to update the configuration of some commo
 2. Open `.cursor/mcp.json`.
 
 3. Find `"mcpServers"`. Include the JSON snippet in the list of MCP servers, replacing the `{your-cluster-id}` and `{your-service-account-api-key}` placeholders.
+
+    ~~~json
+    "mcpServers": {
+      "cockroachdb-cloud": {
+        "url": "https://cockroachlabs.cloud/mcp",
+        "headers": {
+          "mcp-cluster-id": "{your-cluster-id}",
+          "Authorization": "Bearer {your-service-account-api-key}"
+        }
+      }
+    }
+    ~~~
 
 4. Restart Cursor.
 </section>
@@ -207,6 +255,18 @@ The following are instructions for how to update the configuration of some commo
 
 3. Find `"mcpServers"`. Include the JSON snippet in the list of MCP servers, replacing the `{your-cluster-id}` placeholder.
 
+    ~~~json
+    "mcpServers": {
+      "cockroachdb-cloud": {
+        "type": "streamableHttp",
+        "url": "https://cockroachlabs.cloud/mcp",
+        "headers": {
+          "mcp-cluster-id": "{your-cluster-id}"
+        }
+      }
+    }
+    ~~~
+
 4. Restart Cline.
 </section>
 
@@ -228,6 +288,19 @@ The following are instructions for how to update the configuration of some commo
 2. Open `cline_mcp_settings.json`.
 
 3. Find `"mcpServers"`. Include the JSON snippet in the list of MCP servers, replacing the `{your-cluster-id}` and `{your-service-account-api-key}` placeholders.
+
+    ~~~json
+    "mcpServers": {
+      "cockroachdb-cloud": {
+        "type": "streamableHttp",
+        "url": "https://cockroachlabs.cloud/mcp",
+        "headers": {
+          "mcp-cluster-id": "{your-cluster-id}",
+          "Authorization": "Bearer {your-service-account-api-key}"
+        }
+      }
+    }
+    ~~~
 
 4. Restart Cline.
 </section>
@@ -262,6 +335,18 @@ The following are instructions for how to update the configuration of some commo
 
 3. Find `"servers"`. Include the JSON snippet in the list of MCP servers, replacing the `{your-cluster-id}` placeholder.
 
+    ~~~json
+    "servers": {
+      "cockroachdb-cloud": {
+        "type": "http",
+        "url": "https://cockroachlabs.cloud/mcp",
+        "headers": {
+          "mcp-cluster-id": "{your-cluster-id}"
+        }
+      }
+    }
+    ~~~
+
 4. Restart GitHub Copilot.
 </section>
 
@@ -284,6 +369,19 @@ The following are instructions for how to update the configuration of some commo
 
 3. Find `"servers"`. Include the JSON snippet in the list of MCP servers, replacing the `{your-cluster-id}` and `{your-service-account-api-key}` placeholders.
 
+    ~~~json
+    "servers": {
+      "cockroachdb-cloud": {
+        "type": "http",
+        "url": "https://cockroachlabs.cloud/mcp",
+        "headers": {
+          "mcp-cluster-id": "{your-cluster-id}",
+          "Authorization": "Bearer {your-service-account-api-key}"
+        }
+      }
+    }
+    ~~~
+
 4. Restart GitHub Copilot.
 </section>
 </section>
@@ -303,36 +401,44 @@ While it's possible to use multiple MCP server connections to connect your tool 
 
 2. Select the new server configuration `cockroachdb-cloud` and select **Authenticate**.
 
-3. If you are a member of multiple CockroachDB Cloud [organizations]({% link cockroachcloud/authorization.md %}), you wil be directed to the **Organization Selection** modal in your browser. Select the organization associated with the cluster that you have included in the tool configuration.
+3. If you are not currently logged in to your CockroachDB Cloud account, you will be directed to the login page in your browser. Log in.
 
-4. You will be directed to the **Authorize MCP Access** modal in your browser. This modal will ask you to grant read and/or write permissions to this MCP server connection. Select one or both options, then click **Authorize**.
+4. If you are a member of multiple CockroachDB Cloud [organizations]({% link cockroachcloud/authorization.md %}), you wil be directed to the **Organization Selection** modal in your browser. Select the organization associated with the cluster that you have included in the tool configuration.
+
+5. You will be directed to the **Authorize MCP Access** modal in your browser. This modal will ask you to grant read and/or write permissions to this MCP server connection. Select one or both options, then click **Authorize**.
 </section>
 <section class="filter-content" markdown="1" data-scope="cursor">
 1. After configuring the MCP server, use the Cursor interface to access MCP server connection settings.
 
 2. Select the new server configuration `cockroachdb-cloud` and select **Authenticate**.
 
-3. If you are a member of multiple CockroachDB Cloud [organizations]({% link cockroachcloud/authorization.md %}), you wil be directed to the **Organization Selection** modal in your browser. Select the organization associated with the cluster that you have included in the tool configuration.
+3. If you are not currently logged in to your CockroachDB Cloud account, you will be directed to the login page in your browser. Log in.
 
-4. You will be directed to the **Authorize MCP Access** modal in your browser. This modal will ask you to grant read and/or write permissions to this MCP server connection. Select one or both options, then click **Authorize**.
+4. If you are a member of multiple CockroachDB Cloud [organizations]({% link cockroachcloud/authorization.md %}), you wil be directed to the **Organization Selection** modal in your browser. Select the organization associated with the cluster that you have included in the tool configuration.
+
+5. You will be directed to the **Authorize MCP Access** modal in your browser. This modal will ask you to grant read and/or write permissions to this MCP server connection. Select one or both options, then click **Authorize**.
 </section>
 <section class="filter-content" markdown="1" data-scope="cline">
 1. After configuring the MCP server, use the Cline interface to access MCP server connection settings.
 
 2. Select the new server configuration `cockroachdb-cloud` and select **Authenticate**.
 
-3. If you are a member of multiple CockroachDB Cloud [organizations]({% link cockroachcloud/authorization.md %}), you wil be directed to the **Organization Selection** modal in your browser. Select the organization associated with the cluster that you have included in the tool configuration.
+3. If you are not currently logged in to your CockroachDB Cloud account, you will be directed to the login page in your browser. Log in.
 
-4. You will be directed to the **Authorize MCP Access** modal in your browser. This modal will ask you to grant read and/or write permissions to this MCP server connection. Select one or both options, then click **Authorize**.
+4. If you are a member of multiple CockroachDB Cloud [organizations]({% link cockroachcloud/authorization.md %}), you wil be directed to the **Organization Selection** modal in your browser. Select the organization associated with the cluster that you have included in the tool configuration.
+
+5. You will be directed to the **Authorize MCP Access** modal in your browser. This modal will ask you to grant read and/or write permissions to this MCP server connection. Select one or both options, then click **Authorize**.
 </section>
 <section class="filter-content" markdown="1" data-scope="copilot">
 1. After configuring the MCP server, use the GitHub Copilot interface to access MCP server connection settings.
 
 2. Select the new server configuration `cockroachdb-cloud` and select **Authenticate**.
 
-3. If you are a member of multiple CockroachDB Cloud [organizations]({% link cockroachcloud/authorization.md %}), you wil be directed to the **Organization Selection** modal in your browser. Select the organization associated with the cluster that you have included in the tool configuration.
+3. If you are not currently logged in to your CockroachDB Cloud account, you will be directed to the login page in your browser. Log in.
 
-4. You will be directed to the **Authorize MCP Access** modal in your browser. This modal will ask you to grant read and/or write permissions to this MCP server connection. Select one or both options, then click **Authorize**.
+4. If you are a member of multiple CockroachDB Cloud [organizations]({% link cockroachcloud/authorization.md %}), you wil be directed to the **Organization Selection** modal in your browser. Select the organization associated with the cluster that you have included in the tool configuration.
+
+5. You will be directed to the **Authorize MCP Access** modal in your browser. This modal will ask you to grant read and/or write permissions to this MCP server connection. Select one or both options, then click **Authorize**.
 </section>
 </section>
 
