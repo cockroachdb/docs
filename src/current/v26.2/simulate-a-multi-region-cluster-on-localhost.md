@@ -94,7 +94,6 @@ When you're done with your demo cluster, you can wipe the cluster by typing the 
 
 - [Install the client driver]({% link {{ page.version.version }}/install-client-drivers.md %}) for your preferred language
 - Learn more about [CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}) and the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %})
-- [Build an app with CockroachDB]({% link {{ page.version.version }}/example-apps.md %})
 - Further explore CockroachDB capabilities like:
   - [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
   - [Fault tolerance and automated repair]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %})
