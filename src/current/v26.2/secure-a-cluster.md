@@ -465,4 +465,3 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 You might also be interested in the following pages:
 
 - [CockroachDB SQL client]({% link {{ page.version.version }}/cockroach-sql.md %})
-- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
