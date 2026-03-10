@@ -1073,7 +1073,7 @@
   sources: ['cockroachcloud/learn-cockroachdb-sql.md']
 
 - destination: cockroachcloud/client-certs-advanced.md
-  sources: ['v26.1/security-reference/config-secure-hba.md', 'stable/security-reference/config-secure-hba.md']
+  sources: ['v26.1/security-reference/config-secure-hba.md', 'stable/security-reference/config-secure-hba.md', 'v26.2/security-reference/config-secure-hba.md']
 
 - destination: cockroachdb-operator-overview.md
   sources: ['orchestrate-a-local-cluster-with-kubernetes.md', 'orchestrate-a-local-cluster-with-kubernetes-insecure.md']

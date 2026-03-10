@@ -352,3 +352,4 @@ When you no longer need a table, use [`DROP TABLE`]({% link {{ page.version.vers
 - Explore all [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
 - [Use the built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) to execute statements from a shell or directly from the command line
 - [Explore CockroachDB features]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) like automatic replication, rebalancing, and fault tolerance
+- [Install the client driver]({% link {{ page.version.version }}/install-client-drivers.md %}) for your preferred language
