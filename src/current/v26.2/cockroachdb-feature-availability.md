@@ -65,7 +65,7 @@ The `metrics` Prometheus endpoint is commonly used and is the default in Prometh
 
 ### Value separation
 
-[Value separation]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) reduces write amplification by storing large values separately from the LSM in blob files. Value separation can reduce write amplification by up to 50% for large-value workloads, while introducing minor read overhead and a slight increase in disk space usage. This feature is available in Preview.
+[Value separation]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) reduces write amplification by storing large values separately from the LSM in blob files. Value separation can reduce write amplification by up to 50% for large-value workloads, while introducing minor read overhead and a slight increase in disk space usage. This feature is available in preview.
 
 ### `database` and `application_name` labels for certain metrics
 
@@ -86,7 +86,7 @@ The SQL built-in function [workload_index_recs]({% link {{ page.version.version 
 
 ### Triggers
 
-[Triggers]({% link {{ page.version.version }}/triggers.md %}) are in Preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
+[Triggers]({% link {{ page.version.version }}/triggers.md %}) are in preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
 
 ### JWT authorization
 
@@ -98,15 +98,19 @@ The SQL built-in function [workload_index_recs]({% link {{ page.version.version 
 
 ### Admission control for ingesting snapshots
 
-The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` is in Preview. When configured, it limits the disk impact of ingesting snapshots on a node.
+The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` is in preview. When configured, it limits the disk impact of ingesting snapshots on a node.
 
 ### Admission control to limit the bandwidth for a store
 
-The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.provisioned_bandwidth` is in Preview. When configured, the store's bandwidth is limited to the configured bandwidth, expressed in bytes per second,
+The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.provisioned_bandwidth` is in preview. When configured, the store's bandwidth is limited to the configured bandwidth, expressed in bytes per second,
 
 ### CockroachDB Standard
 
 CockroachDB {{ site.data.products.standard }} is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability. Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
+
+### Fault tolerance demo
+
+CockroachDB {{ site.data.products.advanced }} includes a [built-in fault tolerance demo]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud) that allows you to monitor query execution during a simulated failure and recovery. The fault tolerance demo is in preview.
 
 ### CockroachDB Cloud Folders
 

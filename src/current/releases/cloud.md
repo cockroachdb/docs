@@ -16,7 +16,7 @@ Get future release notes emailed to you:
 
 ## Feb 24, 2026
 
-CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} users can now run a built-in [fault tolerance demo]({% link {{ site.versions["stable"] }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud) that allows you to monitor query execition during a simulated failure and recovery. The fault tolerance demo is in [Preview]({% link {{ site.versions["stable"] }}/cockroachdb-feature-availability.md %}).
+CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} users can now run a built-in [fault tolerance demo]({% link {{ site.versions["stable"] }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud) that allows you to monitor query execution during a simulated failure and recovery. The fault tolerance demo is in [Preview]({% link {{ site.versions["stable"] }}/cockroachdb-feature-availability.md %}).
 
 ## Aug 5, 2025
 
