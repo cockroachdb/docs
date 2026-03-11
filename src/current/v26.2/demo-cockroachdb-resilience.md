@@ -9,7 +9,7 @@ This page describes how to perform a hands-on demonstration of CockroachDB's fau
 
 ## Run a guided demo in CockroachDB {{ site.data.products.cloud }}
 
-CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} includes a built-in fault tolerance demo in the {{ site.data.products.cloud }} Console that automatically runs a sample workload and simulates an availability zone failure on your cluster, showing real-time metrics of query latency and failure rate during the outage and recovery.
+CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} includes a built-in fault tolerance demo in the {{ site.data.products.cloud }} Console that automatically runs a sample workload and executes a controlled availability zone failure on your cluster, showing real-time metrics of query latency and failure rate during the outage and recovery.
 
 {{ site.data.alerts.callout_info }}
 The CockroachDB {{ site.data.products.cloud }} fault tolerance demo is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
@@ -20,14 +20,25 @@ The following prerequisites are needed to run the fault tolerance demo:
 - You must have [CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) with at least three nodes.
 - All nodes must be healthy.
 - The cluster's CPU utilization must be below 30%. 
-- The cluster must not currently be in a locked state as a result of maintenance such as scaling.
+- The cluster must not currently be in a locked state as a result of maintenance such as scaling. Clusters that were recently created may be locked intermittently while post-provisioning setup completes. Monitor your cluster's status in the {{ site.data.products.cloud }} Console to make sure it is not in a maintenance state.
 - You must have the [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) and/or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role assigned to start the demo.
 - Another fault tolerance demo must not currently be running.
-- The fault tolerance demo is not recommended to be run on a production cluster.
 
-In total, the fault tolerance demo takes approximately 10 to 15 minutes to complete. The demo creates a temporary database and demo workload on your cluster, then cleans up after the demo is complete. This clean-up may take several minutes after the demo ends. 
+In total, the fault tolerance demo takes approximately 10 to 15 minutes to complete. The demo creates a temporary database and demo workload on your cluster, then cleans up after the demo is complete. If the demo becomes stuck, the system will automatically force a full cleanup after 30 minutes. You do not need to contact support before this window has elapsed.
 
-To run the fault tolerance demo, open the {{ site.data.products.cloud }} Console and navigate to **Actions > Fault tolerance demo**.
+{{ site.data.alerts.callout_danger }}
+The fault tolerance demo is not recommended to be run on a production cluster. The demo temporarily blocks network communication to all nodes in one availability zone. This disruption is real, and may affect cluster performance during the outage window. Instead, use a dedicated test or staging cluster for the fault tolerance demo.
+{{ site.data.alerts.end }}
+
+To run the fault tolerance demo, open the {{ site.data.products.cloud }} Console and navigate to the **Overview** page, then select **Actions > Fault tolerance demo**.
+
+### Known limitations
+
+The following known limitations apply to the fault tolerance demo in CockroachDB {{ site.data.products.cloud }}:
+
+- QPS may briefly appear to drop to zero on the chart during or after the disruption phase. This occurs because metrics from the nodes in the disrupted availability zone are temporarily unavailable during the network block, it does not reflect actual cluster behavior. The unaffected nodes continue serving traffic normally.
+- If you cancel the fault tolerance demo and immediately try to start a new one, you may encounter an error. Wait a few minutes before starting again.
+- Clean-up of the temporary workload and database may continue for a few minutes after the demo ends. Refresh the Console page if the message does not clear after a few minutes.
 
 ## Run a manual demo on a local machine
 
