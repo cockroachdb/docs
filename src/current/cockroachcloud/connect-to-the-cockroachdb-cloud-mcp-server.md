@@ -4,15 +4,14 @@ summary: Description of the MCP Server, what it does, and a step-by-step guide o
 toc: true
 ---
 
-CockroachDB Cloud includes a managed [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server that enables AI coding tools such as Claude Code, Cursor, and AI agents to access a cluster. They can securely explore live schemas and run queries against a single selected cluster using OAuth or API key authentication. Users can interact with their cluster using natural language prompts to perform read operations (such as listing databases, querying tables, and exploring schemas) and write operations (such as creating databases and tables, and inserting rows into a table).
+CockroachDB Cloud includes a managed [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server that enables AI coding tools and AI agents to access a cluster. AI tools can explore live schemas and run queries against a cluster using OAuth or API key authentication. A user can interact with their cluster using natural language prompts to perform read and write operations such as listing tables, executing [`SELECT`]({% link {{site.current_cloud_version}}/select-clause.md %}) statements, and inserting rows into a table.
 
-Cockroach Labs recommends using OAuth to connect to the Cloud MCP server, as short-lived tokens are more secure than long-lived tokens. However, some automated tooling may require long-lived tokens, and so it is possible to connect to the server using an API key.
+This page explains how to connect AI tools to the CockroachDB Cloud MCP server, including detailed instructions for the following tools:
 
-This page explains how to connect your AI tools to the CockroachDB Cloud MCP server.
-
-{{site.data.alerts.callout_danger}}
-Use caution when granting cluster read/write access to an AI tool or agent, especially on a production cluster. Review your organization's security policies before doing so.
-{{site.data.alerts.end}}
+- Claude Code
+- Cursor
+- Cline
+- Github Copilot
 
 ## Before you begin
 
@@ -24,6 +23,12 @@ Use caution when granting cluster read/write access to an AI tool or agent, espe
 
 ## Connect to the MCP Server
 
+{{site.data.alerts.callout_danger}}
+Cockroach Labs recommends using OAuth to connect to the Cloud MCP server, as short-lived tokens are more secure than long-lived tokens.
+
+AI tools with cluster access can execute operations on your behalf. When first connecting an AI tool to CockroachDB, consider starting with a staging cluster to understand the tool's behavior before granting it access to production data.
+{{site.data.alerts.end}}
+
 ### Step 1. Choose your authentication method
 
 <div class="filters filters-big clearfix">
@@ -33,7 +38,7 @@ Use caution when granting cluster read/write access to an AI tool or agent, espe
 
 ### Step 2. Update tool configuration
 
-Cockroach Labs enables access to its CockroachDB Cloud MCP server via HTTP transport.
+Cockroach Labs enables access to its CockroachDB Cloud MCP server via HTTP transport (using HTTPS).
 
 <section class="filter-content" markdown="1" data-scope="oauth">
 Different AI tools might have slightly different ways of connecting to an MCP server via HTTP. This will normally involve adding a JSON snippet to a configuration file, which will include:
@@ -64,7 +69,7 @@ The following are instructions for how to update the configuration of some commo
 <section class="filter-content" markdown="1" data-scope="claude">
 <section class="filter-content" markdown="1" data-scope="oauth">
 
-#### Option 1. Use the Claude CLI
+#### Option 1. Use the Claude Code CLI
 
 1. Copy the following command:
 
@@ -112,7 +117,7 @@ The following are instructions for how to update the configuration of some commo
 
 <section class="filter-content" markdown="1" data-scope="api">
 
-#### Option 1. Use the Claude CLI
+#### Option 1. Use the Claude Code CLI
 1. Copy the following command:
 
     {% include_cached copy-clipboard.html %}
@@ -158,6 +163,7 @@ The following are instructions for how to update the configuration of some commo
 4. Restart Claude Code.
 
 </section>
+For help configuring Claude Code, refer to the [Claude Code documentation](https://code.claude.com/docs/en/mcp).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cursor">
@@ -234,6 +240,7 @@ The following are instructions for how to update the configuration of some commo
 
 4. Restart Cursor.
 </section>
+For help configuring Cursor, refer to the [Cursor documentation](https://cursor.com/docs/context/mcp#installing-mcp-servers).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cline">
@@ -304,6 +311,7 @@ The following are instructions for how to update the configuration of some commo
 
 4. Restart Cline.
 </section>
+For help configuring Cline, refer to the [Cline documentation](https://docs.cline.bot/mcp/adding-and-configuring-servers).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="copilot">
@@ -384,9 +392,10 @@ The following are instructions for how to update the configuration of some commo
 
 4. Restart GitHub Copilot.
 </section>
+For help configuring GitHub Copilot, refer to the [VS Code documentation](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
 </section>
 
-While it's possible to use multiple MCP server connections to connect your tool to multiple clusters at once, or to connect to the same cluster using different authentication methods, Cockroach Labs recommends connecting to just one single cluster using one authentication method.
+While it's possible to use multiple MCP server connections to connect your tool to multiple clusters at once, or to connect to the same cluster using different authentication methods, Cockroach Labs recommends connecting to one cluster using one authentication method.
 
 ### Step 3. Connect and authenticate
 
