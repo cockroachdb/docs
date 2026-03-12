@@ -136,10 +136,6 @@ INTO TABLE {database.public.table_name} WITH label=ldr_job;
 
 For a full reference on tracking metrics with labels, refer to the [Multi-dimensional Metrics]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}#clusters-with-logical-data-replication-jobs) page.
 
-### Datadog
-
-You can export metrics to Datadog for LDR jobs. For steps to set up metrics export, refer to the [Monitor CockroachDB Self-Hosted with Datadog]({% link {{ page.version.version }}/datadog.md %}).
-
 ## See also
 
 - [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %})

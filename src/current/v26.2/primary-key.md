@@ -75,8 +75,6 @@ The columns in the `PRIMARY KEY` constraint are used to create its primary [inde
 
 To ensure each row has a unique identifier, the `PRIMARY KEY` constraint combines the properties of both the [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) and [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraints. The properties of both constraints are necessary to make sure each row's primary key columns contain distinct sets of values. The properties of the `UNIQUE` constraint ensure that each value is distinct from all other values. However, because `NULL` values never equal other `NULL` values, the `UNIQUE` constraint is not enough (two rows can appear the same if one of the values is `NULL`). To prevent the appearance of duplicated values, the `PRIMARY KEY` constraint also enforces the properties of the `NOT NULL` constraint.
 
-For best practices, see [Select primary key columns]({% link {{ page.version.version }}/schema-design-table.md %}#select-primary-key-columns).
-
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
 {{site.data.alerts.end}}

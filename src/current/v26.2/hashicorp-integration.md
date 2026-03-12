@@ -59,8 +59,6 @@ CockroachDB users can use Vault's PostgreSQL Database Secrets Engine to handle t
 
 - As [Dynamic Secrets](https://www.vaultproject.io/use-cases/dynamic-secrets), meaning that credentials are generated and issued on demand from pre-configured templates, rather than created and persisted. Credentials are issued for specific clients and for short validity durations, further minimizing both the likelihood of a credential compromise, and the possible impact of any compromise that might occur.
 
-Try the tutorial: [Using HashiCorp Vault's Dynamic Secrets for Enhanced Database Credential Security in CockroachDB]({% link {{ page.version.version }}/vault-db-secrets-tutorial.md %})
-
 ### How to speed up user/role management
 
 {% include {{page.version.version}}/known-limitations/grant-revoke-schema-changes.md %}
@@ -78,7 +76,6 @@ Vault's [Transit Secrets Engine](https://www.vaultproject.io/docs/secrets/transi
 - [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %})
 - [Certificate Authentication for SQL Clients in Advanced Clusters]({% link cockroachcloud/client-certs-advanced.md %})
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %})
-- [Using HashiCorp Vault's Dynamic Secrets for Enhanced Database Credential Security in CockroachDB]({% link {{ page.version.version }}/vault-db-secrets-tutorial.md %})
 - [Roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles)
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
 - [`GRANT`]({% link {{ page.version.version }}/grant.md %})
