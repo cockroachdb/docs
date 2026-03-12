@@ -22,12 +22,12 @@ This page describes how CockroachDB handles releases and links to the release no
 
 ## Release types
 
-A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, followed by a series of patch releases. These releases follow a staged process where new versions first roll out to select Cockroach {{ site.data.products.cloud }} organizations, with binaries available for CockroachDB {{ site.data.products.core }} afterwards:
+A new [major version](#major-versions) of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production (GA) release, followed by [patch releases](#patch-releases). New versions first roll out to select CockroachDB {{ site.data.products.cloud }} organizations, and binaries are made available for CockroachDB {{ site.data.products.core }} afterward:
 
-- Major releases (x.y.0 GA): Approximately 2 weeks after {{ site.data.products.cloud }} GA.
+- Initial production release (x.y.0 GA): Approximately 2 weeks after {{ site.data.products.cloud }} availability.
 - Patch releases (x.y.1+): Approximately 1 week after {{ site.data.products.cloud }} availability.
 
-Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` indicates the major release starting with `1` each year, and `PP` indicates the patch number, starting with `0`.
+Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` indicates the major version number starting with `1` each year, and `PP` indicates the patch version number, starting with `0` for the initial production (GA) release.
 
 For example, the `{{ latest_full_production_version.release_name }}` production release is the latest patch release of major version [`{{ latest_full_production_version.major_version }}`]({% link releases/{{ latest_full_production_version.major_version }}.md %}).
 
@@ -35,7 +35,7 @@ For example, the `{{ latest_full_production_version.release_name }}` production 
 
 Major versions of CockroachDB alternate between **Regular** and **Innovation** releases:
 
-- **Regular releases** offer extended support windows for long-term stability and security. This support window is further extended after a patch release is nominated to an **LTS** (long-term support) release.
+- **Regular releases** offer extended support windows for long-term stability and security. This support window is further extended after a patch release is nominated to an [**LTS** (long-term support)]({% link releases/release-support-policy.md %}#support-types) release.
 
 - **Innovation releases** offer shorter support windows but include all of the latest features.
 
@@ -86,9 +86,9 @@ A cluster that is upgraded to an alpha binary of CockroachDB or a binary that wa
 
 CockroachDB {{ site.data.products.cloud }} is a managed product that handles CockroachDB upgrades on your behalf, but still offers some flexibility over when to perform upgrades and which version to use. Version and upgrade support varies depending on the {{ site.data.products.cloud }} plan:
 
-- CockroachDB {{ site.data.products.basic }} only supports **Regular releases**. Clusters are automatically upgraded to the next major regular version upon its GA release and receive regular patch updates.
-- CockroachDB {{ site.data.products.standard }} only supports **Regular releases**. By default clusters are automatically upgraded to the next major version upon its GA release, with the option to handle the upgrade timing manually. Clusters receive regular patch updates.
-- CockroachDB {{ site.data.products.advanced }} support both **Regular** and **Innovation** releases.
+- CockroachDB {{ site.data.products.basic }} only supports **Regular releases**. Clusters are automatically upgraded to the next regular GA release, and receive regular patch updates.
+- CockroachDB {{ site.data.products.standard }} only supports **Regular releases**. By default, clusters are automatically upgraded to the next regular GA release, with the option to handle the upgrade timing manually. Clusters receive regular patch updates.
+- CockroachDB {{ site.data.products.advanced }} supports both **Regular** and **Innovation** releases.
 
 For more information, read the [CockroachDB {{ site.data.products.cloud }} upgrade policy]({% link cockroachcloud/upgrade-policy.md %}).
 
