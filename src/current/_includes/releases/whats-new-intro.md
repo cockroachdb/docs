@@ -87,7 +87,7 @@ no_highlights: {{ no_highlights }}<br />
 {% endif %}
 
 {% if released == false %}
-CockroachDB {{ page.major_version }} is in active development, and the following [testing releases]({% link releases/index.md %}#release-types) are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. When CockroachDB {{ page.major_version }} is Generally Available (GA), production releases will also be announced on this page.
+CockroachDB {{ page.major_version }} is in active development, and the following [testing releases]({% link releases/index.md %}#release-schedule) are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. When CockroachDB {{ page.major_version }} is Generally Available (GA), production releases will also be announced on this page.
 {% else %}{% comment %}Begin GA-only content{% endcomment %}
   {% if skippable == true %}
 CockroachDB {{ page.major_version }} is an optional [Innovation release]({% link releases/index.md %}#major-versions). This version can be skipped for CockroachDB {{ site.data.products.advanced }} and {{ site.data.products.core }} clusters. It is unavailable for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} clusters.

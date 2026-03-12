@@ -20,14 +20,14 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 
 This page describes how CockroachDB handles releases and links to the release notes for all CockroachDB [releases](#supported-releases).
 
-## Release types
+## Release schedule
 
 A new [major version](#major-versions) of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production (GA) release, followed by [patch releases](#patch-releases). New versions first roll out to select CockroachDB {{ site.data.products.cloud }} organizations, and binaries are made available for CockroachDB {{ site.data.products.core }} afterward:
 
 - Initial production release (x.y.0 GA): Approximately 2 weeks after {{ site.data.products.cloud }} availability.
 - Patch releases (x.y.1+): Approximately 1 week after {{ site.data.products.cloud }} availability.
 
-Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` indicates the major version number starting with `1` each year, and `PP` indicates the patch version number, starting with `0` for the initial production (GA) release.
+Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` indicates the major version number starting with `1` each year, and `PP` indicates the patch version number.
 
 For example, the `{{ latest_full_production_version.release_name }}` production release is the latest patch release of major version [`{{ latest_full_production_version.major_version }}`]({% link releases/{{ latest_full_production_version.major_version }}.md %}).
 
@@ -43,40 +43,11 @@ For details on how LTS impacts support in CockroachDB {{ site.data.products.core
 
 ### Patch releases
 
-All major versions of CockroachDB receive patch releases that update functionality and fix issues. During the early testing phase a version receives a series of **testing releases** followed by a series of **production releases**. A major version’s initial production release is also known as its GA (generally available) release.
+All major versions of CockroachDB receive patch releases that update functionality and fix issues. Patch releases after a major version's initial production release (`vYY.R.0`) are qualified for production environments.
 
-<style>
-  .no-wrap-table td:nth-child(1) {
-    width: 140px; /* Set width for the first column */
-    white-space: nowrap; /* Prevent wrapping */
-  }
-  .no-wrap-table td:nth-child(2) {
-    width: 200px; /* Set width for the second column */
-    white-space: nowrap; /* Prevent wrapping */
-  }
-</style>
+The type and duration of support for a production release varies depending on the major release type, according to the [release support policy]({% link /release-support-policy.md %}).
 
-<table class="no-wrap-table">
-  <thead>
-    <tr>
-      <th>Patch Release Type</th>
-      <th>Naming</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Production</td>
-      <td><code>vYY.R.0</code> - <code>vYY.R.n</code><br>(ex. v24.2.1)</td>
-      <td>Production releases are qualified for production environments. The type and duration of support for a production release may vary depending on the major release type, according to the <a href="release-support-policy.html">Release Support Policy</a>.</td>
-    </tr>
-    <tr>
-      <td>Testing</td>
-      <td><code>vYY.R.0-alpha.1+</code>,<br><code>vYY.R.0-beta.1+</code>,<br><code>vYY.R.0-rc.1+</code><br>(ex. v24.3.1-alpha.2)</td>
-      <td>Produced during development of a new major version, testing releases are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments.</td>
-    </tr>
-  </tbody>
-</table>
+Prior to its initial production release, development releases are made available for testing and experimentation. These pre-production patch releases are sequenced in alpha (`vYY.R.0-alpha.1+`), followed by beta (`vYY.R.0-beta.1+`), followed by release candidate (`vYY.R.0-rc.1+`) versions. These releases are not supported for production environments.
 
 {{site.data.alerts.callout_danger}}
 A cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
