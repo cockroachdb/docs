@@ -428,7 +428,6 @@ Other common tasks:
 - [Run Multi-Statement Transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %})
 - [Error Handling and Troubleshooting][error_handling]
 - [Optimize Statement Performance]({% link {{ page.version.version }}/make-queries-fast.md %})
-- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
 {% comment %} Reference Links {% endcomment %}
 

@@ -12,7 +12,7 @@ The `SET` statement for session variables is unrelated to the other [`SET TRANSA
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with `SET` statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the [Build an App with CockroachDB]({% link {{ page.version.version }}/example-apps.md %}) tutorials.
+In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with `SET` statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see [Develop with CockroachDB]({% link {{ page.version.version }}/developer-guide-overview.md %}).
 {{site.data.alerts.end}}
 
 ## Required privileges
