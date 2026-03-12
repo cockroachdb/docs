@@ -81,6 +81,8 @@ The **Plan Distribution Over Time** graph displays the execution counts for ever
 
 This graph helps illustrate changes in the distribution of query plans chosen by the [cost-based optimizer]({{ link_prefix }}cost-based-optimizer.html) for this SQL statement. This can be useful for [troubleshooting query plan regressions]({{ link_prefix }}troubleshoot-query-plan-regressions.html#multiple-valid-query-plans).
 
+<img src="{{ 'images/v25.4/ui_plan_distribution_over_time.png' | relative_url }}" alt="Plan distribution over time graph" style="border:1px solid #eee;max-width:100%" />
+
 #### Plan table
 
 The plan table shows the following details:
