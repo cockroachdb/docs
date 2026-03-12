@@ -22,7 +22,7 @@ This page describes how CockroachDB handles releases and links to the release no
 
 ## Release types
 
-A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, followed by a series of patch releases. These releases follow a staged process where new versions first roll out to select Cockroach {{ site.data.products.cloud }} organizations, with binaries available for CockroachDB {{ site.data.products.code }} afterwards:
+A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, followed by a series of patch releases. These releases follow a staged process where new versions first roll out to select Cockroach {{ site.data.products.cloud }} organizations, with binaries available for CockroachDB {{ site.data.products.core }} afterwards:
 
 - Major releases (x.y.0 GA): Approximately 2 weeks after {{ site.data.products.cloud }} GA.
 - Patch releases (x.y.1+): Approximately 1 week after {{ site.data.products.cloud }} availability.
