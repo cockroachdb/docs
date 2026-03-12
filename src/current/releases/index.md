@@ -45,7 +45,7 @@ For details on how LTS impacts support in CockroachDB {{ site.data.products.core
 
 All major versions of CockroachDB receive patch releases that update functionality and fix issues. Patch releases after a major version's initial production release (`vYY.R.0`) are qualified for production environments.
 
-The type and duration of support for a production release varies depending on the major release type, according to the [release support policy]({% link /release-support-policy.md %}).
+The type and duration of support for a production release varies depending on the major release type, according to the [release support policy]({% link releases/release-support-policy.md %}).
 
 Prior to its initial production release, development releases are made available for testing and experimentation. These pre-production patch releases are sequenced in alpha (`vYY.R.0-alpha.1+`), followed by beta (`vYY.R.0-beta.1+`), followed by release candidate (`vYY.R.0-rc.1+`) versions. These releases are not supported for production environments.
 
