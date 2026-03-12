@@ -1,0 +1,1 @@
+- Transactions with [priority `HIGH`]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. [#46414](https://github.com/cockroachdb/cockroach/issues/46414)

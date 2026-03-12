@@ -1,0 +1,1 @@
+- `CITEXT` types are not currently compatible with the `LIKE` and `ILIKE` operators. [#149791](https://github.com/cockroachdb/cockroach/issues/149791)

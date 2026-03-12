@@ -1,0 +1,1 @@
+Restoring [`GLOBAL`]({% link {{ page.version.version }}/table-localities.md %}#global-tables) and [`REGIONAL BY TABLE`]({% link {{ page.version.version }}/table-localities.md %}#regional-tables) tables into a **non**-multi-region database is not supported. [#71502](https://github.com/cockroachdb/cockroach/issues/71502)
