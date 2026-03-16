@@ -60,8 +60,6 @@ Changes to [cluster settings]({% link v25.4/cluster-settings.md %}) should be re
 
 - Updated the redaction policy for cluster settings in `debug zip` output. All "sensitive" settings are now redacted in all debug zips, whether or not redaction is explicitly requested. In redacted debug zips, both "sensitive" and "non-reportable" settings are redacted. This replaces the previous behavior, which redacted all string-type settings only in redacted debug zips. [#150364][#150364]
 
-- Added a new file, `cluster_settings_history.txt`, to debug zips. This file contains a history of cluster setting changes based on the system event log table. The history is only available while the corresponding events remain in the table. Sensitive settings are always redacted, and non-reportable settings are redacted when the debug zip is generated with redaction enabled. [#151066][#151066]
-
 [#149371]: https://github.com/cockroachdb/cockroach/pull/149371
 [#149538]: https://github.com/cockroachdb/cockroach/pull/149538
 [#150364]: https://github.com/cockroachdb/cockroach/pull/150364
