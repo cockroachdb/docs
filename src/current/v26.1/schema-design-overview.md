@@ -8,8 +8,6 @@ docs_area: develop
 
 This page provides an overview of database schemas in CockroachDB.
 
-The follow-up pages listed in [What's next](#whats-next) provide best practices for designing a database schema that optimizes performance and storage resources.
-
 ## Database schema objects
 
 The following sections provide a brief overview of the logical objects that make up a database schema in CockroachDB.
