@@ -4,9 +4,9 @@ summary: Description of the MCP Server, what it does, and a step-by-step guide o
 toc: true
 ---
 
-CockroachDB Cloud includes a managed [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server that enables AI coding tools and AI agents to access a cluster. AI tools can explore live schemas and run queries against a cluster using OAuth or API key authentication. A user can interact with their cluster using natural language prompts to perform read and write operations such as listing tables, executing [`SELECT`]({% link {{site.current_cloud_version}}/select-clause.md %}) statements, and inserting rows into a table.
+CockroachDB Cloud includes a managed [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server that enables your AI coding tools and AI agents to access a cluster. Your AI tools can explore live schemas and run queries against a cluster using OAuth or API key authentication. A user can interact with their cluster using natural language prompts to perform read and write operations such as listing tables, executing [`SELECT`]({% link {{site.current_cloud_version}}/select-clause.md %}) statements, and inserting rows into a table.
 
-This page explains how to connect AI tools to the CockroachDB Cloud MCP server, including detailed instructions for the following tools:
+This page explains how to connect your AI tools to the CockroachDB Cloud MCP server, including detailed instructions for the following tools:
 
 - Claude Code
 - Cursor
