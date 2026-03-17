@@ -208,8 +208,6 @@ The hybrid PQC key exchange is enabled by default and requires no configuration.
 
 ### Encryption
 
-<!-- For self-hosted CockroachDB deployments using [Encryption At Rest]({% link {{ page.version.version }}/encryption.md %}), store keys can be configured with AES-128, AES-192, or AES-256 encryption. Use **AES-256** for encryption keys. AES-256 provides strong resistance against potential quantum computer attacks. The encryption algorithm is automatically determined by the size of the key file you generate. -->
-
 To maximize security against quantum attackers, Cockroach Labs recommends that all data in-flight is sent via a TLS 1.3 connection and encrypted with AES-256. This includes the encryption of any [client connections](#tls-in-cockroachdb-sql-client-connections) as well as [data transferred between CockroachDB nodes](#tls-between-cockroachdb-nodes).
 
 ## The CockroachDB certificate Trust Store
