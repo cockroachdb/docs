@@ -20,6 +20,8 @@ Database objects make up the first level of the [CockroachDB naming hierarchy]({
 
 All CockroachDB clusters include a preloaded database named `defaultdb`. Rather than using the `defaultdb` database, we recommend creating your own database.
 
+For more information about creating databases, refer to [`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %}).
+
 {% include {{page.version.version}}/sql/db-terms.md %}
 
 ### Schemas
@@ -36,13 +38,15 @@ Tables belong to the third and lowest level of the naming hierarchy. Each table 
 
 Tables contain *rows* of data. Each value in a row of data belongs to a particular *column*. Each column allows values of data of a single data type. Columns can be further qualified with [column-level constraints]({% link {{ page.version.version }}/constraints.md %}), or computed with [scalar expressions]({% link {{ page.version.version }}/computed-columns.md %}).
 
+For more information about creating tables, refer to [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}).
+
 ### Indexes
 
 An _index_ is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to find data more efficiently in a table, given the values of a particular column. Each index belongs to a single table.
 
 The two main types of indexes are the primary index, an index on the row-identifying [primary key columns]({% link {{ page.version.version }}/primary-key.md %}), and the secondary index, an index created on non-primary-key columns of your choice.
 
-For guidance on defining secondary indexes, see [Secondary Indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
+For guidance on defining primary keys, see [Select primary key columns]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices). For guidance on defining secondary indexes, see [Secondary Indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
 
 #### Specialized indexes
 
