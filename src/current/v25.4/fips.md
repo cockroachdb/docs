@@ -8,7 +8,7 @@ docs_area: deploy
 {{site.data.alerts.callout_info}}
 FIPS support is GA in v25.4, Preview in v26.1, and will return to GA in v26.2, completing a transition to Go's native FIPS cryptographic module.
 
-As an [Innovation release]({% link releases/index.md %}#major-releases), v26.1 can be skipped by CockroachDB self-hosted clusters.
+As an [Innovation release]({% link releases/index.md %}#major-versions), v26.1 can be skipped by CockroachDB self-hosted clusters.
 
 Production clusters running a v25.4 FIPS binary should be upgraded directly to a v26.2 FIPS binary (available May 2026) for continuous GA support of FIPS.
 

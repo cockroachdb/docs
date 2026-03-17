@@ -15,7 +15,7 @@ A cluster running an unsupported CockroachDB version is not eligible for Cockroa
 
 ### Version and upgrade support by cloud plan
 
-[Major versions]({% link releases/index.md %}) of CockroachDB are labeled either as [Regular releases]({% link releases/index.md %}#major-releases) or [Innovation releases]({% link releases/index.md %}#major-releases).
+[Major versions]({% link releases/index.md %}) of CockroachDB are labeled either as [Regular releases]({% link releases/index.md %}#major-versions) or [Innovation releases]({% link releases/index.md %}#major-versions).
 
 - **Regular releases** are supported for 12 months from their initial production release date.
 - **Innovation releases** are supported for 6 months from their initial production release date.
@@ -51,8 +51,8 @@ The following table describes currently-supported versions on {{ site.data.produ
 
 Version | Release Type | Release date | End-of-support (EOS) date
 :------:|:------------:|:------------:|:---------:
+v26.1   | Innovation   | 2026-02-02   | 2026-08-02
 v25.4   | Regular      | 2025-11-03   | 2026-11-03
-v25.3   | Innovation   | 2025-08-04   | 2026-02-04
 v25.2   | Regular      | 2025-05-09   | 2026-05-12
 v24.3   | Regular      | 2024-11-18   | 2026-05-05
 
@@ -75,6 +75,7 @@ The following table describes versions that have reached their EOS dates on {{ s
 
 Version | Release Type | Release date | End-of-support (EOS) date
 :------:|:------------:|:------------:|:--------:
+v25.3   | Innovation   | 2025-08-04   | 2026-02-04
 v25.1   | Innovation   | 2025-02-18   | 2025-08-18
 v24.1   | Regular      | 2024-05-20   | 2025-05-20
 v24.2   | Innovation   | 2024-08-12   | 2025-02-12
@@ -120,7 +121,7 @@ On CockroachDB {{ site.data.products.standard }} with manual upgrades, and on Co
 <a id="regular-releases"></a>
 ### Innovation releases
 
-As of v24.2, Cockroach Labs releases a major version of CockroachDB once per quarter, alternating between releases classified as a [Regular release or an Innovation release]({% link releases/index.md %}#release-types). Regular releases provide a longer support period and a longer period between upgrades, while Innovation releases offer a shorter support period and faster access to new features.
+As of v24.2, Cockroach Labs releases a major version of CockroachDB once per quarter, alternating between releases classified as a [Regular release or an Innovation release]({% link releases/index.md %}#release-schedule). Regular releases provide a longer support period and a longer period between upgrades, while Innovation releases offer a shorter support period and faster access to new features.
 
 - Regular releases are not optional; they must be applied to CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }} clusters within their support periods. They are applied automatically to CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters that are configured for automatic upgrades. Regular releases are produced twice a year, alternating with Innovation Releases. They are supported for one year. It is supported to upgrade CockroachDB {{ site.data.products.advanced }} directly from one regular release to the next regular release and skip the intervening Innovation release.
 - Innovation releases are optional and can be skipped for CockroachDB {{ site.data.products.advanced }}, and are not available for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }}. Innovation releases are produced twice a year, alternating with Regular releases. An Innovation release is supported for 6 months, at which time the cluster must be upgraded to the next Regular Release. At a given time, only one Innovation release is typically supported. Upgrading a cluster directly from one Innovation release to the next Innovation release is not supported.
