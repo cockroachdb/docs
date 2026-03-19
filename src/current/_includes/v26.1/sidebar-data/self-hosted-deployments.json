@@ -401,6 +401,12 @@
                     "urls": [
                       "/${VERSION}/rotate-certificates.html"
                     ]
+                  },
+                  {
+                    "title": "Use Hashicorp Vault's Dynamic Secrets",
+                    "urls": [
+                      "/${VERSION}/vault-db-secrets-tutorial.html"
+                    ]
                   }
             ]
           },

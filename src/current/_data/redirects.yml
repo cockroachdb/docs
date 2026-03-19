@@ -1110,10 +1110,6 @@
   sources: ['topology-development.md']
   versions: ['v26.1', 'v26.2']
 
-- destination: authentication.md
-  sources: ['vault-db-secrets-tutorial.md']
-  versions: ['v26.1', 'v26.2']
-
 - destination: monitoring-and-alerting.md
   sources: ['datadog.md', 'dbmarlin.md', 'kibana.md']
   versions: ['v26.1', 'v26.2']
