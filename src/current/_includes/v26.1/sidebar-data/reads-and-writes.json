@@ -12,12 +12,6 @@
       "title": "Read Data",
       "items": [
         {
-          "title": "Query Data",
-          "urls": [
-            "/${VERSION}/query-data.html"
-          ]
-        },
-        {
           "title": "Reusable Views",
           "urls": [
             "/${VERSION}/views.html"

@@ -255,12 +255,6 @@
                     ]
                 },
                 {
-                    "title": "Development Topology",
-                    "urls": [
-                    "/${VERSION}/topology-development.html"
-                    ]
-                },
-                {
                     "title": "Basic Production Topology",
                     "urls": [
                     "/${VERSION}/topology-basic-production.html"
@@ -409,14 +403,9 @@
                     ]
                   },
                   {
-                    "title": "Security Tutorials",
-                    "items": [
-                        {
-                            "title": "Use Hashicorp Vault's Dynamic Secrets",
-                            "urls": [
-                                "/${VERSION}/vault-db-secrets-tutorial.html"
-                            ]
-                        }
+                    "title": "Use Hashicorp Vault's Dynamic Secrets",
+                    "urls": [
+                      "/${VERSION}/vault-db-secrets-tutorial.html"
                     ]
                   }
             ]
@@ -452,24 +441,6 @@
                     "title": "Use Prometheus and Alertmanager",
                     "urls": [
                       "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
-                    ]
-                  },
-                  {
-                    "title": "Monitor CockroachDB {{ site.data.products.core }} with Datadog",
-                    "urls": [
-                      "/${VERSION}/datadog.html"
-                    ]
-                  },
-                  {
-                    "title": "Monitor CockroachDB {{ site.data.products.core }} with DBmarlin",
-                    "urls": [
-                      "/${VERSION}/dbmarlin.html"
-                    ]
-                  },
-                  {
-                    "title": "Monitor CockroachDB {{ site.data.products.core }} with Kibana",
-                    "urls": [
-                      "/${VERSION}/kibana.html"
                     ]
                   },
                   {

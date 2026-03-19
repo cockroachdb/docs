@@ -203,7 +203,7 @@ For additional examples, see [Create a new table from an existing one](#create-a
 
 In this example, we create the `users` table with a single [primary key]({% link {{ page.version.version }}/primary-key.md %}) column defined. In CockroachDB, every table requires a [primary key]({% link {{ page.version.version }}/primary-key.md %}). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
 
-For performance recommendations on primary keys, see the [Schema Design: Create a Table]({% link {{ page.version.version }}/schema-design-table.md %}) page and the [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-multi-column-primary-keys) page.
+For performance recommendations on primary keys, see the [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-multi-column-primary-keys) page.
 
 {{site.data.alerts.callout_info}}
   If no primary key is explicitly defined in a `CREATE TABLE` statement, you can add a primary key to the table with [`ADD CONSTRAINT ... PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) or [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key). If the `ADD` or `ALTER` statement follows the `CREATE TABLE` statement, and is part of the same transaction, no default primary key will be created. If the table has already been created and the transaction committed, the `ADD` or `ALTER` statements replace the default primary key.

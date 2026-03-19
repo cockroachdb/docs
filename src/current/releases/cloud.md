@@ -24,7 +24,7 @@ Console users with the [Billing Coordinator role]({% link cockroachcloud/authori
 
 ## Aug 4, 2025
 
-CockroachDB v25.3 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.3 is an [Innovation release]({% link releases/index.md %}#release-types).
+CockroachDB v25.3 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.3 is an [Innovation release]({% link releases/index.md %}#release-schedule).
 
 For release notes, refer to [What's New in v25.3]({% link releases/v25.3.md %}).
 
@@ -51,7 +51,7 @@ For more information, refer to [Customer-Managed Encryption Keys (CMEK) Overview
 
 ## May 12, 2025
 
-CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/index.md %}#release-types).
+CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/index.md %}#release-schedule).
 
 For release notes, refer to [What's New in v25.2]({% link releases/v25.2.md %}).
 
