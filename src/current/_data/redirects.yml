@@ -1104,3 +1104,9 @@
 - destination: developer-guide-overview.md
   sources: ['example-apps.md', 'build-a-spring-app-with-cockroachdb-jdbc.md', 'build-a-spring-app-with-cockroachdb-jpa.md', 'movr-flask-use-case.md', 'movr-flask-database.md', 'movr-flask-setup.md', 'movr-flask-application.md', 'movr-flask-deployment.md']
   versions: ['v26.1', 'v26.2']
+
+- destination: releases/index.md
+  sources: ['releases/staged-release-process.md']
+  
+- destination: releases/downloads-archive.md
+  sources: ['releases/unsupported-versions.md']
