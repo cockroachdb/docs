@@ -9,7 +9,6 @@
 - [`ALTER DATABASE ... DROP SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#drop-secondary-region)
 - [Topology Patterns Overview]({% link {{ page.version.version }}/topology-patterns.md %})
   - Single-region patterns
-      - [Development]({% link {{ page.version.version }}/topology-development.md %})
       - [Basic Production]({% link {{ page.version.version }}/topology-basic-production.md %})
   - Multi-region patterns
       - [`REGIONAL` Tables]({% link {{ page.version.version }}/regional-tables.md %})
