@@ -18,6 +18,7 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 **Failure Count** | The total number of failed executions of this statement fingerprint.
 **Full scan?** | Whether the execution performed a full scan of the table.
 **Vectorized execution?** | Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
+**Transaction type** | The type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
 **Last execution time** | The timestamp when the statement was last executed.
 
 The **Overview** section also displays the SQL statement fingerprint statistics that correspond to the [charts](#charts) below:
