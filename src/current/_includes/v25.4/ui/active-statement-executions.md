@@ -10,6 +10,7 @@ Statement Execution | The SQL statement that was executed.
 Status | The status of the execution: `Preparing`, `Waiting`, or `Executing`.
 Start Time (UTC) | The timestamp when the execution started.
 Time Spent Waiting | The time the execution spent waiting and experiencing [lock contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+Isolation Level | The [isolation level]({{ link_prefix }}transactions.html#isolation-levels) used for the statement execution.
 Application | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
 
 To view details of an active statement execution, click an execution ID in the **Statement Execution ID** column to open the [**Statement Execution** details page](#statement-execution-details-page).
@@ -30,7 +31,7 @@ The statement execution details page provides the following details on the state
 
 If a statement execution is waiting, the statement execution details are followed by Contention Insights and details of the statement execution on which the blocked statement execution is waiting. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
-<img src="{{ 'images/v24.2/waiting-statement.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/waiting-statement.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

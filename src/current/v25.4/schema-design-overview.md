@@ -124,9 +124,21 @@ CockroachDB has been shown to perform well with clusters containing 10,000 table
 
 As you scale to a large number of tables, note that:
 
-- The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, GIN indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact on the number of these objects that a cluster can support, while increasing the number of nodes will not have a substantial effect.
+- {% include_cached new-in.html version="v25.4" %} The cluster setting [`sql.schema.approx_max_object_count`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-schema-approx-max-object-count) defaults to `20000` and blocks creation of new schema objects once the approximate count exceeds the limit. The check relies on cached [table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics), so enforcement can lag until statistics refresh.
+- Other than the value of the `sql.schema.approx_max_object_count` cluster setting, the amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, [indexes]({% link {{ page.version.version }}/indexes.md %}), [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}), [constraints]({% link {{ page.version.version }}/constraints.md %}), and [partitions]({% link {{ page.version.version }}/partitioning.md %}). Increasing RAM is likely to have the greatest impact on the number of these objects that a cluster can support, while increasing the number of nodes will not have a substantial effect.
 - The number of databases or schemas on the cluster has minimal impact on the total number of tables that it can support.
 - Performance at larger numbers of tables may be affected by your use of [backup and restore]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) and [Change data capture (CDC)]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
+
+If you upgrade to this version with an existing object count above the limit set by [`sql.schema.approx_max_object_count`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-schema-approx-max-object-count), the upgrade will complete, but future attempts to create schema objects will return an error until you raise or disable the limit:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Raise the limit
+SET CLUSTER SETTING sql.schema.approx_max_object_count = 50000;
+
+-- Or disable the limit
+SET CLUSTER SETTING sql.schema.approx_max_object_count = 0;
+~~~
 
 See the [Hardware]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) section for additional recommendations based on your expected workloads.
 

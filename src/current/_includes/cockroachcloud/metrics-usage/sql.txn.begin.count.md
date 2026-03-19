@@ -1,1 +1,0 @@
-This metric reflects workload volume by counting explicit [transactions]({% link {{ site.current_cloud_version }}/transactions.md %}). Use this metric to determine whether explicit transactions can be refactored as implicit transactions (individual statements).

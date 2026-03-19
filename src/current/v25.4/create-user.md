@@ -16,6 +16,7 @@ You can use the keywords `ROLE` and `USER` interchangeably. `CREATE USER` is equ
 - After creating users, you must [grant them privileges to databases and tables]({% link {{ page.version.version }}/grant.md %}).
 - All users belong to the `public` role, to which you can [grant]({% link {{ page.version.version }}/grant.md %}) and [revoke]({% link {{ page.version.version }}/revoke.md %}) privileges.
 - On secure clusters, you must [create client certificates for users]({% link {{ page.version.version }}/cockroach-cert.md %}#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
+- {% include_cached new-in.html version="v25.4" %} The `CREATE USER` statement waits for full-cluster visibility of the new user metadata. It is not blocked by long-running transactions that may have accessed older metadata, and it does not create a [background job]({% link {{ page.version.version }}/show-jobs.md %}).
 
 ## Required privileges
 

@@ -56,9 +56,9 @@ If you are running any other version, take the following steps **before** contin
 
 |                    Version                     |                                                                           Action(s) before upgrading to any {{ page.version.version }} release                                                                          |
 |------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release; then upgrade through each subsequent major release, [ending with a {{ previous_version }} production release]({% link {{ previous_version }}/upgrade-cockroach-version.md %}). |
-| Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release]({% link {{ previous_version }}/upgrade-cockroach-version.md %}).                                                     |
-| {{ previous_version}} testing release          | [Upgrade to a {{ previous_version }} production release]({% link {{ previous_version }}/upgrade-cockroach-version.md %}).                                                                                                     |
+| Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release; then upgrade through each subsequent major release, ending with a {{ previous_version }} production release. |
+| Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, ending with a {{ previous_version }} production release.                                                     |
+| {{ previous_version}} testing release          | Upgrade to a {{ previous_version }} production release.                                                                                                     |
 
 When you are ready to upgrade to {{ latest.release_name }}, continue to [step 2](#step-2-prepare-to-upgrade).
 
@@ -156,7 +156,7 @@ This step is relevant only when upgrading from {{ previous_version }}.x to {{ pa
 
 By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}](#features-that-require-upgrade-finalization). However, it will no longer be possible to [roll back to {{ previous_version }}](#step-5-roll-back-the-upgrade-optional) if auto-finalization is enabled. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 6](#step-6-finish-the-upgrade):
 
-1. [Upgrade to {{ previous_version }}]({% link {{ previous_version }}/upgrade-cockroach-version.md %}), if you haven't already.
+1. Upgrade to {{ previous_version }}, if you haven't already.
 
 1. Start the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) shell against any node in the cluster.
 

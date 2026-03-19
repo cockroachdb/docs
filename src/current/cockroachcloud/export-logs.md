@@ -10,6 +10,8 @@ cloud: true
 
 CockroachDB {{ site.data.products.standard }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure log export to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all [regions]({% link cockroachcloud/regions.md %}) of your CockroachDB {{ site.data.products.standard }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, and more.
 
+Log exports include the cluster name (`cloud_cluster_name`) in addition to the cluster ID (`cloud_cluster_id`), which makes it easier to identify logs from specific clusters.
+
 ## The `logexport` endpoint
 
 To configure and manage log export for your CockroachDB {{ site.data.products.standard }} cluster, use the `logexport` endpoint:
@@ -75,7 +77,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq .keychain_config.aws_account_id
+      --header "Authorization: Bearer {secret_key}" | jq .keychain_config.aws_account_id
     ~~~
 
     Where:
@@ -252,7 +254,7 @@ Perform the following steps to enable log export from your CockroachDB {{ site.d
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq .keychain_config.gcp_auth_principal
+      --header "Authorization: Bearer {secret_key}" | jq .keychain_config.gcp_auth_principal
     ~~~
 
     Where:
@@ -450,7 +452,7 @@ No, logs for each region in your cluster are exported to the corresponding cloud
 
 ### What log channels are supported?
 
-You can export the following CockroachDB [log channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels): `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`.
+You can export the following CockroachDB [log channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels): `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, `SQL_PERF`, and `CHANGEFEED`.
 
 Log channels, such as `DEV`, `KV_DISTRIBUTION`, `SQL_INTERNAL_PERF`, and `TELEMETRY`, cannot be exported from CockroachDB {{ site.data.products.standard }}. These are for Cockroach Labs internal use cases and are not meant for external use. If you need access to additional logs, contact [Support](https://support.cockroachlabs.com/hc/).
 

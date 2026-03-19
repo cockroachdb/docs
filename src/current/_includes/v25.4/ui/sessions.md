@@ -1,10 +1,12 @@
 {% if page.cloud != true %}
-<img src="{{ 'images/v24.2/ui-sessions-page.png' | relative_url }}" alt="Sessions Page" style="border:1px solid #eee;max-width:100%" />
+By default, the table is filtered to display active and idle sessions and to exclude closed sessions.
+
+<img src="{{ 'images/v25.4/ui-sessions-page.png' | relative_url }}" alt="Sessions Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
 To filter the sessions, click the **Filters** field.
 
-<img src="{{ 'images/v24.2/ui-session-filter.png' | relative_url }}" alt="Session filter" />
+<img src="{{ 'images/v25.4/ui-session-filter.png' | relative_url }}" alt="Session filter" />
 
 - To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **Application Name** and choose one or more applications.
 
@@ -31,6 +33,7 @@ Memory Usage | Amount of memory currently allocated to the session followed by t
 Client IP Address | The IP address and port of the client that opened the session.
 User Name | The user that opened the session.
 Application Name | The application that ran the session.
+Default Isolation Level | The default [isolation level]({{ link_prefix }}transactions.html#isolation-levels) for transactions in the session.
 Actions | Options to cancel the active statement and cancel the session. These require the `CANCELQUERY` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy `CANCELQUERY` [role option]({{ link_prefix }}alter-role.html#role-options).<ul><li>**Cancel Statement:** Ends the SQL statement. The session running this statement will receive an error. </li> <li>**Cancel Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.</li></ul>
 
 To view details of a session, click a **Session Start Time (UTC)** to display session details.
@@ -40,7 +43,7 @@ To view details of a session, click a **Session Start Time (UTC)** to display se
 If a session is idle, the **Transaction** and **Most Recent Statement** panels will display **No Active [Transaction | Statement]**.
 
 {% if page.cloud != true %}
-<img src="{{ 'images/v24.2/ui-sessions-details-page.png' | relative_url }}" alt="Sessions Details Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/ui-sessions-details-page.png' | relative_url }}" alt="Sessions Details Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
 The **Cancel statement** button ends the SQL statement. The session running this statement will receive an error.

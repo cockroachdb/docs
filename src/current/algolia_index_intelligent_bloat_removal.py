@@ -137,6 +137,41 @@ class IntelligentBloatFilter:
         SEEN_CONTENT_HASHES.add(content_hash)
         return False
     
+    def _is_version_spam(self, content: str, context: Dict[str, str]) -> bool:
+        """Context-aware version filtering to distinguish spam from legitimate version references."""
+        # Version patterns to check
+        v_pattern = re.compile(r'^v\d+\.\d+(\.\d+)?(-beta\.\d+)?\s*$', re.IGNORECASE)
+        beta_pattern = re.compile(r'^beta-\d+\s*$', re.IGNORECASE)
+        
+        # Check if content matches version patterns
+        is_v_version = v_pattern.match(content)
+        is_beta_version = beta_pattern.match(content)
+        
+        if not (is_v_version or is_beta_version):
+            return False
+        
+        # Context clues that indicate this is legitimate version content, not spam
+        page_url = context.get('url', '')
+        
+        # ALWAYS preserve version numbers in release pages and version-specific content
+        if any(area in page_url for area in ['/releases/', 'release-notes', 'changelog']):
+            return False
+        
+        # Handle beta versions - generally filter as spam unless in release context
+        if is_beta_version:
+            return True
+        
+        # Handle v-versions based on length and complexity
+        if is_v_version:
+            # Preserve longer, more complex version strings
+            if len(content) > 8 or '-beta' in content:  # e.g., "v26.1.0-beta.1"
+                return False
+            
+            # Filter short version numbers outside release context (navigation spam)
+            return True
+        
+        return False
+    
     def is_bloat_content(self, content: str, context: Dict[str, str] = None) -> bool:
         """Intelligently determine if content is bloat while preserving valuable content."""
         if not content or len(content.strip()) < MIN_CONTENT_LENGTH:
@@ -150,8 +185,15 @@ class IntelligentBloatFilter:
             if pattern.search(content_clean):
                 return False
         
-        # 2. Check for exact bloat patterns
+        # 2. Context-aware version filtering before exact bloat patterns
+        if self._is_version_spam(content_clean, context):
+            return True
+        
+        # 3. Check for exact bloat patterns (excluding version patterns handled above)
         for pattern in self.exact_bloat_patterns:
+            # Skip version patterns since they're handled contextually above
+            if pattern.pattern.startswith(('^v\\d+', '^beta-')):
+                continue
             if pattern.match(content_clean):
                 return True
         
@@ -672,6 +714,30 @@ def get_git_last_modified(file_path: pathlib.Path) -> str:
         GIT_DATE_CACHE[cache_key] = date
         return date
 
+def enhance_session_variable_content(content: str, element, context: Dict[str, str]) -> str:
+    """Add session variable name to description records where missing for better discoverability."""
+    # Only for session-variables.html page
+    if 'session-variables.html' not in context.get('url', ''):
+        return content
+        
+    # Check if this is a description cell adjacent to a variable name cell
+    if element.name == 'td':
+        prev_sibling = element.find_previous_sibling('td')
+        if prev_sibling:
+            prev_text = extract_text_with_spaces(prev_sibling).strip()
+            
+            # If previous cell contains a session variable name pattern
+            if (re.match(r'^\w+(_\w+)+$', prev_text) and 
+                '_' in prev_text and 
+                len(prev_text) > 5 and
+                len(prev_text) < 50 and
+                prev_text not in content):
+                
+                # Prepend variable name to description for discoverability
+                return f"{prev_text}: {content}"
+    
+    return content
+
 def extract_records_from_html(html_path: pathlib.Path, versions: Dict[str, str] = None) -> List[Dict[str, Any]]:
     """Proven extraction + intelligent bloat removal."""
     if should_exclude_file(str(html_path), versions):
@@ -738,6 +804,9 @@ def extract_records_from_html(html_path: pathlib.Path, versions: Dict[str, str] 
             continue
 
         text = extract_text_with_spaces(element)
+        
+        # Enhance session variable content for better discoverability
+        text = enhance_session_variable_content(text, element, filter_context)
 
         # INTELLIGENT BLOAT REMOVAL - context-aware filtering
         if bloat_filter.is_bloat_content(text, filter_context):

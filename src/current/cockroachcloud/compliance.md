@@ -17,17 +17,13 @@ CockroachDB {{ site.data.products.cloud }} meets or exceeds the requirements of 
 
 CockroachDB {{ site.data.products.advanced }} has been certified by a PCI Qualified Security Assessor (QSA) as a PCI DSS Level 1 Service Provider. When configured appropriately, CockroachDB {{ site.data.products.advanced }} meets the requirements of PCI DSS 4.0. PCI DSS is mandated by credit card issuers but administered by the [Payment Card Industry Security Standards Council](https://www.pcisecuritystandards.org/). Many organizations that do not store cardholder data still rely on compliance with PCI DSS to help protect other sensitive or confidential data or metadata.
 
-Features to support PCI DSS are not yet available on Azure.
-
 To learn more, refer to [PCI DSS Compliance in CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/pci-dss.md %}).
 
 ## HIPAA
 
 The Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_, defines standards for the storage and handling of personally-identifiable information (PII) related to patient healthcare and health insurance (also referred to as Private Health Information, or PHI).
 
-When configured appropriately for [PCI DSS Compliance]({% link cockroachcloud/pci-dss.md %}), CockroachDB {{ site.data.products.advanced }} on AWS and GCP also meets the requirements of HIPAA.
-
-Features to support HIPAA are not yet available on Azure.
+When configured appropriately for [PCI DSS Compliance]({% link cockroachcloud/pci-dss.md %}), CockroachDB {{ site.data.products.advanced }} on AWS, GCP, and Azure also meets the requirements of HIPAA.
 
 ## ISO 27001 and ISO 27017
 

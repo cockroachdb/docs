@@ -27,18 +27,20 @@ You can set the CPU and memory resources allocated to the CockroachDB container 
 1 CPU in Kubernetes is equivalent to 1 vCPU or 1 hyperthread. For best practices on provisioning CPU and memory for CockroachDB, refer to the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
 {{site.data.alerts.end}}
 
-Specify CPU and memory values in `cockroachdb.crdbCluster.resources.limits` and `cockroachdb.crdbCluster.resources.requests` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
+Specify CPU and memory values in `cockroachdb.crdbCluster.podTemplate.spec.resources.limits` and `cockroachdb.crdbCluster.podTemplate.spec.resources.requests` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    resources:
-      limits:
-        cpu: 4000m
-        memory: 16Gi
-      requests:
-        cpu: 4000m
-        memory: 16Gi
+    podTemplate:
+      spec:
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 16Gi
+          requests:
+            cpu: 4000m
+            memory: 16gi
 ~~~
 
 Apply the new settings to the cluster:

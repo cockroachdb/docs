@@ -58,6 +58,30 @@ A new user must be granted the required privileges for each database and table t
 By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role.
 {{site.data.alerts.end}}
 
+### Automatic role synchronization with external identity providers
+
+<span class="version-tag">New in v25.4:</span>
+
+CockroachDB can automatically synchronize user role memberships based on group claims from external identity providers (IdPs). This feature is available for:
+
+- **JWT authentication**: When users authenticate via JWT tokens for SQL client connections, CockroachDB can extract group claims from the token and automatically grant or revoke role memberships based on those groups. For details, refer to [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %}).
+
+- **OIDC authentication**: When users authenticate via OIDC to the DB Console, CockroachDB can extract group claims from the ID token, access token, or userinfo endpoint and automatically manage role memberships. For details, refer to [OIDC Authorization]({% link {{ page.version.version }}/oidc-authorization.md %}).
+
+When authorization is enabled:
+
+1. On each login, CockroachDB extracts the groups claim from the authentication token or queries the IdP's userinfo endpoint.
+1. Each group name is normalized using case folding and Unicode normalization (NFC).
+1. Each normalized group name is matched against existing CockroachDB role names.
+1. Roles corresponding to matching groups are automatically granted to the user.
+1. Roles that no longer match any current groups are automatically revoked.
+
+{{site.data.alerts.callout_info}}
+Groups from the IdP that don't correspond to existing CockroachDB roles are silently ignored. You must pre-create roles in CockroachDB for them to be granted through IdP group synchronization.
+{{site.data.alerts.end}}
+
+This automatic role synchronization simplifies access management by delegating group membership management to your identity provider while maintaining CockroachDB's granular privilege system.
+
 ### Reserved identities
 
 These identities are reserved within CockroachDB. These identities are created automatically and cannot be removed.

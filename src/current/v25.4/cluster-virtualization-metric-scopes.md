@@ -27,7 +27,7 @@ STORAGE: Scoped to the system virtual cluster
 SERVER: n/a
 {% endcomment %}
 
-{% assign version = site.current_cloud_version | replace: ".", "" %}
+{% assign version = page.version.version | replace: ".", "" %}
 {% comment %}version: {{ version }}{% endcomment %}
 
 ## Metrics scoped to a virtual cluster

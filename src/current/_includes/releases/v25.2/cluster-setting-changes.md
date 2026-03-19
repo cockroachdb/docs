@@ -13,3 +13,7 @@ Changes to [cluster settings]({% link v25.2/cluster-settings.md %}) should be re
 The following settings are now marked `public` after previously being `reserved`. Reserved settings are not documented and their tuning by customers is not supported.
 
 - `sql.stats.detailed_latency_metrics.enabled` - Percentile latencies are no longer available for **SQL Activity**. The implementation of these percentiles was error-prone and difficult to understand because it was computed differently from the other SQL statistics collected. Customers interested in viewing percentile latencies per statement fingerprint are encouraged to use the experimental per-fingerprint histograms that can be enabled with the `sql.stats.detailed_latency_metrics.enabled` cluster setting. This will enable externalized histogram metrics via the Prometheus scrape endpoint. [#139500](https://github.com/cockroachdb/cockroach/pulls/139500)
+
+<h5 id="v25-2-0-settings-requiring-operational-changes">Settings requiring operational changes</h5>
+
+- To prevent unnecessary queuing in admission control CPU queues, set the `goschedstats.always_use_short_sample_period.enabled` cluster setting to `true` for any production cluster.

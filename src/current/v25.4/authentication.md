@@ -105,7 +105,9 @@ CockroachDB offers the following methods for client authentication:
     Enter password:
     ~~~
 
-- [**Single sign-on authentication to DB Console**]({% link {{ page.version.version }}/sso-db-console.md %}).
+- [**Single sign-on authentication to DB Console**]({% link {{ page.version.version }}/sso-db-console.md %}). CockroachDB supports OpenID Connect (OIDC) for authenticating users to the DB Console. <span class="version-tag">New in v25.4:</span> You can also enable [automatic role synchronization]({% link {{ page.version.version }}/oidc-authorization.md %}) based on group memberships from your identity provider.
+
+- [**JWT authentication for SQL clients**]({% link {{ page.version.version }}/sso-sql.md %}). CockroachDB supports JSON Web Token (JWT) authentication for SQL client connections. <span class="version-tag">New in v25.4:</span> You can enable [automatic user provisioning]({% link {{ page.version.version }}/sso-sql.md %}#configure-user-provisioning) and [automatic role synchronization]({% link {{ page.version.version }}/jwt-authorization.md %}) based on group claims in JWT tokens.
 
 - [**GSSAPI authentication**]({% link {{ page.version.version }}/gssapi_authentication.md %}).
 
@@ -335,5 +337,10 @@ The following cipher suites are rejected by default because they are not recomme
 - [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %})
 - [`cockroach auth-session`]({% link {{ page.version.version }}/cockroach-auth-session.md %})
 - [GSSAPI Authentication]({% link {{ page.version.version }}/gssapi_authentication.md %})
+- [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %})
+- [Cluster Single Sign-on (SSO) using JWTs]({% link {{ page.version.version }}/sso-sql.md %})
+- [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %})
+- [OIDC Authorization]({% link {{ page.version.version }}/oidc-authorization.md %})
+- [LDAP Authorization]({% link {{ page.version.version }}/ldap-authorization.md %})
 - [SQL Authentication]({% link {{ page.version.version }}/security-reference/authentication.md %})
 - [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %})

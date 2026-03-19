@@ -9,6 +9,10 @@ docs_area: manage
 
 This page describes the cluster management and cluster deletion workflows for CockroachDB {{ site.data.products.advanced }}.
 
+{{site.data.alerts.callout_danger}}
+If you are managing clusters in a [BYOC deployment]({% link cockroachcloud/byoc-deployment.md %}) you must use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to perform the actions described on this page.
+{{site.data.alerts.end}}
+
 ## Planning your cluster
 
 Before making any changes to your cluster's nodes or regions, review the [requirements and recommendations]({% link cockroachcloud/plan-your-cluster.md %}) for CockroachDB {{ site.data.products.cloud }} cluster configuration.
@@ -36,6 +40,10 @@ These sections show how to scale a {{ site.data.products.advanced }} cluster hor
 ### Add or remove nodes from a cluster
 
 You can add or remove nodes from your cluster through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
+
+{{site.data.alerts.callout_danger}}
+Do not add nodes if your cluster's disks are nearly full. Adding nodes triggers rebalancing that can temporarily increase disk usage and worsen disk pressure. Instead, increase storage per node to create headroom. Refer to [Increase storage for a cluster](#increase-storage-for-a-cluster).
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 You cannot scale a multi-node cluster down to a single-node cluster.
@@ -142,7 +150,7 @@ Setting maintenance windows requires the [Cluster Admin]({% link cockroachcloud/
 Maintenance operations that are critical for cluster security or stability may be applied outside of the maintenance window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
 {{site.data.alerts.end}}
 
-To set a maintenance window:
+To set a maintenance window in the {{ site.data.products.cloud }} console:
 
 1. Click the pencil icon next to **Cluster maintenance** to edit the maintenance window.
 1. From the **Day** dropdown, select the day of the week during which maintenance may be applied.
@@ -150,9 +158,11 @@ To set a maintenance window:
 
     The window will last for 6 hours from the start time.
 
-1. (Optional) If you want to delay automatic patch upgrades for 60 days, switch **Delay patch upgrades** to **On**.
+1. (Optional) If you want to delay automatic patch upgrades, switch **Delay patch upgrades** to **On**. You can set a deferral period of 30, 60, or 90 days after the patch is released.
 
-    Enable this setting for production clusters to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch versions and not to other kinds of upgrades.
+    Enable this setting for production clusters to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch upgrades and not to major version upgrades. The patch upgrade occurs during a maintenance window after the deferral period.
+
+You can also configure maintenance windows and patch upgrade deferral periods using the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}#configure-a-cockroachdb-advanced-clusters-maintenance-window).
 
 ## Restore data from a backup
 

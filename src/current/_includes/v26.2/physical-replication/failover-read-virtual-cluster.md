@@ -1,0 +1,1 @@
+If you started the PCR stream with the `READ VIRTUAL CLUSTER` option, failing over with `SYSTEM TIME` will destroy the `readonly` virtual cluster. If you fail over with `LATEST`, the `readonly` virtual cluster will remain on the original standby cluster, but will **not** update with new writes.

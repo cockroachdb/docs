@@ -1,1 +1,0 @@
-**Expected values for a healthy cluster**: RSS minus Go Total and CGo Total should not exceed 100 MiB. Go Allocated should not exceed a few hundred MiB. CGo Allocated should not exceed the `--cache` size.

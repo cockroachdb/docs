@@ -237,7 +237,7 @@ A changefeed job cannot confirm that a message has been received by the sink unl
 
 When a changefeed must pause and then resume, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that were not confirmed in the next checkpoint. The changefeed may not re-emit every message, but it will ensure each change is emitted at least once.
 
-<img src="{{ 'images/v24.2/changefeed-duplicate-messages-emit.png' | relative_url }}" alt="How checkpoints will re-emit messages when a changefeed pauses. The changefeed returns to the last checkpoint and potentially sends duplicate messages." style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.4/changefeed-duplicate-messages-emit.png' | relative_url }}" alt="How checkpoints will re-emit messages when a changefeed pauses. The changefeed returns to the last checkpoint and potentially sends duplicate messages." style="border:0px solid #eee;max-width:100%" />
 
 ### Changefeed encounters an error
 
@@ -566,6 +566,36 @@ With `encode_json_value_null_as_object` enabled, the changefeed will encode the 
 ~~~
 
 When `encode_json_value_null_as_object` is enabled, if the changefeed encounters the literal value `{"__crdb_json_null__": true}` in JSON, it will have the same representation as a JSON `NULL` value and a warning will be printed to the [`DEV` logging channel]({% link {{ page.version.version }}/logging.md %}#dev).
+
+### Protobuf
+
+{% include_cached new-in.html version="v25.4" %} You can use the [`format=protobuf`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option to emit [Protocol Buffer (protobuf)](https://protobuf.dev/overview/) messages from your changefeed. Protobuf is a binary serialization format that can provide efficient integration with protobuf-native messaging infrastructure, such as Kafka-based streaming systems.
+
+The following sections provide information on protobuf usage with CockroachDB changefeeds.
+
+#### Protobuf limitations
+
+The following changefeed option is **not** supported with `format=protobuf`:
+
+- [`headers_json_column_name`]({% link {{ page.version.version }}/create-changefeed.md %}#headers-json-column-name): This option is specific to JSON format and does not work with protobuf messages.
+
+The following changefeed options **are** supported with `format=protobuf`:
+
+- [`diff`]({% link {{ page.version.version }}/create-changefeed.md %}#diff)
+- [`key_in_value`]({% link {{ page.version.version }}/create-changefeed.md %}#key-in-value)
+- [`mvcc_timestamp`]({% link {{ page.version.version }}/create-changefeed.md %}#mvcc-timestamp)
+- [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved)
+- [`split_column_families`]({% link {{ page.version.version }}/create-changefeed.md %}#split-column-families)
+- [`topic_in_value`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-in-value)
+- [`updated`]({% link {{ page.version.version }}/create-changefeed.md %}#updated)
+- [`virtual_columns`]({% link {{ page.version.version }}/create-changefeed.md %}#virtual-columns)
+
+#### Protobuf sink compatibility
+
+Protobuf format is supported with the following changefeed sinks:
+
+- [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka)
+- [Cloud storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink)
 
 ## See also
 

@@ -1,1 +1,0 @@
-The CPU and I/O resources being used by queries in the cluster. Simple queries consume few RUs, while complicated queries with many reads and writes consume more RUs. To learn more about how RUs are calculated, refer to [Resource Usage]({% link cockroachcloud/resource-usage-basic.md %}).

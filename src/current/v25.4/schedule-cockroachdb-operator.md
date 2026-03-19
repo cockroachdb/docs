@@ -17,16 +17,18 @@ The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ pag
 
 A pod with a *node selector* will be scheduled onto a worker node that has matching [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/), or key-value pairs.
 
-Specify the labels in `cockroachdb.crdbCluster.nodeSelector` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster). If you specify multiple `nodeSelector` labels, the node must match all of them.
+Specify the labels in `cockroachdb.crdbCluster.podTemplate.spec.nodeSelector` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster). If you specify multiple `nodeSelector` labels, the node must match all of them.
 
 The following configuration causes CockroachDB pods to be scheduled onto worker nodes that have *both* the labels `worker-pool-name=crdb-workers` and `kubernetes.io/arch=amd64`:
 
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    nodeSelector:
-      worker-pool-name: crdb-workers
-      kubernetes.io/arch: amd64
+    podTemplate:
+      spec:
+        nodeSelector:
+          worker-pool-name: crdb-workers
+          kubernetes.io/arch: amd64
 ~~~
 
 For an example of labeling nodes, see [Scheduling CockroachDB onto labeled nodes](#example-scheduling-cockroachdb-onto-labeled-nodes).
@@ -46,30 +48,32 @@ For an example, see [Scheduling CockroachDB onto labeled nodes](#example-schedul
 
 ### Add a node affinity
 
-Specify node affinities in `cockroachdb.crdbCluster.affinity.nodeAffinity` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster). If you specify multiple `matchExpressions` labels, the node must match all of them. If you specify multiple `values` for a label, the node can match any of the values.
+Specify node affinities in `cockroachdb.crdbCluster.podTemplate.spec.affinity.nodeAffinity` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster). If you specify multiple `matchExpressions` labels, the node must match all of them. If you specify multiple `values` for a label, the node can match any of the values.
 
 The following configuration requires that CockroachDB pods are scheduled onto worker nodes running a Linux operating system, with a preference against worker nodes in the `us-east4-b` availability zone.
 
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: kubernetes.io/os
-              operator: In
-              values: 
-              - linux
-        preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          preference:
-            matchExpressions:
-            - key: topology.kubernetes.io/zone
-              operator: NotIn
-              values:
-              - us-east4-b
+    podTemplate:
+      spec:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/os
+                  operator: In
+                  values: 
+                  - linux
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                - key: topology.kubernetes.io/zone
+                  operator: NotIn
+                  values:
+                  - us-east4-b
 ~~~
 
 The `requiredDuringSchedulingIgnoredDuringExecution` node affinity rule, using the `In` operator, requires CockroachDB pods to be scheduled onto nodes with the matching label `kubernetes.io/os=linux`. It will not evict pods that are already running on nodes that do not match the affinity requirements.
@@ -80,7 +84,7 @@ For more context on how these rules work, see the [Kubernetes documentation](htt
 
 ### Add a pod affinity or anti-affinity
 
-Specify pod affinities and node anti-affinities in `cockroachdb.crdbCluster.affinity.podAffinity` and `cockroachdb.crdbCluster.affinity.podAntiAffinity` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster). If you specify multiple `matchExpressions` labels, the node must match all of them. If you specify multiple `values` for a label, the node can match any of the values.
+Specify pod affinities and node anti-affinities in `cockroachdb.crdbCluster.podTemplate.spec.affinity.podAffinity` and `cockroachdb.crdbCluster.podTemplate.spec.affinity.podAntiAffinity` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster). If you specify multiple `matchExpressions` labels, the node must match all of them. If you specify multiple `values` for a label, the node can match any of the values.
 
 The {{ site.data.products.cockroachdb-operator }} hard-codes the pod template to only allow one pod per Kubernetes node. If you need to override this value, you can [override the pod template]({% link {{ page.version.version }}/override-templates-cockroachdb-operator.md %}#override-the-default-pod).
 
@@ -89,27 +93,29 @@ The following configuration attempts to schedule CockroachDB pods in the same zo
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    affinity:
-      podAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - loadgen
-            topologyKey: topology.kubernetes.io/zone
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-            - key: app.kubernetes.io/instance
-              operator: In
-              values:
-              - cockroachdb
-          topologyKey: kubernetes.io/hostname
+    podTemplate:
+      spec:
+        affinity:
+          podAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - loadgen
+                topologyKey: topology.kubernetes.io/zone
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                  - cockroachdb
+              topologyKey: kubernetes.io/hostname
 ~~~
 
 The `preferredDuringSchedulingIgnoredDuringExecution` pod affinity rule, using the `In` operator and specified `weight`, encourages (but does not require) CockroachDB pods to be co-located with pods labeled `app=loadgen` already running in the same zone, as specified with `topologyKey`.
@@ -161,24 +167,26 @@ In this example, CockroachDB has not yet been deployed to a running Kubernetes c
     ~~~ yaml
     cockroachdb:
       crdbCluster:
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-              - matchExpressions:
-                - key: node
-                  operator: In
-                  values:
-                  - crdb
-          podAntiAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                - key: app.kubernetes.io/instance
-                  operator: In
-                  values:
-                  - cockroachdb
-              topologyKey: kubernetes.io/hostname
+        podTemplate:
+          spec:
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: node
+                      operator: In
+                      values:
+                      - crdb
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                    - key: app.kubernetes.io/instance
+                      operator: In
+                      values:
+                      - cockroachdb
+                  topologyKey: kubernetes.io/hostname
     ~~~
 
     The `nodeAffinity` rule requires CockroachDB pods to be scheduled onto worker nodes with the label `node=crdb`. The `podAntiAffinity` rule requires CockroachDB pods not to be co-located on a worker node, as specified with `topologyKey`.
@@ -217,18 +225,20 @@ For an example, see [Evicting CockroachDB from a running worker node](#example-e
 
 ### Add a toleration
 
-Specify pod tolerations in the `cockroachdb.crdbCluster.tolerations` object in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster).
+Specify pod tolerations in the `cockroachdb.crdbCluster.podTemplate.spec.tolerations` object in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster).
 
 The following toleration matches a taint with the specified key, value, and `NoSchedule` effect, using the `Equal` operator. A toleration that uses the `Equal` operator must include a `value` field:
 
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    tolerations:
-      - key: "test"
-        operator: "Equal"
-        value: "example"
-        effect: "NoSchedule"
+    podTemplate:
+      spec:
+        tolerations:
+          - key: "test"
+            operator: "Equal"
+            value: "example"
+            effect: "NoSchedule"
 ~~~
 
 A `NoSchedule` taint on a node prevents pods from being scheduled onto the node. The matching toleration allows a pod to be scheduled onto the node. A `NoSchedule` toleration is therefore best included before [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster).
@@ -242,11 +252,13 @@ The following toleration matches every taint with the specified key and `NoExecu
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    tolerations:
-      - key: "test"
-        operator: "Exists"
-        effect: "NoExecute"
-        tolerationSeconds: 3600
+    podTemplate:
+      spec:
+        tolerations:
+          - key: "test"
+            operator: "Exists"
+            effect: "NoExecute"
+            tolerationSeconds: 3600
 ~~~
 
 A `NoExecute` taint on a node prevents pods from being scheduled onto the node, and evicts pods from the node if they are already running on the node. The matching toleration allows a pod to be scheduled onto the node, and to continue running on the node if `tolerationSeconds` is not specified. If `tolerationSeconds` is specified, the pod is evicted after this number of seconds.
@@ -288,10 +300,12 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
     ~~~ yaml
     cockroachdb:
       crdbCluster:
-        tolerations:
-          - key: "test"
-            operator: "Exists"
-            effect: "NoExecute"
+        podTemplate:
+          spec:
+            tolerations:
+              - key: "test"
+                operator: "Exists"
+                effect: "NoExecute"
     ~~~
 
     Because no tolerationSeconds is specified, CockroachDB will be evicted immediately from the tainted worker node.
@@ -325,20 +339,22 @@ A pod with a *topology spread constraint* must satisfy its conditions when being
 
 ### Add a topology spread constraint
 
-Specify pod topology spread constraints in the `cockroachdb.crdbCluster.topologySpreadConstraints` object of the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster). If you specify multiple `topologySpreadConstraints` objects, the matching pods must satisfy all of the constraints.
+Specify pod topology spread constraints in the `cockroachdb.crdbCluster.podTemplate.spec.topologySpreadConstraints` object of the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster). If you specify multiple `topologySpreadConstraints` objects, the matching pods must satisfy all of the constraints.
 
 The following topology spread constraint ensures that CockroachDB pods deployed with the label `environment=production` will not be unevenly distributed across zones by more than `1` pod:
 
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: topology.kubernetes.io/zone
-      whenUnsatisfiable: DoNotSchedule
-      labelSelector:
-        matchLabels:
-          environment: production
+    podTemplate:
+      spec:
+        topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              environment: production
 ~~~
 
 The `DoNotSchedule` condition prevents labeled pods from being scheduled onto Kubernetes worker nodes when doing so would fail to meet the spread and topology constraints specified with `maxSkew` and `topologyKey`, respectively.
@@ -349,15 +365,17 @@ For more context on how these rules work, see the [Kubernetes documentation](htt
 
 To assist in working with your cluster, you can add labels and annotations to your resources.
 
-Specify labels in `cockroachdb.crdbCluster.podLabels` and annotations in `cockroachdb.crdbCluster.podAnnotations` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
+Specify labels in `cockroachdb.crdbCluster.podTemplate.metadata.labels` and annotations in `cockroachdb.crdbCluster.podTemplate.metadata.annotations` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    podLabels:
-      app.kubernetes.io/version: v25.1.4
-    podAnnotations
-      operator: https://raw.githubusercontent.com/cockroachdb/helm-charts/refs/heads/master/cockroachdb-parent/charts/cockroachdb/values.yaml
+    podTemplate:
+      metadata:
+        labels:
+          app.kubernetes.io/name: "cockroachdb"
+        annotations:
+          kubernetes.io/description: "This is a CockroachDB pod."
 ~~~
 
 To verify that the labels and annotations were applied to a pod, for example, run `kubectl describe pod {pod-name}`.

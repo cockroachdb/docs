@@ -1,14 +1,14 @@
 {% assign version = page.version.version | replace: ".", "" %}
 {% comment %}DEBUG: {{ version }}{% endcomment %}
 
-These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.core }} cluster. Use them to build custom dashboards with the following tools:
-
 {% comment %} STEP 1. Assign variables specific to deployment {% endcomment %}
 {% if include.deployment == 'self-hosted' %}
   {% assign metrics_datadog = site.data[version].metrics.datadog-cockroachdb %}
   {% assign datadog_link = "https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#metrics" %}
   {% assign datadog_prefix = "cockroachdb" %}
   {% assign category_order = "HARDWARE,STORAGE,OVERLOAD,NETWORKING,DISTRIBUTED,REPLICATION,SQL,CHANGEFEEDS,TTL,UNSET," %}
+
+These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.core }} cluster. Use them to build custom dashboards with the following tools:
 
 - [Grafana]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}#step-5-visualize-metrics-in-grafana)
 - [Datadog Integration]({% link {{ page.version.version }}/datadog.md %}): The [**Datadog Integration Metric Name**]({{ datadog_link }}) column lists the corresponding Datadog metric which requires the `{{ datadog_prefix }}.` prefix.
@@ -19,6 +19,8 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
   {% assign datadog_prefix = "crdb_dedicated" %}
 {% comment %} Removed NETWORKING category for advanced deployment {% endcomment %}
   {% assign category_order = "HARDWARE,STORAGE,OVERLOAD,DISTRIBUTED,REPLICATION,SQL,CHANGEFEEDS,TTL,UNSET," %}
+
+These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.advanced }} cluster. Use them to build custom dashboards with the following tools:
 
 - [Datadog integration]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) - The [**Datadog Integration Metric Name**]({{ datadog_link }}) column lists the corresponding Datadog metric which requires the `{{ datadog_prefix }}` prefix.
 - [Metrics export]({% link cockroachcloud/export-metrics-advanced.md %})

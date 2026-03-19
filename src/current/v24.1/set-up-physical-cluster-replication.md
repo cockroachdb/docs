@@ -355,6 +355,10 @@ The system virtual cluster in the standby cluster initializes and controls the r
 
     With the replication stream running, you can monitor the job via the DB Console, SQL shell, or Prometheus. You can also verify data is correct on the standby cluster at a specific point in time. For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
 
+    {{site.data.alerts.callout_info}}
+    You cannot pause a PCR job for longer than 24 hours. PCR jobs paused for longer than 24 hours fail and cannot be recovered.
+    {{site.data.alerts.end}}
+
 ## Set up PCR from an existing cluster
 
 {% include_cached new-in.html version="v24.1" %} You can set up PCR replication from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled. However, the standby cluster must have cluster virtualization enabled. In the [PCR setup]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}), the existing cluster is the primary cluster.

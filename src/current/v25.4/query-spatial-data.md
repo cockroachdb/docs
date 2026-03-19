@@ -26,7 +26,7 @@ CockroachDB does not implement the full list of PostGIS built-in functions and o
 
 If your application needs support for functions that are not yet implemented, check the [meta-issue for built-in function support on GitHub](https://github.com/cockroachdb/cockroach/issues/49203), which describes how to find an issue for the built-in function(s) you need.
 
-For a list of other known limitations, see [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}#spatial-support-limitations).
+For a list of other known limitations, refer to [Known Limitations]({% link {{ page.version.version }}/spatial-data-overview.md %}#known-limitations).
 
 ### ORM compatibility
 
@@ -279,7 +279,7 @@ We can see that almost half of all of the tornadoes in this outbreak began in Ok
 
 It might be interesting to draw these points on a map. The image below shows the points from the query above drawn as a simple polygon on a map of Oklahoma. The boxes around the polygon show the [spatial index]({% link {{ page.version.version }}/spatial-indexes.md %}) coverings for the polygon.
 
-<img width="100%" src="{{ 'images/v20.2/geospatial/1999-oklahoma-tornado-outbreak-map.png' | relative_url }}" alt="1999 Oklahoma tornado outbreak map view">
+<img width="100%" src="{{ 'images/v25.4/geospatial/1999-oklahoma-tornado-outbreak-map.png' | relative_url }}" alt="1999 Oklahoma tornado outbreak map view">
 
 (Map data &copy; 2020 Google)
 

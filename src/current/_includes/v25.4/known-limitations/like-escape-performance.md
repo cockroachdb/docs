@@ -1,0 +1,1 @@
+`LIKE` queries with an `ESCAPE` clause cannot use index acceleration, which can result in significantly slower performance compared to standard `LIKE` queries. [#30192](https://github.com/cockroachdb/cockroach/issues/30192)

@@ -18,7 +18,9 @@ When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtual
 - When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, a virtual cluster can query a system-visible cluster setting's value, such as `storage.max_sync_duration`, to help adapt to the CockroachDB cluster's configuration.
 
 {% comment %}
-Src: `cockroach gen settings-list --show-class --format=csv > cluster-settings.csv` against cockroach-v25.3.0-rc.1.darwin-11.0-arm64;
+Src: `cockroach gen settings-list --show-class --format=csv > cluster-settings.csv` against cockroach-{version}.darwin-11.0-arm64;
+lower-case headers of cluster-settings.csv: setting,type,default,description,class
+copy cluster-settings.csv to _data/{version}/
 
 Also saved in https://docs.google.com/spreadsheets/d/1HIalzAhwU0CEYzSuG2m1aXSJRpiIyQPJdt8SusHpJ_U/edit?usp=sharing
 (shared CRL-internal). Sort by the Class column, then Settings column, and paste into the correct section below.
@@ -28,7 +30,7 @@ system-only: Scoped to the system virtual cluster
 system-visible: Can be set / modified only from the system virtual cluster, but can be viewed from a VC
 {% endcomment %}
 
-{% assign version = site.current_cloud_version | replace: ".", "" %}
+{% assign version = page.version.version | replace: ".", "" %}
 {% comment %}version: {{ version }}{% endcomment %}
 
 ## Cluster settings scoped to a virtual cluster
@@ -100,5 +102,5 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 ## See also
 
 - [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %})
-- [Cluster Metric Scopes with Cluster Virtualization Enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
+- [Cluster Metric Scopes with Cluster Virtualization Enabled]({% link {{ page.version.version }}/cluster-virtualization-metric-scopes.md %})
 - [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %})

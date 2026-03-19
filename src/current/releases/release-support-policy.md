@@ -13,7 +13,7 @@ docs_area: releases
 
 This page explains Cockroach Labs' policy for supporting [production releases]({% link releases/index.md %}) of CockroachDB {{ site.data.products.core }}. For clusters deployed in {{ site.data.products.cloud }}, refer to the [CockroachDB {{ site.data.products.cloud }} Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
-There are two major release types: [Regular and Innovation releases]({% link releases/index.md %}#release-types). Each offers a unique set of Support Types, which define the durations for each [support phase](#support-phases).
+There are two major release types: [Regular and Innovation releases]({% link releases/index.md %}#release-schedule). Each offers a unique set of Support Types, which define the durations for each [support phase](#support-phases).
 
 ## Support phases
 

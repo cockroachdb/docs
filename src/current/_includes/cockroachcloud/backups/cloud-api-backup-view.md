@@ -1,16 +1,12 @@
 ### View managed backups
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 To view a list of managed backups on a cluster with timestamps and their respective IDs, send a `GET` request to the `/v1/clusters/{cluster_id}/backups` endpoint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups \
---header 'Authorization: Bearer {secret_key}' \
+--header "Authorization: Bearer {secret_key}" \
 ~~~
 
 If the request is successful, the client recieves a JSON response listing backups with their unique `{id}`. The `{as_of_time}` timestamp describes the system time of the cluster when the backup was created:

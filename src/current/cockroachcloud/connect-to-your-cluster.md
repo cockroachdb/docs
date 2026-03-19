@@ -190,7 +190,7 @@ You can connect to your cluster with any [supported version]({% link releases/re
     #
     ~~~
 
-    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link {{site.current_cloud_version}}/sql-statements.md %}).
 
   </section>
 
@@ -235,4 +235,3 @@ To connect to your cluster with a [CockroachDB-compatible tool]({% link {{site.c
 ## What's next
 
 - [Build a "Hello, World" app]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md %})
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})

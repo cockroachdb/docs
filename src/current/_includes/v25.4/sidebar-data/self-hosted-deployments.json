@@ -94,84 +94,7 @@
             ]
           },
           {
-            "title": "Deploy on Kubernetes",
-            "items": [
-                {
-                    "title": "Overview",
-                    "urls": [
-                      "/${VERSION}/kubernetes-overview.html"
-                    ]
-                  },
-                  {
-                    "title": "Single-Cluster Deployment",
-                    "urls": [
-                      "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
-                      "/${VERSION}/deploy-cockroachdb-with-kubernetes-insecure.html"
-                    ]
-                  },
-                  {
-                    "title": "OpenShift Deployment",
-                    "urls": [
-                      "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
-                    ]
-                  },
-                  {
-                    "title": "Multi-Cluster Deployment",
-                    "urls": [
-                      "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html"
-                    ]
-                  },
-                {
-                    "title": "Operate on Kubernetes",
-                    "items": [
-                    {
-                        "title": "Pod Scheduling",
-                        "urls": [
-                        "/${VERSION}/schedule-cockroachdb-kubernetes.html"
-                        ]
-                    },
-                    {
-                        "title": "Resource Management",
-                        "urls": [
-                        "/${VERSION}/configure-cockroachdb-kubernetes.html"
-                        ]
-                    },
-                    {
-                        "title": "Certificate Management",
-                        "urls": [
-                        "/${VERSION}/secure-cockroachdb-kubernetes.html"
-                        ]
-                    },
-                    {
-                        "title": "Cluster Scaling",
-                        "urls": [
-                        "/${VERSION}/scale-cockroachdb-kubernetes.html"
-                        ]
-                    },
-                    {
-                        "title": "Cluster Monitoring",
-                        "urls": [
-                        "/${VERSION}/monitor-cockroachdb-kubernetes.html"
-                        ]
-                    },
-                    {
-                        "title": "Cluster Upgrades",
-                        "urls": [
-                        "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
-                        ]
-                    },
-                    {
-                        "title": "Kubernetes Performance",
-                        "urls": [
-                        "/${VERSION}/kubernetes-performance.html"
-                        ]
-                    }
-                    ]
-                }
-            ]
-          },
-          {
-            "title": "Deploy in Kubernetes with CockroachDB Operator",
+            "title": "Deploy in Kubernetes with CockroachDB Operator (Recommended)",
             "items": [
                 {
                     "title": "Overview",
@@ -255,6 +178,83 @@
                       }
                       ]
                   }
+            ]
+          },
+          {
+            "title": "Deploy on Kubernetes with Other Technologies",
+            "items": [
+                {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/kubernetes-overview.html"
+                    ]
+                  },
+                  {
+                    "title": "Single-Cluster Deployment",
+                    "urls": [
+                      "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
+                      "/${VERSION}/deploy-cockroachdb-with-kubernetes-insecure.html"
+                    ]
+                  },
+                  {
+                    "title": "OpenShift Deployment",
+                    "urls": [
+                      "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
+                    ]
+                  },
+                  {
+                    "title": "Multi-Cluster Deployment",
+                    "urls": [
+                      "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html"
+                    ]
+                  },
+                {
+                    "title": "Operate on Kubernetes",
+                    "items": [
+                    {
+                        "title": "Pod Scheduling",
+                        "urls": [
+                        "/${VERSION}/schedule-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Resource Management",
+                        "urls": [
+                        "/${VERSION}/configure-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Certificate Management",
+                        "urls": [
+                        "/${VERSION}/secure-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Cluster Scaling",
+                        "urls": [
+                        "/${VERSION}/scale-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Cluster Monitoring",
+                        "urls": [
+                        "/${VERSION}/monitor-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Cluster Upgrades",
+                        "urls": [
+                        "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
+                        ]
+                    },
+                    {
+                        "title": "Kubernetes Performance",
+                        "urls": [
+                        "/${VERSION}/kubernetes-performance.html"
+                        ]
+                    }
+                    ]
+                }
             ]
           },
           {
@@ -394,6 +394,12 @@
                     "title": "Cluster SSO using JWT",
                     "urls": [
                       "/${VERSION}/sso-sql.html"
+                    ]
+                  },
+                  {
+                    "title": "JWT Authorization",
+                    "urls": [
+                      "/${VERSION}/jwt-authorization.html"
                     ]
                   },
                   {

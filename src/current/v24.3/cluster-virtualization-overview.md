@@ -48,7 +48,7 @@ To grant access to the system virtual cluster, you must connect to the system vi
 
 ### Upgrades
 
-The system virtual cluster can be at most one [Regular release]({% link releases/index.md %}#release-types) ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.3 can have virtual clusters on CockroachDB v24.1 (a Regular release) or v24.2 (an Innovation release). This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters.
+The system virtual cluster can be at most one [Regular release]({% link releases/index.md %}#release-schedule) ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.3 can have virtual clusters on CockroachDB v24.1 (a Regular release) or v24.2 (an Innovation release). This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters.
 
 To upgrade to a new major version when cluster virtualization is enabled, you must:
 
@@ -87,10 +87,6 @@ When cluster virtualization is enabled, certain low-level SQL APIs, such as (TOD
 ### Replication
 
 [Replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) can be configured only in a virtual cluster, and are not applicable to the `system` virtual cluster.
-
-### Node draining
-
-When cluster virtualization is enabled, [draining a node]({% link {{ page.version.version }}/node-shutdown.md %}#drain-a-node-manually) can cause a temporary SQL latency spike.
 
 ## See also
 

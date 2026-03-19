@@ -1,1 +1,0 @@
-The number of RUs consumed by cross-region networking. Correlate these metrics with [Request Units (RUs)](#tenant.consumption.request_units). For more information about multi-region clusters and networking, refer to [Multi-region clusters]({% link cockroachcloud/plan-your-cluster-basic.md %}#multi-region-clusters).

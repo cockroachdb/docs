@@ -66,7 +66,11 @@ This role can be assigned only at the organization scope.
 
 ### Billing Coordinator
 
-The **Billing Coordinator** role allows users to [manage billing for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
+The **Billing Coordinator** role allows users to [manage and view billing details, invoices, and usage for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
+
+### Billing Viewer
+
+The **Billing Viewer** role allows users to [view billing details, invoices, and usage for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
 
 ### Cluster Operator
 
@@ -138,19 +142,11 @@ This role can be assigned at the scope of the organization, on an individual clu
 
 ### Cluster Monitor
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 The **Cluster Monitor** role provides read‑only visibility into SQL activity and workload health without broader administrative privileges. Users with this role can view the SQL Activity pages ([Sessions]({% link cockroachcloud/sessions-page.md %}), [Statements]({% link cockroachcloud/statements-page.md %}), and [Transactions]({% link cockroachcloud/transactions-page.md %})), the [Jobs page]({% link cockroachcloud/jobs-page.md %}), and the [Insights page]({% link cockroachcloud/insights-page.md %}).
 
 This role can be assigned at the scope of the organization, on an individual cluster, or on a folder. If assigned to a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
 ### Metrics Viewer
-
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
 
 The **Metrics Viewer** role grants read‑only access to observability metrics for a cluster without any administrative or data‑manipulation privileges.
 

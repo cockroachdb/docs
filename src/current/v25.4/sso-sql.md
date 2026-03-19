@@ -7,28 +7,30 @@ docs_area: manage
 
 CockroachDB clusters allow users to authenticate with Single Sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access.
 
-Cluster single sign-on (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or {{ site.data.products.core }}) with the full security of single sign-on (SSO), and the choice of a variety of cloud-based or customer-managed identity providers (IdPs).
+Cluster single sign-on (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or {{ site.data.products.core }}) with the full security of single sign-on (SSO), using JSON Web Tokens (JWTs) from external identity providers (IdPs) such as Okta, Google, Azure AD, or Keycloak.
 
-{{ site.data.products.advanced }} clusters can provision their users with Java Web Tokens (JWTs) via the DB Console. This allows users to authenticate to a cluster by signing in to their IdP (for example, Okta or Google) with a link embedded in the DB Console. This flow provisions a JWT that a user can copy out of the DB Console UI and use in a SQL connection string to authenticate to the cluster.
+Users can obtain JWTs directly from their IdP and use them to authenticate to SQL clients. Optionally, CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} clusters and {{ site.data.products.core }} clusters can also generate JWTs via the DB Console as a convenience feature. When DB Console JWT generation is enabled, users can sign in to their IdP through a link embedded in the DB Console, then copy the generated JWT and use it in a SQL connection string to authenticate to the cluster.
 
-{{site.data.alerts.callout_info}}
-Cluster single sign-on for the DB Console is supported on CockroachDB [{{ site.data.products.enterprise }}]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) and {{ site.data.products.advanced }} clusters. CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters do not support cluster single sign-on and do not have access to the DB Console. However, both CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} clusters can use [Cluster Single Sign-on (SSO) to authenticate to the `ccloud` command-line interface and to the CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/cloud-sso-sql.md %}).
-{{site.data.alerts.end}}
+<span class="version-tag">New in v25.4:</span> JWT authentication supports automatic role synchronization and user provisioning. When [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) is enabled, users' role memberships are automatically synchronized based on group claims from the IdP on each login. Additionally, [automatic user provisioning](#configure-user-provisioning) can automatically create SQL users on first authentication, eliminating the need to pre-create users.
 
-The page describes how to configure a cluster for cluster single sign-on using JWTs and then how users can authenticate using the JWTs. If you're a user ready to sign in to the DB Console with JWTs, you can skip the configuration section:
+This page describes how to configure a cluster for cluster single sign-on using JWTs and then how users can authenticate using the JWTs. If you're a user ready to sign in to the DB Console with JWTs, you can skip the configuration section:
 
 - [Configure a cluster for cluster single sign-on using JWTs](#configure-your-cluster-for-sso)
 - [Authenticate to your cluster](#authenticate-to-your-cluster)
 
 **Prerequisites**
 
-- You must have your cluster pre-configured for OIDC/SSO authentication for DB Console. Use the [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %}) guide to set this up.
+- **Identity Provider (IdP)**: You must have access to an identity provider that supports JWT tokens, such as Okta, Google, Azure AD, or Keycloak.
 
-- SQL users/credentials:
+- **Cluster Settings Access**: You must have the ability to update your cluster settings. Refer to [`SET CLUSTER SETTING`: Required permissions]({% link {{ page.version.version }}/set-cluster-setting.md %}#required-privileges).
 
-    - You must have the ability to update your cluster settings, which can be achieved in several ways. Refer to [`SET CLUSTER SETTING`: Required permissions]({% link {{ page.version.version }}/set-cluster-setting.md %}#required-privileges)
-.
-    - A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
+- **SQL User Provisioning**:
+    - If you are using [automatic user provisioning](#configure-user-provisioning), SQL users will be created automatically on first authentication.
+    - If automatic user provisioning is disabled, a SQL user that corresponds with your external identity must be pre-created on the cluster. To create users, you must have access to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
+
+- **(Optional) DB Console JWT Generation**: To use the DB Console to generate JWTs (instead of obtaining them directly from your IdP), you must have your cluster pre-configured for OIDC/SSO authentication for DB Console. Use the [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %}) guide to set this up.
+
+- **(Optional) JWT Authorization**: To enable automatic role synchronization based on IdP group claims, see [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %}).
 
 ## Configure your cluster for SSO
 
@@ -46,6 +48,10 @@ Cluster Setting | Description
 `server.jwt_authentication.client.timeout` | An optional HTTP client timeout for external calls made during JWT authentication, in seconds. Defaults to `15` seconds.
 `server.jwt_authentication.audience` | This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 `server.jwt_authentication.claim` | The JWT field that will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
+`server.jwt_authentication.authorization.enabled` | <span class="version-tag">New in v25.4:</span> Enables automatic role synchronization based on JWT groups claim. See [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %}). Defaults to `false`.
+`server.jwt_authentication.group_claim` | <span class="version-tag">New in v25.4:</span> JWT field containing groups for authorization. Defaults to `groups`. See [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %}).
+`server.jwt_authentication.userinfo_group_key` | <span class="version-tag">New in v25.4:</span> Userinfo endpoint JSON key for groups fallback. Defaults to `groups`. See [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %}).
+`security.provisioning.jwt.enabled` | <span class="version-tag">New in v25.4:</span> Enables automatic user creation on first JWT login. Defaults to `false`. See [Configure user provisioning](#configure-user-provisioning).
 `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
 `server.oidc_authentication.generate_cluster_sso_token.use_token`| Selects which part of the received OIDC credentials to display.
 `server.identity_map.configuration`| Takes an [Identity Map configuration](#identity-map-configuration).
@@ -211,9 +217,70 @@ Examples:
 
     Maps each GCP-provisioned service account to a SQL user named `gcp_{ GCP user ID }`. For example, `gcp_1234567` for a service account with ID `1234567`.
 
+## Configure user provisioning
+
+<span class="version-tag">New in v25.4:</span>
+
+CockroachDB can automatically create users on their first JWT authentication, eliminating the need to pre-create user accounts.
+
+### Enable user provisioning
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING security.provisioning.jwt.enabled = true;
+~~~
+
+### How it works
+
+1. A user presents a valid JWT token during authentication.
+1. If the user doesn't exist in CockroachDB, the user is created automatically.
+1. The user is tagged with the `PROVISIONSRC` role option: `jwt_token:<issuer>`, where `<issuer>` is the JWT issuer URL.
+1. If [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) is also enabled, roles are synchronized immediately after user creation.
+
+### Auditing provisioned users
+
+You can identify automatically provisioned users by viewing their role options:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW ROLES;
+~~~
+
+Example output:
+
+~~~txt
+  username  |                       options                        | member_of
+------------+------------------------------------------------------+-----------
+  alice     | {PROVISIONSRC=jwt_token:https://auth.example.com}    | {developers}
+  bob       | {PROVISIONSRC=jwt_token:https://auth.example.com}    | {admins}
+~~~
+
+Users provisioned via JWT will have `PROVISIONSRC=jwt_token:<issuer>` in their options column.
+
+### Security considerations
+
+- **Validate JWT issuers carefully**: Ensure `server.jwt_authentication.issuers.configuration` only includes trusted issuers, as any valid JWT from these issuers can create new users.
+- **Monitor provisioned users**: Regularly review automatically created users to ensure only authorized users are being provisioned.
+- **Combine with JWT authorization**: Consider enabling [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) to automatically grant appropriate roles to provisioned users based on their IdP group memberships.
+- **Password management**: Provisioned users cannot change their own passwords, as authentication is managed through the IdP.
+
+{{site.data.alerts.callout_info}}
+If you are going to use JWT user provisioning in conjunction with [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}), be sure to create the necessary roles in CockroachDB before enabling user provisioning. Auto-provisioned users will only receive roles for groups that already exist as CockroachDB roles.
+{{site.data.alerts.end}}
+
 ## Authenticate to your cluster
 
-Once ConsoleDB SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials, and although their expiry depends on the IdP configuration, it is usually 1 hour.
+JWT authentication supports two methods for obtaining tokens:
+
+1. **Obtain JWTs directly from your IdP**: Use your identity provider's API or SDK to generate JWT tokens (e.g., via Okta APIs, Google OAuth, Azure AD). This is the primary method and requires only the JWT authentication cluster settings configured above.
+
+2. **Generate JWTs via DB Console**: If you have [OIDC authentication for DB Console]({% link {{ page.version.version }}/sso-db-console.md %}) configured, users can obtain JWT tokens through the DB Console UI.
+
+This section describes the DB Console method. For obtaining JWTs directly from your IdP, refer to your identity provider's documentation.
+
+### Authenticate using DB Console-generated JWTs
+
+Once DB Console SSO and Cluster SSO with JWTs are enabled and your cluster is [properly configured](#configure-your-cluster-for-sso) (including mapping authorized external users to SQL roles), users can self-provision auth tokens through a sign-in flow embedded in the DB Console. These tokens (JWTs) are intended as short-lived credentials. The expiry is set based on the OIDC token from your identity provider, which is typically 1 hour.
 
 {{site.data.alerts.callout_success}}
 This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), but you can use any SQL client that supports sufficiently long passwords.
@@ -243,3 +310,6 @@ This example uses [`cockroach sql`]({% link {{ page.version.version }}/cockroach
 
 - [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %})
+- [JWT Authorization]({% link {{ page.version.version }}/jwt-authorization.md %})
+- [OIDC Authorization]({% link {{ page.version.version }}/oidc-authorization.md %})
+- [LDAP Authorization]({% link {{ page.version.version }}/ldap-authorization.md %})

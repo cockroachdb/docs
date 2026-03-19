@@ -18,13 +18,6 @@
       ]
     },
     {
-      "title": "Learn CockroachDB SQL",
-      "urls": [
-        "/cockroachcloud/learn-cockroachdb-sql.html",
-        "/${VERSION}/learn-cockroachdb-sql.html"
-      ]
-    },
-    {
       "title": "Develop with CockroachDB",
       "items": [
         {
@@ -204,12 +197,6 @@
                 "/${VERSION}/movr-flask-deployment.html"
               ]
             }
-          ]
-        },
-        {
-          "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
-          "urls": [
-            "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
           ]
         }
       ]

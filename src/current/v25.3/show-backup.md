@@ -13,6 +13,8 @@ The `SHOW BACKUP` syntax **without** the `IN` keyword has been removed from Cock
 For guidance on the syntax for `SHOW BACKUP FROM`, refer to the [Synopsis](#synopsis) and [examples](#examples) on this page.
 {{site.data.alerts.end}}
 
+{% include common/sql/incremental-location-warning.md %}
+
 ## Required privileges
 
 `SHOW BACKUP` requires read permissions to its target destination.

@@ -1,9 +1,5 @@
 ### Restore from a managed backup
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 You can use the `/v1/clusters/{destination_cluster_id}/restores` endpoint to restore the contents of a managed backup to a specified destination cluster.
 
 {% if page.name == "managed-backups-advanced.md" %}
@@ -23,10 +19,10 @@ To restore a cluster to a recent managed backup, send a `POST` request to the `/
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
-    "source_cluster_id": "{cluster_id}"
+    "source_cluster_id": "{cluster_id}",
     "type": "CLUSTER"
 }'
 ~~~
@@ -36,7 +32,7 @@ By default, the restore job uses the most recent backup stored within the last 7
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
     "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
@@ -50,7 +46,7 @@ To restore a cluster backup into a different cluster, ensure that the destinatio
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
     "source_cluster_id": "{source_cluster_id}",
@@ -83,10 +79,10 @@ To restore one or more databases from a cluster's managed backup, send a `POST` 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
-    "source_cluster_id": "{cluster_id}"
+    "source_cluster_id": "{cluster_id}",
     "type": "DATABASE",
     "objects": [
         {
@@ -104,10 +100,10 @@ By default, the database is restored into the original database name from the ma
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
-    "source_cluster_id": "{cluster_id}"
+    "source_cluster_id": "{cluster_id}",
     "type": "DATABASE",
     "objects": [
         {
@@ -125,7 +121,7 @@ To restore from a specific backup rather than the most recently created managed 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
     "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
@@ -134,7 +130,7 @@ curl --request POST \
         {
             "database": "tpcc"
         }
-    ],
+    ]
 }'
 ~~~
 
@@ -143,7 +139,7 @@ To restore a database from a source cluster's managed backup into a different cl
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
     "source_cluster_id": "{source_cluster_id}",
@@ -152,7 +148,7 @@ curl --request POST \
         {
             "database": "tpcc"
         }
-    ],
+    ]
 }'
 ~~~
 
@@ -178,10 +174,10 @@ To restore a one or more tables from a cluster's managed backup, send a `POST` r
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
-    "source_cluster_id": "{cluster_id}"
+    "source_cluster_id": "{cluster_id}",
     "type": "TABLE",
     "objects": [
         {
@@ -203,10 +199,10 @@ By default, the table is restored into the original database name from the manag
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
-    "source_cluster_id": "{cluster_id}"
+    "source_cluster_id": "{cluster_id}",
     "type": "TABLE",
     "objects": [
         {
@@ -231,7 +227,7 @@ To restore from a specific backup rather than the most recently created managed 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
     "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
@@ -251,7 +247,7 @@ To restore a table from a source cluster's managed backup into a different clust
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
---url 'https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores' \
+--url https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores \
 --header "Authorization: Bearer {secret_key}" \
 --json '{
     "source_cluster_id": "{source_cluster_id}",
@@ -284,17 +280,13 @@ If the request is successful, the client recieves a response containing JSON des
 
 ### Get status of a restore job
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 To view the status of a restore job using the cloud API, send a `GET` request to the `/v1/clusters/{cluster_id}/restores/{restore_id}` endpoint where `restore_id` is the `id` from the JSON response:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
 --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores/{restore_id} \
---header 'Authorization: Bearer {secret_key}' \
+--header "Authorization: Bearer {secret_key}"
 ~~~
 
 If the request is successful, the client recieves a response containing JSON describing the status of the specified request operation:

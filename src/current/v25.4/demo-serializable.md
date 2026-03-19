@@ -33,7 +33,7 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 ### Schema
 
-<img src="{{ 'images/v24.2/serializable_schema.png' | relative_url }}" alt="Schema for serializable transaction tutorial" style="max-width:100%" />
+<img src="{{ 'images/v25.4/serializable_schema.png' | relative_url }}" alt="Schema for serializable transaction tutorial" style="max-width:100%" />
 
 ## Step 1. Set up the scenario on PostgreSQL
 

@@ -116,7 +116,7 @@ The batch evaluator ensures that write operations are valid. Our architecture ma
 
 If the write operation is valid according to the evaluator, the leaseholder sends a provisional acknowledgment to the gateway node's `DistSender`; this lets the `DistSender` begin to send its subsequent `BatchRequests` for this range.
 
-Importantly, this feature is entirely built for transactional optimization (known as [transaction pipelining]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-pipelining)). There are no issues if an operation passes the evaluator but doesn't end up committing.
+Importantly, this feature is entirely built for transactional optimization (known as [transaction pipelining]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-pipelining)). For important caveats about what pipelining does and does not change in end-to-end latency, see that section. There are no issues if an operation passes the evaluator but doesn't end up committing.
 
 ### Reads from the storage layer
 

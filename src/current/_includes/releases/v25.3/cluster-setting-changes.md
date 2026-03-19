@@ -11,8 +11,10 @@ Changes to [cluster settings]({% link v25.3/cluster-settings.md %}) should be re
 
 - The value of `sql.stats.error_on_concurrent_create_stats.enabled` now defaults to `false`, suppressing error counters for auto stats jobs that fail due to concurrent stats jobs in progress. [#149857][#149857]
 - The cluster setting `server.client_cert_expiration_cache.capacity` has been deprecated. The client certificate cache now evicts client certificates based on expiration time. [#144181][#144181]
+- To prevent unnecessary queuing in admission control CPU queues, the `goschedstats.always_use_short_sample_period.enabled` setting default was changed to `true` [#146014][#146014]
 
 [#144181]: https://github.com/cockroachdb/cockroach/pull/144181
 [#144610]: https://github.com/cockroachdb/cockroach/pull/144610
 [#145435]: https://github.com/cockroachdb/cockroach/pull/145435
+[#146014]: https://github.com/cockroachdb/cockroach/pull/146014
 [#149857]: https://github.com/cockroachdb/cockroach/pull/149857

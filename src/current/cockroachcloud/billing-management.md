@@ -5,7 +5,11 @@ toc: true
 docs_area:
 ---
 
-The **Billing** page contains an overview of your charges and the payment details on file for your CockroachDB {{ site.data.products.cloud }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
+The **Billing** page contains an overview of your charges and the payment details on file for your CockroachDB {{ site.data.products.cloud }} organization.
+
+## View billing for an organization
+
+Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) or [Billing Viewer]({% link cockroachcloud/authorization.md %}#billing-viewer) role can view billing details, invoices, and usage for the organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
 
 ## Set up billing for an organization
 
@@ -25,7 +29,7 @@ You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit car
 
 1. On the **Billing** page, select the **Payment details** tab.
 1. Click **Add a credit card** in the **Payment method** field.
-1. In the **Edit payment method** dialog, enter the credit or debit card details.
+1. In the **Edit payment method** dialog, enter the credit card details.
 1. Click **Save card**.
 1. Click **Add a billing email** in the **Billing contact info** section.
 1. In **Edit billing email** enter the email address at which you want to receive invoices for the organization.
@@ -45,7 +49,7 @@ You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit car
 
 1. On the **Billing** page, select the **Payment details** tab.
 1. Click the pencil icon for the **Payment method** field.
-1. In the **Edit payment method** dialog, enter the credit or debit card details.
+1. In the **Edit payment method** dialog, enter the credit card details.
 1. Click **Save card**.
 1. In the **Billing contact info** section, click the pencil icon for the **Billing address** field.
 1. Enter the address associated with your new payment method. This address appears on your monthly invoice and should be the legal address of your home or business.

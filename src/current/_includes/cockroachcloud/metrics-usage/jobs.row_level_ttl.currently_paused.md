@@ -1,1 +1,0 @@
-Monitor this metric to ensure the [Row-Level TTL]({% link {{ site.current_cloud_version }}/row-level-ttl.md %}) job does not remain paused inadvertently for an extended period.

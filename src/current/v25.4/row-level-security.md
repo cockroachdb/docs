@@ -528,12 +528,6 @@ For a demo showing how to combine row-level security with [Multi-region SQL]({% 
 
 {% include_cached youtube.html video_id="ZG8RsfwMaa8" %}
 
-## Known limitations
-
-### Row-level security metadata leakage
-
-{% include {{ page.version.version }}/known-limitations/rls-visibility-issue.md %}
-
 ## See also
 
 + [`SHOW POLICIES`]({% link {{ page.version.version }}/show-policies.md %})

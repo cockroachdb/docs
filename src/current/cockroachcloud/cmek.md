@@ -93,7 +93,7 @@ If a CMEK key is disabled, scheduled for destruction, or destroyed:
 
 {% include cockroachcloud/cmek-rotation-types.md %}
 
-To learn more about rotating a CMEK key using the CockroachDB {{ site.data.products.cloud }} API, visit [Rotate a CMEK key]({% link cockroachcloud/managing-cmek.md %}#rotate-a-cmek-key).
+To learn more about rotating a CMEK key in CockroachDB {{ site.data.products.cloud }}, read [Rotate a CMEK key]({% link cockroachcloud/managing-cmek.md %}#rotate-a-cmek-key).
 
 ## Backup and restore operations on a cluster with CMEK
 
@@ -141,7 +141,7 @@ Yes, the data encryption key is rotated automatically once every month. It’s n
 
 {% include cockroachcloud/cmek-rotation-types.md %}
 
-To learn more about rotating a CMEK key using the CockroachDB {{ site.data.products.cloud }} API, visit [Rotate a CMEK key]({% link cockroachcloud/managing-cmek.md %}#rotate-a-cmek-key).
+To learn more about rotating a CMEK key in CockroachDB {{ site.data.products.cloud }}, read [Rotate a CMEK key]({% link cockroachcloud/managing-cmek.md %}#rotate-a-cmek-key).
 
 #### Are CockroachDB {{ site.data.products.advanced }} managed backups also encrypted using the CMEK?
 
@@ -157,7 +157,7 @@ The store key is only stored as encrypted by the CMEK, while it’s available as
 
 #### Can we use the CockroachDB {{ site.data.products.cloud }} Console to enable or revoke a CMEK for a cluster?
 
-Not yet. Currently, you must use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest).
+Yes. You can use the CockroachDB {{ site.data.products.cloud }} Console, the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest). The Console UI is available in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview) and you can request to have the UI enabled for your {{ site.data.products.cloud }} organization.
 
 #### Is it possible to self-serve restore a CMEK-enabled cluster in case of a cluster failure or disaster scenario?
 
@@ -167,7 +167,6 @@ Not yet. To restore a failed CMEK-enabled cluster, please create a support ticke
 
 CMEK has the following limitations:
 
-- To enable or revoke a CMEK on a cluster, you must use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest). It's not possible to enable a CMEK using the CockroachDB {{ site.data.products.cloud }} Console.
 - If you add a new region to a cluster with CMEK enabled, you must configure a CMEK for the new region to protect its data.
 - If the CMEK is not available due to a misconfiguration or a KMS outage, a cluster's managed backups will begin to fail, but no customer notification is sent from CockroachDB {{ site.data.products.cloud }} via email. However, Cockroach Labs support is notified if such a failure occurs.
 
