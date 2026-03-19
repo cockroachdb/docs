@@ -7,7 +7,7 @@ docs_area: ai_tools
 
 CockroachDB supports AI in two primary ways:
 
-- It enables integration with your AI development tools (such as Claude Code, Cursor, and GitHub Copilot in VS Code) through [MCP servers]([Model Context Protocol](https://modelcontextprotocol.io/introduction)), Agent Skills, and the `ccloud` command-line interface (CLI).
+- It enables integration with your AI development tools (such as Claude Code, Cursor, and GitHub Copilot in VS Code) through [MCP servers](https://modelcontextprotocol.io/introduction), Agent Skills, and the `ccloud` command-line interface (CLI).
 - It can serve as the system of record and the retrieval engine for AI applications. It combines support for vector data and similarity search with strongly consistent [transactions]({% link {{ page.version.version }}/transactions.md %}), horizontal scalability, and [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) capabilities. 
 
 ## Support for AI-assisted development

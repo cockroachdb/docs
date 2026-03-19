@@ -7,7 +7,7 @@ docs_area: ai_tools
 
 CockroachDB supports AI in two primary ways:
 
-- It enables integration with your AI development tools (such as Claude Code, Cursor, and GitHub Copilot in VS Code) through [MCP servers]([Model Context Protocol](https://modelcontextprotocol.io/introduction)), Agent Skills, and the `ccloud` command-line interface (CLI).
+- It enables integration with your AI development tools (such as Claude Code, Cursor, and GitHub Copilot in VS Code) through [MCP servers](https://modelcontextprotocol.io/introduction), Agent Skills, and the `ccloud` command-line interface (CLI).
 - It can serve as the system of record and the retrieval engine for AI applications. It combines support for vector data and similarity search with strongly consistent [transactions]({% link {{ page.version.version }}/transactions.md %}), horizontal scalability, and [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) capabilities. 
 
 ## Support for AI-assisted development
@@ -64,7 +64,7 @@ CockroachDB provides the database features needed to store and query AI-related 
 
 AI applications often represent text, images, and other content as vector embeddings. These are numerical representations that capture semantic meaning. To find relevant information, AI applications need to search for vectors that are similar to a query vector, typically using distance metrics. This similarity search is fundamental to retrieval-augmented generation (RAG), semantic search, and recommendation systems.
 
-CockroachDB has a [`VECTOR` data type]({% link {{ page.version.version }}/vector.md %}) for storing fixed-length floating-point embeddings and supports similarity operators such as L2 distance (`<->`), inner product (`<#>`), and cosine distance (`<=>`). You can index vectors using [`CREATE VECTOR INDEX`]({% link {{ page.version.version }}/create-index.md %}#create-vector-indexes) and combine them with other indexed columns.
+CockroachDB has a [`VECTOR` data type]({% link {{ page.version.version }}/vector.md %}) for storing fixed-length floating-point embeddings and supports similarity operators such as L2 distance (`<->`), inner product (`<#>`), and cosine distance (`<=>`). You can index vectors using `CREATE VECTOR INDEX` and combine them with other indexed columns.
 
 You can store vector embeddings, relational data, and [JSON]({% link {{ page.version.version }}/jsonb.md %}) metadata in the same table and query them together. For example:
 
