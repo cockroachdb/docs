@@ -231,7 +231,7 @@ When describing "AI tools," "AI agents," or "AI assistants" (etc.) in the contex
   - **Avoid:** The MCP server enables AI tools to access a cluster.
   - **Prefer:** The MCP server enables your AI tools to access a cluster.
 
-This is a request from Cockroach Labs' legal team. The idea is to remind the reader that these tools are not Cockroach Labs', and so any mistaken/detrimental use of these tools is not Cockroach Labs' responsibility. Not every instance of these terms needs to be preceded with the word "your." This is mainly meant for early instances of these terms on the page (i.e. in introductory paragraphs) should, to establish this idea.
+This is a request from Cockroach Labs' legal team. The idea is to remind the reader that these tools are not Cockroach Labs', and so any mistaken/detrimental use of these tools is not Cockroach Labs' responsibility. Not every instance of these terms needs to be preceded with the word "your." This is mainly meant for early instances of these terms on the page (i.e. in introductory paragraphs), to establish this idea.
 
 ## Inclusivity
 
