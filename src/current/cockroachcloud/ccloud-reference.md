@@ -33,7 +33,7 @@ Success! Created cluster
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
 
-The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
+The `id` in the output is the cluster ID. Use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
 You can set the cluster name, cloud infrastructure provider, region, and [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits) as command options. The following command is equivalent to the previous command that uses the default values.
 
@@ -60,7 +60,7 @@ Success! Created cluster
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
 
-The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
+The `id` in the output is the cluster ID. Use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
 You can set the cluster name, cloud infrastructure provider, region, and [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits) as command options. The following command is equivalent to the previous command that uses the default values.
 
@@ -69,7 +69,7 @@ You can set the cluster name, cloud infrastructure provider, region, and [resour
 ccloud cluster create serverless blue-dog us-central1 --cloud GCP --spend-limit 0
 ~~~
 
-### Create a {{ site.data.products.advanced }} cluster
+### Create an {{ site.data.products.advanced }} cluster
 
 Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.advanced }} cluster.
 
@@ -80,13 +80,6 @@ ccloud cluster create dedicated
 
 This command creates a 1-node CockroachDB {{ site.data.products.advanced }} cluster with 4 virtual CPUs (vCPUs) and 110 GiB of storage in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name. The CockroachDB version will be the latest stable version.
 
-You can set the cluster name, cloud infrastructure provider, region, number of nodes, and storage as command options. The following command is equivalent to the previous command that uses the default values.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-ccloud cluster create dedicated blue-dog us-central1:1 --cloud GCP --vcpus 4 --storage-gib 110
-~~~
-
 ~~~
 ∙∙∙ Creating cluster
 Success! Created cluster
@@ -94,7 +87,14 @@ Success! Created cluster
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
 
-The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
+The `id` in the output is the cluster ID. Use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
+
+You can set the cluster name, cloud infrastructure provider, region, number of nodes, and storage as command options. The following command is equivalent to the previous command that uses the default values.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster create dedicated blue-dog us-central1:1 --cloud GCP --vcpus 4 --storage-gib 110
+~~~
 
 When creating multi-region clusters, you must specify how many nodes should be in each region supported by the cloud infrastructure provider. For example, the following command creates a 12-node cluster where 8 nodes are in `us-central1` and 4 nodes are in `us-west2`. For optimum performance, it is generally recommended to configure the same number of nodes in each region.
 
@@ -121,7 +121,7 @@ blue-dog   041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_DEDICATED   2022-03-22 21:
 
 ## Get information about a cluster
 
-Use the `ccloud cluster info` command with the cluster name as the parameter to show detailed information about your cluster. Find the **Name** column in the output of `ccloud cluster list` to find the name of the cluster.
+Use the `ccloud cluster info` command with the cluster name as the parameter to show detailed information about your cluster. Find the **Name** column in the output of [`ccloud cluster list`](#list-clusters-in-an-organization) to find the name of the cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -143,7 +143,7 @@ Cluster info
  regions: us-central1
 ~~~
 
-Showing cluster info for a {{ site.data.products.advanced }} cluster:
+Showing cluster info for a CockroachDB {{ site.data.products.advanced }} cluster:
 
 ~~~
 ∙∙∙ Retrieving cluster...
@@ -191,9 +191,7 @@ Starting CockroachDB SQL shell...
 #
 # Client version: CockroachDB CCL v21.2.5 (x86_64-apple-darwin19, built 2022/02/07 21:04:05, go1.16.6)
 # Server version: CockroachDB CCL v21.2.4-1-g70835279ac (x86_64-unknown-linux-gnu, built 2022/02/03 22:31:25, go1.16.6)
-
-warning: server version older than client! proceed with caution; some features may not be available.
-
+#
 # Cluster ID: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
 #
 # Enter \? for a brief introduction.
@@ -251,7 +249,6 @@ To create a SSO SQL user:
     ccloud cluster sql blue-dog --sso
     ~~~
 
-{{site.data.alerts.callout_info}}
 Use the `ccloud auth whoami` command to check that you are logged into the correct organization.
 
 If the organization is incorrect:
@@ -269,8 +266,6 @@ If the organization is incorrect:
     ~~~ shell
     ccloud auth login --org {organization name}
     ~~~
-
-{{site.data.alerts.end}}
 
 ### Skip the IP allowlist check when connecting to your cluster
 
