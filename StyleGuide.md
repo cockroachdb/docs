@@ -13,6 +13,7 @@ Included in this guide:
   - [CockroachDB products](#cockroachdb-products)
   - [CockroachDB versions](#cockroachdb-versions)
   - [Third-party products](#third-party-products)
+  - [AI](#ai)
 - [Inclusivity](#inclusivity)
   - [Avoid ableist language](#avoid-ableist-language)
   - [Avoid unnecessarily gendered language](#avoid-unnecessarily-gendered-language)
@@ -218,6 +219,19 @@ Use **on a cluster** when referring to workloads, services, or databases that ru
 
 - Databases on the cluster
 - Jobs running on the cluster
+
+### AI
+
+Write "AI" without periods. Not "A.I."
+
+You don't need to precede the usage of the term "AI" with its elaboration (e.g. "Artificial Intelligence (AI).") Any reader will know what AI is.
+
+When describing "AI tools," "AI agents," or "AI assistants" (etc.) in the context of integrating with CockroachDB, precede introductory instances of these terms with the word "your."
+
+  - **Avoid:** The MCP server enables AI tools to access a cluster.
+  - **Prefer:** The MCP server enables your AI tools to access a cluster.
+
+This is a request from Cockroach Labs' legal team. The idea is to remind the reader that these tools are not Cockroach Labs', and so any mistaken/detrimental use of these tools is not Cockroach Labs' responsibility. Not every instance of these terms needs to be preceded with the word "your." This is mainly meant for early instances of these terms on the page (i.e. in introductory paragraphs) should, to establish this idea.
 
 ## Inclusivity
 
