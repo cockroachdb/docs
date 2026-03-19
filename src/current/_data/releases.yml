@@ -10928,7 +10928,7 @@
   release_date: '2026-03-25'
   release_type: Testing
   go_version: go1.25.5
-  sha: cc34a3eefe9f9548beaa55ced23d3503332bac20
+  sha: c9ce4f5fbaa7911e97a19d74486dd2f5fc839865
   has_sql_only: true
   has_sha256sum: true
   mac:
