@@ -6,7 +6,7 @@ keywords: security, row level security, RLS
 docs_area: reference.sql
 ---
 
-The `DROP POLICY` statement removes an existing [row-level security (RLS)]({% link {{ page.version.version }}/enum.md %}) policy from a [table]({% link {{ page.version.version }}/schema-design-table.md %}).
+The `DROP POLICY` statement removes an existing [row-level security (RLS)]({% link {{ page.version.version }}/enum.md %}) policy from a table.
 
 ## Syntax
 
@@ -31,7 +31,7 @@ DROP POLICY [ IF EXISTS ] policy_name ON table_name [ CASCADE | RESTRICT ];
 | Parameter           | Description                                                                                            |
 |---------------------|--------------------------------------------------------------------------------------------------------|
 | `policy_name`       | Unique identifier for the policy on the table.                                                         |
-| `table_name`        | The [table]({% link {{ page.version.version }}/schema-design-table.md %}) to which the policy applies. |
+| `table_name`        | The table to which the policy applies. |
 | `IF EXISTS`         | Suppresses an error if the policy doesn't exist.                                                       |
 | `CASCADE, RESTRICT` | Standard dependency handling (not relevant for policies themselves).                                   |
 

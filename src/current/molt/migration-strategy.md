@@ -167,6 +167,5 @@ When you are ready to migrate, refer to [Migration flows]({% link molt/migration
 - [Migration Overview]({% link molt/migration-overview.md %})
 - [Migration Failback]({% link molt/migrate-failback.md %})
 - [Schema Design Overview]({% link {{ site.current_cloud_version }}/schema-design-overview.md %})
-- [Primary key best practices]({% link {{ site.current_cloud_version }}/schema-design-table.md %}#primary-key-best-practices)
 - [Secondary index best practices]({% link {{ site.current_cloud_version }}/schema-design-indexes.md %}#best-practices)
 - [Transaction contention best practices]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention)
