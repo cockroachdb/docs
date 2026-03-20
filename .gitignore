@@ -19,3 +19,4 @@ node_modules
 /src/*/vendor/
 spec_30_enriched.json
 .bundle/config
+src/current/changes.md
