@@ -5,10 +5,11 @@ toc: true
 docs_area: ai_tools
 ---
 
-CockroachDB supports AI in two primary ways:
+CockroachDB supports AI in two primary ways: as a platform for AI-assisted development and as a data store for AI applications.
 
-- It enables integration with your AI development tools (such as Claude Code, Cursor, and GitHub Copilot in VS Code) through [MCP servers](https://modelcontextprotocol.io/introduction), Agent Skills, and the `ccloud` command-line interface (CLI).
-- It can serve as the system of record and the retrieval engine for AI applications. It combines support for vector data and similarity search with strongly consistent [transactions]({% link {{ page.version.version }}/transactions.md %}), horizontal scalability, and [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) capabilities. 
+**Support for AI-assisted development**: CockroachDB integrates with AI development tools, including Claude Code, Cursor, and GitHub Copilot in VS Code. MCP servers provide access to CockroachDB Cloud clusters and CockroachDB documentation. The Agent Skills repository encodes operational workflows in a machine-executable format. The `ccloud` command-line interface (CLI) provides programmatic access to CockroachDB Cloud. These tools enable management, deployment, and development of CockroachDB clusters and applications using natural language prompts and AI-assisted workflows. For more information, refer to [Support for AI-assisted development](#support-for-ai-assisted-development).
+
+**A data store for AI applications**: CockroachDB can serve as the system of record and the retrieval engine for AI applications. It combines native support for vector data and similarity search with strongly consistent transactions, horizontal scalability, and multi-region deployments. These capabilities support storing vector embeddings, agent state, conversation histories, and other AI-related data alongside relational data. For more information, refer to [CockroachDB as a data store for AI applicatons](#cockroachdb-as-a-data-store-for-ai-applications).
 
 ## Support for AI-assisted development
 
