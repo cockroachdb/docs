@@ -6,7 +6,7 @@ keywords: security, row level security, RLS
 docs_area: reference.sql
 ---
 
-The `SHOW POLICIES` statement lists the [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policies for a [table]({% link {{ page.version.version }}/schema-design-table.md %}).
+The `SHOW POLICIES` statement lists the [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policies for a table.
 
 ## Syntax
 
