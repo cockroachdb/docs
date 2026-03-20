@@ -80,6 +80,6 @@ CockroachDB provides [serializable transactions]({% link {{ page.version.version
 ## See also
 
 - [How CockroachDB's AI Assistance Boosts Developer Productivity](https://www.cockroachlabs.com/blog/cockroachdb-ai-assistance-for-developers/)
+- [Agent Development with CockroachDB using the LangChain Framework](https://www.cockroachlabs.com/blog/agent-development-cockroachdb-langchain/)
 - [CockroachDB Plugin for Claude Code](https://github.com/cockroachdb/claude-plugin)
 - [CockroachDB Plugin for Cursor](https://github.com/cockroachdb/cursor-plugin)
-- [Agent Development with CockroachDB using the LangChain Framework](https://www.cockroachlabs.com/blog/agent-development-cockroachdb-langchain/)
