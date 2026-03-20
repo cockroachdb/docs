@@ -82,9 +82,9 @@ The following releases and their descriptions represent proposed plans that are 
 | :---: | :---: | :---: |
 | v26.2 | Regular    | 2026 Q2    |
 
-## Unsupported versions 
+## CockroachDB downloads archive 
 
-A full archive of CockroachDB major versions that are no longer supported is available on the [Unsupported Versions]({% link releases/unsupported-versions.md %}) page.
+A full archive of CockroachDB major versions that are no longer supported is available on the [CockroachDB downloads archive]({% link releases/downloads-archive.md %}) page.
 
 ## Licenses
 
