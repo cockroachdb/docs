@@ -16,11 +16,11 @@ You can manage your CMEK keys using one or more of the following services:
 
 To learn more, visit [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/managing-cmek.md %}).
 
-CockroachDB {{ site.data.products.advanced }} includes support for referring to CMEK keys in [HashiCorp Vault Secrets Manager](https://www.vaultproject.io/docs/secrets/key-management), which can distribute keys stored in multiple KMS systems, as long as the actual keys are stored in AWS KMS, GCP KMS, or Azure Key Vault.
-
-{{site.data.alerts.callout_success}}
-You can learn more about the [supported integrations between CockroachDB and HashiCorp Vault]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
+{{site.data.alerts.callout_danger}}
+Azure Key Vault uses RSA-OAEP-256 for key wrapping, which is vulnerable to potential quantum computer attacks. To maximize security against quantum attackers, use AWS or GCP.
 {{site.data.alerts.end}}
+
+CockroachDB {{ site.data.products.advanced }} includes support for referring to CMEK keys in [HashiCorp Vault Secrets Manager](https://www.vaultproject.io/docs/secrets/key-management), which can distribute keys stored in multiple KMS systems, as long as the actual keys are stored in AWS KMS, GCP KMS, or Azure Key Vault. Learn more about the [supported integrations between CockroachDB and HashiCorp Vault]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
 
 CockroachDB {{ site.data.products.cloud }} communicates with the KMS platform using the KMS platform's API, and you manage CockroachDB {{ site.data.products.cloud }}'s access to the CMEK key using the KMS platform's identity and access management (IAM) system. The CMEK key is never present in a cluster and CockroachDB {{ site.data.products.cloud }} never has direct access to the CMEK key material. When CMEK is enabled, the CMEK key must be available before the cluster can start and the cluster's newly-written data at rest can be accessed.
 

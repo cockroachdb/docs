@@ -22,6 +22,10 @@ During the [backup process]({% link {{ page.version.version }}/backup-architectu
 
 Note that the encryption algorithm for the random key is determined by the specific cloud provider. [AWS](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#symmetric-cmks) and [GCP](https://cloud.google.com/kms/docs/algorithms#symmetric_encryption_algorithms) use symmetric encryption with [AES-GCM-256](https://en.wikipedia.org/wiki/Galois/Counter_Mode). [Azure](https://learn.microsoft.com/en-us/azure/security/fundamentals/encryption-atrest) uses asymmetric encryption with RSA-OAEP-256.
 
+{{site.data.alerts.callout_danger}}
+Azure's encryption algorithm, RSA-OAEP-256, is vulnerable to potential quantum computer attacks. To maximize security against quantum attackers, use AWS or GCP.
+{{site.data.alerts.end}}
+
 During a restore job, CockroachDB retrieves the encrypted random key from the backup metadata and attempts to decrypt it using the KMS URI specified in the [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) statement. Once successfully decrypted, CockroachDB uses this key to decrypt the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) manifest and data files. Similarly, the same KMS URI is required for decrypting the files when listing the backup contents using [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}).
 
 When incremental backups are in use, the `kms` option is applied to all backup file URLs. Therefore, each incremental backup must include at least one of the KMS URIs used during the full backup. This subset can consist of any combination of the original URIs, but you cannot introduce new KMS URIs. Likewise, when taking [locality-aware backups](#locality-aware-backup-with-kms-encryption), the specified KMS URI is applied to files across all localities.
