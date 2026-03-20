@@ -65,7 +65,7 @@ CockroachDB provides the database features needed to store and query AI-related 
 
 AI applications often represent text, images, and other content as vector embeddings. These are numerical representations that capture semantic meaning. To find relevant information, AI applications need to search for vectors that are similar to a query vector, typically using distance metrics. This similarity search is fundamental to retrieval-augmented generation (RAG), semantic search, and recommendation systems.
 
-CockroachDB has a [`VECTOR` data type]({% link {{ page.version.version }}/vector.md %}) for storing fixed-length floating-point embeddings and supports similarity operators such as L2 distance (`<->`), inner product (`<#>`), and cosine distance (`<=>`). You can index vectors using `CREATE VECTOR INDEX` and combine them with other indexed columns.
+CockroachDB has a [`VECTOR` data type]({% link {{ page.version.version }}/vector.md %}) for storing fixed-length floating-point embeddings and supports similarity operators such as L2 distance (`<->`), inner product (`<#>`), and cosine distance (`<=>`).
 
 You can store vector embeddings, relational data, and [JSON]({% link {{ page.version.version }}/jsonb.md %}) metadata in the same table and query them together. For example:
 
@@ -77,7 +77,7 @@ ORDER BY embedding <-> $query_vector
 LIMIT 5;
 ~~~
 
-Retrieval-augmented generation (RAG) systems depend on fast and accurate retrieval of contextual data. Vector indexing enables you to implement RAG and semantic search patterns so that you can use CockroachDB as the data store for AI applications. You can store document embeddings in a cluster alongside the source documents, metadata, and access control information associated with those documents. When a user query comes in, you can use vector search to retrive semantically relevant documents, filter by permissions, and return both the relevant context and any associated metadata in a single transaction. 
+Retrieval-augmented generation (RAG) systems depend on fast and accurate retrieval of contextual data. CockroachDB's vector support enables you to implement RAG and semantic search patterns so that you can use CockroachDB as the data store for AI applications. You can store document embeddings in a cluster alongside the source documents, metadata, and access control information associated with those documents. When a user query comes in, you can use vector similarity operators to retrieve semantically relevant documents, filter by permissions, and return both the relevant context and any associated metadata in a single transaction. 
 
 See the [RAG tutorial](https://www.cockroachlabs.com/blog/tutorial-rag-with-cockroachdb/) for a complete implementation example.
 
@@ -95,15 +95,12 @@ AI applications typically generate high data volumes, serve globally distributed
 - Data is automatically replicated and rebalanced across the cluster and node failures do not require application-level failover. 
 - [Multi-region deployments]({% link {{ page.version.version }}/multiregion-overview.md %}) place data closer to users and can enforce [data locality]({% link {{ page.version.version }}/regional-tables.md %}) or residency requirements while maintaining strong consistency.
 
-CockroachDB provides [serializable transactions]({% link {{ page.version.version }}/demo-serializable.md %}) by default. Vector indexes participate in the same transaction and index maintenance model as other [secondary indexes]({% link {{ page.version.version }}/indexes.md %}), so similarity search results remain aligned with the underlying data. This applies to tables storing embeddings, relational records, and agent state.
+CockroachDB provides [serializable transactions]({% link {{ page.version.version }}/demo-serializable.md %}) by default, ensuring that all data operations, including vector similarity searches, maintain consistency across tables storing embeddings, relational records, and agent state.
 
 ## See also
 
-- Vector indexes
-- [Multi-region overview]({% link {{ page.version.version }}/multiregion-overview.md %})
-- [Agent Skills for CockroachDB]({% link {{ page.version.version }}/agent-skills.md %})
-- [CockroachDB Docs MCP Server]({% link {{ page.version.version }}/docs-mcp-integration.md %})
-- [`ccloud` Command Line Interface (CLI)]({% link cockroachcloud/ccloud-get-started.md %})
 - [Tutorial: Augment your AI use case with RAG on CockroachDB](https://www.cockroachlabs.com/blog/tutorial-rag-with-cockroachdb/)
-- [Real-Time Indexing for Billions of Vectors](https://www.cockroachlabs.com/blog/real-time-vector-indexing/)
-- [How CockroachDB's AI Assistance Boosts Developer Productivity](https://www.cockroachlabs.com/blog/ai-assistance-developer-productivity/)
+- [How CockroachDB's AI Assistance Boosts Developer Productivity](https://www.cockroachlabs.com/blog/cockroachdb-ai-assistance-for-developers/)
+- [CockroachDB Plugin for Claude Code](https://github.com/cockroachdb/claude-plugin)
+- [CockroachDB Plugin for Cursor](https://github.com/cockroachdb/cursor-plugin)
+- [Agent Development with CockroachDB using the LangChain Framework](https://www.cockroachlabs.com/blog/agent-development-cockroachdb-langchain/)

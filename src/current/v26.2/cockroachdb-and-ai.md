@@ -7,9 +7,13 @@ docs_area: ai_tools
 
 CockroachDB supports AI in two primary ways: as a platform for AI-assisted development and as a data store for AI applications.
 
-**Support for AI-assisted development**: CockroachDB integrates with AI development tools, including Claude Code, Cursor, and GitHub Copilot in VS Code. MCP servers provide access to CockroachDB Cloud clusters and CockroachDB documentation. The Agent Skills repository encodes operational workflows in a machine-executable format. The `ccloud` command-line interface (CLI) provides programmatic access to CockroachDB Cloud. These tools enable management, deployment, and development of CockroachDB clusters and applications using natural language prompts and AI-assisted workflows. For more information, refer to [Support for AI-assisted development](#support-for-ai-assisted-development).
+**Support for AI-assisted development**: CockroachDB integrates with AI development tools, including Claude Code, Cursor, and GitHub Copilot in VS Code. MCP servers provide access to CockroachDB Cloud clusters and CockroachDB documentation. The Agent Skills repository encodes operational workflows in a machine-executable format. The `ccloud` command-line interface (CLI) provides programmatic access to CockroachDB Cloud. These tools enable management, deployment, and development of CockroachDB clusters and applications using natural language prompts and AI-assisted workflows. 
 
-**A data store for AI applications**: CockroachDB can serve as the system of record and the retrieval engine for AI applications. It combines native support for vector data and similarity search with strongly consistent transactions, horizontal scalability, and multi-region deployments. These capabilities support storing vector embeddings, agent state, conversation histories, and other AI-related data alongside relational data. For more information, refer to [CockroachDB as a data store for AI applicatons](#cockroachdb-as-a-data-store-for-ai-applications).
+For more information, refer to [Support for AI-assisted development](#support-for-ai-assisted-development).
+
+**A data store for AI applications**: CockroachDB can serve as the system of record and the retrieval engine for AI applications. It combines native support for vector data and similarity search with strongly consistent transactions, horizontal scalability, and multi-region deployments. These capabilities support storing vector embeddings, agent state, conversation histories, and other AI-related data alongside relational data. 
+
+For more information, refer to [CockroachDB as a data store for AI applicatons](#cockroachdb-as-a-data-store-for-ai-applications).
 
 ## Support for AI-assisted development
 
@@ -77,7 +81,7 @@ ORDER BY embedding <-> $query_vector
 LIMIT 5;
 ~~~
 
-Retrieval-augmented generation (RAG) systems depend on fast and accurate retrieval of contextual data. [Vector indexing]({% link {{ page.version.version }}/vector-indexes.md %}) enables you to implement RAG and semantic search patterns so that you can use CockroachDB as the data store for AI applications. You can store document embeddings in a cluster alongside the source documents, metadata, and access control information associated with those documents. When a user query comes in, you can use vector search to retrive semantically relevant documents, filter by permissions, and return both the relevant context and any associated metadata in a single transaction. 
+Retrieval-augmented generation (RAG) systems depend on fast and accurate retrieval of contextual data. CockroachDB's vector support enables you to implement RAG and semantic search patterns so that you can use CockroachDB as the data store for AI applications. [Vector indexes]({% link {{ page.version.version }}/vector-indexes.md %}) enable efficient similarity searches over large datasets. You can store document embeddings in a cluster alongside the source documents, metadata, and access control information associated with those documents. When a user query comes in, you can use vector similarity operators to retrieve semantically relevant documents, filter by permissions, and return both the relevant context and any associated metadata in a single transaction. 
 
 See the [RAG tutorial](https://www.cockroachlabs.com/blog/tutorial-rag-with-cockroachdb/) for a complete implementation example.
 
@@ -99,11 +103,9 @@ CockroachDB provides [serializable transactions]({% link {{ page.version.version
 
 ## See also
 
-- [Vector indexes]({% link {{ page.version.version }}/vector-indexes.md %})
-- [Multi-region overview]({% link {{ page.version.version }}/multiregion-overview.md %})
-- [Agent Skills for CockroachDB]({% link {{ page.version.version }}/agent-skills.md %})
-- [CockroachDB Docs MCP Server]({% link {{ page.version.version }}/docs-mcp-integration.md %})
-- [`ccloud` Command Line Interface (CLI)]({% link cockroachcloud/ccloud-get-started.md %})
 - [Tutorial: Augment your AI use case with RAG on CockroachDB](https://www.cockroachlabs.com/blog/tutorial-rag-with-cockroachdb/)
-- [Real-Time Indexing for Billions of Vectors](https://www.cockroachlabs.com/blog/real-time-vector-indexing/)
-- [How CockroachDB's AI Assistance Boosts Developer Productivity](https://www.cockroachlabs.com/blog/ai-assistance-developer-productivity/)
+- [Real-Time Indexing for Billions of Vectors](https://www.cockroachlabs.com/blog/cspann-real-time-indexing-billions-vectors/)
+- [How CockroachDB's AI Assistance Boosts Developer Productivity](https://www.cockroachlabs.com/blog/cockroachdb-ai-assistance-for-developers/)
+- [CockroachDB Plugin for Claude Code](https://github.com/cockroachdb/claude-plugin)
+- [CockroachDB Plugin for Cursor](https://github.com/cockroachdb/cursor-plugin)
+- [Agent Development with CockroachDB using the LangChain Framework](https://www.cockroachlabs.com/blog/agent-development-cockroachdb-langchain/)

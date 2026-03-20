@@ -9,7 +9,7 @@ CockroachDB supports AI in two primary ways: as a platform for AI-assisted devel
 
 **Support for AI-assisted development**: CockroachDB integrates with AI development tools, including Claude Code, Cursor, and GitHub Copilot in VS Code. MCP servers provide access to CockroachDB Cloud clusters and CockroachDB documentation. The Agent Skills repository encodes operational workflows in a machine-executable format. The `ccloud` command-line interface (CLI) provides programmatic access to CockroachDB Cloud. These tools enable management, deployment, and development of CockroachDB clusters and applications using natural language prompts and AI-assisted workflows. For more information, refer to [Support for AI-assisted development](#support-for-ai-assisted-development).
 
-**A data store for AI applications**: CockroachDB can serve as the system of record and the retrieval engine for AI applications. It combines native support for vector data and similarity search with strongly consistent transactions, horizontal scalability, and multi-region deployments. These capabilities support storing vector embeddings, agent state, conversation histories, and other AI-related data alongside relational data. For more information, refer to [CockroachDB as a data store for AI applicatons](#cockroachdb-as-a-data-store-for-ai-applications). 
+**A data store for AI applications**: CockroachDB can serve as the system of record for AI applications. It combines strongly consistent transactions, horizontal scalability, and multi-region deployments. These capabilities support storing agent state, conversation histories, and other AI-related data alongside relational data. For more information, refer to [CockroachDB as a data store for AI applicatons](#cockroachdb-as-a-data-store-for-ai-applications). 
 
 ## Support for AI-assisted development
 
@@ -59,27 +59,7 @@ How do table statistics get refreshed in CockroachDB?
 
 ## CockroachDB as a data store for AI applications
 
-CockroachDB provides the database features needed to store and query AI-related data, including vector embeddings and agent state, with the same transactional guarantees as your other workloads.
-
-### Vector search and RAG
-
-AI applications often represent text, images, and other content as vector embeddings. These are numerical representations that capture semantic meaning. To find relevant information, AI applications need to search for vectors that are similar to a query vector, typically using distance metrics. This similarity search is fundamental to retrieval-augmented generation (RAG), semantic search, and recommendation systems.
-
-CockroachDB has a `VECTOR` data type for storing fixed-length floating-point embeddings and supports similarity operators such as L2 distance (`<->`), inner product (`<#>`), and cosine distance (`<=>`). You can index vectors using `CREATE VECTOR INDEX` and combine them with other indexed columns.
-
-You can store vector embeddings, relational data, and [JSON]({% link {{ page.version.version }}/jsonb.md %}) metadata in the same table and query them together. For example:
-
-~~~sql
-SELECT id, name
-FROM items
-WHERE customer_id = 1
-ORDER BY embedding <-> $query_vector
-LIMIT 5;
-~~~
-
-Retrieval-augmented generation (RAG) systems depend on fast and accurate retrieval of contextual data. Vector indexing enables you to implement RAG and semantic search patterns so that you can use CockroachDB as the data store for AI applications. You can store document embeddings in a cluster alongside the source documents, metadata, and access control information associated with those documents. When a user query comes in, you can use vector search to retrive semantically relevant documents, filter by permissions, and return both the relevant context and any associated metadata in a single transaction. 
-
-See the [RAG tutorial](https://www.cockroachlabs.com/blog/tutorial-rag-with-cockroachdb/) for a complete implementation example.
+CockroachDB provides the database features needed to store and query AI-related data, including agent state, with the same transactional guarantees as your other workloads.
 
 ### AI agent state and workflow coordination
 
@@ -89,21 +69,17 @@ CockroachDB's [transactional model]({% link {{ page.version.version }}/transacti
 
 ### Scale, consistency, and governance
 
-AI applications typically generate high data volumes, serve globally distributed users, and require both transactional correctness and operational durability. Conversation histories, vector embeddings, feature tables, and agent state accumulate quickly and are accessed across regions. These characteristics make AI workloads well-suited to CockroachDB's core design:
+AI applications typically generate high data volumes, serve globally distributed users, and require both transactional correctness and operational durability. Conversation histories, feature tables, and agent state accumulate quickly and are accessed across regions. These characteristics make AI workloads well-suited to CockroachDB's core design:
 
 - CockroachDB scales horizontally by adding nodes to increase capacity. 
 - Data is automatically replicated and rebalanced across the cluster and node failures do not require application-level failover. 
 - [Multi-region deployments]({% link {{ page.version.version }}/multiregion-overview.md %}) place data closer to users and can enforce [data locality]({% link {{ page.version.version }}/regional-tables.md %}) or residency requirements while maintaining strong consistency.
 
-CockroachDB provides [serializable transactions]({% link {{ page.version.version }}/demo-serializable.md %}) by default. Vector indexes participate in the same transaction and index maintenance model as other [secondary indexes]({% link {{ page.version.version }}/indexes.md %}), so similarity search results remain aligned with the underlying data. This applies to tables storing embeddings, relational records, and agent state.
+CockroachDB provides [serializable transactions]({% link {{ page.version.version }}/demo-serializable.md %}) by default, ensuring that all data operations maintain consistency.
 
 ## See also
 
-- Vector indexes
-- [Multi-region overview]({% link {{ page.version.version }}/multiregion-overview.md %})
-- [Agent Skills for CockroachDB]({% link {{ page.version.version }}/agent-skills.md %})
-- [CockroachDB Docs MCP Server]({% link {{ page.version.version }}/docs-mcp-integration.md %})
-- [`ccloud` Command Line Interface (CLI)]({% link cockroachcloud/ccloud-get-started.md %})
-- [Tutorial: Augment your AI use case with RAG on CockroachDB](https://www.cockroachlabs.com/blog/tutorial-rag-with-cockroachdb/)
-- [Real-Time Indexing for Billions of Vectors](https://www.cockroachlabs.com/blog/real-time-vector-indexing/)
-- [How CockroachDB's AI Assistance Boosts Developer Productivity](https://www.cockroachlabs.com/blog/ai-assistance-developer-productivity/)
+- [How CockroachDB's AI Assistance Boosts Developer Productivity](https://www.cockroachlabs.com/blog/cockroachdb-ai-assistance-for-developers/)
+- [CockroachDB Plugin for Claude Code](https://github.com/cockroachdb/claude-plugin)
+- [CockroachDB Plugin for Cursor](https://github.com/cockroachdb/cursor-plugin)
+- [Agent Development with CockroachDB using the LangChain Framework](https://www.cockroachlabs.com/blog/agent-development-cockroachdb-langchain/)
