@@ -513,7 +513,3 @@ Cockroach Labs collects anonymized telemetry events to improve the usability of 
 ~~~ shell
 ccloud settings set --disable-telemetry=true
 ~~~
-
-## Limitations
-
-- {% include cockroachcloud/limitations/limitation-ccloud-folders.md %}
