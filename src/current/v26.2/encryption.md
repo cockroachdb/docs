@@ -9,7 +9,7 @@ This page outlines several procedures necessary for managing encryption in Cockr
 
 ## Generating store key files
 
-Cockroach determines which encryption algorithm to use based on the size of the key file. The key file must contain random data making up the key ID (32 bytes) and the actual key (16, 24, or 32 bytes depending on the encryption algorithm). Review the recommendations for [Encryption at Rest]({% link {{ page.version.version }}/security-reference/encryption.md %}#cockroachdb-self-hosted-clusters) before deciding which algorithm to use.
+Cockroach determines which encryption algorithm to use based on the size of the key file. The key file must contain random data making up the key ID (32 bytes) and the actual key (16, 24, or 32 bytes depending on the encryption algorithm). Review the recommendations for [Encryption at Rest]({% link {{ page.version.version }}/security-reference/encryption.md %}#cockroachdb-self-hosted-clusters) when deciding which algorithm to use.
 
 | Algorithm | Key size | Key file size |
 |-|-|-|

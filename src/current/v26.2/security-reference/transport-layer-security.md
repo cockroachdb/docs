@@ -201,7 +201,7 @@ Note that client connections must also be made insecurely, or the connection req
 
 CockroachDB supports the following key exchange mechanisms for TLS 1.3 connections:
 
-- `X25519MLKEM768` (default): A hybrid PQC algorithm that combines `X25519` (an elliptic curve Diffie-Hellman algorithm) and `ML-KEM-768` (a quantum-resistant key encapsulation mechanism standardized as [FIPS 203](https://csrc.nist.gov/pubs/fips/203/final))
+- `X25519MLKEM768` (default): A hybrid PQC algorithm that combines `X25519` (an elliptic curve Diffie-Hellman algorithm) and `ML-KEM-768` (a quantum-resistant key encapsulation mechanism standardized as [FIPS 203](https://csrc.nist.gov/pubs/fips/203/final)).
 - `X25519`: Used when clients don't support `ML-KEM-768`.
 
 The hybrid PQC key exchange is enabled by default and requires no configuration. Negotiation is fully automatic and transparent: if both client and server support `X25519MLKEM768`, it will be used; otherwise, the connection automatically falls back to using `X25519`.

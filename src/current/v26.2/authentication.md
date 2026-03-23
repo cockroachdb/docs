@@ -328,7 +328,7 @@ The following cipher suites are rejected by default because they are not recomme
 
 CockroachDB supports all elliptic curves provided by Go 1.25. 
 
-{% include_cached new-in.html version="v26.2" %} For TLS 1.3 connections specifically, CockroachDB supports `X25519MLKEM768`. This is a hybrid post-quantum cryptography (PQC) algorithm that combines `X25519` (an elliptic curve Diffie-Hellman algorithm) and `ML-KEM-768` (a quantum-resistant key encapsulation mechanism standardized as [FIPS 203](https://csrc.nist.gov/pubs/fips/203/final))
+{% include_cached new-in.html version="v26.2" %} For TLS 1.3 connections specifically, CockroachDB supports `X25519MLKEM768`. This is a hybrid post-quantum cryptography (PQC) algorithm that combines `X25519` (an elliptic curve Diffie-Hellman algorithm) and `ML-KEM-768` (a quantum-resistant key encapsulation mechanism standardized as [FIPS 203](https://csrc.nist.gov/pubs/fips/203/final)).
 
 The hybrid PQC key exchange is enabled by default for TLS 1.3 connections and requires no configuration. Negotiation is fully automatic: if both client and server support `X25519MLKEM768`, it will be used; otherwise, the connection falls back to other supported curves.
 
