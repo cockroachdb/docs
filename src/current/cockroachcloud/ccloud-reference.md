@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-This page describes how to create and manage CockroachDB {{ site.data.products.cloud }} clusters. If you have not installed the `ccloud` tool or logged into CockroachDB {{ site.data.products.cloud }}, read the [`ccloud` get started guide]({% link cockroachcloud/ccloud-get-started.md %}).
+This page describes how to create and manage CockroachDB {{ site.data.products.cloud }} clusters. If you have not installed the `ccloud` tool or logged into CockroachDB {{ site.data.products.cloud }}, refer to [Get Started with the `ccloud` CLI]({% link cockroachcloud/ccloud-get-started.md %}).
 
 ## Create a new cluster
 
@@ -17,7 +17,7 @@ The `ccloud cluster create` command creates a new CockroachDB {{ site.data.produ
 
 ### Create a {{ site.data.products.basic }} cluster
 
-Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.basic }} cluster.
+Use the `ccloud cluster create basic` command to create a new CockroachDB {{ site.data.products.basic }} cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -71,7 +71,7 @@ ccloud cluster create serverless blue-dog us-central1 --cloud GCP --spend-limit 
 
 ### Create an {{ site.data.products.advanced }} cluster
 
-Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.advanced }} cluster.
+Use the `ccloud cluster create dedicated` command to create a new CockroachDB {{ site.data.products.advanced }} cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -196,7 +196,6 @@ Starting CockroachDB SQL shell...
 #
 # Enter \? for a brief introduction.
 #
-user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
 ~~~
 
 ### Connect to your cluster using SSO
