@@ -274,14 +274,14 @@ To see an index definition, use a [`SHOW CREATE`]({% link {{ page.version.versio
 (1 row)
 ~~~
 
-After creating a database, a user-defined schema, some tables, and secondary indexes, the database schema should be ready for your application to [write]({% link {{ page.version.version }}/insert-data.md %}) and read data.
+After creating a database, a user-defined schema, some tables, and secondary indexes, the database schema should be ready for your application to [write]({% link {{ page.version.version }}/insert.md %}) and read data.
 
 It's likely that you will need to update your database schema at some point. We also recommend reading about [how online schema changes work in CockroachDB]({% link {{ page.version.version }}/online-schema-changes.md %}).
 
 ## What's next?
 
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
-- [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
+- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
 
 You might also be interested in the following pages:
 
