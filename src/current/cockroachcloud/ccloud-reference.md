@@ -385,7 +385,7 @@ ccloud cluster database create blue-dog myapp
 Successfully created database 'myapp'
 ~~~
 
-Use `ccloud cluster database deleted` to delete a database:
+Use `ccloud cluster database delete` to delete a database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -512,7 +512,7 @@ v24.3    REGULAR       SUPPORTED       2025-11-18   v25.1, v25.2
 
 ## Manage upgrade deferrals
 
-The `ccloud cluster version-deferral` command get or set the version upgrade deferral policy for a CockroachDB {{ site.data.products.advanced }} cluster. Version deferral lets you delay automatic major version upgrades.
+The `ccloud cluster version-deferral` commands get or set the version upgrade deferral policy for a CockroachDB {{ site.data.products.advanced }} cluster. Version deferral lets you delay automatic major version upgrades.
 
 Use `ccloud cluster version-deferral get` to retrieve the current deferral policy:
 
@@ -753,7 +753,7 @@ Success! Disabled log export for cluster blue-dog
 
 ## Configure metric export
 
-The `ccloud cluster metric-export` command to configure metric export for a CockroachDB {{ site.data.products.advanced }} cluster. You can export metrics to AWS CloudWatch, Datadog, or Prometheus as described in the following sections.
+The `ccloud cluster metric-export` commands configure metric exporting for a CockroachDB {{ site.data.products.advanced }} cluster. You can export metrics to AWS CloudWatch, Datadog, or Prometheus as described in the following sections.
 
 ### Export metrics to AWS CloudWatch
 
@@ -848,7 +848,7 @@ ccloud cluster metric-export prometheus disable blue-dog
 
 ## Create and manage IP allowlists
 
-The `ccloud cluster networking allowlist create` commands create or manage an [IP allowlist]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting), which allows incoming network connections from the specified network IP range. Use the `--sql` flag to allow incoming CockroachDB SQL shell connections from the specified network. Use the `--ui` flag to allow access to the [DB Console]({% link {{ site.versions["stable"] }}/ui-overview.md %}) from the specified network.
+The `ccloud cluster networking allowlist` commands create or manage an [IP allowlist]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting), which allows incoming network connections from the specified network IP range. Use the `--sql` flag to allow incoming CockroachDB SQL shell connections from the specified network. Use the `--ui` flag to allow access to the [DB Console]({% link {{ site.versions["stable"] }}/ui-overview.md %}) from the specified network.
 
 The IP range must be in [Classless Inter-Domain Routing (CIDR) format](https://wikipedia.org/wiki/Classless_Inter-Domain_Routing). For more information on CIDR, see [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
@@ -922,7 +922,7 @@ Success! Deleted IP allowlist entry for
 
 ## Manage egress networking rules
 
-The `ccloud cluster networking egress-rule` command manage egress traffic rules for a CockroachDB {{ site.data.products.advanced }} cluster. Egress rules control which external destinations your cluster can connect to.
+The `ccloud cluster networking egress-rule` commands manage egress traffic rules for a CockroachDB {{ site.data.products.advanced }} cluster. Egress rules control which external destinations your cluster can connect to.
 
 Use `ccloud cluster networking egress-rule list` to retrieve egress rules:
 
@@ -1563,7 +1563,7 @@ Use `ccloud replication create` to create a replication stream between the clust
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud replication create --primary-cluster prod-east --standby-cluster dr-west
+ccloud replication create --primary-cluster blue-dog --standby-cluster red-cat
 ~~~
 
 ~~~
