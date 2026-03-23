@@ -1149,3 +1149,7 @@
 - destination: update.md
   sources: ['update-data.md']
   versions: ['v26.1', 'v26.2']
+
+- destination: spatial-data-overview.md
+  sources: ['geoserver.md']
+  versions: ['v26.1', 'v26.2']

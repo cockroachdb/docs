@@ -79,8 +79,6 @@ SELECT st_contains(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 
 ## See also
 
-- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
 - [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
@@ -101,4 +99,3 @@ SELECT st_contains(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 - [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
 - [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

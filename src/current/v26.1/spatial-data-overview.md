@@ -13,7 +13,6 @@ See the links below for more information about how to use CockroachDB for spatia
 ## Getting Started
 
 - [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %})
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 
 ## Migrating spatial data into and out of CockroachDB
 
@@ -21,7 +20,6 @@ See the links below for more information about how to use CockroachDB for spatia
 - [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
 - [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
-- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
 
 ## Reference
 
@@ -71,4 +69,3 @@ In addition to the [generated reference documentation for spatial functions]({% 
 ## See also
 
 - [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

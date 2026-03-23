@@ -189,16 +189,14 @@ The JSON below is modified from the output above: it is grouped into a GeoJSON `
 
 Here is the geometry described above as shown on [geojson.io](http://geojson.io):
 
-<img src="{{ 'images/v26.2/geospatial/geojson_example.png' | relative_url }}" alt="GeoJSON.io output" style="max-width: 100%" >
+<img src="{{ 'images/v26.1/geospatial/geojson_example.png' | relative_url }}" alt="GeoJSON.io output" style="max-width: 100%" >
 
 ## See also
 
 - [GeoJSON RFC](https://www.rfc-editor.org/rfc/rfc7946.txt)
 - [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
 - [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
 - [Well known text]({% link {{ page.version.version }}/well-known-text.md %})
 - [Well known binary]({% link {{ page.version.version }}/well-known-binary.md %})
 - [SRID 4326 - longitude and latitude]({% link {{ page.version.version }}/srid-4326.md %})
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
