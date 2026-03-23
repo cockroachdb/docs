@@ -7,6 +7,22 @@ docs_area: manage
 
 This page describes how to create and manage CockroachDB {{ site.data.products.cloud }} clusters. If you have not installed the `ccloud` tool or logged into CockroachDB {{ site.data.products.cloud }}, refer to [Get Started with the `ccloud` CLI]({% link cockroachcloud/ccloud-get-started.md %}).
 
+## Log in to a CockroachDB {{ site.data.products.cloud }} organization
+
+Run the `ccloud auth login` command and press **Enter** to open a browser window:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud auth login
+~~~
+
+If you are a member of more than one CockroachDB Cloud organization, use the `--org` flag to set the organization name when authenticating.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud auth login --org {organization-label}
+~~~
+
 ## Create a new cluster
 
 There are two ways to create clusters using `ccloud`: `ccloud quickstart create` and `ccloud cluster create`.
@@ -163,9 +179,28 @@ Cluster info
   us-central1: 1
 ~~~
 
+## Delete a cluster
+
+Use the `ccloud cluster delete` command to delete the specified cluster using the cluster name.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster delete blue-dog
+~~~
+
+~~~
+∙∙∙ Deleting cluster...
+Success! Deleted cluster
+ id: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+~~~
+
+{{site.data.alerts.callout_info}}
+If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. CockroachDB {{ site.data.products.serverless }} clusters are created in less than a minute. CockroachDB {{ site.data.products.advanced }} clusters can take an hour or more to provision and start.
+{{site.data.alerts.end}}
+
 ## Connect to a cluster with a SQL client
 
-Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection to the specified cluster using the [cluster ID](#list-clusters-in-an-organization). If you haven't created a SQL user for the specified cluster, you will be prompted to create a new user and set the user password.
+Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection to the specified cluster using the [cluster ID](#list-clusters-in-an-organization). If you haven't created a [SQL user]({% link {{ site.versions["stable"] }}/security-reference/authorization.md %}#sql-users) for the specified cluster, you will be prompted to create a new user and set the user password.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -277,7 +312,7 @@ ccloud cluster sql blue-dog --skip-ip-check
 
 ## Create a SQL user
 
-Use the `ccloud cluster user create` command to create a new SQL user by passing in the cluster name and the username. By default, newly created users are assigned to the `admin` role. An `admin` SQL user has full privileges for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+Use the `ccloud cluster user create` command to create a new [SQL user]({% link {{ site.versions["stable"] }}/security-reference/authorization.md %}#sql-users) by passing in the cluster name and the username. By default, newly created users are assigned to the `admin` role. An `admin` SQL user has full privileges for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -322,9 +357,9 @@ Connection parameters
 
 ## Manage databases
 
-Use the `ccloud cluster database` commands to list, create, and delete databases within a cluster.
+The `ccloud cluster database` command lists, creates, and deletes databases within a cluster.
 
-To list all databases in a cluster:
+Use `ccloud cluster database list` to list all databases in a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -338,7 +373,7 @@ defaultdb   0
 myapp       12
 ~~~
 
-To create a new database:
+Use `ccloud cluster database create` to create a new database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -350,7 +385,7 @@ ccloud cluster database create blue-dog myapp
 Successfully created database 'myapp'
 ~~~
 
-To delete a database:
+Use `ccloud cluster database deleted` to delete a database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -364,9 +399,9 @@ Successfully deleted database 'myapp'
 
 ## Manage cluster backups
 
-Use the `ccloud cluster backup` commands to list backups and manage backup configuration for a cluster.
+The `ccloud cluster backup` commands lists backups and manages [backup configuration]({% link cockroachcloud/backup-and-restore-overview.md %}#cockroachdb-cloud-backups) for a cluster.
 
-To list backups for a cluster:
+Use `ccloud cluster backup list` to list backups for a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -380,7 +415,7 @@ a1b2c3d4-e5f6-7890-abcd-ef1234567890  2026-03-01 10:30:00Z
 b2c3d4e5-f6a7-8901-bcde-f12345678901  2026-02-28 10:30:00Z
 ~~~
 
-To get the current backup configuration:
+Use `ccloud backup config get` to retrieve the specified backup configuration:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -395,7 +430,7 @@ Frequency: Every 60 minutes
 Retention: 30 days
 ~~~
 
-To update the backup configuration:
+Use `ccloud cluster backup config update` to update the specified backup configuration:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -413,9 +448,9 @@ Retention: 60 days
 
 ### Restore from a backup
 
-Use the `ccloud cluster restore` commands to list and create restore operations from backups.
+The `ccloud cluster restore` commands list and create restore operations from backups.
 
-To list restores for a cluster:
+Use `ccloud cluster restore list` to list restores for a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -428,7 +463,7 @@ ID                                    BACKUP ID                             TYPE
 c3d4e5f6-a7b8-9012-cdef-123456789012  a1b2c3d4-e5f6-7890-abcd-ef1234567890  CLUSTER  SUCCESS    100%          2026-03-01 12:00:00Z
 ~~~
 
-To restore from a specific backup to a destination cluster:
+Use `ccloud cluster restore create` to start a restore from a specific backup to a destination cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -444,7 +479,7 @@ Type: CLUSTER
 Status: PENDING
 ~~~
 
-If you are restoring from a different cluster, specify the source cluster ID:
+If you are restoring a backup from a different cluster, specify the source cluster ID with the `--source-cluster-id` flag:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -477,9 +512,9 @@ v24.3    REGULAR       SUPPORTED       2025-11-18   v25.1, v25.2
 
 ## Manage upgrade deferrals
 
-Use the `ccloud cluster version-deferral` commands to get or set the version upgrade deferral policy for a CockroachDB {{ site.data.products.advanced }} cluster. Version deferral lets you delay automatic major version upgrades.
+The `ccloud cluster version-deferral` command get or set the version upgrade deferral policy for a CockroachDB {{ site.data.products.advanced }} cluster. Version deferral lets you delay automatic major version upgrades.
 
-To get the current deferral policy:
+Use `ccloud cluster version-deferral get` to retrieve the current deferral policy:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -491,7 +526,7 @@ ccloud cluster version-deferral get blue-dog
 Deferral Policy: NOT_DEFERRED
 ~~~
 
-To set the deferral policy:
+Use `ccloud cluster version-deferral set` to set the deferral policy:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -508,9 +543,9 @@ Valid deferral policies are `NOT_DEFERRED`, `DEFERRAL_30_DAYS`, `DEFERRAL_60_DAY
 
 ## Manage blackout windows
 
-Use the `ccloud cluster blackout-window` commands to manage blackout windows for a CockroachDB {{ site.data.products.advanced }} cluster. Blackout windows prevent automatic maintenance operations during specified time periods.
+The `ccloud cluster blackout-window` commands manage blackout windows for a CockroachDB {{ site.data.products.advanced }} cluster. Blackout windows prevent automatic maintenance operations during specified time periods.
 
-To list blackout windows:
+Use `ccloud cluster blackout-window list` to retrieve blackout windows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -523,7 +558,7 @@ ID                                    START TIME            END TIME
 e5f6a7b8-c9d0-1234-efab-345678901234  2026-04-01 00:00:00Z  2026-04-07 00:00:00Z
 ~~~
 
-To create a blackout window, specify the start and end times in RFC3339 format. The start time must be at least 7 days in the future, and the end time must be within 14 days of the start time.
+To create a blackout window, specify the start and end times in RFC3339 format with the `--start` and `--end` flags. The start time must be at least 7 days in the future, and the end time must be within 14 days of the start time.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -538,7 +573,7 @@ Start: 2026-04-01 00:00:00Z
 End: 2026-04-07 00:00:00Z
 ~~~
 
-To delete a blackout window:
+Use `ccloud cluster blackout-window delete` to delete a blackout window:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -552,9 +587,9 @@ Successfully deleted blackout window 'e5f6a7b8-c9d0-1234-efab-345678901234'
 
 ## Manage maintenance windows
 
-Use the `ccloud cluster maintenance` commands to configure the preferred maintenance window for a CockroachDB {{ site.data.products.advanced }} cluster. The maintenance window determines when automatic maintenance operations are performed. The window duration must be at least 6 hours and less than 1 week.
+The `ccloud cluster maintenance` commands configure the preferred maintenance window for a CockroachDB {{ site.data.products.advanced }} cluster. The maintenance window determines when automatic maintenance operations are performed. The window duration must be at least 6 hours and less than 1 week.
 
-To get the current maintenance window:
+Use `ccloud cluster maintenance get` to retrieve the current maintenance window:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -568,7 +603,7 @@ Window Start: Tuesday 02:00 UTC
 Window Duration: 6h
 ~~~
 
-To set a maintenance window using `--day` and `--hour`:
+Use `ccloud cluster maintenance set` to set a maintenance window using the `--day`, `--hour`, and `--duration` flags:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -583,14 +618,14 @@ Window Start: Tuesday 02:00 UTC
 Window Duration: 6h
 ~~~
 
-Alternatively, you can specify the window start time as a raw offset from Monday 00:00 UTC using `--offset`:
+Alternatively, you can specify the window start time as a raw offset from Monday 00:00 UTC using the `--offset` flag:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud cluster maintenance set blue-dog --offset 26h --duration 6h
 ~~~
 
-To delete (reset) the maintenance window:
+Use `ccloud cluster maintenance delete` to delete the maintenance window, resetting to default:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -604,9 +639,9 @@ Success! Deleted maintenance window for cluster blue-dog
 
 ## Simulate cluster disruptions
 
-Use the `ccloud cluster disruption` commands to simulate cluster disruptions for disaster recovery testing on a CockroachDB {{ site.data.products.advanced }} cluster. Disruptions allow you to test how your applications behave when parts of your cluster become unavailable.
+The `ccloud cluster disruption` commands simulate cluster disruptions for disaster recovery testing on a CockroachDB {{ site.data.products.advanced }} cluster. Disruptions allow you to test how your applications behave when parts of your cluster become unavailable.
 
-To get the current disruption status:
+Use `ccloud cluster disruption get` to retrieve the current disruption status:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -618,7 +653,7 @@ ccloud cluster disruption get blue-dog
 No disruptions active
 ~~~
 
-To disrupt an entire region:
+Use `ccloud cluster disruption set` to disrupt a whole region as specified with the `--region` and `--whole-region` flags:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -630,14 +665,14 @@ ccloud cluster disruption set blue-dog --region us-east-1 --whole-region
 Successfully set disruption for region us-east-1
 ~~~
 
-To disrupt specific availability zones within a region:
+Use the `--azs` flag to disrupt specific availability zones within the specified region:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud cluster disruption set blue-dog --region us-east-1 --azs us-east-1a,us-east-1b
 ~~~
 
-To clear all disruptions and restore normal operation:
+Use `ccloud cluster disruption clear` to clear all disruptions and restore normal operation:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -651,7 +686,7 @@ Successfully cleared all disruptions
 
 ## View CMEK configuration
 
-Use the `ccloud cluster cmek get` command to view the Customer-Managed Encryption Keys (CMEK) configuration for a CockroachDB {{ site.data.products.advanced }} cluster.
+Use the `ccloud cluster cmek get` command to view the [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) configuration for a CockroachDB {{ site.data.products.advanced }} cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -671,9 +706,9 @@ Region Keys:
 
 ## Configure log export
 
-Use the `ccloud cluster log-export` commands to configure log export for a CockroachDB {{ site.data.products.advanced }} cluster. You can export logs to AWS CloudWatch, GCP Cloud Logging, or Azure Log Analytics.
+The `ccloud cluster log-export` commands configure log export for a CockroachDB {{ site.data.products.advanced }} cluster. You can export logs to AWS CloudWatch, GCP Cloud Logging, or Azure Log Analytics.
 
-To get the current log export configuration:
+Use `ccloud cluster log-export get` to retrieve the current log export configuration:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -689,7 +724,7 @@ Log Name: cockroach-logs
 Auth Principal: arn:aws:iam::123456789:role/CockroachCloudLogExport
 ~~~
 
-To enable log export to AWS CloudWatch:
+Use `ccloud cluster log-export enable` to enable log export. The following example configuration enables log export to AWS CloudWatch:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -704,7 +739,7 @@ Type: AWS_CLOUDWATCH
 Status: ENABLING
 ~~~
 
-To disable log export:
+Use the `ccloud cluster log-export disable` command to disable log export:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -718,9 +753,11 @@ Success! Disabled log export for cluster blue-dog
 
 ## Configure metric export
 
-Use the `ccloud cluster metric-export` commands to configure metric export for a CockroachDB {{ site.data.products.advanced }} cluster. You can export metrics to AWS CloudWatch, Datadog, or Prometheus.
+The `ccloud cluster metric-export` command to configure metric export for a CockroachDB {{ site.data.products.advanced }} cluster. You can export metrics to AWS CloudWatch, Datadog, or Prometheus as described in the following sections.
 
 ### Export metrics to AWS CloudWatch
+
+Use `ccloud cluster metric-export cloudwatch enable` to enable metric export to AWS CloudWatch:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -734,14 +771,14 @@ Cluster: blue-dog
 Status: ENABLING
 ~~~
 
-To get the current CloudWatch configuration:
+Use `ccloud cluster metric-export cloudwatch get` to retrieve the current CloudWatch metric export configuration:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud cluster metric-export cloudwatch get blue-dog
 ~~~
 
-To disable CloudWatch metric export:
+Use `ccloud cluster metric-export cloudwatch disable` to disable CloudWatch metric export:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -749,6 +786,8 @@ ccloud cluster metric-export cloudwatch disable blue-dog
 ~~~
 
 ### Export metrics to Datadog
+
+Use `ccloud cluster metric-export datadob enable` to enable metric export to Datadog:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -763,14 +802,14 @@ Site: US5
 Status: ENABLING
 ~~~
 
-To get the current Datadog configuration:
+Use `ccloud cluster metric-export datadog get` to retrieve the current Datadog metric export configuration:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud cluster metric-export datadog get blue-dog
 ~~~
 
-To disable Datadog metric export:
+Use `ccloud cluster metric-export datadog disable` to disable Datadog metric export:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -778,6 +817,8 @@ ccloud cluster metric-export datadog disable blue-dog
 ~~~
 
 ### Export metrics to Prometheus
+
+Use `ccloud cluster metric-export prometheus enable` to enable metric export to Prometheus:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -791,14 +832,14 @@ Cluster: blue-dog
 Status: ENABLING
 ~~~
 
-To get the Prometheus scrape endpoint:
+Use `ccloud cluster metric-export prometheus get` to retrieve the Prometheus scrape endpoint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud cluster metric-export prometheus get blue-dog
 ~~~
 
-To disable the Prometheus endpoint:
+Use `ccloud cluster metric-export prometheus disable` to disable the Prometheus endpoint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -807,11 +848,11 @@ ccloud cluster metric-export prometheus disable blue-dog
 
 ## Create and manage IP allowlists
 
-Use the `ccloud cluster networking allowlist create` command to create an [IP allowlist]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting), which allows incoming network connections from the specified network IP range. Use the `--sql` flag to allow incoming CockroachDB SQL shell connections from the specified network. Use the `--ui` flag to allow access to the DB Console from the specified network.
+The `ccloud cluster networking allowlist create` commands create or manage an [IP allowlist]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting), which allows incoming network connections from the specified network IP range. Use the `--sql` flag to allow incoming CockroachDB SQL shell connections from the specified network. Use the `--ui` flag to allow access to the [DB Console]({% link {{ site.versions["stable"] }}/ui-overview.md %}) from the specified network.
 
 The IP range must be in [Classless Inter-Domain Routing (CIDR) format](https://wikipedia.org/wiki/Classless_Inter-Domain_Routing). For more information on CIDR, see [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
-For example, to allow incoming connections from a single IP address, 1.1.1.1, to your cluster, including the CockroachDB SQL shell and DB Console, use the following command:
+Use the `ccloud cluster networking allowlist create` command to create an allowlist. For example, to allow incoming connections from a single IP address, 1.1.1.1, to your cluster, including the CockroachDB SQL shell and DB Console, use the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -833,12 +874,12 @@ ccloud cluster networking allowlist list blue-dog
 ~~~
 
 ~~~
-∙●∙ Retrieving cluster allowlist...
+∙∙∙ Retrieving cluster allowlist...
 NETWORK         NAME  UI  SQL
 1.1.1.1/32            ✔   ✔
 ~~~
 
-To modify an allowlist entry, use the `ccloud cluster networking allowlist update` command. The following command adds a descriptive name to the previously created entry.
+To modify an allowlist entry, use the `ccloud cluster networking allowlist update` command. The following command adds a descriptive name to the previously created entry:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -846,7 +887,7 @@ ccloud cluster networking allowlist update blue-dog 1.1.1.1/32 --name home
 ~~~
 
 ~~~
-∙∙● Updating IP allowlist entry...
+∙∙∙ Updating IP allowlist entry...
 Success! Updated IP allowlist entry for
  network: 1.1.1.1/32
  cluster: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
@@ -865,7 +906,7 @@ NETWORK         NAME  UI  SQL
 1.1.1.1/32      home  ✔   ✔
 ~~~
 
-To delete an entry, run the `ccloud cluster networking allowlist delete` command.
+Use the `ccloud cluster networking allowlist delete` command to delete an entry:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -881,9 +922,9 @@ Success! Deleted IP allowlist entry for
 
 ## Manage egress networking rules
 
-Use the `ccloud cluster networking egress-rule` commands to manage egress traffic rules for a CockroachDB {{ site.data.products.advanced }} cluster. Egress rules control which external destinations your cluster can connect to.
+The `ccloud cluster networking egress-rule` command manage egress traffic rules for a CockroachDB {{ site.data.products.advanced }} cluster. Egress rules control which external destinations your cluster can connect to.
 
-To list egress rules:
+Use `ccloud cluster networking egress-rule list` to retrieve egress rules:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -897,7 +938,7 @@ f6a7b8c9-d0e1-2345-fab0-456789012345  allow-s3       FQDN  s3.amazonaws.com   Al
 a7b8c9d0-e1f2-3456-ab01-567890123456  allow-subnet   CIDR  10.0.0.0/8         Internal network
 ~~~
 
-To create an egress rule:
+Use `ccloud cluster networking egress-rule create` to create an egress rule:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -913,7 +954,7 @@ Type: FQDN
 Destination: s3.amazonaws.com
 ~~~
 
-To delete an egress rule:
+Use `ccloud cluster networking egress-rule delete` to delete an egress rule:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -927,9 +968,9 @@ Successfully deleted egress rule 'f6a7b8c9-d0e1-2345-fab0-456789012345'
 
 ## Manage client CA certificates
 
-Use the `ccloud cluster networking client-ca-cert` commands to manage client CA certificates for a CockroachDB {{ site.data.products.advanced }} cluster. Client CA certificates allow clients to authenticate using TLS certificates signed by your own certificate authority.
+The `ccloud cluster networking client-ca-cert` commands [manage client CA certificates]({% link cockroachcloud/client-certs-advanced.md %}) for a CockroachDB {{ site.data.products.advanced }} cluster. Client CA certificates allow clients to authenticate using TLS certificates signed by your own certificate authority.
 
-To get the current client CA certificate:
+Use `ccloud cluster networking client-ca-cert get` to retrieve the current client CA certificate:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -945,7 +986,7 @@ MIIBxTCCAWugAwIBAgIRAJ...
 -----END CERTIFICATE-----
 ~~~
 
-To set a client CA certificate from a PEM-encoded file:
+Use `ccloud cluster networking client-ca-cert set` to create a client CA certificate from a PEM-encoded file specified with the `--cert-file` flag:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -958,7 +999,7 @@ Successfully set client CA certificate
 Status: IS_SET
 ~~~
 
-To update the client CA certificate:
+Use `ccloud cluster networking client-ca-cert update` to update the client CA certificate:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -971,7 +1012,7 @@ Successfully updated client CA certificate
 Status: IS_SET
 ~~~
 
-To delete the client CA certificate:
+Use `ccloud cluster networking client-ca-cert delete` to delete the client CA certificate:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -985,11 +1026,11 @@ Successfully deleted client CA certificate
 
 ## Manage private endpoints
 
-Use the `ccloud cluster networking private-endpoint` commands to manage private endpoint connectivity for a CockroachDB {{ site.data.products.advanced }} cluster. Private endpoints provide private connectivity using AWS PrivateLink, GCP Private Service Connect, or Azure Private Link.
+The `ccloud cluster networking private-endpoint` commands manage [private endpoint connectivity]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-private-connectivity) for a CockroachDB {{ site.data.products.advanced }} cluster. Private endpoints provide private connectivity using AWS PrivateLink, GCP Private Service Connect, or Azure Private Link.
 
 ### Manage private endpoint services
 
-To list available private endpoint services for a cluster:
+Use `ccloud cluster networking private-endpoint service list` to retrieve available private endpoint services for a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1002,7 +1043,7 @@ REGION       SERVICE ID                                                     CLOU
 us-east-1    com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef         AWS    AVAILABLE   us-east-1a,us-east-1b,us-east-1c
 ~~~
 
-To create private endpoint services for all regions in a cluster:
+Use `ccloud cluster networking private-endpoint service create` to create private endpoint services for all regions in a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1019,7 +1060,7 @@ us-east-1    com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef         AWS 
 
 ### Manage private endpoint connections
 
-To list connections:
+Use `ccloud cluster networking private-endpoint connection list` to retrieve private endpoint connections:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1032,7 +1073,7 @@ ENDPOINT ID                  SERVICE ID                                         
 vpce-0123456789abcdef0       com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef         us-east-1    AWS    AVAILABLE
 ~~~
 
-To add a connection using your cloud provider's private endpoint identifier:
+Use `ccloud cluster networking private-endpoint connection add` to add a connection using your cloud provider's private endpoint identifier:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1047,7 +1088,7 @@ Success! Added private endpoint connection
  Status: PENDING
 ~~~
 
-To remove a connection:
+Use `ccloud cluster networking private-endpoint connection remove` to remove a connection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1063,7 +1104,7 @@ Success! Removed private endpoint connection vpce-0123456789abcdef0
 
 Trusted owners control which cloud provider accounts are allowed to establish private endpoint connections to your cluster.
 
-To list trusted owners:
+Use `ccloud cluster networking private-endpoint trusted-owner list` to retrieve trusted owners:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1076,7 +1117,7 @@ ID                                    EXTERNAL OWNER ID  TYPE
 a1b2c3d4-e5f6-7890-abcd-ef1234567890  123456789012       AWS_ACCOUNT_ID
 ~~~
 
-To add a trusted owner:
+Use `ccloud cluster networking private-endpoint trusted-owner add` to add a trusted owner:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1091,7 +1132,7 @@ Success! Added trusted owner
  Type: AWS_ACCOUNT_ID
 ~~~
 
-To remove a trusted owner:
+Use `ccloud cluster networking private-endpoint trusted-owner remove` to remove a trusted owner:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1103,30 +1144,11 @@ ccloud cluster networking private-endpoint trusted-owner remove blue-dog a1b2c3d
 Success! Removed trusted owner a1b2c3d4-e5f6-7890-abcd-ef1234567890
 ~~~
 
-## Delete a cluster
-
-Use the `ccloud cluster delete` command to delete the specified cluster using the cluster name.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-ccloud cluster delete blue-dog
-~~~
-
-~~~
-∙∙∙ Deleting cluster...
-Success! Deleted cluster
- id: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
-~~~
-
-{{site.data.alerts.callout_info}}
-If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. CockroachDB {{ site.data.products.serverless }} clusters are created in less than a minute. CockroachDB {{ site.data.products.advanced }} clusters can take an hour or more to provision and start.
-{{site.data.alerts.end}}
-
 ## Manage egress private endpoints
 
-Use the `ccloud cluster networking egress-private-endpoint` commands to manage egress private endpoint connections from a CockroachDB {{ site.data.products.advanced }} cluster. Egress private endpoints allow your cluster to connect to external services using private network connectivity.
+The `ccloud cluster networking egress-private-endpoint` commands manage [egress private endpoint connections]({% link cockroachcloud/egress-private-endpoints.md %}) from a CockroachDB {{ site.data.products.advanced }} cluster. Egress private endpoints allow your cluster to connect to external services using private network connectivity.
 
-To list egress private endpoints:
+Use `ccloud cluster networking egress-private-endpoint list` to retrieve egress private endpoints:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1139,7 +1161,7 @@ ID                                    REGION       STATE      TARGET SERVICE
 b8c9d0e1-f2a3-4567-b012-678901234567  us-east-1    AVAILABLE  com.amazonaws.vpce.us-east-1.vpce-svc-012345abcdef
 ~~~
 
-To get details of an egress private endpoint:
+Use `ccloud cluster networking egress-private-endpoint get` to retrieve details about the specified egress private endpoint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1158,7 +1180,7 @@ Endpoint Connection ID: vpce-0abc123def456789
 Domain Names: example.com
 ~~~
 
-To create an egress private endpoint:
+Use `ccloud cluster networking egress-private-endpoint create` to create an egress private endpoint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1173,9 +1195,9 @@ Region: us-east-1
 State: PENDING
 ~~~
 
-Valid target service types are `PRIVATE_SERVICE`, `MSK_SASL_SCRAM`, `MSK_SASL_IAM`, and `MSK_TLS`.
+Valid target service types for the `--target-service-type` flag are `PRIVATE_SERVICE`, `MSK_SASL_SCRAM`, `MSK_SASL_IAM`, and `MSK_TLS`.
 
-To delete an egress private endpoint:
+Use `ccloud cluster networking egress-private-endpoint delete` to delete an egress private endpoint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1230,9 +1252,9 @@ ccloud audit list --limit 10 --starting-from 2026-03-01T00:00:00Z
 
 ## Manage billing
 
-Use the `ccloud billing invoice` commands to view invoices and billing information for your organization.
+The `ccloud billing invoice` commands display invoices and billing information for your organization.
 
-To list invoices:
+Use `ccloud billing invoice list` to retrieve a list of invoices:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1246,7 +1268,7 @@ d0e1f2a3-b4c5-6789-0123-456789abcdef  2026-02-01 00:00:00Z  2026-02-28 23:59:59Z
 e1f2a3b4-c5d6-7890-1234-567890abcdef  2026-01-01 00:00:00Z  2026-01-31 23:59:59Z  FINALIZED  1,100.00 USD
 ~~~
 
-To get details of a specific invoice:
+Use `ccloud billing invoice get` to retrieve the details of a specific invoice:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1255,9 +1277,9 @@ ccloud billing invoice get d0e1f2a3-b4c5-6789-0123-456789abcdef
 
 ## Manage folders
 
-Use the `ccloud folder` commands to manage folders for organizing clusters within your organization.
+The `ccloud folder` commands manage folders for organizing clusters within your organization.
 
-To list folders:
+Use `ccloud folder list` to retrieve a list of folders:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1266,19 +1288,19 @@ ccloud folder list
 
 ~~~
 ∙∙∙ Retrieving folders...
-ID                                    NAME          PARENT PATH  TYPE
-f2a3b4c5-d6e7-8901-2345-678901abcdef  Production                 FOLDER
-a3b4c5d6-e7f8-9012-3456-789012abcdef  Staging       /Production  FOLDER
+ID                                    NAME          PARENT PATH           TYPE
+f2a3b4c5-d6e7-8901-2345-678901abcdef  Production                          FOLDER
+a3b4c5d6-e7f8-9012-3456-789012abcdef  Staging       /Production/Staging/  FOLDER
 ~~~
 
-To get details of a specific folder:
+Use `ccloud folder get` to retrieve the details of a specific folder:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud folder get f2a3b4c5-d6e7-8901-2345-678901abcdef
 ~~~
 
-To create a folder:
+Use `ccloud folder create` to create a folder:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1292,14 +1314,14 @@ Success! Created folder
  Name: Production
 ~~~
 
-To create a subfolder, use the `--parent-id` flag:
+Use the `--parent-id` flag with a folder ID to create a subfolder:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud folder create Staging --parent-id f2a3b4c5-d6e7-8901-2345-678901abcdef
 ~~~
 
-To update a folder name:
+Use `ccloud folder update` to update a folder name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1313,7 +1335,7 @@ Success! Updated folder
  Name: Prod Environment
 ~~~
 
-To delete a folder:
+Use `ccloud folder delete` to delete a folder:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1325,7 +1347,7 @@ ccloud folder delete f2a3b4c5-d6e7-8901-2345-678901abcdef
 Success! Deleted folder f2a3b4c5-d6e7-8901-2345-678901abcdef
 ~~~
 
-To list the contents of a folder:
+Use `ccloud folder contents` to retrieve the contents of a folder:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1336,14 +1358,14 @@ ccloud folder contents f2a3b4c5-d6e7-8901-2345-678901abcdef
 ∙∙∙ Retrieving folder contents...
 ID                                    NAME        TYPE     PARENT PATH
 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  my-cluster  CLUSTER  /Production
-a3b4c5d6-e7f8-9012-3456-789012abcdef  Staging     FOLDER   /Production
+a3b4c5d6-e7f8-9012-3456-789012abcdef  Staging     FOLDER   /Production/Staging/
 ~~~
 
 ## Manage service accounts
 
-Use the `ccloud service-account` commands to manage service accounts for programmatic access to CockroachDB Cloud.
+The `ccloud service-account` commands manage service accounts for programmatic access to CockroachDB Cloud.
 
-To list service accounts:
+Use `ccloud service-account list` to retrieve a list of service accounts:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1356,14 +1378,14 @@ ID                                    NAME          DESCRIPTION        CREATED A
 b4c5d6e7-f8a9-0123-4567-890123abcdef  ci-pipeline   CI/CD automation   2026-01-15 10:30:00Z
 ~~~
 
-To get details of a specific service account:
+Use `ccloud service-account get` to retrieve details for a specific service account:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud service-account get b4c5d6e7-f8a9-0123-4567-890123abcdef
 ~~~
 
-To create a service account:
+Use `ccloud service-account create` to create a service account with a description specified by the `--description` flag:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1377,7 +1399,7 @@ Success! Created service account
  Name: ci-pipeline
 ~~~
 
-To delete a service account:
+Use `ccloud service-account delete` to delete a service account:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1391,9 +1413,9 @@ Success! Deleted service account b4c5d6e7-f8a9-0123-4567-890123abcdef
 
 ### Manage API keys for service accounts
 
-Use the `ccloud service-account api-key` commands to manage API keys for a service account.
+The `ccloud service-account api-key` commands manage API keys for a service account.
 
-To list API keys:
+Use `ccloud service-account api-key list` to list API keys for the service account ID specified by the `--service-account-id` flag:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1406,7 +1428,7 @@ ID                                    NAME          SERVICE ACCOUNT ID          
 c5d6e7f8-a9b0-1234-5678-901234abcdef  deploy-key    b4c5d6e7-f8a9-0123-4567-890123abcdef  2026-01-15 10:30:00Z
 ~~~
 
-To create an API key:
+Use `ccloud service-account api-key create` to create an API key:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1423,7 +1445,7 @@ Success! Created API key
 IMPORTANT: Save this secret now. It will not be shown again.
 ~~~
 
-To delete an API key:
+Use `ccloud service-account api-key delete` to delete an API key:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1437,9 +1459,9 @@ Success! Deleted API key c5d6e7f8-a9b0-1234-5678-901234abcdef
 
 ## Manage JWT issuers
 
-Use the `ccloud jwt-issuer` commands to manage JWT/OIDC identity providers for cluster authentication. JWT issuers allow your clusters to authenticate users via external identity providers.
+The `ccloud jwt-issuer` commands manage JWT/OIDC identity providers for cluster authentication. JWT issuers allow your clusters to authenticate users via external identity providers.
 
-To list JWT issuers:
+Use `ccloud jwt-issuer list` to retrieve a list of JWT issuers:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1453,14 +1475,14 @@ d6e7f8a9-b0c1-2345-6789-012345abcdef  https://accounts.google.com             my
 e7f8a9b0-c1d2-3456-7890-123456abcdef  https://login.microsoftonline.com/...   my-app-azure
 ~~~
 
-To get details of a JWT issuer:
+Use `ccloud jwt-issuer get` to retrieve the details of a JWT issuer:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud jwt-issuer get d6e7f8a9-b0c1-2345-6789-012345abcdef
 ~~~
 
-To create a JWT issuer:
+Use `ccloud jwt-issuer create` to create a JWT issuer with the specified `--issuer-url`, `--audience`, and `--claim` flag values:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1475,7 +1497,7 @@ Issuer URL: https://accounts.google.com
 Audience: my-app
 ~~~
 
-To update a JWT issuer:
+Use `ccloud jwt-issuer update` to update a JWT issuer with the values of the specified flags:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1490,7 +1512,7 @@ Issuer URL: https://accounts.google.com
 Audience: my-app-v2
 ~~~
 
-To delete a JWT issuer:
+Use `ccloud jwt-issuer delete` to delete a JWT issuer:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1504,13 +1526,13 @@ Successfully deleted JWT issuer 'd6e7f8a9-b0c1-2345-6789-012345abcdef'
 
 ## Manage physical cluster replication
 
-Use the `ccloud replication` commands to manage [physical cluster replication (PCR)]({% link {{site.current_cloud_version}}/physical-cluster-replication-overview.md %}) between CockroachDB Cloud clusters.
+The `ccloud replication` commands manage [physical cluster replication (PCR)]({% link {{site.current_cloud_version}}/physical-cluster-replication-overview.md %}) between CockroachDB Cloud clusters.
 
-To list replication streams for a cluster:
+Use `ccloud replication list` to retrieve a list of replication streams for a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud replication list prod-east
+ccloud replication list blue-dog
 ~~~
 
 ~~~
@@ -1519,7 +1541,7 @@ ID                                    PRIMARY CLUSTER                       STAN
 f8a9b0c1-d2e3-4567-8901-234567abcdef  a1b2c3d4-e5f6-7890-abcd-ef1234567890  b2c3d4e5-f6a7-8901-bcde-f12345678901  REPLICATING
 ~~~
 
-To get details of a replication stream:
+Use `ccloud replication get` to retrieve the details of a replication stream:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1537,7 +1559,7 @@ Replicated Time: 2026-03-04 12:00:00Z
 Replication Lag: 5 seconds
 ~~~
 
-To create a replication stream:
+Use `ccloud replication create` to create a replication stream between the clusters specified in the `--primary-cluster` and `--standby-cluster` flags:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1553,7 +1575,7 @@ Standby Cluster: b2c3d4e5-f6a7-8901-bcde-f12345678901
 Status: STARTING
 ~~~
 
-To initiate a failover to the standby cluster:
+Use `ccloud replication update` with the `--status FAILING_OVER` flag to initiate a failover to the standby cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1567,14 +1589,14 @@ ID: f8a9b0c1-d2e3-4567-8901-234567abcdef
 Status: FAILING_OVER
 ~~~
 
-To schedule a failover for a specific time:
+Use the `--failover-at` flag to schedule a failover for a specific time:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud replication update f8a9b0c1-d2e3-4567-8901-234567abcdef --status FAILING_OVER --failover-at 2026-03-05T00:00:00Z
 ~~~
 
-To cancel a replication stream:
+Use `ccloud replication update` with the `--status CANCELED` flag to cancel a replication stream:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
