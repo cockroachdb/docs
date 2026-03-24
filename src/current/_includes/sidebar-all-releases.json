@@ -1,27 +1,27 @@
 {%- assign versions = site.data.versions | where_exp: "versions", "versions.major_version != site.versions['dev']" | where_exp: "versions", "versions.major_version != site.versions['stable']" | map: "major_version" -%}
 {%- comment -%} versions iterates through the list of major versions (e.g., v21.2) in _data/versions.csv and returns all releases that are not dev or stable. We then pull only the major version name instead of the whole dictionary with map: "major_version" {%- endcomment -%}
 {
-  "title": "Latest Production Release",
+  "title": "Overview",
+  "urls": [
+    "/releases/index.html",
+    "/releases/"
+    {% for v in versions %}
+    ,"/releases/{{ v }}.html"
+    {% endfor %}
+  ]
+},
+{
+  "title": "Latest Production Release ({{ site.versions["stable"] }})",
   "urls": [
     "/releases/{{ site.versions["stable"] }}.html"
   ]
 }{% unless site.versions["stable"] == site.versions["dev"] %},
 {
-  "title": "Latest Testing Release",
+  "title": "Latest Testing Release ({{ site.versions["dev"] }})",
   "urls": [
     "/releases/{{ site.versions["dev"] }}.html"
   ]
 }{% endunless %},
-{
-  "title": "CockroachDB Releases",
-  "urls": [
-    "/releases/index.html",
-    "/releases/"
-  {% for v in versions %}
-    ,"/releases/{{ v }}.html"
-  {% endfor %}
-  ]
-},
 {
   "title": "Staged Release Process",
   "urls": [

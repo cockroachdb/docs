@@ -33,7 +33,7 @@ Here are some simple tutorials on executing schema migrations against CockroachD
 - [Migrate CockroachDB Schemas with Liquibase]({% link {{ page.version.version }}/liquibase.md %})
 - [Migrate CockroachDB Schemas with Flyway]({% link {{ page.version.version }}/flyway.md %})
 - [Migrate CockroachDB Schemas with Alembic]({% link {{ page.version.version }}/alembic.md %})
-- [Execute SQL statements from a file]({% link {{ page.version.version }}/cockroach-sql.md %}#execute-sql-statements-from-a-file) and [Change and Remove Objects in a Database Schema]({% link {{ page.version.version }}/schema-design-update.md %})
+- [Execute SQL statements from a file]({% link {{ page.version.version }}/cockroach-sql.md %}#execute-sql-statements-from-a-file)
 {{site.data.alerts.end}}
 
 ### Step 2. Scale the cluster deployment
