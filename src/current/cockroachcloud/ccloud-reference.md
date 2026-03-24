@@ -144,7 +144,7 @@ Use the `ccloud cluster info` command with the cluster name as the parameter to 
 ccloud cluster info blue-dog
 ~~~
 
-Showing cluster info for a {{ site.data.products.standard }} cluster:
+Showing cluster info for a {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster:
 
 ~~~
 ∙∙∙ Retrieving cluster...
