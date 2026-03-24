@@ -115,7 +115,6 @@ Reference information related to this task:
 Other common tasks:
 
 - [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %})
-- [Query Data]({% link {{ page.version.version }}/query-data.md %})
 - [Update Data]({% link {{ page.version.version }}/update-data.md %})
 - [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
 - [Run Multi-Statement Transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %})

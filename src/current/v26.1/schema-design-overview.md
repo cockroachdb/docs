@@ -8,8 +8,6 @@ docs_area: develop
 
 This page provides an overview of database schemas in CockroachDB.
 
-The follow-up pages listed in [What's next](#whats-next) provide best practices for designing a database schema that optimizes performance and storage resources.
-
 ## Database schema objects
 
 The following sections provide a brief overview of the logical objects that make up a database schema in CockroachDB.
@@ -22,7 +20,7 @@ Database objects make up the first level of the [CockroachDB naming hierarchy]({
 
 All CockroachDB clusters include a preloaded database named `defaultdb`. Rather than using the `defaultdb` database, we recommend creating your own database.
 
-For guidance on creating databases, see [Create a Database]({% link {{ page.version.version }}/schema-design-database.md %}).
+For more information about creating databases, refer to [`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %}).
 
 {% include {{page.version.version}}/sql/db-terms.md %}
 
@@ -32,8 +30,6 @@ Schemas make up the second level of the naming hierarchy. Each schema belongs to
 
 All CockroachDB clusters include a preloaded schema named `public`. CockroachDB also supports creating your own *user-defined schema*.
 
-For guidance on creating user-defined schemas, see [Create a User-defined Schema]({% link {{ page.version.version }}/schema-design-schema.md %}).
-
 {% include {{page.version.version}}/sql/schema-terms.md %}
 
 ### Tables
@@ -42,7 +38,7 @@ Tables belong to the third and lowest level of the naming hierarchy. Each table 
 
 Tables contain *rows* of data. Each value in a row of data belongs to a particular *column*. Each column allows values of data of a single data type. Columns can be further qualified with [column-level constraints]({% link {{ page.version.version }}/constraints.md %}), or computed with [scalar expressions]({% link {{ page.version.version }}/computed-columns.md %}).
 
-For guidance on defining tables, see [Tables]({% link {{ page.version.version }}/schema-design-table.md %}).
+For more information about creating tables, refer to [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}).
 
 ### Indexes
 
@@ -50,7 +46,7 @@ An _index_ is a copy of the rows in a single table, sorted by a column or set of
 
 The two main types of indexes are the primary index, an index on the row-identifying [primary key columns]({% link {{ page.version.version }}/primary-key.md %}), and the secondary index, an index created on non-primary-key columns of your choice.
 
-For guidance on defining primary keys, see [Select primary key columns]({% link {{ page.version.version }}/schema-design-table.md %}#select-primary-key-columns). For guidance on defining secondary indexes, see [Secondary Indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
+For guidance on defining primary keys, see [Select primary key columns]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices). For guidance on defining secondary indexes, see [Secondary Indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
 
 #### Specialized indexes
 
@@ -146,12 +142,7 @@ See the [Hardware]({% link {{ page.version.version }}/recommended-production-set
 
 CockroachDB can support any number of rows by adding additional nodes and [storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage).
 
-## What's next?
-
-- [Create a Database]({% link {{ page.version.version }}/schema-design-database.md %})
-- [Create a User-defined Schema]({% link {{ page.version.version }}/schema-design-database.md %})
-
-You might also be interested in the following pages:
+## See also
 
 - [CockroachDB naming hierarchy]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy)
 - [Authorization]({% link {{ page.version.version }}/authorization.md %})

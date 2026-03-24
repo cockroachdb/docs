@@ -59,13 +59,13 @@ This list is not exhaustive. Any third-party tool that can consume logs from [fi
 | ---------------------- | ----------- | -------------- | -------- |
 | {{ site.data.products.standard }} | [CockroachDB {{ site.data.products.cloud }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) |
 | {{ site.data.products.advanced }} | [CockroachDB {{ site.data.products.cloud }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export) |
-| {{ site.data.products.core }} | [CockroachDB check for Datadog Agent](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Monitor CockroachDB {{ site.data.products.core }} with Datadog]({% link {{ page.version.version }}/datadog.md %}) |
+| {{ site.data.products.core }} | [CockroachDB check for Datadog Agent](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | N/A |
 
 ### DBmarlin
 
 | CockroachDB Deployment | Integration | Metrics Source | Tutorial |
 | ---------------------- | ----------- | -------------- | -------- |
-| {{ site.data.products.core }} | [DBmarlin](https://docs.dbmarlin.com/docs/Monitored-Technologies/Databases/cockroachdb) | [`crdb_internal`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#crdb_internal-system-catalog) | [Monitor CockroachDB {{ site.data.products.core }} with DBmarlin]({% link {{ page.version.version }}/dbmarlin.md %}) |
+| {{ site.data.products.core }} | [DBmarlin](https://docs.dbmarlin.com/docs/Monitored-Technologies/Databases/cockroachdb) | [`crdb_internal`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#crdb_internal-system-catalog) | N/A |
 
 ### GCP Logging
 
@@ -78,7 +78,7 @@ This list is not exhaustive. Any third-party tool that can consume logs from [fi
 
 | CockroachDB Deployment | Integration | Metrics Source | Tutorial |
 | ---------------------- | ----------- | -------------- | -------- |
-| {{ site.data.products.core }} | [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Monitor CockroachDB {{ site.data.products.core }} with Kibana]({% link {{ page.version.version }}/kibana.md %}) |
+| {{ site.data.products.core }} | [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | N/A |
 
 ### Prometheus
 
