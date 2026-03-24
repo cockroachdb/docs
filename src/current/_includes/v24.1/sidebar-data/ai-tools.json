@@ -1,11 +1,11 @@
 {
-  "title": "AI Tools",
+  "title": "CockroachDB and AI",
   "is_top_level": true,
   "items": [
     {
       "title": "Overview",
       "urls": [
-        "/${VERSION}/ai-tools-overview.html"
+        "/${VERSION}/cockroachdb-and-ai.html"
       ]
     },
     {
