@@ -178,7 +178,6 @@ For more information, see [Zone Config Extensions]({% link {{ page.version.versi
 - [Global Tables]({% link {{ page.version.version }}/global-tables.md %})
 - [Topology Patterns]({% link {{ page.version.version }}/topology-patterns.md %})
 - [Disaster Recovery]({% link {{ page.version.version }}/disaster-recovery-planning.md %})
-- [Develop and Deploy a Global Application]({% link {{ page.version.version }}/movr.md %}#develop-and-deploy-a-global-application)
 - [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Migrate to Multi-Region SQL]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %})
 - [`SET SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-secondary-region)

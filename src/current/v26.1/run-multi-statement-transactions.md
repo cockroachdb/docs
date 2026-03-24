@@ -85,12 +85,10 @@ Other common tasks:
 
 - [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %})
 - [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
-- [Query Data]({% link {{ page.version.version }}/query-data.md %})
 - [Update Data]({% link {{ page.version.version }}/update-data.md %})
 - [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
 - [Optimize Statement Performance][fast]
 - [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
-- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
 {% comment %} Reference Links {% endcomment %}
 

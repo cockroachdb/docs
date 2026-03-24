@@ -452,6 +452,8 @@ The rebalancing criteria for load-based replica rebalancing do not include the p
 
 However, in some cases a majority of the largest (or smallest) ranges are on one node, which will result in imbalanced utilization. Normally that shouldn't be a problem with [sufficiently provisioned storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage). If this imbalance is causing issues, please [contact Support]({% link {{ page.version.version }}/support-resources.md %}) for guidance you on how to manually rebalance your cluster's disk usage.
 
+Replica counts can also remain uneven when CockroachDB keeps replicas on a node to preserve survivability through locality diversity, or to satisfy [replica placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints). For more information, refer to the [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#membership-changes-rebalance-repair) documentation.
+
 Finally, note that although the replica allocator does not rebalance based on disk utilization during normal operation, it does have the following mechanisms to help protect against [full disks](#disks-filling-up):
 
 - It will avoid moving replicas onto a disk that is more than 92.5% full.

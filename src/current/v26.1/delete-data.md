@@ -245,12 +245,10 @@ Other common tasks:
 
 - [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %})
 - [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
-- [Query Data]({% link {{ page.version.version }}/query-data.md %})
 - [Update Data]({% link {{ page.version.version }}/update-data.md %})
 - [Run Multi-Statement Transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %})
 - [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
 - [Optimize Statement Performance][fast]
-- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
 {% comment %} Reference Links {% endcomment %}
 

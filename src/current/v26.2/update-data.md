@@ -422,13 +422,11 @@ Other common tasks:
 
 - [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %})
 - [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
-- [Query Data]({% link {{ page.version.version }}/query-data.md %})
 - [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
 - [Bulk-update Data]({% link {{ page.version.version }}/bulk-update-data.md %})
 - [Run Multi-Statement Transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %})
 - [Error Handling and Troubleshooting][error_handling]
 - [Optimize Statement Performance]({% link {{ page.version.version }}/make-queries-fast.md %})
-- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
 {% comment %} Reference Links {% endcomment %}
 

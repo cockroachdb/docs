@@ -224,6 +224,5 @@ Creating a deployment package to deploy the sample function is optional. The `ex
 ## See also
 
 - [Build a Simple Django App with CockroachDB]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb-django.md %})
-- [Deploy a Global Serverless Application]({% link {{ page.version.version }}/movr-flask-deployment.md %})
 
 {% include_cached {{page.version.version}}/app/see-also-links.md %}
