@@ -7,7 +7,7 @@ docs_area: ai_tools
 
 CockroachDB supports AI in two primary ways: as a platform that enables AI-assisted development and administration, and as a data store for AI applications.
 
-**Support for AI-assisted workflows**: CockroachDB integrates with AI development tools, including Claude Code, Cursor, and GitHub Copilot in VS Code. MCP servers provide access to CockroachDB Cloud clusters and CockroachDB documentation. The Agent Skills repository encodes operational workflows in a machine-executable format.
+**Support for AI-assisted workflows**: CockroachDB integrates with AI development tools, including Claude Code, Cursor, and GitHub Copilot in VS Code. [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) servers provide access to CockroachDB Cloud clusters and CockroachDB documentation. The Agent Skills repository encodes operational workflows in a machine-executable format.
 
 For more information, refer to [Support for AI-assisted workflows](#support-for-ai-assisted-workflows).
 
@@ -19,7 +19,7 @@ For more information, refer to [CockroachDB as a data store for AI applications]
 
 CockroachDB enables your AI development tools to work directly with CockroachDB and CockroachDB Cloud. CockroachDB provides the following functionality to support AI-assisted deployment and maintenance of clusters, and AI-assisted development of applications:
 
-- Cluster-level read and write access via the CockroachDB Cloud MCP server.
+- Cluster-level read and write access via the [CockroachDB Cloud MCP server]({% link cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server.md %}).
 - Operational workflows encoded as [Agent Skills for CockroachDB]({% link {{ page.version.version }}/agent-skills.md %}).
 - Command-line automation with the [`ccloud` CLI]({% link cockroachcloud/ccloud-get-started.md %}), designed to be compatible with AI agents.
 - Access to the Cockroach Labs public documentation via the [CockroachDB Docs MCP server]({% link {{ page.version.version }}/docs-mcp-integration.md %}).
@@ -28,7 +28,7 @@ The following sections provide an overview of these tools.
 
 ### CockroachDB Cloud MCP server
 
-The CockroachDB Cloud MCP server is a managed endpoint in CockroachDB Cloud that exposes a set of tools for inspecting and querying your clusters from your AI tools. These tools let your AI assistants list [databases]({% link {{ page.version.version }}/show-databases.md %}) and [tables]({% link {{ page.version.version }}/show-tables.md %}), describe [schemas]({% link {{ page.version.version }}/show-schemas.md %}) and [indexes]({% link {{ page.version.version }}/show-index.md %}), inspect cluster health and running queries, and run read-only SQL and [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) statements. When explicitly enabled, they can also [create databases]({% link {{ page.version.version }}/create-database.md %}), [create tables]({% link {{ page.version.version }}/create-table.md %}), and [insert rows]({% link {{ page.version.version }}/insert.md %}).
+The [CockroachDB Cloud MCP server]({% link cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server.md %}) is a managed endpoint in CockroachDB Cloud that exposes a set of tools for inspecting and querying your clusters from your AI tools. These tools let your AI assistants list [databases]({% link {{ page.version.version }}/show-databases.md %}) and [tables]({% link {{ page.version.version }}/show-tables.md %}), describe [schemas]({% link {{ page.version.version }}/show-schemas.md %}) and [indexes]({% link {{ page.version.version }}/show-index.md %}), inspect cluster health and running queries, and run read-only SQL and [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) statements. When explicitly enabled, they can also [create databases]({% link {{ page.version.version }}/create-database.md %}), [create tables]({% link {{ page.version.version }}/create-table.md %}), and [insert rows]({% link {{ page.version.version }}/insert.md %}).
 
 This endpoint allows you to manage and modify a CockroachDB Cloud cluster using natural language prompts. For example, you could use the following prompt to instruct your AI tool to interface with the cluster:
 

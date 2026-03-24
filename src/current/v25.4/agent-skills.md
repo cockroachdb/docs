@@ -35,5 +35,6 @@ Skills are organized into the following operational domains:
 ## See also
 
 - [CockroachDB and AI]({% link {{ page.version.version }}/cockroachdb-and-ai.md %})
+- [CockroachDB Cloud MCP Server]({% link cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server.md %})
 - [CockroachDB Docs MCP Server]({% link {{ page.version.version }}/docs-mcp-integration.md %})
 - [CockroachDB Skills repository](https://github.com/cockroachlabs/cockroachdb-skills)
