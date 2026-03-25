@@ -543,6 +543,10 @@ Valid deferral policies are `NOT_DEFERRED`, `DEFERRAL_30_DAYS`, `DEFERRAL_60_DAY
 
 ## Manage blackout windows
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
+
 The `ccloud cluster blackout-window` commands manage blackout windows for a CockroachDB {{ site.data.products.advanced }} cluster. Blackout windows prevent automatic maintenance operations during specified time periods.
 
 Use `ccloud cluster blackout-window list` to retrieve blackout windows:
@@ -638,6 +642,10 @@ Success! Deleted maintenance window for cluster blue-dog
 ~~~
 
 ## Simulate cluster disruptions
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
 
 The `ccloud cluster disruption` commands simulate cluster disruptions for disaster recovery testing on a CockroachDB {{ site.data.products.advanced }} cluster. Disruptions allow you to test how your applications behave when parts of your cluster become unavailable.
 
@@ -1146,6 +1154,10 @@ Success! Removed trusted owner a1b2c3d4-e5f6-7890-abcd-ef1234567890
 
 ## Manage egress private endpoints
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
+
 The `ccloud cluster networking egress-private-endpoint` commands manage [egress private endpoint connections]({% link cockroachcloud/egress-private-endpoints.md %}) from a CockroachDB {{ site.data.products.advanced }} cluster. Egress private endpoints allow your cluster to connect to external services using private network connectivity.
 
 Use `ccloud cluster networking egress-private-endpoint list` to retrieve egress private endpoints:
@@ -1459,6 +1471,10 @@ Success! Deleted API key c5d6e7f8-a9b0-1234-5678-901234abcdef
 
 ## Manage JWT issuers
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
+
 The `ccloud jwt-issuer` commands manage JWT/OIDC identity providers for cluster authentication. JWT issuers allow your clusters to authenticate users via external identity providers.
 
 Use `ccloud jwt-issuer list` to retrieve a list of JWT issuers:
@@ -1525,6 +1541,10 @@ Successfully deleted JWT issuer 'd6e7f8a9-b0c1-2345-6789-012345abcdef'
 ~~~
 
 ## Manage physical cluster replication
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
 
 The `ccloud replication` commands manage [physical cluster replication (PCR)]({% link {{site.current_cloud_version}}/physical-cluster-replication-overview.md %}) between CockroachDB Cloud clusters.
 
