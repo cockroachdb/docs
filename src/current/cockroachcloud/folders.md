@@ -223,7 +223,7 @@ To delete a folder:
 
 - Folders can be nested a maximum of four levels deep, including the organization level.
 - An organization can have a maximum of 65 folders, regardless of how they are organized.
-- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above.
+- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above, or the [`ccloud` CLI tool]({% link cockroachcloud/ccloud-reference.md %}#manage-folders).
 
 ## See also
 

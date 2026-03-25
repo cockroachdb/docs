@@ -63,10 +63,6 @@ The [`LTREE` data type]({% link {{ page.version.version }}/ltree.md %}) stores h
 
 The `metrics` Prometheus endpoint is commonly used and is the default in Prometheus configurations.
 
-### Value separation
-
-[Value separation]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) reduces write amplification by storing large values separately from the LSM in blob files. Value separation can reduce write amplification by up to 50% for large-value workloads, while introducing minor read overhead and a slight increase in disk space usage. This feature is available in preview.
-
 ### `database` and `application_name` labels for certain metrics
 
 The following cluster settings enable the [`database` and `application_name` labels for certain metrics]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}#enable-database-and-application_name-labels), along with their internal counterparts if they exist:

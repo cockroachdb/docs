@@ -489,7 +489,7 @@ In addition, this release includes the following features:
 
 <h3 id="2023-07-24-console-changes"> Console changes </h3>
 
-- `ccloud` [v0.5.11]({% link cockroachcloud/ccloud-get-started.md %}#install-ccloud) is now available. This update includes a new [`--skip-ip-check` flag]({% link cockroachcloud/ccloud-get-started.md %}#skip-the-ip-allowlist-check-when-connecting-to-your-cluster) that allows users to skip the client-side IP allowlist check when connecting to a cluster using the `ccloud cluster sql` command.
+- `ccloud` [v0.5.11]({% link cockroachcloud/ccloud-get-started.md %}#install-ccloud) is now available. This update includes a new [`--skip-ip-check` flag]({% link cockroachcloud/ccloud-reference.md %}#skip-the-ip-allowlist-check-when-connecting-to-your-cluster) that allows users to skip the client-side IP allowlist check when connecting to a cluster using the `ccloud cluster sql` command.
 
 ## July 21, 2023
 
