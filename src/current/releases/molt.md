@@ -23,6 +23,20 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
     <button class="filter-button" data-scope="replicator"><code>replicator</code></button>
 </div>
 
+### March 26, 2026
+<section class="filter-content" markdown="1" data-scope="molt">
+`molt` 1.3.7 is [available](#installation):
+
+- Fixed a data correctness bug in MOLT Fetch when migrating from PostgreSQL.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="replicator">
+`replicator` 1.3.2 is [available](#installation):
+
+- Oracle source and target lag values now use the LogMiner redo log generation timestamp for better accuracy. Note that clock skew may still affect these values.
+- PGlogical and MyLogical now respect the `--flushSize` and `--flushPeriod` flags passed in.
+</section>
+
 ### February 26, 2026
 
 <section class="filter-content" markdown="1" data-scope="molt">
