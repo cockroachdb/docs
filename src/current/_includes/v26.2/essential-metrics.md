@@ -11,7 +11,7 @@
 These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.core }} cluster. Use them to build custom dashboards with the following tools:
 
 - [Grafana]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}#step-5-visualize-metrics-in-grafana)
-- [Datadog Integration]({% link {{ page.version.version }}/datadog.md %}): The [**Datadog Integration Metric Name**]({{ datadog_link }}) column lists the corresponding Datadog metric which requires the `{{ datadog_prefix }}.` prefix.
+- Datadog Integration: The [**Datadog Integration Metric Name**]({{ datadog_link }}) column lists the corresponding Datadog metric which requires the `{{ datadog_prefix }}.` prefix.
 
 {% elsif include.deployment == 'advanced' %}
   {% assign metrics_datadog = site.data[version].metrics.datadog-crdb-dedicated %}

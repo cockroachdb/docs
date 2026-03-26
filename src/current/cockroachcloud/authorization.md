@@ -161,13 +161,21 @@ To give a developer the ability to both connect to a cluster and monitor perform
 
 ### Folder Admin
 
-{% capture folder_admin_docs %}{% include cockroachcloud/org-roles/folder-admin.md %}{% endcapture %}
-{{ folder_admin_docs | strip }}
+The **Folder Admin** role allows users to create, rename, move, delete, and manage access to folders where they are assigned the role. Users can also [edit folder labels]({% link cockroachcloud/labels.md %}). This role can be assigned at the level of the organization or on a specific folder. If assigned at the level of the organization, the role allows users to view all users and service accounts in the organization. If assigned to a specific folder, the role is inherited by descendant folders.
+
+A user with the [Organization Admin](#organization-admin) role can assign themselves, another user, or a service account the Folder Admin role.
+
+To create or manage clusters in a folder, a Folder Admin also needs the [Cluster Admin](#cluster-admin) or [Cluster Creator](#cluster-creator) role on that folder directly or by inheritance. To delete a cluster, the Cluster Admin role is required on the cluster directly or by inheritance.
 
 ### Folder Mover
 
-{% capture folder_mover_docs %}{% include cockroachcloud/org-roles/folder-mover.md %}{% endcapture %}
-{{ folder_mover_docs | strip }}
+The **Folder Mover** role allows users to rename or move descendant folders, and move clusters within the folder hierarchy where they have the role. However, a Folder Mover cannot create or delete folders or clusters and cannot assign roles. A Folder Mover can move clusters within the folder hierarchy even if they do not have a role that allows them to connect to the cluster, such as [Cluster Creator](#cluster-creator) or [Cluster Operator](#cluster-operator).
+
+{{site.data.alerts.callout_info}}
+A cluster inside a folder cannot be renamed.
+{{site.data.alerts.end}}
+
+A user with the [Organization Admin](#organization-admin) or [Folder Admin](#folder-admin) role can assign another user or a service account the Folder Mover role. Because the Folder Admin role is a superset of Folder Mover, there is no need for a Folder Admin to assign themselves the Folder Mover role.
 
 ## Service accounts
 
