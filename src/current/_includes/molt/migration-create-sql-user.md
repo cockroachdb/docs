@@ -61,7 +61,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
 ~~~
 
-For each manually defined, pre-existing table, you can change table ownership instead of granting individual table permissions. If you wish to do this, make the following alteration for each table:
+If you will be running Fetch with the `--drop-and-recreate` flag, and the target schema has pre-existing tables that were created by a different user, you may need to change table ownership to allow Fetch to drop those tables. Make the following alteration for each table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
