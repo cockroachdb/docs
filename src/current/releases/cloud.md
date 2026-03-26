@@ -14,13 +14,17 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## Feb 24, 2026
+
+CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} users can now run a built-in [fault tolerance demo]({% link {{ site.versions["stable"] }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud) that allows you to monitor query execution during a simulated failure and recovery. The fault tolerance demo is in [Preview]({% link {{ site.versions["stable"] }}/cockroachdb-feature-availability.md %}).
+
 ## Aug 5, 2025
 
 Console users with the [Billing Coordinator role]({% link cockroachcloud/authorization.md %}#billing-coordinator) can now [export invoices]({% link cockroachcloud/billing-management.md %}#export-invoices) in a PDF format, rendering billing information into a traditional invoice format for ease of distribution.
 
 ## Aug 4, 2025
 
-CockroachDB v25.3 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.3 is an [Innovation release]({% link releases/index.md %}#release-types).
+CockroachDB v25.3 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.3 is an [Innovation release]({% link releases/index.md %}#release-schedule).
 
 For release notes, refer to [What's New in v25.3]({% link releases/v25.3.md %}).
 
@@ -47,7 +51,7 @@ For more information, refer to [Customer-Managed Encryption Keys (CMEK) Overview
 
 ## May 12, 2025
 
-CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/index.md %}#release-types).
+CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/index.md %}#release-schedule).
 
 For release notes, refer to [What's New in v25.2]({% link releases/v25.2.md %}).
 
@@ -485,7 +489,7 @@ In addition, this release includes the following features:
 
 <h3 id="2023-07-24-console-changes"> Console changes </h3>
 
-- `ccloud` [v0.5.11]({% link cockroachcloud/ccloud-get-started.md %}#install-ccloud) is now available. This update includes a new [`--skip-ip-check` flag]({% link cockroachcloud/ccloud-get-started.md %}#skip-the-ip-allowlist-check-when-connecting-to-your-cluster) that allows users to skip the client-side IP allowlist check when connecting to a cluster using the `ccloud cluster sql` command.
+- `ccloud` [v0.5.11]({% link cockroachcloud/ccloud-get-started.md %}#install-ccloud) is now available. This update includes a new [`--skip-ip-check` flag]({% link cockroachcloud/ccloud-reference.md %}#skip-the-ip-allowlist-check-when-connecting-to-your-cluster) that allows users to skip the client-side IP allowlist check when connecting to a cluster using the `ccloud cluster sql` command.
 
 ## July 21, 2023
 

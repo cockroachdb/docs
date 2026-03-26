@@ -7,8 +7,12 @@ docs_area: reference.sql
 
 The `EXPLAIN ANALYZE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) **executes a SQL query** and generates a statement plan with execution statistics. Statement plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. The `(DISTSQL)` option returns the statement plan and performance statistics as well as a generated link to a graphical distributed SQL physical statement plan tree. For more information about distributed SQL queries, see the [DistSQL section of our SQL layer architecture docs]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql). The `(DEBUG)` option generates a URL to download a bundle with more details about the statement plan for advanced debugging.
 
-{{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/sql/physical-plan-url.md %}
+{{site.data.alerts.callout_danger}}
+`EXPLAIN ANALYZE` executes the target statement and may modify or delete data. It is not a dry run.
+
+If you use `EXPLAIN ANALYZE` with a statement that changes data or acquires locks, those effects occur when the statement runs. For example, `EXPLAIN ANALYZE DELETE FROM t WHERE id = 1;` **deletes matching rows** and then reports execution statistics.
+
+To inspect a statement plan without executing the statement, use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) instead. For example, `EXPLAIN DELETE FROM t WHERE id = 1;` shows the plan without deleting data.
 {{site.data.alerts.end}}
 
 ## Aliases
@@ -161,6 +165,10 @@ by hash | _(Orange box)_ The router, which is a component that takes one stream 
 unordered / ordered | _(Blue box)_ A synchronizer that takes one or more output streams and merges them to be consumable by a processor. An ordered synchronizer is used to merge ordered streams and keeps the rows in sorted order. | Both
 &lt;data type&gt; |  If you specify [`EXPLAIN (DISTSQL, TYPES)`]({% link {{ page.version.version }}/explain.md %}#distsql-option), lists the data types of the input columns. | Both
 Response | The response back to the client. | Both
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/sql/physical-plan-url.md %}
+{{site.data.alerts.end}}
 
 ## `DEBUG` option
 
