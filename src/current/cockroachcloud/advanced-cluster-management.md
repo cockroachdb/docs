@@ -25,9 +25,9 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 ## View cluster overview
 
-The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) displays details about the selected CockroachDB {{ site.data.products.cloud }} cluster.
+The [**Overview** page]({% link cockroachcloud/overview-page.md %}) displays details about the selected CockroachDB {{ site.data.products.cloud }} cluster.
 
-From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
+Click the **Connect** button to get client connection details for your cluster. For more information, see [Connect to Your CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
 ## Edit labels
 
@@ -52,7 +52,7 @@ You cannot scale a multi-node cluster down to a single-node cluster.
 To add or remove nodes from your cluster:
 
 1. Navigate to the cluster's **Overview** page.
-1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
+1. Click on **Configuration** to expand the **Cluster configuration** section, then click on **Edit** next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
@@ -62,10 +62,11 @@ To add or remove nodes from your cluster:
 
 ### Change compute for a cluster
 
-1. Navigate to the cluster's **Overview** page and click **Update capacity**.
+1. Click on the three-dots menu and select **Edit cluster**.
 
     The **Edit cluster** page displays.
 
+1. Click on **Next: Capacity** to open the **Capacity** page.
 1. In the **Compute per node** section, select the new amount of vCPUs per node.
 
     {{site.data.alerts.callout_info}}
@@ -81,8 +82,7 @@ To add or remove nodes from your cluster:
 AWS disks can only be scaled once every six hours.
 {{site.data.alerts.end}}
 
-1. Navigate to the cluster's **Overview** page.
-1. Select **Actions > Edit cluster**.
+1. Click on the three-dots menu and select **Edit cluster**.
 
     The **Edit cluster** page displays.
 
@@ -103,8 +103,7 @@ You can add or remove up to nine regions at a time through the Console. Note tha
 
 You can add up to nine regions at a time through the Console. See [Planning your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for cluster requirements and recommendations before proceeding.
 
-1. Navigate to the cluster's **Overview** page.
-1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
+1. Click on the three-dots menu and select **Edit cluster**.
 
     The **Edit cluster** page displays.
 
@@ -126,8 +125,7 @@ If your [zone configurations]({% link {{site.current_cloud_version}}/configure-r
 
 To remove a region from your cluster:
 
-1. Navigate to the cluster's **Overview** page.
-1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
+1. Click on the three-dots menu and select **Edit cluster**.
 
     The **Edit cluster** page displays.
 
@@ -142,7 +140,7 @@ To remove a region from your cluster:
 
 ## Set a maintenance window
 
-From your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. If no maintenance window is set, your cluster will be automatically upgraded as soon as new patch versions are available, and other cluster maintenance occurs as needed. Refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+From your cluster's [**Overview** page]({% link cockroachcloud/overview-page.md %}), you can view and manage the maintenance and [patch upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. If no maintenance window is set, your cluster will be automatically upgraded as soon as new patch versions are available, and other cluster maintenance occurs as needed. Refer to [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 Setting maintenance windows requires the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role.
 
@@ -152,7 +150,8 @@ Maintenance operations that are critical for cluster security or stability may b
 
 To set a maintenance window in the {{ site.data.products.cloud }} console:
 
-1. Click the pencil icon next to **Cluster maintenance** to edit the maintenance window.
+1. On the **Overview** page, click **Settings** to open the **Cluster settings** panel.
+1. Click the **Edit** button next to **Maintenance window**.
 1. From the **Day** dropdown, select the day of the week during which maintenance may be applied.
 1. From the **Start of window** dropdown, select a start time for your maintenance window in UTC.
 
@@ -176,7 +175,7 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 ## Configure PCI ready features
 
-CockroachDB {{ site.data.products.advanced }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+CockroachDB {{ site.data.products.advanced }} advanced clusters have a **PCI DSS Ready** page in the {{ site.data.products.cloud }} Console to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
 - [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
 - [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
@@ -184,8 +183,13 @@ CockroachDB {{ site.data.products.advanced }} advanced clusters have a **PCI rea
 - Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
 - [Network security]({% link cockroachcloud/network-authorization.md %})
 
-You can also check the status of these features on the [**PCI ready**]({% link cockroachcloud/cluster-overview-page.md %}) page of the CockroachDB {{ site.data.products.cloud }} Console.
+## Enable deletion protection
 
+To help prevent a cluster from being deleted by mistake, you can enable _deletion protection_. Before you can delete a cluster with deletion protection enabled, you must disable deletion protection. A user with permission to delete a cluster can enable deletion protection on the same cluster.
+
+1. Navigate to the **Overview** page for the cluster you want to protect.
+1. Click on **Settings** to open the **Cluster settings** panel.
+1. If deletion protection is off, click **Edit**. Toggle the setting, then click **Save**.
 
 ## Delete cluster
 
@@ -199,8 +203,8 @@ You will only be billed for a CockroachDB {{ site.data.products.advanced }} clus
 
 Proceed with the following steps only if you are sure you want to delete a cluster:
 
-1. Navigate to the **Overview** page for the cluster you want to delete.
-1. Click the **Actions** button in the top right corner.
+1. Turn off [deletion protection](#enable-deletion-protection) if it is enabled.
+1. Click on the three-dots menu.
 1. Select **Delete cluster**.
 1. In the confirmation window, enter the name of the cluster.
 1. Click **Delete**.
