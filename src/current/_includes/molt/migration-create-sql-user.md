@@ -61,7 +61,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
 ~~~
 
-If you will be running Fetch with the `--drop-and-recreate` flag, and the target schema has pre-existing tables that were created by a different user, you may need to change table ownership to allow Fetch to drop those tables. Make the following alteration for each table:
+If you will be running Fetch with [`drop-on-target-and-recreate`](#table-handling-mode), and the target schema has pre-existing tables that were created by a different user, you may need to change table ownership to allow the migration user to drop those tables. Make the following alteration for each table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
