@@ -145,7 +145,7 @@ Create a JSON file that defines the filter rules. The following example defines 
         "table": "filtertbl2"
       },
       "source_expr": "id BETWEEN 5 AND 15",
-      "target_expr": "15 > id > 5"
+      "target_expr": "16 > id > 4"
     }
   ]
 }

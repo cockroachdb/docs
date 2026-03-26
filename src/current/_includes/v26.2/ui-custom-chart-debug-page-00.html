@@ -1,0 +1,109 @@
+<table>
+  <thead>
+    <tr>
+      <th>
+        Column
+      </th>
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        Metric Name
+      </td>
+      <td>
+        How the system refers to this metric, e.g., <code>sql.bytesin</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Downsampler
+      </td>
+      <td>
+        <p>
+          The "Downsampler" operation is used to combine the individual datapoints over the longer period into a single datapoint. We store one data point every ten seconds, but for queries over long time spans the backend lowers the resolution of the returned data, perhaps only returning one data point for every minute, five minutes, or even an entire hour in the case of the 30 day view.
+        </p>
+        <p>
+          Options:
+          <ul>
+            <li><strong>AVG</strong>: Returns the average value over the time period.</li>
+            <li><strong>MIN</strong>: Returns the lowest value seen.</li>
+            <li><strong>MAX</strong>: Returns the highest value seen.</li>
+            <li><strong>SUM</strong>: Returns the sum of all values seen.</li>
+          </ul>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Aggregator
+      </td>
+      <td>
+        <p>
+          Used to combine data points from different nodes. It has the same operations available as the Downsampler.
+        </p>
+        <p>
+          Options:
+          <ul>
+            <li><strong>AVG</strong>: Returns the average value over the time period.</li>
+            <li><strong>MIN</strong>: Returns the lowest value seen.</li>
+            <li><strong>MAX</strong>: Returns the highest value seen.</li>
+            <li><strong>SUM</strong>: Returns the sum of all values seen.</li>
+          </ul>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Rate
+      </td>
+      <td>
+        <p>
+          Determines how to display the rate of change during the selected time period.
+        </p>
+        <p>
+          Options:
+
+          <ul>
+            <li>
+              <strong>Normal</strong>: Returns the actual recorded value.
+            </li>
+            <li>
+              <strong>Rate</strong>: Returns the rate of change of the value per second.
+            </li>
+            <li>
+              <strong>Non-negative Rate</strong>: Returns the rate-of-change, but returns 0 instead of negative values. A large number of the stats we track are actually tracked as monotonically increasing counters so each sample is just the total value of that counter. The rate of change of that counter represents the rate of events being counted, which is usually what you want to graph. "Non-negative Rate" is needed because the counters are stored in memory, and thus if a node resets it goes back to zero (whereas normally they only increase).
+            </li>
+          </ul>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Source
+      </td>
+      <td>
+        The set of nodes being queried, which is either:
+        <ul>
+          <li>
+            The entire cluster.
+          </li>
+          <li>
+            A single, named node.
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Per Node
+      </td>
+      <td>
+        If checked, the chart will show a line for each node's value of this metric.
+      </td>
+    </tr>
+  </tbody>
+</table>

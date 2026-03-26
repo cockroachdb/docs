@@ -7,6 +7,7 @@
     ]
   },
   {% include_cached v26.1/sidebar-data/get-started.json %},
+  {% include_cached v26.1/sidebar-data/ai-tools.json %},
   {% include_cached v26.1/sidebar-data/releases.json %},
   {% include_cached v26.1/sidebar-data/feature-overview.json %},
   {% include_cached v26.1/sidebar-data/resilience.json %},
