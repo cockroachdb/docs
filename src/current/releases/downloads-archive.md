@@ -1,5 +1,5 @@
 ---
-title: CockroachDB downloads archive
+title: CockroachDB Downloads Archive
 summary: Archive of downloads for versions of CockroachDB that are no longer supported
 toc: true
 docs_area: releases
