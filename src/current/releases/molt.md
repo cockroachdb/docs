@@ -27,7 +27,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 <section class="filter-content" markdown="1" data-scope="molt">
 `molt` 1.3.7 is [available](#installation):
 
-- Fixed a data correctness bug in MOLT Fetch when migrating from PostgreSQL.
+- Fixed a bug in MOLT Fetch v1.3.3-v1.3.6 where a transient error when scanning rows from the source database could cause retried queries to resume from an incorrect position, resulting in rows missing from the target database. Migrations from PostgreSQL and CockroachDB databases may be exposed to this issue. Fetch retry attempts are recorded in the MOLT Fetch logs, and MOLT Verify will detect any data discrepancies introduced by this bug.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="replicator">
