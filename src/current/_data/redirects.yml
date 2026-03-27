@@ -1121,3 +1121,6 @@
 - destination: reads-and-writes-overview.md
   sources: ['query-data.md']
   versions: ['v26.1', 'v26.2']
+
+- destination: cockroachcloud/overview-page.md
+  sources: ['cockroachcloud/cluster-overview-page.md']

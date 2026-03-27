@@ -675,8 +675,8 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2023-02-06-console-changes"> Console changes </h3>
 
-- CockroachDB {{ site.data.products.basic }} clusters' regions are now displayed on the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) and [**Clusters** page]({% link cockroachcloud/basic-cluster-management.md %}#view-clusters-page).
-- The links in the sidebar navigation of the [**Cluster Overview**]({% link cockroachcloud/cluster-overview-page.md %}) page have been reorganized into sections under relevant headers.
+- CockroachDB {{ site.data.products.basic }} clusters' regions are now displayed on the [**Overview** page]({% link cockroachcloud/overview-page.md %}) and [**Clusters** page]({% link cockroachcloud/basic-cluster-management.md %}#view-clusters-page).
+- The links in the sidebar navigation of the [**Cluster Overview**]({% link cockroachcloud/overview-page.md %}) page have been reorganized into sections under relevant headers.
 - For CockroachDB {{ site.data.products.dedicated }} clusters, the **Monitoring** page is now called the [**Tools** page]({% link cockroachcloud/tools-page.md %}) and is located in the **Monitoring** section of the sidebar.
 
 <h3 id="2023-02-06-api-changes"> Cloud API changes </h3>
@@ -761,7 +761,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2022-11-07-bug-fixes"> Bug fixes </h3>
 
-- The **Sessions** link on the [**Overview**]({% link cockroachcloud/cluster-overview-page.md %}) page now redirects to the correct tab on the [**SQL Activity**]({% link cockroachcloud/sessions-page.md %}) page.
+- The **Sessions** link on the [**Overview**]({% link cockroachcloud/overview-page.md %}) page now redirects to the correct tab on the [**SQL Activity**]({% link cockroachcloud/sessions-page.md %}) page.
 - Fixed a bug where stale data caused **Connect** modal errors immediately after creating a CockroachDB {{ site.data.products.serverless }} cluster.
 - Fixed a bug where backup metadata payloads were limited to 4MiB instead of the desired 32MiB.
 - Fixed a bug where the node-aggregated low disk alert was not firing.
@@ -948,7 +948,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h3 id="2022-02-07-bug-fixes">Bug fixes</h3>
 
 - Fixed a number of broken links throughout the CockroachDB {{ site.data.products.cloud }} Console.
-- Fixed a bug where CockroachDB {{ site.data.products.serverless }} users were seeing occasional dips and spikes in a cluster's [**Request Units**]({% link cockroachcloud/cluster-overview-page.md %}#request-units) usage graph while running a steady workload.
+- Fixed a bug where CockroachDB {{ site.data.products.serverless }} users were seeing occasional dips and spikes in a cluster's [**Request Units**]({% link cockroachcloud/overview-page.md %}#request-units) usage graph while running a steady workload.
 
 ## January 10, 2022
 
@@ -979,7 +979,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 - Fixed a bug where an error was occurring on the [VPC Peering and AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}) pages for clusters with a large number of jobs.
 - Fixed a bug where the **Test email alerts** section on the [**Alerts** page]({% link cockroachcloud/alerts-page.md %}) was not visible for organizations with only custom clusters.
 - Fixed a bug where users were prompted to upgrade CockroachDB {{ site.data.products.serverless }} clusters, which are [upgraded automatically]({% link cockroachcloud/upgrade-policy.md %}).
-- Previously, [SQL metrics graphs]({% link cockroachcloud/cluster-overview-page.md %}) for inactive CockroachDB {{ site.data.products.serverless }} clusters showed discontinuous time series lines or an error message. Continuous graphs will now remain available for scaled-down clusters.
+- Previously, [SQL metrics graphs]({% link cockroachcloud/overview-page.md %}) for inactive CockroachDB {{ site.data.products.serverless }} clusters showed discontinuous time series lines or an error message. Continuous graphs will now remain available for scaled-down clusters.
 
 ## November 8, 2021
 
@@ -994,13 +994,13 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 - The [**Statements**]({% link cockroachcloud/statements-page.md %}), [**Transactions**]({% link cockroachcloud/transactions-page.md %}), and [**Sessions**]({% link cockroachcloud/sessions-page.md %}) pages are now available for CockroachDB {{ site.data.products.serverless }} clusters on the **SQL Activity** page.
 - Statements and transaction statistics are now retained longer for all clusters.
-- Legends are now displayed by default for time-series graphs on the [Cluster Overview]({% link cockroachcloud/cluster-overview-page.md %}#cluster-overview-metrics) page.
-- The **Transaction retries** metric is no longer part of the **Current activity** panel on the CockroachDB {{ site.data.products.serverless }} [Cluster Overview]({% link cockroachcloud/cluster-overview-page.md %}#current-activity-panel) page.
+- Legends are now displayed by default for time-series graphs on the [Cluster Overview]({% link cockroachcloud/overview-page.md %}#cluster-overview-metrics) page.
+- The **Transaction retries** metric is no longer part of the **Current activity** panel on the CockroachDB {{ site.data.products.serverless }} [Cluster Overview]({% link cockroachcloud/overview-page.md %}#current-activity-panel) page.
 - Deleting an organization with outstanding charges that have not been billed is now prohibited.
 - There is now a more clear error message for users attempting to log into CockroachDB {{ site.data.products.cloud }} using GitHub when they have email and password authentication configured.
-- Average RU usage is now shown in the **Request Units** chart for the CockroachDB {{ site.data.products.serverless }} [Cluster Overview]({% link cockroachcloud/cluster-overview-page.md %}#request-units) page.
+- Average RU usage is now shown in the **Request Units** chart for the CockroachDB {{ site.data.products.serverless }} [Cluster Overview]({% link cockroachcloud/overview-page.md %}#request-units) page.
 - The PowerShell command to [download the CockroachDB binary](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster?filters=windows#connect-to-your-cluster) is now improved for Windows users.
-- When under 1 GiB of storage has been used, storage is now shown in MiB instead of GiB in the **Storage used** graph on the CockroachDB {{ site.data.products.serverless }} [Cluster Overview]({% link cockroachcloud/cluster-overview-page.md %}#storage-used) page.
+- When under 1 GiB of storage has been used, storage is now shown in MiB instead of GiB in the **Storage used** graph on the CockroachDB {{ site.data.products.serverless }} [Cluster Overview]({% link cockroachcloud/overview-page.md %}#storage-used) page.
 - A more descriptive error message is now displayed when attempting to create or edit a [SQL user]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster) with an invalid username.
 - Previously, clicking **cancel** while editing a cluster would take users back to the **Clusters** page. Now, users are taken back to the cluster's **Overview** page.
 
@@ -1009,7 +1009,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 - Fixed a bug where, if a user had reached the maximum number of CockroachDB {{ site.data.products.serverless }} clusters and refreshed the **Create your cluster** page, the CockroachDB {{ site.data.products.serverless }} plan was auto-selected even though it is disabled.
 - Fixed a bug where clicking **Cancel** while logging in with GitHub would report and internal error.
 - Fixed a bug where organization deletion was temporarily broken.
-- Fixed a bug that was preventing the **Request Units** and **SQL Statements** graphs on the CockroachDB {{ site.data.products.serverless }} [Cluster Overview]({% link cockroachcloud/cluster-overview-page.md %}#cluster-overview-metrics) page from updating after a certain amount of time.
+- Fixed a bug that was preventing the **Request Units** and **SQL Statements** graphs on the CockroachDB {{ site.data.products.serverless }} [Cluster Overview]({% link cockroachcloud/overview-page.md %}#cluster-overview-metrics) page from updating after a certain amount of time.
 
 ## October 4, 2021
 

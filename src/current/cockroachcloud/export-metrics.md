@@ -284,7 +284,7 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 
     Where:
     - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 1, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-    - `{cluster_region}` is a region of your CockroachDB {{ site.data.products.standard }} cluster as shown in the `targets` of step 3, such as `us-east4`. You can also find your cluster’s region(s) on the [Cluster Overview page]({% link cockroachcloud/cluster-overview-page.md %}).
+    - `{cluster_region}` is a region of your CockroachDB {{ site.data.products.standard }} cluster as shown in the `targets` of step 3, such as `us-east4`. You can also find your cluster’s region(s) on the [Overview page]({% link cockroachcloud/overview-page.md %}).
     - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
 
     Metrics are labeled with the cluster name, organization name, and region. The beginning lines of a metrics scrape response follows:
@@ -328,7 +328,7 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
     Where:
     - `{job_name}` is a job name you assign to scraped metrics by default, such as `scrape-cockroach-us-east4`.
     - `{cluster_id}` is your CockroachDB {{ site.data.products.standard }} cluster ID as determined in step 1, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-    - `{cluster_region}` is a region of your CockroachDB {{ site.data.products.standard }} cluster as shown in the `targets` of step 3, such as `us-east4`. You can also find your cluster’s region(s) on the [Cluster Overview page]({% link cockroachcloud/cluster-overview-page.md %}).
+    - `{cluster_region}` is a region of your CockroachDB {{ site.data.products.standard }} cluster as shown in the `targets` of step 3, such as `us-east4`. You can also find your cluster’s region(s) on the [Overview page]({% link cockroachcloud/overview-page.md %}).
     - `{secret_key}` is your CockroachDB {{ site.data.products.standard }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
 
 </section>

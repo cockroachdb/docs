@@ -31,7 +31,7 @@ Removing or adding an authorized network on your CockroachDB {{ site.data.produc
 
 ## Connect to your cluster
 
-1. Select your cluster to navigate to the cluster [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
+1. Select your cluster to navigate to the cluster [**Overview** page]({% link cockroachcloud/overview-page.md %}).
 
 1. In the top right corner of the CockroachDB {{ site.data.products.cloud }} Console, click the **Connect** button.
 
