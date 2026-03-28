@@ -21,7 +21,7 @@ The **Hardware** dashboard displays the following time series graphs:
 
 ## Host CPU Percent
 
-<img src="{{ 'images/v23.2/ui_host_cpu_percent.png' | relative_url }}" alt="DB Console CPU Percent graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_host_cpu_percent.png" alt="DB Console CPU Percent graph" style="border:1px solid #eee;max-width:100%" />
 
 The **Host CPU Percent** graph displays the current user and system CPU percentage consumed by all processes on the host OS, normalized by number of cores, as tracked by the `sys.cpu.host.combined.percent-normalized` metric. If the CockroachDB process is run in a containerized environment, the host OS is the container since the CockroachDB process cannot inspect CPU usage beyond the container.
 
@@ -35,7 +35,7 @@ For multi-core systems, the percentage of CPU usage is calculated by normalizing
 
 ## Memory Usage
 
-<img src="{{ 'images/v23.2/ui_memory_usage_new.png' | relative_url }}" alt="DB Console Memory Usage graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_memory_usage_new.png" alt="DB Console Memory Usage graph" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
 This graph shows the memory consumption by the CockroachDB process only and is useful as long as there are no other processes consuming significant memory on the node. In case you have other processes running on the node, use a separate monitoring tool to measure the total memory consumption across all processes.
@@ -47,7 +47,7 @@ This graph shows the memory consumption by the CockroachDB process only and is u
 
 ## Disk Read Bytes
 
-<img src="{{ 'images/v23.2/ui_disk_read_bytes.png' | relative_url }}" alt="DB Console Disk Read Bytes graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_disk_read_bytes.png" alt="DB Console Disk Read Bytes graph" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the 10-second average of the number of bytes read per second by all processes, including CockroachDB, for the selected node.
 
@@ -55,7 +55,7 @@ This graph shows the memory consumption by the CockroachDB process only and is u
 
 ## Disk Write Bytes
 
-<img src="{{ 'images/v23.2/ui_disk_write_bytes.png' | relative_url }}" alt="DB Console Disk Write Bytes graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_disk_write_bytes.png" alt="DB Console Disk Write Bytes graph" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the 10-second average of the number of bytes written per second by all processes, including CockroachDB, for the node.
 
@@ -63,7 +63,7 @@ This graph shows the memory consumption by the CockroachDB process only and is u
 
 ## Disk Read Ops
 
-<img src="{{ 'images/v23.2/ui_disk_read_ops.png' | relative_url }}" alt="DB Console Disk Read Ops graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_disk_read_ops.png" alt="DB Console Disk Read Ops graph" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the 10-second average of the number of disk read ops per second for all processes, including CockroachDB, for the selected node.
 
@@ -71,7 +71,7 @@ This graph shows the memory consumption by the CockroachDB process only and is u
 
 ## Disk Write Ops
 
-<img src="{{ 'images/v23.2/ui_disk_write_ops.png' | relative_url }}" alt="DB Console Disk Write Ops graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_disk_write_ops.png" alt="DB Console Disk Write Ops graph" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the 10-second average of the number of disk write ops per second for all processes, including CockroachDB, for the node.
 
@@ -93,7 +93,7 @@ On macOS, this graph is currently not populated and shows zero disk ops in progr
 
 ## Available Disk Capacity
 
-<img src="{{ 'images/v23.2/ui_available_disk_capacity.png' | relative_url }}" alt="DB Console Disk Capacity graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_available_disk_capacity.png" alt="DB Console Disk Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|--------

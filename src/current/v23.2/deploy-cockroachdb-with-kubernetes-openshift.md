@@ -65,7 +65,7 @@ This article assumes you have already installed the OpenShift Container Platform
 
 1. Enter "cockroach" in the search box. There are two tiles called **CockroachDB Operator**. Find the tile _without_ the `Marketplace` label (which requires a subscription).
 
-	<img src="{{ 'images/v23.2/cockroachdb-operator-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
+	<img src="/docs/images/{{ page.version.version }}/cockroachdb-operator-openshift.png" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
 	Click the **CockroachDB Operator** tile and then **Install**.
 
@@ -91,7 +91,7 @@ This article assumes you have already installed the OpenShift Container Platform
 
 1. In the **CockroachDB Operator** tile, click **Create instance**.
 
-	<img src="{{ 'images/v23.2/cockroachdb-operator-instance-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
+	<img src="/docs/images/{{ page.version.version }}/cockroachdb-operator-instance-openshift.png" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
 1. Make sure **CockroachDB Version** is set to a valid CockroachDB version. For a list of compatible image names, see `spec.containers.env` in the [Operator manifest](https://raw.github.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml) on GitHub.
 
@@ -99,7 +99,7 @@ This article assumes you have already installed the OpenShift Container Platform
 
 1. Navigate to **Workloads** > **Pods** and observe the pods being created:
 
-	<img src="{{ 'images/v23.2/cockroachdb-operator-pods-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
+	<img src="/docs/images/{{ page.version.version }}/cockroachdb-operator-pods-openshift.png" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
 1. You can also use the command line to view the pods:
 
@@ -315,7 +315,7 @@ To run a sample [CockroachDB workload]({% link {{ page.version.version }}/cockro
 
 1. Select one of the CockroachDB pods on the **Pods** page and click **Logs**. This will reveal the JDBC URL that your application can use to connect to CockroachDB:
 
-	<img src="{{ 'images/v23.2/cockroachdb-operator-logs-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
+	<img src="/docs/images/{{ page.version.version }}/cockroachdb-operator-logs-openshift.png" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 8. Delete the cluster
 
@@ -325,7 +325,7 @@ If you want to continue using this cluster, see the documentation on [configurin
 
 1. Go to the **Installed Operators** page and find the cluster name of the CockroachDB cluster. Select **Delete CrdbCluster** from the menu.
 
-	<img src="{{ 'images/v23.2/cockroachdb-operator-delete-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
+	<img src="/docs/images/{{ page.version.version }}/cockroachdb-operator-delete-openshift.png" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
 This will delete the CockroachDB cluster being run by the Operator. It will *not* delete:
 
