@@ -1,21 +1,22 @@
+# Former CockroachDB Cloud Products
 serverless: Serverless
-
 dedicated: Dedicated
-
 dedicated-advanced: Dedicated advanced
 
-core: self-hosted
-
+# Former CockroachDB feature classification
 enterprise: Enterprise
 
+# CockroachDB self-hosted
+core: self-hosted
+
+# CockroachDB Cloud
 cloud: Cloud
 
+# CockroachDB Cloud plans
 basic: Basic
-
 standard: Standard
-
 advanced: Advanced
 
+# Kubernetes operators
 public-operator: Public operator
-
 cockroachdb-operator: CockroachDB operator
