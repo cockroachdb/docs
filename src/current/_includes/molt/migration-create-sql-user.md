@@ -14,7 +14,22 @@ Grant database-level privileges for schema creation within the target database:
 GRANT ALL ON DATABASE defaultdb TO crdb_user;
 ~~~
 
-Grant user privileges to create internal MOLT tables like `_molt_fetch_exceptions` in the `public` CockroachDB schema: 
+Grant permission to modify cluster settings:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT SYSTEM MODIFYCLUSTERSETTING TO crdb_user;
+~~~
+
+Grant usage on schemas being migrated:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT USAGE ON SCHEMA migration_schema TO crdb_user;
+GRANT USAGE ON SCHEMA public TO crdb_user;
+~~~
+
+Grant user privileges to create tables in the `migration_schema` schema and internal MOLT tables like `_molt_fetch_exceptions` in the `public` CockroachDB schema: 
 
 {{site.data.alerts.callout_info}}
 Ensure that you are connected to the target database.
@@ -22,6 +37,7 @@ Ensure that you are connected to the target database.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+GRANT CREATE ON SCHEMA migration_schema TO crdb_user;
 GRANT CREATE ON SCHEMA public TO crdb_user;
 ~~~
 
@@ -43,6 +59,13 @@ Grant the same privileges for internal MOLT tables in the `public` CockroachDB s
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO crdb_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
+~~~
+
+If you will be running Fetch with [`drop-on-target-and-recreate`](#table-handling-mode), and the target schema has pre-existing tables that were created by a different user, you may need to change table ownership to allow the migration user to drop those tables. Make the following alteration for each table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE migration_schema.table1 OWNER TO crdb_user;
 ~~~
 
 Depending on the MOLT Fetch [data load mode](#data-load-mode) you will use, grant the necessary privileges to run either [`IMPORT INTO`](#import-into-privileges) or [`COPY FROM`](#copy-from-privileges) on the target tables:
