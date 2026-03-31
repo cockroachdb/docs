@@ -24,21 +24,25 @@ Exit codes:
   2  fatal error (versions.csv not found)
 
 Environment:
-  GITHUB_TOKEN    Optional. Raises API rate limit from 60 to 5000 req/hr.
+  GITHUB_TOKEN    Optional. Raises GitHub API rate limit from 60 to 5000 req/hr.
   GITHUB_ACTIONS  Set automatically in CI. Enables pr-comment.md output.
 """
 
+import base64
 import csv
+import json
 import os
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Optional
 
 GENERATED_DIAGRAMS_REPO = "cockroachdb/generated-diagrams"
-RAW_BASE = "https://raw.githubusercontent.com"
+GITHUB_API_BASE = "https://api.github.com"
 VERSIONS_CSV = Path("src/current/_data/versions.csv")
 DOCS_ROOT = Path("src/current")
 
@@ -59,20 +63,51 @@ ANCHOR_REF_RE = re.compile(r'href=["\']sql-grammar\.html#([^"\']+)["\']')
 # HTTP
 # ---------------------------------------------------------------------------
 
-def _fetch_raw(url: str) -> Optional[str]:
+def _fetch_github_content(repo: str, path: str, ref: str) -> Optional[str]:
+    """Fetch a file from GitHub using the Contents API.
+
+    Uses the REST API endpoint so that GITHUB_TOKEN properly raises rate
+    limits and authenticates against private repos.  Falls back to the
+    download_url for files larger than 1 MB (the API returns the field but
+    omits the base64 payload in that case).
+    """
+    encoded_ref  = urllib.parse.quote(ref,  safe="")
+    encoded_path = urllib.parse.quote(path, safe="/")
+    url = (
+        f"{GITHUB_API_BASE}/repos/{repo}/contents/{encoded_path}"
+        f"?ref={encoded_ref}"
+    )
+
     req = urllib.request.Request(url)
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("X-GitHub-Api-Version", "2022-11-28")
     token = os.environ.get("GITHUB_TOKEN")
     if token:
         req.add_header("Authorization", f"Bearer {token}")
+
     try:
         with urllib.request.urlopen(req, timeout=20) as resp:
-            return resp.read().decode("utf-8", errors="replace")
+            data = json.loads(resp.read().decode())
+
+        # Normal case: inline base64 payload
+        if data.get("encoding") == "base64" and data.get("content"):
+            return base64.b64decode(data["content"].encode()).decode(
+                "utf-8", errors="replace"
+            )
+
+        # Large file (>1 MB): fall back to the raw download_url
+        download_url = data.get("download_url")
+        if download_url:
+            with urllib.request.urlopen(download_url, timeout=20) as resp:
+                return resp.read().decode("utf-8", errors="replace")
+
+        return None
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
             return None
         raise
     except Exception as exc:
-        print(f"  Warning: fetch {url} failed: {exc}", file=sys.stderr)
+        print(f"  Warning: fetch {repo}/{path}@{ref} failed: {exc}", file=sys.stderr)
         return None
 
 
@@ -83,15 +118,33 @@ def _fetch_raw(url: str) -> Optional[str]:
 _stmt_block_cache: dict[str, Optional[set]] = {}
 
 
+class _IDCollector(HTMLParser):
+    """Collects all id= attribute values from an HTML document."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.ids: set[str] = set()
+
+    def handle_starttag(
+        self, tag: str, attrs: list[tuple[str, Optional[str]]]
+    ) -> None:
+        for name, value in attrs:
+            if name == "id" and value:
+                self.ids.add(value)
+
+
 def get_stmt_block_anchors(branch: str) -> Optional[set]:
     """Return all id= values in stmt_block.html for the given branch."""
     if branch not in _stmt_block_cache:
-        url = f"{RAW_BASE}/{GENERATED_DIAGRAMS_REPO}/{branch}/grammar_svg/stmt_block.html"
-        content = _fetch_raw(url)
-        _stmt_block_cache[branch] = (
-            set(re.findall(r'\bid=["\']([^"\']+)["\']', content))
-            if content is not None else None
+        content = _fetch_github_content(
+            GENERATED_DIAGRAMS_REPO, "grammar_svg/stmt_block.html", branch
         )
+        if content is None:
+            _stmt_block_cache[branch] = None
+        else:
+            collector = _IDCollector()
+            collector.feed(content)
+            _stmt_block_cache[branch] = collector.ids
     return _stmt_block_cache[branch]
 
 
@@ -170,8 +223,9 @@ def run_checks(
         print(f"{len(known_anchors)} anchors")
 
         for version, diagram, source_files in sorted(pairs):
-            url = f"{RAW_BASE}/{GENERATED_DIAGRAMS_REPO}/{branch}/grammar_svg/{diagram}"
-            content = _fetch_raw(url)
+            content = _fetch_github_content(
+                GENERATED_DIAGRAMS_REPO, f"grammar_svg/{diagram}", branch
+            )
             if content is None:
                 print(f"    {diagram}: NOT FOUND in generated-diagrams (skipping)")
                 continue
