@@ -12,6 +12,9 @@ though the "natural" release-X.Y branch for that version now exists
 Usage:
   python .github/scripts/validate_branch_existence.py
 
+  # Run built-in unit tests (no network required):
+  python .github/scripts/validate_branch_existence.py --self-test
+
 Exit codes:
   0  all checks passed
   1  one or more issues found
@@ -22,12 +25,15 @@ Environment:
   GITHUB_ACTIONS  Set automatically in CI. Enables pr-comment.md output.
 """
 
+import contextlib
 import csv
+import io
 import json
 import os
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -68,7 +74,8 @@ _cache: dict[str, bool] = {}
 
 def branch_exists(branch: str) -> bool:
     if branch not in _cache:
-        result = _api_get(f"repos/{GENERATED_DIAGRAMS_REPO}/branches/{branch}")
+        encoded = urllib.parse.quote(branch, safe="")
+        result = _api_get(f"repos/{GENERATED_DIAGRAMS_REPO}/branches/{encoded}")
         _cache[branch] = result is not None
     return _cache[branch]
 
@@ -81,7 +88,14 @@ def load_versions_csv() -> list[dict]:
         return list(csv.DictReader(f))
 
 
-def run_checks(rows: list[dict]) -> list[dict]:
+def run_checks(rows: list[dict], _exists_fn=None) -> list[dict]:
+    """Check each versions.csv row for branch existence and staleness.
+
+    _exists_fn is injectable for unit tests; defaults to branch_exists.
+    """
+    if _exists_fn is None:
+        _exists_fn = branch_exists
+
     failures = []
     checked: set[str] = set()
 
@@ -95,7 +109,7 @@ def run_checks(rows: list[dict]) -> list[dict]:
         if branch not in checked:
             checked.add(branch)
             print(f"  {version:8s} → {branch} ...", end=" ", flush=True)
-            if branch_exists(branch):
+            if _exists_fn(branch):
                 print("OK")
             else:
                 print("MISSING")
@@ -114,7 +128,7 @@ def run_checks(rows: list[dict]) -> list[dict]:
         #     e.g. v26.2 → release-26.1 when release-26.2 now exists.
         expected = f"release-{version.lstrip('v')}"
         if branch != expected and expected not in checked:
-            if branch_exists(expected):
+            if _exists_fn(expected):
                 checked.add(expected)
                 failures.append({
                     "type": "branch_mismatch",
@@ -159,10 +173,57 @@ def format_comment(failures: list[dict]) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Self-tests (no network required)
+# ---------------------------------------------------------------------------
+
+def _run_self_tests() -> None:
+    """Unit tests for run_checks logic using injected exists functions."""
+
+    def _quiet(rows, exists_fn):
+        with contextlib.redirect_stdout(io.StringIO()):
+            return run_checks(rows, _exists_fn=exists_fn)
+
+    # branch_missing: listed branch does not exist
+    rows = [{"major_version": "v26.1", "crdb_branch_name": "release-26.1"}]
+    failures = _quiet(rows, lambda b: False)
+    assert len(failures) == 1, failures
+    assert failures[0]["type"] == "branch_missing", failures
+
+    # all OK: branch exists and matches expected
+    rows = [{"major_version": "v26.1", "crdb_branch_name": "release-26.1"}]
+    failures = _quiet(rows, lambda b: True)
+    assert failures == [], failures
+
+    # branch_mismatch: listed branch exists but a newer canonical branch also exists
+    rows = [{"major_version": "v26.2", "crdb_branch_name": "release-26.1"}]
+    known = {"release-26.1", "release-26.2"}
+    failures = _quiet(rows, lambda b: b in known)
+    assert len(failures) == 1, failures
+    assert failures[0]["type"] == "branch_mismatch", failures
+    assert failures[0]["expected"] == "release-26.2", failures
+
+    # N/A entries are skipped entirely
+    rows = [{"major_version": "v24.1", "crdb_branch_name": "N/A"}]
+    failures = _quiet(rows, lambda b: (_ for _ in ()).throw(AssertionError("unexpected call")))
+    assert failures == [], failures
+
+    # empty branch field is skipped
+    rows = [{"major_version": "v25.1", "crdb_branch_name": ""}]
+    failures = _quiet(rows, lambda b: (_ for _ in ()).throw(AssertionError("unexpected call")))
+    assert failures == [], failures
+
+    print("All self-tests passed.")
+    sys.exit(0)
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 
 def main() -> None:
+    if "--self-test" in sys.argv:
+        _run_self_tests()
+
     rows = load_versions_csv()
     print(f"Checking {len(rows)} versions.csv entries against cockroachdb/generated-diagrams...\n")
     failures = run_checks(rows)
