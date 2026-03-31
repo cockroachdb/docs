@@ -86,6 +86,30 @@ CONFIGURE ZONE 1
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 
+{{site.data.alerts.callout_info}}
+When specifying region constraints or lease preferences for nodes running on cloud providers, you must include the cloud provider prefix in the region name. The format is `{provider}-{region}`.
+<br><br>
+For example:
+
+Cloud Provider | Region Format | Example
+---------------|---------------|--------
+**AWS** | `aws-{region}` | `aws-us-east-1`, `aws-eu-central-1`
+**GCP** | `gcp-{region}` | `gcp-us-east1`, `gcp-asia-south1`
+**Azure** | `azure-{region}` | `azure-eastus`, `azure-westus2`
+
+This applies when using `constraints` or `lease_preferences` in zone configurations. For instance:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE my_table CONFIGURE ZONE USING constraints = '[+region=gcp-us-east1]';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE my_db CONFIGURE ZONE USING constraints = '{"+region=aws-us-east-1": 2, "+region=aws-eu-central-1": 1}';
+~~~
+{{site.data.alerts.end}}
+
 ## See also
 
 - [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %})
