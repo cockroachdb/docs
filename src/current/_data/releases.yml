@@ -10956,7 +10956,7 @@
   release_date: '2026-04-03'
   release_type: Production
   go_version: go1.25.5
-  sha: 02b71a2f8badd4305d86e7e4975a353e461b1a88
+  sha: 124a168e515e99109d857fccf020804adebbc0c0
   has_sql_only: true
   has_sha256sum: true
   mac:
