@@ -125,11 +125,11 @@ If you have a [_reader virtual cluster (reader VC)_]({% link {{ page.version.ver
     DROP VIRTUAL CLUSTER <readervc-name>;
     ~~~
 
-1. On the standby cluster, re-create the reader VC:
+1. On the standby cluster, re-create the reader VC from the standby cluster's app VC:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER <readervc-name> SET REPLICATION READ VIRTUAL CLUSTER;
+    ALTER VIRTUAL CLUSTER <appvc-name> SET REPLICATION READ VIRTUAL CLUSTER;
     ~~~
 
 At this point, the reader VC is on the same version as the standby cluster.
