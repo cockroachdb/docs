@@ -69,11 +69,6 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cd rules
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
     curl -o rules/aggregation.rules.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/aggregation.rules.yml
     ~~~
 
