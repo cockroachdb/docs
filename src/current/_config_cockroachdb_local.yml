@@ -3,10 +3,70 @@ exclude:
 - "v1.1"
 - "v2.0"
 - "v2.1"
-- "v19.1"
 - "v19.2"
-- "v20.1"
+- "v20*/**"
+- "v21*/**"
+- "v22*/**"
+- "v23*/**"
+- "v24*/**"
+- "v25*/**"
 - "ci"
 - "scripts"
 - "vendor"
 - "archived"
+- "node_modules"
+- "tmp"
+- "downloads"
+- ".sass-cache"
+- ".jekyll-cache"
+- "sitemap.xml"
+- "robots.txt"
+
+# Disable expensive plugins for local development
+jekyll_get_json: []
+
+# Disable minification for faster builds
+jekyll-minifier:
+  exclude:
+    - "**/*"
+
+# Keep default Redcarpet for compatibility
+# markdown: CommonMark (requires Jekyll 3.x)
+
+# Optimize asset processing for development
+sass:
+  style: compressed
+  quiet_deps: true
+
+# Skip image processing for faster builds  
+image_optim:
+  skip: true
+
+# Disable analytics and tracking for development
+google_analytics: false
+plugins:
+  - jekyll-include-cache
+  - jekyll-last-modified-at
+  - jekyll-sass-converter
+  # Skip heavy plugins in development
+  # - jekyll-minifier (disabled above)
+  # - jekyll-get-json (disabled above) 
+  # - jekyll-algolia (run separately)
+
+# Disable sitemap generation in development
+sitemap: false
+
+# Fast file I/O settings
+keep_files:
+  - ".git"
+  - ".gitkeep"
+
+# Development mode flags
+development_mode: true
+fast_build: true
+
+# Disable heavy layout processing
+layout_optimizations:
+  cache_includes: true
+  simple_version_switcher: true
+  minimal_toc: true
