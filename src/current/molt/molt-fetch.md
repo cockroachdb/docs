@@ -516,7 +516,7 @@ The following JSON example defines two type mappings:
 You can define transformation rules to be performed on the target database during the fetch task. These can be used to:
 
 - Map [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) from source to target.
-- Map [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) to a single target table.
+- Map partitioned tables to a single target table.
 - Rename tables on the target database.
 - Rename database schemas.
 
@@ -602,7 +602,7 @@ The following JSON example defines three transformation rules: rule `1` [maps co
 	- `schema`: POSIX regex matching source schemas.
 	- `table`: POSIX regex matching source tables.
 - `table_rename_opts`: Rename tables on the target.
-	- `value`: Target table name. For a single matching source table, renames it to this value. For multiple matches (n-to-1), consolidates matching [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same table definition into a single table with this name.
+	- `value`: Target table name. For a single matching source table, renames it to this value. For multiple matches (n-to-1), consolidates matching partitioned tables with the same table definition into a single table with this name.
 
 		For n-to-1 mappings:
 
