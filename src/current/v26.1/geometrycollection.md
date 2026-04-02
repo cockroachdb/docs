@@ -27,7 +27,6 @@ SELECT ST_GeomFromText('GEOMETRYCOLLECTION(POINT(0 0), LINESTRING(0 0, 1440 900)
 
 ## See also
 
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects)
 - [POINT]({% link {{ page.version.version }}/point.md %})
 - [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
@@ -35,4 +34,3 @@ SELECT ST_GeomFromText('GEOMETRYCOLLECTION(POINT(0 0), LINESTRING(0 0, 1440 900)
 - [MULTIPOINT]({% link {{ page.version.version }}/multipoint.md %})
 - [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
 - [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
