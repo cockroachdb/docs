@@ -29,7 +29,7 @@ The **Configuration** section displays high-level details about the cluster. Cli
 The **Settings** section shows the [CockroachDB version]({% link releases/index.md %}) running on the cluster. Clicking on this section expands the **Cluster settings** panel which includes the following options for managing this cluster:
 
 - [**Maintenance window**]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) ({{ site.data.products.advanced }} only)
-- [**Delay patch upgrades**]({% link cockroachcloud/cluster-management.md %}#set-a-maintenance-window) ({{ site.data.products.advanced }} only)
+- [**Delay patch upgrades**]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) ({{ site.data.products.advanced }} only)
 - [**Deletion protection**]({% link cockroachcloud/cluster-management.md %}#enable-deletion-protection)
 - [**Manual upgrades**]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades) ({{ site.data.products.standard }} only)
 
