@@ -89,7 +89,7 @@ The **Cluster Operator** role allows actions that are dependent on whether it is
   - View a cluster's Metrics from the [Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
   - View a cluster's Insights from the [Insights page]({% link cockroachcloud/insights-page.md %}).
   - [Upgrade]({% link cockroachcloud/upgrade-cockroach-version.md %}) a cluster's major version of CockroachDB.
-  - View a cluster's [PCI-readiness status (Advanced clusters with Security add-on only)]({% link cockroachcloud/overview-page.md %}?filters=advanced#pci-ready-with-security-add-on).
+  - View a cluster's [PCI-readiness status (Advanced clusters with Security add-on only)]({% link cockroachcloud/advanced-cluster-management.md %}#configure-pci-ready-features).
   - Send a test alert from the [Alerts Page]({% link cockroachcloud/alerts-page.md %}).
   - Configure single sign-on (SSO) enforcement.
   - Access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console).
