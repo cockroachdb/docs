@@ -186,7 +186,7 @@ If you do not need to select specific columns in a table or filter rows from a c
 
 ### Reference TTL in a CDC query
 
-In CockroachDB, table row deletes occur as a result of [regular SQL transactions]({% link {{ page.version.version }}/delete-data.md %}) or through [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}). When your changefeed emits [delete event messages]({% link {{ page.version.version }}/changefeed-messages.md %}#delete-messages), you may need to distinguish between these two types of deletion. For example, only emitting messages for row-level TTL deletes from your changefeed.
+In CockroachDB, table row deletes occur as a result of [regular SQL transactions]({% link {{ page.version.version }}/delete.md %}) or through [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}). When your changefeed emits [delete event messages]({% link {{ page.version.version }}/changefeed-messages.md %}#delete-messages), you may need to distinguish between these two types of deletion. For example, only emitting messages for row-level TTL deletes from your changefeed.
 
 If you have TTL logic defined with [`ttl_expiration_expression`](#ttl_expiration_expression) or [`ttl_expire_after`](#ttl_expire_after), you can leverage CDC queries to determine whether or not a given row was expired at the time of the changefeed event, including a delete event.
 
@@ -233,7 +233,7 @@ This changefeed statement:
 For the `CREATE TABLE` statement and further details on `ttl_expire_after`, refer to [Using `ttl_expire_after`]({% link {{ page.version.version }}/row-level-ttl.md %}#using-ttl_expire_after).
 
 {{site.data.alerts.callout_info}}
-This will only emit rows that were deleted **after** expiring. Furthermore, consider that a [transactional SQL delete]({% link {{ page.version.version }}/delete-data.md %}) during the window between the row expiring and the TTL job running will also cause this message to emit from the changefeed.
+This will only emit rows that were deleted **after** expiring. Furthermore, consider that a [transactional SQL delete]({% link {{ page.version.version }}/delete.md %}) during the window between the row expiring and the TTL job running will also cause this message to emit from the changefeed.
 {{site.data.alerts.end}}
 
 Equally, you can remove the delete messages for expired rows so that they do not emit from your changefeed:
