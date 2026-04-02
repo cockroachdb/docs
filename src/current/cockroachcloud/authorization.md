@@ -78,7 +78,7 @@ The **Cluster Operator** role allows actions that are dependent on whether it is
 
 - *Users* with this role can perform the following *console operations*:
 
-  - View a cluster's [Overview page]({% link cockroachcloud/overview-page.md %}), which displays its configuration, attributes and statistics, including cloud provider, region topography, and available and maximum storage and request units.
+  - View a cluster's [Overview page]({% link cockroachcloud/overview-page.md %}), which displays its settings, attributes and statistics, including cloud provider, region topography, and available and maximum storage and request units.
   - Manage a cluster's databases from the [Databases Page]({% link cockroachcloud/databases-page.md %}).
   - [Scale a cluster's nodes]({% link cockroachcloud/advanced-cluster-management.md %}#scale-your-cluster).
   - View and configure a cluster's authorized networks from the [Networking Page]({% link cockroachcloud/network-authorization.md %}).

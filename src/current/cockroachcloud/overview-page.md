@@ -9,29 +9,26 @@ The **Overview** page displays details and key metrics about your CockroachDB {{
 
 The information displayed on this page in the Console may differ for you based on your assigned [roles]({% link cockroachcloud/authorization.md %}).
 
-## Configuration
-
-The **Configuration** section displays high-level details about the cluster. Clicking on this section expands the **Cluster configuration** panel that displays the following cluster details and settings you chose during [cluster creation]({% link cockroachcloud/create-your-cluster.md %}):
-
-| Field                                         | Description                                                                                                     |
-|-----------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| Plan type                                     | The plan type of the cluster.                                                                                   |
-| Cloud                                         | The cluster's cloud provider.                                                                                   |
-| Region(s)                                     | The cluster's regions.                                                                                          |
-| Compute                                       | The cluster's provisioned compute power as appropriate for the [plan type]({% link cockroachcloud/costs.md %}). |
-| Storage                                       | The cluster's provisioned storage as appropriate for the [plan type]({% link cockroachcloud/costs.md %}).       |
-| Nodes ({{ site.data.products.advanced}} only) | The number of nodes the cluster has and the status of each.                                                     |
-| Labels                                        | The [labels]({% link cockroachcloud/labels.md %}) applied to the cluster.                                       |
-| Cluster created on                            | The creation date of the cluster.                                                                               |
-
 ## Settings
 
-The **Settings** section shows the [CockroachDB version]({% link releases/index.md %}) running on the cluster. Clicking on this section expands the **Cluster settings** panel which includes the following options for managing this cluster:
+The **Settings** section displays high-level details about the cluster, including the [CockroachDB version]({% link releases/index.md %}) running on the cluster. Clicking on this section expands the **Cluster settings** panel that displays the values for the following cluster settings:
 
-- [**Maintenance window**]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) ({{ site.data.products.advanced }} only)
-- [**Delay patch upgrades**]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) ({{ site.data.products.advanced }} only)
-- [**Deletion protection**]({% link cockroachcloud/cluster-management.md %}#enable-deletion-protection)
-- [**Manual upgrades**]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades) ({{ site.data.products.standard }} only)
+| Field                                                         | Description                                                                                                                                            |
+|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Plan type                                                     | The plan type of the cluster.                                                                                                                          |
+| Cloud                                                         | The cluster's cloud provider.                                                                                                                          |
+| Region(s)                                                     | The cluster's regions.                                                                                                                                 |
+| Compute                                                       | The cluster's provisioned compute power as appropriate for the [plan type]({% link cockroachcloud/costs.md %}).                                        |
+| Storage                                                       | The cluster's provisioned storage as appropriate for the [plan type]({% link cockroachcloud/costs.md %}).                                              |
+| Nodes ({{ site.data.products.advanced}} only)                 | The number of nodes the cluster has and the status of each.                                                                                            |
+| Labels                                                        | The [labels]({% link cockroachcloud/labels.md %}) applied to the cluster.                                                                              |
+| Cluster created on                                            | The creation date of the cluster.                                                                                                                      |
+| Maintenance window ({{ site.data.products.advanced }} only)   | The enabled/disabled state of the [Maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) feature.     |
+| Delay patch upgrades ({{ site.data.products.advanced }} only) | The enabled/disabled state of the [Delayed patch upgrades]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) feature. |
+| Deletion protection                                           | The enabled/disabled state of the [Deletion protection]({% link cockroachcloud/cluster-management.md %}#enable-deletion-protection) feature.           |
+| Manual upgrades ({{ site.data.products.standard }} only)      | The enabled/disabled state of the [Manual upgrades]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades) feature.                  |
+
+Click the **Edit** button next to a field to modify the corresponding setting.
 
 ## Usage graphs
 

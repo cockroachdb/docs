@@ -52,7 +52,7 @@ You cannot scale a multi-node cluster down to a single-node cluster.
 To add or remove nodes from your cluster:
 
 1. Navigate to the cluster's **Overview** page.
-1. Click on **Configuration** to expand the **Cluster configuration** section, then click on **Edit** next to the cluster's **Regions**.
+1. Click on **Settings** to expand the **Cluster settings** section, then click on **Edit** next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 

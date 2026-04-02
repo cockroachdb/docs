@@ -68,7 +68,7 @@ You can only add regions to clusters created after May 16, 2023.
 To add regions to your cluster:
 
 1. Navigate to the cluster's **Overview** page.
-1. Click on **Configuration** to expand the **Cluster configuration** section, then click on **Edit** next to the cluster's **Regions**.
+1. Click on **Settings** to expand the **Cluster settings** section, then click on **Edit** next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
@@ -82,7 +82,7 @@ To add regions to your cluster:
 To set the primary region:
 
 1. Navigate to the cluster's **Overview** page.
-1. Click on **Configuration** to expand the **Cluster configuration** section, then click on **Edit** next to the cluster's **Regions**.
+1. Click on **Settings** to expand the **Cluster settings** section, then click on **Edit** next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
