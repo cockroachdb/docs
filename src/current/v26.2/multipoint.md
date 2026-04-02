@@ -69,7 +69,6 @@ SELECT ST_GeomFromText('MULTIPOINT (-87.738258999999999 42.010930999999999, -87.
 
 ## See also
 
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects)
 - [POINT]({% link {{ page.version.version }}/point.md %})
 - [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
@@ -77,4 +76,3 @@ SELECT ST_GeomFromText('MULTIPOINT (-87.738258999999999 42.010930999999999, -87.
 - [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
 - [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
 - [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
