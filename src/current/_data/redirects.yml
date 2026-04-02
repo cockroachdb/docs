@@ -1124,3 +1124,31 @@
 
 - destination: cockroachcloud/overview-page.md
   sources: ['cockroachcloud/cluster-overview-page.md']
+
+- destination: delete.md
+  sources: ['delete-data.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: configure-replication-zones.md
+  sources: ['demo-automatic-cloud-migration.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: jsonb.md
+  sources: ['demo-json-support.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: query-spatial-data.md
+  sources: ['export-spatial-data.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: insert.md
+  sources: ['insert-data.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: spatial-data-overview.md
+  sources: ['spatial-tutorial.md', 'geoserver.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: update.md
+  sources: ['update-data.md']
+  versions: ['v26.1', 'v26.2']
