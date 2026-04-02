@@ -14,7 +14,7 @@ Make sure you have already:
 - Set up a [local cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 - [Installed a PostgreSQL client]({% link {{ page.version.version }}/install-client-drivers.md %}).
 - [Connected to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
-- [Inserted data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to run queries against.
+- [Inserted data]({% link {{ page.version.version }}/insert.md %}) that you now want to run queries against.
 
 {% include {{page.version.version}}/app/retry-errors.md %}
 
@@ -84,9 +84,9 @@ Reference information related to this task:
 Other common tasks:
 
 - [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %})
-- [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
-- [Update Data]({% link {{ page.version.version }}/update-data.md %})
-- [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
+- [Insert Data]({% link {{ page.version.version }}/insert.md %})
+- [Update Data]({% link {{ page.version.version }}/update.md %})
+- [Delete Data]({% link {{ page.version.version }}/delete.md %})
 - [Optimize Statement Performance][fast]
 - [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
 
