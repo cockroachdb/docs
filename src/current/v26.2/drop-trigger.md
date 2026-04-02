@@ -61,10 +61,6 @@ Drop the trigger:
 DROP TRIGGER log_update_timestamp ON users;
 ~~~
 
-## Known limitations
-
-{% include {{ page.version.version }}/known-limitations/drop-trigger-limitations.md %}
-
 ## See also
 
 - [Triggers]({% link {{ page.version.version }}/triggers.md %})

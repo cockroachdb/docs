@@ -1,17 +1,23 @@
 {
-  "title": "AI Tools",
+  "title": "CockroachDB and AI",
   "is_top_level": true,
   "items": [
     {
       "title": "Overview",
       "urls": [
-        "/${VERSION}/ai-tools-overview.html"
+        "/${VERSION}/cockroachdb-and-ai.html"
       ]
     },
     {
       "title": "Agent Skills for CockroachDB",
       "urls": [
         "/${VERSION}/agent-skills.html"
+      ]
+    },
+    {
+      "title": "CockroachDB Cloud MCP Server",
+      "urls": [
+        "/cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server.html"
       ]
     },
     {

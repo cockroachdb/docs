@@ -7,10 +7,6 @@ docs_area: manage
 
 This page explains how to organize and manage access to your {{ site.data.products.db }} organization's clusters with folders using the CockroachDB {{ site.data.products.cloud }} Console. You can also use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. For more details about managing access to {{ site.data.products.db }} resources, refer to [Managing Users, Roles, and Service Accounts in {{ site.data.products.db }}]({% link cockroachcloud/managing-access.md %}).
 
-{{site.data.alerts.callout_info}}
-{% include_cached feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 ## How folders work
 
 Folders allow you to organize and manage access to your clusters according to your organization's requirements, and to [summarize billing by folder]({% link cockroachcloud/billing-management.md %}#view-invoices). For example, you can create top-level folders for each business unit in your organization, and within those folders, you can organize clusters by geographic location and then by their level of maturity, such as production, staging, and testing. For more details, refer to [Folder Structure](#folder-structure).
@@ -71,11 +67,7 @@ The following roles allow creation of clusters at the level of the hierarchy whe
 - Cluster Admin
 - Cluster Creator
 
-The following additional roles explicitly allow management of folders and their contents:
-
-- {% include cockroachcloud/org-roles/folder-admin.md %}
-
-- {% include cockroachcloud/org-roles/folder-mover.md %}
+The [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) and [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover) roles explicitly allow management of folders and their contents.
 
 The remainder of this page shows how to create folders, manage access to them, and use them to organize your clusters.
 
@@ -231,7 +223,7 @@ To delete a folder:
 
 - Folders can be nested a maximum of four levels deep, including the organization level.
 - An organization can have a maximum of 65 folders, regardless of how they are organized.
-- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. {% include cockroachcloud/limitations/limitation-ccloud-folders.md %}
+- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above, or the [`ccloud` CLI tool]({% link cockroachcloud/ccloud-reference.md %}#manage-folders).
 
 ## See also
 

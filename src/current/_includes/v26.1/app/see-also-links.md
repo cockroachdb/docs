@@ -5,4 +5,3 @@ You might also be interested in the following pages:
 - [Data Replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %})
 - [CockroachDB Resilience]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %})
 - [Replication & Rebalancing]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %})
-- [Cross-Cloud Migration]({% link {{ page.version.version }}/demo-automatic-cloud-migration.md %})
