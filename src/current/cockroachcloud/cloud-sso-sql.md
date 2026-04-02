@@ -55,7 +55,7 @@ SQL username: `sso_{name}`
 
 For example, a user named `docs_rule@cockroachlabs.com` would need a SQL username of `sso_docs_rule`
 
-You can [create a user]({% link cockroachcloud/ccloud-get-started.md %}#create-a-sql-user-using-ccloud-cluster-user-create) with:
+You can [create a user]({% link cockroachcloud/ccloud-reference.md %}#create-a-sql-user) with:
 
 {% include_cached copy-clipboard.html %}
  ~~~shell
