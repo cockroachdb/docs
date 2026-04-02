@@ -169,11 +169,11 @@ The transaction or statement execution failed.
 {% if page.cloud != true -%}
 The following screenshot shows a failed statement execution:
 
-<img src="{{ 'images/v23.1/statement_executions_failed.png' | relative_url }}" alt="Failed statement execution" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/statement_executions_failed.png" alt="Failed statement execution" style="border:1px solid #eee;max-width:100%" />
 
 The following screenshot shows the execution details of the preceding failed statement execution.
 
-<img src="{{ 'images/v23.1/statement_execution_details_failed.png' | relative_url }}" alt="Failed statement execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/statement_execution_details_failed.png" alt="Failed statement execution details" style="border:1px solid #eee;max-width:100%" />
 
 {% endif -%}
 
@@ -186,11 +186,11 @@ The transaction or statement execution experienced high [contention]({{ link_pre
 {% if page.cloud != true -%}
 The following screenshot shows the execution of a transaction flagged with **High Contention**:
 
-<img src="{{ 'images/v23.1/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction_execution.png" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
 
 The following screenshot shows the execution details of the preceding transaction execution:
 
-<img src="{{ 'images/v23.1/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction_execution_details.png" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
 
 {% endif -%}
 
@@ -214,11 +214,11 @@ The statement execution has resulted in one or more [index recommendations](#sch
 {% if page.cloud != true -%}
 The following screenshot shows the statement execution of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
-<img src="{{ 'images/v23.1/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/statement_executions.png" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
 
 The following screenshot shows the execution details of the preceding statement execution:
 
-<img src="{{ 'images/v23.1/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/statement_execution_details.png" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
 
 {% endif -%}
 
@@ -241,7 +241,7 @@ This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been 
 {% if page.cloud != true -%}
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
 
-<img src="{{ 'images/v23.1/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/schema_insight.png" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
 
 {% endif -%}
 
