@@ -67,6 +67,22 @@ layout: null
 /docs/releases/v22.1.0-alpha.1.html /docs/releases/v22.1#v22-1-0-alpha-1 301
 /docs/releases/v22.1.0-alpha.1 /docs/releases/v22.1#v22-1-0-alpha-1 301
 
+# Retired version redirects
+# Versions v22.2 and earlier are no longer hosted. Redirect any inbound
+# links to the equivalent stable page so users land on current docs
+# instead of a 404.
+/docs/v22.2/* /docs/stable/:splat 301
+/docs/v22.1/* /docs/stable/:splat 301
+/docs/v21.2/* /docs/stable/:splat 301
+/docs/v21.1/* /docs/stable/:splat 301
+/docs/v20.2/* /docs/stable/:splat 301
+/docs/v20.1/* /docs/stable/:splat 301
+/docs/v19.2/* /docs/stable/:splat 301
+/docs/v19.1/* /docs/stable/:splat 301
+/docs/v2.1/* /docs/stable/:splat 301
+/docs/v2.0/* /docs/stable/:splat 301
+/docs/v1.1/* /docs/stable/:splat 301
+/docs/v1.0/* /docs/stable/:splat 301
 
 {% endif %}
 
