@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-An [_index_]({% link {{ page.version.version }}/indexes.md %}) is a [logical object]({% link {{ page.version.version }}/schema-design-overview.md %}#database-schema-objects) that helps [CockroachDB queries]({% link {{ page.version.version }}/query-data.md %}) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
+An [_index_]({% link {{ page.version.version }}/indexes.md %}) is a [logical object]({% link {{ page.version.version }}/schema-design-overview.md %}#database-schema-objects) that helps CockroachDB queries find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
 
 CockroachDB automatically creates an index on the table's [primary key]({% link {{ page.version.version }}/primary-key.md %}) columns. This index is called the *primary index*. The primary index helps CockroachDB more efficiently scan rows, as sorted by the table's primary key columns, but it does not help find values as identified by any other columns.
 
@@ -20,9 +20,6 @@ Before reading this page, do the following:
 
 - [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
 - [Review the database schema objects]({% link {{ page.version.version }}/schema-design-overview.md %}).
-- [Create a database]({% link {{ page.version.version }}/schema-design-database.md %}).
-- [Create a user-defined schema]({% link {{ page.version.version }}/schema-design-schema.md %}).
-- [Create a table]({% link {{ page.version.version }}/schema-design-table.md %}).
 - Review the [best practices](#best-practices).
 
 ## Create a secondary index
@@ -132,7 +129,7 @@ The [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}#success-respons
 
 Suppose you want the MovR application to display all of the bikes available to the users of the MovR platform.
 
-Recall that the `vehicles` table that you created in [Create a Table]({% link {{ page.version.version }}/schema-design-table.md %}) stores rows of data for each vehicle registered with MovR. Your application will need to read any data about vehicles into the application's persistence layer from this table. To display available bikes, the reads will need to filter on the `available` and `type` columns.
+The `vehicles` table in MovR stores rows of data for each vehicle registered with MovR. Your application will need to read any data about vehicles into the application's persistence layer from this table. To display available bikes, the reads will need to filter on the `available` and `type` columns.
 
 Open `max_init.sql`, and, under the `CREATE TABLE` statement for the `vehicles` table, add a `CREATE INDEX` statement for an index on the `type` and `available` columns of the `vehicles` table:
 
@@ -187,7 +184,7 @@ CREATE TABLE movr.max_schema.rides (
   );
 ~~~
 
-If you executed this file when following the [Create a Table]({% link {{ page.version.version }}/schema-design-table.md %}) example, then all of these objects already exist. To clear the database and re-initialize the schemas, first execute the statements in the `dbinit.sql` file as the `root` user:
+To clear the database and re-initialize the schemas, first execute the statements in the `dbinit.sql` file as the `root` user:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -277,16 +274,14 @@ To see an index definition, use a [`SHOW CREATE`]({% link {{ page.version.versio
 (1 row)
 ~~~
 
-After creating a database, a user-defined schema, some tables, and secondary indexes, the database schema should be ready for your application to [write]({% link {{ page.version.version }}/insert-data.md %}) and [read data]({% link {{ page.version.version }}/query-data.md %}).
+After creating a database, a user-defined schema, some tables, and secondary indexes, the database schema should be ready for your application to [write]({% link {{ page.version.version }}/insert-data.md %}) and read data.
 
-It's likely that you will need to update your database schema at some point. For an overview on how to update a database schema, see [Change and Remove Objects in a Database Schema]({% link {{ page.version.version }}/schema-design-update.md %}). We also recommend reading about [how online schema changes work in CockroachDB]({% link {{ page.version.version }}/online-schema-changes.md %}).
+It's likely that you will need to update your database schema at some point. We also recommend reading about [how online schema changes work in CockroachDB]({% link {{ page.version.version }}/online-schema-changes.md %}).
 
 ## What's next?
 
-- [Change and Remove Objects in a Database Schema]({% link {{ page.version.version }}/schema-design-update.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
 - [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
-- [Query Data]({% link {{ page.version.version }}/query-data.md %})
 
 You might also be interested in the following pages:
 
@@ -297,10 +292,6 @@ You might also be interested in the following pages:
 - [Index JSON and Array Data with Generalized Inverted Indexes]({% link {{ page.version.version }}/inverted-indexes.md %})
 - [Index Spatial Data]({% link {{ page.version.version }}/spatial-indexes.md %})
 - [Cockroach Commands]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [Create a User-defined Schema]({% link {{ page.version.version }}/schema-design-schema.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [Database Schemas]({% link {{ page.version.version }}/schema-design-schema.md %})
-- [Create a Database]({% link {{ page.version.version }}/schema-design-database.md %})
 - [Schema Design Overview]({% link {{ page.version.version }}/schema-design-overview.md %})
-- [Create a Table]({% link {{ page.version.version }}/schema-design-table.md %})
 - [CockroachDB naming hierarchy]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy)

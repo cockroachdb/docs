@@ -6,7 +6,7 @@ keywords: security, row level security, RLS
 docs_area: reference.sql
 ---
 
-The `CREATE POLICY` statement defines a new [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policy on a [table]({% link {{ page.version.version }}/schema-design-table.md %}).
+The `CREATE POLICY` statement defines a new [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policy on a table.
 
 ## Syntax
 
@@ -38,7 +38,7 @@ Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Used to specify that the policy will only be created if one with the same `policy_name` does not already exist on `table_name`. If a policy with that name does already exist, the statement will not return an error if this parameter is used.
 `policy_name` | Unique identifier for the policy on the table.
-`table_name` | The [table]({% link {{ page.version.version }}/schema-design-table.md %}) to which the policy applies.
+`table_name` | The table to which the policy applies.
 `AS ( PERMISSIVE, RESTRICTIVE )` | (**Default**: `PERMISSIVE`.) For `PERMISSIVE`, combine policies using `OR`: a row is accessible if **any** permissive policy grants access. For `RESTRICTIVE`, combine policies using `AND`: a row is accessible if **all** restrictive policies grant access. The overall policy enforcement is determined logically as: `{permissive policies} AND {restrictive policies}`: restrictive policies are evaluated **after** permissive policies. This means that at least one `PERMISSIVE` policy must be in place before `RESTRICTIVE` policies are applied. If any restrictive policy denies access, the row is inaccessible, regardless of the permissive policies.
 `FOR ( ALL, SELECT, INSERT, UPDATE, DELETE )` | (**Default**: `ALL`.) Specifies the SQL statement(s) the policy applies to: ([`SELECT`]({% link {{ page.version.version }}/select-clause.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %})). For details, refer to [Policies by statement type](#policies-by-statement-type).
 `TO role_name, ...`  | (**Default**: `PUBLIC`, which means the policy applies to all roles.) Specifies the database [role(s)]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) to which the policy applies.
