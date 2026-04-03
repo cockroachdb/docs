@@ -1,11 +1,11 @@
 ---
-title: Unsupported Versions
-summary: Versions of CockroachDB that are no longer supported
+title: CockroachDB Downloads Archive
+summary: Archive of downloads for versions of CockroachDB that are no longer supported
 toc: true
 docs_area: releases
 ---
 {{site.data.alerts.callout_danger}}
-The CockroachDB versions on this page are no longer supported. For more information, refer to [Release Support Policy]({% link releases/release-support-policy.md %}#unsupported-versions). To download and learn about currently supported CockroachDB versions, refer to [CockroachDB Releases]({% link releases/index.md %}).
+This page hosts download links to CockroachDB versions that are no longer supported. For more information about CockroachDB version support, refer to [Release Support Policy]({% link releases/release-support-policy.md %}#unsupported-versions). To download and learn about currently supported CockroachDB versions, refer to [CockroachDB Releases]({% link releases/index.md %}).
 {{site.data.alerts.end}}
 ## Downloads
 

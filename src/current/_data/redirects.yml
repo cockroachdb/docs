@@ -1122,6 +1122,12 @@
   sources: ['query-data.md']
   versions: ['v26.1', 'v26.2']
 
+- destination: releases/index.md
+  sources: ['releases/staged-release-process.md']
+  
+- destination: releases/downloads-archive.md
+  sources: ['releases/unsupported-versions.md']
+
 - destination: delete.md
   sources: ['delete-data.md']
   versions: ['v26.1', 'v26.2']
