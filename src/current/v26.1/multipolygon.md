@@ -27,7 +27,6 @@ SELECT ST_GeomFromText('SRID=4326;MULTIPOLYGON(((-87.906471 43.038902, -95.99277
 
 ## See also
 
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects)
 - [POINT]({% link {{ page.version.version }}/point.md %})
 - [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
@@ -35,4 +34,3 @@ SELECT ST_GeomFromText('SRID=4326;MULTIPOLYGON(((-87.906471 43.038902, -95.99277
 - [MULTIPOINT]({% link {{ page.version.version }}/multipoint.md %})
 - [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
 - [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

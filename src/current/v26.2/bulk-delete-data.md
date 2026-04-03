@@ -36,7 +36,7 @@ Before reading this page, do the following:
 - [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
 - [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
 - [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
-- [Insert data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to delete.
+- [Insert data]({% link {{ page.version.version }}/insert.md %}) that you now want to delete.
 
     For the example on this page, we load a cluster with the [`tpcc` database]({% link {{ page.version.version }}/cockroach-workload.md %}#tpcc-workload) and data from [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}).
 
@@ -563,7 +563,6 @@ For detailed reference documentation on the `TRUNCATE` statement, including addi
 
 ## See also
 
-- [Delete data]({% link {{ page.version.version }}/delete-data.md %})
 - [Batch Delete Expired Data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %})
 - [`DELETE`]({% link {{ page.version.version }}/delete.md %})
 - [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %})

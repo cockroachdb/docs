@@ -2,6 +2,5 @@
 - `INSTEAD OF` triggers are not supported. [#126363](https://github.com/cockroachdb/cockroach/issues/126363)
 - Hidden columns are not visible to triggers. [#133331](https://github.com/cockroachdb/cockroach/issues/133331)
 - The `REFERENCING` clause for `CREATE TRIGGER` is not supported. [#135655](https://github.com/cockroachdb/cockroach/issues/135655)
-- CockroachDB uses one-based indexing for the `TG_ARGV` array to maintain consistency with its array indexing system. This differs from PostgreSQL, where `TG_ARGV` uses zero-based indexing, unlike other PostgreSQL arrays. Trigger functions that reference `TG_ARGV` need to be adjusted when migrating from PostgreSQL. [#135311](https://github.com/cockroachdb/cockroach/issues/135311)
 - `UPDATE` triggers with a column list (using `UPDATE OF column_name` syntax) are not supported. [#135656](https://github.com/cockroachdb/cockroach/issues/135656)
 - Statement-level triggers for `TRUNCATE` events are not supported. [#135657](https://github.com/cockroachdb/cockroach/issues/135657)
