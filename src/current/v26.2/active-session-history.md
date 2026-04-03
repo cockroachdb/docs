@@ -20,9 +20,9 @@ By default, ASH allocates approximately 200MB of memory per node **even when dis
 
 ## How ASH sampling works
 
-ASH captures point-in-time snapshots of each node's active work by sampling cluster activity at regular intervals (determined by the [`obs.ash.sample_interval` cluster setting](#ash-cluster-settings)). At each sample point, ASH examines all goroutines that are actively executing or waiting, and it records what each one is doing. Each of these samples is about 200 bytes, and each capturing details like the workload it belongs to (statement fingerprint, job ID, or system task) and the activity it's occupied with. These samples fill an in-memory circular ring buffer, the size of which is determined by the [`obs.ash.buffer_size` cluster setting](#ash-cluster-settings). When the buffer fills, the oldest samples are overwritten. Samples do not persist on disk. They are lost on node restart.
+ASH captures point-in-time snapshots of each node's active work by sampling cluster activity at regular intervals (determined by the [`obs.ash.sample_interval` cluster setting](#ash-cluster-settings)). At each sample point, ASH examines all goroutines that are actively executing or waiting, and it records what each one is doing. Each of these samples is about 200 bytes, and each captures details like the workload that the goroutine belongs to (statement fingerprint, job ID, or system task) and the activity the goroutine is occupied with. These samples fill an in-memory circular ring buffer, the size of which is determined by the [`obs.ash.buffer_size` cluster setting](#ash-cluster-settings). When the buffer fills, the oldest samples are overwritten. Samples do not persist on disk. They are lost on node restart.
 
-Because ASH is sampling-based rather than event-based, the sample count for a particular activity is proportional to how much time was spent on that activity. For example, if a query appears in 45 out of 60 sample points over one minute, it was actively consuming resources for approximately 45 seconds of that minute. This approach provides an accurate picture of resource usage patterns over time, but it means that short-lived operations completing between sample intervals may not be captured. To troubleshoot very brief operations, you may need to reduce the `obs.ash.sample_interval` cluster setting.
+Because ASH is sampling-based rather than event-based, the sample count for a particular activity is proportional to how much time was spent on that activity. For example, if a query appears in 45 out of 60 sample points over one minute, it was actively consuming resources for approximately 45 seconds of that minute. This approach provides an accurate picture of resource usage patterns over time, but it means that short-lived operations completed between sampling points may not be captured. To troubleshoot very brief operations, you may need to reduce the `obs.ash.sample_interval` cluster setting.
 
 These point-in-time samples can be used to:
 
@@ -38,7 +38,7 @@ The following [cluster settings]({% link {{ page.version.version }}/cluster-sett
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
-| `obs.ash.enabled` | bool | `false` | Enables ASH sampling. |
+| `obs.ash.enabled` | bool | `false` | Enables ASH sampling on the cluster. |
 | `obs.ash.sample_interval` | duration | `1s` | Time interval between samples. |
 | `obs.ash.buffer_size` | int | `1,000,000` | Max samples retained in memory. At ~200 bytes/sample, the default uses ~200MB per node. Changes take effect immediately. |
 | `obs.ash.log_interval` | duration | `10m` | How often a top-N workload summary is emitted to the OPS log channel. Also used as the lookback window for ASH reports written by the environment sampler profiler. |
@@ -49,8 +49,8 @@ The following [cluster settings]({% link {{ page.version.version }}/cluster-sett
 
 ASH data is accessible through two views in the [`information_schema`]({% link {{ page.version.version }}/information-schema.md %}) system catalog:
 
-- `information_schema.crdb_node_active_session_history`: Includes samples from the local node.
-- `information_schema.crdb_cluster_active_session_history`: Includes samples from all nodes in the cluster. Querying the cluster-wide view may be more resource-intensive for large clusters.
+- [`information_schema.crdb_node_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_node_active_session_history): Includes samples from the local node.
+- [`information_schema.crdb_cluster_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_cluster_active_session_history): Includes samples from all nodes in the cluster. Querying the cluster-wide view may be more resource-intensive for large clusters.
 
 The data for each sample is placed into a row with the following columns:
 
@@ -79,7 +79,7 @@ Each sample is attributed to a workload via the `workload_type` and `workload_id
 
 ### `work_event` columns
 
-The `work_event_type` categorizes the resource being consumed or waited on. Types include `CPU`, `IO`, `NETWORK`, `ADMISSION`, and `OTHER`. The `work_event` gives the specific activity.
+The `work_event_type` categorizes the resource being consumed or waited on. Types include `CPU`, `IO`, `LOCK`, `NETWORK`, `ADMISSION`, and `OTHER`. The `work_event` gives the specific activity.
 
 **`CPU`** — active computation:
 
@@ -272,6 +272,7 @@ The query breaks down the job's resource consumption by work event type and spec
 
 - ASH is not recommended for nodes with 64 or more vCPUs, due to degraded performance on those nodes.
 - On Basic and Standard CockroachDB {{ site.data.products.cloud }} clusters, ASH samples only cover work running on the SQL pod. KV-level work (storage I/O, lock waits, replication, etc.) is not visible in ASH samples.
+- KV work triggered during COMMIT (for example, intent resolution, Raft proposals deferred from earlier statements in an explicit transaction) is attributed to the last statement's fingerprint, not the statement that originally caused the work.
 
 ## See also
 
