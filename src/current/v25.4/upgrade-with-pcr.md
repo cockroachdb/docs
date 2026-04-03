@@ -129,7 +129,7 @@ If you have a [_reader virtual cluster (reader VC)_]({% link {{ page.version.ver
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER <application-vc> SET REPLICATION READ VIRTUAL CLUSTER;
+    ALTER VIRTUAL CLUSTER <application-vc-main> SET REPLICATION READ VIRTUAL CLUSTER;
     ~~~
 
 At this point, the reader VC is on the same version as the replicating main VC on the standby cluster.
