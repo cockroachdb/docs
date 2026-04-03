@@ -33,6 +33,12 @@
         ]
       },
       {
+        "title": "Active Session History",
+        "urls": [
+          "/${VERSION}/active-session-history.html"
+        ]
+      },
+      {
         "title": "Transaction Retry Error Reference",
         "urls": [
           "/${VERSION}/transaction-retry-error-reference.html"

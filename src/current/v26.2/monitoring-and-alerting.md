@@ -51,6 +51,18 @@ The SQL Activity pages, which are located within **SQL Activity** in DB Console,
 
 The information on the SQL Activity pages comes from the cluster's [`crdb_internal` system catalog](#crdb_internal-system-catalog). It is not exported via the cluster's [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}).
 
+### Active Session History
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+[Active Session History (ASH)]({% link {{ page.version.version }}/active-session-history.md %}) is a time-series sampling-based observability feature that captures what work was actively executing on your cluster at specific points in time. Unlike the SQL Activity pages that aggregate data over time, ASH provides point-in-time snapshots of active execution, making it easier to diagnose transient performance problems and understand resource usage patterns.
+
+ASH is accessible via SQL queries against the [`information_schema.crdb_node_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_node_active_session_history) and [`information_schema.crdb_cluster_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_cluster_active_session_history) views. It is enabled and configurable via [cluster settings]({% link {{ page.version.version }}/active-session-history.md %}#ash-cluster-settings).
+
+For more information, refer to [Active Session History]({% link {{ page.version.version }}/active-session-history.md %}).
+
 ### Cluster API
 
 The [Cluster API]({% link {{ page.version.version }}/cluster-api.md %}) is a REST API that runs in the cluster and provides much of the same information about your cluster and nodes as is available from the [DB Console](#db-console) or the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}), and is accessible from each node at the same address and port as the DB Console.
