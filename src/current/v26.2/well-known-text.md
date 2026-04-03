@@ -44,7 +44,6 @@ CockroachDB only supports 2-dimensional geometries.
 ## See also
 
 - [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
 - [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
 - [Geographic information — Well-known text representation of coordinate reference systems](http://www.opengis.net/doc/is/wkt-crs/2.0.6)
@@ -53,4 +52,3 @@ CockroachDB only supports 2-dimensional geometries.
 - [GeoJSON]({% link {{ page.version.version }}/geojson.md %})
 - [SRID 4326 - longitude and latitude]({% link {{ page.version.version }}/srid-4326.md %})
 - [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

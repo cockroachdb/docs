@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
- CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}).
+ CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/query-spatial-data.md %}).
 
 This page has instructions for migrating data from [OpenStreetMap](https://www.openstreetmap.org) `.pbf` data files into CockroachDB using [`osm2pgsql`](https://github.com/openstreetmap/osm2pgsql/).
 
@@ -122,8 +122,6 @@ Osm2pgsql took 2879s overall
 
 ## See also
 
-- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
 - [Migrate from GeoPackages]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
 - [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
@@ -134,7 +132,6 @@ Osm2pgsql took 2879s overall
 - [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
 
 {% comment %} Reference Links {% endcomment %}
 
