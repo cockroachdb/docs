@@ -16,8 +16,6 @@ CockroachDB stores the contents of the following data types in GIN indexes:
 - [`TSVECTOR` (for full-text search)]({% link {{ page.version.version }}/tsvector.md %})
 - [`STRING` (using trigram indexes)]({% link {{ page.version.version }}/trigram-indexes.md %})
 
-{{site.data.alerts.callout_success}}For a hands-on demonstration of using GIN indexes to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
-
 ## How do GIN indexes work?
 
 Standard [indexes]({% link {{ page.version.version }}/indexes.md %}) work well for searches based on prefixes of sorted data. However, data types like [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) or [arrays]({% link {{ page.version.version }}/array.md %}) cannot be queried without a full table scan, since they do not adhere to ordinary value prefix comparison operators. `JSONB` in particular needs to be indexed in a more detailed way than what a standard index provides. This is where GIN indexes prove useful.

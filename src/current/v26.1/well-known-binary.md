@@ -19,7 +19,6 @@ The Extended Well Known Binary (_EWKB_) format is the same as WKB, with an [SRID
 ## See also
 
 - [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
 - [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
 - [OpenGIS Implementation Specification for Geographic information - Simple feature access - Part 1: Common architecture](https://portal.opengeospatial.org/files/?artifact_id=25355)
@@ -27,4 +26,3 @@ The Extended Well Known Binary (_EWKB_) format is the same as WKB, with an [SRID
 - [GeoJSON]({% link {{ page.version.version }}/geojson.md %})
 - [SRID 4326 - longitude and latitude]({% link {{ page.version.version }}/srid-4326.md %})
 - [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

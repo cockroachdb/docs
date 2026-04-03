@@ -15,9 +15,9 @@ For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row statement is
 
 For more information, see:
 
-- [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
-- [Update Data]({% link {{ page.version.version }}/update-data.md %})
-- [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
+- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
+- [`UPDATE`]({% link {{ page.version.version }}/update.md %})
+- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
 - [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
 
 ### Use `UPSERT` instead of `INSERT ON CONFLICT` on tables with no secondary indexes
