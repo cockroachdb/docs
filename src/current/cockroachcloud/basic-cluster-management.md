@@ -19,7 +19,7 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 The **Overview** page displays details about the selected CockroachDB {{ site.data.products.basic }} cluster. For more information, see [Overview Page]({% link cockroachcloud/overview-page.md %}).
 
-Click the **Connect** button to get client connection details for your cluster. For more information, see [Connect to Your CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
+Click the **Connect** button to get client connection details for your cluster. For more information, see [Connect to Your CockroachDB Cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
 
 ## Edit labels
 
