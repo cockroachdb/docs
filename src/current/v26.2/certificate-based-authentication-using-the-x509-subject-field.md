@@ -43,7 +43,7 @@ These instructions assume that you have already created certificates using your 
 General guidelines for certificate creation:
 
 - The cluster name and SQL user name will generally both appear somewhere in the certificate's Subject.
-- The cluster name will usually go in the `OU` or `DC` fields, and the user name in `UID` or `CN` fields.
+- The cluster name will usually go in the `OU` or `DC` fields, and the user name in `UID` or `CN` fields. You can also map the user name to a `SAN` field by enabling [Subject Alternative Name mapping](#optional-enable-the-cluster-setting-to-map-users-to-subject-alternative-name-san-fields).
 - For example, the Subject might look like `O=Acme Inc,OU=movr-prod,UID=root`.
 
 ### Step 2. Start your cluster with root and node certificate flags
@@ -113,6 +113,15 @@ Regardless of this setting's value, CockroachDB will verify the following during
 - For the `root` user, that the distinguished name in the certificate Subject matches the distinguished name fields passed in via `cockroach start --root-cert-distinguished-name`.
 - For the `node` user, that the distinguished name in the certificate Subject matches the distinguished name fields passed in via `cockroach start --node-cert-distinguished-name`.
 - For all other SQL users, that the values in the Subject field of the [X.509 certificate](https://en.wikipedia.org/wiki/X.509) match the values attached to the user or role with `CREATE ROLE ... SUBJECT` or `ALTER ROLE ... SUBJECT`.
+
+#### (Optional) Enable the cluster setting to map users to Subject Alternative Name (SAN) fields
+
+If your organization uses Subject Alternative Name (`SAN`) fields for user identity mapping, enable the following cluster setting to map user identity to `SAN` fields instead of the default `CN` lookup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING security.client_cert.san_required.enabled = true;
+~~~
 
 ## See also
 
