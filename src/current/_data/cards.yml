@@ -15,7 +15,7 @@ develop:
   - link: "/PREFIX/schema-design-overview.html"
     title: "Design a schema"
     text: "Details and best practices about designing schemas for your data."
-  - link: "/PREFIX/insert-data.html"
+  - link: "/PREFIX/insert.html"
     title: "Write data"
     text: "How to insert data into your cluster."
   - link: "/PREFIX/query-behavior-troubleshooting.html"
