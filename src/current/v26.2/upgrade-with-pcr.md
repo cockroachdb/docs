@@ -111,28 +111,28 @@ To upgrade your primary and standby clusters:
 If you have a [_reader virtual cluster (reader VC)_]({% link {{ page.version.version }}/read-from-standby.md %}), you must drop and recreate it to upgrade after completing the main upgrade process on the primary and standby clusters. Follow these steps to upgrade your reader VC:
 
 1. After upgrading the app VC on your primary cluster, wait for the replicated time to pass the time at which the upgrade completed.
-1. On the standby cluster, stop the reader VC service:
+1. On the standby cluster, stop the reader VC service on the readonly tenant:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER <readervc-name> STOP SERVICE;
+    ALTER VIRTUAL CLUSTER <application-vc-readonly> STOP SERVICE;
     ~~~
 
-1. Drop the reader VC:
+1. Drop the reader VC on the readonly tenant:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    DROP VIRTUAL CLUSTER <readervc-name>;
+    DROP VIRTUAL CLUSTER <application-vc-readonly>;
     ~~~
 
-1. On the standby cluster, re-create the reader VC:
+1. On the standby cluster, re-create the reader VC from the standby cluster's replicating main VC.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER VIRTUAL CLUSTER <readervc-name> SET REPLICATION READ VIRTUAL CLUSTER;
+    ALTER VIRTUAL CLUSTER <application-vc-main> SET REPLICATION READ VIRTUAL CLUSTER;
     ~~~
 
-At this point, the reader VC is on the same version as the standby cluster.
+At this point, the reader VC is on the same version as the replicating main VC on the standby cluster.
 
 ## Failover and fast failback during upgrade
 
