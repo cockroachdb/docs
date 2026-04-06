@@ -81,7 +81,7 @@ The following screenshot shows an execution of the query discussed in [Overview]
 
 #### Plan Distribution Over Time
 
-The **Plan Distribution Over Time** graph displays the execution counts for every query plan used within the selected time interval. If multiple query plans were being used at the same time, bars will be stacked, and each query plan will be represented by a different color. The key below the graph indicates the plan gist associated with each color. More information about these query plans can be found in the [plan table](#plan-table).
+The **Plan Distribution Over Time** graph displays the execution counts for query plans within the selected time interval. If multiple query plans were used during a given time period, the plans are stacked and represented by a different color to compare their relative execution counts. The key below the graph indicates the plan gist associated with each color. More information about these query plans can be found in the [plan table](#plan-table).
 
 This graph helps illustrate changes in the distribution of query plans chosen by the [cost-based optimizer]({{ link_prefix }}cost-based-optimizer.html) for this SQL statement. This can be useful for [troubleshooting query plan regressions]({{ link_prefix }}troubleshoot-query-plan-regressions.html#multiple-valid-query-plans).
 
