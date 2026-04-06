@@ -90,9 +90,9 @@ If the newer plan differs from the older plan, the query plan has changed:
 
 If multiple query plans were used before and after the latency increase, the SQL statement may have multiple valid query plans. This can occur when the optimizer chooses a plan based on literal values in the SQL query, those replaced by the "_" placeholder in the statement fingerprint. The optimizer may decide that different plans are better for different literal values.
 
-With multiple valid query plans, you're not just looking for a plan change, but for a shift in the _distribution of plans_ used for the statement.
+With multiple valid query plans, you’re not just looking for a plan change, but for a shift in the _distribution of plans_ used for the statement.
 
-- On the **Explain Plans** tab, refer to the [**Plan Distribution Over Time**]({% link {{ page.version.version }}/ui-statements-page.md %}#plan-distribution-over-time) graph. Note the distribution of query plans both before and after the latency increase. If the distribution shifts toward a plan with higher average execution time, it may indicate a query plan regression.
+- Look at the query plans that were used in the time interval after the latency increase. Note the values in the **Execution Count** column for each plan. Repeat the process for the interval before the latency increase. This will let you know not only if the same query plans were being used during both intervals, but also if their distributions changed. If the distribution shifts toward a plan with higher average execution time, it may indicate a query plan regression.
 
 {{site.data.alerts.callout_success}}
 If you couldn’t identify a specific moment when latency increased, you won’t have a clear "before" and "after" to compare. In this case, it’s still helpful to have a general sense of when the increase occurred (using the methods from Step 1) even if the range spans several hours. You can then use the above methods (in Step 3) to compare query plans on a rolling basis by changing the custom time interval to consecutive hour-long intervals. This approach can help identify the specific interval when the latency spike occurred.
