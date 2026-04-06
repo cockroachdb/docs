@@ -161,7 +161,7 @@ Exit the SQL shell:
 > \q
 ~~~
 
-## Step 6. Run the application
+## Step 5. Run the application
 
 To run the application:
 
