@@ -87,12 +87,12 @@ no_highlights: {{ no_highlights }}<br />
 {% endif %}
 
 {% if released == false %}
-CockroachDB {{ page.major_version }} is in active development, and the following [testing releases]({% link releases/index.md %}#release-types) are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. When CockroachDB {{ page.major_version }} is Generally Available (GA), production releases will also be announced on this page.
+CockroachDB {{ page.major_version }} is in active development, and the following [testing releases]({% link releases/index.md %}#release-schedule) are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. When CockroachDB {{ page.major_version }} is Generally Available (GA), production releases will also be announced on this page.
 {% else %}{% comment %}Begin GA-only content{% endcomment %}
   {% if skippable == true %}
-CockroachDB {{ page.major_version }} is an [Innovation Release]({% link releases/release-support-policy.md %}#support-types), which is optional for CockroachDB {{ site.data.products.advanced }}, CockroachDB {{ site.data.products.standard }}, and CockroachDB {{ site.data.products.core }} clusters but is required for CockroachDB {{ site.data.products.basic }}.
+CockroachDB {{ page.major_version }} is an optional [Innovation release]({% link releases/index.md %}#major-versions). This version can be skipped for CockroachDB {{ site.data.products.advanced }} and {{ site.data.products.core }} clusters. It is unavailable for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} clusters.
   {% else %}
-CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %} is a required [Regular Release]({% link releases/release-support-policy.md %}#support-types).
+CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-types){% endif %} is a required [Regular release]({% link releases/index.md %}#major-versions).
   {% endif %}
 
 Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details.{% if no_highlights == false and released == true %} To learn what's new in this release, refer to its [Feature Highlights](#feature-highlights).{% endif %}

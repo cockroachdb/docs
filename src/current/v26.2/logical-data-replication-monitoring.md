@@ -14,7 +14,7 @@ You can monitor [**logical data replication (LDR)**]({% link {{ page.version.ver
 - [`SHOW LOGICAL REPLICATION JOBS`](#sql-shell) in the SQL shell to view a list of LDR jobs on the cluster.
 - The [**Logical Data Replication** dashboard]({% link {{ page.version.version }}/ui-logical-data-replication-dashboard.md %}) on the [DB Console](#db-console) to view metrics at the cluster level.
 - [Prometheus and Alertmanager](#prometheus) to track and alert on LDR metrics.
-- Metrics export with [Datadog](#datadog).
+- Metrics export with Datadog.
 - [Metrics labels](#metrics-labels) to view metrics at the job level.
 
 {{site.data.alerts.callout_info}}
@@ -138,7 +138,7 @@ For a full reference on tracking metrics with labels, refer to the [Multi-dimens
 
 ### Datadog
 
-You can export metrics to Datadog for LDR jobs. For steps to set up metrics export, refer to the [Monitor CockroachDB Self-Hosted with Datadog]({% link {{ page.version.version }}/datadog.md %}).
+You can export metrics to Datadog for LDR jobs. For steps to set up metrics export, refer to [Datadog documentation](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host).
 
 ## See also
 

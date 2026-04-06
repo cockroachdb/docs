@@ -18,7 +18,7 @@ When your clients are in a single geographic region, choosing a topology pattern
 
 Deployment Type | Latency | Resiliency | Configuration
 --------|---------|------------|--------------
-[Development]({% link {{ page.version.version }}/topology-development.md %}) | <ul><li>Fast reads and writes</li></ul> | <ul><li>None</li></ul> | <ul><li>1 node</li><li>No replication</li></ul>
+Development | <ul><li>Fast reads and writes</li></ul> | <ul><li>None</li></ul> | <ul><li>1 node</li><li>No replication</li></ul>
 [Basic Production]({% link {{ page.version.version }}/topology-basic-production.md %}) | <ul><li>Fast reads and writes</li></ul> | <ul><li>1 zone failure</li></ul> | <ul><li>1 region</li><li>3 zones</li><li>3+ nodes across zones</li></ul>
 
 ## Multi-region

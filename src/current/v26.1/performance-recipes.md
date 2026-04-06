@@ -243,7 +243,7 @@ Also see [Table scans best practices]({% link {{ page.version.version }}/perform
 
 #### Fix suboptimal primary keys
 
-Evaluate the schema of your table to see if you can redistribute data more evenly across multiple ranges. Specifically, make sure you have followed [best practices when selecting your primary key]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices).
+Evaluate the schema of your table to see if you can redistribute data more evenly across multiple ranges. Specifically, make sure you have followed [best practices when selecting your primary key]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
 
 If your application with a small dataset (for example, a dataset that contains few index key values) is experiencing resource contention, consider splitting your tables and indexes to [distribute ranges across multiple nodes]({% link {{ page.version.version }}/alter-table.md %}#split-a-table) to reduce resource contention.
 

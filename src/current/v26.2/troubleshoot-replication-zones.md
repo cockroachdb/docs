@@ -136,7 +136,7 @@ Using the range IDs from that endpoint, you can map from range IDs to schema obj
 
 Once you have a range ID, you need to map from that ID to the name of a schema object that you can pass to [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}).
 
-The following example query uses the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to show, for each range ID, which tables and indexes use that range for their underlying storage. The query assumes the [`movr` schema]({% link {{ page.version.version }}/movr.md %}#the-movr-database) that is loaded by [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}), so you'll need to modify it to work with your schema.
+The following example query uses the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to show, for each range ID, which tables and indexes use that range for their underlying storage. The query assumes the `movr` schema that is loaded by [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}), so you'll need to modify it to work with your schema.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

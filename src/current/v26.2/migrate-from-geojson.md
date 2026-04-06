@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}).
+CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/query-spatial-data.md %}).
 
 This page has instructions for migrating data from the [GeoJSON](https://wikipedia.org/wiki/GeoJSON) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
 
@@ -116,8 +116,6 @@ IMPORT INTO underground_storage_tank CSV DATA ('http://localhost:3000/tanks.csv'
 ## See also
 
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
-- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
 - [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
 - [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
@@ -128,7 +126,6 @@ IMPORT INTO underground_storage_tank CSV DATA ('http://localhost:3000/tanks.csv'
 - [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
 
 {% comment %} Reference Links {% endcomment %}
 

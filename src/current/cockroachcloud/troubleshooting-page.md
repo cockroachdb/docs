@@ -27,7 +27,7 @@ Failed running "sql"
 
 <h4>Solution</h4>
 
-Update to the latest [CockroachDB client]({% link releases/index.md %}#production-releases). You need to use v21.2.5 or later of the CockroachDB client to connect to your cluster without specifying the CA certificate path in the connection string.
+Update to the latest [CockroachDB client]({% link releases/index.md %}). You need to use v21.2.5 or later of the CockroachDB client to connect to your cluster without specifying the CA certificate path in the connection string.
 
 ### Certificate signed by unknown authority
 
@@ -172,7 +172,7 @@ If you are experiencing access issues, ensure that the password is correct. If t
 
 ### Hanging or stuck queries
 
-A hanging or stuck query using a CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster may be caused by reaching the cluster's configured [resource limits]({% link cockroachcloud/plan-your-cluster-basic.md %}#choose-resource-limits) for [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) or storage space. SQL Statements and `cockroach` CLI commands may be impacted. You can check your cluster's resource limits and status from the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) in the Cloud Console. Resource limits are displayed in **Usage this month**. If you've used all your storage, your cluster will be labeled **THROTTLED**, and you will be limited to a single SQL connection which you can use to delete data. If you've used all your RUs, your cluster will be **DISABLED**.
+A hanging or stuck query using a CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster may be caused by reaching the cluster's configured [resource limits]({% link cockroachcloud/plan-your-cluster-basic.md %}#choose-resource-limits) for [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) or storage space. SQL Statements and `cockroach` CLI commands may be impacted. You can check your cluster's resource limits and status from the [**Overview** page]({% link cockroachcloud/overview-page.md %}) in the Cloud Console. Resource limits are displayed in **Usage this month**. If you've used all your storage, your cluster will be labeled **THROTTLED**, and you will be limited to a single SQL connection which you can use to delete data. If you've used all your RUs, your cluster will be **DISABLED**.
 
 <h4>Solution</h4>
 
