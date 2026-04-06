@@ -30,7 +30,7 @@ Removing or adding an authorized network on your CockroachDB {{ site.data.produc
 
 ### Establish private connectivity
 
-Private connectivity allows you to establish SQL access to a CockroachDB {{ site.data.products.advanced }} cluster entirely through cloud provider private infrastructure, without exposing the cluster to the public internet, affording enhanced security and performance.
+Private connectivity allows you to establish SQL and [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console) access to a CockroachDB {{ site.data.products.advanced }} cluster entirely through cloud provider private infrastructure, without exposing the cluster to the public internet, affording enhanced security and performance.
 
 - Clusters deployed on GCP can connect privately using [GCP Private Service Connect (PSC)](#gcp-private-service-connect) or [GCP VPC Peering](#vpc-peering). PSC allows you to connect your cluster directly to a VPC within your Google Cloud project, while VPC Peering allows you to peer your cluster's VPC in CockroachDB Cloud to a VPC within your Google Cloud project.
 - Clusters deployed on AWS can connect privately using [AWS PrivateLink](#aws-privatelink), which allows you to connect your cluster to a VPC within your AWS account.
