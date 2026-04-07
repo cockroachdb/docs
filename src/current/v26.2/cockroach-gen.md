@@ -416,14 +416,14 @@ Generate a Datadog dashboard:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen dashboard --tool=datadog --output='path/to/file.json' --rollup-interval=60
+$ cockroach gen dashboard --tool=datadog --output='{path/to/file.json}' --rollup-interval=60
 ~~~
 
 Generate a Grafana dashboard:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen dashboard --tool=grafana --output='path/to/file.json' --rollup-interval=60
+$ cockroach gen dashboard --tool=grafana --output='{path/to/file.json}' --rollup-interval=60
 ~~~
 
 ## See also
