@@ -199,7 +199,7 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
     <img src="{{ 'images/v26.2/tpcc-large-replication-dashboard.png' | relative_url }}" alt="TPC-C 140k replication and partitioning dashboards" style="border:1px solid #eee;max-width:100%" />
 
-## Step 7. Allocate partitions
+## Step 6. Allocate partitions
 
 Before running the benchmark, it's important to allocate partitions to workload binaries properly to ensure that the cluster is balanced.
 
@@ -297,7 +297,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-## Step 8. Run the benchmark
+## Step 7. Run the benchmark
 
 Once the allocations finish, run TPC-C for 30 minutes on each VM with `workload`:
 
@@ -365,7 +365,7 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-## Step 9. Interpret the results
+## Step 8. Interpret the results
 
 1. Collect the result files from each VM with `workload`:
 
