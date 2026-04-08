@@ -11174,7 +11174,7 @@
   previous_release: v23.2.29
   
   
-  - release_name: v24.1.27
+- release_name: v24.1.27
   major_version: v24.1
   release_date: '2026-04-08'
   release_type: Production
