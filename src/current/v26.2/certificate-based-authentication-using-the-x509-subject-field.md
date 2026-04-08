@@ -114,7 +114,7 @@ Regardless of this setting's value, CockroachDB will verify the following during
 - For the `node` user, that the distinguished name in the certificate Subject matches the distinguished name fields passed in via `cockroach start --node-cert-distinguished-name`.
 - For all other SQL users, that the values in the Subject field of the [X.509 certificate](https://en.wikipedia.org/wiki/X.509) match the values attached to the user or role with `CREATE ROLE ... SUBJECT` or `ALTER ROLE ... SUBJECT`.
 
-#### (Optional) Enable the cluster setting to map users to Subject Alternative Name (SAN) fields
+#### (Optional) Enable the cluster setting to map users to Subject Alternative Name (`SAN`) fields
 
 If your organization uses Subject Alternative Name (`SAN`) fields for user identity mapping, enable the following cluster setting to map user identity to `SAN` fields instead of the default `CN` lookup:
 
