@@ -1357,4 +1357,3 @@ Parameter | Description
 - [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %})
 - [Connection Pooling]({% link {{ page.version.version }}/connection-pooling.md %})
 - [`cockroach` Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
-- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
