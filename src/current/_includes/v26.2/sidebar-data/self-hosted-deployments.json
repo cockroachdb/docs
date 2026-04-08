@@ -52,36 +52,31 @@
               {
                 "title": "Deploy On-Premises",
                 "urls": [
-                  "/${VERSION}/deploy-cockroachdb-on-premises.html",
-                  "/${VERSION}/deploy-cockroachdb-on-premises-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-on-premises.html"
                 ]
               },
               {
                 "title": "Deploy on AWS",
                 "urls": [
-                  "/${VERSION}/deploy-cockroachdb-on-aws.html",
-                  "/${VERSION}/deploy-cockroachdb-on-aws-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-on-aws.html"
                 ]
               },
               {
                 "title": "Deploy on Azure",
                 "urls": [
-                  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html",
-                  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html"
                 ]
               },
               {
                 "title": "Deploy on Google Cloud Platform GCE",
                 "urls": [
-                  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html",
-                  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html"
                 ]
               },
               {
                 "title": "Deploy on Digital Ocean",
                 "urls": [
-                  "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html",
-                  "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html"
                 ]
               }
             ]
@@ -260,12 +255,6 @@
                     ]
                 },
                 {
-                    "title": "Development Topology",
-                    "urls": [
-                    "/${VERSION}/topology-development.html"
-                    ]
-                },
-                {
                     "title": "Basic Production Topology",
                     "urls": [
                     "/${VERSION}/topology-basic-production.html"
@@ -414,14 +403,9 @@
                     ]
                   },
                   {
-                    "title": "Security Tutorials",
-                    "items": [
-                        {
-                            "title": "Use Hashicorp Vault's Dynamic Secrets",
-                            "urls": [
-                                "/${VERSION}/vault-db-secrets-tutorial.html"
-                            ]
-                        }
+                    "title": "Use Hashicorp Vault's Dynamic Secrets",
+                    "urls": [
+                      "/${VERSION}/vault-db-secrets-tutorial.html"
                     ]
                   }
             ]
@@ -457,24 +441,6 @@
                     "title": "Use Prometheus and Alertmanager",
                     "urls": [
                       "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
-                    ]
-                  },
-                  {
-                    "title": "Monitor CockroachDB {{ site.data.products.core }} with Datadog",
-                    "urls": [
-                      "/${VERSION}/datadog.html"
-                    ]
-                  },
-                  {
-                    "title": "Monitor CockroachDB {{ site.data.products.core }} with DBmarlin",
-                    "urls": [
-                      "/${VERSION}/dbmarlin.html"
-                    ]
-                  },
-                  {
-                    "title": "Monitor CockroachDB {{ site.data.products.core }} with Kibana",
-                    "urls": [
-                      "/${VERSION}/kibana.html"
                     ]
                   },
                   {

@@ -164,7 +164,7 @@ Replace:
 You can find the cluster IDs in the cluster creation output, or in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`. The ID will resemble `ad1e8630-729a-40f3-87e4-9f72eb3347a0`.
 
 {{site.data.alerts.callout_info}}
-Once you have started PCR, the standby cluster cannot accept writes and reads, therefore the [Cloud Console]({% link cockroachcloud/cluster-overview-page.md %}) and SQL shell will be unavailable prior to [failover](#fail-over-to-the-standby-cluster).
+Once you have started PCR, the standby cluster cannot accept writes and reads, therefore the [Cloud Console]({% link cockroachcloud/overview-page.md %}) and SQL shell will be unavailable prior to [failover](#fail-over-to-the-standby-cluster).
 {{site.data.alerts.end}}
 
 You will receive a response similar to:

@@ -2,5 +2,3 @@
 - [CockroachDB Resilience]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %})
 - [Low Latency Multi-Region Deployment]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Serializable Transactions]({% link {{ page.version.version }}/demo-serializable.md %})
-- [Cross-Cloud Migration]({% link {{ page.version.version }}/demo-automatic-cloud-migration.md %})
-- [JSON Support]({% link {{ page.version.version }}/demo-json-support.md %})

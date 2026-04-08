@@ -55,7 +55,7 @@ To handle these types of errors, you have the following options:
    - **Go** developers using [GORM](https://github.com/jinzhu/gorm) or [pgx](https://github.com/jackc/pgx) can use the [`github.com/cockroachdb/cockroach-go/crdb`](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) package. For an example, see [Build a Go App with CockroachDB]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb.md %}).
    - **Python** developers using [SQLAlchemy](https://www.sqlalchemy.org) can use the [`sqlalchemy-cockroachdb` adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb). For an example, see [Build a Python App with CockroachDB and SQLAlchemy]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb-sqlalchemy.md %}).
    - **Ruby (Active Record)** developers can use the [`activerecord-cockroachdb-adapter`](https://rubygems.org/gems/activerecord-cockroachdb-adapter). For an example, see [Build a Ruby App with CockroachDB and Active Record]({% link {{ page.version.version }}/build-a-ruby-app-with-cockroachdb-activerecord.md %}).
-- If you're building an application with another driver or data access framework that is [supported by CockroachDB]({% link {{ page.version.version }}/third-party-database-tools.md %}), we recommend reusing the retry logic in our ["Simple CRUD" Example Apps]({% link {{ page.version.version }}/example-apps.md %}). For example, **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can reuse the example code implementing retry logic shown in [Build a Java app with CockroachDB]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %}).
+- If you're building an application with another driver or data access framework that is [supported by CockroachDB]({% link {{ page.version.version }}/third-party-database-tools.md %}), we recommend reusing the retry logic in our "Simple CRUD" Example Apps. For example, **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can reuse the example code implementing retry logic shown in [Build a Java app with CockroachDB]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %}).
 - If you're building an application with a language and framework for which we do not provide example retry logic, you might need to write your own retry logic. For an example, see the [Client-side retry handling example]({% link {{ page.version.version }}/transaction-retry-error-example.md %}).
 - **Advanced users, such as library authors**: See [Advanced Client-Side Transaction Retries]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).
 
@@ -74,6 +74,18 @@ Reduce failed transactions caused by [timestamp pushes]({% link {{ page.version.
 Increase the chance that CockroachDB can [automatically retry]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) a failed transaction:
 
 {% include {{ page.version.version }}/performance/increase-server-side-retries.md %}
+
+### Interpreting log messages
+
+In CockroachDB {{ page.version.version }}, the `meta={... key=/Table/...}` field that appears in log output for serialization conflicts identifies the transaction's [transaction record key]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-records) (also known as the _anchor key_), not necessarily the key where the conflict occurred. This anchor key is the first key written by the transaction and is where its record is stored.
+
+{% include_cached new-in.html version="v26.2" %} [Contention events]({% link {{ page.version.version }}/monitor-and-analyze-transaction-contention.md %}) that are recorded when [`sql.contention.record_serialization_conflicts.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-contention-record-serialization-conflicts-enabled) is `true` use the actual key where contention occurred (not the anchor key, as prior versions did) when populating the recorded conflict.
+
+Only the following error types may add a conflicting key to a contention event:
+
+- `TransactionRetryError`
+- `WriteTooOld`
+- `ExclusionViolationError`
 
 ## Transaction retry error reference
 
@@ -192,7 +204,7 @@ See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for 
 ```
 TransactionRetryWithProtoRefreshError: ReadWithinUncertaintyIntervalError:
         read at time 1591009232.376925064,0 encountered previous write with future timestamp 1591009232.493830170,0 within uncertainty interval `t <= 1591009232.587671686,0`;
-        observed timestamps: [{1 1591009232.587671686,0} {5 1591009232.376925064,0}]
+        observed timestamps: [{1 1591009232.587671686,0} {5 1591009232.376925064,0}] meta={id=a3458962 key=/Table/9373/10/5293921467191001339/0 ...}
 ```
 
 **Error type:** Serialization error

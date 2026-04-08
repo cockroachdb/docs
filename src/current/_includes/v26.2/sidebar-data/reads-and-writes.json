@@ -12,12 +12,6 @@
       "title": "Read Data",
       "items": [
         {
-          "title": "Query Data",
-          "urls": [
-            "/${VERSION}/query-data.html"
-          ]
-        },
-        {
           "title": "Reusable Views",
           "urls": [
             "/${VERSION}/views.html"
@@ -58,12 +52,6 @@
           "urls": [
             "/${VERSION}/query-spatial-data.html"
           ]
-        },
-        {
-          "title": "Export Spatial Data",
-          "urls": [
-          "/${VERSION}/export-spatial-data.html"
-          ]
         }
       ]
     },
@@ -71,27 +59,9 @@
       "title": "Write Data",
       "items": [
         {
-          "title": "Insert Data",
-          "urls": [
-            "/${VERSION}/insert-data.html"
-          ]
-        },
-        {
-          "title": "Update Data",
-          "urls": [
-            "/${VERSION}/update-data.html"
-          ]
-        },
-        {
           "title": "Bulk-update Data",
           "urls": [
             "/${VERSION}/bulk-update-data.html"
-          ]
-        },
-        {
-          "title": "Delete Data",
-          "urls": [
-            "/${VERSION}/delete-data.html"
           ]
         },
         {
@@ -141,24 +111,6 @@
       "title": "Test Your Application Locally",
       "urls": [
         "/${VERSION}/local-testing.html"
-      ]
-    },
-    {
-      "title": "JSON Support",
-      "urls": [
-        "/${VERSION}/demo-json-support.html"
-      ]
-    },
-    {
-      "title": "Spatial Data",
-      "urls": [
-        "/${VERSION}/spatial-tutorial.html"
-      ]
-    },
-    {
-      "title": "Cross-Cloud Migration",
-      "urls": [
-        "/${VERSION}/demo-automatic-cloud-migration.html"
       ]
     },
     {

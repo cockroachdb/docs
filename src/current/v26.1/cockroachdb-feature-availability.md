@@ -63,10 +63,6 @@ The [`LTREE` data type]({% link {{ page.version.version }}/ltree.md %}) stores h
 
 The `metrics` Prometheus endpoint is commonly used and is the default in Prometheus configurations.
 
-### Value separation
-
-[Value separation]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) reduces write amplification by storing large values separately from the LSM in blob files. Value separation can reduce write amplification by up to 50% for large-value workloads, while introducing minor read overhead and a slight increase in disk space usage. This feature is available in Preview.
-
 ### `database` and `application_name` labels for certain metrics
 
 The following cluster settings enable the [`database` and `application_name` labels for certain metrics]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}#enable-database-and-application_name-labels), along with their internal counterparts if they exist:
@@ -86,7 +82,7 @@ The SQL built-in function [workload_index_recs]({% link {{ page.version.version 
 
 ### Triggers
 
-[Triggers]({% link {{ page.version.version }}/triggers.md %}) are in Preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
+[Triggers]({% link {{ page.version.version }}/triggers.md %}) are in preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
 
 ### JWT authorization
 
@@ -98,19 +94,19 @@ The SQL built-in function [workload_index_recs]({% link {{ page.version.version 
 
 ### Admission control for ingesting snapshots
 
-The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` is in Preview. When configured, it limits the disk impact of ingesting snapshots on a node.
+The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` is in preview. When configured, it limits the disk impact of ingesting snapshots on a node.
 
 ### Admission control to limit the bandwidth for a store
 
-The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.provisioned_bandwidth` is in Preview. When configured, the store's bandwidth is limited to the configured bandwidth, expressed in bytes per second,
+The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.provisioned_bandwidth` is in preview. When configured, the store's bandwidth is limited to the configured bandwidth, expressed in bytes per second,
 
 ### CockroachDB Standard
 
 CockroachDB {{ site.data.products.standard }} is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability. Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
 
-### CockroachDB Cloud Folders
+### Fault tolerance demo
 
-[Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
+CockroachDB {{ site.data.products.advanced }} includes a [built-in fault tolerance demo]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud) that allows you to monitor query execution during a simulated failure and recovery. The fault tolerance demo is in preview.
 
 ### Read from standby in physical cluster replication (PCR) for CockroachDB {{ site.data.products.core }}
  
@@ -278,12 +274,6 @@ Command                                     | Description
 --------------------------------------------+-------------
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
-
-### Leader leases
-
-{% include {{ page.version.version }}/leader-leases-intro.md %}
-
-For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
 ### Buffered Writes
 

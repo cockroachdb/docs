@@ -133,78 +133,9 @@
       ]
     },
     {
-      "title": "Advanced Example Applications",
-      "items": [
-        {
-          "title": "Overview",
-          "urls": [
-            "/${VERSION}/example-apps.html"
-          ]
-        },
-        {
-          "title": "Spring Boot",
-          "items": [
-            {
-              "title": "Spring Boot with JDBC",
-              "urls": [
-                "/${VERSION}/build-a-spring-app-with-cockroachdb-jdbc.html"
-              ]
-            },
-            {
-              "title": "Spring Boot with JPA",
-              "urls": [
-                "/${VERSION}/build-a-spring-app-with-cockroachdb-jpa.html"
-              ]
-            }
-          ]
-        },
-        {
-          "title": "MovR",
-          "items": [
-            {
-              "title": "Overview",
-              "urls": [
-                "/${VERSION}/movr.html"
-              ]
-            },
-            {
-              "title": "Global Application Use Case",
-              "urls": [
-                "/${VERSION}/movr-flask-use-case.html"
-              ]
-            },
-            {
-              "title": "Multi-region Database Schema",
-              "urls": [
-                "/${VERSION}/movr-flask-database.html"
-              ]
-            },
-            {
-              "title": "Set up a Development Environment",
-              "urls": [
-                "/${VERSION}/movr-flask-setup.html"
-              ]
-            },
-            {
-              "title": "Develop a Global Application",
-              "urls": [
-                "/${VERSION}/movr-flask-application.html"
-              ]
-            },
-            {
-              "title": "Deploy a Global Application",
-              "urls": [
-                "/${VERSION}/movr-flask-deployment.html"
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
-          "urls": [
-            "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
-          ]
-        }
+      "title": "MovR",
+      "urls": [
+        "/${VERSION}/movr.html"
       ]
     }
   ]

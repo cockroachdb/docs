@@ -26,17 +26,6 @@ docs_area:
       </div>
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex">
-        <a href="example-apps.html" class="h-100">
-          <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
-            <h6 class="mt-2 mt-0 text-black">Sample <br>apps</h6>
-            <p class="text-black">Examples that show you how to build a simple "Hello World" application with CockroachDB</p>
-            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
-          </div>
-          </a>
-        </div>
-        </div>
-      <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
-        <div class="card card-link h-100 d-flex">
         <a href="frequently-asked-questions.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
             <h6 class="m-0 text-black">CockroachDB <br>FAQ</h6>
@@ -72,7 +61,6 @@ docs_area:
         <li><a href="install-cockroachdb.html">Install CockroachDB</a></li>
         <li><a href="secure-a-cluster.html">Start a Local Cluster</a></li>
         <li><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
-        <li><a href="example-apps.html">Build a Sample Application</a></li>
         <li><a href="demo-cockroachdb-resilience.html">Explore Capabilities</a></li>
       </ul>
     </div>
@@ -80,7 +68,6 @@ docs_area:
       <p class="landing-column-title">Develop</p>
       <ul>
         <li><a href="developer-guide-overview.html">Common Dev Tasks</a></li>
-        <li><a href="example-apps.html">Sample Apps</a></li>
         <li><a href="sql-feature-support.html">SQL Reference</a></li>
         <li><a href="performance-best-practices-overview.html">SQL Best Practices</a></li>
         <li><a href="query-behavior-troubleshooting.html">SQL Troubleshooting</a></li>

@@ -26,7 +26,7 @@ The changefeed pipeline contains three main sections that start at the [storage 
 
 Where noted in the following sections, you can use changefeed [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) to measure metrics per changefeed.
 
-You can [enable the Datadog integration]({% link {{ page.version.version }}/datadog.md %}) on your cluster to collect data and alert on [selected CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
+You can enable Datadog integration on your cluster to collect data and alert on [selected CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
 
 {{site.data.alerts.callout_info}}
 Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names can differ, refer to the [Datadog metrics list](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#metrics).

@@ -161,7 +161,7 @@ Exit the SQL shell:
 > \q
 ~~~
 
-## Step 6. Run the application
+## Step 5. Run the application
 
 To run the application:
 
@@ -410,5 +410,4 @@ CockroachDB documentation:
 - [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
 - [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
 - [CockroachDB Developer Guide]({% link {{ page.version.version }}/developer-guide-overview.md %})
-- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 - [Transactions]({% link {{ page.version.version }}/transactions.md %})

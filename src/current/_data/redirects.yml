@@ -422,7 +422,7 @@
     - show-transaction.md
   versions: [':version']
 
-- destination: stable/example-apps.md#python
+- destination: stable/build-a-python-app-with-cockroachdb-psycopg3
   sources:
     - v20.1/build-a-python-app-with-cockroachdb-pony.md
 
@@ -1073,11 +1073,88 @@
   sources: ['cockroachcloud/learn-cockroachdb-sql.md']
 
 - destination: cockroachcloud/client-certs-advanced.md
-  sources: ['v26.1/security-reference/config-secure-hba.md', 'stable/security-reference/config-secure-hba.md']
+  sources: ['v26.1/security-reference/config-secure-hba.md', 'stable/security-reference/config-secure-hba.md', 'v26.2/security-reference/config-secure-hba.md']
 
 - destination: cockroachdb-operator-overview.md
   sources: ['orchestrate-a-local-cluster-with-kubernetes.md', 'orchestrate-a-local-cluster-with-kubernetes-insecure.md']
-  versions: ['v26.1']
+  versions: ['v26.1', 'v26.2']
 
+- destination: deploy-cockroachdb-on-premises.md
+  sources: ['deploy-cockroachdb-on-premises-insecure.md']
+  versions: ['v26.1', 'v26.2']
 
+- destination: deploy-cockroachdb-on-aws.md
+  sources: ['deploy-cockroachdb-on-aws-insecure.md']
+  versions: ['v26.1', 'v26.2']
 
+- destination: deploy-cockroachdb-on-microsoft-azure.md
+  sources: ['deploy-cockroachdb-on-microsoft-azure-insecure.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: deploy-cockroachdb-on-google-cloud-platform.md
+  sources: ['deploy-cockroachdb-on-google-cloud-platform-insecure.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: deploy-cockroachdb-on-digital-ocean.md
+  sources: ['deploy-cockroachdb-on-digital-ocean-insecure.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: stable/developer-guide-overview.md
+  sources: ['cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md']
+
+- destination: developer-guide-overview.md
+  sources: ['example-apps.md', 'build-a-spring-app-with-cockroachdb-jdbc.md', 'build-a-spring-app-with-cockroachdb-jpa.md', 'movr-flask-use-case.md', 'movr-flask-database.md', 'movr-flask-setup.md', 'movr-flask-application.md', 'movr-flask-deployment.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: topology-patterns.md
+  sources: ['topology-development.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: monitoring-and-alerting.md
+  sources: ['datadog.md', 'dbmarlin.md', 'kibana.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: schema-design-overview.md
+  sources: ['schema-design-database.md', 'schema-design-schema.md', 'schema-design-table.md', 'schema-design-update.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: reads-and-writes-overview.md
+  sources: ['query-data.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: cockroachcloud/overview-page.md
+  sources: ['cockroachcloud/cluster-overview-page.md']
+
+- destination: releases/index.md
+  sources: ['releases/staged-release-process.md']
+  
+- destination: releases/downloads-archive.md
+  sources: ['releases/unsupported-versions.md']
+
+- destination: delete.md
+  sources: ['delete-data.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: configure-replication-zones.md
+  sources: ['demo-automatic-cloud-migration.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: jsonb.md
+  sources: ['demo-json-support.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: query-spatial-data.md
+  sources: ['export-spatial-data.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: insert.md
+  sources: ['insert-data.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: spatial-data-overview.md
+  sources: ['spatial-tutorial.md', 'geoserver.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: update.md
+  sources: ['update-data.md']
+  versions: ['v26.1', 'v26.2']

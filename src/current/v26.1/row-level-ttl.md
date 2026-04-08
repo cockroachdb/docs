@@ -586,7 +586,6 @@ If you are migrating your TTL usage from an earlier version of CockroachDB, the 
 ## See also
 
 - [Bulk-delete Data]({% link {{ page.version.version }}/bulk-delete-data.md %})
-- [Delete data]({% link {{ page.version.version }}/delete-data.md %})
 - [`DELETE`]({% link {{ page.version.version }}/delete.md %})
 - [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %})
 - [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %})
