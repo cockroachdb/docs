@@ -11123,7 +11123,7 @@
   release_date: '2026-04-08'
   release_type: Production
   go_version: go1.25.5
-  sha: cb739bd0afc756af4216b3e9372738fce619e7b2
+  sha: beea59c4620c6b990655bf57f1193efc8fd46bf0
   has_sql_only: true
   has_sha256sum: true
   mac:
