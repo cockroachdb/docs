@@ -17,7 +17,9 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 ## View cluster overview
 
-The **Overview** page displays details about the selected CockroachDB {{ site.data.products.basic }} cluster. For more information, see [Cluster Overview Page]({% link cockroachcloud/cluster-overview-page.md %}).
+The **Overview** page displays details about the selected CockroachDB {{ site.data.products.basic }} cluster. For more information, see [Overview Page]({% link cockroachcloud/overview-page.md %}).
+
+Click the **Connect** button to get client connection details for your cluster. For more information, see [Connect to Your CockroachDB Cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
 
 ## Edit labels
 
@@ -31,8 +33,11 @@ This feature is not available if your organization is billed through [Credits]({
 
 The monthly cost estimate is calculated using simple extrapolation that assumes your workload during the selected time frame is an accurate representation of your workload over the month. If you haven't been running a workload for at least the length of the selected time frame, your results will be inaccurate.
 
-1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
-1. On the **Edit cluster** page, navigate to **Capacity**.
+1. Click on the three-dots menu and select **Edit cluster**.
+
+    The **Edit cluster** page displays.
+
+1. Click on **Next: Capacity** to open the **Capacity** page.
 1. Under the **Estimate cost based on usage** section, select a time period in which your workload was active.
 
     Your used [RUs]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrued costs and monthly cost estimate do not account for the [$15 of free resources each month]({% link cockroachcloud/plan-your-cluster-basic.md %}#free-vs-paid-usage) granted to each organization (excluding those with annual or multi-year contracts), which you would have to use up before being charged.
@@ -41,8 +46,11 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 
 The price-performance characteristics of CockroachDB {{ site.data.products.basic }} vary significantly depending on the workload. It can be difficult to estimate a workload's compute requirements in advance. With {{ site.data.products.basic }}, by default compute and storage scale with your cluster's needs, but you can limit a cluster's resource usage:
 
-1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
+1. Click on the three-dots menu and select **Edit cluster**.
 
+    The **Edit cluster** page displays.
+
+1. Click on **Next: Capacity** to open the **Capacity** page.
 1. On the **Capacity** page, edit the resource limits. In the sidebar, click **Update cluster**.
 
 Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}).
@@ -60,7 +68,7 @@ You can only add regions to clusters created after May 16, 2023.
 To add regions to your cluster:
 
 1. Navigate to the cluster's **Overview** page.
-1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
+1. Click on **Settings** to expand the **Cluster settings** section, then click on **Edit** next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
@@ -74,7 +82,7 @@ To add regions to your cluster:
 To set the primary region:
 
 1. Navigate to the cluster's **Overview** page.
-1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
+1. Click on **Settings** to expand the **Cluster settings** section, then click on **Edit** next to the cluster's **Regions**.
 
     The **Edit cluster** page displays.
 
@@ -106,7 +114,8 @@ You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-
 To help prevent a cluster from being deleted by mistake, you can enable _deletion protection_. Before you can delete a cluster with deletion protection enabled, you must disable deletion protection. A user with permission to delete a cluster can enable deletion protection on the same cluster.
 
 1. Navigate to the **Overview** page for the cluster you want to protect.
-1. If deletion protection is disabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
+1. Click on **Settings** to open the **Cluster settings** panel.
+1. If deletion protection is off, click **Edit**. Toggle the setting, then click **Save**.
 
 ## Delete cluster
 
@@ -120,9 +129,8 @@ Free CockroachDB {{ site.data.products.basic }} clusters are subject to deletion
 
 Proceed with the following steps only if you are sure you want to delete a cluster:
 
-1. Navigate to the **Overview** page for the cluster you want to delete.
-1. If [deletion protection](#enable-deletion-protection) is enabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
-1. Click the **Actions** button in the top right corner.
+1. Turn off [deletion protection](#enable-deletion-protection) if it is enabled.
+1. Click on the three-dots menu.
 1. Select **Delete cluster**.
 1. In the confirmation window, enter the name of the cluster.
 1. Click **Delete**.
