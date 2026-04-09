@@ -18,7 +18,7 @@ For example, if you index an `INT` column and then filter it `WHERE <indexed col
 
 You can also create an index on a subset of rows. This type of index is called a _partial index_. For more information, see [Partial Indexes]({% link {{ page.version.version }}/partial-indexes.md %}).
 
-To index [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}), CockroachDB uses _spatial indexes_. For more information, see [Spatial Indexes]({% link {{ page.version.version }}/spatial-indexes.md %}).
+To index [spatial data]({% link {{ page.version.version }}/query-spatial-data.md %}), CockroachDB uses _spatial indexes_. For more information, see [Spatial Indexes]({% link {{ page.version.version }}/spatial-indexes.md %}).
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 

@@ -1,0 +1,133 @@
+name: Validate Branch Existence
+
+# EDUENG-614
+# Verifies that every crdb_branch_name in versions.csv exists as a branch in
+# cockroachdb/generated-diagrams, and flags entries where a proper release-X.Y
+# branch has been created but versions.csv still points to an older one.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'src/current/_data/versions.csv'
+  schedule:
+    # Daily at 07:00 UTC.
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+jobs:
+  validate-branch-existence:
+    name: Check crdb_branch_name entries against generated-diagrams
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run branch existence check
+        id: validate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTIONS: 'true'
+        run: python .github/scripts/validate_branch_existence.py
+        continue-on-error: true
+
+      - name: Post PR comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- branch-existence-check -->';
+
+            let body = marker + '\n';
+            try {
+              body += fs.readFileSync('pr-comment.md', 'utf8');
+            } catch {
+              body += '### Branch Existence Check\n\nCheck ran but could not generate a detailed report.';
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(
+              c => c.user.type === 'Bot' && c.body.includes(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+      - name: Fail on PR issues
+        if: github.event_name == 'pull_request' && steps.validate.outcome == 'failure'
+        run: |
+          echo "Branch existence check failed. See the PR comment for details."
+          exit 1
+
+      - name: Open or update tracking issue (scheduled failure)
+        if: github.event_name != 'pull_request' && steps.validate.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const runUrl = `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+
+            let detail = '';
+            try {
+              detail = fs.readFileSync('pr-comment.md', 'utf8');
+            } catch {
+              detail = `Check failed. See [workflow run](${runUrl}) for details.`;
+            }
+
+            const label = 'sql-diagram-validation';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label,
+            });
+
+            if (issues.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Branch existence check failure (automated)',
+                body: [
+                  'Opened automatically by the nightly branch existence workflow.',
+                  '',
+                  detail,
+                  '',
+                  `[Workflow run](${runUrl})`,
+                ].join('\n'),
+                labels: [label],
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues[0].number,
+                body: `**Nightly update** — [run ${{ github.run_id }}](${runUrl}):\n\n${detail}`,
+              });
+            }

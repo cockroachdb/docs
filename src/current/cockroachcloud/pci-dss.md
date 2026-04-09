@@ -86,6 +86,8 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
 
 CockroachDB {{ site.data.products.advanced }} is certified by a PCI QSA to be compliant with [PCI DSS 4.0](https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Reporting%20Template%20or%20Form/PCI-DSS-v4-0-1-ROC-AOC-Merchants.pdf) within the DBaaS platform. Customers are still responsible to ensure that their applications are PCI DSS compliant. Customers may need to take the additional actions outlined in [Responsibilities of the customer](#responsibilities-of-the-customer) to maintain their own PCI compliance when using CockroachDB {{ site.data.products.advanced }} clusters for cardholder data or other sensitive data.
 
+The **PCI DSS Ready** page in the CockroachDB {{ site.data.products.cloud }} console allows you to track your cluster's utilization of advanced security features that enable the cluster's PCI DSS readiness.
+
 ## Responsibilities of Cockroach Labs
 
 Cockroach Labs takes actions to ensure that the operating procedures and the deployment environment for CockroachDB {{ site.data.products.advanced }} clusters meet or exceed the requirements of PCI DSS 4.0. Some of these actions include:
