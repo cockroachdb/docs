@@ -17,7 +17,7 @@ When accessing the CockroachDB {{ site.data.products.cloud }} Console through Go
 With this approach:
 
 - The IdP manages MFA policies and enrollment for all SSO users
-- Users authenticate through your IdP's MFA flow (push notifications, TOTP codes, biometrics, etc.)
+- Users authenticate through your IdP's MFA flow
 - CockroachDB {{ site.data.products.cloud }} Console inherits the MFA protection from your IdP
 
 Refer to your IdP's documentation for configuring MFA.
@@ -28,7 +28,7 @@ Refer to your IdP's documentation for configuring MFA.
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v26.2" %} While Cockroach Labs recommends SSO for CockroachDB {{ site.data.products.cloud }} Console access, organizations commonly retain password-based accounts as a failsafe when SSO is unavailable. To ensure that these remaining password-based accounts are well-protected, you can enable Cockroach {{ site.data.products.cloud }}'s native MFA feature for password-based access:
+{% include_cached new-in.html version="v26.2" %} While Cockroach Labs recommends SSO for CockroachDB {{ site.data.products.cloud }} Console access, organizations commonly retain password-based accounts as a failsafe when SSO is unavailable. To ensure that these remaining password-based accounts are well-protected, you can enable CockroachDB {{ site.data.products.cloud }}'s native MFA feature for password-based access:
 
 - All users who authenticate with a password (rather than SSO) must enroll in Time-based One-Time Password (TOTP) authentication
 - Users scan a QR code with a standard authenticator app (Google Authenticator, Authy, 1Password, Microsoft Authenticator, etc.)
@@ -37,13 +37,13 @@ Refer to your IdP's documentation for configuring MFA.
 
 Only organizations that have [enabled Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %}#enable-cloud-organization-sso) can set up MFA for these password-based accounts.
 
-Organization Admins can [enforce MFA usage for all password-based accounts](#enable-mfa-enforcement-for-all-password-based-accounts), which ensures account security across the organization.
+[Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) can [enforce MFA usage for all password-based accounts](#enable-mfa-enforcement-for-all-password-based-accounts), which ensures account security across the organization.
 
 ### Set up MFA for a password-based account
 
 You can increase the security of password-based access to the CockroachDB {{ site.data.products.cloud }} Console by setting up MFA for your account. This feature is specific to password-based access. MFA for [SSO users]({% link cockroachcloud/cloud-org-sso.md %}#cloud-organization-sso) is managed directly by the identity provider.
 
-Organization Admins can initiate MFA setup for their own accounts when they [enable MFA enforcement](#enable-mfa-enforcement-for-all-password-based-accounts). All users will be required to initiate MFA setup upon attempting to log in after MFA enforcement has been enabled by an Organization Admin:
+[Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) can initiate MFA setup for their own accounts when they [enable MFA enforcement](#enable-mfa-enforcement-for-all-password-based-accounts). All users will be required to initiate MFA setup upon attempting to log in after MFA enforcement has been enabled by an Organization Admin:
 
 1. A 6-digit verification code will be sent to the email associated with the account. Enter the code then click **Verify & Continue**.
 1. Scan the QR code using an authenticator app. You will receive another 6-digit code via the app. Enter the code then click **Verify & Continue**.
@@ -69,13 +69,13 @@ MFA verification is required once per session. You won't be prompted again until
 
 ### Enable MFA enforcement for all password-based accounts
 
-Organization Admins can require password-based users to use MFA to access the CockroachDB {{ site.data.products.cloud }} Console.
+[Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) can require password-based users to use MFA when accessing the CockroachDB {{ site.data.products.cloud }} Console.
 
 Before you can enforce MFA, you must have [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}#cloud-organization-sso) enabled for your organization. First make a [plan to enable Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %}#plan-to-enable-cloud-organization-sso), then [enable Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %}#enable-cloud-organization-sso).
 
 1. Log in to the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role.
 1. Go to **Organization** > **Authentication**.
-1. Under **Authentication Methods**, click on the **Username and Password** method.
+1. Under **Authentication Methods**, click **Username and Password**.
 1. If you have not yet enabled [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}#cloud-organization-sso), you will be prompted to do so.
 1. At least one Organization Admin must enable MFA on their own account before MFA enforcement can be enabled for all users. If no Organization Admins have enabled MFA, you will be prompted to do so:
     1. Click **Set up Multi-Factor Authentication on your account**.
@@ -85,11 +85,23 @@ Before you can enforce MFA, you must have [Cloud Organization SSO]({% link cockr
 
 Once enabled, all password-based users will be required to [enroll in MFA](#set-up-mfa-for-a-password-based-account) at their next login. 
 
-Note that this does not enforce MFA for users who log in via SSO or social credentials. MFA enforcement for those users is handled by the respective SSO or social platform.
+Organization admins can enable MFA enforcement using the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}#toggle-the-organizations-mfa-enforcement-policy).
+
+{{site.data.alerts.callout_info}}
+This does not enforce MFA for users who log in via SSO or social credentials. MFA enforcement for those users is handled by the respective SSO or social platform.
+{{site.data.alerts.end}}
 
 ### Reset a user's MFA
 
-TODO
+[Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) can reset the MFA of any users who have [set up MFA](#set-up-mfa-for-a-password-based-account) for their password-based access. Resetting the MFA will invalidate the user's existing TOTP binding and recovery codes, and it will force the user to go through the enrollment process upon their next login. To reset a user's MFA:
+
+1. Log in to the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role.
+1. Go to **Organization** > **Authentication**.
+1. Under **Authentication Methods**, click **Username and Password**.
+1. If [MFA enforcement has already been enabled](#enable-mfa-enforcement-for-all-password-based-accounts), this **Method Details** page will state that **MFA enforcement is active**. Click **View enrollment status**.
+1. A table containing the organization's MFA-enrolled users will appear. Under the **Action** column, you may choose to **Reconfigure MFA** for Organization Admins, or **Reset MFA** for other users. Click on the action to reset the user's MFA.
+
+Organization admins can also reset a user's MFA using the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}#reset-mfa-for-a-user).
 
 ### Recover your account
 
@@ -105,6 +117,7 @@ If every Organization Admin has been locked out, contact [CockroachDB Support](h
 
 ## See also
 
+- [Use the CockroachDB Cloud API: Manage multi-factor authentication (MFA) enrollment]({% link cockroachcloud/cloud-api.md %}#manage-multi-factor-authentication-mfa-enrollment)
 - [Single Sign-On (SSO) for CockroachDB Cloud organizations]({% link cockroachcloud/cloud-org-sso.md %})
 - [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})
 - [Require SSO]({% link cockroachcloud/configure-cloud-org-sso.md %}#require-sso)
