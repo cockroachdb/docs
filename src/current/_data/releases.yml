@@ -11004,13 +11004,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.29
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 
 - release_name: v25.2.16
@@ -11039,13 +11032,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.15
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 
 - release_name: v25.4.7
@@ -11074,13 +11060,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.4.6
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 
 - release_name: v26.1.2
@@ -11109,13 +11088,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v26.1.1
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 
 - release_name: v26.2.0-beta.3
