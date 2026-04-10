@@ -97,6 +97,7 @@ A few other recommendations apply for best security practices:
 - Do not switch from encrypted to plaintext, this leaks data keys. When plaintext is selected, all previously encrypted data must be considered reachable.
 - Do not copy the encrypted files, as the data keys are not easily available.
 - If encryption is desired, start a node with it enabled from the first run, without ever running in plaintext.
+- To maximize post-quantum security, use AES-256 to encrypt data.
 
 {{site.data.alerts.callout_danger}}
 Note that backups taken with the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) statement **are not encrypted** even if Encryption at Rest is enabled. Encryption at Rest only applies to the CockroachDB node's data on the local disk. If you want encrypted backups, you will need to encrypt your backup files using your preferred encryption method.
