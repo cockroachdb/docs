@@ -195,6 +195,10 @@ Note that client connections must also be made insecurely, or the connection req
 
 ## Post-quantum cryptography support in CockroachDB
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 {% include_cached new-in.html version="v26.2" %} CockroachDB supports post-quantum cryptography (PQC) to protect against threats from quantum computers.
 
 ### Key exchange
