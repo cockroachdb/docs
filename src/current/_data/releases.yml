@@ -11176,7 +11176,7 @@
 
 - release_name: v25.4.8
   major_version: v25.4
-  release_date: '2026-04-09'
+  release_date: '2026-04-10'
   release_type: Production
   go_version: go1.25.5
   sha: 466b1cd8cd953daa0c18a38cd32466a5c3dc73a3
