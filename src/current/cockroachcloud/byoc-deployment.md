@@ -49,13 +49,9 @@ Once this Azure subscription has been created and configured to host CockroachDB
 
 {{ site.data.alerts.end }}
 
-## Step 2. Grant admin consent to Cockroach Labs support
+## Step 2. Grant admin consent to the BYOC enterprise application
 
-The CockroachDB {{ site.data.products.cloud }} BYOC Reader is an enterprise application in Azure that is used
-by Cockroach Labs support. Granting admin consent to this application gives **read-only** permissions to allow
-Cockroach Labs support engineers to securely view your Azure resources if needed.
-
-Follow these steps to grant admin consent to the reader application and assign the necessary permissions:
+When BYOC is enabled for your account, Cockroach Labs provisions the CockroachDB {{ site.data.products.cloud }} BYOC Reader enterprise application. This application requires admin consent to deploy the read-only infrastructure that is then used by Cockroach Labs support as needed.
 
 1. Log in to the Azure portal as a user with Global Administrator or Privileged Role Administrator permissions.
 2. Open the following URL in your browser:
@@ -70,8 +66,7 @@ Follow these steps to grant admin consent to the reader application and assign t
     ~~~ text
     https://login.microsoftonline.com/<customer-tenant-id>/adminconsent?client_id=7f6538cb-f687-4411-9bbe-2f96bfbce028
     ~~~
-3. Review the requested permissions and click **Accept**.
-4. A service principal for the CockroachDB {{ site.data.products.cloud }} BYOC reader is created. Grant the following set of roles to the app:
+3. Review the requested permissions and click **Accept**. The following permissions are requested:
    - `Role Based Access Control Administrator`
    - `Azure Kubernetes Service Cluster User Role`
    - `Azure Kubernetes Service Contributor Role`
@@ -82,7 +77,6 @@ Follow these steps to grant admin consent to the reader application and assign t
    - `Storage Blob Data Contributor`
    - `Virtual Machine Contributor`
    - A custom role, `Resource Group Manager`, with the following permissions:
-    
      - `Microsoft.Resources/subscriptions/resourceGroups/read`
      - `Microsoft.Resources/subscriptions/resourceGroups/write`
      - `Microsoft.Resources/subscriptions/resourceGroups/delete`
@@ -96,7 +90,17 @@ Follow these steps to grant admin consent to the reader application and assign t
     
     The custom `Resource Group Manager` role is required to create and manage resource groups in the subscription. This role is used instead of requesting the more broad `Contributor` role.
 
-## Step 3. Configure Azure Lighthouse
+## Step 3. Grant permissions to the service principle
+
+The CockroachDB {{ site.data.products.cloud }} BYOC Reader application creates a read-only service principle. This service principle is only used for read-only access and Kubernetes cluster visibility by Cockroach Labs support.
+
+Assign the following Azure RBAC roles to the service principle at the subscription scope:
+
+- `Reader`
+- `Azure Kubernetes Service Cluster User Role`
+- `Azure Kubernetes Service RBAC Reader`
+
+## Step 4. Configure Azure Lighthouse
 
 [Azure Lighthouse](https://learn.microsoft.com/azure/lighthouse/overview) enables cross-tenant management to Cockroach Labs with least-privilege access and full customer visibility. You can review or remove this access at any time from the Azure portal.
 
@@ -106,7 +110,13 @@ This Azure Lighthouse deployment grants the following permissions to Cockroach L
 - Kubernetes read access for cluster inspection.
 - Administrative access for managed operations.
 
-These permissions are granted to Cockroach Labs's managed tenant, which has a tenant ID of `a4611215-941c-4f86-b53b-348514e57b45`
+These permissions are granted to Cockroach Labs's managed tenant, which has a tenant ID of `a4611215-941c-4f86-b53b-348514e57b45`, by assigning the following roles to the reader and admin Entra groups within the tenant:
+
+- Reader Entra group:
+  - `Reader`
+  - `Azure Kubernetes Service Cluster User Role`
+- Admin Entra group:
+  - `Contributor`
 
 Follow these steps to enable secure, scoped access for Cockroach Labs to your subscription using Azure Lighthouse:
 
