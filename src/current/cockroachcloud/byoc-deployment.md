@@ -49,9 +49,38 @@ Once this Azure subscription has been created and configured to host CockroachDB
 
 {{ site.data.alerts.end }}
 
-## Step 2. Grant admin consent to the BYOC enterprise application
+## Step 2. Set up the admin enterprise application
 
-When BYOC is enabled for your account, Cockroach Labs provisions the CockroachDB {{ site.data.products.cloud }} BYOC Reader enterprise application. This application requires admin consent to deploy the read-only infrastructure that is then used by Cockroach Labs support as needed.
+When BYOC is enabled for your account, Cockroach Labs dynamically provisions a multi-tenant admin App Registration associated with your CockroachDB {{ site.data.products.cloud }} organization and provides you with a URL to grant tenant-wide admin consent to the application. Visit this URL with a user account that is [authorized to consent on behalf of your organization](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal#prerequisites).
+
+Once the Cockroach Labs App Registration has been granted admin consent in the tenant, grant the following set of roles to the app:
+
+- `Role Based Access Control Administrator`
+- `Azure Kubernetes Service Cluster User Role`
+- `Azure Kubernetes Service Contributor Role`
+- `Azure Kubernetes Service RBAC Cluster Admin`
+- `Managed Identity Contributor`
+- `Network Contributor`
+- `Storage Account Contributor`
+- `Storage Blob Data Contributor`
+- `Virtual Machine Contributor`
+- A custom role, `Resource Group Manager`, with the following permissions:
+  - `Microsoft.Resources/subscriptions/resourceGroups/read`
+  - `Microsoft.Resources/subscriptions/resourceGroups/write`
+  - `Microsoft.Resources/subscriptions/resourceGroups/delete`
+  - `Microsoft.Resources/subscriptions/resourceGroups/moveResources/action`
+  - `Microsoft.Resources/subscriptions/resourceGroups/validateMoveResources/action`
+  - `Microsoft.Resources/subscriptions/resourcegroups/deployments/read`
+  - `Microsoft.Resources/subscriptions/resourcegroups/deployments/write`
+  - `Microsoft.Resources/subscriptions/resourcegroups/resources/read`
+  - `Microsoft.Resources/subscriptions/resourcegroups/deployments/operations/read`
+  - `Microsoft.Resources/subscriptions/resourcegroups/deployments/operationstatuses/read`
+
+The custom `Resource Group Manager` role is required to create and manage resource groups in the subscription. This role is used instead of requesting the more broad `Contributor` role.
+
+## Step 3. Set up the reader enterprise application
+
+In addition to the admin application, Cockroach Labs provisions the CockroachDB {{ site.data.products.cloud }} BYOC Reader enterprise application. This application also requires admin consent to deploy the read-only infrastructure that is then used by Cockroach Labs support as needed.
 
 1. Log in to the Azure portal as a user with Global Administrator or Privileged Role Administrator permissions.
 2. Open the following URL in your browser:
@@ -66,51 +95,13 @@ When BYOC is enabled for your account, Cockroach Labs provisions the CockroachDB
     ~~~ text
     https://login.microsoftonline.com/<customer-tenant-id>/adminconsent?client_id=7f6538cb-f687-4411-9bbe-2f96bfbce028
     ~~~
-3. Review the requested permissions and click **Accept**. The following permissions are requested:
-   - `Role Based Access Control Administrator`
-   - `Azure Kubernetes Service Cluster User Role`
-   - `Azure Kubernetes Service Contributor Role`
-   - `Azure Kubernetes Service RBAC Cluster Admin`
-   - `Managed Identity Contributor`
-   - `Network Contributor`
-   - `Storage Account Contributor`
-   - `Storage Blob Data Contributor`
-   - `Virtual Machine Contributor`
-   - A custom role, `Resource Group Manager`, with the following permissions:
-     - `Microsoft.Resources/subscriptions/resourceGroups/read`
-     - `Microsoft.Resources/subscriptions/resourceGroups/write`
-     - `Microsoft.Resources/subscriptions/resourceGroups/delete`
-     - `Microsoft.Resources/subscriptions/resourceGroups/moveResources/action`
-     - `Microsoft.Resources/subscriptions/resourceGroups/validateMoveResources/action`
-     - `Microsoft.Resources/subscriptions/resourcegroups/deployments/read`
-     - `Microsoft.Resources/subscriptions/resourcegroups/deployments/write`
-     - `Microsoft.Resources/subscriptions/resourcegroups/resources/read`
-     - `Microsoft.Resources/subscriptions/resourcegroups/deployments/operations/read`
-     - `Microsoft.Resources/subscriptions/resourcegroups/deployments/operationstatuses/read`
-    
-    The custom `Resource Group Manager` role is required to create and manage resource groups in the subscription. This role is used instead of requesting the more broad `Contributor` role.
+3. Review the requested permissions and click **Accept**.
 
-## Step 3. Grant permissions to the service principle
+## Step 4. Grant permissions to the reader service principle with Azure Lighthouse
 
-The CockroachDB {{ site.data.products.cloud }} BYOC Reader application creates a read-only service principle. This service principle is only used for read-only access and Kubernetes cluster visibility by Cockroach Labs support.
+The CockroachDB {{ site.data.products.cloud }} BYOC Reader application creates a read-only service principle. Use [Azure Lighthouse](https://learn.microsoft.com/azure/lighthouse/overview) to enable cross-tenant management to the service principle with least-privilege access and full customer visibility. You can review or remove this access at any time from the Azure portal.
 
-Assign the following Azure RBAC roles to the service principle at the subscription scope:
-
-- `Reader`
-- `Azure Kubernetes Service Cluster User Role`
-- `Azure Kubernetes Service RBAC Reader`
-
-## Step 4. Configure Azure Lighthouse
-
-[Azure Lighthouse](https://learn.microsoft.com/azure/lighthouse/overview) enables cross-tenant management to Cockroach Labs with least-privilege access and full customer visibility. You can review or remove this access at any time from the Azure portal.
-
-This Azure Lighthouse deployment grants the following permissions to Cockroach Labs:
-
-- Access to the CockroachDB {{ site.data.products.cloud }} BYOC reader application for observability.
-- Kubernetes read access for cluster inspection.
-- Administrative access for managed operations.
-
-These permissions are granted to Cockroach Labs's managed tenant, which has a tenant ID of `a4611215-941c-4f86-b53b-348514e57b45`, by assigning the following roles to the reader and admin Entra groups within the tenant:
+This Azure Lighthouse deployment grants permissions to Cockroach Labs's managed tenant, which has a tenant ID of `a4611215-941c-4f86-b53b-348514e57b45`, by assigning the following roles to the reader and admin Entra groups within the tenant:
 
 - Reader Entra group:
   - `Reader`
@@ -200,7 +191,7 @@ Follow these steps to enable secure, scoped access for Cockroach Labs to your su
       }
       }
     ~~~
-2. Deploy the template at the subscription scope using Azure CLI, Azure PowerShell, or Azure Portal. The following example command uses the Azure CLI:
+2. Deploy the template at the subscription scope using [Azure CLI, Azure PowerShell, or Azure Portal](https://learn.microsoft.com/azure/lighthouse/how-to/onboard-customer?tabs=azure-portal#deploy-the-azure-resource-manager-template). The following example command uses the Azure CLI:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     az deployment sub create \
@@ -209,7 +200,7 @@ Follow these steps to enable secure, scoped access for Cockroach Labs to your su
       --template-file byoc-lighthouse.json
     ~~~
 
-## Step 4. Register resource providers
+## Step 5. Register resource providers
 
 Register the following [resource providers](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types) in the Azure subscription:
 
@@ -219,7 +210,7 @@ Register the following [resource providers](https://learn.microsoft.com/azure/az
 - `Microsoft.Quota`
 - `Microsoft.Storage`
 
-## Step 5. Create the CockroachDB {{ site.data.products.cloud }} cluster
+## Step 6. Create the CockroachDB {{ site.data.products.cloud }} cluster
 
 In BYOC deployments, CockroachDB clusters are deployed with the {{ site.data.products.cloud }} API and must use the {{ site.data.products.advanced }} plan. Follow the API documentation to [create a CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} cluster]({% link cockroachcloud/cloud-api.md %}#create-an-advanced-cluster).
 
