@@ -30,7 +30,7 @@ The statement execution details page provides the following details on the state
 
 If a statement execution is waiting, the statement execution details are followed by Contention Insights and details of the statement execution on which the blocked statement execution is waiting. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
-<img src="{{ 'images/v23.1/waiting-statement.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/waiting-statement.png" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
