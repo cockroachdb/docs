@@ -49,11 +49,11 @@ Once this Azure subscription has been created and configured to host CockroachDB
 
 {{ site.data.alerts.end }}
 
-## Step 2. Set up the admin enterprise application
+## Step 2. Set up the admin App Registration
 
-When BYOC is enabled for your account, Cockroach Labs dynamically provisions a multi-tenant admin App Registration associated with your CockroachDB {{ site.data.products.cloud }} organization and provides you with a URL to grant tenant-wide admin consent to the application. Visit this URL with a user account that is [authorized to consent on behalf of your organization](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal#prerequisites).
+When BYOC is enabled for your account, Cockroach Labs dynamically provisions a multi-tenant admin App Registration associated with your CockroachDB {{ site.data.products.cloud }} organization and provides you with a URL to grant tenant-wide admin consent to the application. Granting admin consent creates an admin Service Principal in your tenant, which is used to grant Cockroach Labs engineers admin access to the Kubernetes cluster to assist in the event of an escalation.
 
-Once the Cockroach Labs App Registration has been granted admin consent in the tenant, grant the following set of roles to the app:
+Visit this URL with a user account that is [authorized to consent on behalf of your organization](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal#prerequisites). Once the Cockroach Labs App Registration has been granted admin consent in the tenant, grant the following set of roles to the admin Service Principal:
 
 - `Role Based Access Control Administrator`
 - `Azure Kubernetes Service Cluster User Role`
@@ -78,9 +78,11 @@ Once the Cockroach Labs App Registration has been granted admin consent in the t
 
 The custom `Resource Group Manager` role is required to create and manage resource groups in the subscription. This role is used instead of requesting the more broad `Contributor` role.
 
-## Step 3. Set up the reader enterprise application
+## Step 3. Set up the reader App Registration
 
-In addition to the admin application, Cockroach Labs provisions the CockroachDB {{ site.data.products.cloud }} BYOC Reader enterprise application. This application also requires admin consent to deploy the read-only infrastructure that is then used by Cockroach Labs support as needed.
+In addition to the admin application, Cockroach Labs provisions the CockroachDB {{ site.data.products.cloud }} BYOC Reader App Registration. This App Registration is used to grant Cockroach Labs engineers the default read-only access to Azure cloud resources. 
+
+This reader application also requires admin consent to deploy the reader Service Principal:
 
 1. Log in to the Azure portal as a user with Global Administrator or Privileged Role Administrator permissions.
 2. Open the following URL in your browser:
