@@ -24,6 +24,8 @@ ASH captures point-in-time snapshots of each node's active work by sampling clus
 
 Because ASH is sampling-based rather than event-based, the sample count for a particular activity is proportional to how much time was spent on that activity. For example, if a query appears in 45 out of 60 sample points over one minute, it was actively consuming resources for approximately 45 seconds of that minute. This approach provides an accurate picture of resource usage patterns over time, but it means that short-lived operations completed between sampling points may not be captured. To troubleshoot very brief operations, you may need to reduce the `obs.ash.sample_interval` cluster setting.
 
+ASH does not provide exact resource accounting per query or job, nor does it provide the exact timing of individual executions. Its sampling-based approach instead provides a statistically reliable view of the system at a given time, which can help with troubleshooting.
+
 These point-in-time samples can be used to:
 
 - **Root-cause slow queries**: Understand exactly what a query was doing at specific points in time (e.g., waiting for locks, performing I/O, consuming CPU).
@@ -31,6 +33,19 @@ These point-in-time samples can be used to:
 - **Troubleshoot transient issues**: Diagnose performance problems that don't show up in aggregated statistics because they're intermittent or short-lived.
 - **Analyze resource usage patterns**: Understand how different workloads (user queries, background jobs, system operations) consume cluster resources.
 - **Compare performance across time**: Analyze how workload behavior changes during different time periods (e.g., peak vs. off-peak hours).
+
+### Use ASH alongside other monitoring tools
+
+ASH complements CockroachDB's existing observability tools. Each tool serves a different purpose:
+
+| Tool | What it's best for |
+|------|-------------------|
+| [Prometheus metrics]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) | Real-time alerts on resource usage, latency, or errors. Monitoring overall cluster health and capacity trends over time. ASH is retrospective and sampling-based, not designed for alerting, and its in-memory storage means samples are lost on restart. |
+| [Statements Page]({% link {{ page.version.version }}/ui-statements-page.md %}) | Aggregated statistics about query performance over hours, days, or weeks. Identifying slow queries based on latency percentiles, tracking performance changes after schema updates, and understanding total resource consumption across all executions. ASH shows what was actively running at specific moments, but not the aggregated trends needed for performance baselines. |
+| [Insights Page]({% link {{ page.version.version }}/ui-insights-page.md %}) | Automatically flagging queries with performance problems such as high contention, failed executions, or suboptimal plans. Provides optimization recommendations without requiring diagnostic queries. ASH helps investigate why a problem occurred at a specific time, while Insights tells you which queries are problematic. |
+| [Statement diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) and [execution logs]({% link {{ page.version.version }}/logging-use-cases.md %}#sql_exec) | Complete traces of single query executions, including all operators, data flow, and exact execution plans with timings. ASH's sampling may miss short-lived operations and doesn't provide operator-level detail. |
+
+ASH can often be used with these other tools to help troubleshoot issues. For example, Prometheus metrics might alert you to a problem (such as a CPU spike at 2:15 PM). ASH shows which queries and jobs were actively running during that spike and which took a disproportionate amount of time to run. The Statements Page then provides aggregated performance data for those queries over a longer period of time, and statement diagnostics give detailed execution plans for deeper analysis.
 
 ## ASH cluster settings
 
