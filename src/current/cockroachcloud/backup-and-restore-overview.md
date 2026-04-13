@@ -48,7 +48,7 @@ You can run the following types of self-managed backups:
 
 CockroachDB supports [creating schedules for periodic backups]({% link {{site.current_cloud_version}}/create-schedule-for-backup.md %}). Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of [protected timestamps]({% link {{site.current_cloud_version}}/architecture/storage-layer.md %}#protected-timestamps) means that you can run scheduled backups at a cadence independent from the [GC TTL]({% link {{site.current_cloud_version}}/configure-replication-zones.md %}#gc-ttlseconds) of the data.
 
-For detail on scheduled backup features CockroachDB supports:
+Read the following documentation for more information on the scheduled backup features supported by CockroachDB:
 
 - [Set up monitoring for the backup schedule]({% link {{site.current_cloud_version}}/manage-a-backup-schedule.md %}#set-up-monitoring-for-the-backup-schedule)
 - [View]({% link {{site.current_cloud_version}}/manage-a-backup-schedule.md %}#view-the-schedule), [pause]({% link {{site.current_cloud_version}}/manage-a-backup-schedule.md %}#pause-the-schedule), [resume]({% link {{site.current_cloud_version}}/manage-a-backup-schedule.md %}#resume-the-schedule), or [drop]({% link {{site.current_cloud_version}}/manage-a-backup-schedule.md %}#drop-the-schedule) the schedule.
