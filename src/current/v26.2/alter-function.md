@@ -6,7 +6,7 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `ALTER FUNCTION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) applies a [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) to a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
+The `ALTER FUNCTION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) applies a [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) to a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %})..
 
 ## Required privileges
 
