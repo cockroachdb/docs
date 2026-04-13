@@ -1,13 +1,17 @@
-During a major-version upgrade, certain features and performance improvements are not available until the upgrade is finalized. In v26.1, these are:
+During a major-version upgrade, certain features and performance improvements are not available until the upgrade is finalized. In v26.2, these are:
 
-- Bullet
+- **`security_invoker` option for views**: {% comment %}TODO: Verify with @shadiGh{% endcomment %}Views now support the PostgreSQL-compatible `security_invoker` option. When set via `CREATE VIEW ... WITH (security_invoker)` or `ALTER VIEW SET (security_invoker = true)`, privilege checks on the underlying tables are performed as the querying user rather than the view owner. The `security_invoker` option can be reset with `ALTER VIEW ... RESET (security_invoker)`. For details, refer to the [release note](#v26-2-0-alpha-2-security-invoker).
 
-{% comment %}TODO: Verify with engineering that leased descriptors truly requires upgrade finalization{% endcomment %}
+- **`ALTER TABLE ENABLE/DISABLE TRIGGER` syntax**: {% comment %}TODO: Verify with @rafiss{% endcomment %}Added support for `ALTER TABLE ENABLE TRIGGER` and `ALTER TABLE DISABLE TRIGGER` syntax. This allows users to temporarily disable triggers without dropping them, and later re-enable them. The syntax supports disabling/enabling individual triggers by name, or all triggers on a table using the `ALL` or `USER` keywords. For details, refer to the [release note](#v26-2-0-alpha-1-enable-disable-trigger).
 
-{% comment %}TODO: Add anchor IDs to the referenced release notes if they don't exist{% endcomment %}
+- **`skip_unique_checks` storage parameter**: {% comment %}TODO: Verify with @DrewKimball{% endcomment %}Added an index storage parameter `skip_unique_checks` that can be used to disable unique constraint checks for indexes with implicit partition columns, including indexes in `REGIONAL BY ROW` tables. This should **only** be used if the application can guarantee uniqueness, for example, by using external UUID values or relying on a `unique_rowid()` default value. Incorrectly applying this setting when uniqueness is not guaranteed by the application could result in logically duplicate keys in different partitions of a unique index. For details, refer to the [release note](#v26-2-0-alpha-2-skip-unique-checks).
 
-{% comment %}
-Additional features reviewed but NOT included:
-- Bullet
-- Bullet
-{% endcomment %}
+- **`DROP CONSTRAINT` on unique indexes**: {% comment %}TODO: Verify with @rafiss{% endcomment %}`ALTER TABLE ... DROP CONSTRAINT` can now be used to drop `UNIQUE` constraints. The backing `UNIQUE` index will also be dropped, as CockroachDB treats the constraint and index as the same thing. For details, refer to the [release note](#v26-2-0-alpha-1-drop-unique-constraint).
+
+- **Canary stats in `EXPLAIN` output**: {% comment %}TODO: Verify with @ZhouXing19{% endcomment %}`EXPLAIN` and `EXPLAIN ANALYZE` now display a `table stats mode` field (`canary` or `stable`) when the `sql.stats.canary_fraction` cluster setting is greater than 0, indicating which table statistics were used for query planning. Scan nodes for tables with active canary stats also show the configured canary window duration. For details, refer to the [release note](#v26-2-0-beta-2-canary-stats).
+
+- **View owner privilege checking**: {% comment %}TODO: Verify with @shadiGh{% endcomment %}When selecting from a view, the view owner's privileges on the underlying tables are now checked. Previously, no privilege checks were performed on the underlying tables, so a view would continue to work even after the owner lost access to the underlying tables. This also affects row-level security (RLS): the view owner's RLS policies are now enforced instead of the invoker's. If this causes issues, you can restore the previous behavior by setting the cluster setting `sql.auth.skip_underlying_view_privilege_checks.enabled` to `true`. For details, refer to the [release note](#v26-2-0-alpha-2-view-privilege-checks).
+
+- **`INSPECT` uniqueness validation for `REGIONAL BY ROW` tables**: {% comment %}TODO: Verify with @bgbg{% endcomment %}During an `INSPECT` run, a new check validates unique column values in `REGIONAL BY ROW` tables. For details, refer to the [release note](#v26-2-0-alpha-2-inspect-uniqueness).
+
+- **`IMPORT` row count validation with `INSPECT`**: {% comment %}TODO: Verify with @bgbg{% endcomment %}Row count validation after `IMPORT` is now enabled by default in async mode. After an `IMPORT` completes, a background `INSPECT` job validates that the imported row count matches expectations. The `IMPORT` result now includes an `inspect_job_id` column so the `INSPECT` job can be viewed separately. The `bulkio.import.row_count_validation.mode` cluster setting controls this behavior, with valid values of `off`, `async` (default), and `sync`. For details, refer to the [release note](#v26-2-0-alpha-1-import-inspect-validation).
