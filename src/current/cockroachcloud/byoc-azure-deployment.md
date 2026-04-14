@@ -1,5 +1,5 @@
 ---
-title: Prepare a CockroachDB Cloud BYOC Deployment
+title: Prepare a CockroachDB Cloud BYOC Deployment in Azure
 summary: Prepare a cloud service account to self-host a CockroachDB Cloud deployment with the BYOC model
 toc: true
 keywords: deployment, byoc
@@ -8,36 +8,18 @@ keywords: deployment, byoc
 CockroachDB {{ site.data.products.cloud }} supports a "bring your own cloud" (BYOC) deployment model, where CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} is hosted in your own account rather than in an account managed by Cockroach Labs. This model allows you to take more control of security and take advantage of existing cloud service credits or discounts.
 
 {{site.data.alerts.callout_info}}
-The BYOC {{ site.data.products.cloud }} deployment option is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}). BYOC deployments are only supported in Microsoft Azure.
+The BYOC {{ site.data.products.cloud }} deployment option is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 This page describes how to prepare a cloud service account to host a BYOC deployment of CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} in Microsoft Azure.
 
 ## Shared responsibility model for BYOC
 
-In any CockroachDB {{ site.data.products.cloud }} deployment, responsibility for a successful and healthy deployment is [split between you and Cockroach Labs]({% link cockroachcloud/production-checklist.md %}). In a BYOC deployment, all of the [CockroachDB {{ site.data.products.cloud }} infrastructure]({% link cockroachcloud/plan-your-cluster-advanced.md %}#advanced-cluster-architecture) except the control plane lives in an account under your control, which means that you incur additional responsibilities under the shared model.
-
-The following table describes the split of responsibilities between you and Cockroach Labs in the shared responsibility model for BYOC:
-
-Area        | Cockroach Labs responsibility | Customer responsibility
-:----------:|:-----------------------------:|:----------------------:
-Uptime      | Ensure 99.999% cluster uptime | Ensure that clusters remain accessible
-Deployments | Automate cluster provisioning and scaling, provide hardware best practices | Provision new cloud service accounts and grant IAM permissions for Cockroach Labs to create and manage clusters
-Upgrades    | Provide automatic minor/patch upgrades and major upgrade automation via Terraform, APIs, or the {{ site.data.products.cloud }} Console | Initiate [major version upgrades]({% link cockroachcloud/upgrade-cockroach-version.md %}), [set maintenance windows]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) if applicable
-Workload    | Troubleshoot problems as they pertain to cluster availability | [Size clusters]({% link cockroachcloud/advanced-cluster-management.md %}#scale-your-cluster) to manage workload requirements, [tune performance]({% link {{ site.versions["stable"] }}/performance-recipes.md %}), and adjust schema designs with support from Cockroach Labs
-Backups     | Initialize a default backup schedule and write to customer-owned Cloud storage, ensure backup jobs run successfully | Configure a backup schedule as needed to meet RPO/RTO requirements
-Support     | Reactively and proactively identify and resolve availability-impacting incidents | Ensure sufficient hardware is made available and appropriate IAM permissions are maintained at all times
-Billing     | Meter vCPUs consumed, [charge for vCPU consumption]({% link cockroachcloud/costs.md %}) at the per-minute level | Negotiate with cloud service provider, manage infrastructure spend and discounts
+{% include cockroachcloud/byoc/byoc-responsibility-model.md %}
 
 ## Prerequisites
 
-- [Create a CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/create-an-account.md %}) if you do not already have one. 
-
-- The BYOC deployment option is not available by default and must be requested. Reach out to your account team to express interest in BYOC.
-
-- Cluster creation and management for BYOC deployments is handled using the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}). Create a service account and [API key]({% link cockroachcloud/managing-access.md %}#api-access) if you do not have one.
-
-- Review the [Plan a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}) documentation to plan your cluster sizing and resource allocation.
+{% include cockroachcloud/byoc/byoc-common-prerequisites.md %}
 
 ## Step 1. Create a new Azure subscription
 
