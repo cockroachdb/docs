@@ -128,3 +128,31 @@ table {
     }
   }
 }
+
+#feature-highlights table {
+  width: 100%;
+  display: table;
+}
+
+// Release notes cluster settings and deprecations table styling
+.release-cluster-settings-table table {
+  display: table;
+  table-layout: auto;
+}
+
+.release-cluster-settings-table table td:first-child,
+.release-cluster-settings-table table th:first-child {
+  width: 280px;
+  min-width: 200px;
+  max-width: 300px;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  hyphens: none;
+}
+
+.release-cluster-settings-table table td:first-child code {
+  word-break: normal;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  hyphens: none;
+}
