@@ -16,9 +16,11 @@ ASH is accessible via CockroachDB SQL and is disabled by default. To enable ASH,
 
 ## How ASH sampling works
 
-ASH captures point-in-time snapshots of each node's active work by sampling cluster activity at regular intervals (determined by the [`obs.ash.sample_interval` cluster setting](#configuration)). At each sample point, ASH examines all goroutines that are actively executing or waiting, and it records what each one is doing. Each of these samples is about 200 bytes, and each captures details like the workload that the goroutine belongs to (statement fingerprint, job ID, or system task) and the activity the goroutine is occupied with. These samples fill an in-memory circular ring buffer, the size of which is determined by the [`obs.ash.buffer_size` cluster setting](#configuration). When the buffer fills, the oldest samples are overwritten. Samples do not persist on disk. They are lost on node restart.
+ASH captures point-in-time snapshots of each node's active work by sampling cluster activity at regular intervals (determined by the [`obs.ash.sample_interval` cluster setting](#configuration)). At each sample point, ASH examines all goroutines that are actively executing or waiting, and it records what each one is doing. Each sample captures details like the workload that the goroutine belongs to (statement fingerprint, job ID, or system task) and the activity the goroutine is occupied with. These samples fill an in-memory circular ring buffer, the size of which is determined by the [`obs.ash.buffer_size` cluster setting](#configuration). When the buffer fills, the oldest samples are overwritten. Samples do not persist on disk. They are lost on node restart.
 
-Because ASH is sampling-based rather than event-based, the sample count for a particular activity is proportional to how much time was spent on that activity. For example, if a query appears in 45 out of 60 sample points over one minute, it was actively consuming resources for approximately 45 seconds of that minute. This approach provides an accurate picture of resource usage patterns over time, but it means that short-lived operations completed between sampling points may not be captured. To troubleshoot very brief operations, you may need to reduce the `obs.ash.sample_interval` cluster setting.
+A user can query the ASH data for the specific node to which their SQL shell is connected (the gateway node) or across the whole cluster.
+
+Because ASH is sampling-based rather than event-based, the sample count for a particular activity is proportional to how much time was spent on that activity. For example, if a query appears in 45 out of 60 sample points over one minute, it was actively consuming resources for approximately 45 seconds of that minute. This approach provides an accurate picture of resource usage patterns over time, but it means that short-lived operations completed between sampling points may not be captured. To troubleshoot very brief operations, you may need to reduce the `obs.ash.sample_interval` cluster setting, or use [statement diagnostics](#use-ash-alongside-other-monitoring-tools). However, use caution when reducing the sampling interval, as this will cause the buffer to fill up quickly.
 
 ASH does not provide exact resource accounting per query or job, nor does it provide the exact timing of individual executions. Its sampling-based approach instead provides a statistically reliable view of the system at a given time, which can help with troubleshooting.
 
@@ -55,12 +57,13 @@ The following [cluster settings]({% link {{ page.version.version }}/cluster-sett
 | `obs.ash.log_interval` | duration | `10m` | How often a top-N workload summary is emitted to the OPS log channel. Also used as the lookback window for ASH reports written by the environment sampler profiler. |
 | `obs.ash.log_top_n` | int | `10` | Max entries in each periodic log summary. |
 | `obs.ash.report.total_dump_size_limit` | byte size | `32MiB` | Garbage collection limit for ASH report files on disk. |
+| `obs.ash.response_limit` | int | `10,000` | Max number of samples that each node will return to the gateway node when a user queries the cluster-wide view. This helps ensure that the gateway node does not run out of memory. |
 
 ## ASH table reference
 
 ASH data is accessible through two views in the [`information_schema`]({% link {{ page.version.version }}/information-schema.md %}) system catalog:
 
-- [`information_schema.crdb_node_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_node_active_session_history): Includes samples from the node to which the user's SQL shell is connected.
+- [`information_schema.crdb_node_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_node_active_session_history): Includes samples from the gateway node.
 - [`information_schema.crdb_cluster_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_cluster_active_session_history): Includes samples from all nodes in the cluster. Querying the cluster-wide view may be more resource-intensive for large clusters.
 
 The data for each sample is placed into a row with the following columns:
@@ -86,7 +89,7 @@ Each sample is attributed to a workload via the `workload_type` and `workload_id
 | `STATEMENT` | Hex-encoded [statement fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) ID |
 | `JOB` | Decimal [job ID]({% link {{ page.version.version }}/show-jobs.md %}) |
 | `SYSTEM` | One of the following system task names: <br>`LDR`, `RAFT`, `STORELIVENESS`, `RPC_HEARTBEAT`, `NODE_LIVENESS`, `SQL_LIVENESS`, `TIMESERIES`, `RAFT_LOG_TRUNCATION`, `TXN_HEARTBEAT`, `INTENT_RESOLUTION`, `LEASE_ACQUISITION`, `MERGE_QUEUE`, `CIRCUIT_BREAKER_PROBE`, `GC`, `RANGEFEED`, `REPLICATE_QUEUE`, `SPLIT_QUEUE`, `DESCRIPTOR_LEASE` |
-| `UNKNOWN` | Unidentified |
+| `UNKNOWN` | Unidentified. If you're seeing many unattributed samples for your workload, you may want to [file an issue](  https://github.com/cockroachdb/cockroach/issues/new?template=bug_report.md). |
 
 ### `work_event` columns
 
@@ -301,19 +304,19 @@ ORDER BY sample_count DESC;
 The query breaks down the job's resource consumption by work event type and specific activity:
 
 ~~~
-  work_event_type |    work_event     | sample_count
-------------------+-------------------+---------------
-  CPU             | sample aggregator |            1
-(1 row)
+  work_event_type |     work_event      | sample_count
+  -----------------+---------------------+--------------
+  CPU              | backupDataProcessor |           10
+  CPU              | ReplicaSend         |           10
+  LOCK             | LockWait            |            3
+(3 rows)
 ~~~
 
-The results show the job is primarily consuming CPU time. To find the job ID for a running job, query the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) or use `SELECT job_id, description, status FROM [SHOW JOBS]`.
+The results show the job spent most of its time on active computation. The remaining samples show the job waiting for locks (`LockWait`). This breakdown helps identify that the backup job is primarily CPU-bound rather than I/O or lock-constrained. To find the job ID for a running job, query the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) or use `SELECT job_id, description, status FROM [SHOW JOBS]`.
 
-## Limitations
+## Known limitations
 
-- ASH is not recommended for nodes with 64 or more vCPUs, due to degraded performance on those nodes.
-- On Basic and Standard CockroachDB {{ site.data.products.cloud }} clusters, ASH samples only cover work running on the SQL pod. KV-level work (storage I/O, lock waits, replication, etc.) is not visible in ASH samples.
-- KV work triggered during COMMIT (for example, intent resolution, Raft proposals deferred from earlier statements in an explicit transaction) is attributed to the last statement's fingerprint, not the statement that originally caused the work.
+{% include {{page.version.version}}/known-limitations/active-session-history.md %}
 
 ## See also
 
