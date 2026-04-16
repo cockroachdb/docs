@@ -5,13 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER VIEW` [statement]({% link {{ page.version.version }}/sql-statements.md %}) applies a schema change to a [view]({% link {{ page.version.version }}/views.md %}).
+The `ALTER VIEW` [statement]({% link {{ page.version.version }}/sql-statements.md %}) applies a schema change to a [view]({% link {{ page.version.version }}/views.md %}). You can also use `ALTER VIEW` to set or reset the `security_invoker` option on a non-materialized view.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
 - To alter a view, the user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the parent database.
+- To set or reset `security_invoker`, the user must own the view.
 - To change the schema of a view with `ALTER VIEW ... SET SCHEMA`, or to change the name of a view with `ALTER VIEW ... RENAME TO`, the user must also have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the view.
 
 ## Syntax
@@ -30,6 +31,7 @@ Parameter | Description
 `view_new_name` | The new name of the view. The name of the view must be unique to its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). Name changes do not propagate to the table(s) using the view.
 `schema_name` | The name of the new schema.
 `role_spec` |  The role to set as the owner of the view.
+`security_invoker` | Sets whether to check privileges on the underlying tables as the querying user (`true`) or the view owner (`false`). `SET (security_invoker)` is equivalent to `SET (security_invoker = true)`. `RESET (security_invoker)` restores the default behavior. This option applies only to non-materialized views.
 
 ## Known limitations
 
@@ -132,6 +134,22 @@ SHOW CREATE cockroach_labs.expensive_rides;
 ---------------------------------+---------------------------------------------------------------------------------------------------------------------------
   cockroach_labs.expensive_rides | CREATE VIEW cockroach_labs.expensive_rides (id, revenue) AS SELECT id, revenue FROM movr.public.rides WHERE revenue > 50
 (1 row)
+~~~
+
+### Set or reset `security_invoker`
+
+By default, a view checks privileges on the underlying tables as the view owner. To change the view to use the querying user's privileges instead:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER VIEW user_accounts SET (security_invoker = true);
+~~~
+
+To restore the default behavior:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER VIEW user_accounts RESET (security_invoker);
 ~~~
 
 ## See also
