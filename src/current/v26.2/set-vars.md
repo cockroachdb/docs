@@ -135,6 +135,27 @@ SHOW search_path;
 (1 row)
 ~~~
 
+### Configure TCP keepalive session variables
+
+{% include_cached new-in.html version="v26.2" %} CockroachDB supports the PostgreSQL-compatible session variables `tcp_keepalives_idle`, `tcp_keepalives_interval`, `tcp_keepalives_count`, and `tcp_user_timeout`. A value of `0` uses the corresponding cluster setting:
+
+- `tcp_keepalives_idle`: [`server.sql_tcp_keep_alive.idle`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-sql-tcp-keep-alive-idle)
+- `tcp_keepalives_interval`: [`server.sql_tcp_keep_alive.interval`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-sql-tcp-keep-alive-interval)
+- `tcp_keepalives_count`: [`server.sql_tcp_keep_alive.count`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-sql-tcp-keep-alive-count)
+- `tcp_user_timeout`: [`server.sql_tcp_user.timeout`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-sql-tcp-user-timeout)
+
+`tcp_keepalives_idle` and `tcp_keepalives_interval` are stored in seconds and can be set either as integer seconds or as duration strings, truncated to whole seconds. `tcp_keepalives_count` is an integer probe count. `tcp_user_timeout` is stored in milliseconds and can be set either as integer milliseconds or as duration strings, truncated to whole milliseconds.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET tcp_keepalives_idle = 25;
+SET tcp_keepalives_interval = 8;
+SET tcp_keepalives_count = 4;
+SET tcp_user_timeout = 15000;
+~~~
+
+You can also pass these values in a client connection string by appending `options=-c tcp_keepalives_idle=25 -c tcp_keepalives_interval=8 -c tcp_keepalives_count=4 -c tcp_user_timeout=15000`.
+
 ### Reset a variable to its default value
 
 {{site.data.alerts.callout_success}}
