@@ -95,9 +95,4 @@ To download the Docker image (Intel-only):
 docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 ~~~
 
-  {% if release.previous_release %}
-<h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-changelog">Changelog</h3>
-View a detailed changelog on GitHub: [{{ release.previous_release }}...{{ release.release_name }}](https://github.com/cockroachdb/cockroach/compare/{{ release.previous_release }}...{{ release.release_name }})
-  {% endif %}
-
 {% endif %}

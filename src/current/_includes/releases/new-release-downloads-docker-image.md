@@ -2,7 +2,9 @@
 {% assign release = site.data.releases | where_exp: "release", "release.release_name == include.release" | first %}
 {% assign version = site.data.versions | where_exp: "version", "version.major_version == release.major_version" | first %}
 
-<h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-downloads">Downloads</h3>{% comment %} take the version name, force it to be lowercase, and replace all periods with hyphens. {% endcomment %}
+{% if release.cloud_only != true %}
+<h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-downloads">Downloads</h3>
+{% endif %}
 
 {% if release.release_type == "Testing" %}
 {% include releases/experimental-test-release.md version=release.release_name %}
@@ -98,9 +100,4 @@ docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 
 To view or download the source code for CockroachDB {{ release.release_name }} on Github, visit <a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.release_name }}">{{ release.release_name }} source tag</a>.
 
-{% endif %}
-
-{% if release.previous_release %}
-<h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-changelog">Changelog</h3>
-View a detailed changelog on GitHub: [{{ release.previous_release }}...{{ release.release_name }}](https://github.com/cockroachdb/cockroach/compare/{{ release.previous_release }}...{{ release.release_name }})
 {% endif %}
