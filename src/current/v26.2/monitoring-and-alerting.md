@@ -59,7 +59,7 @@ The information on the SQL Activity pages comes from the cluster's [`crdb_intern
 
 [Active Session History (ASH)]({% link {{ page.version.version }}/active-session-history.md %}) is a time-series sampling-based observability feature that captures what work was actively executing on your cluster at specific points in time. Unlike the SQL Activity pages that aggregate data over time, ASH provides point-in-time snapshots of active execution, making it easier to diagnose transient performance problems and understand resource usage patterns.
 
-ASH is accessible via SQL queries against the [`information_schema.crdb_node_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_node_active_session_history) and [`information_schema.crdb_cluster_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_cluster_active_session_history) views. It is enabled and configurable via [cluster settings]({% link {{ page.version.version }}/active-session-history.md %}#ash-cluster-settings).
+ASH is accessible via SQL queries against the [`information_schema.crdb_node_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_node_active_session_history) and [`information_schema.crdb_cluster_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_cluster_active_session_history) views. It is enabled and configurable via [cluster settings]({% link {{ page.version.version }}/active-session-history.md %}#configuration).
 
 For more information, refer to [Active Session History]({% link {{ page.version.version }}/active-session-history.md %}).
 

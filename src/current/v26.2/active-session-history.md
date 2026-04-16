@@ -16,7 +16,7 @@ ASH is accessible via CockroachDB SQL and is disabled by default. To enable ASH,
 
 ## How ASH sampling works
 
-ASH captures point-in-time snapshots of each node's active work by sampling cluster activity at regular intervals (determined by the [`obs.ash.sample_interval` cluster setting](#ash-cluster-settings)). At each sample point, ASH examines all goroutines that are actively executing or waiting, and it records what each one is doing. Each of these samples is about 200 bytes, and each captures details like the workload that the goroutine belongs to (statement fingerprint, job ID, or system task) and the activity the goroutine is occupied with. These samples fill an in-memory circular ring buffer, the size of which is determined by the [`obs.ash.buffer_size` cluster setting](#ash-cluster-settings). When the buffer fills, the oldest samples are overwritten. Samples do not persist on disk. They are lost on node restart.
+ASH captures point-in-time snapshots of each node's active work by sampling cluster activity at regular intervals (determined by the [`obs.ash.sample_interval` cluster setting](#configuration)). At each sample point, ASH examines all goroutines that are actively executing or waiting, and it records what each one is doing. Each of these samples is about 200 bytes, and each captures details like the workload that the goroutine belongs to (statement fingerprint, job ID, or system task) and the activity the goroutine is occupied with. These samples fill an in-memory circular ring buffer, the size of which is determined by the [`obs.ash.buffer_size` cluster setting](#configuration). When the buffer fills, the oldest samples are overwritten. Samples do not persist on disk. They are lost on node restart.
 
 Because ASH is sampling-based rather than event-based, the sample count for a particular activity is proportional to how much time was spent on that activity. For example, if a query appears in 45 out of 60 sample points over one minute, it was actively consuming resources for approximately 45 seconds of that minute. This approach provides an accurate picture of resource usage patterns over time, but it means that short-lived operations completed between sampling points may not be captured. To troubleshoot very brief operations, you may need to reduce the `obs.ash.sample_interval` cluster setting.
 
@@ -171,7 +171,7 @@ The following [metrics]({% link {{ page.version.version }}/metrics.md %}) monito
 
 ## Debug zip integration
 
-When the environment sampler triggers [goroutine dumps]({% link {{ page.version.version }}/automatic-go-execution-tracer.md %}) or [CPU profiles]({% link {{ page.version.version }}/automatic-cpu-profiler.md %}), ASH writes aggregated report files (`.txt` and `.json`) alongside them. These reports are included in [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) output. The lookback window for these reports is controlled by the [`obs.ash.log_interval` cluster setting](#ash-cluster-settings).
+When the environment sampler triggers [goroutine dumps]({% link {{ page.version.version }}/automatic-go-execution-tracer.md %}) or [CPU profiles]({% link {{ page.version.version }}/automatic-cpu-profiler.md %}), ASH writes aggregated report files (`.txt` and `.json`) alongside them. These reports are included in [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) output. The lookback window for these reports is controlled by the [`obs.ash.log_interval` cluster setting](#configuration).
 
 ## Common use cases and examples
 
@@ -186,7 +186,7 @@ To enable ASH on your cluster:
 SET CLUSTER SETTING obs.ash.enabled = true;
 ~~~
 
-Enabling ASH begins collecting samples immediately. The in-memory buffer will fill up over time based on workload activity and the configured [ASH cluster settings](#ash-cluster-settings).
+Enabling ASH begins collecting samples immediately. The in-memory buffer will fill up over time based on workload activity and the configured [ASH cluster settings](#configuration).
 
 ### View a node's work event data from the past minute
 
