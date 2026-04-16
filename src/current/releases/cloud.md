@@ -35,7 +35,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">2-DC Active-Passive Architecture</p>
-    <p class="feature-description">Deploy CockroachDB Cloud Advanced clusters across two geographically separated data centers in an active-passive configuration, providing resilience against data center failures with near-zero downtime failover.</p>
+    <p class="feature-description">Deploy CockroachDB Advanced clusters across two geographically separated data centers in an active-passive configuration, providing resilience against data center failures with near-zero downtime failover.</p>
    </td>
    <td class="icon-center">Preview</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -59,7 +59,7 @@ Get future release notes emailed to you:
     <p class="feature-summary">Agent Roach: AI-Powered In-Console Assistant</p>
     <p class="feature-description">An AI-powered in-console assistant that helps you troubleshoot issues, optimize queries, and manage CockroachDB clusters using natural language, without leaving the Cloud console.</p>
    </td>
-   <td class="icon-center">GA</td>
+   <td class="icon-center">Preview</td>
    <td class="icon-center">{% include icon-no.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
@@ -68,7 +68,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Multi-Factor Authentication for CockroachDB Cloud</p>
-    <p class="feature-description">Enforce multi-factor authentication for all CockroachDB Cloud users, reducing the risk of unauthorized access from compromised credentials and strengthening organizational security posture.</p>
+    <p class="feature-description">Multi-factor authentication is now enforced for all CockroachDB Cloud users. This reduces the risk of unauthorized access from compromised credentials and strengthens organizational security posture.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
