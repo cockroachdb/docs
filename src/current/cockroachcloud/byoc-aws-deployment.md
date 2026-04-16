@@ -25,11 +25,11 @@ This page describes how to prepare a cloud service account to host a BYOC deploy
 
 Provision a new AWS account with no existing infrastructure, dedicated to your Cockroach {{ site.data.products.cloud }} deployment. The account configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this account, so this step is necessary to isolate these permissions from non-Cockroach Cloud resources. This account can be reused for multiple CockroachDB clusters.
 
-## Step 2. Configure intermediate IAM role for Cockroach Labs
+## Step 2. Record your intermediate role's ARN
 
-Cockroach Labs uses an intermediate IAM role to provision and manage resources in your AWS account. In this step, you will use your CockroachDB {{ site.data.products.cloud }} organization label to determine what the ARN will be for later use.
+Cockroach Labs uses an intermediate **IAM role** to provision and manage resources in your AWS account. In this step, use your CockroachDB {{ site.data.products.cloud }} organization label to determine the **Amazon Resource Name (ARN)** of this IAM role.
 
-You can collect the org label for your CockroachDB {{ site.data.products.cloud }} organization in the Console or by using the `/v1/organization` endpoint of the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/organization) with a `GET` request similar to the following example:
+Find your org label in the CockroachDB {{ site.data.products.cloud }} Console or by using the `/v1/organization` endpoint of the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/organization) with a `GET` request similar to the following example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -38,24 +38,24 @@ curl --request GET \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
-The ARN of this dedicated intermediate service account follows the following schema:
+Record the ARN of your organization's intermediate IAM role using the following schema:
 
 ~~~ text
-arn:aws:iam::721449411130:user/byoc/CockroachDB-Cloud-managed-BYOC_<org-label>
+arn:aws:iam::<AWS Account ID>:user/byoc/CockroachDB-Cloud-managed-BYOC_<org-label>
 ~~~
 
 For example, if your organization’s org label is `org-32222` then record your ARN as follows:
 ~~~
-arn:aws:iam::721449411130:user/byoc/CockroachDB-Cloud-managed-BYOC_org-32222
+arn:aws:iam::<AWS Account ID>:user/byoc/CockroachDB-Cloud-managed-BYOC_org-32222
 ~~~
 
 ## Step 3. Create IAM role for Cockroach Labs access
 
-Follow these steps to create the IAM role and grant the necessary permissions:
+Follow these steps to create the intermediate IAM role and grant the necessary permissions:
 
-1. In the AWS IAM console, do the following:
-   1. Create a new role. This name is arbitrary, in these instructions the role is named `CRLBYOCAdmin`.
-   2. Use the following trust relationship policy for the new role, using the ARN collected in the previous step:
+1. Open the AWS IAM console.
+1. Create a new role. This name is arbitrary, in these instructions the role is named `CRLBYOCAdmin`.
+1. Use the following trust relationship policy for the new role, using the ARN collected in the previous step:
     {% include_cached copy-clipboard.html %}
     ~~~ json
     {
@@ -71,7 +71,7 @@ Follow these steps to create the IAM role and grant the necessary permissions:
       ]
     }
     ~~~
-   3. Apply an IAM policy to the intermediate role granting the following list of permissions:
+1. Apply an IAM policy to the intermediate role granting the following list of permissions:
     {% include_cached copy-clipboard.html %}
     ~~~ text
     // Auto Scaling permissions
@@ -220,7 +220,7 @@ You may also need to adjust quotas for vCPU and EBS disk storage for the regions
 
 In BYOC deployments, CockroachDB clusters are deployed with the {{ site.data.products.cloud }} API and must use the {{ site.data.products.advanced }} plan. Follow the API documentation to [create a CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} cluster]({% link cockroachcloud/cloud-api.md %}#create-an-advanced-cluster).
 
-The following example request creates a 3-node {{ site.data.products.advanced }} cluster in the `centralus` region, specifying the `subscription-id` and `customer-tenant-id` associated with your Azure subscription:
+The following example request creates a 3-node {{ site.data.products.advanced }} cluster in the `us-east-2` region, specifying the ARN associated with your intermediate IAM role:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -241,7 +241,7 @@ curl --request POST \
         "plan": "ADVANCED",
         "customer_cloud_account": {
           "aws": {
-            "arn": "arn:aws:iam::<AWS Account ID>:role/CRLBYOCAdmin"
+            "arn": "arn:aws:iam::<AWS Account ID>:user/byoc/CockroachDB-Cloud-managed-BYOC_<org-label>"
           }
         }
       }
