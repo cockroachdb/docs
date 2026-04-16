@@ -51,7 +51,7 @@ Once this Azure subscription has been created and configured to host CockroachDB
 
 ## Step 2. Set up the admin App Registration
 
-When BYOC is enabled for your account, Cockroach Labs dynamically provisions a multi-tenant admin App Registration associated with your CockroachDB {{ site.data.products.cloud }} organization and provides you with a URL to grant tenant-wide admin consent to the application. Granting admin consent creates an admin Service Principal in your tenant, which is used by Cockroach Labs support to act on the Kubernetes cluster, running automation that initializes support infrastructure.
+When BYOC is enabled for your account, Cockroach Labs dynamically provisions a multi-tenant admin **App Registration** associated with your CockroachDB {{ site.data.products.cloud }} organization and provides you with a URL to grant tenant-wide admin consent to the application. Granting admin consent creates an admin **Service Principal** in your tenant, which is used by Cockroach Labs support to act on the Kubernetes cluster, running automation that initializes support infrastructure.
 
 Visit this URL with a user account that is [authorized to consent on behalf of your organization](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal#prerequisites). Once the Cockroach Labs App Registration has been granted admin consent in the tenant, grant the following set of roles to the admin Service Principal:
 
@@ -98,11 +98,11 @@ This reader application also requires admin consent to deploy the reader Service
     https://login.microsoftonline.com/<customer-tenant-id>/adminconsent?client_id=7f6538cb-f687-4411-9bbe-2f96bfbce028
     ~~~
 3. Review the requested permissions and click **Accept**.
-Once the CockroachDB Cloud BYOC Reader App Registration has been granted admin consent in the tenant, grant the following set of roles to the reader Service Principal:
+4. Once the CockroachDB Cloud BYOC Reader App Registration has been granted admin consent in the tenant, grant the following set of roles to the reader Service Principal:
+      - `Reader`
+      - `Azure Kubernetes Service Cluster User`
+      - `Azure Kubernetes Service RBAC Reader`
 
-Reader
-Azure Kubernetes Service Cluster User Role
-Azure Kubernetes Service RBAC Reader
 ## Step 4. Grant persmissions to Entra groups with Azure Lighthouse
 
 Use [Azure Lighthouse](https://learn.microsoft.com/azure/lighthouse/overview) to enable cross-tenant management that establishes the support infrastructure that allows Cockroach Labs to assist in the event of a support escalation. Permissions are granted least-privilege access and full visibility, allowing you to review and remove access at any time from the Azure portal.
@@ -113,14 +113,12 @@ This Azure Lighthouse deployment grants permissions to Cockroach Labs's managed 
   - `Reader`
   - `Azure Kubernetes Service Cluster User Role`
 - Admin Entra group:
--  Azure Kubernetes Service Contributor Role 
--  Azure Kubernetes Service Cluster Admin
-- Managed Identity Contributor
-- Network Contributor 
-- Storage Account Contributor 
-- Virtual Machine Contributor
-
- 
+  - `Azure Kubernetes Service Contributor Role`
+  - `Azure Kubernetes Service Cluster Admin`
+  - `Managed Identity Contributor`
+  - `Network Contributor`
+  - `Storage Account Contributor`
+  - `Virtual Machine Contributor`
 
 Follow these steps to enable secure, scoped access for Cockroach Labs to your subscription using Azure Lighthouse:
 
