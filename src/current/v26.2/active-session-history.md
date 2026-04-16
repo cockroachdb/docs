@@ -10,13 +10,9 @@ preview: true
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-Active Session History (ASH) is a time-series sampling-based observability feature that helps you troubleshoot SQL performance issues by capturing what work was actively executing on your cluster at specific points in time. Unlike traditional [statement statistics]({% link {{ page.version.version }}/ui-statements-page.md %}) that aggregate data over time, ASH provides point-in-time snapshots of active execution, making it easier to diagnose transient performance problems and understand resource usage patterns.
+Active Session History (ASH) is a time-series sampling-based observability feature that helps you troubleshoot workload performance issues by capturing what work was actively executing on your cluster at specific points in time. Unlike traditional [statement statistics]({% link {{ page.version.version }}/ui-statements-page.md %}) that aggregate data over time, ASH provides point-in-time snapshots of active execution, making it easier to diagnose transient performance problems and understand resource usage patterns.
 
 ASH is accessible via CockroachDB SQL and is disabled by default. To enable ASH, refer to [Enable Active Session History](#enable-active-session-history).
-
-{{site.data.alerts.callout_danger}}
-By default, ASH allocates approximately 200MB of memory per node **even when disabled**. To avoid this memory allocation on clusters where you do not plan to use ASH, set the [`obs.ash.buffer_size` cluster setting](#ash-cluster-settings) to `0`.
-{{site.data.alerts.end}}
 
 ## How ASH sampling works
 
@@ -47,11 +43,11 @@ ASH complements CockroachDB's existing observability tools. Each tool serves a d
 
 ASH can often be used with these other tools to help troubleshoot issues. For example, Prometheus metrics might alert you to a problem (such as a CPU spike at 2:15 PM). ASH shows which queries and jobs were actively running during that spike and which took a disproportionate amount of time to run. The Statements Page then provides aggregated performance data for those queries over a longer period of time, and statement diagnostics give detailed execution plans for deeper analysis.
 
-## ASH cluster settings
+## Configuration
 
-The following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) control ASH behavior:
+The following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) configure ASH behavior:
 
-| Setting | Type | Default | Description |
+| Cluster Setting | Type | Default | Description |
 |---------|------|---------|-------------|
 | `obs.ash.enabled` | bool | `false` | Enables ASH sampling on the cluster. |
 | `obs.ash.sample_interval` | duration | `1s` | Time interval between samples. |
@@ -64,7 +60,7 @@ The following [cluster settings]({% link {{ page.version.version }}/cluster-sett
 
 ASH data is accessible through two views in the [`information_schema`]({% link {{ page.version.version }}/information-schema.md %}) system catalog:
 
-- [`information_schema.crdb_node_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_node_active_session_history): Includes samples from the local node.
+- [`information_schema.crdb_node_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_node_active_session_history): Includes samples from the node to which the user's SQL shell is connected.
 - [`information_schema.crdb_cluster_active_session_history`]({% link {{ page.version.version }}/information-schema.md %}#crdb_cluster_active_session_history): Includes samples from all nodes in the cluster. Querying the cluster-wide view may be more resource-intensive for large clusters.
 
 The data for each sample is placed into a row with the following columns:
@@ -96,7 +92,9 @@ Each sample is attributed to a workload via the `workload_type` and `workload_id
 
 The `work_event_type` categorizes the resource being consumed or waited on. Types include `CPU`, `IO`, `LOCK`, `NETWORK`, `ADMISSION`, and `OTHER`. The `work_event` gives the specific activity.
 
-**`CPU`** — active computation:
+#### `CPU`
+
+`work_events` whose `work_event_type` is `CPU` represent active computation:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -107,13 +105,17 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 | `ColExecSync` | [DistSQL (columnar)]({% link {{ page.version.version }}/vectorized-execution.md %}) | Synchronous columnar execution |
 | *(processor name)* | [DistSQL processors]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) | Dynamic — each DistSQL processor registers with its own name (e.g. `hashJoiner`, `tablereader`) |
 
-**`IO`** — storage I/O:
+#### `IO`
+
+`work_events` whose `work_event_type` is `IO` represent storage I/O:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
 | `KVEval` | [KV server]({% link {{ page.version.version }}/architecture/storage-layer.md %}) | Batch evaluation in the storage layer |
 
-**`LOCK`** — lock and latch contention:
+#### `LOCK`
+
+`work_events` whose `work_event_type` is `LOCK` represent lock and latch contention:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -122,7 +124,9 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 | `TxnPushWait` | [Concurrency manager]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#concurrency-control) | Waiting for a conflicting transaction to be pushed |
 | `TxnQueryWait` | [Concurrency manager]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#concurrency-control) | Waiting for the status of a conflicting transaction |
 
-**`NETWORK`** — remote RPCs:
+#### `NETWORK`
+
+`work_events` whose `work_event_type` is `NETWORK` represent remote RPCs:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -130,7 +134,9 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 | `InboxRecv` | [DistSQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) | Receiving data from a remote DistSQL flow |
 | `OutboxSend` | [DistSQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) | Sending data to a remote DistSQL flow |
 
-**`ADMISSION`** — admission control queues:
+#### `ADMISSION`
+
+`work_events` whose `work_event_type` is `ADMISSION` represent admission control queues:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -141,7 +147,9 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 | `sql-sql-response` | [Admission control]({% link {{ page.version.version }}/admission-control.md %}) | SQL layer waiting for DistSQL response admission |
 | `ReplicationFlowControl` | [Replication admission]({% link {{ page.version.version }}/admission-control.md %}#replication-admission-control) | Waiting for replication flow control token |
 
-**`OTHER`** — miscellaneous wait points:
+#### `OTHER`
+
+`work_events` whose `work_event_type` is `OTHER` represent miscellaneous wait points:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -163,9 +171,11 @@ The following [metrics]({% link {{ page.version.version }}/metrics.md %}) monito
 
 ## Debug zip integration
 
-When the environment sampler triggers goroutine dumps or CPU profiles, ASH writes aggregated report files (`.txt` and `.json`) alongside them. These reports are included in `cockroach debug zip` output. The lookback window for these reports is controlled by the [`obs.ash.log_interval` cluster setting](#ash-cluster-settings).
+When the environment sampler triggers [goroutine dumps]({% link {{ page.version.version }}/automatic-go-execution-tracer.md %}) or [CPU profiles]({% link {{ page.version.version }}/automatic-cpu-profiler.md %}), ASH writes aggregated report files (`.txt` and `.json`) alongside them. These reports are included in [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) output. The lookback window for these reports is controlled by the [`obs.ash.log_interval` cluster setting](#ash-cluster-settings).
 
 ## Common use cases and examples
+
+ASH is accessed through the built-in CockroachDB SQL shell. Run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) to open the shell. CockroachDB Cloud deployments can also use the [SQL Shell page]({% link cockroachcloud/sql-shell.md %}) on the Console.
 
 ### Enable Active Session History
 
@@ -178,9 +188,11 @@ SET CLUSTER SETTING obs.ash.enabled = true;
 
 Enabling ASH begins collecting samples immediately. The in-memory buffer will fill up over time based on workload activity and the configured [ASH cluster settings](#ash-cluster-settings).
 
-### View local work event data from the past minute
+### View a node's work event data from the past minute
 
-To see what resources the local node has been consuming, query the node-level ASH view and group by work event type:
+**Scenario**: A node is experiencing high resource utilization, but it's unclear which subsystem (CPU, I/O, locks, network) is consuming resources and what specific operations are involved.
+
+You can query the node-level ASH view to see what resources the node has been consuming:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -204,9 +216,13 @@ The query returns the count of samples for each work event type and specific eve
 (5 rows)
 ~~~
 
+The results show that Raft proposal waits dominate this node's activity. To understand which workloads are triggering these waits, add `workload_type` and `workload_id` to the query. If CPU events dominate instead, investigate whether they're from user queries or system tasks by filtering on `work_event_type = 'CPU'` and grouping by `workload_type`. Use the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) or [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) to examine specific workloads identified by their `workload_id`.
+
 ### View cluster-wide workload data from the past 10 minutes
 
-To identify the top workloads consuming resources across the entire cluster, query the cluster-wide ASH view:
+**Scenario**: Overall cluster resource consumption is high, but it's unclear which workloads (user queries, background jobs, or system tasks) are responsible for the activity.
+
+You can query the cluster-wide ASH view to identify the top workloads consuming resources across all nodes:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -236,9 +252,13 @@ The query returns the top 10 workloads by sample count:
 (10 rows)
 ~~~
 
+The results show that a single statement fingerprint (`ad360b79112da7e3`) dominates resource usage, followed by system tasks like intent resolution and timeseries maintenance. For statement workloads, use the `workload_id` to locate the query on the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) and review its execution plan and performance statistics.
+
 ### Find recent lock contention hotspots
 
-To diagnose lock contention issues, filter ASH samples to show only lock-related wait events:
+**Scenario**: Elevated p99 latency and increased transaction retries indicate contention, but it's unclear which specific workloads are experiencing lock waits and what type of contention is occurring.
+
+You can filter ASH samples to show only lock-related wait events:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -259,9 +279,13 @@ The query shows which workloads experienced lock contention and what type of loc
 (1 row)
 ~~~
 
+The results identify the statement fingerprint experiencing latch waits. Use the `workload_id` to locate the query on the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) and examine its execution plan and contention time. Review the [Insights page]({% link {{ page.version.version }}/ui-insights-page.md %}) for contention insights on this statement. If multiple workloads show `LockWait` events, investigate whether they're accessing the same tables or rows by examining their query patterns. For detailed contention analysis, see [Monitor and Analyze Transaction Contention]({% link {{ page.version.version }}/monitor-and-analyze-transaction-contention.md %}).
+
 ### Get details about what a specific job is spending time on
 
-To understand where a specific background job is spending its time, filter by workload type and job ID:
+**Scenario**: A background job (such as a backup, schema change, or import) is running longer than expected, but it's unclear whether the job is consuming CPU, waiting on I/O, or blocked by other resources.
+
+You can filter by workload type and job ID to understand where the job is spending its time:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -282,6 +306,8 @@ The query breaks down the job's resource consumption by work event type and spec
   CPU             | sample aggregator |            1
 (1 row)
 ~~~
+
+The results show the job is primarily consuming CPU time. To find the job ID for a running job, query the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) or use `SELECT job_id, description, status FROM [SHOW JOBS]`.
 
 ## Limitations
 
