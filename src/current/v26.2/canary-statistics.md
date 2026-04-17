@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-The _canary statistics_ feature improves [query performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}) by allowing CockroachDB to try newly collected [table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) on a small number of queries before deploying them for all queries. By testing the efficiency of [query plans]({% link {{ page.version.version }}/cost-based-optimizer.md %}) made with new statistics on a fraction of queries, canary statistics blocks bad plans based on inaccurate statistics from impacting the full workload.
+<span class="version-tag">New in v26.2:</span> The _canary statistics_ feature improves [query performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}) by allowing CockroachDB to try newly collected [table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) on a small number of queries before deploying them for all queries. By testing the efficiency of [query plans]({% link {{ page.version.version }}/cost-based-optimizer.md %}) made with new statistics on a fraction of queries, canary statistics blocks bad plans based on inaccurate statistics from impacting the full workload.
 
 ## The canary window
 
