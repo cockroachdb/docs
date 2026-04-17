@@ -45,7 +45,7 @@ When you run the `BACKUP` statement for a locality-aware backup, check the follo
 - {% include {{ page.version.version }}/backups/cap-parameter-ext-connection.md %}
 - {% include {{ page.version.version }}/backups/locality-aware-access.md %}
 
-Locality-aware backups attempt to match data to buckets in corresponding regions as specified. However, edge cases exist in which a locality-aware backup may be forced to write to the default bucket instead, such as when the cluster has unhealthy nodes. Use the [`STRICT`]({% link {{ page.version.version }}/backup.md %}#options) option when creating a locality-aware backup to force the backup to fail in these cases to avoid violating data domiciling requirements.
+Locality-aware backups attempt to match data to buckets in corresponding regions as specified. However, edge cases exist in which a locality-aware backup may be forced to write to the default bucket instead, such as when the cluster has unhealthy nodes. Use the [`STRICT`]({% link {{ page.version.version }}/backup.md %}#options) option when creating a locality-aware backup to force the backup to fail in these cases to avoid violating [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) requirements.
 
 You can restore the backup by running:
 
