@@ -537,15 +537,13 @@ There are two types of statement hints:
 - [`REWRITE INLINE HINTS`](#rewrite-inline-hints): These hints allow you to apply inline hints (such as [index hints]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) and [join hints](#join-hints)) to a statement fingerprint, so that you can apply the hint for every matching query without modifying the statement.
 - [`SET VARIABLE`](#override-session-variables): These hints allow you to override [session variable]({% link {{ page.version.version }}/session-variables.md %}) values for every execution of a statement fingerprint without modifying application code.
 
-You can apply multiple statement hints of either type to a single statement fingerprint, though only the most recently created `REWRITE INLINE HINTS` hint will be applied at execution (as well as all `SET VARIABLE` hints).
-
-Statement hints can be scoped to a particular database, such that the hint is only applied when executing on that database. Statement hints can also be disabled (but are enabled by default upon creation).
-
-To rewrite inline hints using `information_schema.crdb_rewrite_inline_hints()` or to override session variables using `information_schema.crdb_set_session_variable_hint()`, you must have the [`REPAIRCLUSTER`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege.
+You can create multiple statement hints for a single statement fingerprint. Statement hints can be scoped to a particular database, such that the hint is only applied when executing on that database. Statement hints can also be disabled (but are enabled by default upon creation).
 
 ### Rewrite inline hints
 
-To rewrite inline hints for a statement fingerprint, invoke the [`information_schema.crdb_rewrite_inline_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function with two matching SQL statement fingerprints: a fingerprint identifying which statements to optimize, and a *donor* fingerprint with inline hints that must be applied to those statements. This function supports all inline hint types, and automatically applies them to statements that match the given fingerprint:
+To rewrite inline hints for a statement fingerprint, invoke the [`information_schema.crdb_rewrite_inline_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function. You must have the [`REPAIRCLUSTER`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege. 
+
+Provide two SQL statement fingerprints to the function: a fingerprint identifying which statements to optimize, and a *donor* fingerprint with inline hints that must be applied to those statements. This function supports all inline hint types, and automatically applies them to statements that match the given fingerprint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -601,7 +599,7 @@ A unique ID is returned:
 
 Afterward, any executed statement that matches the `SELECT * FROM users WHERE city = _` fingerprint will first be rewritten with the `users_city_idx` index hint, regardless of the `city` value.
 
-The following call applies the `MERGE` [join algorithm](#supported-join-algorithms):
+The following call applies a hint for the `MERGE` [join algorithm](#supported-join-algorithms):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -622,16 +620,18 @@ SELECT information_schema.crdb_rewrite_inline_hints(
 ~~~
 
 {{site.data.alerts.callout_success}}
-If multiple `REWRITE INLINE HINT` hints exist for the same statement fingerprint, only the **most recently created hint** with `information_schema.crdb_rewrite_inline_hints()` is applied. To replace an existing hint, you can create a new one for the same fingerprint, which will take precedence.
+If multiple `REWRITE INLINE HINTS` are enabled for the same statement fingerprint, only the **most recently created hint** is applied. To replace an existing hint, you can create a new one for the same fingerprint, which will take precedence.
 {{site.data.alerts.end}}
 
 ### Override session variables
 
-You can override [session variable]({% link {{ page.version.version }}/session-variables.md %}) values for every execution of a statement fingerprint without modifying application code. This is useful when you need to tune specific queries without changing application settings, such as adjusting optimizer behavior for problematic statements in production or during escalations.
+You can override [session variable]({% link {{ page.version.version }}/session-variables.md %}) values for every execution of a statement fingerprint without modifying application code. The override applies only to statements matching a specific fingerprint and does not apply to other session activity. 
 
-The override applies only to statements matching a specific [fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) and does not apply to other session activity.
+While there are no restrictions on what session variables can be hinted, some session variable hints will not be meaningful at the statement level. For example, changing the `default_transaction_isolation` session variable at the statement level will have no effect, since the transaction has already started and the variable will be reverted after execution finishes.
 
-To override a session variable for a statement fingerprint, invoke the [`information_schema.crdb_set_session_variable_hint()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function with three arguments:
+To override a session variable for a statement fingerprint, invoke the [`information_schema.crdb_set_session_variable_hint()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function. You must have the [`REPAIRCLUSTER`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege. 
+
+Provide the required three arguments:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -706,9 +706,13 @@ SELECT information_schema.crdb_set_session_variable_hint(
 );
 ~~~
 
+{{site.data.alerts.callout_success}}
+Multiple `SET VARIABLE` hints can be applied to the same statement fingerprint, as long as they override different session variables. If multiple `SET VARIABLE` hints are enabled for the same statement fingerprint and session variable, only the **most recently created hint** is applied. To replace an existing hint, you can create a new one for the same fingerprint and session variable, which will take precedence.
+{{site.data.alerts.end}}
+
 ### View statement hints
 
-Use the [`SHOW STATEMENT HINTS`]({% link {{ page.version.version }}/show-statement-hints.md %}) statement to view statement-level hints for a specific fingerprint. You must have the [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege.
+Use the [`SHOW STATEMENT HINTS`]({% link {{ page.version.version }}/show-statement-hints.md %}) statement to view statement hints for a specific fingerprint. You must have the [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -721,7 +725,7 @@ SHOW STATEMENT HINTS FOR $$ SELECT * FROM users WHERE city = _ $$ WITH DETAILS;
   1143727380739620865 | SELECT * FROM users WHERE city = _ | REWRITE INLINE HINTS | NULL     | t       | 2026-01-22 18:58:16.952689+00 | {"donorSql": "SELECT * FROM users@users_city_idx WHERE city = _"}
 ~~~
 
-You can also query the `system.statement_hints` table directly to view all fingerprints with statement-level hints:
+You can also query the `system.statement_hints` table directly to view all fingerprints with statement hints:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -761,12 +765,12 @@ EXPLAIN SELECT * FROM users WHERE city = 'new york';
 ~~~
 
 {{site.data.alerts.callout_info}}
-The `statement hints count` field shows the number of `system.statement_hints` rows that were applied. A single row in `system.statement_hints` can contain multiple inline hints.
+The `statement hints count` field shows the number of `system.statement_hints` rows that were applied. A single row in `system.statement_hints` corresponds to a single `REWRITE INLINE HINTS` or `SET VARIABLE` hint.
 {{site.data.alerts.end}}
 
 ### Enable and disable statement hints
 
-Statement hints are enabled by default when created. You can temporarily disable hints without deleting them using the [`information_schema.crdb_enable_statement_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function. Disabled hints remain in the `system.statement_hints` table but are not applied during query execution.
+Statement hints are enabled by default when created. You can temporarily disable hints without deleting them using the [`information_schema.crdb_enable_statement_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function. Disabled hints remain in the `system.statement_hints` table but are not applied during query execution. To enable or disable statement hints, you must have the [`REPAIRCLUSTER`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege. 
 
 The status of a hint is stored in the boolean `enabled` field of `system.statement_hints`.
 
@@ -822,7 +826,7 @@ When you omit the `database` parameter, the function affects **all** hints for t
 
 ### Delete statement hints
 
-To remove hints, you can use the [`information_schema.crdb_delete_statement_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function. This removes the hints from the `system.statement_hints` table.
+To remove hints, you can use the [`information_schema.crdb_delete_statement_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function. This removes the hints from the `system.statement_hints` table. To delete statement hints, you must have the [`REPAIRCLUSTER`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege. 
 
 #### Delete a hint by its `row_id`
 

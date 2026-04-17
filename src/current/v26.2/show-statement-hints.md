@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW STATEMENT HINTS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the [statement-level hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#statement-hints) that have been created for a specific SQL statement fingerprint using the `information_schema.crdb_rewrite_inline_hints()` and `information_schema.crdb_set_session_variable_hint()` [built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions).
+The `SHOW STATEMENT HINTS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the [statement hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#statement-hints) that have been created for a specific SQL statement fingerprint using the `information_schema.crdb_rewrite_inline_hints()` and `information_schema.crdb_set_session_variable_hint()` [built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions).
 
 ## Required privileges
 
