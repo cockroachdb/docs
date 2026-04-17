@@ -530,7 +530,7 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
 
 Unlike inline hints, which apply hints for a specific statement execution, *statement hints* allow you to apply the same hints for every execution of a given [statement fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints). You can add and maintain statement hints with built-in [functions]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions).
 
-Statemint hints are useful when you want to apply a hint without modifying the original statement, when you cannot modify application code, when you need to optimize queries from ORMs or third-party applications, or when you want to test different hints without changing queries in production.
+Statement hints are useful when you want to apply a hint without modifying the original statement, when you cannot modify application code, when you need to optimize queries from ORMs or third-party applications, or when you want to test different hints without changing queries in production.
 
 There are two types of statement hints:
 
@@ -766,45 +766,67 @@ The `statement hints count` field shows the number of `system.statement_hints` r
 
 ### Enable and disable statement hints
 
-Statement hints are enabled by default when created. You can temporarily disable hints without deleting them using the [`information_schema.crdb_enable_statement_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function.
+Statement hints are enabled by default when created. You can temporarily disable hints without deleting them using the [`information_schema.crdb_enable_statement_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function. Disabled hints remain in the `system.statement_hints` table but are not applied during query execution.
 
-To enable or disable a hint by its `row_id`:
+The status of a hint is stored in the boolean `enabled` field of `system.statement_hints`.
+
+#### Enable or disable a hint by its `row_id`
+
+To enable or disable a specific hint, pass its `row_id` into `information_schema.crdb_enable_statement_hints()`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT information_schema.crdb_enable_statement_hints({enabled}, {row_id});
 ~~~
 
-To enable or disable all hints for a specific statement fingerprint:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT information_schema.crdb_enable_statement_hints({enabled}, '{statement_fingerprint}');
-~~~
-
-The `enabled` parameter is a boolean: `true` to enable, `false` to disable.
-
-For example, to disable a hint by row ID:
+For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT information_schema.crdb_enable_statement_hints(false, 1143727380739620865);
 ~~~
 
-To re-enable all hints for a specific fingerprint:
+#### Enable or disable all hints for a statement fingerprint
+
+To enable or disable all hints associated with a specific statement fingerprint, pass the fingerprint into `information_schema.crdb_enable_statement_hints()`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_enable_statement_hints({enabled}, '{statement_fingerprint}');
+~~~
+
+For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT information_schema.crdb_enable_statement_hints(true, 'SELECT * FROM users WHERE city = _');
 ~~~
 
-Disabled hints remain in the `system.statement_hints` table but are not applied during query execution.
+When using a statement fingerprint to enable or disable statement hints, you can optionally scope the operation to hints on a specific database:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_enable_statement_hints({enabled}, '{statement_fingerprint}', '{database}');
+~~~
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_enable_statement_hints(false, 'SELECT * FROM users WHERE city = _', 'mydb');
+~~~
+
+{{site.data.alerts.callout_info}}
+When you omit the `database` parameter, the function affects **all** hints for the given fingerprint, regardless of their database value (including hints with `database = NULL`). When you specify a `database`, the function only affects hints with that exact database value and will not affect hints with `database = NULL`.
+{{site.data.alerts.end}}
 
 ### Delete statement hints
 
-To remove hints, you can use the [`information_schema.crdb_delete_statement_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function or directly delete from the `system.statement_hints` table.
+To remove hints, you can use the [`information_schema.crdb_delete_statement_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function. This removes the hints from the `system.statement_hints` table.
 
 #### Delete a hint by its `row_id`
+
+To delete a specific hint, pass its `row_id` into `information_schema.crdb_delete_statement_hints()`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -818,7 +840,9 @@ For example:
 SELECT information_schema.crdb_delete_statement_hints(1143727380739620865);
 ~~~
 
-#### Delete a hint by its statement fingerprint:
+#### Delete all hints for a statement fingerprint
+
+To delete all hints associated with a specific statement fingerprint, pass the fingerprint into `information_schema.crdb_delete_statement_hints()`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -831,6 +855,24 @@ For example:
 ~~~ sql
 SELECT information_schema.crdb_delete_statement_hints('SELECT * FROM users WHERE city = _');
 ~~~
+
+When using a statement fingerprint to delete statement hints, you can optionally scope the operation to hints on a specific database:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_delete_statement_hints('{statement_fingerprint}', '{database}');
+~~~
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_delete_statement_hints('SELECT * FROM users WHERE city = _', 'mydb');
+~~~
+
+{{site.data.alerts.callout_info}}
+When you omit the `database` parameter, the function affects **all** hints for the given fingerprint, regardless of their database value (including hints with `database = NULL`). When you specify a `database`, the function only affects hints with that exact database value and will not affect hints with `database = NULL`.
+{{site.data.alerts.end}}
 
 ## Zigzag joins
 
