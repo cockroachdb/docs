@@ -119,7 +119,11 @@ _stmt_block_cache: dict[str, Optional[set]] = {}
 
 
 class _IDCollector(HTMLParser):
-    """Collects all id= attribute values from an HTML document."""
+    """Collects fragment-anchor identifiers from an HTML document.
+
+    Collects both id= attributes (on any element) and name= attributes
+    (on <a> tags only), since <a name="..."> also defines a fragment anchor.
+    """
 
     def __init__(self) -> None:
         super().__init__()
@@ -128,13 +132,16 @@ class _IDCollector(HTMLParser):
     def handle_starttag(
         self, tag: str, attrs: list[tuple[str, Optional[str]]]
     ) -> None:
-        for name, value in attrs:
-            if name == "id" and value:
+        for attr_name, value in attrs:
+            if value and (
+                attr_name == "id"
+                or (attr_name == "name" and tag == "a")
+            ):
                 self.ids.add(value)
 
 
 def get_stmt_block_anchors(branch: str) -> Optional[set]:
-    """Return all id= values in stmt_block.html for the given branch."""
+    """Return all anchor identifiers in stmt_block.html for the given branch."""
     if branch not in _stmt_block_cache:
         content = _fetch_github_content(
             GENERATED_DIAGRAMS_REPO, "grammar_svg/stmt_block.html", branch
@@ -146,6 +153,31 @@ def get_stmt_block_anchors(branch: str) -> Optional[set]:
             collector.feed(content)
             _stmt_block_cache[branch] = collector.ids
     return _stmt_block_cache[branch]
+
+
+_local_anchor_cache: dict[str, set] = {}
+
+
+def get_local_grammar_anchors(version: str) -> set:
+    """Return id= values from <a id="..."> tags in the local sql-grammar.md.
+
+    The sql-grammar.md files define stub anchors for missing nonterminals
+    (e.g. col_label, column_constraints) that are present on the rendered
+    sql-grammar.html page but absent from stmt_block.html.
+    """
+    if version not in _local_anchor_cache:
+        grammar_path = DOCS_ROOT / version / "sql-grammar.md"
+        if not grammar_path.exists():
+            _local_anchor_cache[version] = set()
+        else:
+            try:
+                content = grammar_path.read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                content = ""
+            collector = _IDCollector()
+            collector.feed(content)
+            _local_anchor_cache[version] = collector.ids
+    return _local_anchor_cache[version]
 
 
 # ---------------------------------------------------------------------------
@@ -231,7 +263,8 @@ def run_checks(
                 continue
 
             refs = ANCHOR_REF_RE.findall(content)
-            missing = [r for r in refs if r not in known_anchors]
+            all_anchors = known_anchors | get_local_grammar_anchors(version)
+            missing = [r for r in refs if r not in all_anchors]
 
             if missing:
                 print(f"    {diagram}: {len(missing)} MISSING anchor(s)")
@@ -244,7 +277,8 @@ def run_checks(
                         "message": (
                             f"Diagram {diagram!r} on {branch!r} links to "
                             f"sql-grammar.html#{anchor}, "
-                            f"but that anchor is absent from stmt_block.html."
+                            f"but that anchor is absent from both "
+                            f"stmt_block.html and sql-grammar.md."
                         ),
                     })
             else:
