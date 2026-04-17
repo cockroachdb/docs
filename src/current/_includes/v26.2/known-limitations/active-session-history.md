@@ -1,0 +1,3 @@
+- ASH is not recommended for nodes with 64 or more vCPUs, due to degraded performance on those nodes. [#168289](https://github.com/cockroachdb/cockroach/issues/168289)
+- On Basic and Standard CockroachDB {{ site.data.products.cloud }} clusters, ASH samples only cover work running on the SQL pod. KV-level work (storage I/O, lock waits, replication, etc.) is not visible in ASH samples.
+- KV work triggered during COMMIT (for example, intent resolution, Raft proposals deferred from earlier statements in an explicit transaction) is attributed to the last statement's fingerprint, not the statement that originally caused the work. [#165864](https://github.com/cockroachdb/cockroach/issues/165864)
