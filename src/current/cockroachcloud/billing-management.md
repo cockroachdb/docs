@@ -149,11 +149,17 @@ You can also use the Cloud API to [get invoices for an organization]({% link coc
 
 ### Export invoices
 
-You can export invoice data in CSV or PDF format. From the **Invoices** tab, on the row of any billing period, click the **...** button under the **Download** column and select **Export CSV** or **Export PDF**.
+You can export invoice data in CSV or PDF format. From the **Invoices** tab, on the row of any billing period, click the **...** button under the **Download** column and select an export option:
 
-- The CSV file includes line items for all clusters in your organization for the selected billing period. It includes the same information that is available when viewing invoices within the Console.
+- **Export Monthly CSV**: Exports a CSV file with one row per line item for all clusters in your organization, matching what is displayed in invoices in the Console. Any adjustments (such as applied credits or fees) are appended as additional rows at the end of the file, with no cluster-specific details.
 
-- The PDF renders invoice information from the Console into a traditional invoice format. This format includes the high level information from the Console, a summary of total usage, the organization's billing address, and a CockroachDB letterhead.
+- **Export Daily CSV**: Contains the same columns and structure as the Monthly CSV, but usage rows are broken down by individual day rather than aggregated across the full billing period. Two additional columns are included: **Usage date** (the date each usage row covers) and **Locality** (for multi-region charge breakdowns). Adjustments are appended in the same way as in the Monthly CSV.
+
+    {{site.data.alerts.callout_info}}
+    **Export Daily CSV** is not available for invoices posted in 2025 or earlier.
+    {{site.data.alerts.end}}
+
+- **Export Invoice PDF**: Renders invoice information from the Console into a traditional invoice format. This format includes the high level information from the Console, a summary of total usage, the organization's billing address, and a CockroachDB letterhead.
 
 If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, the full path for each cluster is provided under the **Cluster path** column.
 
