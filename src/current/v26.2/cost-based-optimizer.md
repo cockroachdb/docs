@@ -481,7 +481,7 @@ Due to SQL's implicit `AS` syntax, you cannot specify a join hint with only the 
 For a join hint example, see [Use the right join type]({% link {{ page.version.version }}/apply-statement-performance-rules.md %}#rule-3-use-the-right-join-type).
 
 {{site.data.alerts.callout_success}}
-You can use [hint injection](#hint-injection) to apply join hints without modifying the original query text.
+You can [rewrite inline hints](#rewrite-inline-hints) to apply join hints without modifying the original query text.
 {{site.data.alerts.end}}
 
 ### Supported join algorithms
@@ -522,23 +522,30 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
 
 - You should reconsider hint usage with each new release of CockroachDB. Due to improvements in the optimizer, hints specified to work with an older version may cause decreased performance in a newer version.
 
-## Hint injection
+## Statement hints
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-*Hint injection* allows you to apply inline hints, such as [index hints]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) and [join hints](#join-hints), without modifying the original statement. This is useful when you cannot modify application code, need to optimize queries from ORMs or third-party applications, or want to test different hints without changing queries in production.
+Unlike inline hints, which apply hints for a specific statement execution, *statement hints* allow you to apply the same hints for every execution of a given [statement fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints). You can add and maintain statement hints with built-in [functions]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions).
 
-Hint injection supports all inline hint types, and automatically applies them to statements that match a [fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints).
+Statemint hints are useful when you want to apply a hint without modifying the original statement, when you cannot modify application code, when you need to optimize queries from ORMs or third-party applications, or when you want to test different hints without changing queries in production.
 
-### Inject hints
+There are two types of statement hints:
 
-{{site.data.alerts.callout_info}}
-To inject hints using `information_schema.crdb_rewrite_inline_hints()`, users must have the [`REPAIRCLUSTER`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege.
-{{site.data.alerts.end}}
+- [`REWRITE INLINE HINTS`](#rewrite-inline-hints): These hints allow you to apply inline hints (such as [index hints]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) and [join hints](#join-hints)) to a statement fingerprint, so that you can apply the hint for every matching query without modifying the statement.
+- [`SET VARIABLE`](#override-session-variables): These hints allow you to override [session variable]({% link {{ page.version.version }}/session-variables.md %}) values for every execution of a statement fingerprint without modifying application code.
 
-To inject hints, invoke the `information_schema.crdb_rewrite_inline_hints()` built-in function with two matching SQL statement fingerprints: a fingerprint identifying which statements to optimize, and a *donor* fingerprint with inline hints that must be applied to those statements:
+You can apply multiple statement hints of either type to a single statement fingerprint, though only the most recently created `REWRITE INLINE HINTS` hint will be applied at execution (as well as all `SET VARIABLE` hints).
+
+Statement hints can be scoped to a particular database, such that the hint is only applied when executing on that database. Statement hints can also be disabled (but are enabled by default upon creation).
+
+To rewrite inline hints using `information_schema.crdb_rewrite_inline_hints()` or to override session variables using `information_schema.crdb_set_session_variable_hint()`, you must have the [`REPAIRCLUSTER`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege.
+
+### Rewrite inline hints
+
+To rewrite inline hints for a statement fingerprint, invoke the [`information_schema.crdb_rewrite_inline_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function with two matching SQL statement fingerprints: a fingerprint identifying which statements to optimize, and a *donor* fingerprint with inline hints that must be applied to those statements. This function supports all inline hint types, and automatically applies them to statements that match the given fingerprint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -548,6 +555,19 @@ SELECT information_schema.crdb_rewrite_inline_hints(
 );
 ~~~
 
+Optionally, you can scope the hint to a specific database by providing a third argument:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_rewrite_inline_hints(
+  '{fingerprint}',
+  '{donor fingerprint}',
+  '{database_name}'
+);
+~~~
+
+When a database is specified, the hint only applies to executions of the matching statement on that database. If the database parameter is omitted, the hint applies to all databases.
+
 Both fingerprints in the function invocation **must** have the same syntactic structure and use underscores (`_`) as placeholders for constants (for example, `SELECT * FROM users WHERE city = _`). If you use a regular SQL statement in either argument, it is automatically replaced by the matching fingerprint.
 
 {{site.data.alerts.callout_success}}
@@ -556,12 +576,12 @@ To find the fingerprint for a statement, use the [**Statements** page of the DB 
 
 The `information_schema.crdb_rewrite_inline_hints()` function does the following:
 
-1. Stores the injected hint in the `system.statement_hints` table.
+1. Stores the statement hint in the `system.statement_hints` table.
 1. Matches SQL statements with the fingerprint in the first argument.
 1. Removes any existing inline hints from the matching SQL statements.
 1. Rewrites the matching SQL statements with the inline hints from the donor fingerprint.
 
-For example, the following call injects the `users_city_idx` index hint (provided an [index was created]({% link {{ page.version.version }}/create-index.md %}#create-standard-indexes) on the `city` column) into SQL statements matching `SELECT * FROM users WHERE city = _`:
+For example, the following call applies the `users_city_idx` index hint (provided an [index was created]({% link {{ page.version.version }}/create-index.md %}#create-standard-indexes) on the `city` column) to SQL statements matching `SELECT * FROM users WHERE city = _`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -581,7 +601,7 @@ A unique ID is returned:
 
 Afterward, any executed statement that matches the `SELECT * FROM users WHERE city = _` fingerprint will first be rewritten with the `users_city_idx` index hint, regardless of the `city` value.
 
-The following call injects the `MERGE` [join algorithm](#supported-join-algorithms):
+The following call applies the `MERGE` [join algorithm](#supported-join-algorithms):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -602,16 +622,93 @@ SELECT information_schema.crdb_rewrite_inline_hints(
 ~~~
 
 {{site.data.alerts.callout_success}}
-If multiple injected hints exist for the same statement fingerprint, only the **most recently created hint** with `information_schema.crdb_rewrite_inline_hints()` is applied. To replace an existing hint, you can create a new one for the same fingerprint, which will take precedence.
+If multiple `REWRITE INLINE HINT` hints exist for the same statement fingerprint, only the **most recently created hint** with `information_schema.crdb_rewrite_inline_hints()` is applied. To replace an existing hint, you can create a new one for the same fingerprint, which will take precedence.
 {{site.data.alerts.end}}
 
-### View injected hints
+### Override session variables
 
-{{site.data.alerts.callout_info}}
-To view hints using [`SHOW STATEMENT HINTS`]({% link {{ page.version.version }}/show-statement-hints.md %}), users must have the [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege.
+You can override [session variable]({% link {{ page.version.version }}/session-variables.md %}) values for every execution of a statement fingerprint without modifying application code. This is useful when you need to tune specific queries without changing application settings, such as adjusting optimizer behavior for problematic statements in production or during escalations.
+
+The override applies only to statements matching a specific [fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) and does not apply to other session activity.
+
+To override a session variable for a statement fingerprint, invoke the [`information_schema.crdb_set_session_variable_hint()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function with three arguments:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_set_session_variable_hint(
+  '{fingerprint}',
+  '{variable_name}',
+  '{variable_value}'
+);
+~~~
+
+Optionally, you can scope the hint to a specific database by providing a fourth argument:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_set_session_variable_hint(
+  '{fingerprint}',
+  '{variable_name}',
+  '{variable_value}',
+  '{database_name}'
+);
+~~~
+
+When a database is specified, the hint only applies to executions of the matching statement on that database. If the database parameter is omitted, the hint applies to all databases.
+
+Transaction control statements (`BEGIN`, `COMMIT`, `ROLLBACK`, `SAVEPOINT`, etc.) **cannot** be targets for session variable hints. Attempting to create a hint for such statements will return an error.
+
+{{site.data.alerts.callout_success}}
+To find the fingerprint for a statement, use the [**Statements** page of the DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}#statement-fingerprints-view) or [`EXPLAIN (FINGERPRINT) {statement}`]({% link {{ page.version.version }}/explain.md %}#fingerprint-option).
 {{site.data.alerts.end}}
 
-Use the [`SHOW STATEMENT HINTS`]({% link {{ page.version.version }}/show-statement-hints.md %}) statement to view injected hints for a specific statement fingerprint:
+The `information_schema.crdb_set_session_variable_hint()` function does the following:
+
+1. Stores the hint in the `system.statement_hints` table.
+1. Matches SQL statements with the specified fingerprint.
+1. Applies the session variable override for the duration of the matching statement's execution.
+
+For example, to limit join reordering for a specific query without modifying the application:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_set_session_variable_hint(
+  'SELECT * FROM users AS u INNER JOIN rides AS r ON u.id = r.rider_id WHERE r.city = _',
+  'reorder_joins_limit',
+  '4'
+);
+~~~
+
+A unique ID is returned:
+
+~~~
+  information_schema.crdb_set_session_variable_hint
+-----------------------------------------------------
+                           1143850492847104001
+~~~
+
+Afterward, any statement matching the fingerprint will execute with `reorder_joins_limit` set to `4`, regardless of the session's or role's default value.
+
+You can override multiple session variables for the same statement by calling the function multiple times with the same fingerprint:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_set_session_variable_hint(
+  'SELECT * FROM large_table WHERE status = _',
+  'disallow_full_table_scans',
+  'false'
+);
+
+SELECT information_schema.crdb_set_session_variable_hint(
+  'SELECT * FROM large_table WHERE status = _',
+  'vectorize',
+  'on'
+);
+~~~
+
+### View statement hints
+
+Use the [`SHOW STATEMENT HINTS`]({% link {{ page.version.version }}/show-statement-hints.md %}) statement to view statement-level hints for a specific fingerprint. You must have the [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -619,28 +716,28 @@ SHOW STATEMENT HINTS FOR $$ SELECT * FROM users WHERE city = _ $$ WITH DETAILS;
 ~~~
 
 ~~~
-        row_id        |            fingerprint             |      hint_type       |          created_at           |                              details
-----------------------+------------------------------------+----------------------+-------------------------------+--------------------------------------------------------------------
-  1143727380739620865 | SELECT * FROM users WHERE city = _ | rewrite_inline_hints | 2026-01-22 18:58:16.952689+00 | {"donorSql": "SELECT * FROM users@users_city_idx WHERE city = _"}
+        row_id        |            fingerprint             |      hint_type       | database | enabled |          created_at           |                              details
+----------------------+------------------------------------+----------------------+----------+---------+-------------------------------+--------------------------------------------------------------------
+  1143727380739620865 | SELECT * FROM users WHERE city = _ | REWRITE INLINE HINTS | NULL     | t       | 2026-01-22 18:58:16.952689+00 | {"donorSql": "SELECT * FROM users@users_city_idx WHERE city = _"}
 ~~~
 
-You can also query the `system.statement_hints` table directly to view all fingerprints with injected hints:
+You can also query the `system.statement_hints` table directly to view all fingerprints with statement-level hints:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT row_id, fingerprint, created_at FROM system.statement_hints;
+SELECT row_id, fingerprint, hint_type, database, enabled, created_at FROM system.statement_hints;
 ~~~
 
 ~~~
-        row_id        |                             fingerprint                             |          created_at
-----------------------+---------------------------------------------------------------------+--------------------------------
-  1143727380739620865 | SELECT * FROM users WHERE city = _                                  | 2026-01-22 18:58:16.952689+00
-  1143727427097886721 | SELECT * FROM users AS u INNER JOIN rides AS r ON u.id = r.rider_id | 2026-01-22 18:58:31.100944+00
-  1143727443278921729 | SELECT * FROM users@users_pkey WHERE city = _                       | 2026-01-22 18:58:36.039125+00
+        row_id        |                             fingerprint                             |      hint_type       | database | enabled |          created_at
+----------------------+---------------------------------------------------------------------+----------------------+----------+---------+--------------------------------
+  1143727380739620865 | SELECT * FROM users WHERE city = _                                  | REWRITE INLINE HINTS | NULL     | t       | 2026-01-22 18:58:16.952689+00
+  1143727427097886721 | SELECT * FROM users AS u INNER JOIN rides AS r ON u.id = r.rider_id | REWRITE INLINE HINTS | NULL     | t       | 2026-01-22 18:58:31.100944+00
+  1143727443278921729 | SELECT * FROM users@users_pkey WHERE city = _                       | REWRITE INLINE HINTS | NULL     | t       | 2026-01-22 18:58:36.039125+00
 (3 rows)
 ~~~
 
-To verify that injected hints are being applied to your queries, use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) or [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}). When hints from `system.statement_hints` are applied, the output includes a `statement hints count` field showing the number of hints applied. For example:
+To verify that these hints are being applied to your queries, use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) or [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}). When hints from `system.statement_hints` are applied, the output includes a `statement hints count` field showing the number of hints applied. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -667,20 +764,72 @@ EXPLAIN SELECT * FROM users WHERE city = 'new york';
 The `statement hints count` field shows the number of `system.statement_hints` rows that were applied. A single row in `system.statement_hints` can contain multiple inline hints.
 {{site.data.alerts.end}}
 
-### Remove injected hints
+### Enable and disable statement hints
 
-To remove an injected hint by its ID:
+Statement hints are enabled by default when created. You can temporarily disable hints without deleting them using the [`information_schema.crdb_enable_statement_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function.
+
+To enable or disable a hint by its `row_id`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-DELETE FROM system.statement_hints WHERE row_id = {id};
+SELECT information_schema.crdb_enable_statement_hints({enabled}, {row_id});
 ~~~
 
-To remove all injected hints for a specific query fingerprint:
+To enable or disable all hints for a specific statement fingerprint:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-DELETE FROM system.statement_hints WHERE fingerprint = '{statement_fingerprint}';
+SELECT information_schema.crdb_enable_statement_hints({enabled}, '{statement_fingerprint}');
+~~~
+
+The `enabled` parameter is a boolean: `true` to enable, `false` to disable.
+
+For example, to disable a hint by row ID:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_enable_statement_hints(false, 1143727380739620865);
+~~~
+
+To re-enable all hints for a specific fingerprint:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_enable_statement_hints(true, 'SELECT * FROM users WHERE city = _');
+~~~
+
+Disabled hints remain in the `system.statement_hints` table but are not applied during query execution.
+
+### Delete statement hints
+
+To remove hints, you can use the [`information_schema.crdb_delete_statement_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function or directly delete from the `system.statement_hints` table.
+
+#### Delete a hint by its `row_id`
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_delete_statement_hints({row_id});
+~~~
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_delete_statement_hints(1143727380739620865);
+~~~
+
+#### Delete a hint by its statement fingerprint:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_delete_statement_hints('{statement_fingerprint}');
+~~~
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT information_schema.crdb_delete_statement_hints('SELECT * FROM users WHERE city = _');
 ~~~
 
 ## Zigzag joins
