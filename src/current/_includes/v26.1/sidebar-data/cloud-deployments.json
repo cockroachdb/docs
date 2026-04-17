@@ -286,6 +286,12 @@
                         ]
                     },
                     {
+                        "title": "Multi-Factor Authentication for the Cloud Console",
+                        "urls": [
+                        "/cockroachcloud/multi-factor-authentication.html"
+                        ]
+                    },
+                    {
                         "title": "SQL Client Certificate Authentication for Advanced Clusters",
                         "urls": [
                         "/cockroachcloud/client-certs-advanced.html"

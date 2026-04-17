@@ -120,5 +120,6 @@ The table below lists the `sslmode` settings you can use to [connect to your clu
 
 - [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %})
 - [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})
+- [Multi-Factor Authentication for the CockroachDB Cloud Console]({% link cockroachcloud/multi-factor-authentication.md %})
 - [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
 - [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
