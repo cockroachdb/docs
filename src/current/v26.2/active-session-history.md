@@ -209,17 +209,20 @@ ORDER BY sample_count DESC;
 The query returns the count of samples for each work event type and specific event:
 
 ~~~
-  work_event_type |    work_event     | sample_count
-------------------+-------------------+---------------
-  OTHER           | RaftProposalWait  |           14
-  CPU             | ReplicaSend       |            3
-  IO              | KVEval            |            2
-  CPU             | create statistics |            1
-  CPU             | flow coordinator  |            1
-(5 rows)
+  work_event_type |      work_event        | sample_count
+------------------+------------------------+--------------
+  NETWORK         | DistSenderRemote       |           42
+  OTHER           | RaftProposalWait       |           38
+  CPU             | upsert                 |           19
+  ADMISSION       | ReplicationFlowControl |           12
+  LOCK            | LockWait               |            8
+  IO              | KVEval                 |            5
+  CPU             | ReplicaSend            |            3
+  NETWORK         | InboxRecv              |            2
+(8 rows)
 ~~~
 
-The results show that Raft proposal waits dominate this node's activity. To understand which workloads are triggering these waits, add `workload_type` and `workload_id` to the query. If CPU events dominate instead, investigate whether they're from user queries or system tasks by filtering on `work_event_type = 'CPU'` and grouping by `workload_type`. Use the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) or [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) to examine specific workloads identified by their `workload_id`.
+The results show this node's activity is dominated by network waits (`DistSenderRemote`) and Raft consensus waits (`RaftProposalWait`), which is typical for write-heavy workloads that must replicate data across nodes. The upsert `CPU` samples show time spent executing upsert statements, while `ReplicationFlowControl` admission samples indicate that the system is throttling writes due to replication backpressure. The `LockWait` samples indicate some transaction-level lock contention on hot keys. To identify which specific workloads are causing these waits, add `workload_type`, `workload_id`, and `app_name` to the query and group by them.
 
 ### View cluster-wide workload data from the past 10 minutes
 
@@ -240,22 +243,22 @@ LIMIT 10;
 The query returns the top 10 workloads by sample count:
 
 ~~~
-  workload_type |     workload_id     |                  app_name                   | sample_count
-----------------+---------------------+---------------------------------------------+---------------
-  STATEMENT     | ad360b79112da7e3    | tpcc                                        |           59
-  SYSTEM        | INTENT_RESOLUTION   |                                             |           40
-  SYSTEM        | TIMESERIES          |                                             |           26
-  UNKNOWN       |                     |                                             |           13
-  STATEMENT     | 3be3baac97a1c623    | $ internal-write-job-progress-history-prune |            5
-  SYSTEM        | RAFT_LOG_TRUNCATION |                                             |            5
-  SYSTEM        | GC                  |                                             |            4
-  STATEMENT     | 0351d79a175f5ba7    | tpcc                                        |            4
-  STATEMENT     | b8e5459dbf4cc094    | $ internal-create-stats                     |            4
-  STATEMENT     | b254ac5884b1eacc    | $ internal-job-update-job                   |            3
+  workload_type |     workload_id      |        app_name         | sample_count
+----------------+----------------------+-------------------------+--------------
+  STATEMENT     | 9bef06d795045524     | kv                      |         2603
+  SYSTEM        | INTENT_RESOLUTION    |                         |         1383
+  JOB           | 1028061800150958081  |                         |          925
+  SYSTEM        | TXN_HEARTBEAT        |                         |          166
+  SYSTEM        | GC                   |                         |           91
+  STATEMENT     | 61a0effae6169169     | $ internal-create-stats |           23
+  SYSTEM        | LEASE_ACQUISITION    |                         |           17
+  SYSTEM        | NODE_LIVENESS        |                         |           12
+  STATEMENT     | ad360b79112da7e3     | myapp                   |            9
+  SYSTEM        | TIMESERIES           |                         |            7
 (10 rows)
 ~~~
 
-The results show that a single statement fingerprint (`ad360b79112da7e3`) dominates resource usage, followed by system tasks like intent resolution and timeseries maintenance. For statement workloads, use the `workload_id` to locate the query on the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) and review its execution plan and performance statistics.
+The results show that a single SQL statement fingerprint (`9bef06d795045524`) from the `kv` application is the largest consumer of cluster resources. System tasks like `INTENT_RESOLUTION` (async cleanup of transaction intents) and `TXN_HEARTBEAT` are also significant. To investigate the statement, use the `workload_id` to find the statement on the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}). To investigate the job, use its `workload_id` on the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}).
 
 ### Find recent lock contention hotspots
 
@@ -308,7 +311,6 @@ The query breaks down the job's resource consumption by work event type and spec
   -----------------+---------------------+--------------
   CPU              | backupDataProcessor |           10
   CPU              | ReplicaSend         |           10
-  LOCK             | LockWait            |            3
 (3 rows)
 ~~~
 
