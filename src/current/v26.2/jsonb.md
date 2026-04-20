@@ -8,8 +8,6 @@ docs_area: reference.sql
 
 The `JSONB` [data type]({% link {{ page.version.version }}/data-types.md %}) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}).
 
-{{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="{% link {{ page.version.version }}/demo-json-support.md %}">JSON tutorial</a>.{{site.data.alerts.end}}
-
 ## Alias
 
 In CockroachDB, `JSON` is an alias for `JSONB`.
@@ -54,7 +52,7 @@ Operator | Description | Example Query and Output |
 `->` | Access a `JSONB` field, returning a `JSONB` value. | `SELECT '[{"foo":"bar"}]'::JSONB->0->'foo';`<br><br>`"bar"::JSONB`
 `->>` | Access a `JSONB` field, returning a string. | `SELECT '{"foo":"bar"}'::JSONB->>'foo';`<br><br>`bar::STRING`
 `@>` | Tests whether the left `JSONB` field contains the right `JSONB` field. | `SELECT ('{"foo": {"baz": 3}, "bar": 2}'::JSONB@>'{"foo": {"baz":3}}'::JSONB );`<br><br>`true`
-`>@` | Tests whether the left `JSONB` field is contained by the right `JSONB` field. | `SELECT('{"bar":2}'::JSONB<@'{"foo":1, "bar":2}'::JSONB);`<br><br>`true`
+`<@` | Tests whether the left `JSONB` field is contained by the right `JSONB` field. | `SELECT('{"bar":2}'::JSONB<@'{"foo":1, "bar":2}'::JSONB);`<br><br>`true`
 `#>` | Access a `JSONB` field at the specified path, returning a `JSONB` value.  | `SELECT '[{"foo":"bar"}]'::JSONB#>'{0,foo}';`<br><br>`"bar"::JSONB`
 `#>>` | Access a `JSONB` field at the specified path, returning a string. | `SELECT '[{"foo":"bar"}]'::JSONB#>>'{0,foo}';`<br><br>`bar::STRING`
 `?` | Does the key or element string exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?'bar');`<br><br>`true`
@@ -489,7 +487,6 @@ INSERT 1
 
 ## See also
 
-- [JSON tutorial]({% link {{ page.version.version }}/demo-json-support.md %})
 - [GIN Indexes]({% link {{ page.version.version }}/inverted-indexes.md %})
 - [Use an expression to index a field in a JSONB column]({% link {{ page.version.version }}/expression-indexes.md %}#use-an-expression-to-index-a-field-in-a-jsonb-column)
 - [Computed Columns]({% link {{ page.version.version }}/computed-columns.md %})

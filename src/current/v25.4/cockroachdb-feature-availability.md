@@ -63,10 +63,6 @@ The [`LTREE` data type]({% link {{ page.version.version }}/ltree.md %}) stores h
 
 The `metrics` Prometheus endpoint is commonly used and is the default in Prometheus configurations.
 
-### Value separation
-
-[Value separation]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) reduces write amplification by storing large values separately from the LSM in blob files. Value separation can reduce write amplification by up to 50% for large-value workloads, while introducing minor read overhead and a slight increase in disk space usage. This feature is available in Preview.
-
 ### `database` and `application_name` labels for certain metrics
 
 The following cluster settings enable the [`database` and `application_name` labels for certain metrics]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}#enable-database-and-application_name-labels), along with their internal counterparts if they exist:
@@ -297,12 +293,6 @@ Command                                     | Description
 --------------------------------------------+-------------
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
-
-### Leader leases
-
-{% include {{ page.version.version }}/leader-leases-intro.md %}
-
-For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
 ### Buffered Writes
 

@@ -24,7 +24,7 @@ Before reading this page, do the following:
 
     For the example on this page, we use the `psycopg2` Python driver.
 - [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
-- [Insert data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to update.
+- [Insert data]({% link {{ page.version.version }}/insert.md %}) that you now want to update.
 
     For the example on this page, we load a cluster with the `movr` database and data from [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}).
 
@@ -110,5 +110,4 @@ Note that the last iteration of the nested loop assigns the primary key value of
 
 ## See also
 
-- [Update data]({% link {{ page.version.version }}/update-data.md %})
 - [`UPDATE`]({% link {{ page.version.version }}/update.md %})

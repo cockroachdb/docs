@@ -335,7 +335,7 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
 1. Use the [**Databases**]({% link {{ page.version.version }}/ui-databases-page.md %}), [**Statements**]({% link {{ page.version.version }}/ui-statements-page.md %}), and [**Jobs**]({% link {{ page.version.version }}/ui-jobs-page.md %}) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
-## Step 6.  Stop the cluster
+## Step 7. Stop the cluster
 
 1. Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes]({% link {{ page.version.version }}/node-shutdown.md %}#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
 
@@ -366,4 +366,4 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 - [Create a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?experience=enterprise) where you can [generate and manage licenses]({% link {{ page.version.version }}/licensing-faqs.md %}) for CockroachDB installations
 - Learn more about [CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}) and the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [Install the client driver]({% link {{ page.version.version }}/install-client-drivers.md %}) for your preferred language
-- Further explore CockroachDB capabilities like [fault tolerance and automated repair]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}), [multi-region performance]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}), [serializable transactions]({% link {{ page.version.version }}/demo-serializable.md %}), and [JSON support]({% link {{ page.version.version }}/demo-json-support.md %})
+- Further explore CockroachDB capabilities like [fault tolerance and automated repair]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}), [multi-region performance]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}), [serializable transactions]({% link {{ page.version.version }}/demo-serializable.md %}), and [JSON support]({% link {{ page.version.version }}/jsonb.md %})

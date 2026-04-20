@@ -31,7 +31,6 @@ You can also make a LineString using the [aggregate function form]({% link {{ pa
 
 ## See also
 
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects)
 - [POINT]({% link {{ page.version.version }}/point.md %})
 - [POLYGON]({% link {{ page.version.version }}/polygon.md %})
@@ -39,4 +38,3 @@ You can also make a LineString using the [aggregate function form]({% link {{ pa
 - [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
 - [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
 - [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

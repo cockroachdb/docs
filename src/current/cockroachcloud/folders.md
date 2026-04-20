@@ -7,10 +7,6 @@ docs_area: manage
 
 This page explains how to organize and manage access to your {{ site.data.products.db }} organization's clusters with folders using the CockroachDB {{ site.data.products.cloud }} Console. You can also use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. For more details about managing access to {{ site.data.products.db }} resources, refer to [Managing Users, Roles, and Service Accounts in {{ site.data.products.db }}]({% link cockroachcloud/managing-access.md %}).
 
-{{site.data.alerts.callout_info}}
-{% include_cached feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 ## How folders work
 
 Folders allow you to organize and manage access to your clusters according to your organization's requirements, and to [summarize billing by folder]({% link cockroachcloud/billing-management.md %}#view-invoices). For example, you can create top-level folders for each business unit in your organization, and within those folders, you can organize clusters by geographic location and then by their level of maturity, such as production, staging, and testing. For more details, refer to [Folder Structure](#folder-structure).
@@ -71,11 +67,7 @@ The following roles allow creation of clusters at the level of the hierarchy whe
 - Cluster Admin
 - Cluster Creator
 
-The following additional roles explicitly allow management of folders and their contents:
-
-- {% include cockroachcloud/org-roles/folder-admin.md %}
-
-- {% include cockroachcloud/org-roles/folder-mover.md %}
+The [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) and [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover) roles explicitly allow management of folders and their contents.
 
 The remainder of this page shows how to create folders, manage access to them, and use them to organize your clusters.
 
@@ -130,6 +122,12 @@ Your service account must have the following roles on the organization, the fold
 
 1. Click **Confirm**.
 
+## Search for a cluster or folder
+
+1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
+1. In the search bar, enter cluster or folder metadata. You can search on the full cluster or folder name, a name prefix, name substrings, UUID, UUID prefix, and folder path segment names.
+1. Select a folder or cluster from the dropdown.
+
 ## List folder contents
 
 Your service account must have one of the following roles to read a folder's contents:
@@ -149,7 +147,7 @@ Your service account must have the following roles on the organization or the fo
 - [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator)
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. Browse to the folder where you want to create the cluster.
+1. Browse to the folder where you want to create the cluster, or use the search bar.
 1. Click **Create**, then click **Create cluster**.
     {{site.data.alerts.callout_info}}
     If you do not have permission to create folders at this location, you will see only **Create cluster**.
@@ -177,14 +175,14 @@ When you move a cluster into or out of a folder, users or service accounts who h
 To move a cluster from the organization level into a folder, or to move it from one folder to another:
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. Browse to the folder that contains the cluster, then click the cluster name to open its details.
+1. Browse to the folder that contains the cluster, or use the search bar. Click the cluster name to open its details.
 1. Click **Actions** > **Move Cluster**.
 1. In the dialog, select the destination to move the cluster to, then click **Next**.
 1. Click **Move**.
 
 To move a cluster to a new folder from the **Clusters** page:
 
-1. Browse to the location of the destination folder.
+1. Browse to the location of the destination folder, or use the search bar.
 1. Click the the three-dots **Action** button, then select **Move**.
 
 {{site.data.alerts.callout_info}}
@@ -204,7 +202,7 @@ When you move a folder, users or service accounts who had access to the previous
 To move a folder and its contents into another folder:
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. Browse to the location of the folder that you want to move.
+1. Browse to the location of the folder that you want to move, or use the search bar.
 1. Next to the folder you want to move, click the three-dots **Action** button and select **Move folder**.
 1. In the dialog, set **Destination** to the new location for the folder, then click **Next**.
 1. Click **Move**.
@@ -223,7 +221,7 @@ To delete a folder:
 
 1. Move or delete all descendant folders and clusters.
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. Browse to the location of the folder that you want to delete.
+1. Browse to the location of the folder that you want to delete, or use the search bar.
 1. Next to the folder you want to delete, click the three-dots **Action** button and select **Delete folder**.
 1. Type the name of the folder to confirm, then click **Delete**.
 
@@ -231,7 +229,7 @@ To delete a folder:
 
 - Folders can be nested a maximum of four levels deep, including the organization level.
 - An organization can have a maximum of 65 folders, regardless of how they are organized.
-- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. {% include cockroachcloud/limitations/limitation-ccloud-folders.md %}
+- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above, or the [`ccloud` CLI tool]({% link cockroachcloud/ccloud-reference.md %}#manage-folders).
 
 ## See also
 

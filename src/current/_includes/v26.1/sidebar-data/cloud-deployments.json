@@ -380,9 +380,9 @@
             "title": "Monitoring and Alerting",
                 "items": [
                   {
-                    "title": "Cluster Overview Page",
+                    "title": "Overview Page",
                     "urls": [
-                      "/cockroachcloud/cluster-overview-page.html"
+                      "/cockroachcloud/overview-page.html"
                     ]
                   },
                   {
@@ -606,8 +606,19 @@
               },
               {
                 "title": "<code>ccloud</code> CLI",
-                "urls": [
-                  "/cockroachcloud/ccloud-get-started.html"
+                "items": [
+                    {
+                          "title": "Get started",
+                          "urls": [
+                            "/cockroachcloud/ccloud-get-started.html"
+                          ]
+                    },
+                    {
+                          "title": "<code>ccloud</code> CLI reference",
+                          "urls": [
+                            "/cockroachcloud/ccloud-reference.html"
+                          ]
+                    }
                 ]
               }
     ]

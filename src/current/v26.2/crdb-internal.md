@@ -9,10 +9,10 @@ The `crdb_internal` [system catalog]({% link {{ page.version.version }}/system-c
 
 ## Access control
 
-CockroachDB treats most objects in the `crdb_internal` schema, as well as tables and built-in functions in the `system` database, as *unsafe internals*. Access to these objects is controlled by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals). This variable defaults to `off`, restricting access to the `system` and `crdb_internal` namespaces. Queries to these namespaces will fail unless access is manually enabled. With `allow_unsafe_internals` set to `off`, you should access only [`information_schema` tables]({% link {{ page.version.version }}/information-schema.md %}).
+CockroachDB treats most objects in the `crdb_internal` schema, as well as tables and built-in functions in the `system` database, as *unsafe internals*. Access to these objects is controlled by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals). This variable defaults to `off`, restricting access to the `system` and `crdb_internal` namespaces. Queries to these namespaces will fail unless access is manually enabled. With `allow_unsafe_internals` set to `off`, you should access only [`information_schema`]({% link {{ page.version.version }}/information-schema.md %}) and [`pg_catalog`]({% link {{ page.version.version }}/pg-catalog.md %}) tables.
 
 {{site.data.alerts.callout_info}}
-If you need information not available through production-supported [`information_schema` tables]({% link {{ page.version.version }}/information-schema.md %}), contact your account team or contact [Cockroach Labs support](https://support.cockroachlabs.com).
+If you need information not available through production-supported [`information_schema`]({% link {{ page.version.version }}/information-schema.md %}) or [`pg_catalog`]({% link {{ page.version.version }}/pg-catalog.md %}) tables, contact your account team or contact [Cockroach Labs support](https://support.cockroachlabs.com).
 {{site.data.alerts.end}}
 
 When `allow_unsafe_internals` is set to `off`, external sessions can still read allowlisted `crdb_internal` objects that are supported for production use (those marked ✓ in the table below). To access all other tables and built-in functions in `crdb_internal` and `system`, you must explicitly enable `allow_unsafe_internals` for the session.
