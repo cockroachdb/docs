@@ -287,6 +287,10 @@ Buffered Writes enhance transaction throughput and reduce operational cost by mi
 
 For more information, refer to [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
 
+### Active Session History
+
+[Active Session History (ASH)]({% link {{ page.version.version }}/active-session-history.md %}) is in preview, and is disabled by defauly. ASH is a time-series sampling-based observability feature that helps you troubleshoot workload performance issues by capturing what work was actively executing on your cluster at specific points in time.
+
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
