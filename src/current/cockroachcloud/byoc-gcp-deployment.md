@@ -28,7 +28,12 @@ The following requirements apply to the GCP project used for your BYOC deploymen
 
 ## Step 2. Grant permissions to the Cockroach Labs service account
 
-Cockroach Labs provisions a service account for your organization which is used to manage CockroachDB {{ site.data.products.cloud }} resources in your GCP account. In this step, use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to collect the email address of the Cockroach Labs service account and grant it the necessary roles.
+Cockroach Labs uses cross-account service account impersonation to provision and manage resources in your GCP project. This requires two service accounts:
+
+- A service account owned by Cockroach Labs which must be granted roles to view and access service accounts in your GCP project.
+- An intermediary service account in your GCP project which must be granted roles create and manage infrasturcture. This service account is the target used by Cockroach Labs for cross-account impersonation.
+
+In this step, use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to collect the email address of the Cockroach Labs service account and grant it the necessary roles.
 
 Send a `GET` request to the `/v1/organization` endpoint of the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/organization) similar to the following example:
 
@@ -56,9 +61,9 @@ Grant this service account the following roles in the GCP IAM Console:
 - `Service Account Token Creator (roles/iam.serviceAccountTokenCreator)`
 - `View Service Accounts (roles/iam.serviceAccountViewer)`
 
-## Step 3. Configure an intermediate service account for Cockroach Labs
+## Step 3. Configure the intermediate service account
 
-Cockroach Labs uses cross-account service account impersonation to provision and manage resources in your GCP project. In this step, create a new intermediate service account (separate from the service account provisioned by Cockroach Labs) and grant it the necessary roles in your GCP project.
+In this step, create the intermediate service account in your GCP project and grant it the necessary roles in your GCP project.
 
 Follow these steps to create the intermediate service account:
 
