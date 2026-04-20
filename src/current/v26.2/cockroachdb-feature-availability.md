@@ -281,6 +281,10 @@ Buffered Writes enhance transaction throughput and reduce operational cost by mi
 
 For more information, refer to [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
 
+### Post-quantum cryptography support
+
+[Post-quantum cryptography (PQC)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#post-quantum-cryptography-support-in-cockroachdb) support is in preview. For TLS 1.3 connections, CockroachDB uses `X25519MLKEM768` by default, a hybrid PQC algorithm that combines `X25519` (an elliptic curve Diffie-Hellman algorithm) and `ML-KEM-768` (a quantum-resistant key encapsulation mechanism).
+
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
