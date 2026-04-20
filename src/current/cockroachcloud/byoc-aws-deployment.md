@@ -21,9 +21,14 @@ The BYOC {{ site.data.products.cloud }} deployment option is currently in [Previ
 
 Provision a new AWS account with no existing infrastructure, dedicated to your Cockroach {{ site.data.products.cloud }} deployment. The account configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this account, so this step is necessary to isolate these permissions from non-Cockroach Cloud resources. This account can be reused for multiple CockroachDB clusters.
 
-## Step 2. Record your intermediate role's ARN
+## Step 2. Collect the Cockroach Labs IAM role ARN
 
-Cockroach Labs uses an intermediate **IAM role** to provision and manage resources in your AWS account. In this step, use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to get the **Amazon Resource Name (ARN)** of this IAM role.
+Cockroach Labs uses cross-account resource management to provision and manage resources in your AWS account. This requires two **IAM roles**:
+
+- An IAM role owned by Cockroach Labs which must be granted permissions to access an IAM role in your AWS account.
+- An intermediary IAM role in your AWS account which must be granted permissions to create and manage infrastructure. This IAM role is the target used by Cockroach Labs for cross-account management.
+
+In this step, use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to get the **Amazon Resource Name (ARN)** of the IAM role provisioned by Cockroach Labs for your account.
 
 Send a `GET` request to the `/v1/organization` endpoint of the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/organization) similar to the following example:
 
@@ -46,9 +51,11 @@ Record the value of `cockroach_cloud_service_principals.aws.user_arn` in the res
 }
 ~~~
 
-## Step 3. Create IAM role for Cockroach Labs access
+## Step 3. Create intermediary IAM role and apply permissions
 
-Follow these steps to create the intermediate IAM role and grant the necessary permissions:
+In this step, create the intermediary IAM role in your AWS account and apply a trust relationship policy and permissions that allows Cockroach Labs to assume the intermediary role as needed.
+
+Follow these steps to create the intermediate IAM role:
 
 1. Open the AWS IAM console.
 1. Create a new role. This name is arbitrary and can be named whatever you want. In these instructions the example role is named `CRLBYOCAdmin`.

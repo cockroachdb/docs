@@ -31,7 +31,7 @@ The following requirements apply to the GCP project used for your BYOC deploymen
 Cockroach Labs uses cross-account service account impersonation to provision and manage resources in your GCP project. This requires two service accounts:
 
 - A service account owned by Cockroach Labs which must be granted roles to view and access service accounts in your GCP project.
-- An intermediary service account in your GCP project which must be granted roles create and manage infrasturcture. This service account is the target used by Cockroach Labs for cross-account impersonation.
+- An intermediary service account in your GCP project which must be granted roles to create and manage infrasturcture. This service account is the target used by Cockroach Labs for cross-account impersonation.
 
 In this step, use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to collect the email address of the Cockroach Labs service account and grant it the necessary roles.
 
