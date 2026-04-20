@@ -1,6 +1,6 @@
 ---
 title: Prepare a CockroachDB Cloud BYOC Deployment in Azure
-summary: Prepare a cloud service account to self-host a CockroachDB Cloud deployment with the BYOC model
+summary: Prepare a Microsoft Azure account to host a BYOC deployment of CockroachDB
 toc: true
 keywords: deployment, byoc
 ---
@@ -14,6 +14,8 @@ The BYOC {{ site.data.products.cloud }} deployment option is currently in [Previ
 ## Prerequisites
 
 {% include cockroachcloud/byoc/byoc-common-prerequisites.md %}
+
+- (Optional) Create an [API service account]({% link cockroachcloud/managing-access.md %}#create-api-keys) to use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) with your {{ site.data.products.cloud }} organization.
 
 ## Step 1. Create a new Azure subscription
 

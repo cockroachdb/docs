@@ -1,6 +1,6 @@
 ---
 title: Prepare a CockroachDB Cloud BYOC Deployment in Amazon Web Services
-summary: Prepare a cloud service account to self-host a CockroachDB Cloud deployment with the BYOC model
+summary: Prepare an Amazon Web Services account to host a BYOC deployment of CockroachDB
 toc: true
 keywords: deployment, byoc
 ---
@@ -15,15 +15,17 @@ The BYOC {{ site.data.products.cloud }} deployment option is currently in [Previ
 
 {% include cockroachcloud/byoc/byoc-common-prerequisites.md %}
 
+- Create an [API service account]({% link cockroachcloud/managing-access.md %}#create-api-keys) to use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) with your {{ site.data.products.cloud }} organization.
+
 ## Step 1. Create a new AWS account
 
 Provision a new AWS account with no existing infrastructure, dedicated to your Cockroach {{ site.data.products.cloud }} deployment. The account configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this account, so this step is necessary to isolate these permissions from non-Cockroach Cloud resources. This account can be reused for multiple CockroachDB clusters.
 
 ## Step 2. Record your intermediate role's ARN
 
-Cockroach Labs uses an intermediate **IAM role** to provision and manage resources in your AWS account. In this step, use your CockroachDB {{ site.data.products.cloud }} organization label to determine the **Amazon Resource Name (ARN)** of this IAM role.
+Cockroach Labs uses an intermediate **IAM role** to provision and manage resources in your AWS account. In this step, use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to get the **Amazon Resource Name (ARN)** of this IAM role.
 
-Find your org label in the CockroachDB {{ site.data.products.cloud }} Console or by using the `/v1/organization` endpoint of the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/organization) with a `GET` request similar to the following example:
+Send a `GET` request to the `/v1/organization` endpoint of the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/organization) similar to the following example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -32,15 +34,16 @@ curl --request GET \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
-Record the ARN of your organization's intermediate IAM role using the following schema:
+Record the value of `cockroach_cloud_service_principals.aws.user_arn` in the response:
 
-~~~ text
-arn:aws:iam::<AWS Account ID>:user/byoc/CockroachDB-Cloud-managed-BYOC_<org-label>
-~~~
-
-For example, if your organization’s org label is `org-32222` then record your ARN as follows:
-~~~
-arn:aws:iam::<AWS Account ID>:user/byoc/CockroachDB-Cloud-managed-BYOC_org-32222
+~~~ json
+{
+  "cockroach_cloud_service_principals": {
+    "aws": {
+      "user_arn": "arn:aws:iam::{AWS Account ID}:example/arn"
+    }
+  }
+}
 ~~~
 
 ## Step 3. Create IAM role for Cockroach Labs access
@@ -48,7 +51,7 @@ arn:aws:iam::<AWS Account ID>:user/byoc/CockroachDB-Cloud-managed-BYOC_org-32222
 Follow these steps to create the intermediate IAM role and grant the necessary permissions:
 
 1. Open the AWS IAM console.
-1. Create a new role. This name is arbitrary, in these instructions the role is named `CRLBYOCAdmin`.
+1. Create a new role. This name is arbitrary and can be named whatever you want. In these instructions the example role is named `CRLBYOCAdmin`.
 1. Use the following trust relationship policy for the new role, using the ARN collected in the previous step:
     {% include_cached copy-clipboard.html %}
     ~~~ json

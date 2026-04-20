@@ -1,6 +1,6 @@
 ---
 title: Prepare a CockroachDB Cloud BYOC Deployment in Google Cloud Platform
-summary: Prepare a cloud service account to self-host a CockroachDB Cloud deployment with the BYOC model
+summary: Prepare a Google Cloud Platform account to host a BYOC deployment of CockroachDB
 toc: true
 keywords: deployment, byoc
 ---
@@ -15,22 +15,55 @@ The BYOC {{ site.data.products.cloud }} deployment option is currently in [Previ
 
 {% include cockroachcloud/byoc/byoc-common-prerequisites.md %}
 
+- Create an [API service account]({% link cockroachcloud/managing-access.md %}#create-api-keys) to use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) with your {{ site.data.products.cloud }} organization.
+
 ## Step 1. Create a new GCP project
 
 Provision a fresh **GCP project** with no existing infrastructure, dedicated to your Cockroach {{ site.data.products.cloud }} deployment. The project configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this project, so this step is necessary to isolate these permissions from non-Cockroach Cloud resources. This project can be reused for multiple CockroachDB clusters.
 
 The following requirements apply to the GCP project used for your BYOC deployment:
+
 - The project ID **must not** begin with the reserved prefix `crl-`.
 - [Enable](https://docs.cloud.google.com/endpoints/docs/openapi/enable-api) the Service Usage API and the Cloud Resource Manager APIs for this project. Cockroach Labs will enable additional APIs as needed, but these two must be initialized first.
 
-## Step 2. Configure an intermediate service account for Cockroach Labs
+## Step 2. Grant permissions to the Cockroach Labs service account
 
-Cockroach Labs uses cross-account service account impersonation to provision and manage resources in your GCP project.
+Cockroach Labs provisions a service account for your organization which is used to manage CockroachDB {{ site.data.products.cloud }} resources in your GCP account. In this step, use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to collect the email address of the Cockroach Labs service account and grant it the necessary roles.
+
+Send a `GET` request to the `/v1/organization` endpoint of the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/organization) similar to the following example:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/organization \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+
+Record the value of `cockroach_cloud_service_principals.gcp.service_account_email` in the response:
+
+~~~ json
+{
+  "cockroach_cloud_service_principals": {
+    "gcp": {
+      "service_account_email": "example@email.com"
+    }
+  }
+}
+~~~
+
+Grant this service account the following roles in the GCP IAM Console:
+
+- `Service Account Token Creator (roles/iam.serviceAccountTokenCreator)`
+- `View Service Accounts (roles/iam.serviceAccountViewer)`
+
+## Step 3. Configure an intermediate service account for Cockroach Labs
+
+Cockroach Labs uses cross-account service account impersonation to provision and manage resources in your GCP project. In this step, create a new intermediate service account (separate from the service account provisioned by Cockroach Labs) and grant it the necessary roles in your GCP project.
 
 Follow these steps to create the intermediate service account:
 
 1. Open the GCP IAM Console.
-2. Create a new service account. The name is arbitrary but be sure to note down the email address of the account.
+2. Create a new service account. The account's name is arbitrary and can be whatever you want, but be sure to note down the email address of the account.
 3. Grant the following IAM roles to the service account:
     - `Compute Instance Admin (v1) (roles/compute.instanceAdmin.v1)`
     - `Compute Network Admin (roles/compute.networkAdmin)`
@@ -48,7 +81,7 @@ Follow these steps to create the intermediate service account:
     - `Storage Admin (roles/storage.admin)`
 
 
-## Step 3. Create the CockroachDB {{ site.data.products.cloud }} cluster
+## Step 4. Create the CockroachDB {{ site.data.products.cloud }} cluster
 
 In BYOC deployments, CockroachDB clusters can be deployed in the {{ site.data.products.cloud }} Console or with the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}).
 
