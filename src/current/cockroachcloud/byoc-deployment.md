@@ -43,11 +43,17 @@ Billing     | Meter vCPUs consumed, [charge for vCPU consumption]({% link cockro
 
 Provision a new Azure subscription with no existing infrastructure, dedicated to your Cockroach {{ site.data.products.cloud }} deployment. The account configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this subscription, so this step is necessary to isolate these permissions from non-Cockroach Cloud resources. This subscription can be reused for multiple CockroachDB clusters.
 
-## Step 2. Grant IAM permissions to Cockroach Labs
+{{ site.data.alerts.callout_danger }}
 
-When BYOC is enabled for your account, Cockroach Labs provisions a multi-tenant App Registration associated with your CockroachDB {{ site.data.products.cloud }} organization and provides you with a URL to grant tenant-wide admin consent to the application. Visit this URL with a user account that is [authorized to consent on behalf of your organization](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal#prerequisites).
+Once this Azure subscription has been created and configured to host CockroachDB {{ site.data.products.cloud }} clusters, do not make additional modifications to the account. Changes to the cloud account can cause unexpected problems with cluster operations.
 
-Once the Cockroach Labs App Registration has been granted admin consent in the tenant, grant the following set of roles to the app:
+{{ site.data.alerts.end }}
+
+## Step 2. Set up the admin App Registration
+
+When BYOC is enabled for your account, Cockroach Labs dynamically provisions a multi-tenant admin **App Registration** associated with your CockroachDB {{ site.data.products.cloud }} organization and provides you with a URL to grant tenant-wide admin consent to the application. Granting admin consent creates an admin **Service Principal** in your tenant, which is used by Cockroach Labs support to act on the Kubernetes cluster, running automation that initializes support infrastructure.
+
+Visit this URL with a user account that is [authorized to consent on behalf of your organization](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal#prerequisites). Once the Cockroach Labs App Registration has been granted admin consent in the tenant, grant the following set of roles to the admin Service Principal:
 
 - `Role Based Access Control Administrator`
 - `Azure Kubernetes Service Cluster User Role`
@@ -72,7 +78,165 @@ Once the Cockroach Labs App Registration has been granted admin consent in the t
 
 The custom `Resource Group Manager` role is required to create and manage resource groups in the subscription. This role is used instead of requesting the more broad `Contributor` role.
 
-## Step 3. Register resource providers
+## Step 3. Set up the reader App Registration
+
+In addition to the admin application, Cockroach Labs provisions the CockroachDB {{ site.data.products.cloud }} BYOC Reader App Registration. This App Registration is used by Cockroach Labs support for read access to Kubernetes infrastructure.
+
+This reader application also requires admin consent to deploy the reader Service Principal:
+
+1. Log in to the Azure portal as a user with Global Administrator or Privileged Role Administrator permissions.
+2. Open the following URL in your browser:
+    {% include_cached copy-clipboard.html %}
+    ~~~ text
+    https://login.microsoftonline.com/adminconsent?client_id=7f6538cb-f687-4411-9bbe-2f96bfbce028
+    ~~~
+    
+    If you have multiple tenants, replace `customer-tenant-id` in the following URL with the tenant containing your newly-created Azure subscription:
+    
+    {% include_cached copy-clipboard.html %}
+    ~~~ text
+    https://login.microsoftonline.com/<customer-tenant-id>/adminconsent?client_id=7f6538cb-f687-4411-9bbe-2f96bfbce028
+    ~~~
+3. Review the requested permissions and click **Accept**.
+4. Once the CockroachDB Cloud BYOC Reader App Registration has been granted admin consent in the tenant, grant the following set of roles to the reader Service Principal:
+      - `Reader`
+      - `Azure Kubernetes Service Cluster User`
+      - `Azure Kubernetes Service RBAC Reader`
+
+## Step 4. Grant persmissions to Entra groups with Azure Lighthouse
+
+Use [Azure Lighthouse](https://learn.microsoft.com/azure/lighthouse/overview) to enable cross-tenant management that establishes the support infrastructure that allows Cockroach Labs to assist in the event of a support escalation. Permissions are granted least-privilege access and full visibility, allowing you to review and remove access at any time from the Azure portal.
+
+This Azure Lighthouse deployment grants permissions to Cockroach Labs's managed tenant, which has a tenant ID of `a4611215-941c-4f86-b53b-348514e57b45`, by assigning the following roles to the reader and admin Entra groups within the tenant:
+
+- Reader Entra group:
+  - `Reader`
+  - `Azure Kubernetes Service Cluster User Role`
+- Admin Entra group:
+  - `Azure Kubernetes Service Contributor Role`
+  - `Azure Kubernetes Service Cluster Admin`
+  - `Managed Identity Contributor`
+  - `Network Contributor`
+  - `Storage Account Contributor`
+  - `Virtual Machine Contributor`
+
+Follow these steps to enable secure, scoped access for Cockroach Labs to your subscription using Azure Lighthouse:
+
+1. Save the following ARM template to a file named `byoc-lighthouse.json`:
+    {% include_cached copy-clipboard.html %}
+    ~~~ json
+    {
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "mspOfferName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specify a unique name for your offer"
+      },
+      "defaultValue": "CockroachDB Cloud BYOC"
+      },
+      "mspOfferDescription": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Managed Service Provider offering"
+      },
+      "defaultValue": "Template for secure access to customer clusters in CockroachDB Cloud BYOC"
+      }
+    },
+    "variables": {
+      "mspRegistrationName": "[guid(parameters('mspOfferName'))]",
+      "mspAssignmentName": "[guid(parameters('mspOfferName'))]",
+      "managedByTenantId": "a4611215-941c-4f86-b53b-348514e57b45",
+      "authorizations": [
+      {
+        "principalId": "c4139366-960c-431d-afad-29c65fd68087",
+        "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7",
+        "principalIdDisplayName": "CockroachDB Cloud BYOC Reader Entra Group"
+      },
+      {
+        "principalId": "c4139366-960c-431d-afad-29c65fd68087",
+        "roleDefinitionId": "4abbcc35-e782-43d8-92c5-2d3f1bd2253f",
+        "principalIdDisplayName": "CockroachDB Cloud BYOC Reader Entra Group"
+      },
+      {
+        "principalId": "6532a4f2-3fa1-4b10-a4c2-05368c87c89a",
+        "roleDefinitionId": "ed7f3fbd-7b88-4dd4-9017-9adb7ce333f8",
+        "principalIdDisplayName": "CockroachDB Cloud BYOC Admin Entra Group"
+      },
+      {
+        "principalId": "6532a4f2-3fa1-4b10-a4c2-05368c87c89a",
+        "roleDefinitionId": "0ab0b1a8-8aac-4efd-b8c2-3ee1fb270be8",
+        "principalIdDisplayName": "CockroachDB Cloud BYOC Admin Entra Group"
+      },
+      {
+        "principalId": "6532a4f2-3fa1-4b10-a4c2-05368c87c89a",
+        "roleDefinitionId": "e40ec5ca-96e0-45a2-b4ff-59039f2c2b59",
+        "principalIdDisplayName": "CockroachDB Cloud BYOC Admin Entra Group"
+      },
+      {
+        "principalId": "6532a4f2-3fa1-4b10-a4c2-05368c87c89a",
+        "roleDefinitionId": "4d97b98b-1d4f-4787-a291-c67834d212e7",
+        "principalIdDisplayName": "CockroachDB Cloud BYOC Admin Entra Group"
+      },
+      {
+        "principalId": "6532a4f2-3fa1-4b10-a4c2-05368c87c89a",
+        "roleDefinitionId": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+        "principalIdDisplayName": "CockroachDB Cloud BYOC Admin Entra Group"
+      },
+      {
+        "principalId": "6532a4f2-3fa1-4b10-a4c2-05368c87c89a",
+        "roleDefinitionId": "9980e02c-c2be-4d73-94e8-173b1dc7cf3c",
+        "principalIdDisplayName": "CockroachDB Cloud BYOC Admin Entra Group"
+      }
+      ]
+    },
+    "resources": [
+      {
+      "type": "Microsoft.ManagedServices/registrationDefinitions",
+      "apiVersion": "2022-10-01",
+      "name": "[variables('mspRegistrationName')]",
+      "properties": {
+        "registrationDefinitionName": "[parameters('mspOfferName')]",
+        "description": "[parameters('mspOfferDescription')]",
+        "managedByTenantId": "[variables('managedByTenantId')]",
+        "authorizations": "[variables('authorizations')]"
+      }
+      },
+      {
+      "type": "Microsoft.ManagedServices/registrationAssignments",
+      "apiVersion": "2022-10-01",
+      "name": "[variables('mspAssignmentName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+      ],
+      "properties": {
+        "registrationDefinitionId": "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+      }
+      }
+    ],
+    "outputs": {
+      "mspOfferName": {
+      "type": "string",
+      "value": "[concat('Managed by', ' ', parameters('mspOfferName'))]"
+      },
+      "authorizations": {
+      "type": "array",
+      "value": "[variables('authorizations')]"
+      }
+    }
+    }
+    ~~~
+2. Deploy the template at the subscription scope using [Azure CLI, Azure PowerShell, or Azure Portal](https://learn.microsoft.com/azure/lighthouse/how-to/onboard-customer?tabs=azure-portal#deploy-the-azure-resource-manager-template). The following example command uses the Azure CLI:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    az deployment sub create \
+      --name cockroach-byoc-lighthouse \
+      --location <region> \
+      --template-file byoc-lighthouse.json
+    ~~~
+
+## Step 5. Register resource providers
 
 Register the following [resource providers](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types) in the Azure subscription:
 
@@ -82,7 +246,7 @@ Register the following [resource providers](https://learn.microsoft.com/azure/az
 - `Microsoft.Quota`
 - `Microsoft.Storage`
 
-## Step 4. Create the CockroachDB {{ site.data.products.cloud }} cluster
+## Step 6. Create the CockroachDB {{ site.data.products.cloud }} cluster
 
 In BYOC deployments, CockroachDB clusters are deployed with the {{ site.data.products.cloud }} API and must use the {{ site.data.products.advanced }} plan. Follow the API documentation to [create a CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} cluster]({% link cockroachcloud/cloud-api.md %}#create-an-advanced-cluster).
 
