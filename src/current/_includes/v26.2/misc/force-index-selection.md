@@ -3,7 +3,7 @@ By using the explicit index annotation, you can override [CockroachDB's index se
 Index selection can impact [performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), but does not change the result of a query.
 
 {{site.data.alerts.callout_success}}
-You can use [hint injection]({% link {{ page.version.version }}/cost-based-optimizer.md %}#hint-injection) to apply index hints without modifying the original query text.
+You can [rewrite inline hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#rewrite-inline-hints) to apply index hints without modifying the original query text.
 {{site.data.alerts.end}}
 
 ##### Force index scan
