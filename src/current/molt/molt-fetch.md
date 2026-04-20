@@ -1109,7 +1109,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 
 - {% include molt/molt-drop-constraints-indexes.md %}
 
-- For PostgreSQL sources using [`--use-stats-based-sharding`](#global-flags), run [`ANALYZE`]({% link {{ site.current_cloud_version }}/create-statistics.md %}) on source tables before migration to ensure optimal shard distribution. This is especially important for large tables where even distribution can significantly improve export performance.
+- For PostgreSQL sources using [`--use-stats-based-sharding`](#global-flags), run [`ANALYZE`](https://www.postgresql.org/docs/current/sql-analyze.html) on source tables before migration to ensure optimal shard distribution. This is especially important for large tables where even distribution can significantly improve export performance.
 
 - If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
 
