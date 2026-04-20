@@ -30,7 +30,7 @@ Parameter | Description
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the parent database.
+The user must have the [`MAINTAIN` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#maintain) or the `SELECT` privilege on the target table.
 
 ## Aliases
 
