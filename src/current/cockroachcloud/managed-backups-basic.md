@@ -29,6 +29,7 @@ For details on viewing and managing the backups, refer to the [Cloud Console](#r
 ## Considerations
 
 - Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
+- You can perform a cross-cluster restore across clusters in the same organization. However, the target cluster must also be a {{ site.data.products.basic }} cluster and be completely wiped of data.
 
 {% include cockroachcloud/backups/costs-link.md %}
 
@@ -66,13 +67,9 @@ To restore a cluster:
 
     The **Restore cluster** module displays with backup details.
 
-1. You can restore a backup to the same cluster.
+1. You can restore a backup to the same cluster or a different {{ site.data.products.basic }} cluster. The target cluster must already be created. Select the desired target cluster under **Restore to cluster** and click **Continue**
 
-    {{site.data.alerts.callout_info}}
-    If you need to restore data into a new or different cluster, use [self-managed backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) or [contact support]({% link {{site.current_cloud_version}}/support-resources.md %}).
-    {{site.data.alerts.end}}
-
-1. Click **Restore**.
+1. Review the restore details then click **Restore**.
 
 ## Cloud API
 
