@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW INSPECT ERRORS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) displays errors recorded by an [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) job.
+The `SHOW INSPECT ERRORS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) displays errors recorded by an [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) job, including background `INSPECT` jobs triggered by [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) row count validation.
 
-`SHOW INSPECT ERRORS` shows results for a single `INSPECT` job at a time; it does not aggregate results across jobs. By default, it returns errors from the most recent completed, successful `INSPECT` job for the specified table. To view errors from a specific job, use `SHOW INSPECT ERRORS FOR JOB {job_id}`.
+`SHOW INSPECT ERRORS` shows results for a single `INSPECT` job at a time; it does not aggregate results across jobs. To view errors from a specific job, including an `inspect_job_id` returned by [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}), use `SHOW INSPECT ERRORS FOR JOB {job_id}`.
 
 ## Required privileges
 
@@ -26,7 +26,7 @@ To run `SHOW INSPECT ERRORS`, the user must have:
 Parameter | Syntax   | Description
 ----------|----------|------------
 `opt_for_table_clause` | `FOR TABLE {table_name}` | Optional. Show errors for the specified [table]({% link {{ page.version.version }}/create-table.md %}).
-`opt_for_job_clause` | `FOR JOB {job_id}` | Optional. Show errors produced by the job ID returned by the [`INSPECT` statement]({% link {{ page.version.version }}/inspect.md %}).
+`opt_for_job_clause` | `FOR JOB {job_id}` | Optional. Show errors produced by the specified job ID, such as a job ID returned by the [`INSPECT` statement]({% link {{ page.version.version }}/inspect.md %}) or the `inspect_job_id` returned by [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
 `opt_with_details` | `WITH DETAILS` | Optional. Include structured error metadata from the `details` column ([JSON]({% link {{ page.version.version }}/jsonb.md %})) in the results.
 
 ## Response
@@ -35,13 +35,13 @@ Parameter | Syntax   | Description
 
 Field | Description
 ------|------------
-`job_id` | The ID of the [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) job that detected the issue.
 `error_type` | The type of inconsistency detected. For more information, see [Error types](#error-types).
-`aost` | The [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) timestamp used by the validation [job]({% link {{ page.version.version }}/show-jobs.md %}) (if any).
 `database_name` | The [database]({% link {{ page.version.version }}/create-database.md %}) containing the schema object with an issue.
 `schema_name` | The [schema]({% link {{ page.version.version }}/schema-design-overview.md %}) containing the object with an issue.
-`object_name` | The [table]({% link {{ page.version.version }}/create-table.md %}) or [index]({% link {{ page.version.version }}/indexes.md %}) with an issue.
+`table_name` | The [table]({% link {{ page.version.version }}/create-table.md %}) with an issue.
 `primary_key` | The [primary key]({% link {{ page.version.version }}/primary-key.md %}) of the row involved in the issue, if applicable.
+`job_id` | The ID of the [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) job that detected the issue.
+`aost` | The [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) timestamp used by the validation [job]({% link {{ page.version.version }}/show-jobs.md %}) (if any).
 `details` | This column is present only if `WITH DETAILS` is specified. It contains structured metadata ([JSON]({% link {{ page.version.version }}/jsonb.md %})) describing the issue.
 
 ### Error types
@@ -53,6 +53,8 @@ Error type | Meaning
 `missing_secondary_index_entry` | A row in the [primary index]({% link {{ page.version.version }}/primary-key.md %}) is missing a corresponding entry in a [secondary index]({% link {{ page.version.version }}/indexes.md %}). If you see this error, [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
 `dangling_secondary_index_entry` | A [secondary index]({% link {{ page.version.version }}/indexes.md %}) entry exists, but the referenced [primary index]({% link {{ page.version.version }}/primary-key.md %}) row does not. If you see this error, [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
 `internal_error` | An error occurred while `INSPECT` was running its validation queries (for example, an [MVCC GC timeout]({% link {{ page.version.version }}/ui-queues-dashboard.md %}#mvcc-gc-queue)). The cause of this error type is usually not related to data validity. Investigate the underlying job error details and cluster logs to determine the cause before deciding whether to [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
+`row_count_mismatch` | The row count observed by `INSPECT` did not match the expected row count. This can occur in the post-import validation job triggered by [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}). Use `WITH DETAILS` to compare the `expected` and `actual` counts.
+`duplicate_unique_value` | `INSPECT` found a duplicate value in a supported [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row) uniqueness check. Use `WITH DETAILS` to see the `index_name` and `remote_regions` metadata for the duplicate.
 
 ## Examples
 
@@ -85,6 +87,8 @@ To show errors for a job, issue the following statement:
 ~~~ sql
 SHOW INSPECT ERRORS FOR JOB 1141477013029322753;
 ~~~
+
+If [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) returns an `inspect_job_id` value for its post-import validation job, you can use that value with `SHOW INSPECT ERRORS FOR JOB {inspect_job_id}` as well.
 
 If there are no errors associated with that job ID, the output is:
 
