@@ -74,23 +74,23 @@ MOLT Replicator supports forward replication from PostgreSQL, MySQL, and Oracle,
 
 *Consistency modes* control how MOLT Replicator balances throughput and transactional guarantees.
 
-#### Forward replication (PostgreSQL, MySQL, Oracle sources)
-
-When using `pglogical`, `mylogical`, or `oraclelogminer` commands to replicate from PostgreSQL, MySQL, or Oracle sources to CockroachDB, changes are always applied immediately as they arrive to Replicator. This behavior cannot be configured. The consistency mode flags ([`--immediate`]({% link molt/replicator-flags.md %}#immediate), [`--bestEffortOnly`]({% link molt/replicator-flags.md %}#best-effort-only), [`--bestEffortWindow`]({% link molt/replicator-flags.md %}#best-effort-window)) do not apply to these commands and will have no effect if specified.
-
 #### Failback mode (CockroachDB source)
 
 When using the `start` command to replicate from CockroachDB to another database, you can configure one of the following consistency modes:
 
-1. *Consistent* (default): Preserves per-row order and source transaction atomicity. Concurrent transactions are controlled by [`--parallelism`]({% link molt/replicator-flags.md %}#parallelism).
+1. *Consistent* (default): Preserves per-row order and source transaction atomicity. Mutations are buffered in memory and are flushed out to the target database when [`--flushSize`]({% link molt/replicator-flags.md %}#flush-size) is reached or once [`--flushPeriod`]({% link molt/replicator-flags.md %}#flush-period) has passed since the previous flush. Concurrent transactions are controlled by [`--parallelism`]({% link molt/replicator-flags.md %}#parallelism).
 
-1. *BestEffort*: Relaxes atomicity across tables that do not have foreign key constraints between them (maintains coherence within FK-connected groups). Enable with [`--bestEffortOnly`]({% link molt/replicator-flags.md %}#best-effort-only) or allow auto-entry via [`--bestEffortWindow`]({% link molt/replicator-flags.md %}#best-effort-window) set to a positive duration (such as `1s`).
+1. *BestEffort*: Relaxes atomicity across tables that do not have foreign key constraints between them (maintains coherence within FK-connected groups). Mutations are buffered in memory and are flushed out to the target database when [`--flushSize`]({% link molt/replicator-flags.md %}#flush-size) is reached or once [`--flushPeriod`]({% link molt/replicator-flags.md %}#flush-period) has passed since the previous flush. Enable with [`--bestEffortOnly`]({% link molt/replicator-flags.md %}#best-effort-only) or allow auto-entry via [`--bestEffortWindow`]({% link molt/replicator-flags.md %}#best-effort-window) set to a positive duration (such as `1s`).
 
 	{{site.data.alerts.callout_info}}
 	For independent tables (with no foreign key constraints), BestEffort mode applies changes immediately as they arrive, without waiting for the resolved timestamp. This provides higher throughput for tables that have no relationships with other tables.
 	{{site.data.alerts.end}}
 
 1. *Immediate*: Applies updates as they arrive to Replicator with no buffering or waiting for resolved timestamps. Enable with [`--immediate`]({% link molt/replicator-flags.md %}#immediate). Provides highest throughput but requires no foreign keys on the target schema.
+
+#### Forward replication (PostgreSQL, MySQL, Oracle sources)
+
+When using `pglogical`, `mylogical`, or `oraclelogminer` commands to replicate from PostgreSQL, MySQL, or Oracle sources to CockroachDB, Replicator always preserves per-row order and source transaction atomicity for any changes. This behavior cannot be configured. The consistency mode flags ([`--immediate`]({% link molt/replicator-flags.md %}#immediate), [`--bestEffortOnly`]({% link molt/replicator-flags.md %}#best-effort-only), [`--bestEffortWindow`]({% link molt/replicator-flags.md %}#best-effort-window)) do not apply to these commands and will have no effect if specified.
 
 ## Commands
 
