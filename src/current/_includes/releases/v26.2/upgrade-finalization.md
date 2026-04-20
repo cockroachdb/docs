@@ -1,4 +1,4 @@
-During a major-version upgrade, certain features and performance improvements are not available until the upgrade is finalized. In v26.2, these are:
+This section summarizes the features that are not available until you [finalize the v26.2 upgrade]({% link v26.2/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually).
 
 - **`security_invoker` option for views**: {% comment %}TODO: Verify with @shadiGh{% endcomment %}Views now support the PostgreSQL-compatible `security_invoker` option. When set via `CREATE VIEW ... WITH (security_invoker)` or `ALTER VIEW SET (security_invoker = true)`, privilege checks on the underlying tables are performed as the querying user rather than the view owner. The `security_invoker` option can be reset with `ALTER VIEW ... RESET (security_invoker)`. [#164184](https://github.com/cockroachdb/cockroach/pull/164184)
 
