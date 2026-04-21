@@ -83,9 +83,7 @@ Before you can enforce MFA, you must have [Cloud Organization SSO]({% link cockr
     1. [Set up MFA for your account](#set-up-mfa-for-a-password-based-account).
 1. The **Multi-Factor Authentication Enforcement** toggle will switch on once you've set up MFA for your own account. An Organization Admin can toggle this setting on and off.
 
-Once enabled, all password-based users will be required to [enroll in MFA](#set-up-mfa-for-a-password-based-account) at their next login. 
-
-Organization admins can enable MFA enforcement using the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}#toggle-the-organizations-mfa-enforcement-policy).
+Once enabled, all password-based users will be required to [enroll in MFA](#set-up-mfa-for-a-password-based-account) at their next login.
 
 {{site.data.alerts.callout_info}}
 This does not enforce MFA for users who log in via SSO or social credentials. MFA enforcement for those users is handled by the respective SSO or social platform.
@@ -101,8 +99,6 @@ This does not enforce MFA for users who log in via SSO or social credentials. MF
 1. If [MFA enforcement has already been enabled](#enable-mfa-enforcement-for-all-password-based-accounts), this **Method Details** page will state that **MFA enforcement is active**. Click **View enrollment status**.
 1. A table containing the organization's MFA-enrolled users will appear. Under the **Action** column, you may choose to **Reconfigure MFA** for Organization Admins, or **Reset MFA** for other users. Click on the action to reset the user's MFA.
 
-Organization admins can also reset a user's MFA using the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}#reset-mfa-for-a-user).
-
 ### Recover your account
 
 During [MFA setup](#set-up-mfa-for-a-password-based-account), the user receives several recovery codes that they should store in a safe place. If the user loses access to their authenticator app, they can instead [log in using one of those codes](#log-in-using-mfa-for-a-password-based-account).
@@ -117,7 +113,6 @@ If every Organization Admin has been locked out, contact [CockroachDB Support](h
 
 ## See also
 
-- [Use the CockroachDB Cloud API: Manage multi-factor authentication (MFA) enrollment]({% link cockroachcloud/cloud-api.md %}#manage-multi-factor-authentication-mfa-enrollment)
 - [Single Sign-On (SSO) for CockroachDB Cloud organizations]({% link cockroachcloud/cloud-org-sso.md %})
 - [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})
 - [Require SSO]({% link cockroachcloud/configure-cloud-org-sso.md %}#require-sso)
