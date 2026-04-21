@@ -14,9 +14,9 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
-## May 13, 2026
+## April 28, 2026
 
-<h3 id="2026-05-13-v26-2-feature-highlights">v26.2 Cloud Feature Highlights</h3>
+<h3 id="2026-05-13-v26-2-feature-highlights">v26.2 feature highlights</h3>
 
 <div id="feature-highlights">
 
