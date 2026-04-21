@@ -16,8 +16,6 @@ Get future release notes emailed to you:
 
 ## April 28, 2026
 
-<h3 id="2026-05-13-v26-2-feature-highlights">v26.2 feature highlights</h3>
-
 <div id="feature-highlights">
 
 <table>
@@ -90,7 +88,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Fault tolerance demo</p>
-    <p class="feature-description">CockroachDB Cloud includes a built-in demo that simulates an availability zone failure in a live cluster. You can watch the cluster automatically recover as traffic continues uninterrupted.</p>
+    <p class="feature-description">The built-in [fault tolerance demo]({% link {{ site.versions["stable"] }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud) is now generally available. This demo simulates an availability zone failure in a live cluster, allowing you to watch the cluster automatically recover as traffic continues uninterrupted.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
