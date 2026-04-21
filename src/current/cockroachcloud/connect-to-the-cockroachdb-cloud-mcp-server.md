@@ -16,7 +16,7 @@ This page explains how to connect your AI tools to the CockroachDB Cloud MCP ser
 ## Before you begin
 
 - [Create a CockroachDB cluster]({% link cockroachcloud/create-a-basic-cluster.md %}). 
-    - Note the Cluster ID in the URL of the [Cluster Overview Page]({% link cockroachcloud/cluster-overview-page.md %}): `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`.
+    - Note the Cluster ID in the URL of the [Overview page]({% link cockroachcloud/overview-page.md %}): `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`.
 - If you plan to connect to the MCP server using OAuth, ensure that the user managing the MCP server connection [is able to log in]({% link cockroachcloud/authentication.md %}) to the Cloud Console. Ensure that the user has been assigned the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role or the [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role.
 - If you plan to connect to the MCP server using an API key, create a [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and an [API key]({% link cockroachcloud/managing-access.md %}#api-access) in the CockroachDB Cloud Console. Ensure that the service account has been assigned the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role or the [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role.
   - Copy the secret key that's generated upon service account creation.
@@ -171,7 +171,7 @@ For help configuring Claude Code, refer to the [Claude Code documentation](https
 
 #### Option 1: Automatic installation
 
-1. Navigate to the [Cluster Overview Page]({% link cockroachcloud/cluster-overview-page.md %}) for the cluster that you want to manage with the MCP server connection.
+1. Navigate to the [Overview page]({% link cockroachcloud/overview-page.md %}) for the cluster that you want to manage with the MCP server connection.
 2. Select **Connect**, then the **Model Context Protocol (MCP)** tab.
 3. Select **Cursor** as the MCP Client.
 4. Select **Add to Cursor**.
@@ -319,7 +319,7 @@ For help configuring Cline, refer to the [Cline documentation](https://docs.clin
 
 #### Option 1: Automatic installation
 
-1. Navigate to the [Cluster Overview Page]({% link cockroachcloud/cluster-overview-page.md %}) for the cluster that you want to manage with the MCP server connection.
+1. Navigate to the [Overview page]({% link cockroachcloud/overview-page.md %}) for the cluster that you want to manage with the MCP server connection.
 2. Select **Connect**, then the **Model Context Protocol (MCP)** tab.
 3. Select **GitHub Copilot** as the MCP Client.
 4. Select **Add to GitHub Copilot**.
