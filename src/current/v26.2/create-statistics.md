@@ -30,7 +30,7 @@ Parameter | Description
 
 ## Required privileges
 
-The user must have the [`MAINTAIN` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#maintain) or the `SELECT` privilege on the target table.
+The user must have the [`MAINTAIN` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#maintain) or the `SELECT` privilege on the target table. [Owners and admins]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) implicitly have this privilege.
 
 ## Aliases
 
