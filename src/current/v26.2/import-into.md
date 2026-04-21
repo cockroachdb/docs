@@ -7,6 +7,10 @@ docs_area: reference.sql
 
 The `IMPORT INTO` [statement]({% link {{ page.version.version }}/sql-statements.md %}) imports CSV, Avro, Parquet, or delimited data into an existing table by appending new rows to the table.
 
+{{site.data.alerts.callout_info}}
+Parquet file support is in preview. It is subject to change.
+{{site.data.alerts.end}}
+
 ## Considerations
 
 - `IMPORT INTO` takes the table **offline** before importing the data. The table will be online again once the [job](#view-and-control-import-jobs) has completed successfully.
@@ -263,9 +267,15 @@ To specify the table schema in-line:
     );
 ~~~
 
+For more information about importing data from Avro, including examples, see [Migrate from Avro]({% link {{ page.version.version }}/migrate-from-avro.md %}).
+
 ### Import into an existing table from a Parquet file
 
-You can import flat schemas with primitive types from Parquet files. Column-level compression formats are supported, but additional file-level compression is not.
+{{site.data.alerts.callout_info}}
+Parquet file support is in preview. It is subject to change.
+{{site.data.alerts.end}}
+
+You can import flat schemas with primitive types from Parquet files, but not nested Parquet types like `LIST`, `MAP`, and `STRUCT`. Column-level compression formats are supported, but additional file-level compression is not.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -274,8 +284,6 @@ You can import flat schemas with primitive types from Parquet files. Column-leve
       's3://{BUCKET NAME}/{customers.parquet}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     );
 ~~~
-
-For more information about importing data from Avro, including examples, see [Migrate from Avro]({% link {{ page.version.version }}/migrate-from-avro.md %}).
 
 ### Import into an existing table from a delimited data file
 
