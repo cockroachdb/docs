@@ -1,4 +1,4 @@
-This section summarizes changes that can cause applications, scripts, or manual workflows to fail or behave differently than in previous releases. This includes [key cluster setting changes](#key-cluster-setting-changes) and [deprecations](#deprecations).
+This section summarizes changes that can cause applications, scripts, or manual workflows to fail or behave differently than in previous releases. This includes [key cluster setting changes](#v26-2-0-cluster-settings) and [deprecations](#v26-2-0-deprecations).
 
 - The `TG_ARGV` trigger function parameter now uses 0-based indexing to match PostgreSQL behavior. Previously, `TG_ARGV[1]` returned the first argument; now `TG_ARGV[0]` returns the first argument and `TG_ARGV[1]` returns the second argument. Additionally, usage of `TG_ARGV` no longer requires setting the `allow_create_trigger_function_with_argv_references` session variable. [#161925](https://github.com/cockroachdb/cockroach/pull/161925)
 
