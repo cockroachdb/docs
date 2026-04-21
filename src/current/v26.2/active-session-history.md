@@ -10,7 +10,7 @@ preview: true
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-Active Session History (ASH) is a time-series sampling-based observability feature that helps you troubleshoot workload performance issues by capturing what work was actively executing on your cluster at specific points in time. Unlike traditional [statement statistics]({% link {{ page.version.version }}/ui-statements-page.md %}) that aggregate data over time, ASH provides point-in-time snapshots of active execution, making it easier to diagnose transient performance problems and understand resource usage patterns.
+Active Session History (ASH) is a time-series sampling-based observability feature that helps you troubleshoot workload performance issues by capturing what work was actively executing on your cluster at specific points in time. Unlike traditional statement statistics that aggregate data over time, ASH provides point-in-time snapshots of active execution, making it easier to diagnose transient performance problems and understand resource usage patterns.
 
 ASH is accessible via CockroachDB SQL and is disabled by default. To enable ASH, refer to [Enable Active Session History](#enable-active-session-history).
 
@@ -39,8 +39,8 @@ ASH complements CockroachDB's existing observability tools. Each tool serves a d
 | Tool | What it's best for |
 |------|-------------------|
 | [Prometheus metrics]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) | Real-time alerts on resource usage, latency, or errors. Monitoring overall cluster health and capacity trends over time. ASH is retrospective and sampling-based, not designed for alerting, and its in-memory storage means samples are lost on restart. |
-| [Statements Page]({% link {{ page.version.version }}/ui-statements-page.md %}) | Aggregated statistics about query performance over hours, days, or weeks. Identifying slow queries based on latency percentiles, tracking performance changes after schema updates, and understanding total resource consumption across all executions. ASH shows what was actively running at specific moments, but not the aggregated trends needed for performance baselines. |
-| [Insights Page]({% link {{ page.version.version }}/ui-insights-page.md %}) | Automatically flagging queries with performance problems such as high contention, failed executions, or suboptimal plans. Provides optimization recommendations without requiring diagnostic queries. ASH helps investigate why a problem occurred at a specific time, while Insights tells you which queries are problematic. |
+| Statements Page ([DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}), [Cloud Console]({% link cockroachcloud/statements-page.md %})) | Aggregated statistics about query performance over hours, days, or weeks. Identifying slow queries based on latency percentiles, tracking performance changes after schema updates, and understanding total resource consumption across all executions. ASH shows what was actively running at specific moments, but not the aggregated trends needed for performance baselines. |
+| Insights Page ([DB Console]({% link {{ page.version.version }}/ui-insights-page.md %}), [Cloud Console]({% link cockroachcloud/insights-page.md %})) | Automatically flagging queries with performance problems such as high contention, failed executions, or suboptimal plans. Provides optimization recommendations without requiring diagnostic queries. ASH helps investigate why a problem occurred at a specific time, while Insights tells you which queries are problematic. |
 | [Statement diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) and [execution logs]({% link {{ page.version.version }}/logging-use-cases.md %}#sql_exec) | Complete traces of single query executions, including all operators, data flow, and exact execution plans with timings. ASH's sampling may miss short-lived operations and doesn't provide operator-level detail. |
 
 ASH can often be used with these other tools to help troubleshoot issues. For example, Prometheus metrics might alert you to a problem (such as a CPU spike at 2:15 PM). ASH shows which queries and jobs were actively running during that spike and which took a disproportionate amount of time to run. The Statements Page then provides aggregated performance data for those queries over a longer period of time, and statement diagnostics give detailed execution plans for deeper analysis.
@@ -174,7 +174,19 @@ The following [metrics]({% link {{ page.version.version }}/metrics.md %}) monito
 
 ## Debug zip integration
 
-When the environment sampler triggers [goroutine dumps]({% link {{ page.version.version }}/automatic-go-execution-tracer.md %}) or [CPU profiles]({% link {{ page.version.version }}/automatic-cpu-profiler.md %}), ASH writes aggregated report files (`.txt` and `.json`) alongside them. These reports are included in [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) output. The lookback window for these reports is controlled by the [`obs.ash.log_interval` cluster setting](#configuration).
+When the environment sampler triggers [goroutine dumps]({% link {{ page.version.version }}/automatic-go-execution-tracer.md %}) or [CPU profiles]({% link {{ page.version.version }}/automatic-cpu-profiler.md %}), ASH writes aggregated report files (`.txt` and `.json`) alongside them. These reports are included in [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) output. The naming pattern for these files is as follows:
+
+~~~
+ash_report.{TIMESTAMP}.{TRIGGER}.{FORMAT}
+~~~
+
+- `TIMESTAMP`: When the report was made (formatted as `2006-01-02T15_04_05.000`)
+- `TRIGGER`: What event triggered the report (`goroutine_dump` or `cpu_profile`)
+- `FORMAT`: `.txt` (human-readable) or `.json` (structured)
+
+For example: `ash_report.2026-03-05T12_00_00.000.goroutine_dump.txt`
+
+The lookback window for these reports is controlled by the [`obs.ash.log_interval` cluster setting](#configuration).
 
 ## Common use cases and examples
 
@@ -258,7 +270,7 @@ The query returns the top 10 workloads by sample count:
 (10 rows)
 ~~~
 
-The results show that a single SQL statement fingerprint (`9bef06d795045524`) from the `kv` application is the largest consumer of cluster resources. System tasks like `INTENT_RESOLUTION` (async cleanup of transaction intents) and `TXN_HEARTBEAT` are also significant. To investigate the statement, use the `workload_id` to find the statement on the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}). To investigate the job, use its `workload_id` on the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}).
+The results show that a single SQL statement fingerprint (`9bef06d795045524`) from the `kv` application is the largest consumer of cluster resources. System tasks like `INTENT_RESOLUTION` (async cleanup of transaction intents) and `TXN_HEARTBEAT` are also significant. To investigate the statement, use the `workload_id` to find the statement on the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}). To investigate the job, use its `workload_id` on the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}). CockroachDB {{ site.data.products.cloud }} users can use the [Statements page]({% link cockroachcloud/statements-page.md %}) and [Jobs page]({% link cockroachcloud/jobs-page.md %}) in the {{ site.data.products.cloud }} Console.
 
 ### Find recent lock contention hotspots
 
@@ -285,7 +297,7 @@ The query shows which workloads experienced lock contention and what type of loc
 (1 row)
 ~~~
 
-The results identify the statement fingerprint experiencing latch waits. Use the `workload_id` to locate the query on the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) and examine its execution plan and contention time. Review the [Insights page]({% link {{ page.version.version }}/ui-insights-page.md %}) for contention insights on this statement. If multiple workloads show `LockWait` events, investigate whether they're accessing the same tables or rows by examining their query patterns. For detailed contention analysis, see [Monitor and Analyze Transaction Contention]({% link {{ page.version.version }}/monitor-and-analyze-transaction-contention.md %}).
+The results identify the statement fingerprint experiencing latch waits. Use the `workload_id` to locate the query on the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) and examine its execution plan and contention time. Review the [Insights page]({% link {{ page.version.version }}/ui-insights-page.md %}) for contention insights on this statement. CockroachDB {{ site.data.products.cloud }} users can use the [Statements page]({% link cockroachcloud/statements-page.md %}) and [Insights page]({% link cockroachcloud/insights-page.md %}) in the {{ site.data.products.cloud }} Console. If multiple workloads show `LockWait` events, investigate whether they're accessing the same tables or rows by examining their query patterns. For detailed contention analysis, see [Monitor and Analyze Transaction Contention]({% link {{ page.version.version }}/monitor-and-analyze-transaction-contention.md %}).
 
 ### Get details about what a specific job is spending time on
 
@@ -314,7 +326,7 @@ The query breaks down the job's resource consumption by work event type and spec
 (3 rows)
 ~~~
 
-The results show the job spent most of its time on active computation. The remaining samples show the job waiting for locks (`LockWait`). This breakdown helps identify that the backup job is primarily CPU-bound rather than I/O or lock-constrained. To find the job ID for a running job, query the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) or use `SELECT job_id, description, status FROM [SHOW JOBS]`.
+The results show the job spent most of its time on active computation. The remaining samples show the job waiting for locks (`LockWait`). This breakdown helps identify that the backup job is primarily CPU-bound rather than I/O or lock-constrained. To find the job ID for a running job, query the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) or use `SELECT job_id, description, status FROM [SHOW JOBS]`. CockroachDB {{ site.data.products.cloud }} users can use the [Jobs page]({% link cockroachcloud/jobs-page.md %}) in the {{ site.data.products.cloud }} Console.
 
 ## Known limitations
 
@@ -323,8 +335,6 @@ The results show the job spent most of its time on active computation. The remai
 ## See also
 
 - [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
-- [Statements Page]({% link {{ page.version.version }}/ui-statements-page.md %})
-- [Insights Page]({% link {{ page.version.version }}/ui-insights-page.md %})
 - [Monitor and Analyze Transaction Contention]({% link {{ page.version.version }}/monitor-and-analyze-transaction-contention.md %})
 - [Performance Tuning Recipes]({% link {{ page.version.version }}/performance-recipes.md %})
 - [Cluster Settings]({% link {{ page.version.version }}/cluster-settings.md %})
