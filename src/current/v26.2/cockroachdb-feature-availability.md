@@ -281,6 +281,15 @@ Buffered Writes enhance transaction throughput and reduce operational cost by mi
 
 For more information, refer to [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
 
+### Statement hints
+
+[Statement hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#statement-hints) are in preview. Statement hints allow you to apply hints to every execution of a given [statement fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) without modifying the original statement.
+
+There are two types of statement hints:
+
+- `REWRITE INLINE HINTS`: Apply [index hints]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) and [join hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#join-hints) to statement fingerprints.
+- `SET VARIABLE`: Override [session variable]({% link {{ page.version.version }}/session-variables.md %}) values for every execution of a statement fingerprint.
+
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
