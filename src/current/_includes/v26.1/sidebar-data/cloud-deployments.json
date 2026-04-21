@@ -30,19 +30,19 @@
                 ]
             },
           {
-                "title": "Deploy BYOC in AWS",
+                "title": "Deploy BYOC on AWS",
                 "urls": [
                     "/cockroachcloud/byoc-aws-deployment.html"
                 ]
             },
             {
-                "title": "Deploy BYOC in Azure",
+                "title": "Deploy BYOC on Azure",
                 "urls": [
                     "/cockroachcloud/byoc-azure-deployment.html"
                 ]
             },
             {
-                "title": "Deploy BYOC in GCP",
+                "title": "Deploy BYOC on GCP",
                 "urls": [
                     "/cockroachcloud/byoc-gcp-deployment.html"
                 ]

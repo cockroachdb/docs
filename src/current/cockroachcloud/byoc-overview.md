@@ -24,16 +24,16 @@ Deployments | Automate cluster provisioning and scaling, provide hardware best p
 Upgrades    | Provide automatic minor/patch upgrades and major upgrade automation via Terraform, APIs, or the {{ site.data.products.cloud }} Console | Initiate [major version upgrades]({% link cockroachcloud/upgrade-cockroach-version.md %}), [set maintenance windows]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) if applicable
 Workload    | Troubleshoot problems as they pertain to cluster availability | [Size clusters]({% link cockroachcloud/advanced-cluster-management.md %}#scale-your-cluster) to manage workload requirements, [tune performance]({% link {{ site.versions["stable"] }}/performance-recipes.md %}), and adjust schema designs with support from Cockroach Labs
 Backups     | Initialize a default backup schedule and write to customer-owned Cloud storage, ensure backup jobs run successfully | Configure a backup schedule as needed to meet RPO/RTO requirements
-Support     | Reactively and proactively identify and resolve availability-impacting incidents | Ensure sufficient hardware is made available, including negotiating cloud resource quotas and availability with your cloud service provider. Maintain appropriate IAM permissions at all times
+Support     | Reactively and proactively identify and resolve availability-impacting incidents | Ensure sufficient hardware is made available to prevent scaling issues, including negotiating cloud resource quotas and availability with your cloud service provider. Maintain appropriate IAM permissions at all times
 Billing     | Meter vCPUs consumed, [charge for vCPU consumption]({% link cockroachcloud/costs.md %}) at the per-minute level | Negotiate with cloud service provider, manage infrastructure spend and discounts
 
 ## Next steps
 
 CockroachDB supports BYOC deployments in Amazon Web Services, Microsoft Azure, and Google Cloud Platform. To prepare your cloud account for a BYOC deployment, refer to the corresponding deployment guide:
 
-- [Prepare a CockroachDB Cloud BYOC Deployment in Amazon Web Services]({% link cockroachcloud/byoc-aws-deployment.md %}).
-- [Prepare a CockroachDB Cloud BYOC Deployment in Azure]({% link cockroachcloud/byoc-azure-deployment.md %}).
-- [Prepare a CockroachDB Cloud BYOC Deployment in Google Cloud Platform]({% link cockroachcloud/byoc-gcp-deployment.md %}).
+- [Prepare a CockroachDB Cloud BYOC Deployment in Amazon Web Services]({% link cockroachcloud/byoc-aws-deployment.md %})
+- [Prepare a CockroachDB Cloud BYOC Deployment in Azure]({% link cockroachcloud/byoc-azure-deployment.md %})
+- [Prepare a CockroachDB Cloud BYOC Deployment in Google Cloud Platform]({% link cockroachcloud/byoc-gcp-deployment.md %})
 
 Once your cloud account is prepared for a BYOC deployment, cluster configuration and management is identical to a CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} cluster. To learn more about CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} cluster planning and management, refer to the following guides:
 

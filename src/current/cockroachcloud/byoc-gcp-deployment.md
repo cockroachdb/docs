@@ -28,10 +28,10 @@ The following requirements apply to the GCP project used for your BYOC deploymen
 
 ## Step 2. Grant permissions to the Cockroach Labs service account
 
-Cockroach Labs uses cross-account service account impersonation to provision and manage resources in your GCP project. This requires two service accounts:
+Cockroach Labs uses cross-account service account impersonation to provision and manage resources in your GCP project. This requires two GCP service accounts:
 
 - A service account owned by Cockroach Labs which must be granted roles to view and access service accounts in your GCP project.
-- An intermediary service account in your GCP project which must be granted roles to create and manage infrasturcture. This service account is the target used by Cockroach Labs for cross-account impersonation.
+- An intermediary service account in your GCP project which must be granted roles to create and manage infrasturcture. This service account is the target used by Cockroach Labs for cross-account impersonation, and you specify this service account when creating CockroachDB {{ site.data.products.cloud }} clusters in this organization.
 
 In this step, use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to collect the email address of the Cockroach Labs service account and grant it the necessary roles.
 
@@ -44,7 +44,7 @@ curl --request GET \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
-Record the value of `cockroach_cloud_service_principals.gcp.service_account_email` in the response:
+In the response, the value of `cockroach_cloud_service_principals.gcp.service_account_email` is the Cockroach Labs service account:
 
 ~~~ json
 {
@@ -56,7 +56,7 @@ Record the value of `cockroach_cloud_service_principals.gcp.service_account_emai
 }
 ~~~
 
-Grant this service account the following roles in the GCP IAM Console:
+Grant this Cockroach Labs service account the following roles in the GCP IAM Console:
 
 - `Service Account Token Creator (roles/iam.serviceAccountTokenCreator)`
 - `View Service Accounts (roles/iam.serviceAccountViewer)`
@@ -98,7 +98,7 @@ Follow these steps to create a CockroachDB cluster in the {{ site.data.products.
 1. Click **Create cluster**.
 1. Under **Select a plan**, click **{{ site.data.products.advanced }}**.
 1. Under **Cloud & Regions**, click **Bring Your Own Cloud** and select Google Cloud.
-1. Under **Cloud account**, click **Select your cloud account > Add new cloud account**. Enter the service account email associated with your intermediate service account.
+1. Under **Cloud account**, click **Select your cloud account > Add new cloud account**. Enter the service account email associated with the intermediate service account you created, *not* the email address of the Cockroach Labs service account.
 1. Follow the rest of the **Create Cluster** steps to configure your cluster's regions, capacity, and features as desired. Read the [Plan a CockroachDB {{ site.data.products.advanced}} Cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}) documentation for more details.
 
 ### Create a cluster with the {{ site.data.products.cloud }} API

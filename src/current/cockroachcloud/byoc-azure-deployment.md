@@ -73,7 +73,7 @@ This reader application also requires admin consent to deploy the reader Service
     
     {% include_cached copy-clipboard.html %}
     ~~~ text
-    https://login.microsoftonline.com/<customer-tenant-id>/adminconsent?client_id=7f6538cb-f687-4411-9bbe-2f96bfbce028
+    https://login.microsoftonline.com/{customer-tenant-id}/adminconsent?client_id=7f6538cb-f687-4411-9bbe-2f96bfbce028
     ~~~
 3. Review the requested permissions and click **Accept**.
 4. Once the CockroachDB Cloud BYOC Reader App Registration has been granted admin consent in the tenant, grant the following set of roles to the reader Service Principal:
@@ -210,7 +210,7 @@ Follow these steps to enable secure, scoped access for Cockroach Labs to your su
     ~~~ shell
     az deployment sub create \
       --name cockroach-byoc-lighthouse \
-      --location <region> \
+      --location {region} \
       --template-file byoc-lighthouse.json
     ~~~
 
