@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}).
+CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/query-spatial-data.md %}).
 
 This page has instructions for migrating data from ESRI [Shapefiles]({% link {{ page.version.version }}/architecture/glossary.md %}#shapefile) into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
 
@@ -133,10 +133,7 @@ IMPORT INTO tornadoes CSV DATA ('http://localhost:3000/tornadoes.csv') WITH skip
 ## See also
 
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
-- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
 - [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
 - [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
