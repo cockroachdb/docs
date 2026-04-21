@@ -272,7 +272,7 @@ For more information about importing data from Avro, including examples, see [Mi
 ### Import into an existing table from a Parquet file
 
 {{site.data.alerts.callout_info}}
-Parquet file support is in preview. It is subject to change.
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 You can import flat schemas with primitive types from Parquet files, but not nested Parquet types like `LIST`, `MAP`, and `STRUCT`. Column-level compression formats are supported, but additional file-level compression is not.
