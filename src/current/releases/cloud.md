@@ -34,8 +34,8 @@ Get future release notes emailed to you:
  <tbody>
   <tr>
    <td>
-    <p class="feature-summary">2-DC Active-Passive Architecture</p>
-    <p class="feature-description">Deploy CockroachDB Advanced clusters across two geographically separated data centers in an active-passive configuration, providing resilience against data center failures with near-zero downtime failover.</p>
+    <p class="feature-summary">Active-passive deployment across two data centers</p>
+    <p class="feature-description">CockroachDB Advanced clusters can be deployed across two geographically separated data centers in an active-passive configuration, providing resilience against data center failures.</p>
    </td>
    <td class="icon-center">Preview</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -45,8 +45,8 @@ Get future release notes emailed to you:
   </tr>
   <tr>
    <td>
-    <p class="feature-summary">CockroachDB Cloud CLI Revamp</p>
-    <p class="feature-description">A modernized CockroachDB Cloud CLI with improved commands, better discoverability, and a more intuitive interface for managing clusters, users, and cloud resources from the terminal.</p>
+    <p class="feature-summary">CockroachDB Cloud CLI</p>
+    <p class="feature-description">The CockroachDB Cloud CLI has been redesigned with updated commands for managing clusters, users, and cloud resources from the terminal.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -56,19 +56,8 @@ Get future release notes emailed to you:
   </tr>
   <tr>
    <td>
-    <p class="feature-summary">Agent Roach: AI-Powered In-Console Assistant</p>
-    <p class="feature-description">An AI-powered in-console assistant that helps you troubleshoot issues, optimize queries, and manage CockroachDB clusters using natural language, without leaving the Cloud console.</p>
-   </td>
-   <td class="icon-center">Preview</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-  </tr>
-  <tr>
-   <td>
-    <p class="feature-summary">Multi-Factor Authentication for CockroachDB Cloud</p>
-    <p class="feature-description">Multi-factor authentication is now enforced for all CockroachDB Cloud users. This reduces the risk of unauthorized access from compromised credentials and strengthens organizational security posture.</p>
+    <p class="feature-summary">Multi-factor authentication</p>
+    <p class="feature-description">Multi-factor authentication is now enforced for all CockroachDB Cloud users, reducing the risk of unauthorized access from compromised credentials.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -78,8 +67,8 @@ Get future release notes emailed to you:
   </tr>
   <tr>
    <td>
-    <p class="feature-summary">Bring Your Own Cloud (BYOC) for AWS, Azure, and GCP</p>
-    <p class="feature-description">Run CockroachDB Cloud clusters entirely within your own AWS, Azure, or GCP account with Bring Your Own Cloud, giving you full control over networking, security, and data residency while retaining fully managed database operations.</p>
+    <p class="feature-summary">Bring your own cloud (BYOC)</p>
+    <p class="feature-description">CockroachDB Cloud clusters can run within your own AWS, Azure, or GCP account. This gives you control over networking, security, and data residency while retaining managed database operations.</p>
    </td>
    <td class="icon-center">Preview</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -89,8 +78,8 @@ Get future release notes emailed to you:
   </tr>
   <tr>
    <td>
-    <p class="feature-summary">CockroachDB Cloud MCP Server</p>
-    <p class="feature-description">Connect AI agents and LLM-powered applications to CockroachDB using the Model Context Protocol (MCP), enabling intelligent, database-aware AI workflows without custom integration work.</p>
+    <p class="feature-summary">Model Context Protocol (MCP) server</p>
+    <p class="feature-description">The CockroachDB Cloud MCP server allows AI agents and LLM-powered applications to connect to CockroachDB using the Model Context Protocol (MCP).</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -100,8 +89,8 @@ Get future release notes emailed to you:
   </tr>
   <tr>
    <td>
-    <p class="feature-summary">Fault Tolerance Demo</p>
-    <p class="feature-description">Experience CockroachDB's resilience firsthand by simulating an AZ failure in a live production cluster and watching the cluster auto-recover, and traffic stay unimpacted.</p>
+    <p class="feature-summary">Fault tolerance demo</p>
+    <p class="feature-description">CockroachDB Cloud includes a built-in demo that simulates an availability zone failure in a live cluster. You can watch the cluster automatically recover as traffic continues uninterrupted.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
