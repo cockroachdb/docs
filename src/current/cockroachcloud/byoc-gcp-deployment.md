@@ -35,31 +35,31 @@ Cockroach Labs uses cross-account service account impersonation to provision and
 
 In this step, use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to collect the email address of the Cockroach Labs service account and grant it the necessary roles.
 
-Send a `GET` request to the `/v1/organization` endpoint of the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/organization) similar to the following example:
+Follow these steps to identify the Cockroach Labs service account and grant it the necessary roles:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl --request GET \
-  --url https://cockroachlabs.cloud/api/v1/organization \
-  --header 'Authorization: Bearer {secret_key}'
-~~~
-
-In the response, the value of `cockroach_cloud_service_principals.gcp.service_account_email` is the Cockroach Labs service account:
-
-~~~ json
-{
-  "cockroach_cloud_service_principals": {
-    "gcp": {
-      "service_account_email": "example@email.com"
+1. Send a `GET` request to the `/v1/organization` endpoint of the [CockroachDB {{ site.data.products.cloud }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/organization) similar to the following example:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --request GET \
+      --url https://cockroachlabs.cloud/api/v1/organization \
+      --header 'Authorization: Bearer {secret_key}'
+    ~~~
+  
+    In the response, the value of `cockroach_cloud_service_principals.gcp.service_account_email` is the email address of the Cockroach Labs service account:
+  
+    ~~~ json
+    {
+      "cockroach_cloud_service_principals": {
+        "gcp": {
+          "service_account_email": "{Cockroach Labs service account}"
+        }
+      }
     }
-  }
-}
-~~~
+    ~~~
 
-Grant this Cockroach Labs service account the following roles in the GCP IAM Console:
-
-- `Service Account Token Creator (roles/iam.serviceAccountTokenCreator)`
-- `View Service Accounts (roles/iam.serviceAccountViewer)`
+1. Grant this Cockroach Labs service account the following roles in the GCP IAM Console:
+  - `Service Account Token Creator (roles/iam.serviceAccountTokenCreator)`
+  - `View Service Accounts (roles/iam.serviceAccountViewer)`
 
 ## Step 3. Configure the intermediate service account
 
@@ -105,7 +105,7 @@ Follow these steps to create a CockroachDB cluster in the {{ site.data.products.
 
 Send a `POST` request to the the `/v1/clusters` endpoint to [create a CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} cluster]({% link cockroachcloud/cloud-api.md %}#create-an-advanced-cluster).
 
-The following example request creates a 3-node {{ site.data.products.advanced }} cluster in the `us-east1` region, specifying the `service_account_email` associated with the intermediate service account you created:
+The following example request creates a 3-node {{ site.data.products.advanced }} cluster in the `us-east1` region, specifying the intermediate service account you created in the `service_account_email` field:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
