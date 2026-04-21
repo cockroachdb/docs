@@ -25,7 +25,7 @@ RU and storage consumption is prorated at the following prices:
   1M Request Units        | $0.20
   1 GiB storage           | $0.50
 
-Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of common queries and how they increase with the size and complexity of the query. You can view your cluster's RU and storage usage on the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
+Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of common queries and how they increase with the size and complexity of the query. You can view your cluster's RU and storage usage on the [**Overview** page]({% link cockroachcloud/overview-page.md %}).
 
 ## Free vs. paid usage
 
