@@ -8,7 +8,7 @@ keywords: deployment, byoc
 This page describes how to prepare a cloud service account to host a [BYOC deployment]({% link cockroachcloud/byoc-overview.md %}) of CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} in Amazon Web Services (AWS).
 
 {{site.data.alerts.callout_info}}
-The BYOC {{ site.data.products.cloud }} deployment option is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -19,7 +19,7 @@ The BYOC {{ site.data.products.cloud }} deployment option is currently in [Previ
 
 ## Step 1. Create a new AWS account
 
-Provision a new AWS account with no existing infrastructure, dedicated to your Cockroach {{ site.data.products.cloud }} deployment. The account configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this account, so this step is necessary to isolate these permissions from non-Cockroach Cloud resources. This account can be reused for multiple CockroachDB clusters.
+Provision a new AWS account with no existing infrastructure, dedicated to your CockroachDB {{ site.data.products.cloud }} deployment. The account configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this account, so this step is necessary to isolate these permissions from non-CockroachDB Cloud resources. This account can be reused for multiple CockroachDB clusters.
 
 ## Step 2. Collect the Cockroach Labs IAM role ARN
 
@@ -53,12 +53,12 @@ Record the value of `cockroach_cloud_service_principals.aws.user_arn` in the res
 
 ## Step 3. Create intermediary IAM role and apply permissions
 
-In this step, create the intermediary IAM role in your AWS account and apply a trust relationship policy and permissions that allows Cockroach Labs to assume the intermediary role as needed.
+In this step, create the intermediary IAM role in your AWS account, then apply a trust relationship policy and permissions that allow Cockroach Labs to assume the intermediary role as needed.
 
 Follow these steps to create the intermediate IAM role:
 
 1. Open the AWS IAM console.
-1. Create a new role. This name is arbitrary and can be named whatever you want. In these instructions the example role is named `CRLBYOCAdmin`.
+1. Create a new role. You can choose any name for this role. In these instructions the example role is named `CRLBYOCAdmin`.
 1. Use the following trust relationship policy for the new role, using the ARN collected in the previous step:
     {% include_cached copy-clipboard.html %}
     ~~~ json
@@ -218,7 +218,7 @@ Follow these steps to create the intermediate IAM role:
 
 If you plan to use non-default AWS regions, you must manually enable them in the AWS Management Console. You must also activate [global STS tokens](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_region-endpoints.html) for these regions to work with CockroachDB.
 
-You may also need to adjust quotas for vCPU and EBS disk storage for the regions that you plan to create your cluster in.
+You may also need to adjust quotas for vCPU and EBS disk storage for the regions in which you plan to create your cluster.
 
 ## Step 5. Create the CockroachDB {{ site.data.products.cloud }} cluster
 
@@ -228,9 +228,9 @@ In BYOC deployments, CockroachDB clusters can be deployed in the {{ site.data.pr
 
 Follow these steps to create a CockroachDB cluster in the {{ site.data.products.cloud }} console:
 
-1. Open the {{ site.data.products.cloud }} and select the organization that has been enabled for BYOC.
-1. Click **Create cluster**
-1. Under **Select a plan**, click **{{ site.data.products.advanced }}.
+1. Open the {{ site.data.products.cloud }} Console and select the organization that has been enabled for BYOC.
+1. Click **Create cluster**.
+1. Under **Select a plan**, click **{{ site.data.products.advanced }}**.
 1. Under **Cloud & Regions**, click **Bring Your Own Cloud** and select AWS.
 1. Under **Cloud account**, click **Select your cloud account > Add new cloud account**. Enter the ARN associated with your intermediate IAM role.
 1. Follow the rest of the **Create Cluster** steps to configure your cluster's regions, capacity, and features as desired. Read the [Plan a CockroachDB {{ site.data.products.advanced}} Cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}) documentation for more details.

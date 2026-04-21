@@ -5,10 +5,10 @@ toc: true
 keywords: deployment, byoc
 ---
 
-CockroachDB {{ site.data.products.cloud }} supports a ["bring your own cloud" (BYOC) deployment model](https://www.cockroachlabs.com/product/cloud/bring-your-own-cloud/), where CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} is hosted in your own account rather than in an account managed by Cockroach Labs. This model allows you to take more control of security and take advantage of existing cloud service credits or discounts.
+CockroachDB {{ site.data.products.cloud }} supports a [Bring Your Own Cloud (BYOC) deployment model](https://www.cockroachlabs.com/product/cloud/bring-your-own-cloud/), where CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} is hosted in your own cloud account rather than in an account managed by Cockroach Labs. This model allows you to take more control of security and take advantage of existing cloud service credits or discounts.
 
 {{site.data.alerts.callout_info}}
-The BYOC {{ site.data.products.cloud }} deployment option is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 ## Shared responsibility model for BYOC
@@ -19,7 +19,7 @@ The following table describes the split of responsibilities between you and Cock
 
 Area        | Cockroach Labs responsibility | Customer responsibility
 :----------:|:-----------------------------:|:----------------------:
-Uptime      | Ensure 99.999% cluster uptime | Ensure that clusters remain accessible to CRL via cross-account IAM as documented in the corresponding deployment guide
+Uptime      | Ensure 99.999% cluster uptime | Ensure that clusters remain accessible to CRL via cross-account IAM as documented in the corresponding [deployment guide](#next-steps)
 Deployments | Automate cluster provisioning and scaling, provide hardware best practices | Provision new cloud service accounts and grant IAM permissions for Cockroach Labs to create and manage clusters
 Upgrades    | Provide automatic minor/patch upgrades and major upgrade automation via Terraform, APIs, or the {{ site.data.products.cloud }} Console | Initiate [major version upgrades]({% link cockroachcloud/upgrade-cockroach-version.md %}), [set maintenance windows]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) if applicable
 Workload    | Troubleshoot problems as they pertain to cluster availability | [Size clusters]({% link cockroachcloud/advanced-cluster-management.md %}#scale-your-cluster) to manage workload requirements, [tune performance]({% link {{ site.versions["stable"] }}/performance-recipes.md %}), and adjust schema designs with support from Cockroach Labs
@@ -29,13 +29,13 @@ Billing     | Meter vCPUs consumed, [charge for vCPU consumption]({% link cockro
 
 ## Next steps
 
-CockroachDB supports BYOC deployments in Amazon Web Services, Microsoft Azure, and Google Cloud Platform. Read the corresponding deployment guides:
+CockroachDB supports BYOC deployments in Amazon Web Services, Microsoft Azure, and Google Cloud Platform. To prepare your cloud account for a BYOC deployment, refer to the corresponding deployment guide:
 
 - [Prepare a CockroachDB Cloud BYOC Deployment in Amazon Web Services]({% link cockroachcloud/byoc-aws-deployment.md %}).
 - [Prepare a CockroachDB Cloud BYOC Deployment in Azure]({% link cockroachcloud/byoc-azure-deployment.md %}).
 - [Prepare a CockroachDB Cloud BYOC Deployment in Google Cloud Platform]({% link cockroachcloud/byoc-gcp-deployment.md %}).
 
-Once your cloud account is prepared for a BYOC deployment, cluster configuration and management is identical to a CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} cluster. Read more about CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} cluster planning and management:
+Once your cloud account is prepared for a BYOC deployment, cluster configuration and management is identical to a CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} cluster. To learn more about CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} cluster planning and management, refer to the following guides:
 
 - [Plan an {{ site.data.products.advanced }} cluster deployment]({% link cockroachcloud/plan-your-cluster-advanced.md %})
 - [Manage a cluster using the {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %})

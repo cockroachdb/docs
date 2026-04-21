@@ -8,7 +8,7 @@ keywords: deployment, byoc
 This page describes how to prepare a cloud service account to host a [BYOC deployment]({% link cockroachcloud/byoc-overview.md %}) of CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} in Microsoft Azure.
 
 {{site.data.alerts.callout_info}}
-The BYOC {{ site.data.products.cloud }} deployment option is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -233,8 +233,8 @@ In BYOC deployments, CockroachDB clusters can be deployed in the {{ site.data.pr
 Follow these steps to create a CockroachDB cluster in the {{ site.data.products.cloud }} console:
 
 1. Open the {{ site.data.products.cloud }} and select the organization that has been enabled for BYOC.
-1. Click **Create cluster**
-1. Under **Select a plan**, click **{{ site.data.products.advanced }}.
+1. Click **Create cluster**.
+1. Under **Select a plan**, click **{{ site.data.products.advanced }}**.
 1. Under **Cloud & Regions**, click **Bring Your Own Cloud** and select Azure.
 1. Under **Cloud account**, click **Select your cloud account > Add new cloud account**. Enter the tenant ID and subscription ID associated with your Azure subscription.
 1. Follow the rest of the **Create Cluster** steps to configure your cluster's regions, capacity, and features as desired. Read the [Plan a CockroachDB {{ site.data.products.advanced}} Cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}) documentation for more details.

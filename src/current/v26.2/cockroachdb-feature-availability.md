@@ -130,7 +130,7 @@ Exporting metrics to Azure Monitor is in limited access. Refer to [Export metric
 
 Enabling and managing [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for CockroachDB {{ site.data.products.advanced }} in the {{ site.data.products.cloud }} Console is in preview. CMEK management with the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in general availability.
 
-### Bring your own cloud (BYOC) deployments of CockroachDB {{ site.data.products.cloud }}
+### Bring Your Own Cloud (BYOC) deployments of CockroachDB {{ site.data.products.cloud }}
 
 Deploying CockroachDB {{ site.data.products.cloud }} with a [BYOC deployment model]({% link cockroachcloud/byoc-overview.md %}) is in preview for Amazon Web Services, Microsoft Azure, and Google Cloud Platform.
 
