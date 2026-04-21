@@ -286,6 +286,10 @@ There are two types of statement hints:
 - `REWRITE INLINE HINTS`: Apply [index hints]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) and [join hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#join-hints) to statement fingerprints.
 - `SET VARIABLE`: Override [session variable]({% link {{ page.version.version }}/session-variables.md %}) values for every execution of a statement fingerprint.
 
+### Post-quantum cryptography support
+
+[Post-quantum cryptography (PQC)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#post-quantum-cryptography-support-in-cockroachdb) support is in preview. For TLS 1.3 connections, CockroachDB uses `X25519MLKEM768` by default, a hybrid PQC algorithm that combines `X25519` (an elliptic curve Diffie-Hellman algorithm) and `ML-KEM-768` (a quantum-resistant key encapsulation mechanism).
+
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
