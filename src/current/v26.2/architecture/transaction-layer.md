@@ -436,17 +436,22 @@ Additionally, when other transactions encounter a transaction in `STAGING` state
 
 ### Buffered writes
 
-{% include feature-phases/preview.md %}
-
 Buffered writes enhance transaction throughput and reduce operational cost by minimizing the number of round trips between the gateway node and other nodes during write operations.
 
 Buffered writes work by temporarily storing a transaction's writes on the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) until the transaction [commits]({% link {{ page.version.version }}/commit-transaction.md %}). This approach reduces redundant writes, minimizes [pipeline](#transaction-pipelining) stalls, and allows the system to serve [read-your-writes](https://jepsen.io/consistency/models/read-your-writes) locally. Most importantly, it allows for passive use of the [1-phase commit (1PC) fast-path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions) which can lead to increased performance.
 
-Buffered writes are off by default. To turn them on for the [current session]({% link {{ page.version.version }}/session-variables.md %}), issue the following statement:
+{% include_cached new-in.html version="v26.2" %} Buffered writes are enabled by default for [explicit transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %}) that use [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. [Implicit transactions]({% link {{ page.version.version }}/transactions.md %}#individual-statements) and transactions that use weaker isolation levels do not use buffered writes by default. To enable buffered writes for implicit transactions in the [current session]({% link {{ page.version.version }}/session-variables.md %}), issue the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET kv_transaction_buffered_writes_enabled = on;
+SET buffered_writes_implicit_txns_enabled = on;
+~~~
+
+To disable buffered writes for all transaction types in the current session, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET kv_transaction_buffered_writes_enabled = off;
 ~~~
 
 Buffered writes update the transaction flow so that it has the following properties:
@@ -459,7 +464,7 @@ Buffered writes update the transaction flow so that it has the following propert
 {{site.data.alerts.callout_info}}
 Buffered writes have the following limitations:
 
-- Users of [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation won't see a performance benefit. This limitation is likely to remain in place until the feature is [Generally Available (GA)]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#feature-availability-phases).
+- Transactions that use [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation do not use buffered writes by default. CockroachDB keeps this behavior opt-in for weaker isolation levels because buffering writes there needs extra safeguards to avoid transaction anomalies.
 - Some workloads could see an increase in [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}).
 {{site.data.alerts.end}}
 
