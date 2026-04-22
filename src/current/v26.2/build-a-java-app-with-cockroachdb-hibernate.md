@@ -14,7 +14,6 @@ This tutorial shows you how build a simple Java application with CockroachDB and
 {% include {{page.version.version}}/app/java-version-note.md %}
 
 For another use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
-{{site.data.alerts.end}}
 
 ## Step 1. Start CockroachDB
 

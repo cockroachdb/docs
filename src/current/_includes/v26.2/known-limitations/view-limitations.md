@@ -1,1 +1,2 @@
 - Casting subqueries to [user-defined types]({% link {{ page.version.version }}/create-type.md %}) (including ENUMs) in views is not supported. [#108184](https://github.com/cockroachdb/cockroach/issues/108184)
+- Statements within views do not currently respect hint injections. The workaround is to modify the inline hints directly in the body by replacing the view. [#166782](https://github.com/cockroachdb/cockroach/issues/166782)
