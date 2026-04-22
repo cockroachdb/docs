@@ -294,6 +294,10 @@ There are two types of statement hints:
 
 [Post-quantum cryptography (PQC)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#post-quantum-cryptography-support-in-cockroachdb) support is in preview. For TLS 1.3 connections, CockroachDB uses `X25519MLKEM768` by default, a hybrid PQC algorithm that combines `X25519` (an elliptic curve Diffie-Hellman algorithm) and `ML-KEM-768` (a quantum-resistant key encapsulation mechanism).
 
+### Active Session History
+
+[Active Session History (ASH)]({% link {{ page.version.version }}/active-session-history.md %}) is in preview, and is disabled by default. ASH is a time-series sampling-based observability feature that helps you troubleshoot workload performance issues by capturing what work was actively executing on your cluster at specific points in time.
+
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
