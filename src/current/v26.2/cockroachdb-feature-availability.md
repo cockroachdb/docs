@@ -275,17 +275,24 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
-### Leader leases
-
-{% include {{ page.version.version }}/leader-leases-intro.md %}
-
-For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
-
 ### Buffered Writes
 
 Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) and the other nodes during write operations.
 
 For more information, refer to [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
+
+### Statement hints
+
+[Statement hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#statement-hints) are in preview. Statement hints allow you to apply hints to every execution of a given [statement fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) without modifying the original statement.
+
+There are two types of statement hints:
+
+- `REWRITE INLINE HINTS`: Apply [index hints]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) and [join hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#join-hints) to statement fingerprints.
+- `SET VARIABLE`: Override [session variable]({% link {{ page.version.version }}/session-variables.md %}) values for every execution of a statement fingerprint.
+
+### Post-quantum cryptography support
+
+[Post-quantum cryptography (PQC)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#post-quantum-cryptography-support-in-cockroachdb) support is in preview. For TLS 1.3 connections, CockroachDB uses `X25519MLKEM768` by default, a hybrid PQC algorithm that combines `X25519` (an elliptic curve Diffie-Hellman algorithm) and `ML-KEM-768` (a quantum-resistant key encapsulation mechanism).
 
 ## See Also
 
