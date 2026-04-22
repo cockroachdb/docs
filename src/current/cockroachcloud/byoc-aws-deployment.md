@@ -19,7 +19,7 @@ This page describes how to prepare a cloud service account to host a [BYOC deplo
 
 ## Step 1. Create a new AWS account
 
-Provision a new AWS account with no existing infrastructure, dedicated to your CockroachDB {{ site.data.products.cloud }} deployment. The account configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this account, so this step is necessary to isolate these permissions from non-CockroachDB Cloud resources. This account can be reused for multiple CockroachDB clusters.
+Provision a new AWS account with no existing infrastructure, dedicated to your CockroachDB {{ site.data.products.cloud }} deployment. The account configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this account, so this step is necessary to isolate these permissions from non-CockroachDB Cloud resources.
 
 ## Step 2. Collect the Cockroach Labs IAM role ARN
 
