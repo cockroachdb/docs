@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE VIEW` statement creates a new [view]({% link {{ page.version.version }}/views.md %}), which is a stored query represented as a virtual table. By default, CockroachDB checks privileges on the underlying tables using the view owner's privileges. To check privileges using the querying user's privileges instead, create the view with `WITH (security_invoker)` or `WITH (security_invoker = true)`.
+The `CREATE VIEW` statement creates a new [view]({% link {{ page.version.version }}/views.md %}), which is a stored query represented as a virtual table.
 
 {{site.data.alerts.callout_info}}
  By default, views created in a database cannot reference objects in a different database. To enable cross-database references for views, set the `sql.cross_db_views.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
@@ -32,7 +32,7 @@ Parameter | Description
 `OR REPLACE`  |   Create a new view if a view of the same name does not already exist. If a view of the same name already exists, replace that view.<br><br>In order to replace an existing view, the new view must have the same columns as the existing view, or more. If the new view has additional columns, the old columns must be a prefix of the new columns. For example, if the existing view has columns `a, b`, the new view can have an additional column `c`, but must have columns `a, b` as a prefix. In this case, `CREATE OR REPLACE VIEW myview (a, b, c)` would be allowed, but `CREATE OR REPLACE VIEW myview (b, a, c)` would not.
 `view_name` | The name of the view to create, which must be unique within its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
 `name_list` | An optional, comma-separated list of column names for the view. If specified, these names will be used in the response instead of the columns specified in `AS select_stmt`.
-`WITH (security_invoker [ = { true | false } ])` | Sets whether to check privileges on the underlying tables as the querying user (`true`) or the view owner (`false`). `WITH (security_invoker)` is equivalent to `WITH (security_invoker = true)`. This option applies only to non-materialized views.
+`WITH (security_invoker = true)` | Sets whether to check privileges on the underlying tables as the querying user (`true`) or the view owner (`false`). `WITH (security_invoker)` is equivalent to `WITH (security_invoker = true)`. This option applies only to non-materialized views.
 `AS select_stmt` | The [selection query]({% link {{ page.version.version }}/selection-queries.md %}) to execute when the view is requested.<br><br>Note that it is not currently possible to use `*` to select all columns from a referenced table or view; instead, you must specify specific columns.
 `AS OF SYSTEM TIME` | When used with `CREATE MATERIALIZED VIEW`, populates the materialized view using historical data. This can reduce [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) by leveraging [follower reads]({% link {{ page.version.version }}/follower-reads.md %}). The timestamp must be within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds). For more information, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
 `opt_temp` |  Defines the view as a session-scoped temporary view. For more information, see [Temporary Views]({% link {{ page.version.version }}/views.md %}#temporary-views).<br><br>**Support for temporary views is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#temporary-objects)**.
@@ -151,7 +151,7 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 
 ### Create a view with invoker privileges
 
-To make a view check privileges on the underlying tables as the querying user, include the `security_invoker` option:
+To make a view check privileges on the underlying tables as the querying user, include the [`security_invoker` option]({% link {{ page.version.version }}/views.md %}#use-invoker-privileges-for-underlying-data):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
