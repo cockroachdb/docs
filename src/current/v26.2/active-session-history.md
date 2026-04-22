@@ -16,20 +16,20 @@ ASH is accessible via CockroachDB SQL and is disabled by default. To enable ASH,
 
 ## How ASH sampling works
 
-ASH captures point-in-time snapshots of each node's active work by sampling cluster activity at regular intervals (determined by the [`obs.ash.sample_interval` cluster setting](#configuration)). At each sample point, ASH examines all goroutines that are actively executing or waiting, and it records what each one is doing. Each sample captures details like the workload that the goroutine belongs to (statement fingerprint, job ID, or system task) and the activity the goroutine is occupied with. These samples fill an in-memory circular ring buffer, the size of which is determined by the [`obs.ash.buffer_size` cluster setting](#configuration). When the buffer fills, the oldest samples are overwritten. Samples do not persist on disk. They are lost on node restart.
+ASH captures point-in-time snapshots of each [node]({% link {{ page.version.version }}/architecture/glossary.md %}#node)'s active work by sampling cluster activity at regular intervals (determined by the [`obs.ash.sample_interval` cluster setting](#configuration)). At each sample point, ASH examines all goroutines that are actively executing or waiting, and it records what each one is doing. Each sample captures details like the workload that the goroutine belongs to (statement fingerprint, job ID, or system task) and the activity the goroutine is occupied with. These samples fill an in-memory circular ring buffer, the size of which is determined by the [`obs.ash.buffer_size` cluster setting](#configuration). When the buffer fills, the oldest samples are overwritten. Samples do not persist on disk. They are lost on node restart.
 
 A user can query the ASH data for the specific node to which their SQL shell is connected (the gateway node) or across the whole cluster.
 
-Because ASH is sampling-based rather than event-based, the sample count for a particular activity is proportional to how much time was spent on that activity. For example, if a query appears in 45 out of 60 sample points over one minute, it was actively consuming resources for approximately 45 seconds of that minute. This approach provides an accurate picture of resource usage patterns over time, but it means that short-lived operations completed between sampling points may not be captured. To troubleshoot very brief operations, you may need to reduce the `obs.ash.sample_interval` cluster setting, or use [statement diagnostics](#use-ash-alongside-other-monitoring-tools). However, use caution when reducing the sampling interval, as this will cause the buffer to fill up quickly.
+Because ASH is sampling-based rather than event-based, the sample count for a particular activity is proportional to how much time was spent on that activity. For example, if a query appears in 45 out of 60 sample points over one minute, it was actively consuming resources for approximately 45 seconds of that minute. This approach provides an accurate picture of resource usage patterns over time, but it means that short-lived operations completed between sampling points may not be captured. To troubleshoot very brief operations, you may need to reduce the `obs.ash.sample_interval` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), or use [statement diagnostics](#use-ash-alongside-other-monitoring-tools). However, use caution when reducing the sampling interval, as this will cause the buffer to fill up quickly.
 
 ASH does not provide exact resource accounting per query or job, nor does it provide the exact timing of individual executions. Its sampling-based approach instead provides a statistically reliable view of the system at a given time, which can help with troubleshooting.
 
 These point-in-time samples can be used to:
 
-- **Root-cause slow queries**: Understand exactly what a query was doing at specific points in time (e.g., waiting for locks, performing I/O, consuming CPU).
+- **Root-cause slow queries**: Understand exactly what a query was doing at specific points in time (e.g., [waiting for locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#concurrency-control), performing I/O, consuming CPU).
 - **Identify bottlenecks**: Determine which resources (CPU, locks, I/O, network, admission control) are constraining workload performance.
 - **Troubleshoot transient issues**: Diagnose performance problems that don't show up in aggregated statistics because they're intermittent or short-lived.
-- **Analyze resource usage patterns**: Understand how different workloads (user queries, background jobs, system operations) consume cluster resources.
+- **Analyze resource usage patterns**: Understand how different workloads (user queries, [background jobs]({% link {{ page.version.version }}/show-jobs.md %}), system operations) consume cluster resources.
 - **Compare performance across time**: Analyze how workload behavior changes during different time periods (e.g., peak vs. off-peak hours).
 
 ### Use ASH alongside other monitoring tools
@@ -77,7 +77,7 @@ The data for each sample is placed into a row with the following columns:
 | `workload_type` | `STRING NOT NULL` | Kind of workload (refer to [`workload` columns](#workload-columns)) |
 | `app_name` | `STRING` | Application name; only set for SQL statement workloads |
 | `work_event_type` | `STRING NOT NULL` | Resource category (refer to [`work_event` columns](#work_event-columns)) |
-| `work_event` | `STRING NOT NULL` | Specific activity label (refer to [`work_event` columns](#work_event-columns) |
+| `work_event` | `STRING NOT NULL` | Specific activity label (refer to [`work_event` columns](#work_event-columns)) |
 | `goroutine_id` | `INT NOT NULL` | Go runtime goroutine ID |
 
 ### `workload` columns
@@ -89,7 +89,7 @@ Each sample is attributed to a workload via the `workload_type` and `workload_id
 | `STATEMENT` | Hex-encoded [statement fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) ID |
 | `JOB` | Decimal [job ID]({% link {{ page.version.version }}/show-jobs.md %}) |
 | `SYSTEM` | One of the following system task names: <br>`LDR`, `RAFT`, `STORELIVENESS`, `RPC_HEARTBEAT`, `NODE_LIVENESS`, `SQL_LIVENESS`, `TIMESERIES`, `RAFT_LOG_TRUNCATION`, `TXN_HEARTBEAT`, `INTENT_RESOLUTION`, `LEASE_ACQUISITION`, `MERGE_QUEUE`, `CIRCUIT_BREAKER_PROBE`, `GC`, `RANGEFEED`, `REPLICATE_QUEUE`, `SPLIT_QUEUE`, `DESCRIPTOR_LEASE` |
-| `UNKNOWN` | Unidentified. If you're seeing many unattributed samples for your workload, you may want to [file an issue](  https://github.com/cockroachdb/cockroach/issues/new?template=bug_report.md). |
+| `UNKNOWN` | Unidentified. If you're seeing many unattributed samples for your workload, you may want to [file an issue](https://github.com/cockroachdb/cockroach/issues/new?template=bug_report.md). |
 
 ### `work_event` columns
 
@@ -101,12 +101,12 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
-| `Optimize` | [SQL optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) | Cost-based query optimization |
-| `ReplicaSend` | [KV server]({% link {{ page.version.version }}/architecture/storage-layer.md %}) | Replica-level batch evaluation |
-| `DistSenderLocal` | [KV client]({% link {{ page.version.version }}/architecture/distribution-layer.md %}) | DistSender processing a local batch |
-| `BatchFlowCoordinator` | [DistSQL (columnar)]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) | Columnar flow coordination |
-| `ColExecSync` | [DistSQL (columnar)]({% link {{ page.version.version }}/vectorized-execution.md %}) | Synchronous columnar execution |
-| *(processor name)* | [DistSQL processors]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) | Dynamic — each DistSQL processor registers with its own name (e.g. `hashJoiner`, `tablereader`) |
+| `Optimize` | SQL optimizer | [Cost-based query optimization]({% link {{ page.version.version }}/cost-based-optimizer.md %}) |
+| `ReplicaSend` | KV server | Replica-level batch evaluation |
+| `DistSenderLocal` | KV client | [DistSender]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) processing a local batch |
+| `BatchFlowCoordinator` | [DistSQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) (columnar) | Columnar flow coordination |
+| `ColExecSync` | DistSQL (columnar) | Synchronous columnar execution |
+| *(processor name)* | DistSQL processors | Dynamic — each DistSQL processor registers with its own name (e.g. `hashJoiner`, `tablereader`) |
 
 #### `IO`
 
@@ -114,7 +114,7 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
-| `KVEval` | [KV server]({% link {{ page.version.version }}/architecture/storage-layer.md %}) | Batch evaluation in the storage layer |
+| `KVEval` | KV server | Batch evaluation in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) |
 
 #### `LOCK`
 
@@ -133,7 +133,7 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
-| `DistSenderRemote` | [KV client]({% link {{ page.version.version }}/architecture/distribution-layer.md %}) | DistSender waiting on a remote node RPC |
+| `DistSenderRemote` | KV client | [DistSender]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) waiting on a remote node RPC |
 | `InboxRecv` | [DistSQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) | Receiving data from a remote DistSQL flow |
 | `OutboxSend` | [DistSQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) | Sending data to a remote DistSQL flow |
 
@@ -156,11 +156,11 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
-| `CommitWaitSleep` | [KV server]({% link {{ page.version.version }}/architecture/storage-layer.md %}) | Transaction commit-wait for linearizability |
-| `RaftProposalWait` | [KV server]({% link {{ page.version.version }}/architecture/storage-layer.md %}) | Waiting for a Raft proposal to be applied |
-| `Backpressure` | [KV server]({% link {{ page.version.version }}/architecture/storage-layer.md %}) | Range backpressure from splits/merges |
-| `LeaseAcquisition` | [KV server]({% link {{ page.version.version }}/architecture/storage-layer.md %}) | Waiting to acquire a range lease |
-| `TenantRateLimit` | [KV server]({% link {{ page.version.version }}/architecture/storage-layer.md %}) | Tenant rate limiter throttling |
+| `CommitWaitSleep` | KV server | [Transaction]({% link {{ page.version.version }}/architecture/transaction-layer.md %}) commit-wait for linearizability |
+| `RaftProposalWait` | KV server | Waiting for a [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) proposal to be applied |
+| `Backpressure` | KV server | [Range]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) backpressure from splits/merges |
+| `LeaseAcquisition` | KV server | Waiting to acquire a [range lease]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) |
+| `TenantRateLimit` | KV server | [Tenant rate limiter]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}#virtual-clusters) throttling |
 
 ## ASH Metrics
 
@@ -234,7 +234,7 @@ The query returns the count of samples for each work event type and specific eve
 (8 rows)
 ~~~
 
-The results show this node's activity is dominated by network waits (`DistSenderRemote`) and Raft consensus waits (`RaftProposalWait`), which is typical for write-heavy workloads that must replicate data across nodes. The upsert `CPU` samples show time spent executing upsert statements, while `ReplicationFlowControl` admission samples indicate that the system is throttling writes due to replication backpressure. The `LockWait` samples indicate some transaction-level lock contention on hot keys. To identify which specific workloads are causing these waits, add `workload_type`, `workload_id`, and `app_name` to the query and group by them.
+The results show this node's activity is dominated by network waits (`DistSenderRemote`) and Raft consensus waits (`RaftProposalWait`), which is typical for write-heavy workloads that must replicate data across nodes. The upsert `CPU` samples show time spent executing upsert statements, while `ReplicationFlowControl` admission samples indicate that the system is throttling writes due to replication backpressure. The `LockWait` samples indicate some [transaction-level lock contention]({% link {{ page.version.version }}/troubleshoot-lock-contention.md %}) on hot keys. To identify which specific workloads are causing these waits, add `workload_type`, `workload_id`, and `app_name` to the query and group by them.
 
 ### View cluster-wide workload data from the past 10 minutes
 
@@ -274,7 +274,7 @@ The results show that a single SQL statement fingerprint (`9bef06d795045524`) fr
 
 ### Find recent lock contention hotspots
 
-**Scenario**: Elevated p99 latency and increased transaction retries indicate contention, but it's unclear which specific workloads are experiencing lock waits and what type of contention is occurring.
+**Scenario**: Elevated p99 latency and increased [transaction retries]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) indicate contention, but it's unclear which specific workloads are experiencing lock waits and what type of contention is occurring.
 
 You can filter ASH samples to show only lock-related wait events:
 
@@ -301,7 +301,7 @@ The results identify the statement fingerprint experiencing latch waits. Use the
 
 ### Get details about what a specific job is spending time on
 
-**Scenario**: A background job (such as a backup, schema change, or import) is running longer than expected, but it's unclear whether the job is consuming CPU, waiting on I/O, or blocked by other resources.
+**Scenario**: A background job (such as a [backup]({% link {{ page.version.version }}/backup.md %}), schema change, or [import]({% link {{ page.version.version }}/import-into.md %})) is running longer than expected, but it's unclear whether the job is consuming CPU, waiting on I/O, or blocked by other resources.
 
 You can filter by workload type and job ID to understand where the job is spending its time:
 
@@ -323,10 +323,10 @@ The query breaks down the job's resource consumption by work event type and spec
   -----------------+---------------------+--------------
   CPU              | backupDataProcessor |           10
   CPU              | ReplicaSend         |           10
-(3 rows)
+(2 rows)
 ~~~
 
-The results show the job spent most of its time on active computation. The remaining samples show the job waiting for locks (`LockWait`). This breakdown helps identify that the backup job is primarily CPU-bound rather than I/O or lock-constrained. To find the job ID for a running job, query the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) or use `SELECT job_id, description, status FROM [SHOW JOBS]`. CockroachDB {{ site.data.products.cloud }} users can use the [Jobs page]({% link cockroachcloud/jobs-page.md %}) in the {{ site.data.products.cloud }} Console.
+The results show the job spent most of its time on active computation. This breakdown helps identify that the backup job is primarily CPU-bound rather than I/O or lock-constrained. To find the job ID for a running job, query the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) or use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}): `SELECT job_id, description, status FROM [SHOW JOBS]`. CockroachDB {{ site.data.products.cloud }} users can use the [Jobs page]({% link cockroachcloud/jobs-page.md %}) in the {{ site.data.products.cloud }} Console.
 
 ## Known limitations
 
