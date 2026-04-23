@@ -459,7 +459,7 @@ For usage, see [Synopsis](#synopsis).
 `ALTER TABLE ... RESET {storage parameter}` reverts the value of a storage parameter on a table to its default value.
 
 {{site.data.alerts.callout_info}}
-To reset a storage parameter on an existing index, use [`ALTER INDEX ... RESET (storage_parameter)`]({% link {{ page.version.version }}/alter-index.md %}#reset) if the parameter can be altered. Otherwise, you must drop and [recreate the index without the storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}).
+To reset a storage parameter on an existing index, use [`ALTER INDEX ... RESET (storage_parameter)`]({% link {{ page.version.version }}/alter-index.md %}#reset) if the parameter [can be altered]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters). Otherwise, you must drop and [recreate the index without the storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}).
 {{site.data.alerts.end}}
 
 For examples, see [Set and reset storage parameters](#set-and-reset-storage-parameters).
@@ -541,7 +541,7 @@ The user must be a member of the [`admin`]({% link {{ page.version.version }}/se
 `ALTER TABLE ... SET {storage parameter}` sets a storage parameter on an existing table.
 
 {{site.data.alerts.callout_info}}
-To set a storage parameter on an existing index, use [`ALTER INDEX ... SET (storage_parameter)`]({% link {{ page.version.version }}/alter-index.md %}#set) if the parameter can be altered. Otherwise, you must drop and [recreate the index with the storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}).
+To set a storage parameter on an existing index, use [`ALTER INDEX ... SET (storage_parameter)`]({% link {{ page.version.version }}/alter-index.md %}#set) if the parameter [can be altered]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters). Otherwise, you must drop and [recreate the index with the storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}).
 {{site.data.alerts.end}}
 
 For examples, see [Set and reset storage parameters](#set-and-reset-storage-parameters).

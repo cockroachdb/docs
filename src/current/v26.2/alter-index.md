@@ -151,10 +151,6 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER INDEX ... SET (storage_parameter)` modifies an alterable [index storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) on an existing index.
 
-{{site.data.alerts.callout_info}}
-Most [index storage parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) can only be set at index creation time and cannot be modified afterward.
-{{site.data.alerts.end}}
-
 For examples, see [Modify index storage parameters](#modify-index-storage-parameters).
 
 #### Required privileges
@@ -173,10 +169,6 @@ For usage, see [Synopsis](#synopsis).
 ### `RESET`
 
 `ALTER INDEX ... RESET (storage_parameter)` removes an alterable [index storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) from an existing index, resetting it to its default value.
-
-{{site.data.alerts.callout_info}}
-Most [index storage parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) can only be set at index creation time and cannot be modified afterward.
-{{site.data.alerts.end}}
 
 For examples, see [Modify index storage parameters](#modify-index-storage-parameters).
 
