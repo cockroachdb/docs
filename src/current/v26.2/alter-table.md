@@ -1363,6 +1363,8 @@ To ensure that the uniqueness constraint is enforced properly across regions whe
 
     {{site.data.alerts.callout_danger}}
     Uniqueness checks should only be skipped if the application can guarantee uniqueness, for example, by using external UUID values or relying on a [`unique_rowid()`]({% link {{ page.version.version }}/uuid.md %}#use-unique_rowid) default value. Incorrectly applying this setting when uniqueness is not guaranteed by the application could result in logically duplicate keys in different partitions of a unique index.
+
+    For more information, refer to [`skip_unique_checks`]({% link {{ page.version.version }}/with-storage-parameter.md %}#skip-unique-checks).
     {{site.data.alerts.end}}
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
@@ -1403,7 +1405,7 @@ To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`U
 ~~~
 
 {{site.data.alerts.callout_info}}
-When using `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables, uniqueness checks on those columns are disabled by default for performance purposes. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`]({% link {{ page.version.version }}/uuid.md %}#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). Note that while there is virtually no chance of a [collision](https://wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
+The optimizer does not perform uniqueness checks when you use `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`]({% link {{ page.version.version }}/uuid.md %}#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). Note that while there is virtually no chance of a [collision](https://wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
 {{site.data.alerts.end}}
 
 #### Using implicit vs. explicit index partitioning in `REGIONAL BY ROW` tables
@@ -1419,6 +1421,8 @@ In the latter case, the index alone cannot enforce uniqueness on columns that ar
 
 {{site.data.alerts.callout_danger}}
 Uniqueness checks should only be skipped if the application can guarantee uniqueness, for example, by using external UUID values or relying on a [`unique_rowid()`]({% link {{ page.version.version }}/uuid.md %}#use-unique_rowid) default value. Incorrectly applying this setting when uniqueness is not guaranteed by the application could result in logically duplicate keys in different partitions of a unique index.
+
+For more information, refer to [`skip_unique_checks`]({% link {{ page.version.version }}/with-storage-parameter.md %}#skip-unique-checks).
 {{site.data.alerts.end}}
 
 Whether or not to explicitly include `crdb_region` in the index definition depends on the context:
