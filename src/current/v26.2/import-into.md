@@ -13,7 +13,7 @@ The `IMPORT INTO` [statement]({% link {{ page.version.version }}/sql-statements.
 - `IMPORT INTO` works with existing tables. To import data into a new table, see [Import into a new table from a CSV file](#import-into-a-new-table-from-a-csv-file).
 - `IMPORT INTO` cannot be used during a [rolling upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
 - `IMPORT INTO` is a blocking statement. To run an `IMPORT INTO` job asynchronously, use the [`DETACHED`](#options-detached) option.
-- {% include_cached new-in.html version="v26.2" %} After a successful `IMPORT INTO`, CockroachDB can start a background [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) job to validate the imported row count. The [`bulkio.import.row_count_validation.mode` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-bulkio-import-row-count-validation-mode) controls this behavior: `off`, `async`, or `sync`.
+- {% include_cached new-in.html version="v26.2" %} After a successful `IMPORT INTO`, CockroachDB can start a background [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) job to validate the imported row count. The [`bulkio.import.row_count_validation.mode` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-bulkio-import-row-count-validation-unsafe-mode) controls this behavior: `off`, `async`, or `sync`.
 - `IMPORT INTO` invalidates all [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}) on the target table. To validate the foreign key(s), use the [`ALTER TABLE ... VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint) statement.
 - `IMPORT INTO` is an insert-only statement; it cannot be used to [update]({% link {{ page.version.version }}/update.md %}) existing rows. Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) constraint on the table.
 - `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To add a subset of rows to a table, use [`INSERT`]({% link {{ page.version.version }}/insert.md %}#insert-from-a-select-statement).
@@ -171,7 +171,7 @@ If initiated correctly, the statement returns when the import is finished or if 
 
 For non-`DETACHED` imports, when post-import row count validation runs, the statement result includes an `inspect_job_id` column for the background [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) job. Use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) to monitor that job, or run `SHOW INSPECT ERRORS FOR JOB {inspect_job_id} WITH DETAILS` to investigate validation failures.
 
-If [`bulkio.import.row_count_validation.mode`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-bulkio-import-row-count-validation-mode) is set to `sync`, `IMPORT INTO` waits for the validation job to finish and the statement fails if `INSPECT` finds inconsistencies.
+If [`bulkio.import.row_count_validation.mode`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-bulkio-import-row-count-validation-unsafe-mode) is set to `sync`, `IMPORT INTO` waits for the validation job to finish and the statement fails if `INSPECT` finds inconsistencies.
 
 {{site.data.alerts.callout_danger}}
 Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the beginning.
