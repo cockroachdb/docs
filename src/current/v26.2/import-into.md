@@ -8,7 +8,7 @@ docs_area: reference.sql
 The `IMPORT INTO` [statement]({% link {{ page.version.version }}/sql-statements.md %}) imports CSV, Avro, Parquet, or delimited data into an existing table by appending new rows to the table.
 
 {{site.data.alerts.callout_info}}
-Parquet file support is in preview. It is subject to change.
+Parquet file support is in [preview]({% link {{ page.version.version }}/feature-availability.md %}#feature-availability-phases). It is subject to change.
 {{site.data.alerts.end}}
 
 ## Considerations
