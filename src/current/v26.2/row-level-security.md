@@ -105,7 +105,7 @@ If you use PCR, the target cluster will have all RLS policies applied to the dat
 
 When [views]({% link {{ page.version.version }}/views.md %}) are accessed, RLS policies on any underlying tables are applied. [Policies]({% link {{ page.version.version }}/create-policy.md %}) can only be defined directly on tables, not views.
 
-Views will only show rows that the current [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) has access to on the table that the view is referencing.
+By default, these policies are evaluated using the view owner's privileges. If the view is created or altered with [`security_invoker`]({% link {{ page.version.version }}/views.md %}#use-invoker-privileges-for-underlying-data), the policies are evaluated using the querying [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) instead.
 
 ## Examples
 
