@@ -58,7 +58,7 @@ You can set your retention duration **once**. After you have adjusted the retent
 ## Considerations
 
 - Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
-- You can perform a cross-cluster restore across {{ site.data.products.advanced }} clusters that belong to the same organization. However, this cross-cluster restore is not supported for {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters.
+- You can perform a cross-cluster restore across clusters in the same organization. However, the target cluster must also be an {{ site.data.products.advanced }} cluster and be completely wiped of data.
 - You cannot restore a backup of a multi-region database into a single-region database.
 - For details on managed backups and enabling CMEK in {{ site.data.products.advanced }} clusters, refer to [Backup and restore operations on a cluster with CMEK]({% link cockroachcloud/cmek.md %}#backup-and-restore-operations-on-a-cluster-with-cmek).
 
