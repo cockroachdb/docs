@@ -10926,7 +10926,7 @@
   cloud_only_message: >
     This version is currently available only for select
     CockroachDB Cloud clusters. Binaries for self-hosted clusters will be available
-    on May 13, 2026.
+    approximately 2 weeks after Cloud availability.
 
 - release_name: v26.2.0-alpha.2
   major_version: v26.2
