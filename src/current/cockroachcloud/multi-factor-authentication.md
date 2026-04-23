@@ -77,7 +77,7 @@ Before you can enforce MFA, you must have [Cloud Organization SSO]({% link cockr
 1. Go to **Organization** > **Authentication**.
 1. Under **Authentication Methods**, click **Username and Password**.
 1. If you have not yet enabled [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}#cloud-organization-sso), you will be prompted to do so.
-1. At least one Organization Admin must enable MFA on their own account before MFA enforcement can be enabled for all users. If no Organization Admins have enabled MFA, you will be prompted to do so:
+1. If you are a password-based user and you have not yet set up MFA for your own account, you will be prompted to do so before you can enforce MFA across the organization:
     1. Click **Set up Multi-Factor Authentication on your account**.
     1. Read the information on the **Enable MFA enforcement** modal, then click **Set up MFA**.
     1. [Set up MFA for your account](#set-up-mfa-for-a-password-based-account).

@@ -81,6 +81,7 @@ The following information is also contained in the `.zip` file, and cannot be fi
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
 - CPU profiles
 - A script (`hot-ranges.sh`) that summarizes the hottest ranges (ranges receiving a high number of reads or writes)
+- [Active Session History]({% link {{ page.version.version }}/active-session-history.md %}) data
 
 ## Subcommands
 
