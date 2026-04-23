@@ -44,7 +44,7 @@ SELECT * FROM users;
 (3 rows)
 ~~~
 
-For performance, CockroachDB automatically skips uniqueness checks for `gen_random_uuid()` due to the near-zero probability of UUID collisions. This optimization is controlled by the [`sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}) cluster setting, which defaults to `false`.
+For performance, CockroachDB defaults to skipping uniqueness checks for `gen_random_uuid()` due to the near-zero probability of UUID collisions. UUID uniqueness checks can be enabled by setting the [`sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}) cluster setting to `true`.
 
 #### Use `uuid_v4()`
 
@@ -124,6 +124,6 @@ SELECT * FROM users3;
 
 Upon insert or upsert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert. Such time-ordered values are likely to be globally unique except in cases where a very large number of IDs (100,000+) are generated per node per second. Also, there can be gaps and the order is not completely guaranteed.
 
-In multi-region deployments with [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables, uniqueness checks can add latency due to cross-partition validation. You can improve performance by setting the `skip_unique_checks` index storage parameter, but **only** if the application can guarantee uniqueness. For more information, refer to [`skip_unique_checks`]({% link {{ page.version.version }}/with-storage-parameter.md %}#skip-unique-checks).
+In multi-region deployments with [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables, uniqueness checks can add latency due to cross-partition validation. You can improve performance by setting the `skip_unique_checks` index storage parameter to `true`, but this is **only** recommended if the application can guarantee uniqueness. For more information, refer to [`skip_unique_checks`]({% link {{ page.version.version }}/with-storage-parameter.md %}#skip-unique-checks).
 
 To understand the differences between the `UUID` and `unique_rowid()` options, see the [SQL FAQs]({% link {{ page.version.version }}/sql-faqs.md %}#what-are-the-differences-between-uuid-sequences-and-unique_rowid). For further background on UUIDs, see [What is a UUID, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-a-uuid/).

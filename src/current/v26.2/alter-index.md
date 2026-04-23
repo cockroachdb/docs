@@ -561,9 +561,9 @@ The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `
 
 ### Modify index storage parameters
 
-Most [index storage parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) can only be set when creating an index and cannot be changed afterward. However, some index storage parameters can be modified on an existing index using `ALTER INDEX ... SET` or `ALTER INDEX ... RESET`.
+Many [index storage parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) can only be set when creating an index and cannot be changed afterward. However, some index storage parameters can be modified on an existing index using `ALTER INDEX ... SET` or `ALTER INDEX ... RESET`.
 
-This example demonstrates enabling and disabling the `skip_unique_checks` parameter on a unique index on a [`REGIONAL BY ROW`]({% link {{ page.version.version }}/regional-tables.md %}) table.
+This example demonstrates modifying the `skip_unique_checks` parameter on a unique index on a [`REGIONAL BY ROW`]({% link {{ page.version.version }}/regional-tables.md %}) table.
 
 Set up a multi-region database and create a `REGIONAL BY ROW` table with a unique index:
 
@@ -600,7 +600,7 @@ SHOW CREATE TABLE users;
 (1 row)
 ~~~
 
-The `users_email_key` index is a unique index that is implicitly partitioned by the `crdb_region` column. By default, CockroachDB performs cross-partition uniqueness checks for this index (`skip_unique_checks = false`).
+The `users_email_key` index is a unique index that is implicitly partitioned by the `crdb_region` column. By default, CockroachDB performs cross-partition uniqueness checks for this index because `skip_unique_checks` is set to `false`.
 
 #### Set a storage parameter
 
