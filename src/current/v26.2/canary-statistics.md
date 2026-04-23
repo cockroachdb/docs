@@ -1,6 +1,6 @@
 ---
 title: Canary Statistics
-summary: Test recent statistics on a small group of queries to ensure that you use good plans.
+summary: Test recent statistics on a small group of queries to ensure that CockroachDB is using good plans.
 toc: true
 docs_area: develop
 ---
@@ -57,9 +57,9 @@ SET canary_stats_mode = 'force_canary';
 
 ## Analytical tools for canary statistics
 
-Analyzing canary statistics allows you to visualize how new statistics affect query performance and catch problematic statistics before they impact your full workload. The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) contains metrics about canary statistics on the [**Statement Fingerprint** page]({% link {{ page.version.version }}/ui-statements-page.md %}#charts). The **Canary vs Stable Statement Times** chart shows planning and execution latency for each statistics set, and the **Canary vs Stable Plan Distribution** chart shows which plans the [query optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) chose using each statistics set.
+Analyzing canary statistics allows you to visualize how new statistics affect query performance and catch problematic statistics before they impact your full workload. The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) contains metrics about canary statistics on the [**Statement Fingerprint** page]({% link {{ page.version.version }}/ui-statements-page.md %}#charts). The **Canary vs Stable Statement Times** chart shows planning and execution latency for each statistics set, and the **Canary vs Stable Plan Distribution** chart shows which plans the [query optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) chose using each statistics set. These charts only appear when canary statistics are enabled.
 
-When using the canary statistics feature, the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) and [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) statements show the table's current canary window and whether a query is using canary statistics or stable statistics.
+When using the canary statistics feature, the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) and [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) statements show the table's current canary window and whether a query is using canary statistics or stable statistics. These fields only appear when canary statistics are enabled.
 
 ## See also
 
