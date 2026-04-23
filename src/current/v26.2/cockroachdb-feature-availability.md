@@ -80,10 +80,6 @@ By default, these cluster settings are disabled.
 
 The SQL built-in function [workload_index_recs]({% link {{ page.version.version }}/ui-insights-page.md %}#workload_index_recs-function) returns index recommendations and the fingerprint IDs of the statements they impact.
 
-### Triggers
-
-[Triggers]({% link {{ page.version.version }}/triggers.md %}) are in preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
-
 ### JWT authorization
 
 [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) allows CockroachDB to automatically assign roles to users based on group claims in their JWT tokens. When a client connects using a JWT token, the cluster extracts group information and maps each group to a corresponding cluster role, simplifying access control for organizations using identity providers.
