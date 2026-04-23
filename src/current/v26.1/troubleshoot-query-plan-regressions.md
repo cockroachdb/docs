@@ -78,7 +78,7 @@ For each suspect SQL statement, determine whether the high latency is caused by 
 5. Note which query plan was in use just before the latency increase, and record the values in the **Plan Gist**, **Average Execution Time**, and **Average Rows Read** columns.
 6. Compare the query plans.
     
-If the newer plan matches the older plan (that is, it has the same **Plan Gist**), there was no query plan regression.
+If the newer plan matches the older plan (that is, it has the same plan gist), there was no query plan regression.
     
 If the newer plan differs from the older plan, the query plan has changed:
     
@@ -102,14 +102,14 @@ If you couldn’t identify a specific moment when latency increased, you won’t
 
 For any query plans whose increased execution time seems suspicious, investigate further to understand why the plan changed.
 
-1. In the **Explain Plans** tab, click the **Plan Gist** of the more recent plan to view its details.
+1. In the **Explain Plans** tab, click on the plan gist of the more recent plan to view its details.
 2. Click on **All Plans** above to return to the full list.
-3. Click on the Plan Gist of the previous plan to inspect it in more detail. Compare the two plans to understand what changed. They may use different indexes. They may also scan different parts of the table or use different join strategies.
+3. Click on the plan gist of the previous plan to inspect it in more detail. Compare the two plans to understand what changed. They may use different indexes. They may also scan different parts of the table or use different join strategies.
 
 #### Determine if the table indexes changed
 
 1. Check the **Used Indexes** column for both the older and newer query plans. If these differ, it's likely that the creation or deletion of an index resulted in a change to the statement's query plan.
-2. In the **Explain Plans** tab, click the **Plan Gist** of the more recent plan to view its details. Identify the table(s) used in the initial "scan" step of the plan.
+2. In the **Explain Plans** tab, click on the plan gist of the more recent plan to view its details. Identify the table(s) used in the initial "scan" step of the plan.
 3. In your SQL client, run `SHOW INDEXES FROM <table_name>;` for each of those tables.
 4. Make sure that the query plan is using a table index that makes sense, given the query and the table's full set of indexes.
 
@@ -117,7 +117,7 @@ The new index may be well-chosen, but the schema change could have triggered a s
 
 #### Determine if the table statistics changed
 
-1. In the **Explain Plans** tab, click the Plan Gist of the more recent plan to view its details. Identify the table used in the initial "scan" step of the plan.
+1. In the **Explain Plans** tab, click on the plan gist of the more recent plan to view its details. Identify the table used in the initial "scan" step of the plan.
 2. In your SQL client, run `SHOW STATISTICS FOR TABLE <table_name>;` using that table name.
 
     The results will include statistics that were collected for each column in that table. The value in the "created" column of these results tells you when the statistics were collected. Compare the statistics of each table column across multiple timestamps. A change in the values of `row_count`, `distinct_count`, `null_count`, or other statistics may have affected planning. If the timestamp of the new statistics creation is associated with the time that the query plan changed, there may be a causal relationship between the two.
