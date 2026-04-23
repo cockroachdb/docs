@@ -34,10 +34,12 @@ Additional parameters are documented for the respective [subcommands](#subcomman
 
 Subcommand | Description |
 -----------|-------------|
-[`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for an index. | 
+[`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for an index. |
 [`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index.
 [`RENAME TO`](#rename-to) | Change the name of an index.
 [`SCATTER`](#scatter) | Make a best-effort attempt to redistribute replicas and leaseholders for the ranges of a table or index. Note that this statement does not return an error even if replicas are not moved. |
+[`SET`](#set) | Modify alterable [storage parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) on an existing index.
+[`RESET`](#reset) | Remove alterable [storage parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) from an existing index, resetting it to its default value.
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the index.
 [`VISIBILITY`](#visibility) | Set the visibility of an index between a range of `0.0` and `1.0`.
@@ -142,6 +144,51 @@ Parameter | Description
 `table_name` | The name of the table that you want to scatter.
 `table_index_name` | The name of the index that you want to scatter.
 `expr_list` | A list of [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}) in the form of the primary key of the table or the specified index.
+
+For usage, see [Synopsis](#synopsis).
+
+### `SET`
+
+`ALTER INDEX ... SET (storage_parameter)` modifies an alterable [index storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) on an existing index.
+
+{{site.data.alerts.callout_info}}
+Most [index storage parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) can only be set at index creation time and cannot be modified afterward.
+{{site.data.alerts.end}}
+
+For examples, see [Modify index storage parameters](#modify-index-storage-parameters).
+
+#### Required privileges
+
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
+
+#### Parameters
+
+Parameter | Description
+----------|-------------
+`storage_parameter` | The name of the [index storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) to modify.
+`value` | The new value for the storage parameter.
+
+For usage, see [Synopsis](#synopsis).
+
+### `RESET`
+
+`ALTER INDEX ... RESET (storage_parameter)` removes an alterable [index storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) from an existing index, resetting it to its default value.
+
+{{site.data.alerts.callout_info}}
+Most [index storage parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) can only be set at index creation time and cannot be modified afterward.
+{{site.data.alerts.end}}
+
+For examples, see [Modify index storage parameters](#modify-index-storage-parameters).
+
+#### Required privileges
+
+The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
+
+#### Parameters
+
+Parameter | Description
+----------|-------------
+`storage_parameter` | The name of the [index storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) to reset to its default value.
 
 For usage, see [Synopsis](#synopsis).
 
@@ -511,6 +558,69 @@ SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_intern
 ~~~
 
 The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-merges) in the table as needed.
+
+### Modify index storage parameters
+
+Most [index storage parameters]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) can only be set when creating an index and cannot be changed afterward. However, some index storage parameters can be modified on an existing index using `ALTER INDEX ... SET` or `ALTER INDEX ... RESET`.
+
+This example demonstrates enabling and disabling the `skip_unique_checks` parameter on a unique index on a [`REGIONAL BY ROW`]({% link {{ page.version.version }}/regional-tables.md %}) table.
+
+Set up a multi-region database and create a `REGIONAL BY ROW` table with a unique index:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE DATABASE multi_region_db PRIMARY REGION "us-east1" REGIONS "us-west1", "europe-west1";
+USE multi_region_db;
+
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email STRING UNIQUE,
+  name STRING
+) LOCALITY REGIONAL BY ROW;
+~~~
+
+View the index on the `email` column:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                                         create_statement
+-------------+----------------------------------------------------------------------------------------------------
+  users      | CREATE TABLE public.users (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     email STRING NULL,
+             |     name STRING NULL,
+             |     crdb_region public.crdb_internal_region NOT VISIBLE NOT NULL DEFAULT default_to_database_primary_region(gateway_region())::public.crdb_internal_region,
+             |     CONSTRAINT users_pkey PRIMARY KEY (id ASC),
+             |     UNIQUE INDEX users_email_key (email ASC)
+             | ) LOCALITY REGIONAL BY ROW
+(1 row)
+~~~
+
+The `users_email_key` index is a unique index that is implicitly partitioned by the `crdb_region` column. By default, CockroachDB performs cross-partition uniqueness checks for this index (`skip_unique_checks = false`).
+
+#### Set a storage parameter
+
+To disable the cross-partition uniqueness checks, set `skip_unique_checks` to `true`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER INDEX users_email_key SET (skip_unique_checks = true);
+~~~
+
+#### Reset a storage parameter
+
+To re-enable cross-partition uniqueness checks, reset the parameter to its default value:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER INDEX users_email_key RESET (skip_unique_checks);
+~~~
+
+This restores the default behavior where CockroachDB enforces uniqueness across all partitions of the index (`skip_unique_checks = false`).
 
 ### Set index visibility
 
