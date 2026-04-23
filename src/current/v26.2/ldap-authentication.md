@@ -10,7 +10,7 @@ toc: true
 
 CockroachDB supports authentication and authorization using systems compatible with the Lightweight Directory Access Protocol (LDAP), such as Active Directory and Microsoft Entra ID. This allows you to integrate your cluster with your organization's existing identity infrastructure for centralized user management and access control.
 
-This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization]({% link {{ page.version.version }}/ldap-authorization.md %}) (role-based access control), which assigns CockroachDB roles to users based on their group memberships in the directory.
+This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization]({% link {{ page.version.version }}/ldap-authorization.md %}) (role-based access control), which assigns CockroachDB roles to users based on their group memberships in the directory. For alternative SSO authentication methods, refer to [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %}) (OIDC).
 
 ## Overview
 
@@ -109,7 +109,7 @@ CockroachDB supports two approaches for the creation of users who will authentic
 
 #### Option 1: Automatic user provisioning (recommended)
 
-With automatic user provisioning, CockroachDB creates users automatically during their first successful LDAP authentication. This eliminates the need for custom scripting to create user accounts.
+With automatic user provisioning, CockroachDB creates users automatically during their first successful LDAP authentication, whether connecting via a SQL client or the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}). This eliminates the need for custom scripting to create user accounts.
 
 When enabled:
 
@@ -192,8 +192,8 @@ cockroach sql --url "postgresql://username:ldap_password@host:26257" --certs-dir
 
 If LDAP authentication is configured, DB Console access will also use this configuration, allowing users to log in with their SQL username and LDAP password. During a login attempt, the system checks if LDAP authentication is configured for the user in the HBA configuration. If so, it validates the credentials against the LDAP server. If automatic user provisioning is enabled, users will be created automatically during their first successful login. If LDAP authentication fails or is not configured, the system falls back to password authentication.
 
-{{site.data.alerts.callout_info}}
-Authorization (role-based access control) is not applied when logging in to DB Console.
+{{site.data.alerts.callout_success}}
+When [LDAP authorization]({% link {{ page.version.version }}/ldap-authorization.md %}) is configured (with `ldapgrouplistfilter` in the HBA configuration), role-based access control is applied automatically upon login to both SQL clients and the DB Console. Users logging into the DB Console via LDAP will have their roles synchronized from LDAP groups, just as they are for SQL client connections.
 {{site.data.alerts.end}}
 
 ## Manage auto-provisioned users
@@ -225,6 +225,8 @@ WHERE NOT EXISTS (
 ~~~
 
 ### Last-login tracking for usage and dormancy
+
+When `security.provisioning.ldap.enabled` is set to `true`, the `estimated_last_login_time` column in the `SHOW USERS` output is updated for both SQL client connections and DB Console logins. This allows administrators to track user activity across all connection methods and identify dormant accounts.
 
 The `estimated_last_login_time` column in the output of `SHOW USERS` tracks when users last authenticated. For example:
 
