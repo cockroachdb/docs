@@ -42,3 +42,5 @@ This section summarizes changes that can cause applications, scripts, or manual 
 
 - The **Statement Details** page URL format has changed from `/statement/{implicitTxn}/{statementId}` to `/statement/{statementId}`. As a result, bookmarks using the old URL structure will no longer work. [#159558](https://github.com/cockroachdb/cockroach/pull/159558)
 
+- Added the `server.sql_tcp_user.timeout` cluster setting, which specifies the maximum amount of time transmitted data can remain unacknowledged before the underlying TCP connection is forcefully closed. This setting is enabled by default with a value of 30 seconds and is supported on Linux and macOS (Darwin). [#164037](https://github.com/cockroachdb/cockroach/pull/164037)
+
