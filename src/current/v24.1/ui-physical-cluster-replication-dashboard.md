@@ -21,7 +21,7 @@ The **Physical Cluster Replication** dashboard displays the following time-serie
 
 ## Logical bytes
 
-<img src="{{ 'images/v24.1/ui-logical-bytes.png' | relative_url }}" alt="DB Console Logical Bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-logical-bytes.png" alt="DB Console Logical Bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
 
 The **Logical Bytes** graph displays the throughput of the replicated bytes. The graph displays the rate at which the logical bytes (sum of keys + values) are ingested by all replication jobs.
 
@@ -36,7 +36,7 @@ When you [start a replication stream]({% link {{ page.version.version }}/set-up-
 
 ## SST bytes
 
-<img src="{{ 'images/v24.1/ui-sst-bytes.png' | relative_url }}" alt="DB Console SST bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-sst-bytes.png" alt="DB Console SST bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
 
 The **SST Bytes** graph displays the rate at which all [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes are sent to the [KV layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) by physical cluster replication jobs.
 
@@ -47,7 +47,7 @@ Hovering over the graph displays:
 
 ## Replication lag
 
-<img src="{{ 'images/v24.1/ui-replication-lag.png' | relative_url }}" alt="DB Console Replication Lag graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-replication-lag.png" alt="DB Console Replication Lag graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
 
 {% include_cached new-in.html version="v24.1" %} The **Replication Lag** graph displays the [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby cluster. This is the time between the most up-to-date replicated time and the actual time.
 

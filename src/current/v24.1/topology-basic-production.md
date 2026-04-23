@@ -17,7 +17,7 @@ If you haven't already, [review the full range of topology patterns]({% link {{ 
 
 ## Configuration
 
-<img src="{{ 'images/v24.1/topology-patterns/topology_basic_production1.png' | relative_url }}" alt="Basic production topology" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/topology-patterns/topology_basic_production1.png" alt="Basic production topology" style="max-width:100%" />
 
 1. Provision hardware as follows:
     - 1 region with 3 AZs
@@ -56,7 +56,7 @@ For example, in the animation below:
 1. The leaseholder retrieves the results and returns to the gateway node.
 1. The gateway node returns the results to the client.
 
-<img src="{{ 'images/v24.1/topology-patterns/topology_basic_production_reads.png' | relative_url }}" alt="Basic production topology reads" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/topology-patterns/topology_basic_production_reads.png" alt="Basic production topology reads" style="max-width:100%" />
 
 #### Writes
 
@@ -72,17 +72,17 @@ For example, in the animation below:
 1. The leaseholders then return acknowledgement of the commit to the gateway node.
 1. The gateway node returns the acknowledgement to the client.
 
-<img src="{{ 'images/v24.1/topology-patterns/topology_basic_production_writes.gif' | relative_url }}" alt="Leaseholder preferences topology writes" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/topology-patterns/topology_basic_production_writes.gif" alt="Leaseholder preferences topology writes" style="max-width:100%" />
 
 ### Resiliency
 
 Because each range is balanced across AZs, one AZ can fail without interrupting access to any data:
 
-<img src="{{ 'images/v24.1/topology-patterns/topology_basic_production_resiliency1.png' | relative_url }}" alt="Basic production topology single zone failure" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/topology-patterns/topology_basic_production_resiliency1.png" alt="Basic production topology single zone failure" style="max-width:100%" />
 
 However, if an additional AZ fails at the same time, the ranges that lose consensus become unavailable for reads and writes:
 
-<img src="{{ 'images/v24.1/topology-patterns/topology_basic_production_resiliency2.png' | relative_url }}" alt="Basic production topology double zone failure" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/topology-patterns/topology_basic_production_resiliency2.png" alt="Basic production topology double zone failure" style="max-width:100%" />
 
 ## See also
 
