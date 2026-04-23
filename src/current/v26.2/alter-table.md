@@ -461,7 +461,7 @@ For usage, see [Synopsis](#synopsis).
 `ALTER TABLE ... RESET {storage parameter}` reverts the value of a storage parameter on a table to its default value.
 
 {{site.data.alerts.callout_info}}
-To reset a storage parameter on an existing index, you must drop and [recreate the index without the storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}).
+To reset a storage parameter on an existing index, use [`ALTER INDEX ... RESET (storage_parameter)`]({% link {{ page.version.version }}/alter-index.md %}#reset) if the parameter [can be altered]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters). Otherwise, you must drop and [recreate the index without the storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}).
 {{site.data.alerts.end}}
 
 For examples, see [Set and reset storage parameters](#set-and-reset-storage-parameters).
@@ -555,7 +555,7 @@ The user must be a member of the [`admin`]({% link {{ page.version.version }}/se
 `ALTER TABLE ... SET {storage parameter}` sets a storage parameter on an existing table.
 
 {{site.data.alerts.callout_info}}
-To set a storage parameter on an existing index, you must drop and [recreate the index with the storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}).
+To set a storage parameter on an existing index, use [`ALTER INDEX ... SET (storage_parameter)`]({% link {{ page.version.version }}/alter-index.md %}#set) if the parameter [can be altered]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters). Otherwise, you must drop and [recreate the index with the storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}).
 {{site.data.alerts.end}}
 
 For examples, see [Set and reset storage parameters](#set-and-reset-storage-parameters).
@@ -1371,7 +1371,15 @@ SHOW PARTITIONS FROM TABLE users;
 To ensure that the uniqueness constraint is enforced properly across regions when rows are inserted, or the `email` column of an existing row is updated, the database needs to do the following additional work when indexes are partitioned:
 
 1. Run a one-time-only validation query to ensure that the existing data in the table satisfies the unique constraint.
-1. Thereafter, the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) will automatically add a "uniqueness check" when necessary to any [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement affecting the columns in the unique constraint.
+1. By default, the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) performs a "uniqueness check" when handling an [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement affecting the columns in the unique constraint. 
+
+    These checks can be skipped for unique, implicitly partitioned indexes by setting the `skip_unique_checks` [storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) to `true`. 
+
+    {{site.data.alerts.callout_danger}}
+    Uniqueness checks should only be skipped if the application can guarantee uniqueness, for example, by using external UUID values or relying on a [`unique_rowid()`]({% link {{ page.version.version }}/uuid.md %}#use-unique_rowid) default value. Incorrectly applying this setting when uniqueness is not guaranteed by the application could result in logically duplicate keys in different partitions of a unique index.
+
+    For more information, refer to [`skip_unique_checks`]({% link {{ page.version.version }}/with-storage-parameter.md %}#skip-unique-checks).
+    {{site.data.alerts.end}}
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
@@ -1411,7 +1419,7 @@ To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`U
 ~~~
 
 {{site.data.alerts.callout_info}}
-When using `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables, uniqueness checks on those columns are disabled by default for performance purposes. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`]({% link {{ page.version.version }}/uuid.md %}#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). Note that while there is virtually no chance of a [collision](https://wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
+By default, the optimizer does not perform uniqueness checks when you use `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`]({% link {{ page.version.version }}/uuid.md %}#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). Note that while there is virtually no chance of a [collision](https://wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
 {{site.data.alerts.end}}
 
 #### Using implicit vs. explicit index partitioning in `REGIONAL BY ROW` tables
@@ -1423,7 +1431,13 @@ These indexes can either include or exclude the partitioning key (`crdb_region`)
 - If `crdb_region` is included in the index definition, a [`UNIQUE` index]({% link {{ page.version.version }}/unique.md %}) will enforce uniqueness on the set of columns, just like it would in a non-partitioned table.
 - If `crdb_region` is excluded from the index definition, that serves as a signal that CockroachDB should enforce uniqueness on only the columns in the index definition.
 
-In the latter case, the index alone cannot enforce uniqueness on columns that are not a prefix of the index columns, so any time rows are [inserted]({% link {{ page.version.version }}/insert.md %}) or [updated]({% link {{ page.version.version }}/update.md %}) in a `REGIONAL BY ROW` table that has an implicitly partitioned `UNIQUE` index, the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) must add uniqueness checks.
+In the latter case, the index alone cannot enforce uniqueness on columns that are not a prefix of the index columns, so any time rows are [inserted]({% link {{ page.version.version }}/insert.md %}) or [updated]({% link {{ page.version.version }}/update.md %}) in a `REGIONAL BY ROW` table that has an implicitly partitioned `UNIQUE` index, by default the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) performs uniqueness checks. These checks can be skipped for unique, implicitly partitioned indexes by setting the `skip_unique_checks` [storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#index-parameters) to `true`. 
+
+{{site.data.alerts.callout_danger}}
+Uniqueness checks should only be skipped if the application can guarantee uniqueness, for example, by using external UUID values or relying on a [`unique_rowid()`]({% link {{ page.version.version }}/uuid.md %}#use-unique_rowid) default value. Incorrectly applying this setting when uniqueness is not guaranteed by the application could result in logically duplicate keys in different partitions of a unique index.
+
+For more information, refer to [`skip_unique_checks`]({% link {{ page.version.version }}/with-storage-parameter.md %}#skip-unique-checks).
+{{site.data.alerts.end}}
 
 Whether or not to explicitly include `crdb_region` in the index definition depends on the context:
 
