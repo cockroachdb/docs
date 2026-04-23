@@ -123,7 +123,6 @@ Asia Pacific    | `asia-southeast1`         | Jurong West
 North America   | `us-central1`             | Iowa
                 | `us-east1`                | South Carolina
                 | `us-west2`                | California
-South America   | `southamerica-east1`      | São Paulo
 Western Europe  | `europe-west1`            | St. Ghislain
                 | `europe-west2`            | London
                 | `europe-west3`            | Frankfurt

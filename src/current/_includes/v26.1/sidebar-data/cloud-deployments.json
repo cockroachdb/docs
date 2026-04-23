@@ -21,9 +21,32 @@
         ]
     },
     {
-        "title": "BYOC Deployments (Preview)",
-        "urls": [
-            "/cockroachcloud/byoc-deployment.html"
+        "title": "Bring Your Own Cloud (BYOC)",
+        "items": [
+            {
+                "title": "BYOC Overview",
+                "urls": [
+                    "/cockroachcloud/byoc-overview.html"
+                ]
+            },
+          {
+                "title": "Deploy BYOC on AWS",
+                "urls": [
+                    "/cockroachcloud/byoc-aws-deployment.html"
+                ]
+            },
+            {
+                "title": "Deploy BYOC on Azure",
+                "urls": [
+                    "/cockroachcloud/byoc-azure-deployment.html"
+                ]
+            },
+            {
+                "title": "Deploy BYOC on GCP",
+                "urls": [
+                    "/cockroachcloud/byoc-gcp-deployment.html"
+                ]
+            }
         ]
     },
     {
@@ -380,9 +403,9 @@
             "title": "Monitoring and Alerting",
                 "items": [
                   {
-                    "title": "Cluster Overview Page",
+                    "title": "Overview Page",
                     "urls": [
-                      "/cockroachcloud/cluster-overview-page.html"
+                      "/cockroachcloud/overview-page.html"
                     ]
                   },
                   {

@@ -80,10 +80,6 @@ By default, these cluster settings are disabled.
 
 The SQL built-in function [workload_index_recs]({% link {{ page.version.version }}/ui-insights-page.md %}#workload_index_recs-function) returns index recommendations and the fingerprint IDs of the statements they impact.
 
-### Triggers
-
-[Triggers]({% link {{ page.version.version }}/triggers.md %}) are in preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
-
 ### JWT authorization
 
 [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) allows CockroachDB to automatically assign roles to users based on group claims in their JWT tokens. When a client connects using a JWT token, the cluster extracts group information and maps each group to a corresponding cluster role, simplifying access control for organizations using identity providers.
@@ -130,9 +126,9 @@ Exporting metrics to Azure Monitor is in limited access. Refer to [Export metric
 
 Enabling and managing [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for CockroachDB {{ site.data.products.advanced }} in the {{ site.data.products.cloud }} Console is in preview. CMEK management with the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in general availability.
 
-### Bring your own cloud (BYOC) deployments of CockroachDB {{ site.data.products.cloud }}
+### Bring Your Own Cloud (BYOC) deployments of CockroachDB {{ site.data.products.cloud }}
 
-Deploying CockroachDB {{ site.data.products.cloud }} with a [BYOC deployment model]({% link cockroachcloud/byoc-deployment.md %}) is in preview for Microsoft Azure.
+Deploying CockroachDB {{ site.data.products.cloud }} with a [BYOC deployment model]({% link cockroachcloud/byoc-overview.md %}) is in preview for Amazon Web Services, Microsoft Azure, and Google Cloud Platform.
 
 ### Convert a schema from Oracle or Microsoft SQL Server
 
@@ -275,17 +271,28 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
-### Leader leases
-
-{% include {{ page.version.version }}/leader-leases-intro.md %}
-
-For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
-
 ### Buffered Writes
 
 Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) and the other nodes during write operations.
 
 For more information, refer to [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
+
+### Statement hints
+
+[Statement hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#statement-hints) are in preview. Statement hints allow you to apply hints to every execution of a given [statement fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) without modifying the original statement.
+
+There are two types of statement hints:
+
+- `REWRITE INLINE HINTS`: Apply [index hints]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) and [join hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#join-hints) to statement fingerprints.
+- `SET VARIABLE`: Override [session variable]({% link {{ page.version.version }}/session-variables.md %}) values for every execution of a statement fingerprint.
+
+### Post-quantum cryptography support
+
+[Post-quantum cryptography (PQC)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#post-quantum-cryptography-support-in-cockroachdb) support is in preview. For TLS 1.3 connections, CockroachDB uses `X25519MLKEM768` by default, a hybrid PQC algorithm that combines `X25519` (an elliptic curve Diffie-Hellman algorithm) and `ML-KEM-768` (a quantum-resistant key encapsulation mechanism).
+
+### Active Session History
+
+[Active Session History (ASH)]({% link {{ page.version.version }}/active-session-history.md %}) is in preview, and is disabled by default. ASH is a time-series sampling-based observability feature that helps you troubleshoot workload performance issues by capturing what work was actively executing on your cluster at specific points in time.
 
 ## See Also
 

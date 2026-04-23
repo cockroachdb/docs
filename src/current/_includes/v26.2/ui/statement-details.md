@@ -34,6 +34,8 @@ The **Overview** section also displays the SQL statement fingerprint statistics 
 |**KV CPU Time** | The average KV CPU time spent executing the statement within the specified time interval. This represents [KV]({{ link_prefix }}architecture/overview.html#layers) work that is on the critical path of serving the query. It excludes time spent on asynchronous replication and in the [storage layer]({{ link_prefix }}architecture/storage-layer.html). |
 |**Admission Wait Time** | Average time spent waiting in [admission control]({{ link_prefix }}admission-control.html) queues within the specified time interval. |
 |**Client Wait Time** | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements). |
+|**Canary vs Stable Statement Times** | Comparison of the time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements when using [canary statistics]({% link {{ page.version.version }}/canary-statistics.md %}) and when using stable statistics. This chart only appears when canary statistics are enabled. |
+|**Canary vs Stable Plan Distribution** | Comparison of which execution plans were used during each time period when using [canary statistics]({% link {{ page.version.version }}/canary-statistics.md %}) and when using stable statistics. This chart only appears when canary statistics are enabled. |
 
 The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
@@ -78,6 +80,16 @@ The **Explain Plans** tab displays statement plans for an [explainable statement
 The following screenshot shows an execution of the query discussed in [Overview](#overview):
 
 <img src="{{ 'images/v26.2/ui_plan_table.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
+
+#### Plan Distribution Over Time
+
+The **Plan Distribution Over Time** graph displays the execution counts for query plans within the selected time interval. If multiple query plans were used during a given time period, the plans are stacked and represented by a different color to compare their relative execution counts. The key below the graph indicates the plan gist associated with each color. More information about these query plans can be found in the [plan table](#plan-table).
+
+This graph helps illustrate changes in the distribution of query plans chosen by the [cost-based optimizer]({{ link_prefix }}cost-based-optimizer.html) for this SQL statement. This can be useful for [troubleshooting query plan regressions]({{ link_prefix }}troubleshoot-query-plan-regressions.html#multiple-valid-query-plans).
+
+<img src="{{ 'images/v26.2/ui_plan_distribution_over_time.png' | relative_url }}" alt="Plan distribution over time graph" style="border:1px solid #eee;max-width:100%" />
+
+#### Plan table
 
 The plan table shows the following details:
 
