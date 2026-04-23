@@ -11,10 +11,6 @@ This page guides you through the process of creating a CockroachDB {{ site.data.
 
 Only [CockroachDB {{ site.data.products.cloud }} Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Organization Admin.
 
-{{site.data.alerts.callout_danger}}
-If you are creating a cluster for a [BYOC deployment]({% link cockroachcloud/byoc-deployment.md %}) you must use the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to perform the actions described on this page.
-{{site.data.alerts.end}}
-
 ## Step 1. Start the cluster creation process
 
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_account" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>, then [log in](https://cockroachlabs.cloud/).
@@ -118,15 +114,11 @@ Advanced security features cannot be enabled or disabled after cluster creation.
       Remember to [delete your trial cluster]({% link cockroachcloud/cluster-management.md %}#delete-cluster) before the trial expires. Otherwise, your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing]({% link cockroachcloud/billing-management.md %}) page.
       {{site.data.alerts.end}}
 
-<a id="step-7-name-the-cluster"></a>
-
 ## Step 8. Name the cluster
 
 The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after the cluster is created.
 
-<a id="step-8-select-the-cockroachdb-version"></a>
-
-## Step 8. Select the CockroachDB version
+## Step 9. Select the CockroachDB version
 
 When you create a new cluster, it uses the [latest CockroachDB {{ site.data.products.cloud }} production release](https://www.cockroachlabs.com/docs/releases/cloud) by default. All clusters are then upgraded automatically to each subsequent patch release of their major version as it becomes available. To learn more, refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
@@ -135,7 +127,7 @@ To select the cluster version:
 1. Under **Cluster version**, click the version selector.
 1. Select a CockroachDB version.
 
-## Step 9. Finish creating the cluster
+## Step 10. Finish creating the cluster
 
 Click **Create cluster**. Your cluster will be created in approximately 20-30 minutes.
 

@@ -122,6 +122,12 @@ Your service account must have the following roles on the organization, the fold
 
 1. Click **Confirm**.
 
+## Search for a cluster or folder
+
+1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
+1. In the search bar, enter cluster or folder metadata. You can search on the full cluster or folder name, a name prefix, name substrings, UUID, UUID prefix, and folder path segment names.
+1. Select a folder or cluster from the dropdown.
+
 ## List folder contents
 
 Your service account must have one of the following roles to read a folder's contents:
@@ -141,7 +147,7 @@ Your service account must have the following roles on the organization or the fo
 - [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator)
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. Browse to the folder where you want to create the cluster.
+1. Browse to the folder where you want to create the cluster, or use the search bar.
 1. Click **Create**, then click **Create cluster**.
     {{site.data.alerts.callout_info}}
     If you do not have permission to create folders at this location, you will see only **Create cluster**.
@@ -169,14 +175,14 @@ When you move a cluster into or out of a folder, users or service accounts who h
 To move a cluster from the organization level into a folder, or to move it from one folder to another:
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. Browse to the folder that contains the cluster, then click the cluster name to open its details.
+1. Browse to the folder that contains the cluster, or use the search bar. Click the cluster name to open its details.
 1. Click **Actions** > **Move Cluster**.
 1. In the dialog, select the destination to move the cluster to, then click **Next**.
 1. Click **Move**.
 
 To move a cluster to a new folder from the **Clusters** page:
 
-1. Browse to the location of the destination folder.
+1. Browse to the location of the destination folder, or use the search bar.
 1. Click the the three-dots **Action** button, then select **Move**.
 
 {{site.data.alerts.callout_info}}
@@ -196,7 +202,7 @@ When you move a folder, users or service accounts who had access to the previous
 To move a folder and its contents into another folder:
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. Browse to the location of the folder that you want to move.
+1. Browse to the location of the folder that you want to move, or use the search bar.
 1. Next to the folder you want to move, click the three-dots **Action** button and select **Move folder**.
 1. In the dialog, set **Destination** to the new location for the folder, then click **Next**.
 1. Click **Move**.
@@ -215,7 +221,7 @@ To delete a folder:
 
 1. Move or delete all descendant folders and clusters.
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
-1. Browse to the location of the folder that you want to delete.
+1. Browse to the location of the folder that you want to delete, or use the search bar.
 1. Next to the folder you want to delete, click the three-dots **Action** button and select **Delete folder**.
 1. Type the name of the folder to confirm, then click **Delete**.
 
