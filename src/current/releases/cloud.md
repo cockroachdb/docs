@@ -32,41 +32,30 @@ Get future release notes emailed to you:
  <tbody>
   <tr>
    <td>
-    <p class="feature-summary">Active-passive deployment across two data centers</p>
-    <p class="feature-description">CockroachDB Advanced clusters can be deployed across two geographically separated data centers in an active-passive configuration, providing resilience against data center failures.</p>
+    <p class="feature-summary">CockroachDB Cloud CLI</p>
+    <p class="feature-description">The <a href="{% link cockroachcloud/ccloud-get-started.md %}">CockroachDB Cloud CLI</a> has been redesigned with updated commands for managing clusters, users, and cloud resources from the terminal.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Multi-factor authentication enforcement for the Cloud Console</p>
+    <p class="feature-description">Multi-factor authentication can now be enforced for CockroachDB Cloud users who access the Console via username and password, reducing the risk of unauthorized access from compromised credentials.</p>
    </td>
    <td class="icon-center">Preview</td>
    <td class="icon-center">{% include icon-no.html %}</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-  </tr>
-  <tr>
-   <td>
-    <p class="feature-summary">CockroachDB Cloud CLI</p>
-    <p class="feature-description">The CockroachDB Cloud CLI has been redesigned with updated commands for managing clusters, users, and cloud resources from the terminal.</p>
-   </td>
-   <td class="icon-center">GA</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
   </tr>
   <tr>
    <td>
-    <p class="feature-summary">Multi-factor authentication</p>
-    <p class="feature-description">Multi-factor authentication is now enforced for all CockroachDB Cloud users, reducing the risk of unauthorized access from compromised credentials.</p>
-   </td>
-   <td class="icon-center">GA</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-  </tr>
-  <tr>
-   <td>
-    <p class="feature-summary">Bring your own cloud (BYOC)</p>
-    <p class="feature-description">CockroachDB Cloud clusters can run within your own AWS, Azure, or GCP account. This gives you control over networking, security, and data residency while retaining managed database operations.</p>
+    <p class="feature-summary">Bring Your Own Cloud (BYOC)</p>
+    <p class="feature-description">You can deploy <a href="{% link cockroachcloud/byoc-overview.md %}">CockroachDB Cloud clusters within your own AWS, Azure, or GCP account</a>. This gives you access to your existing cloud savings and control over networking, security, and data residency while retaining the managed database operations of CockroachDB Cloud.</p>
    </td>
    <td class="icon-center">Preview</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -77,7 +66,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Model Context Protocol (MCP) server</p>
-    <p class="feature-description">The CockroachDB Cloud MCP server allows AI agents and LLM-powered applications to connect to CockroachDB using the Model Context Protocol (MCP).</p>
+    <p class="feature-description">The <a href="{% link cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server.md %}">CockroachDB Cloud MCP server</a> allows your AI agents and LLM-powered applications to connect to CockroachDB using the Model Context Protocol (MCP).</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -88,9 +77,9 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Fault tolerance demo</p>
-    <p class="feature-description">The built-in <a href="{% link {{ site.versions["stable"] }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud">fault tolerance demo</a> is now generally available. This demo simulates an availability zone failure in a live cluster, allowing you to watch the cluster automatically recover as traffic continues uninterrupted.</p>
+    <p class="feature-description">Run a built-in <a href="{% link {{ site.versions["stable"] }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud">fault tolerance demo</a> in the CockroachDB Cloud Console that allows you to monitor query execution during a simulated failure and recovery.</p>
    </td>
-   <td class="icon-center">GA</td>
+   <td class="icon-center">Preview</td>
    <td class="icon-center">{% include icon-no.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
@@ -100,10 +89,6 @@ Get future release notes emailed to you:
 </table>
 
 </div>
-
-## Feb 24, 2026
-
-CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} users can now run a built-in [fault tolerance demo]({% link {{ site.versions["stable"] }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud) that allows you to monitor query execution during a simulated failure and recovery. The fault tolerance demo is in [Preview]({% link {{ site.versions["stable"] }}/cockroachdb-feature-availability.md %}).
 
 ## Aug 5, 2025
 
