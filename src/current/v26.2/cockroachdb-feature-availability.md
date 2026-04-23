@@ -80,10 +80,6 @@ By default, these cluster settings are disabled.
 
 The SQL built-in function [workload_index_recs]({% link {{ page.version.version }}/ui-insights-page.md %}#workload_index_recs-function) returns index recommendations and the fingerprint IDs of the statements they impact.
 
-### Triggers
-
-[Triggers]({% link {{ page.version.version }}/triggers.md %}) are in preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
-
 ### JWT authorization
 
 [JWT authorization]({% link {{ page.version.version }}/jwt-authorization.md %}) allows CockroachDB to automatically assign roles to users based on group claims in their JWT tokens. When a client connects using a JWT token, the cluster extracts group information and maps each group to a corresponding cluster role, simplifying access control for organizations using identity providers.
@@ -130,9 +126,9 @@ Exporting metrics to Azure Monitor is in limited access. Refer to [Export metric
 
 Enabling and managing [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for CockroachDB {{ site.data.products.advanced }} in the {{ site.data.products.cloud }} Console is in preview. CMEK management with the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in general availability.
 
-### Bring your own cloud (BYOC) deployments of CockroachDB {{ site.data.products.cloud }}
+### Bring Your Own Cloud (BYOC) deployments of CockroachDB {{ site.data.products.cloud }}
 
-Deploying CockroachDB {{ site.data.products.cloud }} with a [BYOC deployment model]({% link cockroachcloud/byoc-deployment.md %}) is in preview for Microsoft Azure.
+Deploying CockroachDB {{ site.data.products.cloud }} with a [BYOC deployment model]({% link cockroachcloud/byoc-overview.md %}) is in preview for Amazon Web Services, Microsoft Azure, and Google Cloud Platform.
 
 ### Convert a schema from Oracle or Microsoft SQL Server
 
