@@ -89,11 +89,11 @@ If the statement is canceled, the job will continue in the background.
 
 ### Run a uniqueness check on a `REGIONAL BY ROW` primary index
 
-On supported [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row) tables, naming the primary index lets `INSPECT` run the uniqueness check for that index:
+{% include_cached new-in.html version="v26.2" %} On supported [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row) tables, `INSPECT` will run uniqueness checks on the primary index to detect duplicate unique values across regions. This will also run any other checks supported by `INSPECT`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-INSPECT TABLE mr_db.public.users WITH OPTIONS INDEX (users_pkey);
+INSPECT TABLE movr.public.users;
 ~~~
 
 ### `INSPECT` a table without waiting for completion
