@@ -5,6 +5,10 @@ toc: true
 docs_area: develop
 ---
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 <span class="version-tag">New in v26.2:</span> The _canary statistics_ feature improves [query performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}) by allowing CockroachDB to try newly collected [table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) on a small number of queries before deploying them for all queries. By testing the efficiency of [query plans]({% link {{ page.version.version }}/cost-based-optimizer.md %}) made with new statistics on a fraction of queries, canary statistics blocks bad plans based on inaccurate statistics from impacting the full workload.
 
 ## The canary window
@@ -16,6 +20,19 @@ Example usage:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE t (x int) WITH (sql_stats_canary_window = '1h');
+~~~
+
+If you create statistics manually with [`ANALYZE` or `CREATE STATISTICS`]({% link {{ page.version.version }}/create-statistics.md %}), they are also subject to the canary window. However, you can force manually created statistics to take effect immediately using [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}) with the [`RESET`]({% link {{ page.version.version }}/alter-table.md %}#reset-storage-parameter) subcommand.
+
+Example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ANALYZE t;
+-- reset the canary window to 0, causing queries to use the new stats immediately
+ALTER TABLE t RESET (sql_stats_canary_window);
+-- wait 1 hour for the skipped canary widow to elapse, then set the window again
+ALTER TABLE t SET (sql_stats_canary_window = '1h');
 ~~~
 
 ## Queries with canary statistics
@@ -36,15 +53,6 @@ Example usage:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET canary_stats_mode = 'force_canary';
-~~~
-
-You can also use the `stats_as_of` [session variable]({% link {{ page.version.version }}/session-variables.md %}#supported-variables) to use statistics as of a specified timestamp for the duration of the session. This variable is useful for analyzing how statistics have affected query performance over time.
-
-Example usage:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET stats_as_of = '2025-04-03 00:05:10.000000';
 ~~~
 
 ## Analytical tools for canary statistics
