@@ -184,8 +184,8 @@ Format | Description
 To generate a connection URL for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) or [Logical Data Replication]({% link {{ page.version.version }}/logical-data-replication-overview.md %}), use the `--format crdb` flag with the `--inline` flag to inline certificates directly into the URL:
 
 {% include_cached copy-clipboard.html %}
-~~~
-$ ./cockroach convert-url --url "postgresql://{user}:{password}@{node IP}:26257" --format crdb --ca-cert {path to CA certificate} --inline
+~~~ shell
+cockroach convert-url --url "postgresql://{user}:{password}@{node IP}:26257" --format crdb --ca-cert {path to CA certificate} --inline
 ~~~
 
 The `--inline` flag automatically sets `--format crdb`, so you can also use:
