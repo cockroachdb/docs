@@ -102,7 +102,7 @@ CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link release
 {% if released == true %}
 {% comment %}v1.0 has no #v1-0-0 anchor, and before GA other releases also do not.{% endcomment %}
 - For a summary of the most significant changes in {{ page.major_version }}, refer to [Feature highlights](#feature-highlights).
-- Before [upgrading to CockroachDB {{ page.major_version }}]({% link {{ page.major_version }}/upgrade-cockroach-version.md %}), review the [backward-incompatible changes](#{{ page.major_version | replace: ".", "-" }}-0-backward-incompatible-changes), including [key cluster setting changes](#{{ page.major_version | replace: ".", "-" }}-0-cluster-settings) and [deprecations](#{{ page.major_version | replace: ".", "-" }}-0-deprecations).
+- Before [upgrading to CockroachDB {{ page.major_version }}]({% link {{ page.major_version }}/upgrade-cockroach-version.md %}), review the [backward-incompatible changes](#{{ page.major_version | replace: ".", "-" }}-0-backward-incompatible-changes), including [key cluster setting changes](#{{ page.major_version | replace: ".", "-" }}-0-cluster-settings) and [deprecations](#{{ page.major_version | replace: ".", "-" }}-0-deprecations); as well as newly identified [known limtiations](#{{ page.major_version | replace: ".", "-" }}-0-known-limitations).
 {% endif %}
 {% endif %}{% comment %}End GA-only content{% endcomment %}
 - For details about the support window for this release type, review the [Release Support Policy]({% link releases/release-support-policy.md %}).
