@@ -250,7 +250,7 @@ Enabling backup compactions also improves restore performance and is required fo
 
 ### How it works
 
-When enabled for scheduled backups, compaction jobs automatically trigger when the number of backups in the backup chain—the full backup and its incrementals—reaches a configured quantity. These jobs merge multiple consecutive incremental backups into a single compacted backup, reducing chain length while preserving data. Compactions run through [Admission Control]({% link {{ page.version.version }}/architecture/admission-control.md %}) to minimize impact on foreground operations.
+When enabled for scheduled backups, compaction jobs automatically trigger when the number of backups in the backup chain—the full backup and its incrementals—reaches a configured quantity. These jobs merge multiple consecutive incremental backups into a single compacted backup, reducing chain length while preserving data. Compactions run through [Admission Control]({% link {{ page.version.version }}/admission-control.md %}) to minimize impact on foreground operations.
 
 With backup compaction enabled, each backup chain can grow up to a maximum recommended size of 400 incremental backups, far more than the maximum of 48 recommended when using incremental backups without compaction.  
 
