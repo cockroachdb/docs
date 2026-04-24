@@ -191,8 +191,8 @@ cockroach convert-url --url "postgresql://{user}:{password}@{node IP}:26257" --f
 The `--inline` flag automatically sets `--format crdb`, so you can also use:
 
 {% include_cached copy-clipboard.html %}
-~~~
-$ ./cockroach convert-url --url "postgresql://{user}:{password}@{node IP}:26257" --ca-cert {path to CA certificate} --inline
+~~~ shell
+cockroach convert-url --url "postgresql://{user}:{password}@{node IP}:26257" --ca-cert {path to CA certificate} --inline
 ~~~
 
 #### Additional flags
