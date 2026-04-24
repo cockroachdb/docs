@@ -117,11 +117,11 @@ SHOW BACKUPS IN 'external://backup_s3' NEWER THAN '-7d' OLDER THAN '-1d';
 ~~~
 
 ~~~
-         id        |      backup_time       | revision_start_time
--------------------+------------------------+---------------------
-  Wnfqrp0BAAD4tw8= | 2026-04-18 08:42:11+00 | NULL
-  clvprp0BAADQmww= | 2026-04-17 10:15:23+00 | NULL
-  osDlrp0B         | 2026-04-16 14:23:55+00 | NULL
+         id        |      backup_time       
+-------------------+------------------------
+  Wnfqrp0BAAD4tw8= | 2026-04-18 08:42:11+00 
+  clvprp0BAADQmww= | 2026-04-17 10:15:23+00 
+  osDlrp0B         | 2026-04-16 14:23:55+00 
 (3 rows)
 ~~~
 
@@ -129,7 +129,6 @@ The response includes:
 
 - `id`: A unique identifier for the backup
 - `backup_time`: The end time of the backup (equivalent to the time you can restore to)
-- `revision_start_time`: For backups with [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}), the earliest time you can restore to. `NULL` for standard backups.
 
 #### Time filtering
 
