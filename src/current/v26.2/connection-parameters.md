@@ -162,8 +162,8 @@ postgresql://root@foo:26257/bar
 Use the `--format` flag to output a specific format:
 
 {% include_cached copy-clipboard.html %}
-~~~
-$ ./cockroach convert-url --url "postgres://foo/bar" --format jdbc
+~~~ shell
+cockroach convert-url --url "postgres://foo/bar" --format jdbc
 ~~~
 
 ~~~
