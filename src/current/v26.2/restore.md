@@ -104,9 +104,9 @@ No special privilege is required for:
 -----------|-------------
 `table_pattern` | The table, [view]({% link {{ page.version.version }}/views.md %}), or [sequence]({% link {{ page.version.version }}/create-sequence.md %}) you want to restore. For details on how restore works with objects that are dependent on one another, refer to [Object dependencies](#object-dependencies).
 `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
-<a name="subdir-param"></a>`string_or_placeholder` | One of the following:<ul><li>`LATEST`: Restore the most recent backup in the given [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) URI. Refer to the [Restore from the most recent backup](#restore-the-most-recent-full-or-incremental-backup) example.</li><li>`your_backup_subdirectory`: Restore from a specific subdirectory in the given collection URI. Refer to the [Restore a specific backup](#restore-a-specific-full-or-incremental-backup) example.</li></ul>
+<a name="subdir-param"></a>`string_or_placeholder` | One of the following:<ul><li>`LATEST`: Restore the most recent backup in the given [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) URI. Refer to the [Restore from the most recent backup](#restore-the-most-recent-full-or-incremental-backup) example.</li><li>`your_backup_subdirectory`: Restore from a specific subdirectory in the given collection URI. Refer to the [Restore a specific backup](#restore-a-specific-full-or-incremental-backup) example.</li><li>`backup_id`: **New in v26.2**: When the [`use_backups_with_ids`]({% link {{ page.version.version }}/session-variables.md %}#use-backups-with-ids) session variable is enabled, restore from a specific backup using its unique backup ID. See [Restore using backup IDs](#restore-using-backup-ids).</li></ul>
 `string_or_placeholder_opt_list` | One of the following:<ul><li>`your_backup_collection_URI`: The [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) URI where the [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) (and appended [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups), if applicable) is stored.</li><li>`your_locality_aware_backup_URI`: The URI where a [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) is stored. When [restoring from an incremental locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}#restore-from-an-incremental-locality-aware-backup), include **every** locality ever used, even if it was only used once.</li></ul>
-<a name="as-of-system-time"></a>`timestamp` | Restore data as it existed as of [`timestamp`]({% link {{ page.version.version }}/as-of-system-time.md %}). You can restore point-in-time data if you had taken a full or incremental backup [with revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}). If the backup was not taken with `revision_history`, you can use [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) to restore to a time that the backup covers (including in the full or incremental backup). Refer to the [Restore with as of system time](#restore-with-as-of-system-time) example.
+<a name="as-of-system-time"></a>`timestamp` | Restore data as it existed as of [`timestamp`]({% link {{ page.version.version }}/as-of-system-time.md %}). You can restore point-in-time data if you had taken a full or incremental backup [with revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}). If the backup was not taken with `revision_history`, you can use [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) to restore to a time that the backup covers (including in the full or incremental backup). When using [backup IDs](#restore-using-backup-ids), the `AS OF SYSTEM TIME` clause is not needed, unless performing a point-in-time restore from a revision history backup. Refer to the [Restore with as of system time](#restore-with-as-of-system-time) example.
 `restore_options_list` | Control the backup job behavior with [these options](#options).
 
 ### Options
@@ -118,8 +118,8 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 <a name="detached"></a>`DETACHED`                                   | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously. The job ID is returned after the restore job creation completes. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example]({% link {{ page.version.version }}/restore.md %}#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) statement. <br><br>To run a restore within a [transaction]({% link {{ page.version.version }}/transactions.md %}), use the `DETACHED` option.
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) statement.
 <a name="execution_locality"></a>`EXECUTION LOCALITY` | Key-value pairs                             | Restricts the execution of the restore to nodes that match the defined [locality filter]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}) requirements. <br><br>Example: `WITH EXECUTION LOCALITY = 'region=us-west-1a,cloud=aws'`
+<a name="experimental-copy"></a>`EXPERIMENTAL COPY` | N/A | Improves restore performance by using a more efficient data download strategy. Requires [backup compactions]({% link {{ page.version.version }}/backup.md %}#backup-compactions) to be enabled on the source backup. Not supported with encrypted backups in v26.2. See [Run restores faster](#run-faster-restores) for details. <br><br>Example: `WITH EXPERIMENTAL COPY`
 <a name="grants"></a>`GRANTS` | N/A | When `RESTORE` runs with `GRANTS`, users in the restore target cluster receive the same grants on the restored database as their corresponding users in the restoring cluster, determined by username. If a restore uses `GRANTS` along with `new_db_name`, the new database inherits the privileges in the backed up database.
-<a name="incr-location"></a>`incremental_location` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Restore an incremental backup from the alternate collection URI the backup was originally taken with. <br><br>See [Restore incremental backups](#restore-a-specific-full-or-incremental-backup) for more detail.
 <a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the destination database](#restore-tables-into-a-different-database) for table restores. The destination database must exist before a restore with `into_db`. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
 <a name="kms"></a>`kms` | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to [take and restore encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#examples). Refer to [URI Formats]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#uri-formats) on the Encrypted Backups page. The key or keys are used to encrypt the manifest and data files that the `BACKUP` statement generates, decrypt them during a [restore]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#examples) operation, and list the contents of the backup when using [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}). <br/><br/>AWS KMS, Google Cloud KMS, and Azure Key Vault are supported.
 <a name="new-db-name"></a>`new_db_name`                             | Database name                                 | [Rename a database during a restore](#rename-a-database-on-restore). The existing backed-up database can remain active while the same database is restored with a different name. <br><br>Example: `RESTORE DATABASE movr ... WITH new_db_name = 'new_movr'`
@@ -293,6 +293,144 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`]({% l
 {{site.data.alerts.callout_info}}
 If initiated correctly, the statement returns when the restore is finished or if it encounters an error. In some cases, the restore can continue after an error has been returned (the error message will tell you that the restore has resumed in background).
 {{site.data.alerts.end}}
+
+## Run faster restores
+
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="v26.2" %} This capability is available in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview) for self-hosted clusters in v26.2.
+{{site.data.alerts.end}}
+
+The `WITH EXPERIMENTAL COPY` option improves restore performance by using a more efficient data download and import strategy. This can provide significant performance improvements depending on your workload characteristics.
+
+### Prerequisites
+
+To run faster restores, [backup compactions]({% link {{ page.version.version }}/backup.md %}#backup-compactions) must be enabled on the cluster that produced the backup you are restoring from. To enable compactions, set the `backup.compaction.threshold` cluster setting to `4`.
+
+To verify that compactions are enabled, check the cluster setting value:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW CLUSTER SETTING backup.compaction.threshold;
+~~~
+
+If the backup was not created with compactions enabled and the incremental backup chain is too long, the faster restore will fail with the following error:
+
+~~~
+experimental online restore: too many incremental layers
+~~~
+
+{{site.data.alerts.callout_info}}
+Faster restores also support locality-restricted backups, locality-aware backups, and backups with revision history.
+
+Faster restores do not currently support encrypted backups.
+{{site.data.alerts.end}}
+
+### Syntax
+
+To run a faster restore from a backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE DATABASE movr FROM LATEST IN 'external://backup_s3' WITH EXPERIMENTAL COPY;
+~~~
+
+You can combine `WITH EXPERIMENTAL COPY` with other restore options:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE TABLE movr.users FROM 'osDlrp0B' IN 'external://backup_s3'
+WITH EXPERIMENTAL COPY, DETACHED;
+~~~
+
+## Restore using backup IDs
+
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="v26.2" %} This capability is available in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview) for self-hosted clusters in v26.2.
+{{site.data.alerts.end}}
+
+When the [`use_backups_with_ids`]({% link {{ page.version.version }}/session-variables.md %}#use-backups-with-ids) session variable is enabled, you can restore from a backup using its unique backup ID instead of specifying a subdirectory and `AS OF SYSTEM TIME`. This simplifies restore operations and eliminates the need to determine the correct timestamp.
+
+### Enable backup IDs
+
+Set the session variable to enable backup ID support:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET use_backups_with_ids = true;
+~~~
+
+### List available backups
+
+Use [`SHOW BACKUPS IN`]({% link {{ page.version.version }}/show-backup.md %}#query-backups-more-efficiently) to list backups with their IDs:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUPS IN 'external://backup_s3';
+~~~
+
+~~~
+         id        |      backup_time
+-------------------+------------------------
+  clvprp0BAADQmww= | 2026-04-17 10:15:23+00
+  osDlrp0B         | 2026-04-16 14:23:55+00
+(2 rows)
+~~~
+
+### Restore from a backup ID
+
+Restore from a specific backup using its ID:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE DATABASE movr FROM 'clvprp0BAADQmww=' IN 'external://backup_s3';
+~~~
+
+When restoring from a backup ID, you do not need to specify `AS OF SYSTEM TIME`. The backup ID uniquely identifies the backup and its restore point.
+
+### Combine with faster restore
+
+You can combine backup IDs with the `WITH EXPERIMENTAL COPY` option for maximum performance:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE DATABASE movr FROM 'clvprp0BAADQmww=' IN 'external://backup_s3'
+WITH EXPERIMENTAL COPY;
+~~~
+
+### Restore from a revision history backup ID
+
+When restoring from a backup taken with [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}), you can perform point-in-time restores to any timestamp between `revision_start_time` and `backup_time`.
+
+#### List revision history backups
+
+Use `SHOW BACKUPS IN` with `WITH REVISION START TIME` to display the revision history window for each backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUPS IN 'external://backup_s3' WITH REVISION START TIME;
+~~~
+
+~~~
+         id        |      backup_time       |  revision_start_time
+-------------------+------------------------+------------------------
+  clvprp0BAADQmww= | 2026-04-17 10:15:23+00 | 2026-04-16 10:15:23+00
+  osDlrp0B         | 2026-04-16 14:23:55+00 | 2026-04-15 14:23:55+00
+(2 rows)
+~~~
+
+The `revision_start_time` column shows the earliest timestamp you can restore to for each backup. For backups without revision history, this column displays `NULL`.
+
+#### Restore to a specific point in time
+
+To restore to a specific timestamp within the revision history window, use the backup ID with `AS OF SYSTEM TIME`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE DATABASE movr FROM 'clvprp0BAADQmww=' IN 'external://backup_s3'
+AS OF SYSTEM TIME '2026-04-16 18:00:00';
+~~~
+
+The specified timestamp must fall between the backup's `revision_start_time` and `backup_time`. If you omit `AS OF SYSTEM TIME`, the restore uses the `backup_time` (the latest available data in the backup).
 
 ## Examples
 
@@ -564,22 +702,6 @@ After it's restored into a new database, you can write the restored `users` tabl
     ~~~ sql
     > DROP TABLE newdb.users;
     ~~~
-
-#### Restore from incremental backups in a different location
-
-{% include common/sql/incremental-location-warning.md %}
-
-To restore an incremental backup that was taken using the [`incremental_location` option]({% link {{ page.version.version }}/backup.md %}#incr-location), you must run the `RESTORE` statement with both:
-
-- the collection URI of the full backup
-- the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE TABLE movr.users FROM LATEST IN 'external://backup_s3' WITH incremental_location = '{incremental_backup_URI}';
-~~~
-
-For more detail on using this option with `BACKUP`, see [Incremental backups with explicitly specified destinations]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations).
 
 ## Known limitations
 
