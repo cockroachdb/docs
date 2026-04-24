@@ -155,23 +155,21 @@ Full backups are implicitly of `backup_type` `0`, and so does not display in the
 
 ### Apply different options to scheduled backups
 
-{% include common/sql/incremental-location-warning.md %}
-
 You can modify the behavior of your backup schedule and the backup jobs with `SET SCHEDULE OPTION` and `SET WITH`. See the [Schedule options](#schedule-options) table and the [Backup options](#backup-options) table for a list of the available options.
 
-This statement changes the default `wait` value for the `on_previous_running` schedule option to `start`. If a previous backup started by the schedule is still running, the scheduled job will now start the new backup anyway, rather than waiting. The backup option [`incremental_location`]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations) modifies the storage location for incremental backups:
+This statement changes the default `wait` value for the `on_previous_running` schedule option to `start`. If a previous backup started by the schedule is still running, the scheduled job will now start the new backup anyway, rather than waiting. It also adds the `revision_history` backup option:
 
 ~~~sql
-ALTER BACKUP SCHEDULE 814168045421199361 SET SCHEDULE OPTION on_previous_running = 'start', SET WITH incremental_location = 'external://gcs_incremental_storage';
+ALTER BACKUP SCHEDULE 814168045421199361 SET SCHEDULE OPTION on_previous_running = 'start', SET WITH revision_history;
 ~~~
 
-The incremental backup schedule's `BACKUP` statement shows that it will read files in the full backup location `'external://gcs_storage'` and ultimately store the incremental backup in `'external://gcs_incremental_storage'` on an hourly basis:
+The incremental backup schedule's `BACKUP` statement now includes revision history:
 
 ~~~
-     schedule_id     |    label    | status |       first_run        | schedule |                                                        backup_stmt
----------------------+-------------+--------+------------------------+----------+----------------------------------------------------------------------------------------------------------------------------
-  814168045421199361 | gcs_backups | ACTIVE | 2022-11-15 21:00:00+00 | @hourly  | BACKUP INTO LATEST IN 'external://gcs_storage' WITH detached, incremental_location = 'external://gcs_incremental_storage'
-  814155335856521217 | gcs_backups | ACTIVE | 2022-11-16 00:00:00+00 | @daily   | BACKUP INTO 'external://gcs_storage' WITH detached, incremental_location = 'external://gcs_incremental_storage'
+     schedule_id     |    label    | status |       first_run        | schedule |                                                  backup_stmt
+---------------------+-------------+--------+------------------------+----------+----------------------------------------------------------------------------------------------------------------
+  814168045421199361 | gcs_backups | ACTIVE | 2022-11-15 21:00:00+00 | @hourly  | BACKUP INTO LATEST IN 'external://gcs_storage' WITH detached, revision_history
+  814155335856521217 | gcs_backups | ACTIVE | 2022-11-16 00:00:00+00 | @daily   | BACKUP INTO 'external://gcs_storage' WITH detached, revision_history
 (2 rows)
 ~~~
 

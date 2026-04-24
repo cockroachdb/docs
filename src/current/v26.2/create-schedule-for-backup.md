@@ -76,6 +76,14 @@ For schedules that include both [full and incremental backups]({% link {{ page.v
 - The `AS OF SYSTEM TIME` clause cannot be set on scheduled backups. Scheduled backups are started shortly after the scheduled time has passed by an internal polling mechanism and are automatically run with `AS OF SYSTEM TIME` set to the time at which the backup was scheduled to run.
 - If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
 
+### Backup compactions for scheduled backups
+
+When [backup compactions]({% link {{ page.version.version }}/backup.md %}#backup-compactions) are enabled, scheduled backups automatically merge incremental backups to extend backup chains. This allows you to maintain up to 400 incremental backups per full backup, compared to the 48-backup limit without compactions.
+
+Compactions run automatically on scheduled backups when the [`backup.compaction.threshold`]({% link {{ page.version.version }}/cluster-settings.md %}) cluster setting is set to `4` or higher. Compactions are a prerequisite for [faster restore]({% link {{ page.version.version }}/restore.md %}#run-faster-restores) operations.
+
+For more information, refer to [Backup compactions]({% link {{ page.version.version }}/backup.md %}#backup-compactions).
+
 ### Protected timestamps and scheduled backups
 
 {% include {{ page.version.version }}/backups/protected-timestamps.md %}

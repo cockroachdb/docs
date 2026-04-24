@@ -238,6 +238,64 @@ You can also visit the [**Jobs** page]({% link {{ page.version.version }}/ui-job
 The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indicator that the backup job completed successfully.
 {{site.data.alerts.end}}
 
+## Backup compactions
+
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="v26.2" %} This capability is available in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview) for self-hosted clusters in v26.2.
+{{site.data.alerts.end}}
+
+Backup compactions automatically merge incremental backups, enabling you to take incremental backups more frequently while reducing the frequency of full backups. This can help improve RPO while limiting storage costs.
+
+Enabling backup compactions also improves restore performance and is required for [faster restores]({% link {{ page.version.version }}/restore.md %}#run-faster-restores) using `WITH EXPERIMENTAL COPY`. 
+
+### How it works
+
+When enabled for scheduled backups, compaction jobs automatically trigger when the number of backups in the backup chain—the full backup and its incrementals—reaches a configured quantity. These jobs merge multiple consecutive incremental backups into a single compacted backup, reducing chain length while preserving data. Compactions run through [Admission Control]({% link {{ page.version.version }}/architecture/admission-control.md %}) to minimize impact on foreground operations.
+
+With backup compaction enabled, each backup chain can grow up to a maximum recommended size of 400 incremental backups, far more than the maximum of 48 recommended when using incremental backups without compaction.  
+
+{{site.data.alerts.callout_info}}
+Compacted incrementals only preserve the end time of the last backup in the compaction window. For example, if hourly incrementals at 1pm, 2pm, and 3pm are compacted, you can restore to 3pm but not 1pm or 2pm. For fine-grained point-in-time restore, use [revision history backups]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}).
+ {{site.data.alerts.end}}
+
+### Enable backup compactions
+
+Set the [`backup.compaction.threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-backup-compaction-threshold) cluster setting to `4` or higher:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING backup.compaction.threshold = 4;
+~~~
+
+The threshold is the backup chain length at which compaction triggers:
+- `0`: Disabled (default)
+- `4` or higher: Compaction occurs when chain reaches this length (e.g., `4` = 1 full + 3 incrementals)
+
+{{site.data.alerts.callout_info}}
+Compactions only apply to **scheduled backups** with full and incremental backups. Manual `BACKUP` statements do not trigger compactions. In addition to full and incremental backups, compactions also support locality-aware and revision history backups. Encrypted backups are not currently supported.
+{{site.data.alerts.end}}
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING backup.compaction.threshold = 4;
+
+CREATE SCHEDULE hourly_backups
+FOR BACKUP DATABASE movr INTO 'external://backup_s3'
+RECURRING '@hourly'
+FULL BACKUP '@weekly';
+~~~
+
+This configuration runs hourly incrementals with weekly full backups. Each time the chain reaches 4, compaction automatically merges incrementals.
+
+### Cluster settings
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| [`backup.compaction.threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-backup-compaction-threshold) | Backup chain length at which compaction triggers. `0` disables; minimum `4`. | `0` |
+| [`backup.index.read.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-backup-index-read-enabled) | Must be `true` for compactions to function. | `true` |
+
 ## Examples
 
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
@@ -310,8 +368,6 @@ See [Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md 
 
 ### Create incremental backups
 
-{% include common/sql/incremental-location-warning.md %}
-
 When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) storage location.
 
 To take an incremental backup using the `LATEST` keyword:
@@ -331,8 +387,6 @@ BACKUP INTO {'subdirectory'} IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 {{site.data.alerts.callout_info}}
 If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
 {{site.data.alerts.end}}
-
-To explicitly control where you store your incremental backups, use the [`incremental_location`]({% link {{ page.version.version }}/backup.md %}#options) option. For more detail, see [this example]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations) demonstrating the `incremental_location` option.
 
 ### Run a backup asynchronously
 
