@@ -43,17 +43,6 @@ Get future release notes emailed to you:
   </tr>
   <tr>
    <td>
-    <p class="feature-summary">Multi-factor authentication enforcement for the Cloud Console</p>
-    <p class="feature-description">Multi-factor authentication can now be enforced for CockroachDB Cloud users who access the Console via username and password, reducing the risk of unauthorized access from compromised credentials.</p>
-   </td>
-   <td class="icon-center">Preview</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-  </tr>
-  <tr>
-   <td>
     <p class="feature-summary">Bring Your Own Cloud (BYOC)</p>
     <p class="feature-description">You can deploy <a href="{% link cockroachcloud/byoc-overview.md %}">CockroachDB Cloud clusters within your own AWS, Azure, or GCP account</a>. This gives you access to your existing cloud savings and control over networking, security, and data residency while retaining the managed database operations of CockroachDB Cloud.</p>
    </td>
