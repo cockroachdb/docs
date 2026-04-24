@@ -97,6 +97,21 @@
 - multi_dimensional_metric_id: changefeed.kafka_throttling_hist_nanos
   feature: changefeed
 
+- multi_dimensional_metric_id: changefeed.parallel_io_workers
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.sink_backpressure_nanos
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.max_behind_nanos
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.progress_skew.span
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.progress_skew.table
+  feature: changefeed
+
 - multi_dimensional_metric_id: livebytes
   feature: virtual
 
