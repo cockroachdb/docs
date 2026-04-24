@@ -10897,7 +10897,7 @@
 
 - release_name: v26.2.0
   major_version: v26.2
-  release_date: '2026-04-28'
+  release_date: '2026-04-27'
   release_type: Production
   go_version: go1.25.5
   sha: TBD

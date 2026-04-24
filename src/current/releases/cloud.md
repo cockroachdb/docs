@@ -14,7 +14,7 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
-## April 28, 2026
+## April 27, 2026
 
 <div id="feature-highlights">
 
