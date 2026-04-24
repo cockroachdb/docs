@@ -244,7 +244,7 @@ The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indi
 {% include_cached new-in.html version="v26.2" %} This capability is available in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview) for self-hosted clusters in v26.2.
 {{site.data.alerts.end}}
 
-Backup compactions automatically merge incremental backups, allowing you to reduce the frequency of full backups without reducing the frequency of incremental backups. You can maintain the same RPO while limiting storage costs.
+Backup compactions automatically merge incremental backups, allowing you to take up to 400 incrementals between full backups instead of the usual 48-backup limit. This maintains the same RPO while reducing storage costs.
 
 Enabling backup compactions also improves restore performance and is required for [faster restores]({% link {{ page.version.version }}/restore.md %}#run-faster-restores) using `WITH EXPERIMENTAL COPY`. 
 
@@ -289,13 +289,6 @@ FULL BACKUP '@weekly';
 ~~~
 
 This configuration runs hourly incrementals with weekly full backups. Each time the chain reaches 4, compaction automatically merges incrementals.
-
-### Cluster settings
-
-| Setting | Description | Default |
-|---------|-------------|---------|
-| `backup.compaction.threshold` | Backup chain length at which compaction triggers. `0` disables. `4` is the only recommended value for compaction. | `0` |
-| `backup.index.read.enabled` | Must be `true` for restore from compacted backups to function. | `true` |
 
 ## Examples
 
