@@ -13,12 +13,15 @@ A view is a stored and named [selection query]({% link {{ page.version.version }
  By default, views created in a database cannot reference objects in a different database. To enable cross-database references for views, set the `sql.cross_db_views.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
 {{site.data.alerts.end}}
 
+By default, a view checks privileges on its underlying tables using the view owner's privileges. A view created or altered with `security_invoker` checks privileges using the querying user's privileges instead.
+
 ## Why use views?
 
 There are various reasons to use views, including:
 
 - [Hide query complexity](#hide-query-complexity)
 - [Limit access to underlying data](#limit-access-to-underlying-data)
+- [Use invoker privileges for underlying data](#use-invoker-privileges-for-underlying-data)
 
 ### Hide query complexity
 
@@ -85,6 +88,8 @@ Then, executing the query is as easy as `SELECT`ing from the view:
 ### Limit access to underlying data
 
 When you do not want to grant a user access to all the data in one or more standard tables, you can create a view that contains only the columns and/or rows that the user should have access to and then grant the user permissions on the view.
+
+This pattern uses the default view behavior: CockroachDB checks access to the underlying tables using the view owner's privileges.
 
 #### Example
 
@@ -168,6 +173,19 @@ pq: user bob does not have SELECT privilege on table accounts
   savings  | ben@roach.com
 (5 rows)
 ~~~
+
+### Use invoker privileges for underlying data
+
+If you want a view to enforce privileges on the underlying tables for the querying user, create or alter the view with `security_invoker`. This also makes the view apply [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policies as the querying user instead of the view owner.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE VIEW user_accounts_invoker WITH (security_invoker) AS
+  SELECT type, email
+  FROM accounts;
+~~~
+
+To enable this behavior on an existing view, use [`ALTER VIEW ... SET (security_invoker = true)`]({% link {{ page.version.version }}/alter-view.md %}).
 
 ## How views work
 
