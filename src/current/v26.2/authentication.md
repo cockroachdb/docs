@@ -324,6 +324,10 @@ The following cipher suites are rejected by default because they are not recomme
 
 {% include common/tls-cipher-suites.md list='disabled' %}
 
+## Supported key exchange mechanisms
+
+For information about supported TLS 1.3 key exchange mechanisms, including post-quantum cryptography support, see [Post-quantum cryptography support in CockroachDB]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#post-quantum-cryptography-support-in-cockroachdb).
+
 ## See also
 
 - [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})

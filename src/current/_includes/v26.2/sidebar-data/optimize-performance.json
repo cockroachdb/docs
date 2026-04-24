@@ -34,6 +34,12 @@
         ]
       },
       {
+        "title": "Canary Statistics",
+        "urls": [
+          "/${VERSION}/canary-statistics.html"
+        ]
+      },
+      {
         "title": "Vectorized Execution Engine",
         "urls": [
           "/${VERSION}/vectorized-execution.html"
