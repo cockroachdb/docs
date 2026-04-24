@@ -207,11 +207,11 @@ This section illustrates the steps to fail back to the original primary cluster 
     ALTER VIRTUAL CLUSTER {cluster_a} STOP SERVICE;
     ~~~
 
-1. Open another terminal window and generate a connection string for **Cluster B** using [`cockroach encode-uri`]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-3-manage-cluster-certificates-and-generate-connection-strings):
+1. Open another terminal window and generate a connection string for **Cluster B** using [`cockroach convert-url`]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-3-manage-cluster-certificates-and-generate-connection-strings):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach encode-uri {replication user}:{password}@{cluster B node IP or hostname}:26257 --ca-cert certs/ca.crt --inline
+    cockroach convert-url --url "postgresql://{replication user}:{password}@{cluster B node IP or hostname}:26257" --format crdb --ca-cert certs/ca.crt --inline
     ~~~
 
     Copy the output ready for starting the PCR stream, which requires the connection string to **Cluster B**:
