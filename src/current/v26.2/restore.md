@@ -369,16 +369,12 @@ SHOW BACKUPS IN 'external://backup_s3';
 ~~~
 
 ~~~
-                  id                  |        backup_time         | revision_start_time
---------------------------------------+----------------------------+----------------------
-  2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 | NULL
-  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  | NULL
+                  id                  |        backup_time         
+--------------------------------------+----------------------------
+  2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 
+  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  
 (2 rows)
 ~~~
-
-{{site.data.alerts.callout_info}}
-The `revision_start_time` column only appears when using `WITH REVISION START TIME`. For details on restoring from revision history backups, see [Restore from a revision history backup ID](#restore-from-a-revision-history-backup-id).
-{{site.data.alerts.end}}
 
 ### Restore from a backup ID
 
