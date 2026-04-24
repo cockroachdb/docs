@@ -267,9 +267,10 @@ Set the `backup.compaction.threshold` cluster setting to `4`:
 SET CLUSTER SETTING backup.compaction.threshold = 4;
 ~~~
 
-The threshold is the backup chain length at which compaction triggers:
+Higher values are not recommended.
+
 - `0`: Disabled (default)
-- `4`: Compaction occurs when chain reaches length 4 (1 full + 3 incrementals)
+- `4`: Recommended, if enabling backup compactions. Compaction occurs when chain reaches length 4 (1 full + 3 incrementals)
 
 {{site.data.alerts.callout_info}}
 Compactions only apply to **scheduled backups** with full and incremental backups. Manual `BACKUP` statements do not trigger compactions. In addition to full and incremental backups, compactions also support locality-aware, revision history, and encrypted backups.
@@ -293,7 +294,7 @@ This configuration runs hourly incrementals with weekly full backups. Each time 
 
 | Setting | Description | Default |
 |---------|-------------|---------|
-| `backup.compaction.threshold` | Backup chain length at which compaction triggers. `0` disables; minimum `4`. | `0` |
+| `backup.compaction.threshold` | Backup chain length at which compaction triggers. `0` disables. `4` is the only recommended value for compaction. | `0` |
 | `backup.index.read.enabled` | Must be `true` for restore from compacted backups to function. | `true` |
 
 ## Examples

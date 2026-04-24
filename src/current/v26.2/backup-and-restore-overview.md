@@ -84,8 +84,6 @@ This table outlines the level of product support for backup and restore features
   </tbody>
 </table>
 
-### Additional backup and restore features
-
 ## Scheduled backups
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}

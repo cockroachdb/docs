@@ -80,7 +80,7 @@ For schedules that include both [full and incremental backups]({% link {{ page.v
 
 When [backup compactions]({% link {{ page.version.version }}/backup.md %}#backup-compactions) are enabled, scheduled backups automatically merge incremental backups to extend backup chains. This allows you to maintain up to 400 incremental backups per full backup, compared to the 48-backup limit without compactions.
 
-Compactions run automatically on scheduled backups when the [`backup.compaction.threshold`]({% link {{ page.version.version }}/cluster-settings.md %}) cluster setting is set to `4` or higher. Compactions are a prerequisite for [faster restore]({% link {{ page.version.version }}/restore.md %}#run-faster-restores) operations.
+Compactions run automatically on scheduled backups when the [`backup.compaction.threshold`]({% link {{ page.version.version }}/cluster-settings.md %}) cluster setting is set to `4` instead of the default of `0`. Compactions are a prerequisite for [faster restore]({% link {{ page.version.version }}/restore.md %}#run-faster-restores) operations.
 
 For more information, refer to [Backup compactions]({% link {{ page.version.version }}/backup.md %}#backup-compactions).
 
