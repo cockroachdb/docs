@@ -181,13 +181,13 @@ To change the password later, refer to [`ALTER USER`]({% link {{ page.version.ve
 
 In this step, you'll set up [external connection(s)]({% link {{ page.version.version }}/create-external-connection.md %}) to store the connection string for one or both clusters. Depending on how you manage certificates, you must ensure that all nodes between the clusters have access to the certificate of the other cluster.
 
-You can use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate.
+You can use the `cockroach convert-url` command to generate a connection string containing a cluster's certificate.
 
-1. On the **source** cluster in a new terminal window, generate a connection string, by passing the replication user, node IP, and port, along with the directory to the source cluster's CA certificate:
+1. On the **source** cluster in a new terminal window, generate a connection string by passing the connection URL for the replication user, along with the path to the source cluster's CA certificate:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach encode-uri postgresql://{user}:{password}@{node IP}:26257 --ca-cert {path to CA certificate} --inline
+    cockroach convert-url --url "postgresql://{user}:{password}@{node IP}:26257" --format crdb --ca-cert {path to CA certificate} --inline
     ~~~
 
     The connection string output contains the source cluster's certificate:
@@ -224,7 +224,7 @@ Once the source cluster has made a connection to the destination cluster, the de
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach encode-uri postgresql://{user}:{password}@{node IP}:26257 --ca-cert {path to CA certificate} --inline
+    cockroach convert-url --url "postgresql://{user}:{password}@{node IP}:26257" --format crdb --ca-cert {path to CA certificate} --inline
     ~~~
 
     The connection string output contains the source cluster's certificate:
