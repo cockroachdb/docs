@@ -304,7 +304,7 @@ The `WITH EXPERIMENTAL COPY` option improves restore performance by using a more
 
 ### Prerequisites
 
-To run faster restores, [backup compactions]({% link {{ page.version.version }}/backup.md %}#backup-compactions) must be enabled on the backup you are restoring from. To enable compactions, set the [`backup.compaction.threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-backup-compaction-threshold) cluster setting to `4` or higher before creating your backups.
+To run faster restores, [backup compactions]({% link {{ page.version.version }}/backup.md %}#backup-compactions) must be enabled on the backup you are restoring from. To enable compactions, set the `backup.compaction.threshold` cluster setting to `4` or higher before creating your backups.
 
 To verify that compactions are enabled, check the cluster setting value:
 

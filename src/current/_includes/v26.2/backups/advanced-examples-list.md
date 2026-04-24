@@ -1,6 +1,5 @@
 For examples of advanced `BACKUP` and `RESTORE` use cases, see:
 
-- [Incremental backups with a specified destination]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations)
 - [Backup with revision history and point-in-time restore]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %})
 - [Locality-aware backup and restore]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %})
 - [Encrypted backup and restore]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %})

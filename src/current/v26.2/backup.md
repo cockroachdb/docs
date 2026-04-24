@@ -260,7 +260,7 @@ Compacted incrementals only preserve the end time of the last backup in the comp
 
 ### Enable backup compactions
 
-Set the [`backup.compaction.threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-backup-compaction-threshold) cluster setting to `4` or higher:
+Set the `backup.compaction.threshold` cluster setting to `4` or higher:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -293,8 +293,8 @@ This configuration runs hourly incrementals with weekly full backups. Each time 
 
 | Setting | Description | Default |
 |---------|-------------|---------|
-| [`backup.compaction.threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-backup-compaction-threshold) | Backup chain length at which compaction triggers. `0` disables; minimum `4`. | `0` |
-| [`backup.index.read.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-backup-index-read-enabled) | Must be `true` for compactions to function. | `true` |
+| `backup.compaction.threshold` | Backup chain length at which compaction triggers. `0` disables; minimum `4`. | `0` |
+| `backup.index.read.enabled` | Must be `true` for compactions to function. | `true` |
 
 ## Examples
 

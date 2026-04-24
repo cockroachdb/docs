@@ -22,12 +22,9 @@ You can use the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) stat
 
 ## Backup collections
 
- A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the [collection URI]({% link {{ page.version.version }}/backup.md %}#collectionURI-param) passed with the `BACKUP` statement.
+A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the [collection URI]({% link {{ page.version.version }}/backup.md %}#collectionURI-param) passed with the `BACKUP` statement.
 
-There are some specific cases where part of the collection data is stored at a different URI:
-
-- A [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}). The backup collection will be stored according to the URIs passed with the `BACKUP` statement: `BACKUP INTO LATEST IN {collectionURI}, {localityURI}, {localityURI}`. Here, the `collectionURI` represents the default locality.
-- As of v22.1, it is possible to store incremental backups at a [different URI](#incremental-backups-with-explicitly-specified-destinations) to the related full backup. This means that one or multiple storage locations can hold one backup collection.
+For a [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}). The backup collection will be stored according to the URIs passed with the `BACKUP` statement: `BACKUP INTO LATEST IN {collectionURI}, {localityURI}, {localityURI}`. Here, the `collectionURI` represents the default locality.
 
 By default, full backups are stored at the root of the collection's URI in a date-based path, and incremental backups are stored in the `/incrementals` directory. The following example shows a backup collection created using these default values, where all backups reside in one storage bucket:
 
