@@ -464,7 +464,7 @@ Buffered writes update the transaction flow so that it has the following propert
 {{site.data.alerts.callout_info}}
 Buffered writes have the following limitations:
 
-- Transactions that use [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation do not use buffered writes by default. CockroachDB keeps this behavior opt-in for weaker isolation levels because buffering writes there needs extra safeguards to avoid transaction anomalies.
+- Transactions that use [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation do not use buffered writes. Support for buffered writes with `READ COMMITTED` may be added in a future release.
 - Some workloads could see an increase in [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}).
 {{site.data.alerts.end}}
 
