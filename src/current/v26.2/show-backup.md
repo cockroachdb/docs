@@ -108,7 +108,7 @@ SET use_backups_with_ids = true;
 
 ### List backups with time filtering
 
-When `use_backups_with_ids` is enabled, `SHOW BACKUPS IN` returns backup IDs and timestamps:
+When `use_backups_with_ids` is enabled, `SHOW BACKUPS IN` returns the backup ID, backup time, and revision start time for each backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -118,9 +118,9 @@ SHOW BACKUPS IN 'external://backup_s3' NEWER THAN '-7d' OLDER THAN '-1d';
 ~~~
                   id                  |        backup_time         | revision_start_time
 --------------------------------------+----------------------------+----------------------
-  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  | NULL
-  2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 | NULL
   2026-04-18T08:42:11.223456Z         | 2026-04-18 08:42:11.223456 | NULL
+  2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 | NULL
+  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  | NULL
 (3 rows)
 ~~~
 
@@ -147,7 +147,7 @@ Time filters can be specified in either order. If no time filter is provided, th
 
 ### Show a specific backup by ID
 
-To view the contents of a specific backup, use its ID:
+To view the contents of a specific backup, use its backup ID (from the `id` column in the `SHOW BACKUPS IN` output):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -155,6 +155,30 @@ SHOW BACKUP FROM '2026-04-16T14:23:55.335570Z' IN 'external://backup_s3';
 ~~~
 
 This returns the same detailed backup information as the [standard `SHOW BACKUP` output](#response), including all databases, tables, and metadata for that specific backup.
+
+### Show revision history backup windows
+
+For backups taken with [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}), use the `WITH REVISION START TIME` option to display the revision history window for each backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUPS IN 'external://backup_s3' WITH REVISION START TIME;
+~~~
+
+~~~
+                  id                  |        backup_time         |    revision_start_time
+--------------------------------------+----------------------------+----------------------------
+  2026-04-18T08:42:11.223456Z         | 2026-04-18 08:42:11.223456 | 2026-04-17 08:42:11.223456
+  2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 | 2026-04-16 10:15:23.445123
+  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  | 2026-04-15 14:23:55.33557
+(3 rows)
+~~~
+
+The `revision_start_time` column shows the earliest timestamp you can restore to for each backup. This represents the start of the revision history window. For backups without revision history, this column displays `NULL`.
+
+Without the `WITH REVISION START TIME` option, the `revision_start_time` column does not appear in the output, and only the `id` and `backup_time` columns are shown.
+
+For details on performing point-in-time restores using revision history backups, see [Restore from a revision history backup ID]({% link {{ page.version.version }}/restore.md %}#restore-from-a-revision-history-backup-id).
 
 ## Examples
 

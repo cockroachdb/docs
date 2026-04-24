@@ -106,7 +106,7 @@ No special privilege is required for:
 `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
 <a name="subdir-param"></a>`string_or_placeholder` | One of the following:<ul><li>`LATEST`: Restore the most recent backup in the given [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) URI. Refer to the [Restore from the most recent backup](#restore-the-most-recent-full-or-incremental-backup) example.</li><li>`your_backup_subdirectory`: Restore from a specific subdirectory in the given collection URI. Refer to the [Restore a specific backup](#restore-a-specific-full-or-incremental-backup) example.</li><li>`backup_id`: **New in v26.2**: When the [`use_backups_with_ids`]({% link {{ page.version.version }}/session-variables.md %}#use-backups-with-ids) session variable is enabled, restore from a specific backup using its unique backup ID. See [Restore using backup IDs](#restore-using-backup-ids).</li></ul>
 `string_or_placeholder_opt_list` | One of the following:<ul><li>`your_backup_collection_URI`: The [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) URI where the [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) (and appended [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups), if applicable) is stored.</li><li>`your_locality_aware_backup_URI`: The URI where a [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) is stored. When [restoring from an incremental locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}#restore-from-an-incremental-locality-aware-backup), include **every** locality ever used, even if it was only used once.</li></ul>
-<a name="as-of-system-time"></a>`timestamp` | Restore data as it existed as of [`timestamp`]({% link {{ page.version.version }}/as-of-system-time.md %}). You can restore point-in-time data if you had taken a full or incremental backup [with revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}). If the backup was not taken with `revision_history`, you can use [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) to restore to a time that the backup covers (including in the full or incremental backup). When using [backup IDs](#restore-using-backup-ids), the `AS OF SYSTEM TIME` clause is not needed. Refer to the [Restore with as of system time](#restore-with-as-of-system-time) example.
+<a name="as-of-system-time"></a>`timestamp` | Restore data as it existed as of [`timestamp`]({% link {{ page.version.version }}/as-of-system-time.md %}). You can restore point-in-time data if you had taken a full or incremental backup [with revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}). If the backup was not taken with `revision_history`, you can use [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) to restore to a time that the backup covers (including in the full or incremental backup). When using [backup IDs](#restore-using-backup-ids), the `AS OF SYSTEM TIME` clause is not needed, unless performing a point-in-time restore from a revision history backup. Refer to the [Restore with as of system time](#restore-with-as-of-system-time) example.
 `restore_options_list` | Control the backup job behavior with [these options](#options).
 
 ### Options
@@ -371,10 +371,14 @@ SHOW BACKUPS IN 'external://backup_s3';
 ~~~
                   id                  |        backup_time         | revision_start_time
 --------------------------------------+----------------------------+----------------------
-  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  | NULL
   2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 | NULL
+  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  | NULL
 (2 rows)
 ~~~
+
+{{site.data.alerts.callout_info}}
+The `revision_start_time` column only appears when using `WITH REVISION START TIME`. For details on restoring from revision history backups, see [Restore from a revision history backup ID](#restore-from-a-revision-history-backup-id).
+{{site.data.alerts.end}}
 
 ### Restore from a backup ID
 
@@ -396,6 +400,41 @@ You can combine backup IDs with the `WITH EXPERIMENTAL COPY` option for maximum 
 RESTORE DATABASE movr FROM '2026-04-17T10:15:23.445123Z' IN 'external://backup_s3'
 WITH EXPERIMENTAL COPY;
 ~~~
+
+### Restore from a revision history backup ID
+
+When restoring from a backup taken with [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}), you can perform point-in-time restores to any timestamp between `revision_start_time` and `backup_time`.
+
+#### List revision history backups
+
+Use `SHOW BACKUPS IN` with `WITH REVISION START TIME` to display the revision history window for each backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUPS IN 'external://backup_s3' WITH REVISION START TIME;
+~~~
+
+~~~
+                  id                  |        backup_time         |    revision_start_time
+--------------------------------------+----------------------------+----------------------------
+  2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 | 2026-04-16 10:15:23.445123
+  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  | 2026-04-15 14:23:55.33557
+(2 rows)
+~~~
+
+The `revision_start_time` column shows the earliest timestamp you can restore to for each backup. For backups without revision history, this column displays `NULL`.
+
+#### Restore to a specific point in time
+
+To restore to a specific timestamp within the revision history window, use the backup ID with `AS OF SYSTEM TIME`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE DATABASE movr FROM '2026-04-17T10:15:23.445123Z' IN 'external://backup_s3'
+AS OF SYSTEM TIME '2026-04-16 18:00:00';
+~~~
+
+The specified timestamp must fall between the backup's `revision_start_time` and `backup_time`. If you omit `AS OF SYSTEM TIME`, the restore uses the `backup_time` (the latest available data in the backup).
 
 ## Examples
 

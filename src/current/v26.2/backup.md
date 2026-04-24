@@ -244,7 +244,7 @@ The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indi
 {% include_cached new-in.html version="v26.2" %} This capability is available in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview) for self-hosted clusters in v26.2.
 {{site.data.alerts.end}}
 
-Backup compactions automatically merge incremental backups, enabling you to take incremental backups more frequently while reducing the frequency of full backups. This can help improve RPO while limiting storage costs.
+Backup compactions automatically merge incremental backups, allowing you to reduce the frequency of full backups without reducing the frequency of incremental backups. You can maintain the same RPO while limiting storage costs.
 
 Enabling backup compactions also improves restore performance and is required for [faster restores]({% link {{ page.version.version }}/restore.md %}#run-faster-restores) using `WITH EXPERIMENTAL COPY`. 
 
@@ -255,12 +255,12 @@ When enabled for scheduled backups, compaction jobs automatically trigger when t
 With backup compaction enabled, each backup chain can grow up to a maximum recommended size of 400 incremental backups, far more than the maximum of 48 recommended when using incremental backups without compaction.  
 
 {{site.data.alerts.callout_info}}
-Compacted incrementals only preserve the end time of the last backup in the compaction window. For example, if hourly incrementals at 1pm, 2pm, and 3pm are compacted, you can restore to 3pm but not 1pm or 2pm. For fine-grained point-in-time restore, use [revision history backups]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}).
- {{site.data.alerts.end}}
+Backup compactions improve restore performance by creating consolidated SST files from incremental backups. The original backups remain available for point-in-time restores. For fine-grained point-in-time restore, use [revision history backups]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}).
+{{site.data.alerts.end}}
 
 ### Enable backup compactions
 
-Set the `backup.compaction.threshold` cluster setting to `4` or higher:
+Set the `backup.compaction.threshold` cluster setting to `4`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -269,10 +269,10 @@ SET CLUSTER SETTING backup.compaction.threshold = 4;
 
 The threshold is the backup chain length at which compaction triggers:
 - `0`: Disabled (default)
-- `4` or higher: Compaction occurs when chain reaches this length (e.g., `4` = 1 full + 3 incrementals)
+- `4`: Compaction occurs when chain reaches length 4 (1 full + 3 incrementals)
 
 {{site.data.alerts.callout_info}}
-Compactions only apply to **scheduled backups** with full and incremental backups. Manual `BACKUP` statements do not trigger compactions. In addition to full and incremental backups, compactions also support locality-aware and revision history backups. Encrypted backups are not currently supported.
+Compactions only apply to **scheduled backups** with full and incremental backups. Manual `BACKUP` statements do not trigger compactions. In addition to full and incremental backups, compactions also support locality-aware, revision history, and encrypted backups.
 {{site.data.alerts.end}}
 
 For example:
@@ -294,7 +294,7 @@ This configuration runs hourly incrementals with weekly full backups. Each time 
 | Setting | Description | Default |
 |---------|-------------|---------|
 | `backup.compaction.threshold` | Backup chain length at which compaction triggers. `0` disables; minimum `4`. | `0` |
-| `backup.index.read.enabled` | Must be `true` for compactions to function. | `true` |
+| `backup.index.read.enabled` | Must be `true` for restore from compacted backups to function. | `true` |
 
 ## Examples
 
