@@ -128,7 +128,15 @@ SQL driver to determine whether these options are supported.
 
 ### Convert a URL for different drivers
 
- The subcommand `cockroach convert-url` converts a connection URL, such as those printed out by [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) or included in the online documentation, to the syntax recognized by various [client drivers]({% link {{ page.version.version }}/third-party-database-tools.md %}#drivers). For example:
+The subcommand `cockroach convert-url` converts a connection URL, such as those printed out by [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) or included in the online documentation, to the syntax recognized by various [client drivers]({% link {{ page.version.version }}/third-party-database-tools.md %}#drivers).
+
+{{site.data.alerts.callout_info}}
+The `cockroach encode-uri` command has been deprecated and merged into `cockroach convert-url`. Use `cockroach convert-url --format crdb` instead. The `encode-uri` command will be removed in a future release.
+{{site.data.alerts.end}}
+
+#### Basic usage
+
+By default, `convert-url` outputs the URL in multiple formats:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -145,6 +153,60 @@ and also ODBC:
 # Connection URL for JDBC (Java and JVM-based languages):
   jdbc:postgresql://foo:26257/bar?user=root
 ~~~
+
+#### Specify output format
+
+Use the `--format` flag to output a specific format:
+
+{% include_cached copy-clipboard.html %}
+~~~
+$ ./cockroach convert-url --url "postgres://foo/bar" --format jdbc
+~~~
+
+~~~
+jdbc:postgresql://foo:26257/bar?user=root
+~~~
+
+Supported formats:
+
+Format | Description
+-------|------------
+`pq` | Connection URL for libpq (C/C++), psycopg (Python), lib/pq & pgx (Go), node-postgres (JS), and most pq-compatible drivers
+`dsn` | Data Source Name for Postgres drivers that accept DSNs and ODBC
+`jdbc` | Connection URL for JDBC (Java and JVM-based languages)
+`crdb` | CockroachDB-specific URL format with inlined certificates for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) and [Logical Data Replication]({% link {{ page.version.version }}/logical-data-replication-overview.md %})
+
+#### Generate URLs for replication
+
+To generate a connection URL for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) or [Logical Data Replication]({% link {{ page.version.version }}/logical-data-replication-overview.md %}), use the `--format crdb` flag with the `--inline` flag to inline certificates directly into the URL:
+
+{% include_cached copy-clipboard.html %}
+~~~
+$ ./cockroach convert-url --url "postgresql://{user}:{password}@{node IP}:26257" --format crdb --ca-cert {path to CA certificate} --inline
+~~~
+
+The `--inline` flag automatically sets `--format crdb`, so you can also use:
+
+{% include_cached copy-clipboard.html %}
+~~~
+$ ./cockroach convert-url --url "postgresql://{user}:{password}@{node IP}:26257" --ca-cert {path to CA certificate} --inline
+~~~
+
+#### Additional flags
+
+Flag | Description
+-----|------------
+`--url` | Connection URL to convert (required)
+`--format` | Output format: `pq`, `dsn`, `jdbc`, or `crdb`
+`--inline` | Inline certificates into the URL (automatically sets `--format crdb`)
+`--database` | Database name
+`--user` | Username
+`--password` | Password
+`--cluster` | Cluster name (sets `options=-ccluster=<name>`)
+`--certs-dir` | Path to certificates directory
+`--ca-cert` | Path to CA certificate
+`--cert` | Path to client certificate
+`--key` | Path to client private key
 
 ### Example URL for an insecure connection
 
