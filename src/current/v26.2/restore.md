@@ -338,7 +338,7 @@ You can combine `WITH EXPERIMENTAL COPY` with other restore options:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE TABLE movr.users FROM '2026-04-16T14:23:55.335570Z' IN 'external://backup_s3'
+RESTORE TABLE movr.users FROM 'osDlrp0B' IN 'external://backup_s3'
 WITH EXPERIMENTAL COPY, DETACHED;
 ~~~
 
@@ -369,10 +369,10 @@ SHOW BACKUPS IN 'external://backup_s3';
 ~~~
 
 ~~~
-                  id                  |        backup_time         
---------------------------------------+----------------------------
-  2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 
-  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  
+         id        |      backup_time
+-------------------+------------------------
+  clvprp0BAADQmww= | 2026-04-17 10:15:23+00
+  osDlrp0B         | 2026-04-16 14:23:55+00
 (2 rows)
 ~~~
 
@@ -382,7 +382,7 @@ Restore from a specific backup using its ID:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE DATABASE movr FROM '2026-04-17T10:15:23.445123Z' IN 'external://backup_s3';
+RESTORE DATABASE movr FROM 'clvprp0BAADQmww=' IN 'external://backup_s3';
 ~~~
 
 When restoring from a backup ID, you do not need to specify `AS OF SYSTEM TIME`. The backup ID uniquely identifies the backup and its restore point.
@@ -393,7 +393,7 @@ You can combine backup IDs with the `WITH EXPERIMENTAL COPY` option for maximum 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE DATABASE movr FROM '2026-04-17T10:15:23.445123Z' IN 'external://backup_s3'
+RESTORE DATABASE movr FROM 'clvprp0BAADQmww=' IN 'external://backup_s3'
 WITH EXPERIMENTAL COPY;
 ~~~
 
@@ -411,10 +411,10 @@ SHOW BACKUPS IN 'external://backup_s3' WITH REVISION START TIME;
 ~~~
 
 ~~~
-                  id                  |        backup_time         |    revision_start_time
---------------------------------------+----------------------------+----------------------------
-  2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 | 2026-04-16 10:15:23.445123
-  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  | 2026-04-15 14:23:55.33557
+         id        |      backup_time       |  revision_start_time
+-------------------+------------------------+------------------------
+  clvprp0BAADQmww= | 2026-04-17 10:15:23+00 | 2026-04-16 10:15:23+00
+  osDlrp0B         | 2026-04-16 14:23:55+00 | 2026-04-15 14:23:55+00
 (2 rows)
 ~~~
 
@@ -426,7 +426,7 @@ To restore to a specific timestamp within the revision history window, use the b
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE DATABASE movr FROM '2026-04-17T10:15:23.445123Z' IN 'external://backup_s3'
+RESTORE DATABASE movr FROM 'clvprp0BAADQmww=' IN 'external://backup_s3'
 AS OF SYSTEM TIME '2026-04-16 18:00:00';
 ~~~
 

@@ -117,11 +117,11 @@ SHOW BACKUPS IN 'external://backup_s3' NEWER THAN '-7d' OLDER THAN '-1d';
 ~~~
 
 ~~~
-                  id                  |        backup_time         | revision_start_time
---------------------------------------+----------------------------+----------------------
-  2026-04-18T08:42:11.223456Z         | 2026-04-18 08:42:11.223456 | NULL
-  2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 | NULL
-  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  | NULL
+         id        |      backup_time       | revision_start_time
+-------------------+------------------------+---------------------
+  Wnfqrp0BAAD4tw8= | 2026-04-18 08:42:11+00 | NULL
+  clvprp0BAADQmww= | 2026-04-17 10:15:23+00 | NULL
+  osDlrp0B         | 2026-04-16 14:23:55+00 | NULL
 (3 rows)
 ~~~
 
@@ -152,7 +152,7 @@ To view the contents of a specific backup, use its backup ID (from the `id` colu
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUP FROM '2026-04-16T14:23:55.335570Z' IN 'external://backup_s3';
+SHOW BACKUP FROM 'osDlrp0B' IN 'external://backup_s3';
 ~~~
 
 This returns the same detailed backup information as the [standard `SHOW BACKUP` output](#response), including all databases, tables, and metadata for that specific backup.
@@ -167,11 +167,11 @@ SHOW BACKUPS IN 'external://backup_s3' WITH REVISION START TIME;
 ~~~
 
 ~~~
-                  id                  |        backup_time         |    revision_start_time
---------------------------------------+----------------------------+----------------------------
-  2026-04-18T08:42:11.223456Z         | 2026-04-18 08:42:11.223456 | 2026-04-17 08:42:11.223456
-  2026-04-17T10:15:23.445123Z         | 2026-04-17 10:15:23.445123 | 2026-04-16 10:15:23.445123
-  2026-04-16T14:23:55.335570Z         | 2026-04-16 14:23:55.33557  | 2026-04-15 14:23:55.33557
+         id        |      backup_time       |  revision_start_time
+-------------------+------------------------+------------------------
+  Wnfqrp0BAAD4tw8= | 2026-04-18 08:42:11+00 | 2026-04-17 08:42:11+00
+  clvprp0BAADQmww= | 2026-04-17 10:15:23+00 | 2026-04-16 10:15:23+00
+  osDlrp0B         | 2026-04-16 14:23:55+00 | 2026-04-15 14:23:55+00
 (3 rows)
 ~~~
 
