@@ -115,8 +115,6 @@ BACKUP INTO {'subdirectory'} IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
 {{site.data.alerts.end}}
 
-To explicitly control where you store your incremental backups, use the [`incremental_location`]({% link {{site.current_cloud_version}}/backup.md %}#options) option. For more detail, see [this example]({% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations) demonstrating the `incremental_location` option.
-
 ### Scheduled backup
 
 This example [creates a schedule]({% link {{site.current_cloud_version}}/create-schedule-for-backup.md %}) for a cluster backup with revision history that is taken every day at midnight:
