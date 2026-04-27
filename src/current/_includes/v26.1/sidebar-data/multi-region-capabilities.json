@@ -47,21 +47,9 @@
             "title": "Multi-Region Tutorials",
             "items": [
                 {
-                    "title": "Low Latency Reads and Writes",
-                    "urls": [
-                    "/${VERSION}/demo-low-latency-multi-region-deployment.html"
-                    ]
-                },
-                {
                     "title": "Data Domiciling with CockroachDB",
                     "urls": [
                     "/${VERSION}/data-domiciling.html"
-                    ]
-                },
-                {
-                    "title": "Migrate to Multi-Region SQL with Replication Zones",
-                    "urls": [
-                    "/${VERSION}/migrate-to-multiregion-sql.html"
                     ]
                 }
             ]
