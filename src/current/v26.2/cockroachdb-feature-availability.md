@@ -90,7 +90,7 @@ The SQL built-in function [workload_index_recs]({% link {{ page.version.version 
 
 ### Admission control for ingesting snapshots
 
-The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` is in preview. When configured, it limits the disk impact of ingesting snapshots on a node.
+The [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` and `kvadmission.store.snapshot_ingest_bandwidth_control.min_rate.enabled` are in preview. When [`kvadmission.store.provisioned_bandwidth`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kvadmission-store-provisioned-bandwidth) is set to a non-zero value, these settings limit the disk impact of ingesting [snapshots]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) on a node and keep snapshot ingestion moving at a minimum rate so it is not starved by other elastic work.
 
 ### Admission control to limit the bandwidth for a store
 
@@ -271,11 +271,11 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
-### Buffered Writes
+### Leader leases
 
-Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) and the other nodes during write operations.
+{% include {{ page.version.version }}/leader-leases-intro.md %}
 
-For more information, refer to [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
+For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
 ### Statement hints
 
