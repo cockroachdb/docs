@@ -22,12 +22,9 @@ You can use the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) stat
 
 ## Backup collections
 
- A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the [collection URI]({% link {{ page.version.version }}/backup.md %}#collectionURI-param) passed with the `BACKUP` statement.
+A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the [collection URI]({% link {{ page.version.version }}/backup.md %}#collectionURI-param) passed with the `BACKUP` statement.
 
-There are some specific cases where part of the collection data is stored at a different URI:
-
-- A [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}). The backup collection will be stored according to the URIs passed with the `BACKUP` statement: `BACKUP INTO LATEST IN {collectionURI}, {localityURI}, {localityURI}`. Here, the `collectionURI` represents the default locality.
-- As of v22.1, it is possible to store incremental backups at a [different URI](#incremental-backups-with-explicitly-specified-destinations) to the related full backup. This means that one or multiple storage locations can hold one backup collection.
+For a [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}). The backup collection will be stored according to the URIs passed with the `BACKUP` statement: `BACKUP INTO LATEST IN {collectionURI}, {localityURI}, {localityURI}`. Here, the `collectionURI` represents the default locality.
 
 By default, full backups are stored at the root of the collection's URI in a date-based path, and incremental backups are stored in the `/incrementals` directory. The following example shows a backup collection created using these default values, where all backups reside in one storage bucket:
 
@@ -48,37 +45,6 @@ Collection URI:
 ~~~
 
 [`SHOW BACKUPS IN {collectionURI}`]({% link {{ page.version.version }}/show-backup.md %}#view-a-list-of-the-available-full-backup-subdirectories) will display a list of the full backup subdirectories at the collection's URI.
-
-<a name="incremental-location-structure"></a> Alternately, the following directories also constitute a backup collection. There are multiple backups in two separate URIs. Each individual backup is a full backup and its related incremental backup(s). Despite using the [`incremental_location`](#incremental-backups-with-explicitly-specified-destinations) option to store the incremental backup in an alternative location, that incremental backup is still part of this backup collection as it depends on the full backup in the first cloud storage bucket:
-
-~~~
-Collection URI
-|—— 2022
-  |—— 02
-    |—— 09-155340.13/
-      |—— Full backup files
-      |—— 20220210/
-        |—— 155530.50/
-        |—— 16-143018.72/
-          |—— Full backup files
-|—— incrementals
-  |—— 2022
-  |—— 02
-    |—— 25-172907.21/
-      |—— 20220325
-        |—— 17921.23
-          |—— incremental backup files
-~~~
-
-~~~
-Explicit Incrementals URI
-|—— 2022
-  |—— 02
-    |—— 25-172907.21/
-      |—— 20220325
-        |—— 17921.23
-          |—— incremental_location backup files
-~~~
 
 In the examples on this page, `{collectionURI}` is a placeholder for the storage location that will contain the example backup.
 
@@ -185,10 +151,6 @@ Then, create nightly incremental backups based off of the full backups you've al
 
 This will add the incremental backup to the default `/incrementals` directory at the root of the backup collection's directory. With incremental backups in the `/incrementals` directory, you can apply different lifecycle/retention policies from cloud storage providers to the `/incrementals` directory as needed.
 
-{{site.data.alerts.callout_info}}
-In v21.2 and earlier, incremental backups were stored in the same directory as their full backup (i.e., `collectionURI/subdirectory`). If an incremental backup command points to a subdirectory with incremental backups created in v21.2 and earlier, v22.1 and later will write the incremental backup to the v21.2 default location. To use the v21.2 behavior on a backup that does not already contain incremental backups in the full backup subdirectory, use the `incremental_location` option, as shown in this [example](#backup-earlier-behavior).
-{{site.data.alerts.end}}
-
 If it's ever necessary, you can then use the [`RESTORE`][restore] statement to restore your cluster, database(s), and/or table(s). Restoring from incremental backups requires previous full and incremental backups.
 
 To restore from the latest backup in the collection, stored in the default `/incrementals` collection subdirectory, run:
@@ -217,41 +179,6 @@ RESTORE FROM '2023/03/23-213101.37' IN 's3://bucket/path?AUTH=implicit';
 {{site.data.alerts.callout_info}}
 `RESTORE` will re-validate [indexes]({% link {{ page.version.version }}/indexes.md %}) when [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
 {{site.data.alerts.end}}
-
-### Incremental backups with explicitly specified destinations
-
-{% include common/sql/incremental-location-warning.md %}
-
-To explicitly control where your incremental backups go, use the [`incremental_location`]({% link {{ page.version.version }}/backup.md %}#options) option. By default, incremental backups are stored in the `/incrementals` subdirectory at the root of the collection. However, there are some advanced cases where you may want to store incremental backups in a different storage location.
-
-In the following examples, the `{collectionURI}` specifies the storage location containing the full backup. The `{explicit_incrementalsURI}` is the alternative location that you can store an incremental backup:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP INTO LATEST IN '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH incremental_location = '{explicit_incrementalsURI}';
-~~~
-
-Although the incremental backup will be in a different storage location, it is still part of the logical [backup collection](#backup-collections).
-
-A full backup must be present in the `{collectionURI}` in order to take an incremental backup to the alternative `{explicit_incrementalsURI}`. If there isn't a full backup present in `{collectionURI}` when taking an incremental backup with `incremental_location`, the error `path does not contain a completed latest backup` will be returned.
-
-For details on the backup directory structure when taking incremental backups with `incremental_location`, see this [incremental location directory structure](#incremental-location-structure) example.
-
-<a name="backup-earlier-behavior"></a>To take incremental backups that are stored in the same way as v21.2 and earlier, you can use the `incremental_location` option. You can specify the same `collectionURI` with `incremental_location` and the backup will place the incremental backups in a date-based path under the full backup, rather than in the default `/incrementals` directory:
-
-~~~ sql
-BACKUP INTO LATEST IN '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH incremental_location = '{collectionURI}';
-~~~
-
-When you append incrementals to this backup, they will continue to be stored in a date-based path under the full backup.
-
-To restore an incremental backup that was taken using the [`incremental_location` option]({% link {{ page.version.version }}/restore.md %}#incr-location), you must run `RESTORE` with the full backup's location and the `incremental_location` option referencing the location passed in the original `BACKUP` statement:
-
-~~~ sql
-RESTORE TABLE movr.users FROM LATEST IN '{collectionURI}' WITH incremental_location = '{explicit_incrementalsURI}';
-~~~
-
-For details on cloud storage URLs, see [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %}).
 
 ## Examples
 

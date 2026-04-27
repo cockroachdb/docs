@@ -7,13 +7,9 @@ docs_area: reference.sql
 
 The `SHOW BACKUP` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the contents of a backup created with the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) statement.
 
-{{site.data.alerts.callout_danger}}
-The `SHOW BACKUP` syntax **without** the `IN` keyword has been removed from CockroachDB v24.3 and later.
-
-For guidance on the syntax for `SHOW BACKUP FROM`, refer to the [Synopsis](#synopsis) and [examples](#examples) on this page.
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="v26.2" %} On self-hosted clusters, a feature is available in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#feature-availability-phases) that improves backup query performance and simplifies backup operations. Refer to [Query backups more efficiently](#query-backups-more-efficiently).
 {{site.data.alerts.end}}
-
-{% include common/sql/incremental-location-warning.md %}
 
 ## Required privileges
 
@@ -44,9 +40,10 @@ We recommend using [cloud storage]({% link {{ page.version.version }}/use-cloud-
 
 Parameter | Description
 ----------|------------
-`SHOW BACKUPS IN collectionURI` | List the backup paths in the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
-`SHOW BACKUP FROM subdirectory IN collectionURI` | Show the details of backups in the subdirectory at the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). Also, use `FROM LATEST in collectionURI` to show the most recent backup. [See the example](#show-the-most-recent-backup).
-`SHOW BACKUP SCHEMAS FROM subdirectory IN collectionURI` | Show the schema details of the backup in the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). [See the example](#show-a-backup-with-schemas).
+`SHOW BACKUPS IN collectionURI` | List the backup paths (subdirectories) in the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). Returns the `path` column with subdirectory paths in `<year>/<month>/<day>-<timestamp>` format. [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
+`SHOW BACKUPS IN collectionURI [NEWER THAN interval] [OLDER THAN interval]` | **New in v26.2 (Preview)**: When the [`use_backups_with_ids`]({% link {{ page.version.version }}/session-variables.md %}#use-backups-with-ids) session variable is enabled, list backups with their IDs and optional time filtering. Returns `id`, `backup_time`, and `revision_start_time` columns. [See the examples](#query-backups-more-efficiently).
+`SHOW BACKUP FROM {subdirectory \| backup_id} IN collectionURI` | Show the details of backups in the subdirectory or with the specified backup ID at the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). Also, use `FROM LATEST in collectionURI` to show the most recent backup. [See the example](#show-the-most-recent-backup).
+`SHOW BACKUP SCHEMAS FROM {subdirectory \| backup_id} IN collectionURI` | Show the schema details of the backup in the given [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls). [See the example](#show-a-backup-with-schemas).
 `collectionURI` | The URI for the [backup storage]({% link {{ page.version.version }}/use-cloud-storage.md %}). <br>Note that `SHOW BACKUP` does not support listing backups if the [`nodelocal`]({% link {{ page.version.version }}/cockroach-nodelocal-upload.md %}) storage location is a symlink. Cockroach Labs recommends using remote storage for backups.
 `kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
@@ -59,7 +56,6 @@ Option        | Value | Description
 `debug_ids` |  N/A  |  [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The passphrase used to [encrypt the files]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}) that the `BACKUP` statement generates (the data files and its manifest, containing the backup's metadata).
 `kms`                                                            | [`STRING`]({% link {{ page.version.version }}/string.md %}) |  The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to [take and restore encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#examples). Refer to [URI Formats]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#uri-formats).
-`incremental_location` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | [List the details of an incremental backup](#show-a-backup-taken-with-the-incremental-location-option) taken with the [`incremental_location` option]({% link {{ page.version.version }}/backup.md %}#incr-location).
 `privileges`  | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
 
 ## Response
@@ -84,6 +80,105 @@ Field | Value | Description
 `path` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The list of the [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups)'s subdirectories. This field is returned for `SHOW BACKUPS IN collectionURI` only. The path format is `<year>/<month>/<day>-<timestamp>`.
 
 See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for the responses displayed when the `WITH debug_ids` option is specified.
+
+## Query backups more efficiently
+
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="v26.2" %} This feature is available in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview) for self-hosted clusters.
+{{site.data.alerts.end}}
+
+To improve query performance and simplify backup operations, enable the [`use_backups_with_ids`]({% link {{ page.version.version }}/session-variables.md %}#use-backups-with-ids) session variable. This enables a more efficient backup query interface with the following benefits:
+
+- Significantly faster performance for listing backups in a collection
+- Server-side time filtering, using `NEWER THAN` and `OLDER THAN` clauses
+- Unique backup IDs that simplify [restore operations]({% link {{ page.version.version }}/restore.md %}#restore-using-backup-ids)
+- No `AS OF SYSTEM TIME` required when restoring from a backup ID
+
+{{site.data.alerts.callout_danger}}
+Backups taken when the cluster was on versions prior to v26.1 will not appear when using `use_backups_with_ids=true`. The backup ID interface requires backup index files that were introduced in v26.1. After your pre-v26.1 backups have expired, per your retention policy, this limitation will no longer affect your use of this feature.
+{{site.data.alerts.end}}
+
+### Enable the backup ID interface
+
+To use the backup ID interface, set the session variable:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET use_backups_with_ids = true;
+~~~
+
+### List backups with time filtering
+
+When `use_backups_with_ids` is enabled, `SHOW BACKUPS IN` returns the backup ID, backup time, and revision start time for each backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUPS IN 'external://backup_s3' NEWER THAN '-7d' OLDER THAN '-1d';
+~~~
+
+~~~
+         id        |      backup_time       
+-------------------+------------------------
+  Wnfqrp0BAAD4tw8= | 2026-04-18 08:42:11+00 
+  clvprp0BAADQmww= | 2026-04-17 10:15:23+00 
+  osDlrp0B         | 2026-04-16 14:23:55+00 
+(3 rows)
+~~~
+
+The response includes:
+
+- `id`: A unique identifier for the backup
+- `backup_time`: The end time of the backup (equivalent to the time you can restore to)
+
+#### Time filtering
+
+Use `NEWER THAN` and `OLDER THAN` to filter backups by age:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Backups from the last week
+SHOW BACKUPS IN 'external://backup_s3' NEWER THAN '-1w';
+
+-- Backups between 1 and 2 weeks old
+SHOW BACKUPS IN 'external://backup_s3' NEWER THAN '-2w' OLDER THAN '-1w';
+~~~
+
+Time filters can be specified in either order. If no time filter is provided, the response is paginated to 50 rows.
+
+### Show a specific backup by ID
+
+To view the contents of a specific backup, use its backup ID (from the `id` column in the `SHOW BACKUPS IN` output):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP FROM 'osDlrp0B' IN 'external://backup_s3';
+~~~
+
+This returns the same detailed backup information as the [standard `SHOW BACKUP` output](#response), including all databases, tables, and metadata for that specific backup.
+
+### Show revision history backup windows
+
+For backups taken with [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}), use the `WITH REVISION START TIME` option to display the revision history window for each backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUPS IN 'external://backup_s3' WITH REVISION START TIME;
+~~~
+
+~~~
+         id        |      backup_time       |  revision_start_time
+-------------------+------------------------+------------------------
+  Wnfqrp0BAAD4tw8= | 2026-04-18 08:42:11+00 | 2026-04-17 08:42:11+00
+  clvprp0BAADQmww= | 2026-04-17 10:15:23+00 | 2026-04-16 10:15:23+00
+  osDlrp0B         | 2026-04-16 14:23:55+00 | 2026-04-15 14:23:55+00
+(3 rows)
+~~~
+
+The `revision_start_time` column shows the earliest timestamp you can restore to for each backup. This represents the start of the revision history window. For backups without revision history, this column displays `NULL`.
+
+Without the `WITH REVISION START TIME` option, the `revision_start_time` column does not appear in the output, and only the `id` and `backup_time` columns are shown.
+
+For details on performing point-in-time restores using revision history backups, see [Restore from a revision history backup ID]({% link {{ page.version.version }}/restore.md %}#restore-from-a-revision-history-backup-id).
 
 ## Examples
 
@@ -156,39 +251,6 @@ system        | public             | ui                         | table       | 
 system        | public             | jobs                       | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |      30148 |    23 |      true
 system        | public             | locations                  | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |        261 |     5 |      true
 system        | public             | role_members               | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |         94 |     1 |      true
-. . .
-~~~
-
-### Show a backup taken with the incremental location option
-
-To view an incremental backup that was taken with the `incremental_location` option, run `SHOW BACKUP` with the full backup and incremental backup location following the original `BACKUP` statement.
-
-You can use the option to show the most recent backup where `incremental_location` has stored the backup:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW BACKUP FROM LATEST IN {'full backup collectionURI'} WITH incremental_location = {'incremental backup collectionURI'};
-~~~
-
-~~~
-database_name | parent_schema_name |        object_name         | object_type | backup_type |         start_time         |          end_time          | size_bytes | rows  | is_full_cluster
---------------+--------------------+----------------------------+-------------+-------------+----------------------------+----------------------------+------------+-------+------------------
-NULL          | NULL               | movr                       | database    | full        | NULL                       | 2022-04-13 20:01:15.177739 |       NULL |  NULL |      false
-movr          | NULL               | public                     | schema      | full        | NULL                       | 2022-04-13 20:01:15.177739 |       NULL |  NULL |      false
-movr          | public             | rides                      | table       | full        | NULL                       | 2022-04-13 20:01:15.177739 |     395716 |  1415 |      false
-NULL          | NULL               | system                     | database    | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
-system        | public             | users                      | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |         99 |     2 |      true
-system        | public             | scheduled_jobs             | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |        250 |     1 |      true
-system        | public             | database_role_settings     | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |          0 |     0 |      true
-system        | public             | tenant_settings            | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |          0 |     0 |      true
-NULL          | NULL               | defaultdb                  | database    | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
-defaultdb     | NULL               | public                     | schema      | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
-NULL          | NULL               | postgres                   | database    | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
-postgres      | NULL               | public                     | schema      | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
-NULL          | NULL               | movr                       | database    | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
-movr          | NULL               | public                     | schema      | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
-movr          | public             | users                      | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |      81098 |   892 |      true
-movr          | public             | vehicles                   | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |      57755 |   296 |      true
 . . .
 ~~~
 

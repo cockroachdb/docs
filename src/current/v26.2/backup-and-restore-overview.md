@@ -8,7 +8,6 @@ docs_area: manage
 CockroachDB is built to be [fault-tolerant with automatic recovery]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}), but sometimes disasters happen. Backup and restore is an important part of a robust disaster recovery plan. CockroachDB {{ site.data.products.core }} clusters provide a range of [backup and restore features](#backup-and-restore-support).
 
 - [Backup and restore support](#backup-and-restore-support)
-  - [Additional backup and restore features](#additional-backup-and-restore-features)
 - [Scheduled backups](#scheduled-backups)
 - [Backup jobs with locality requirements](#backup-jobs-with-locality-requirements)
 - [Backup and restore SQL statements](#backup-and-restore-sql-statements)
@@ -84,11 +83,6 @@ This table outlines the level of product support for backup and restore features
   </tbody>
 </table>
 
-### Additional backup and restore features
-
-- [Incremental backups with explicitly specified destinations]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations)
-- [Exclude a table's data from backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#exclude-a-tables-data-from-backups)
-
 ## Scheduled backups
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
@@ -162,5 +156,6 @@ For practical examples of running backup and restore jobs, watch the following v
 ## See also
 
 - Considerations for using [backup]({% link {{ page.version.version }}/backup.md %}#considerations) and [restore]({% link {{ page.version.version }}/restore.md %}#considerations).
+- [Exclude a table's data from backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#exclude-a-tables-data-from-backups)
 - [Backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) for details on how CockroachDB stores backups.
 - [Restoring backups]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}) across major versions of CockroachDB.
