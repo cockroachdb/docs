@@ -8,7 +8,9 @@ toc: true
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-If you manage users through a service compatible with the Lightweight Directory Access Protocol (LDAP), such as Active Directory or Microsoft Entra ID, you can configure CockroachDB to automatically assign [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}) to users based on LDAP group memberships, simplifying access control. 
+If you manage users through a service compatible with the Lightweight Directory Access Protocol (LDAP), such as Active Directory or Microsoft Entra ID, you can configure CockroachDB to automatically assign [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}) to users based on LDAP group memberships, simplifying access control.
+
+LDAP authorization applies to both SQL client connections and [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) logins. When a user authenticates via LDAP, their roles are automatically synchronized from LDAP groups, providing consistent role-based access control across all connection methods.
 
 If LDAP authorization is enabled:
 
