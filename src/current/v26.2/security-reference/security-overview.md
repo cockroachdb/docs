@@ -98,12 +98,19 @@ docs_area: reference.security
       <td><a href="https://wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a> certificate revocation protocol</td>
     </tr>
     <tr>
-      <td rowspan="5" ><a href="encryption.html">Encryption</a></td>
+      <td rowspan="6" ><a href="encryption.html">Encryption</a></td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
       <td>Encryption in transit using TLS 1.3</td>
+    </tr>
+    <tr>
+      <td>✓</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td><a href="{% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#post-quantum-cryptography-support-in-cockroachdb">Post-quantum cryptography (PQC)</a> key exchange for TLS 1.3</td>
     </tr>
     <tr>
       <td>✓</td>
