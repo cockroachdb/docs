@@ -507,11 +507,19 @@ For examples, refer to [Disable row-level security](#disable-row-level-security)
 
 This statement enables a [trigger]({% link {{ page.version.version }}/triggers.md %}) associated with a table. When a trigger is enabled for a table, it activates if its triggering event occurs on the table. Use `ENABLE TRIGGER ALL` or `ENABLE TRIGGER USER` to enable all triggers associated with a table.
 
+{{site.data.alerts.callout_info}}
+ALL and USER are both available for compatibility with PostgreSQL syntax, but in CockroachDB they behave identically since CockroachDB does not have system triggers. Both keywords enable all triggers associated with the table.
+{{site.data.alerts.end}}
+
 For examples, refer to [Enable a trigger](#enable-a-trigger).
 
 ### `DISABLE TRIGGER`
 
 This statement disables a [trigger]({% link {{ page.version.version }}/triggers.md %}) associated with a table. When a trigger is disabled for a table, it does not activate even if its triggering event occurs on the table. Use `DISABLE TRIGGER ALL` or `DISABLE TRIGGER USER` to disable all triggers associated with a table.
+
+{{site.data.alerts.callout_info}}
+ALL and USER are both available for compatibility with PostgreSQL syntax, but in CockroachDB they behave identically since CockroachDB does not have system triggers. Both keywords disable all triggers associated with the table.
+{{site.data.alerts.end}}
 
 For examples, refer to [Disable a trigger](#disable-a-trigger).
 
