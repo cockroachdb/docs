@@ -226,7 +226,7 @@ WHERE NOT EXISTS (
 
 ### Last-login tracking for usage and dormancy
 
-When `security.provisioning.ldap.enabled` is set to `true`, the `estimated_last_login_time` column in the `SHOW USERS` output is updated for both SQL client connections and DB Console logins. This allows administrators to track user activity across all connection methods and identify dormant accounts.
+When `security.provisioning.ldap.enabled` is set to `true`, the `estimated_last_login_time` column in the `SHOW USERS` output is updated for both SQL client connections and DB Console authentication attempts. This allows administrators to track user activity across all connection methods and identify dormant accounts, even for users who successfully authenticate but lack privileges to access the DB Console.
 
 The `estimated_last_login_time` column in the output of `SHOW USERS` tracks when users last authenticated. For example:
 
