@@ -3438,6 +3438,8 @@ To enable a [trigger]({% link {{ page.version.version }}/triggers.md %}) associa
 ALTER TABLE <table_name> ENABLE TRIGGER <trigger_name>;
 ~~~
 
+This requires an existing trigger. For information on creating a trigger, refer to [Triggers]({% link {{ page.version.version }}/triggers.md %}).
+
 To enable all triggers associated with a table, use either of the following statements:
 
 {% include_cached copy-clipboard.html %}
