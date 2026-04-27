@@ -8,9 +8,9 @@ This section summarizes changes that can cause applications, scripts, or manual 
 
 - User-defined views that reference `crdb_internal` virtual tables now enforce unsafe access checks. To restore the previous behavior, set the session variable `allow_unsafe_internals` or the cluster setting `sql.override.allow_unsafe_internals.enabled` to `true`. [#167023](https://github.com/cockroachdb/cockroach/pull/167023)
 
-- Removed the `incremental_location` option from `BACKUP` and `CREATE SCHEDULE FOR BACKUP`. [#159189](https://github.com/cockroachdb/cockroach/pull/159189)
+- Removed the `incremental_location` option from `BACKUP` and `CREATE SCHEDULE FOR BACKUP`. All backup data is now stored in the base backup location, with incrementals automatically placed in `{collection_root}/incrementals`, preserving the ability to set distinct TTL policies for full and incremental backups. [#159189](https://github.com/cockroachdb/cockroach/pull/159189)
 
-- Removed the `incremental_location` option from `SHOW BACKUP` and `RESTORE`. [#160416](https://github.com/cockroachdb/cockroach/pull/160416)
+- Removed the `incremental_location` option from `SHOW BACKUP` and `RESTORE`. Backups created before v26.2 using `incremental_location` are **not** restorable in v26.2. [#160416](https://github.com/cockroachdb/cockroach/pull/160416)
 
 - `CREATE CHANGEFEED FOR DATABASE` now returns an error stating that the feature is not implemented. [#166920](https://github.com/cockroachdb/cockroach/pull/166920)
 
