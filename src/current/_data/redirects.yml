@@ -1161,3 +1161,15 @@
 
 - destination: cockroachcloud/byoc-azure-deployment.md
   sources: ['cockroachcloud/byoc-deployment.md']
+
+- destination: multiregion-overview.md
+  sources: ['demo-low-latency-multi-region-deployment.md', 'migrate-to-multiregion-sql.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: performance-best-practices-overview.md
+  sources: ['performance.md', 'performance-benchmarking-with-tpcc-local.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: support-resources.md
+  sources: ['file-an-issue.md']
+  versions: ['v26.1', 'v26.2']
