@@ -1,7 +1,3 @@
-{{site.data.alerts.callout_info}}
-`SHOW BACKUP` is able to display metadata using `check_files` for locality-aware backups taken with the [`incremental_location`]({% link {{ page.version.version }}/show-backup.md %}#show-a-backup-taken-with-the-incremental-location-option) option.
-{{site.data.alerts.end}}
-
 To view a list of [locality-aware backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}), pass the endpoint [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls) that is set as the `default` location with `COCKROACH_LOCALITY=default`: 
 
 {% include_cached copy-clipboard.html %}

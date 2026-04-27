@@ -162,16 +162,6 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 | `LeaseAcquisition` | KV server | Waiting to acquire a [range lease]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) |
 | `TenantRateLimit` | KV server | [Tenant rate limiter]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}#virtual-clusters) throttling |
 
-## ASH Metrics
-
-The following [metrics]({% link {{ page.version.version }}/metrics.md %}) monitor ASH behavior:
-
-| Metric | Type | Description |
-|--------|------|-------------|
-| `ash.work_states.active` | Gauge | Number of goroutines with an active work state |
-| `ash.sampler.take_sample.latency` | Histogram | Latency of each sample collection tick |
-| `ash.samples.collected` | Counter | Total ASH samples collected |
-
 ## Debug zip integration
 
 When the environment sampler triggers [goroutine dumps]({% link {{ page.version.version }}/automatic-go-execution-tracer.md %}) or [CPU profiles]({% link {{ page.version.version }}/automatic-cpu-profiler.md %}), ASH writes aggregated report files (`.txt` and `.json`) alongside them. These reports are included in [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) output. The naming pattern for these files is as follows:
