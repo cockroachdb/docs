@@ -539,6 +539,8 @@ There are two types of statement hints:
 
 You can create multiple statement hints for a single statement fingerprint. Statement hints can be scoped to a particular database, such that the hint is only applied when executing on that database. Statement hints can also be disabled (but are enabled by default upon creation).
 
+Note the [known limitations](#cost-based-optimizer-kl) for statement hints.
+
 ### Rewrite inline hints
 
 To rewrite inline hints for a statement fingerprint, invoke the [`information_schema.crdb_rewrite_inline_hints()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) built-in function. You must have the [`REPAIRCLUSTER`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privilege. 
@@ -933,10 +935,13 @@ If you have an index named `FORCE_ZIGZAG` and use the hint `table@{FORCE_ZIGZAG}
 
 {% include {{ page.version.version }}/sql/inverted-joins.md %}
 
+<a name="cost-based-optimizer-kl"></a>
+
 ## Known limitations
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
 {% include {{ page.version.version }}/known-limitations/forecasted-stats-limitations.md %}
+{% include {{ page.version.version }}/known-limitations/statement-hints-limitations.md %}
 
 ## See also
 
