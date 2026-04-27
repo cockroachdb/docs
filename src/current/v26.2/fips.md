@@ -107,6 +107,7 @@ If you do not want to use the FIPS-ready CockroachDB Docker image directly, you 
 To download FIPS-ready CockroachDB runtimes, use the following links.
 
     {% for s in sections %}
+        {% if s == "Production" %}
 
         {% assign releases = fips_releases | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %} {% comment %} Fetch all releases for that major version based on release type (Production/Testing). {% endcomment %}
 
@@ -141,7 +142,7 @@ To download FIPS-ready CockroachDB runtimes, use the following links.
     <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
         <td>
                 {% comment %}Version{% endcomment %}
-            <a href="{% link releases/{{ page.version.version }}.md %}#{{ r.release_name | replace: '.', '-' }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+            {{ r.release_name }}
                     {% if r.release_name == latest_hotfix.release_name %}
             <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                     {% endif %}
@@ -181,6 +182,7 @@ To download FIPS-ready CockroachDB runtimes, use the following links.
                 {% endif %}
             {% endfor %} {% comment %}Releases {% endcomment %}
 </table>
+        {% endif %}
         {% endif %}
     {% endfor %}{% comment %}Sections {%endcomment %}
 {% else %}

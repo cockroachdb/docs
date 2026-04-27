@@ -67,6 +67,7 @@ For more information, read the [CockroachDB {{ site.data.products.cloud }} upgra
 
 | Version | Release Type | GA date |
 | :---: | :---: | :---: |
+| [v26.2]({% link releases/v26.2.md %}) | Regular | 2026-04-27 |
 | [v26.1]({% link releases/v26.1.md %}) | Innovation | 2026-02-02 |
 | [v25.4]({% link releases/v25.4.md %}) | Regular | 2025-11-03 |
 | [v25.2]({% link releases/v25.2.md %}) | Regular | 2025-05-12 |
@@ -80,7 +81,7 @@ The following releases and their descriptions represent proposed plans that are 
 
 | Version | Release Type | Expected GA date |
 | :---: | :---: | :---: |
-| v26.2 | Regular    | 2026 Q2    |
+| v26.3 | Innovation | 2026 Q3    |
 
 ## Archived releases 
 
