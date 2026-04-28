@@ -436,9 +436,7 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 ## See also
 
 - [How to Choose a Multi-region Configuration]({% link {{ page.version.version }}/choosing-a-multi-region-configuration.md %})
-- [Migrate to Multi-Region SQL]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %})
 - [Multi-Region Overview]({% link {{ page.version.version }}/multiregion-overview.md %})
-- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %})
 - [Reads and Writes in CockroachDB]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %})
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables]({% link {{ page.version.version }}/table-localities.md %}#when-to-use-regional-vs-global-tables)

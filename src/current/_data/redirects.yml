@@ -1167,7 +1167,7 @@
   versions: ['v26.1', 'v26.2']
 
 - destination: performance-best-practices-overview.md
-  sources: ['performance.md', 'performance-benchmarking-with-tpcc-local.md']
+  sources: ['performance.md', 'performance-benchmarking-with-tpcc-local.md', 'performance-benchmarking-with-tpcc-small.md', 'performance-benchmarking-with-tpcc-medium.md', 'performance-benchmarking-with-tpcc-large.md', 'performance-benchmarking-with-tpcc-local-multiregion.md']
   versions: ['v26.1', 'v26.2']
 
 - destination: support-resources.md

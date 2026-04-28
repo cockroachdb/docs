@@ -91,10 +91,6 @@ $ cockroach demo movr
 
 {% include {{ page.version.version }}/misc/movr-workflow.md %}
 
-## Extended examples
-
-For a tutorial on running MovR against a multi-region cluster, using two important multi-region [data topologies]({% link {{ page.version.version }}/topology-patterns.md %}) to get very low latency reads and writes, see [Low Latency, Multi-Region Deployment]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
-
 ## See also
 
 - [Features in Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %})

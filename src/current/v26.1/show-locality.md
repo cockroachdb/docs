@@ -79,7 +79,6 @@ For a more extensive example, see [Create a table with node locality information
 
 ## See also
 
-- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality)
 - [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
 - [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})

@@ -1202,7 +1202,7 @@ To follow along with the examples below:
     cockroach demo --global --nodes 9
     ~~~
 
-1. Set the demo cluster's [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) and [table localities]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) as described in [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}) (specifically, starting at [Step 5. Execute multi-region SQL statements]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}#step-5-execute-multi-region-sql-statements)).
+1. Set the demo cluster's [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) and [table localities]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality).
 
 1. Enable the replica placement syntax with either the [session variable]({% link {{ page.version.version }}/set-vars.md %}) or the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) as shown below.
 

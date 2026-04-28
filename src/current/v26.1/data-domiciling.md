@@ -138,7 +138,7 @@ ALTER DATABASE movr ADD REGION "us-west1";
 
 Next, check the [critical nodes status endpoint](monitoring-and-alerting.html#critical-nodes-endpoint) to see which ranges are still not in compliance with your desired domiciling: that data on EU-based entities (users, etc.) does not leave EU-based nodes.
 
-On a small demo cluster like this one, the data movement from the previous step should finish quickly; on larger clusters, the rebalancing process may take longer. For more information about the performance considerations of rebalancing data in multi-region clusters, see [Performance considerations](migrate-to-multiregion-sql.html#performance-considerations).
+On a small demo cluster like this one, the data movement from the previous step should finish quickly; on larger clusters, the rebalancing process may take longer.
 
 With the default settings, you should expect some replicas in the cluster to be violating this constraint. Those replicas will appear in the `violatingConstraints` field of the output. 
 
@@ -436,9 +436,7 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 ## See also
 
 - [How to Choose a Multi-region Configuration]({% link {{ page.version.version }}/choosing-a-multi-region-configuration.md %})
-- [Migrate to Multi-Region SQL]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %})
 - [Multi-Region Overview]({% link {{ page.version.version }}/multiregion-overview.md %})
-- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %})
 - [Reads and Writes in CockroachDB]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %})
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables]({% link {{ page.version.version }}/table-localities.md %}#when-to-use-regional-vs-global-tables)
