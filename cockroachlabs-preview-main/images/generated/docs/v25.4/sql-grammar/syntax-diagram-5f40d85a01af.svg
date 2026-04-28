@@ -1,0 +1,53 @@
+<svg height="101" width="471" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 5 1 1 1 9"></polygon>
+<polygon points="17 5 9 1 9 9"></polygon>
+<rect height="32" rx="10" width="54" x="51" y="23"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="49" y="21"></rect>
+<text class="terminal" x="59" y="41">FULL</text>
+<rect height="32" rx="10" width="74" x="125" y="23"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="123" y="21"></rect>
+<text class="terminal" x="133" y="41">BACKUP</text><a xlink:href="#sconst_or_placeholder" xlink:title="sconst_or_placeholder">
+<rect height="32" width="164" x="239" y="23"></rect>
+<rect class="nonterminal" height="32" width="164" x="237" y="21"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="140" font-size="10" class="nonterminal" x="249" y="41">sconst_or_placeholder</text></a><rect height="32" rx="10" width="78" x="239" y="67"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="237" y="65"></rect>
+<text class="terminal" x="247" y="85">ALWAYS</text>
+<path class="line" d="m17 5 h2 m20 0 h10 m0 0 h382 m-412 0 h20 m392 0 h20 m-432 0 q10 0 10 10 m412 0 q0 -10 10 -10 m-422 10 v12 m412 0 v-12 m-412 12 q0 10 10 10 m392 0 q10 0 10 -10 m-402 10 h10 m54 0 h10 m0 0 h10 m74 0 h10 m20 0 h10 m164 0 h10 m-204 0 h20 m184 0 h20 m-224 0 q10 0 10 10 m204 0 q0 -10 10 -10 m-214 10 v24 m204 0 v-24 m-204 24 q0 10 10 10 m184 0 q10 0 10 -10 m-194 10 h10 m78 0 h10 m0 0 h86 m43 -76 h-3"></path>
+<polygon points="461 5 469 1 469 9"></polygon>
+<polygon points="461 5 453 1 453 9"></polygon></svg>

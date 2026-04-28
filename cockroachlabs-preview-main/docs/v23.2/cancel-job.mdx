@@ -1,0 +1,117 @@
+---
+title: "CANCEL JOB"
+old_description: "The CANCEL JOB statement stops long-running jobs such as imports, backups, and schema changes.such as imports, backups, and schema changes."
+---
+
+import { CancelJob2 } from "/snippets/syntax-diagrams/CancelJob2.jsx";
+import { CancelJob3 } from "/snippets/syntax-diagrams/CancelJob3.jsx";
+
+The `CANCEL JOB` [statement](/docs/v23.2/sql-statements) lets you stop long-running jobs, which include:
+
+- [`IMPORT`](/docs/v23.2/import) jobs
+- [`BACKUP`](/docs/v23.2/backup) and [`RESTORE`](/docs/v23.2/restore) jobs
+- [User-created table statistics](/docs/v23.2/create-statistics) jobs
+- [Automatic table statistics](/docs/v23.2/cost-based-optimizer#table-statistics) jobs
+- [Changefeeds](/docs/v23.2/create-changefeed)
+- [Scheduled backup](/docs/v23.2/manage-a-backup-schedule) jobs
+- [Schema change](/docs/v23.2/online-schema-changes) jobs (see [Limitations](#limitations) for exceptions)
+
+## Limitations
+
+- When an Enterprise [`RESTORE`](/docs/v23.2/restore) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+- To avoid transaction states that cannot properly [roll back](/docs/v23.2/rollback-transaction), `DROP` statements (e.g., [`DROP TABLE`](/docs/v23.2/drop-table) ), `ALTER... RENAME` statements (e.g., [`ALTER TABLE... RENAME TO`](/docs/v23.2/alter-table#rename-to) ), and [`CREATE TABLE... AS`](/docs/v23.2/create-table-as) statements are no longer cancellable.
+
+## Required privileges
+
+To cancel a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](/docs/v23.2/create-user#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) [role option](/docs/v23.2/security-reference/authorization#role-options) set. Non-admin users cannot cancel admin users' jobs.
+
+For changefeeds, users with the [`CHANGEFEED`](/docs/v23.2/create-changefeed#required-privileges) privilege on a set of tables can cancel changefeed jobs running on those tables.
+
+## Synopsis
+
+<CancelJob2 />
+
+### Cancel all jobs by type
+
+<CancelJob3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>job&#95;id</code></td><td>The ID of the job you want to cancel, which can be found with <a href="/docs/v23.2/show-jobs"><code>SHOW JOBS</code></a>.</td></tr><tr><td><code>select&#95;stmt</code></td><td>A <a href="/docs/v23.2/selection-queries">selection query</a> that returns <code>job&#95;id</code>(s) to cancel.</td></tr><tr><td><code>for&#95;schedules&#95;clause</code></td><td>The schedule you want to cancel jobs for. You can cancel jobs for a specific schedule (<code>FOR SCHEDULE id</code>) or cancel jobs for multiple schedules by nesting a <a href="/docs/v23.2/select-clause"><code>SELECT</code> clause</a> in the statement (<code>FOR SCHEDULES &lt;select&#95;clause&gt;</code>). See the <a href="#cancel-jobs-for-a-schedule">examples</a> below.</td></tr><tr><td><code>BACKUP</code>, <code>CHANGEFEED</code>, <code>RESTORE</code>, <code>IMPORT</code></td><td>The job type to cancel.</td></tr></tbody></table>
+
+## Examples
+
+### Cancel a single job
+
+```sql
+> SHOW JOBS;
+```
+
+```text
++----------------+---------+------------------------------------------------+...
+|       id       |  type   |               description                      |...
++----------------+---------+------------------------------------------------+...
+| 27536791415282 | RESTORE | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
++----------------+---------+------------------------------------------------+...
+```
+
+```sql
+> CANCEL JOB 27536791415282;
+```
+
+### Cancel multiple jobs
+
+To cancel multiple jobs, nest a [`SELECT` clause](/docs/v23.2/select-clause) that retrieves `job_id`(s) inside the `CANCEL JOBS` statement:
+
+```sql
+> CANCEL JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
+      WHERE user_name = 'maxroach');
+```
+
+All jobs created by `maxroach` will be cancelled.
+
+### Cancel by job type
+
+To cancel all jobs by the type of job, use the `CANCEL ALL {job} JOBS` statement. You can cancel all `BACKUP`, `RESTORE`, `CHANGEFEED`, `IMPORT` jobs using this statement, for example:
+
+```sql
+CANCEL ALL BACKUP JOBS;
+```
+
+### Cancel automatic table statistics jobs
+
+Canceling an automatic table statistics job is not useful since the system will automatically restart the job immediately. To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting](/docs/v23.2/cluster-settings):
+
+```sql
+> SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+```
+
+### Cancel jobs for a schedule
+
+To cancel jobs for a specific [backup schedule](/docs/v23.2/create-schedule-for-backup), use the schedule's `id`:
+
+```sql
+> CANCEL JOBS FOR SCHEDULE 590204387299262465;
+```
+
+```text
+CANCEL JOBS FOR SCHEDULES 1
+```
+
+You can also CANCEL multiple schedules by nesting a [`SELECT` clause](/docs/v23.2/select-clause) that retrieves `id`(s) inside the `CANCEL JOBS` statement:
+
+```sql
+> CANCEL JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
+```
+
+```text
+CANCEL JOBS FOR SCHEDULES 2
+```
+
+## See also
+
+- [`SHOW JOBS`](/docs/v23.2/show-jobs)
+- [`BACKUP`](/docs/v23.2/backup)
+- [`RESTORE`](/docs/v23.2/restore)
+- [`IMPORT`](/docs/v23.2/import)
+- [`CREATE CHANGEFEED`](/docs/v23.2/create-changefeed)

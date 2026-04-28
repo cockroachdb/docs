@@ -1,0 +1,20 @@
+---
+title: "Overview metrics"
+old_description: "The Metrics Overview graphs let you monitor SQL performance, Request Units, and storage."
+---
+
+import MetricsOverview from "/snippets/cockroachcloud/metrics-overview.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MetricsOverview />

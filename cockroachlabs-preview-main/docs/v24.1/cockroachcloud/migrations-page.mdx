@@ -1,0 +1,20 @@
+---
+title: "MOLT Schema Conversion Tool"
+old_description: "Use the MOLT Schema Conversion Tool to begin a database migration to CockroachDB."
+---
+
+import MigrationsPage from "/snippets/cockroachcloud/migrations-page.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MigrationsPage />

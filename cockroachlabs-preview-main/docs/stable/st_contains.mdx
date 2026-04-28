@@ -1,0 +1,100 @@
+---
+title: "ST_Contains"
+old_description: "ST_Contains(A, B) returns true if no point in shape B lies outside of shape A, and at least one point in the interior of B lies in the interior of A."
+---
+
+Given two shapes _A_ and _B_, the predicate function `ST_Contains(A, B)` returns `true` if:
+
+- No point in _B_ lies outside of shape _A_, and
+- At least one point in the interior of _B_ lies in the interior of _A_.
+
+In other words, the exterior of shape _A_ must not include any point in _B_, and one or more points of _B_'s interior must lie in the interior of _A_.
+
+This behavior is similar to [`ST_Covers`](/docs/v26.1/st_covers), except that the criteria are more exacting, and therefore some pairs of shapes will be rejected by this function that would be accepted by `ST_Covers`.
+
+`ST_Contains` works on the following data types:
+
+- [`GEOMETRY`](/docs/v26.1/architecture/glossary#geometry)
+
+<Note>
+  `ST_Contains` will attempt to use any available [spatial index](/docs/v26.1/spatial-indexes) to speed up its
+  operation. Use the prefixed variant `_ST_Contains` if you do not want any spatial indexes to be used.
+</Note>
+
+<Note>This function is the inverse of [`ST_Within`](/docs/v26.1/st_within).</Note>
+
+## Examples
+
+<Note>
+  The screenshots in these examples were generated using [geojson.io](http://geojson.io/), but they are designed to
+  showcase the shapes, not the map. Representing `GEOMETRY` data in GeoJSON can lead to unexpected results if using
+  geometries with [SRIDs](/docs/v26.1/architecture/glossary#srid) other than 4326 (as shown below).
+</Note>
+
+### True
+
+In this example, `ST_Contains` returns `true` because:
+
+- No point in the LineString _B_ lies outside of the Polygon _A_, and
+- At least one point in the interior of _B_ lies in the interior of _A_.
+
+```sql
+SELECT ST_Contains(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;LINESTRING(-88.243385 40.116421, -87.906471 43.038902, -95.992775 36.153980)'));
+```
+
+```text
+  st_contains
+---------------
+     true
+
+(1 row)
+```
+
+<Frame>![ST_Contains - true](/images/v26.1/geospatial/st_contains_true.png)</Frame>
+
+### False
+
+In this example, `ST_Contains` returns `false` because:
+
+- At least one point in the interior of LineString _B_ does not lie in the interior of the Polygon _A_.
+
+Note that A query against these shapes with [`ST_Covers`](/docs/v26.1/st_covers) will return `true`.
+
+```sql
+SELECT st_contains(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;LINESTRING( -87.906471 43.038902, -95.992775 36.153980)'));
+```
+
+```text
+  st_contains
+---------------
+     false
+(1 row)
+```
+
+<Frame>![ST_Contains - false](/images/v26.1/geospatial/st_contains_false.png)</Frame>
+
+## See also
+
+- [Export Spatial Data](/docs/v26.1/export-spatial-data)
+- [Spatial tutorial](/docs/v26.1/spatial-tutorial)
+- [Spatial and GIS Glossary of Terms](/docs/v26.1/architecture/glossary)
+- [Spatial indexes](/docs/v26.1/spatial-indexes)
+- [Spatial functions](/docs/v26.1/functions-and-operators#spatial-functions)
+- [`ST_Covers`](/docs/v26.1/st_covers)
+- [`ST_CoveredBy`](/docs/v26.1/st_coveredby)
+- [`ST_Within`](/docs/v26.1/st_within)
+- [`ST_Intersects`](/docs/v26.1/st_intersects)
+- [`ST_CoveredBy`](/docs/v26.1/st_coveredby)
+- [`ST_Covers`](/docs/v26.1/st_covers)
+- [`ST_Disjoint`](/docs/v26.1/st_disjoint)
+- [`ST_Equals`](/docs/v26.1/st_equals)
+- [`ST_Overlaps`](/docs/v26.1/st_overlaps)
+- [`ST_Touches`](/docs/v26.1/st_touches)
+- [`ST_ConvexHull`](/docs/v26.1/st_convexhull)
+- [`ST_Union`](/docs/v26.1/st_union)
+- [Migrate from Shapefiles](/docs/v26.1/migrate-from-shapefiles)
+- [Migrate from GeoJSON](/docs/v26.1/migrate-from-geojson)
+- [Migrate from GeoPackage](/docs/v26.1/migrate-from-geopackage)
+- [Migrate from OpenStreetMap](/docs/v26.1/migrate-from-openstreetmap)
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data) (blog post)
+- [Using GeoServer with CockroachDB](/docs/v26.1/geoserver)

@@ -1,0 +1,46 @@
+---
+title: "Restoring Backups Across Versions"
+old_description: "CockroachDB's support policy for restoring backups across versions."
+---
+
+This page describes the support Cockroach Labs provides for restoring backups across major versions of CockroachDB. The sections outline the support for the most common use cases when restoring backups across versions:
+
+- [Support for restoring backups into a newer version](#support-for-restoring-backups-into-a-newer-version)
+- [Support for long-term backup archival](#support-for-long-term-backup-archival)
+
+<Note>
+Since CockroachDB considers the cluster version when running a backup, this page refers to versions in a "v25.4.x" format. For example, both v25.4.1 and v25.4.2 are considered as v25.4 clusters for backup purposes.
+</Note>
+
+CockroachDB is designed with high fault tolerance. However, taking regular backups of your data is an operational best practice for [disaster recovery](/docs/v25.4/disaster-recovery-planning) planning. See [how to upgrade to the latest version of CockroachDB](/docs/v25.4/upgrade-cockroach-version).
+
+## Support for restoring backups into a newer version
+
+Cockroach Labs supports restoring a backup taken on a cluster on a specific major version into a cluster that is on the same version or the next major version. Therefore, when upgrading your cluster from version N to N+1, if you took a backup on major version N, you can restore it to your cluster on either major version N or N+1.
+
+Additionally, you can skip an [innovation release](/docs/releases#major-versions) version when restoring a backup. Innovation releases are intermediate releases that introduce new features, but are not long-term supported versions.
+
+Other than skipping innovation releases, restoring backups outside major version N or N+1 is **not supported**.
+
+For example, backups taken on v24.1.x can be restored into v24.3.x (skipping the v24.2 innovation release). Backups taken on v24.3.x can be restored into v25.1.x:
+
+<table><thead><tr><th>Backup taken on version</th><th>Restorable into version</th></tr></thead><tbody><tr><td>23.2.x</td><td>23.2.x, 24.1.x</td></tr><tr><td>24.1.x</td><td>24.1.x, 24.2.x, 24.3.x</td></tr><tr><td>24.2.x (innovation)</td><td>24.2.x, 24.3.x</td></tr><tr><td>24.3.x</td><td>24.3.x, 25.1.x (innovation), 25.2.x</td></tr></tbody></table>
+
+Refer to [Supported releases](/docs/releases#supported-releases) and [Upcoming releases](/docs/releases#upcoming-releases).
+
+When a cluster is in a mixed-version state during an upgrade, [full cluster restores](/docs/v25.4/restore#restore-a-cluster) will fail. See the [Upgrade documentation](/docs/v25.4/upgrade-cockroach-version) for the necessary steps to finalize your upgrade. For CockroachDB Cloud clusters, see the [CockroachDB Cloud Upgrade Policy](/docs/cockroachcloud/upgrade-policy) page.
+
+<Note>
+Cockroach Labs does **not** support restoring backups from a higher version into a lower version.
+</Note>
+
+## Support for long-term backup archival
+
+When you need to archive a backup for the long term, we recommend that you also archive the CockroachDB binary of the version that the backup was taken on.
+
+For a true archival copy that is not dependent on CockroachDB at all, running a changefeed to export your data from CockroachDB and archiving the files would be a better approach instead of taking a backup. See [Export Data with Changefeeds](/docs/v25.4/export-data-with-changefeeds) for more detail.
+
+## See also
+
+- [`RESTORE`](/docs/v25.4/restore)
+- [Take Full and Incremental Backups](/docs/v25.4/take-full-and-incremental-backups)

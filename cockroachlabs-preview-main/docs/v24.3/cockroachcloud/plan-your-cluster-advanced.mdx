@@ -1,0 +1,20 @@
+---
+title: "Plan a CockroachDB Advanced Cluster"
+old_description: "Plan your cluster's configuration."
+---
+
+import PlanYourClusterAdvanced from "/snippets/cockroachcloud/plan-your-cluster-advanced.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<PlanYourClusterAdvanced />

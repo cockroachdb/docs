@@ -1,0 +1,69 @@
+---
+title: "SHOW STATEMENT HINTS"
+old_description: "The SHOW STATEMENT HINTS statement lists the injected hints for a SQL statement fingerprint."
+---
+
+import { ShowStatementHints } from "/snippets/syntax-diagrams/ShowStatementHints.jsx";
+
+The `SHOW STATEMENT HINTS` [statement](/docs/v26.1/sql-statements) lists the [injected hints](/docs/v26.1/cost-based-optimizer#hint-injection) that have been created for a specific SQL statement fingerprint using the `information_schema.crdb_rewrite_inline_hints()` built-in function.
+
+## Required privileges
+
+Users must have the [`VIEWCLUSTERMETADATA`](/docs/v26.1/security-reference/authorization#supported-privileges) privilege to run `SHOW STATEMENT HINTS`.
+
+## Synopsis
+
+<ShowStatementHints />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>string&#95;or&#95;placeholder</code></td><td>The SQL statement fingerprint to show injected hints for. This can be a string literal (such as <code>'SELECT &#42; FROM users WHERE city = &#95;'</code>) or a SQL parameter placeholder (such as <code>&#36;1</code>) for use in prepared statements.</td></tr></tbody></table>
+
+### Options
+
+<table><thead><tr><th>Option</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>DETAILS</code></td><td>N/A</td><td>Include hint-specific information in JSON format.</td></tr></tbody></table>
+
+## Response
+
+The following fields are returned:
+
+<table><thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>row&#95;id</code></td><td><code>INT</code></td><td>A unique ID.</td></tr><tr><td><code>fingerprint</code></td><td><code>STRING</code></td><td>The SQL statement fingerprint that the hint applies to.</td></tr><tr><td><code>hint&#95;type</code></td><td><code>STRING</code></td><td>Hint type. <code>rewrite&#95;inline&#95;hints</code> indicates an injected hint.</td></tr><tr><td><code>created&#95;at</code></td><td><code>TIMESTAMPTZ</code></td><td>The timestamp when the injected hint was created.</td></tr><tr><td><code>details</code></td><td><code>JSONB</code></td><td>When the <a href="#options"><code>DETAILS</code></a> option is specified, hint-specific information in JSON format. For <code>rewrite&#95;inline&#95;hints</code>, this includes the donor SQL fingerprint with hints that will be applied.</td></tr></tbody></table>
+
+## Examples
+
+### Show hints for a statement
+
+To show all injected hints for a specific statement fingerprint:
+
+```sql
+SHOW STATEMENT HINTS FOR $$ SELECT * FROM users WHERE city = _ $$;
+```
+
+```text
+        row_id        |            fingerprint             |      hint_type       |          created_at
+----------------------+------------------------------------+----------------------+--------------------------------
+  1143470380756697089 | SELECT * FROM users WHERE city = _ | rewrite_inline_hints | 2026-01-21 21:11:06.782818+00
+(1 row)
+```
+
+### Show hints with detailed information
+
+To include the donor fingerprint in the output:
+
+```sql
+SHOW STATEMENT HINTS FOR $$ SELECT * FROM users WHERE city = _ $$ WITH DETAILS;
+```
+
+```text
+        row_id        |            fingerprint             |      hint_type       |          created_at           |                              details
+----------------------+------------------------------------+----------------------+-------------------------------+--------------------------------------------------------------------
+  1143470380756697089 | SELECT * FROM users WHERE city = _ | rewrite_inline_hints | 2026-01-21 21:11:06.782818+00 | {"donorSql": "SELECT * FROM users@users_city_idx WHERE city = _"}
+(1 row)
+```
+
+## See also
+
+- [Hint injection](/docs/v26.1/cost-based-optimizer#hint-injection)
+- [Index hints](/docs/v26.1/table-expressions#force-index-selection)
+- [Join hints](/docs/v26.1/cost-based-optimizer#join-hints)
+- [SQL Statements](/docs/v26.1/sql-statements)

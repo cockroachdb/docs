@@ -1,0 +1,187 @@
+---
+title: "DROP OWNED BY"
+old_description: "The DROP OWNED BY statement drops all objects owned by and any grants on objects not owned by a role."
+---
+
+import { DropOwnedBy3 } from "/snippets/syntax-diagrams/DropOwnedBy3.jsx";
+
+The `DROP OWNED BY` [statement](/docs/v24.1/sql-statements) drops all objects owned by and any [grants](/docs/v24.1/grant) on objects not owned by a [role](/docs/v24.1/security-reference/authorization#roles).
+
+<Note>
+The `DROP OWNED BY` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v24.1/online-schema-changes).
+</Note>
+
+## Required privileges
+
+The [role](/docs/v24.1/security-reference/authorization#roles) must have the `DROP` [privilege](/docs/v24.1/security-reference/authorization#managing-privileges) on the specified objects.
+
+`DROP OWNED BY` will result in an error if the user was granted a [system-level privilege](/docs/v24.1/security-reference/authorization#supported-privileges) (i.e., using the [`GRANT SYSTEM...`](/docs/v24.1/grant#grant-system-level-privileges-on-the-entire-cluster) statement). To work around this, use [`SHOW SYSTEM GRANTS FOR <role>`](/docs/v24.1/show-system-grants) and then use [`REVOKE SYSTEM...`](/docs/v24.1/revoke#revoke-system-level-privileges-on-the-entire-cluster) for each system-level privilege in the result.
+
+## Synopsis
+
+<DropOwnedBy3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>role&#95;spec&#95;list</code></td><td>The source <a href="/docs/v24.1/security-reference/authorization#roles">role</a>, or a comma-separated list of source roles.</td></tr><tr><td><code>RESTRICT</code></td><td><em>(Default)</em> Do not drop ownership if any objects (such as <a href="/docs/v24.1/constraints">constraints</a> and tables) use it.</td></tr><tr><td><code>CASCADE</code></td><td>Not implemented.</td></tr></tbody></table>
+
+## Known limitations
+
+- [`ENUM`](/docs/v24.1/enum) types are not dropped.
+- [`DROP OWNED BY`](/docs/v24.1/drop-owned-by) drops all owned objects as well as any [grants](/docs/v24.1/grant) on objects not owned by the [role](/docs/v24.1/security-reference/authorization#roles).
+- If the [role](/docs/v24.1/security-reference/authorization#roles) for which you are trying to `DROP OWNED BY` was granted a [system-level privilege](/docs/v24.1/security-reference/authorization#supported-privileges) (i.e., using the [`GRANT SYSTEM...`](/docs/v24.1/grant#grant-system-level-privileges-on-the-entire-cluster) statement), the following error will be signalled:
+
+    ```text
+    ERROR: cannot perform drop owned by if role has synthetic privileges; foo has entries in system.privileges
+    SQLSTATE: 0A000
+    HINT: perform REVOKE SYSTEM ... for the relevant privileges foo has in system.privileges
+    ```
+
+    The phrase "synthetic privileges" in the error message refers to [system-level privileges](/docs/v24.1/security-reference/authorization#supported-privileges).
+
+    The workaround is to use [`SHOW SYSTEM GRANTS FOR {role}`](/docs/v24.1/show-system-grants) and then use [`REVOKE SYSTEM...`](/docs/v24.1/revoke#revoke-system-level-privileges-on-the-entire-cluster) for each privilege in the result. [#88149](https://github.com/cockroachdb/cockroach/issues/88149)
+
+## Examples
+
+The following examples assume a [local cluster is running](/docs/v24.1/start-a-local-cluster). They involve a user we will create called `maxroach` and several tables. The setup is shown below.
+
+From a Terminal window, open a SQL shell as the `root` user:
+
+```shell
+cockroach sql --insecure --host localhost --port 26257
+```
+
+Next, create the user `maxroach`:
+
+```sql
+CREATE USER IF NOT EXISTS maxroach;
+```
+
+From a second Terminal window, open a SQL shell as the newly created user `maxroach`.
+
+```shell
+cockroach sql --insecure --host localhost --port 26257 --user maxroach
+```
+
+### Drop all objects owned by a user/role
+
+From the `maxroach` user's SQL shell, create a table called `max_kv`:
+
+```sql
+CREATE TABLE IF NOT EXISTS max_kv (k INT, v INT);
+```
+
+To verify that this table is owned by `maxroach`, use [`SHOW GRANTS`](/docs/v24.1/show-grants):
+
+```sql
+SHOW GRANTS FOR maxroach;
+```
+
+```text
+  database_name | schema_name | object_name   | grantee  | privilege_type | is_grantable
+----------------+-------------+---------------+----------+----------------+---------------
+  defaultdb     | public      | max_kv        | maxroach | ALL            |      t
+(1 row)
+```
+
+To drop all of the objects owned by the user `maxroach`, switch to the `root` user's SQL shell and use `DROP OWNED BY`:
+
+```sql
+DROP OWNED BY maxroach;
+```
+
+In this case, `maxroach` only owns the `max_kv` table, so this will drop that table from the database completely. To confirm that the table has been dropped, run [`SHOW TABLES`](/docs/v24.1/show-tables):
+
+```sql
+SHOW TABLES;
+```
+
+```text
+SHOW TABLES 0
+```
+
+From the `root` user's SQL shell, use [`SHOW GRANTS`](/docs/v24.1/show-grants) to further confirm that the `maxroach` user has no remaining object grants:
+
+```sql
+SHOW GRANTS FOR maxroach;
+```
+
+```text
+SHOW GRANTS 0
+```
+
+### Drop all grants on objects for a user/role
+
+From the `root` user's SQL shell, create a table called `root_kv`:
+
+```sql
+CREATE TABLE IF NOT EXISTS root_kv (k INT, v INT);
+```
+
+Next, grant all privileges on that table to user `maxroach` using [`GRANT ALL`](/docs/v24.1/grant):
+
+```sql
+GRANT ALL on root_kv TO maxroach;
+```
+
+Next, confirm that the user `maxroach` has all privileges on the table using [`SHOW GRANTS`](/docs/v24.1/show-grants):
+
+```sql
+SHOW GRANTS FOR maxroach;
+```
+
+```text
+  database_name | schema_name | object_name   | grantee  | privilege_type | is_grantable
+----------------+-------------+---------------+----------+----------------+---------------
+  defaultdb     | public      | root_kv       | maxroach | ALL            |      f
+(1 row)
+```
+
+Next, switch to the `maxroach` user's SQL shell, and insert some data into the table. It should succeed:
+
+```sql
+INSERT INTO root_kv(k) select i from generate_series(1,10) as i;
+```
+
+```text
+INSERT 0 10
+```
+
+Next, switch to the `root` user's SQL shell and use `DROP OWNED BY` to remove all grants on objects to the user `maxroach`:
+
+```sql
+DROP OWNED BY maxroach;
+```
+
+Next, confirm that the user `maxroach` has no grants on any objects using [`SHOW GRANTS`](/docs/v24.1/show-grants):
+
+```sql
+SHOW GRANTS FOR maxroach;
+```
+
+```text
+SHOW GRANTS 0
+```
+
+Finally, switch back to the `maxroach` user's SQL shell and try to insert data into the `root_kv` table. This should signal an error:
+
+```sql
+INSERT INTO root_kv(k) select i from generate_series(1,10) as i;
+```
+
+```text
+ERROR: user maxroach does not have INSERT privilege on relation root_kv
+SQLSTATE: 42501
+```
+
+## See also
+
+- [Authorization in CockroachDB](/docs/v24.1/security-reference/authorization)
+- [`GRANT`](/docs/v24.1/grant)
+- [`SHOW GRANTS`](/docs/v24.1/show-grants)
+- [`REVOKE`](/docs/v24.1/revoke)
+- [`REASSIGN OWNED`](/docs/v24.1/reassign-owned)
+- [`DROP ROLE`](/docs/v24.1/drop-role)
+- [`SHOW TABLES`](/docs/v24.1/show-tables)
+- [SQL Statements](/docs/v24.1/sql-statements)
+- [Online Schema Changes](/docs/v24.1/online-schema-changes)

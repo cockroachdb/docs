@@ -1,0 +1,371 @@
+---
+title: "Glossary"
+old_description: "Learn about database, CockroachDB architecture and deployment, and CockroachCloud terminology."
+---
+
+This page defines terms that you will encounter throughout the documentation.
+
+## Database terms
+
+### Consistency
+
+The requirement that a transaction must change affected data only in allowed ways. CockroachDB uses "consistency" in both the sense of [ACID semantics](https://en.wikipedia.org/wiki/ACID) and the [CAP theorem](https://wikipedia.org/wiki/CAP_theorem), albeit less formally than either definition.
+
+### Isolation
+
+The degree to which a transaction may be affected by other transactions running at the same time. CockroachDB provides the [`SERIALIZABLE`](https://wikipedia.org/wiki/Serializability) and `READ COMMITTED` isolation levels. For more information, see [Isolation levels](/docs/v25.4/transactions#isolation-levels).
+
+### Consensus
+
+The process of reaching agreement on whether a transaction is committed or aborted. CockroachDB uses the [Raft consensus protocol](#architecture-raft). In CockroachDB, when a range receives a write, a [quorum](https://wikipedia.org/wiki/Quorum_%28distributed_computing%29) of nodes containing replicas of the range acknowledge the write. This means your data is safely stored and a majority of nodes agree on the database's current state, even if some of the nodes are offline.
+
+When a write does not achieve consensus, forward progress halts to maintain consistency within the cluster.
+
+### Replication
+
+The process of creating and distributing copies of data, as well as ensuring that those copies remain consistent. CockroachDB requires all writes to propagate to a [quorum](https://wikipedia.org/wiki/Quorum_%28distributed_computing%29) of copies of the data before being considered committed. This ensures the consistency of your data.
+
+### Transaction
+
+A set of operations performed on a database that satisfy the requirements of [ACID semantics](https://en.wikipedia.org/wiki/ACID). This is a crucial feature for a consistent system to ensure developers can trust the data in their database. For more information about how transactions work in CockroachDB, see [Transaction Layer](/docs/v25.4/architecture/transaction-layer).
+
+### Transaction contention
+
+A [state of conflict](/docs/v25.4/performance-best-practices-overview#transaction-contention) that occurs when:
+
+- A [transaction](/docs/v25.4/transactions) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. This is also called *lock contention*.
+- A transaction is [automatically retried](/docs/v25.4/transactions#automatic-retries) because it could not be placed into a [serializable ordering](/docs/v25.4/demo-serializable) among all of the currently executing transactions. This is also called a *serialization conflict*. If the automatic retry is not possible or fails, a [*transaction retry error*](/docs/v25.4/transaction-retry-error-reference) is emitted to the client, requiring a client application running under `SERIALIZABLE` isolation to [retry the transaction](/docs/v25.4/transaction-retry-error-reference#client-side-retry-handling).
+
+Steps should be taken to [reduce transaction contention](/docs/v25.4/performance-best-practices-overview#reduce-transaction-contention) in the first place.
+
+### Multi-active availability
+
+A consensus-based notion of high availability that lets each node in the cluster handle reads and writes for a subset of the stored data (on a per-range basis). This is in contrast to *active-passive replication*, in which the active node receives 100% of request traffic, and *active-active* replication, in which all nodes accept requests but typically cannot guarantee that reads are both up-to-date and fast.
+
+### User
+
+A SQL user is an identity capable of executing SQL statements and performing other cluster actions against CockroachDB clusters. SQL users must authenticate with an option permitted on the cluster (username/password, single sign-on (SSO), or certificate). Note that a SQL/cluster user is distinct from a CockroachDB Cloud organization user.
+
+## CockroachDB architecture terms
+
+### Cluster
+
+A group of interconnected CockroachDB nodes that function as a single distributed SQL database server. Nodes collaboratively organize transactions, and rebalance workload and data storage to optimize performance and fault-tolerance.
+
+Each cluster has its own authorization hierarchy, meaning that users and roles must be defined on that specific cluster.
+
+A CockroachDB cluster can be run in CockroachDB Cloud, within a customer [Organization](/docs/v25.4/architecture/glossary#organization), or can be self-hosted.
+
+### Node
+
+An individual instance of CockroachDB. One or more nodes form a cluster.
+
+### Range
+
+CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a sorted map of key-value pairs. This keyspace is divided into contiguous chunks called *ranges*, such that every key is found in one range.
+
+From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the *primary index* because the table is sorted by the primary key) or a single row in a secondary index. As soon as the size of a range reaches [the default range size](/docs/v25.4/configure-replication-zones#range-max-bytes), it is [split into two ranges](/docs/v25.4/architecture/distribution-layer#range-splits). This process continues for these new ranges as the table and its indexes continue growing.
+
+### Replica
+
+A copy of a range stored on a node. By default, there are three [replicas](/docs/v25.4/configure-replication-zones#num_replicas) of each range on different nodes.
+
+### Leaseholder
+
+The replica that holds the "range lease." This replica receives and coordinates all read and write requests for the range.
+
+For most types of tables and queries, the leaseholder is the only replica that can serve consistent reads (reads that return "the latest" data).
+
+The leaseholder is always the same replica as the [Raft leader](#architecture-raft-leader), except briefly during [lease transfers](/docs/v25.4/architecture/replication-layer#how-leases-are-transferred-from-a-dead-node). For more information, refer to [Leader leases](/docs/v25.4/architecture/replication-layer#leader-leases).
+
+### Raft protocol
+
+The [consensus protocol](/docs/v25.4/architecture/replication-layer#raft) employed in CockroachDB that ensures that your data is safely stored on multiple nodes and that those nodes agree on the current state even if some of them are temporarily disconnected.
+
+### Raft leader
+
+For each range, the replica that is the "leader" for write requests. The leader uses the Raft protocol to ensure that a majority of replicas (the leader and enough followers) agree, based on their Raft logs, before committing the write. The Raft leader is always the same replica as the [leaseholder](#architecture-raft-leader). For more information, refer to [Leader leases](/docs/v25.4/architecture/replication-layer#leader-leases).
+
+### Raft log
+
+A time-ordered log of writes to a range that its replicas have agreed on. This log exists on-disk with each replica and is the range's source of truth for consistent replication.
+
+For more information on CockroachDB architecture, see [Architecture Overview](/docs/v25.4/architecture/overview#overview).
+
+## CockroachDB deployment terms
+
+#### Region
+
+A logical identification of how nodes and data are clustered around [geographical locations](/docs/v25.4/multiregion-overview). A *cluster region* is the set of locations where cluster nodes are running. A *database region* is the subset of cluster regions database data should be restricted to.
+
+#### Availability zone
+
+A part of a data center that is considered to form a unit with regards to failures and fault tolerance. There can be multiple nodes in a single availability zone, however Cockroach Labs recommends that you to place different replicas of your data in different availability zones.
+
+#### [CockroachDB self-hosted](/docs/v25.4/start-a-local-cluster)
+
+A full featured, self-managed CockroachDB deployment.
+
+## CockroachDB Cloud terms
+
+#### Organization
+
+In CockroachDB Cloud, an organization corresponds to an authorization hierarchy rooted linked to a billing account. The admins of the organization can add or invite other users to it.
+
+To learn more, refer to [Overview of the CockroachDB Cloud authorization model](/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-authorization-model).
+
+#### User
+
+A CockroachDB Cloud user can belong to one or more organizations.
+
+Organization users are granted permissions to perform organization and cluster administration functions through one or more roles: [Organization user roles](/docs/cockroachcloud/authorization#organization-user-roles).
+
+<Note>
+The concept of *Organization user* is distinct from *SQL user/role* in any given cluster.
+
+Learn more: [Overview of the CockroachDB Cloud authorization model](/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-authorization-model).
+</Note>
+
+#### Service Account
+
+A service account is a type of identity similar to an Organization user, but is intended to be used for automation.
+
+Service accounts authenticate with API keys to the CockroachDB Cloud API, rather than to the CockroachDB Cloud Console UI.
+
+Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](/docs/cockroachcloud/authorization#organization-user-roles) as users.
+
+However, 'legacy service accounts' that were created before the updated authorization model was enabled for your cloud organization may have permissions assigned under the legacy model (like ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts is now deprecated. It is recommended to update such service accounts with updated organization roles.
+
+To learn more, refer to [Manage Service Accounts](/docs/cockroachcloud/managing-access#manage-service-accounts).
+
+#### CockroachDB Basic cluster
+
+A CockroachDB Cloud cluster with minimal operational features deployed in *shared* network and compute infrastructure.
+
+#### CockroachDB Standard cluster
+
+A CockroachDB Cloud cluster with full operational features and provisioned capacity, deployed in *shared* network and compute infrastructure.
+
+#### CockroachDB Advanced cluster
+
+A CockroachDB Cloud cluster with full operational capacity deployed in a cloud provider's network and compute infrastructure *dedicated* to each customer. In addition to infrastructure isolation, Advanced clusters can be customized with advanced security features for PCI DSS and HIPAA [compliance](/docs/cockroachcloud/compliance) at an additional cost.
+
+#### Request Unit (RU)
+
+All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in Request Units, or RUs. An RU is an abstracted metric that represents the [compute and I/O resources](/docs/cockroachcloud/resource-usage#understand-resource-consumption) used by a database operation. In addition to queries that you run, background activity, such as automatic statistics to optimize your queries or running a changefeed to an external sink, also consumes RUs. You can review how many request units your cluster has used on the [Cluster Overview](/docs/cockroachcloud/cluster-overview-page#request-units) page.
+
+#### Resource limits
+
+The maximum amount of storage and RUs a CockroachDB Basic cluster can use in a particular billing period. The amount you are billed is based on the actual resources the cluster used during that billing period.
+
+#### Storage
+
+Disk space for permanently storing data over time. All data in CockroachDB Basic and Standard is automatically replicated three times and distributed across Availability Zones to survive outages. Storage is measured in units of GiB-months, which is the amount of data stored multiplied by how long it was stored. Storing 10 GiB for a month and storing 1 GiB for 10 months are both 10 GiB-months. The storage you see in the [Cluster Overview](/docs/cockroachcloud/basic-cluster-management#view-cluster-overview) page is the amount of data before considering the replication multiplier.
+
+## Spatial and GIS terms
+
+This section contains a glossary of terms common to spatial databases and geographic information systems (GIS). Where possible, we provide links to further information.
+
+<Note>
+This section is provided for reference purposes only. The inclusion of a term in this glossary does not imply that CockroachDB has support for any feature(s) related to that term. For more information about the specific spatial and GIS features supported by CockroachDB, see [Working with Spatial Data](/docs/v25.4/query-spatial-data).
+</Note>
+
+### Geometry terms
+
+#### Bounding box
+
+Given a set of points, a bounding box is the smallest rectangle that encloses all of the points in the set. Due to edge cases in how geographic points are mapped to [cartographic projections](#cartographic-projection), a bounding box for a given set of points may be larger than expected.
+
+#### Spheroid
+
+A spheroid (also known as an ellipsoid) is essentially a "slightly squished" sphere. Spheroids are used to represent almost-but-not-quite spherical objects. For example, a spheroid is used to represent the Earth in the [World Geodetic System](#wgs84) standard.
+
+#### Cartographic projection
+
+A cartographic projection, or map projection, is the process used to represent 3-dimensional (or higher) data on a 2-dimensional surface. This is usually related to how we might display 3-dimensional shapes represented in a database by the [`GEOGRAPHY` data type](#geography) on the surface of a map, which is a flat plane. For more information, see the GIS Lounge article [What is a Map Projection?](https://www.gislounge.com/map-projection) by Caitlin Dempsey.
+
+#### Covering
+
+The covering of a shape *A* is a set of locations (in CockroachDB, [S2 cell IDs](#s2)) that comprise another shape *B* such that no points of *A* lie outside of *B*.
+
+#### Geocoder
+
+Takes an address or the name of a place, and returns latitude and longitude coordinates. For more information, see [the Wikipedia article on Geocoding](https://wikipedia.org/wiki/Geocoding).
+
+#### Nearest-neighbor search
+
+Given a starting point on a map and a set of search criteria, find the specified number of points nearest the starting point that meet the criteria. For example, a nearest-neighbor search can be used to answer the question, "What are the 10 closest [Waffle House restaurants](https://www.wafflehouse.com/) to my current location?" This is also sometimes referred to as "*k* nearest-neighbor" search.
+
+#### SRID
+
+The Spatial Referencing System Identifier (a.k.a. SRID) is used to tell which spatial reference system will be used to interpret each spatial object. A [commonly used SRID is 4326](/docs/v25.4/srid-4326), which represents spatial data using longitude and latitude coordinates on the Earth's surface as defined in the [WGS84](#wgs84) standard.
+
+#### Spatial reference system
+
+Used to define what a spatial object "means". For example, a spatial object could use [geographic](#geography) coordinates using latitude and longitude, or a [geometry](#geometry) projection using points with X,Y coordinates in a 2-dimensional plane.
+
+### Data types
+
+#### `GEOMETRY`
+
+Used to represent shapes relative to 2-, 3-, or higher-dimensional plane geometry. For more information about the spatial objects used to represent geometries, see: - [`POINT`](/docs/v25.4/point) - [`LINESTRING`](/docs/v25.4/linestring) - [`POLYGON`](/docs/v25.4/polygon) - [`MULTIPOINT`](/docs/v25.4/multipoint) - [`MULTILINESTRING`](/docs/v25.4/multilinestring) - [`MULTIPOLYGON`](/docs/v25.4/multipolygon) - [`GEOMETRYCOLLECTION`](/docs/v25.4/geometrycollection)
+
+#### `GEOGRAPHY`
+
+Used to represent shapes relative to locations on the Earth's [spheroidal](#spheroid) surface.
+
+### Data formats
+
+#### WKT
+
+The "Well Known Text" data format is a convenient human-readable notation for representing [spatial objects](#spatial-objects). For example a 2-dimensional point object with x- and y-coordinates is represented in WKT as `POINT(123,456)`. This format is defined by the [OGC](#ogc). For more information, see the [Well Known Text](/docs/v25.4/well-known-text) documentation.
+
+#### EWKT
+
+The "Extended Well Known Text" data format extends [WKT](#wkt) by prepending an [SRID](#srid) to the shape's description. For more information, see the [Well Known Text](/docs/v25.4/well-known-text#ewkt) documentation.
+
+#### WKB
+
+The "Well Known Binary" data format is a convenient machine-readable binary representation for [spatial objects](#spatial-objects). For efficiency, an application may choose to use this data format, but humans may prefer to read [WKT](#wkt). This format is defined by the [OGC](#ogc). For more information, see [Well Known Binary](/docs/v25.4/well-known-binary).
+
+#### EWKB
+
+The "Extended Well Known Binary" data format extends [WKB](#wkb) by prepending [SRID](#srid) information to the shape's description. For more information, see [Well Known Binary](/docs/v25.4/well-known-binary#ewkb).
+
+### Organizations
+
+#### OSGeo
+
+The Open Source Geospatial Foundation. For more information, see [https://www.osgeo.org](https://www.osgeo.org/).
+
+#### OGC
+
+The [Open Geospatial Consortium](https://www.ogc.org/) was formerly known as the "Open GIS Consortium". The organization is still referred to colloquially as "OpenGIS" in many places online. The OGC is a consortium of businesses, government agencies, universities, etc., described as "a worldwide community committed to improving access to geospatial (location) information."
+
+#### MapBox
+
+A company providing a location data platform for mobile and web applications. For more information, see [https://www.mapbox.com/](https://www.mapbox.com/).
+
+#### Esri
+
+A company providing "location intelligence" services. Esri develops spatial and [GIS](#gis) software, including the popular [ArcGIS](#arcgis) package. For more information about Esri, see [https://www.esri.com](https://www.esri.com/).
+
+### Industry Standards
+
+#### SQL/MM
+
+The SQL Multimedia Applications specification. The part of this standard that applies to SQL geospatial data types is defined in [part 3 of the ISO/IEC 13249 document](https://www.iso.org/standard/60343). For a freely available paper discussing the geospatial data types and functions defined by the standard, see the (PDF) paper [SQL/MM Spatial: The Standard to Manage Spatial Data in Relational Database Systems](http://doesen0.informatik.uni-leipzig.de/proceedings/paper/68.pdf), by Knut Stolze.
+
+#### WGS84
+
+The latest revision of the [World Geodetic System](http://wiki.gis.com/wiki/index.php/World_Geodetic_System) standard (from 1984 CE), which defines a standard spheroidal reference system for mapping the Earth. See also: [spheroid](#spheroid), [cartographic projection](#cartographic-projection).
+
+#### DE-9IM
+
+The [Dimensionally Extended nine-Intersection Model (DE-9IM)](https://wikipedia.org/wiki/DE-9IM) defines a method that uses a 3x3 matrix to determine whether two shapes (1) touch along a boundary, (2), intersect (overlap), or (3) are equal to each other - that is, they are the same shape that covers the same area. This notation is used by the `ST_Relate` built-in function. Almost all other spatial predicate functions can be logically implemented using this model. However, in practice, most are not, and `ST_Relate` is reserved for advanced use cases.
+
+### File Formats
+
+#### Shapefile
+
+A spatial data file format developed by [Esri](#esri) and used by [GIS](#gis) software for storing geospatial data. It can be automatically converted to SQL by tools like [shp2pgsql](https://manpages.debian.org/stretch/postgis/shp2pgsql.1) for use by a database that can run spatial queries.
+
+#### Vector file
+
+A file format that uses a non-pixel-based, abstract coordinate representation for geospatial data. Because it is abstract and not tied to pixels, the vector format is scalable. The motivation is similar to that behind the [Scalable Vector Graphics (SVG)](https://wikipedia.org/wiki/Scalable_Vector_Graphics) image format: scaling the image up or down does not reveal any "jaggedness" (due to loss of information) such as might be revealed by a pixel representation. However, vector files are usually much larger in size and more expensive (in terms of CPU, memory, and disk) to work with than [Raster files](#raster-file).
+
+#### Raster file
+
+A file format that uses a non-scalable, pixel-based representation for geospatial data. Raster files are smaller and generally faster to read, write, or generate than [Vector files](#vector-file). However, raster files have inferior image quality and/or accuracy when compared to vector files: they can appear "jagged" due to the reduced information available when compared to vector files.
+
+#### GeoJSON
+
+A format for encoding geometric and geographic data as [JSON](https://www.json.org/). For more information, see [GeoJSON](/docs/v25.4/geojson).
+
+### Software and Code Libraries
+
+#### GIS
+
+A "Geographic Information System" (or GIS) is used to store geographic information in a computer for processing and interaction by humans and/or other software. Some systems provide graphical "point and click" user interfaces, and some are embedded in programming languages or data query languages like SQL. For example, CockroachDB versions 20.2 and later provide support for [executing spatial queries from SQL](/docs/v25.4/query-spatial-data).
+
+#### ArcGIS
+
+A commercial [GIS](#gis) software package developed by the location intelligence company [Esri](#esri). For more information, see Esri's [ArcGIS overview](https://www.esri.com/en-us/arcgis/about-arcgis/overview).
+
+#### PostGIS
+
+An extension to the [PostgreSQL](https://postgresql.org/) database that adds support for geospatial queries. For more information, see [postgis.net](https://postgis.net/).
+
+#### GEOS
+
+A geometry library used by CockroachDB, [PostGIS](#postgis), and other projects to provide the calculations underlying various spatial predicate functions and operators. For more information, see [http://trac.osgeo.org/geos/](http://trac.osgeo.org/geos).
+
+#### GeographicLib
+
+A C++ library for performing various geographic and other calculations used by CockroachDB and other projects. For more information, see [https://geographiclib.sourceforge.io](https://geographiclib.sourceforge.io/).
+
+#### GDAL
+
+A Geospatial Data Abstraction Library used to provide support for many types of [raster file formats](#raster-file). Used in [PostGIS](#postgis). For more information, see [https://www.gdal.org/](https://www.gdal.org/).
+
+#### PROJ
+
+A [cartographic projection](#cartographic-projection) library. Used by CockroachDB and other projects. For more information, see [https://proj.org/](https://proj.org/).
+
+#### GeoBuf
+
+A compact binary encoding developed by [MapBox](#mapbox) that provides nearly lossless compression of [GeoJSON](#geojson) data into [protocol buffers](https://developers.google.com/protocol-buffers). For more information, see [https://github.com/mapbox/geobuf](https://github.com/mapbox/geobuf).
+
+#### CGAL
+
+The computational geometry algorithms library. For more information, see [https://www.cgal.org](https://www.cgal.org/).
+
+#### SFCGAL
+
+A C++ wrapper library around [CGAL](#cgal). For more information, see [http://www.sfcgal.org](http://www.sfcgal.org/).
+
+#### TIGER
+
+The "Topographically Integrated Geographic Encoding and Referencing System" released by the [U.S. Census Bureau](https://www.census.gov/programs-surveys/geography/guidance/tiger-data-products-guide).
+
+#### S2
+
+The [S2 Geometry Library](http://s2geometry.io/) is a C++ code library for performing spherical geometry computations. It models a sphere using a [quadtree](https://wikipedia.org/wiki/Quadtree) "divide the space" approach, and is used by CockroachDB.
+
+### Spatial objects
+
+This section has information about the representation of geometric and geographic "shapes" according to the [SQL/MM](#sql-mm) standard.
+
+#### Point
+
+A point is a sizeless location identified by its X and Y coordinates. These coordinates are then translated according to the [spatial reference system](#spatial-reference-system) to determine what the point "is", or what it "means" relative to the other geometric objects (if any) in the data set. A point can be created in SQL by the `ST_Point()` function.
+
+#### LineString
+
+A linestring is a collection of [points](#point) that are "strung together" into one geometric object, like a necklace. If the "necklace" were "closed", it could also represent a [polygon](#polygon). A linestring can also be used to represent an arbitrary curve, such as a [Bézier curve](https://wikipedia.org/wiki/B%C3%A9zier_curve).
+
+#### Polygon
+
+A polygon is a closed shape that can be made up of straight or curved lines. It can be thought of as a "closed" [linestring](#linestring). Irregular polygons can take on almost any arbitrary shape. Common regular polygons include: squares, rectangles, hexagons, and so forth. For more information about regular polygons, see the ['Regular polygon' Wikipedia article](https://wikipedia.org/wiki/Regular_polygon).
+
+#### GeometryCollection
+
+A geometry collection is a "box" or "bag" used for gathering 1 or more of the other types of objects defined above into a collection: namely, points, linestrings, or polygons. In the particular case of SQL, it provides a way of referring to a group of spatial objects as one "thing" so that you can operate on it/them more conveniently, using various SQL functions.
+
+### Spatial System tables
+
+#### `pg_extension`
+
+A table used by the PostgreSQL database to store information about extensions to that database. Provided for compatibility by CockroachDB. For more information, see [the PostgreSQL documentation](https://www.postgresql.org/docs/current/catalog-pg-extension).
+
+#### `spatial_ref_sys`
+
+A SQL table defined by the [OGC](#ogc) that holds the list of [SRID](#srid)s supported by a database, e.g., `SELECT count(*) FROM spatial_ref_sys;`
+
+#### `geometry_columns`
+
+Used to list all of the columns in a database with the [`GEOMETRY`](#geometry) data type, e.g., `SELECT * from geometry_columns`.
+
+#### `geography_columns`
+
+Used to list all of the columns in a database with the [`GEOGRAPHY`](#geography) data type, e.g., `SELECT * FROM geography_columns`.

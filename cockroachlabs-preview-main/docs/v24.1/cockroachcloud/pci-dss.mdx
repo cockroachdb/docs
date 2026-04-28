@@ -1,0 +1,20 @@
+---
+title: "Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Advanced"
+old_description: "Learn about compliance with the Payment Card Industry Data Security Standard (PCI DSS) for CockroachDB Advanced clusters."
+---
+
+import PciDss from "/snippets/cockroachcloud/pci-dss.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<PciDss />

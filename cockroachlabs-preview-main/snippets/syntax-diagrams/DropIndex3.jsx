@@ -1,0 +1,82 @@
+export const DropIndex3 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="211" width="569" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="58" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">DROP</text>
+<rect height="32" rx="10" width="64" x="109" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="107" y="1"></rect>
+<text class="terminal" x="117" y="21">INDEX</text>
+<rect height="32" rx="10" width="130" x="213" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="130" x="211" y="33"></rect>
+<text class="terminal" x="221" y="53">CONCURRENTLY</text>
+<rect height="32" rx="10" width="34" x="403" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="34" x="401" y="33"></rect>
+<text class="terminal" x="411" y="53">IF</text>
+<rect height="32" rx="10" width="70" x="457" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="455" y="33"></rect>
+<text class="terminal" x="465" y="53">EXISTS</text><a xlink:href="/docs/v24.1/sql-grammar#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="107" y="133"></rect>
+<rect class="nonterminal" height="32" width="96" x="105" y="131"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="117" y="151">table_name</text></a><rect height="32" rx="10" width="32" x="223" y="133"></rect>
+<rect class="terminal" height="32" rx="10" width="32" x="221" y="131"></rect>
+<text class="terminal" x="231" y="151">@</text><a xlink:href="/docs/v24.1/sql-grammar#index_name" xlink:title="index_name">
+<rect height="32" width="98" x="295" y="101"></rect>
+<rect class="nonterminal" height="32" width="98" x="293" y="99"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="74" font-size="11" class="nonterminal" x="305" y="119">index_name</text></a><rect height="32" rx="10" width="84" x="433" y="133"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="431" y="131"></rect>
+<text class="terminal" x="441" y="151">CASCADE</text>
+<rect height="32" rx="10" width="88" x="433" y="177"></rect>
+<rect class="terminal" height="32" rx="10" width="88" x="431" y="175"></rect>
+<text class="terminal" x="441" y="195">RESTRICT</text>
+<path class="line" d="m17 17 h2 m0 0 h10 m58 0 h10 m0 0 h10 m64 0 h10 m20 0 h10 m0 0 h140 m-170 0 h20 m150 0 h20 m-190 0 q10 0 10 10 m170 0 q0 -10 10 -10 m-180 10 v12 m170 0 v-12 m-170 12 q0 10 10 10 m150 0 q10 0 10 -10 m-160 10 h10 m130 0 h10 m40 -32 h10 m0 0 h134 m-164 0 h20 m144 0 h20 m-184 0 q10 0 10 10 m164 0 q0 -10 10 -10 m-174 10 v12 m164 0 v-12 m-164 12 q0 10 10 10 m144 0 q10 0 10 -10 m-154 10 h10 m34 0 h10 m0 0 h10 m70 0 h10 m22 -32 l2 0 m2 0 l2 0 m2 0 l2 0 m-504 98 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h158 m-188 0 h20 m168 0 h20 m-208 0 q10 0 10 10 m188 0 q0 -10 10 -10 m-198 10 v12 m188 0 v-12 m-188 12 q0 10 10 10 m168 0 q10 0 10 -10 m-178 10 h10 m96 0 h10 m0 0 h10 m32 0 h10 m20 -32 h10 m98 0 h10 m20 0 h10 m0 0 h98 m-128 0 h20 m108 0 h20 m-148 0 q10 0 10 10 m128 0 q0 -10 10 -10 m-138 10 v12 m128 0 v-12 m-128 12 q0 10 10 10 m108 0 q10 0 10 -10 m-118 10 h10 m84 0 h10 m0 0 h4 m-118 -10 v20 m128 0 v-20 m-128 20 v24 m128 0 v-24 m-128 24 q0 10 10 10 m108 0 q10 0 10 -10 m-118 10 h10 m88 0 h10 m23 -76 h-3"></path>
+<polygon points="559 115 567 111 567 119"></polygon>
+<polygon points="559 115 551 111 551 119"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

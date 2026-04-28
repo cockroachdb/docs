@@ -1,0 +1,616 @@
+---
+title: "Cluster Scaling"
+old_description: "How to scale a secure 3-node CockroachDB cluster with Kubernetes."
+---
+
+<Note>
+This article assumes you have already [deployed CockroachDB on a single Kubernetes cluster](/docs/v24.1/deploy-cockroachdb-with-kubernetes).
+</Note>
+
+This page explains how to add and remove CockroachDB nodes on Kubernetes.
+
+<Tabs>
+<Tab title="Operator">
+
+<Note>
+All `kubectl` steps should be performed in the [namespace where you installed the Operator](/docs/v24.1/deploy-cockroachdb-with-kubernetes#install-the-operator). By default, this is `cockroach-operator-system`.
+</Note>
+
+<Tip>
+If you [deployed CockroachDB on Red Hat OpenShift](/docs/v24.1/deploy-cockroachdb-with-kubernetes-openshift), substitute `kubectl` with `oc` in the following commands.
+</Tip>
+
+## Add nodes
+
+Before scaling up CockroachDB, note the following [topology recommendations](/docs/v24.1/recommended-production-settings#topology):
+
+- Each CockroachDB node (running in its own pod) should run on a separate Kubernetes worker node.
+- Each availability zone should have the same number of CockroachDB nodes.
+
+If your cluster has 3 CockroachDB nodes distributed across 3 availability zones (as in our [deployment example](/docs/v24.1/deploy-cockroachdb-with-kubernetes)), we recommend scaling up by a multiple of 3 to retain an even distribution of nodes. You should therefore scale up to a minimum of 6 CockroachDB nodes, with 2 nodes in each zone.
+
+1. Run `kubectl get nodes` to list the worker nodes in your Kubernetes cluster. There should be at least as many worker nodes as pods you plan to add. This ensures that no more than one pod will be placed on each worker node.
+2. If you need to add worker nodes, resize your GKE cluster by specifying the desired number of worker nodes in each zone:
+
+    ```shell
+    gcloud container clusters resize {cluster-name} --region {region-name} --num-nodes 2
+    ```
+
+    This example distributes 2 worker nodes across the default 3 zones, raising the total to 6 worker nodes.
+
+    1. If you are adding nodes after previously [scaling down](#remove-nodes), and have not enabled [automatic PVC pruning](#automatic-pvc-pruning), you must first manually delete any persistent volumes that were orphaned by node removal.
+
+        <Note>
+        Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/542), automatic pruning of PVCs is currently disabled by default. This means that after decommissioning and removing a node, the Operator will not remove the persistent volume that was mounted to its pod.
+        </Note>
+
+        View the PVCs on the cluster:
+
+        ```shell
+        kubectl get pvc
+        ```
+
+        ```text
+        NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+        datadir-cockroachdb-0   Bound    pvc-f1ce6ed2-ceda-40d2-8149-9e5b59faa9df   60Gi       RWO            standard       24m
+        datadir-cockroachdb-1   Bound    pvc-308da33c-ec77-46c7-bcdf-c6e610ad4fea   60Gi       RWO            standard       24m
+        datadir-cockroachdb-2   Bound    pvc-6816123f-29a9-4b86-a4e2-b67f7bb1a52c   60Gi       RWO            standard       24m
+        datadir-cockroachdb-3   Bound    pvc-63ce836a-1258-4c58-8b37-d966ed12d50a   60Gi       RWO            standard       24m
+        datadir-cockroachdb-4   Bound    pvc-1ylabv86-6512-6n12-bw3g-i0dh2zxvfhd0   60Gi       RWO            standard       24m
+        datadir-cockroachdb-5   Bound    pvc-2vka2c9x-7824-41m5-jk45-mt7dzq90q97x   60Gi       RWO            standard       24m
+        ```
+    2. The PVC names correspond to the pods they are bound to. For example, if the pods `cockroachdb-3`, `cockroachdb-4`, and `cockroachdb-5` had been removed by [scaling the cluster down](#remove-nodes) from 6 to 3 nodes, `datadir-cockroachdb-3`, `datadir-cockroachdb-4`, and `datadir-cockroachdb-5` would be the PVCs for the orphaned persistent volumes. To verify that a PVC is not currently bound to a pod:
+
+        ```shell
+        kubectl describe pvc datadir-cockroachdb-5
+        ```
+
+        The output will include the following line:
+
+        ```text
+        Mounted By:    <none>
+        ```
+
+        If the PVC is bound to a pod, it will specify the pod name.
+    3. Remove the orphaned persistent volumes by deleting their PVCs:
+
+        <Warning>
+        Before deleting any persistent volumes, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set#persistent-volumes).
+        </Warning>
+
+        ```shell
+        kubectl delete pvc datadir-cockroachdb-3 datadir-cockroachdb-4 datadir-cockroachdb-5
+        ```
+
+        ```text
+        persistentvolumeclaim "datadir-cockroachdb-3" deleted
+        persistentvolumeclaim "datadir-cockroachdb-4" deleted
+        persistentvolumeclaim "datadir-cockroachdb-5" deleted
+        ```
+3. Update `nodes` in the Operator's custom resource, which you downloaded when [deploying the cluster](/docs/v24.1/deploy-cockroachdb-with-kubernetes#initialize-the-cluster), with the target size of the CockroachDB cluster. This value refers to the number of CockroachDB nodes, each running in one pod:
+
+    ```text
+    nodes: 6
+    ```
+
+    <Note>
+    Note that you must scale by updating the `nodes` value in the custom resource. Using `kubectl scale statefulset <cluster-name> --replicas=4` will result in new pods immediately being terminated.
+    </Note>
+4. Apply the new settings to the cluster:
+
+    ```shell
+    $ kubectl apply -f example.yaml
+    ```
+5. Verify that the new pods were successfully started:
+
+    ```shell
+    kubectl get pods
+    ```
+
+    ```text
+    NAME                                  READY   STATUS    RESTARTS   AGE
+    cockroach-operator-655fbf7847-zn9v8   1/1     Running   0          30m
+    cockroachdb-0                         1/1     Running   0          24m
+    cockroachdb-1                         1/1     Running   0          24m
+    cockroachdb-2                         1/1     Running   0          24m
+    cockroachdb-3                         1/1     Running   0          30s
+    cockroachdb-4                         1/1     Running   0          30s
+    cockroachdb-5                         1/1     Running   0          30s
+    ```
+
+    Each pod should be running in one of the 6 worker nodes.
+
+## Remove nodes
+
+<Warning>
+Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern on CockroachDB and will cause errors.
+</Warning>
+
+<Warning>
+Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/542), automatic pruning of PVCs is currently disabled by default. This means that after decommissioning and removing a node, the Operator will not remove the persistent volume that was mounted to its pod.
+
+If you plan to eventually [scale up](#add-nodes) the cluster after scaling down, you will need to manually delete any PVCs that were orphaned by node removal before scaling up. For more information, see [Add nodes](#add-nodes).
+</Warning>
+
+<Note>
+If you want to enable the Operator to automatically prune PVCs when scaling down, see [Automatic PVC pruning](#automatic-pvc-pruning). However, note that this workflow is currently unsupported.
+</Note>
+
+Before scaling down CockroachDB, note the following [topology recommendation](/docs/v24.1/recommended-production-settings#topology):
+
+- Each availability zone should have the same number of CockroachDB nodes.
+
+If your nodes are distributed across 3 availability zones (as in our [deployment example](/docs/v24.1/deploy-cockroachdb-with-kubernetes)), we recommend scaling down by a multiple of 3 to retain an even distribution. If your cluster has 6 CockroachDB nodes, you should therefore scale down to 3, with 1 node in each zone.
+
+1. Update `nodes` in the custom resource, which you downloaded when [deploying the cluster](/docs/v24.1/deploy-cockroachdb-with-kubernetes#initialize-the-cluster), with the target size of the CockroachDB cluster. For instance, to scale down to 3 nodes:
+
+    ```text
+    nodes: 3
+    ```
+
+    <Note>
+    Before removing a node, the Operator first decommissions the node. This lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+    </Note>
+2. Apply the new settings to the cluster:
+
+    ```shell
+    $ kubectl apply -f example.yaml
+    ```
+
+    The Operator will remove nodes from the cluster one at a time, starting from the pod with the highest number in its address.
+3. Verify that the pods were successfully removed:
+
+    ```shell
+    kubectl get pods
+    ```
+
+    ```text
+    NAME                                  READY   STATUS    RESTARTS   AGE
+    cockroach-operator-655fbf7847-zn9v8   1/1     Running   0          32m
+    cockroachdb-0                         1/1     Running   0          26m
+    cockroachdb-1                         1/1     Running   0          26m
+    cockroachdb-2                         1/1     Running   0          26m
+    ```
+
+### Automatic PVC pruning
+
+To enable the Operator to automatically remove persistent volumes when [scaling down](#remove-nodes) a cluster, turn on automatic PVC pruning through a feature gate.
+
+<Warning>
+This workflow is unsupported and should be enabled at your own risk.
+</Warning>
+
+1. Download the Operator manifest:
+
+    ```shell
+    $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.18.3/install/operator.yaml
+    ```
+2. Uncomment the following lines in the Operator manifest:
+
+    ```yaml
+    - feature-gates
+    - AutoPrunePVC=true
+    ```
+3. Reapply the Operator manifest:
+
+    ```shell
+    $ kubectl apply -f operator.yaml
+    ```
+4. Validate that the Operator is running:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME                                  READY   STATUS    RESTARTS   AGE
+    cockroach-operator-6f7b86ffc4-9ppkv   1/1     Running   0          22s
+    ...
+    ```
+
+</Tab>
+<Tab title="Manual Configs">
+
+## Add nodes
+
+Before scaling up CockroachDB, note the following [topology recommendations](/docs/v24.1/recommended-production-settings#topology):
+
+- Each CockroachDB node (running in its own pod) should run on a separate Kubernetes worker node.
+- Each availability zone should have the same number of CockroachDB nodes.
+
+If your cluster has 3 CockroachDB nodes distributed across 3 availability zones (as in our [deployment example](/docs/v24.1/deploy-cockroachdb-with-kubernetes?filters=manual)), we recommend scaling up by a multiple of 3 to retain an even distribution of nodes. You should therefore scale up to a minimum of 6 CockroachDB nodes, with 2 nodes in each zone.
+
+1. Run `kubectl get nodes` to list the worker nodes in your Kubernetes cluster. There should be at least as many worker nodes as pods you plan to add. This ensures that no more than one pod will be placed on each worker node.
+2. Add worker nodes if necessary:
+    - On GKE, [resize your cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/resizing-a-cluster). If you deployed a [regional cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster) as we recommended, you will use `--num-nodes` to specify the desired number of worker nodes in each zone. For example:
+
+        ```shell
+        gcloud container clusters resize {cluster-name} --region {region-name} --num-nodes 2
+        ```
+    - On EKS, resize your [Worker Node Group](https://eksctl.io/usage/managing-nodegroups#scaling).
+    - On GCE, resize your [Managed Instance Group](https://cloud.google.com/compute/docs/instance-groups).
+    - On AWS, resize your [Auto Scaling Group](https://docs.aws.amazon.com/autoscaling/latest/userguide/as-manual-scaling).
+3. Edit your StatefulSet configuration to add pods for each new CockroachDB node:
+
+    ```shell
+    $ kubectl scale statefulset cockroachdb --replicas=6
+    ```
+
+    ```text
+    statefulset.apps/cockroachdb scaled
+    ```
+4. Verify that the new pod started successfully:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME                        READY     STATUS    RESTARTS   AGE
+    cockroachdb-0               1/1       Running   0          51m
+    cockroachdb-1               1/1       Running   0          47m
+    cockroachdb-2               1/1       Running   0          3m
+    cockroachdb-3               1/1       Running   0          1m
+    cockroachdb-4               1/1       Running   0          1m
+    cockroachdb-5               1/1       Running   0          1m
+    cockroachdb-client-secure   1/1       Running   0          15m
+    ...
+    ```
+5. You can also open the [**Node List**](/docs/v24.1/ui-cluster-overview-page#node-list) in the DB Console to ensure that the fourth node successfully joined the cluster.
+
+## Remove nodes
+
+<Warning>
+Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern on CockroachDB and will cause errors.
+</Warning>
+
+Before removing a node from your cluster, you must first decommission the node. This lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+
+<Warning>
+If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Prepare for graceful shutdown](/docs/v24.1/node-shutdown?filters=decommission#prepare-for-graceful-shutdown).
+</Warning>
+
+1. Use the [`cockroach node status`](/docs/v24.1/cockroach-node) command to get the internal IDs of nodes. For example, if you followed the steps in [Deploy CockroachDB with Kubernetes](/docs/v24.1/deploy-cockroachdb-with-kubernetes#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach node status \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
+    ```
+
+    ```text
+      id |               address                                     | build  |            started_at            |            updated_at            | is_available | is_live
+    +----+---------------------------------------------------------------------------------+--------+----------------------------------+----------------------------------+--------------+---------+
+       1 | cockroachdb-0.cockroachdb.default.svc.cluster.local:26257 | v24.1.26 | 2018-11-29 16:04:36.486082+00:00 | 2018-11-29 18:24:24.587454+00:00 | true         | true
+       2 | cockroachdb-2.cockroachdb.default.svc.cluster.local:26257 | v24.1.26 | 2018-11-29 16:55:03.880406+00:00 | 2018-11-29 18:24:23.469302+00:00 | true         | true
+       3 | cockroachdb-1.cockroachdb.default.svc.cluster.local:26257 | v24.1.26 | 2018-11-29 16:04:41.383588+00:00 | 2018-11-29 18:24:25.030175+00:00 | true         | true
+       4 | cockroachdb-3.cockroachdb.default.svc.cluster.local:26257 | v24.1.26 | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
+    (4 rows)
+    ```
+
+    The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required.
+2. Use the [`cockroach node decommission`](/docs/v24.1/cockroach-node) command to decommission the node with the highest number in its address, specifying its ID (in this example, node ID `4` because its address is `cockroachdb-3`):
+
+    <Note>
+    You must decommission the node with the highest number in its address. Kubernetes will remove the pod for the node with the highest number in its address when you reduce the replica count.
+    </Note>
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach node decommission 4 \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
+    ```
+
+    You'll then see the decommissioning status print to `stderr` as it changes:
+
+    ```text
+      id | is_live | replicas | is_decommissioning |   membership    | is_draining
+    -----+---------+----------+--------------------+-----------------+--------------
+       4 |  true   |       73 |        true        | decommissioning |    false    
+    ```
+
+    Once the node has been fully decommissioned, you'll see a confirmation:
+
+    ```text
+      id | is_live | replicas | is_decommissioning |   membership    | is_draining
+    -----+---------+----------+--------------------+-----------------+--------------
+       4 |  true   |        0 |        true        | decommissioning |    false    
+    (1 row)
+
+    No more data reported on target nodes. Please verify cluster health before removing the nodes.
+    ```
+3. Once the node has been decommissioned, scale down your StatefulSet:
+
+    ```shell
+    $ kubectl scale statefulset cockroachdb --replicas=3
+    ```
+
+    ```text
+    statefulset.apps/cockroachdb scaled
+    ```
+4. Verify that the pod was successfully removed:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME                        READY     STATUS    RESTARTS   AGE
+    cockroachdb-0               1/1       Running   0          51m
+    cockroachdb-1               1/1       Running   0          47m
+    cockroachdb-2               1/1       Running   0          3m
+    cockroachdb-client-secure   1/1       Running   0          15m
+    ...
+    ```
+5. You should also remove the persistent volume that was mounted to the pod. Get the persistent volume claims for the volumes:
+
+    ```shell
+    $ kubectl get pvc
+    ```
+
+    ```text
+    NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-cockroachdb-1   Bound    pvc-75e143ca-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-cockroachdb-2   Bound    pvc-75ef409a-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-cockroachdb-3   Bound    pvc-75e561ba-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    ```
+6. Verify that the PVC with the highest number in its name is no longer mounted to a pod:
+
+    ```shell
+    $ kubectl describe pvc datadir-cockroachdb-3
+    ```
+
+    ```text
+    Name:          datadir-cockroachdb-3
+    ...
+    Mounted By:    <none>
+    ```
+7. Remove the persistent volume by deleting the PVC:
+
+    ```shell
+    $ kubectl delete pvc datadir-cockroachdb-3
+    ```
+
+    ```text
+    persistentvolumeclaim "datadir-cockroachdb-3" deleted
+    ```
+
+</Tab>
+<Tab title="Helm">
+
+## Add nodes
+
+Before scaling CockroachDB, ensure that your Kubernetes cluster has enough worker nodes to host the number of pods you want to add. This is to ensure that two pods are not placed on the same worker node, as recommended in our [production guidance](/docs/v24.1/recommended-production-settings#topology).
+
+For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes cluster should have at least 4 worker nodes. You can verify the size of your Kubernetes cluster by running `kubectl get nodes`.
+
+1. Edit your StatefulSet configuration to add another pod for the new CockroachDB node:
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set statefulset.replicas=4 \
+    --reuse-values
+    ```
+
+    ```text
+    Release "my-release" has been upgraded. Happy Helming!
+    LAST DEPLOYED: Tue May 14 14:06:43 2019
+    NAMESPACE: default
+    STATUS: DEPLOYED
+
+    RESOURCES:
+    ==> v1beta1/PodDisruptionBudget
+    NAME                           AGE
+    my-release-cockroachdb-budget  51m
+
+    ==> v1/Pod(related)
+
+    NAME                               READY  STATUS     RESTARTS  AGE
+    my-release-cockroachdb-0           1/1    Running    0         38m
+    my-release-cockroachdb-1           1/1    Running    0         39m
+    my-release-cockroachdb-2           1/1    Running    0         39m
+    my-release-cockroachdb-3           0/1    Pending    0         0s
+    my-release-cockroachdb-init-nwjkh  0/1    Completed  0         39m
+
+    ...
+    ```
+2. Get the name of the `Pending` CSR for the new pod:
+
+    ```shell
+    $ kubectl get csr
+    ```
+
+    ```text
+    NAME                                                   AGE       REQUESTOR                               CONDITION
+    default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.my-release-cockroachdb-0                  1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.my-release-cockroachdb-1                  1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.my-release-cockroachdb-2                  1h        system:serviceaccount:default:default   Approved,Issued
+    default.node.my-release-cockroachdb-3                  2m        system:serviceaccount:default:default   Pending
+    node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   1h        kubelet                                 Approved,Issued
+    node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   1h        kubelet                                 Approved,Issued
+    node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
+    ...
+    ```
+
+    If you do not see a `Pending` CSR, wait a minute and try again.
+3. Examine the CSR for the new pod:
+
+    ```shell
+    $ kubectl describe csr default.node.my-release-cockroachdb-3
+    ```
+
+    ```text
+    Name:               default.node.my-release-cockroachdb-3
+    Labels:             <none>
+    Annotations:        <none>
+    CreationTimestamp:  Thu, 09 Nov 2017 13:39:37 -0500
+    Requesting User:    system:serviceaccount:default:default
+    Status:             Pending
+    Subject:
+      Common Name:    node
+      Serial Number:
+      Organization:   Cockroach
+    Subject Alternative Names:
+             DNS Names:     localhost
+                            my-release-cockroachdb-1.my-release-cockroachdb.default.svc.cluster.local
+                            my-release-cockroachdb-1.my-release-cockroachdb
+                            my-release-cockroachdb-public
+                            my-release-cockroachdb-public.default.svc.cluster.local
+             IP Addresses:  127.0.0.1
+                            10.48.1.6
+    Events:  <none>
+    ```
+4. If everything looks correct, approve the CSR for the new pod:
+
+    ```shell
+    $ kubectl certificate approve default.node.my-release-cockroachdb-3
+    ```
+
+    ```text
+    certificatesigningrequest.certificates.k8s.io/default.node.my-release-cockroachdb-3 approved
+    ```
+5. Verify that the new pod started successfully:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME                        READY     STATUS    RESTARTS   AGE
+    my-release-cockroachdb-0    1/1       Running   0          51m
+    my-release-cockroachdb-1    1/1       Running   0          47m
+    my-release-cockroachdb-2    1/1       Running   0          3m
+    my-release-cockroachdb-3    1/1       Running   0          1m
+    cockroachdb-client-secure   1/1       Running   0          15m
+    ...
+    ```
+6. You can also open the [**Node List**](/docs/v24.1/ui-cluster-overview-page#node-list) in the DB Console to ensure that the fourth node successfully joined the cluster.
+
+## Remove nodes
+
+<Warning>
+Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern on CockroachDB and will cause errors.
+</Warning>
+
+Before removing a node from your cluster, you must first decommission the node. This lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+
+<Warning>
+If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Prepare for graceful shutdown](/docs/v24.1/node-shutdown?filters=decommission#prepare-for-graceful-shutdown).
+</Warning>
+
+1. Use the [`cockroach node status`](/docs/v24.1/cockroach-node) command to get the internal IDs of nodes. For example, if you followed the steps in [Deploy CockroachDB with Kubernetes](/docs/v24.1/deploy-cockroachdb-with-kubernetes#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach node status \
+    --certs-dir=/cockroach-certs \
+    --host=my-release-cockroachdb-public
+    ```
+
+    ```text
+      id |                                     address                                     | build  |            started_at            |            updated_at            | is_available | is_live
+    +----+---------------------------------------------------------------------------------+--------+----------------------------------+----------------------------------+--------------+---------+
+       1 | my-release-cockroachdb-0.my-release-cockroachdb.default.svc.cluster.local:26257 | v24.1.26 | 2018-11-29 16:04:36.486082+00:00 | 2018-11-29 18:24:24.587454+00:00 | true         | true
+       2 | my-release-cockroachdb-2.my-release-cockroachdb.default.svc.cluster.local:26257 | v24.1.26 | 2018-11-29 16:55:03.880406+00:00 | 2018-11-29 18:24:23.469302+00:00 | true         | true
+       3 | my-release-cockroachdb-1.my-release-cockroachdb.default.svc.cluster.local:26257 | v24.1.26 | 2018-11-29 16:04:41.383588+00:00 | 2018-11-29 18:24:25.030175+00:00 | true         | true
+       4 | my-release-cockroachdb-3.my-release-cockroachdb.default.svc.cluster.local:26257 | v24.1.26 | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
+    (4 rows)
+    ```
+
+    The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required.
+2. Use the [`cockroach node decommission`](/docs/v24.1/cockroach-node) command to decommission the node with the highest number in its address, specifying its ID (in this example, node ID `4` because its address is `my-release-cockroachdb-3`):
+
+    <Note>
+    You must decommission the node with the highest number in its address. Kubernetes will remove the pod for the node with the highest number in its address when you reduce the replica count.
+    </Note>
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach node decommission 4 \
+    --certs-dir=/cockroach-certs \
+    --host=my-release-cockroachdb-public
+    ```
+
+    You'll then see the decommissioning status print to `stderr` as it changes:
+
+    ```text
+      id | is_live | replicas | is_decommissioning |   membership    | is_draining
+    -----+---------+----------+--------------------+-----------------+--------------
+       4 |  true   |       73 |        true        | decommissioning |    false    
+    ```
+
+    Once the node has been fully decommissioned, you'll see a confirmation:
+
+    ```text
+      id | is_live | replicas | is_decommissioning |   membership    | is_draining
+    -----+---------+----------+--------------------+-----------------+--------------
+       4 |  true   |        0 |        true        | decommissioning |    false    
+    (1 row)
+
+    No more data reported on target nodes. Please verify cluster health before removing the nodes.
+    ```
+3. Once the node has been decommissioned, scale down your StatefulSet:
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set statefulset.replicas=3 \
+    --reuse-values
+    ```
+4. Verify that the pod was successfully removed:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME                        READY     STATUS    RESTARTS   AGE
+    my-release-cockroachdb-0    1/1       Running   0          51m
+    my-release-cockroachdb-1    1/1       Running   0          47m
+    my-release-cockroachdb-2    1/1       Running   0          3m
+    cockroachdb-client-secure   1/1       Running   0          15m
+    ...
+    ```
+5. You should also remove the persistent volume that was mounted to the pod. Get the persistent volume claims for the volumes:
+
+    ```shell
+    $ kubectl get pvc
+    ```
+
+    ```text
+    NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-my-release-cockroachdb-1   Bound    pvc-75e143ca-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-my-release-cockroachdb-2   Bound    pvc-75ef409a-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-my-release-cockroachdb-3   Bound    pvc-75e561ba-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    ```
+6. Verify that the PVC with the highest number in its name is no longer mounted to a pod:
+
+    ```shell
+    $ kubectl describe pvc datadir-my-release-cockroachdb-3
+    ```
+
+    ```text
+    Name:          datadir-my-release-cockroachdb-3
+    ...
+    Mounted By:    <none>
+    ```
+7. Remove the persistent volume by deleting the PVC:
+
+    ```shell
+    $ kubectl delete pvc datadir-my-release-cockroachdb-3
+    ```
+
+    ```text
+    persistentvolumeclaim "datadir-my-release-cockroachdb-3" deleted
+    ```
+
+</Tab>
+</Tabs>

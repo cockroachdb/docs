@@ -1,0 +1,204 @@
+---
+title: "Licensing FAQs"
+old_description: "Frequently asked questions about CockroachDB Enterprise licensing."
+---
+
+All versions of CockroachDB starting from the release date of 24.3.0 onward, including patch fixes for versions 23.1-24.2 from that date onward, are made available under the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license). You can use the dropdown menu at the top of the page to view documentation for other versions.
+
+## License options
+
+The table of licenses below refers to options for self-hosted deployments. All Cloud deployments automatically have a valid **Enterprise** license.
+
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><strong>Enterprise</strong><a></a></td><td>This paid license allows usage of all CockroachDB features in accordance with the terms specified in the <a href="https://www.cockroachlabs.com/cockroachdb-software-license">CockroachDB Software License</a>. License must be renewed annually or as negotiated. Support levels available include <a href="https://www.cockroachlabs.com/support">Enterprise</a> or <a href="https://www.cockroachlabs.com/support">Essential</a>. The type of enterprise license may be set to <strong>Production</strong>, <strong>Pre-production</strong>, or <strong>Development</strong> depending on the environment in which CockroachDB is deployed.</td></tr><tr><td><strong>Free</strong><a></a></td><td>Same functionality as <strong>Enterprise</strong>, but free of charge for businesses with less than &#36;10M in annual revenue. Clusters will be <a href="#throttling">throttled</a> after 7 days without sending <a href="/docs/v24.3/telemetry">telemetry</a>. License must be renewed annually. Support level available is Community (i.e., <a href="/docs/v24.3">Docs</a>, <a href="https://forum.cockroachlabs.com/">Forum</a>, <a href="https://www.cockroachlabs.com/join-community">Slack</a>).</td></tr><tr><td><strong>Trial</strong><a></a></td><td>A 30 day self-service trial license. <a href="/docs/v24.3/telemetry">Telemetry</a> is required during the trial. Clusters will be <a href="#throttling">throttled</a> after 7 days without sending telemetry. Telemetry can be disabled once the cluster is upgraded to a paid <strong>Enterprise</strong> license. Support level available during trial is Community (i.e., <a href="/docs/v24.3">Docs</a>, <a href="https://forum.cockroachlabs.com/">Forum</a>, <a href="https://www.cockroachlabs.com/join-community">Slack</a>).</td></tr><tr><td><strong>Evaluation</strong><a></a></td><td>Same functionality as <strong>Enterprise</strong>, but may be provided by your sales team if needed for an extended evaluation period. Support level is equivalent to a enterprise license.</td></tr></tbody></table>
+
+[Contact Sales](mailto:sales@cockroachlabs.com) if you want to try CockroachDB without telemetry requirements or if you require an extended trial period.
+
+<Tip>
+Note that:
+
+- Clusters with no license key have a 7-day grace period before requiring a license key. This is useful for ephemeral development clusters.
+- No license key is required for developers running [single-node clusters](#single-node-clusters).
+</Tip>
+
+## Obtain a license
+
+To obtain a paid **Enterprise** license, [contact Sales](mailto:sales@cockroachlabs.com). Once a license is added to your account, it appears in the [CockroachDB Cloud Console](https://cockroachlabs.cloud/) on the **Organization » Enterprise Licenses** page. This page is only accessible by users with **Organization Admin** permissions.
+
+[Sign up for a CockroachDB Cloud Console account](https://cockroachlabs.cloud/signup?experience=enterprise) if you do not already have one.
+
+<Note>
+Enterprise licenses generated prior to May 31st 2025 are not visible in the **Enterprise Licenses** page.
+</Note>
+
+To obtain an **Enterprise Free** or **Enterprise Trial** license, take the following steps:
+
+1. Point your web browser to the [CockroachDB Cloud Console](https://cockroachlabs.cloud/) and [log in](/docs/cockroachcloud/authentication#console-ui-authentication) as an account with **Organization Admin** permissions.
+2. Select **Organization » Enterprise Licenses** from the nav bar dropdown. This will bring you to the **Enterprise Licenses** page, which shows a (possibly empty) list of licenses and their keys, with information about the status of each.
+3. Click the **Create License** button. This will bring you to a page called **Get started with CockroachDB Enterprise**.
+4. On this page, you will create an **Enterprise Trial** license or an **Enterprise Free** license.
+    1. To create an **Enterprise Trial** license:
+        1. Fill in the form with the required information.
+        2. Click the **Continue** button.
+        3. Select the checkbox to agree to the Terms &amp; Conditions of the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license).
+        4. Click the **Generate License Key** button. You will be redirected to the **Enterprise Licenses** page, where you can [start using the key](#set-a-license).
+    2. To create an **Enterprise Free** license:
+        1. Fill in the form with the required information.
+        2. Toggle the switch called **Find out if my company qualifies for an Enterprise Free license**.
+        3. Fill out the additional information.
+        4. Click the **Continue** button.
+            - Note that at this stage, you may not qualify for the **Enterprise Free** license. If so, you will be given an **Enterprise Trial** license.
+        5. Select the checkbox to agree to the Terms &amp; Conditions of the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license).
+        6. Click the **Generate License Key** button. You will be redirected to the **Enterprise Licenses** page, where you can [start using the key](#set-a-license).
+
+<Warning>
+You will not be able to create more than one **Enterprise Trial** license per day. If you try, the UI will prevent you from proceeding, and the following message will be displayed:
+
+*A new Enterprise Trial license cannot be created at this time because one was recently created. Tell us more about your intended use to find out if you qualify for an Enterprise Free license, or create a new one after &#36;&#123;DATE&#125;.*
+</Warning>
+
+<Tip>
+For quick local testing of Enterprise features, you can [run a single-node cluster](#single-node-clusters).
+</Tip>
+
+## Set a license
+
+Start the [`cockroach sql` shell](/docs/v24.3/cockroach-sql). As the [`root` user](/docs/v24.3/security-reference/authorization#root-user), use the [`SET CLUSTER SETTING`](/docs/v24.3/set-cluster-setting) statement to set the license key:
+
+```sql
+SET CLUSTER SETTING enterprise.license = 'xxxxxxxxxxxx';
+```
+
+<Warning>
+You cannot apply an [**Enterprise Trial** license](/docs/v24.3/licensing-faqs#types-of-licenses) more than once to the same cluster.
+</Warning>
+
+## Verify a license
+
+To verify a license, open the [built-in SQL shell](/docs/v24.3/cockroach-sql) and use the [`SHOW CLUSTER SETTING`](/docs/v24.3/show-cluster-setting) command to check the license key:
+
+```sql
+SHOW CLUSTER SETTING enterprise.license;
+```
+
+```text
+             enterprise.license
++-------------------------------------------+
+  crl-0-ChB1x...
+(1 row)
+```
+
+The license setting is also logged in the `cockroach.log` on the node where the command is run:
+
+```shell
+cat cockroach.log | grep license
+```
+
+```text
+I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root,n1] Event: "set_cluster_setting", target: 0, info: {SettingName:enterprise.license Value:xxxxxxxxxxxx User:root}
+```
+
+## Monitor for license expiry
+
+You can monitor the time until your license expires in the following ways:
+
+1. [Prometheus](/docs/v24.3/monitor-cockroachdb-with-prometheus): The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the license on a cluster expires. It will report `0` if there is no license, and a negative number if the license has already expired. For more information, see [Monitoring and Alerting](/docs/v24.3/monitoring-and-alerting).
+2. [DB Console](/docs/v24.3/ui-overview): Several [license expiration messages](/docs/v24.3/ui-overview#license-expiration-message) may be displayed, depending on the status of your cluster's license.
+3. [CockroachDB Cloud Console](https://cockroachlabs.cloud/): If you have an **Enterprise Free** or **Enterprise Trial** cluster, you will see notifications in the **Enterprise Licenses** section, as well as receive notification emails sent to users with **Organization Admin** permissions.
+4. CockroachDB emits [log messages](/docs/v24.3/logging-overview) when a cluster is at risk of being [throttled](#throttling) due to license expiration or [telemetry](/docs/v24.3/telemetry) requirements. The database will also return notices to [SQL clients](/docs/v24.3/cockroach-sql) or [applications](/docs/v24.3/install-client-drivers) that try to execute [transactions](/docs/v24.3/transactions).
+
+<Note>
+During the transition to the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license), expiration behavior (including [throttling](#throttling)) will work as follows depending on your version of CockroachDB.
+
+For v23.1.29, v23.2.15, v24.1.7, v24.2.5, and v24.3.0 and later, clusters will behave as described in this documentation.
+
+For versions less than or equal to v23.1.28, v23.2.14, v24.1.6, and v24.2.4, the behavior will be as follows:
+
+- **Enterprise Trial** and **Enterprise Free** licenses will work as expected when you [set a license](#set-a-license).
+- However, the expiration behavior will be different. Clusters running these versions won't be [throttled](#throttling); instead, the Enterprise features will immediately stop working at license expiration.
+</Note>
+
+## Renew an expired license
+
+To renew an expired **Enterprise** license, [contact Sales](mailto:sales@cockroachlabs.com) and then [set](#set-a-license) the new license.
+
+To renew an expired **Enterprise Free** license, follow the steps in [Obtain a license](#obtain-a-license).
+
+## FAQs
+
+<AccordionGroup>
+<Accordion title="Can I host CockroachDB as a service for internal use at my organization?">
+
+Yes, employees and contractors can use your internal CockroachDB instance as a service, but no people outside of your organization will be able to use it without purchasing a license.
+
+</Accordion>
+
+<Accordion title="What constitutes hosting CockroachDB as a service?">
+
+Hosting CockroachDB as a service means creating an offering that allows third parties (other than your employees and contractors) to operate a database. Specifically, third parties cannot modify table schemas.
+
+</Accordion>
+
+<Accordion title="What is throttling and how does it work?">
+
+When a cluster is being throttled, the number of concurrent open [SQL transactions](/docs/v24.3/transactions) is limited to 5.
+
+This will happen in the following cases:
+
+- The cluster is not following [telemetry](/docs/v24.3/telemetry) requirements.
+    - There is a 7 day grace period for **Enterprise Free** and **Enterprise Trial** clusters to (re)start sending telemetry. This applies when the license is first [added](#set-a-license), or any time there is an interruption in telemetry.
+- The cluster has an expired [license key](#obtain-a-license); depending on the type of expired license, the cluster will be throttled after the following time periods:
+    - **Enterprise**: Never throttles
+    - **Enterprise Free**: Throttles 30 days after expiration
+    - **Enterprise Trial**: Throttles 7 days after expiration
+- The cluster was running an earlier version of CockroachDB which supported the license known as "CockroachDB Core" and has just been patch upgraded to a version of CockroachDB which is available under the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license). Such clusters get a 30 day grace period before being throttled to de-risk impact to production environments.
+
+If no valid license key is ever entered, the cluster will be throttled 7 days after cluster initialization.
+
+Single-node clusters for development use are [not throttled](#single-node-clusters).
+
+</Accordion>
+
+<Accordion title="Can I use CockroachDB for academic research?">
+
+Cockroach Labs encourages non-commercial academic research involving CockroachDB. For such projects, [obtain an **Enterprise Free** license](#obtain-a-license).
+
+</Accordion>
+
+<Accordion title="Do government entities qualify for a CockroachDB Enterprise Free license?">
+
+No, government entities do not qualify for an **Enterprise Free** license. To obtain an **Enterprise Trial** license or paid **Enterprise** license, see [Obtain a license](#obtain-a-license).
+
+</Accordion>
+
+<Accordion title="Where can I deploy CockroachDB Enterprise Free licenses? Does it have to be on my own hardware or cloud instance?">
+
+When using an **Enterprise Free** license, an **Enterprise Free** license can only be used to run CockroachDB on your own on premises hardware or in your own account in the public clouds. If you plan to run CockroachDB in your customer's environment or public cloud instance, you will need an **Enterprise** License.
+
+</Accordion>
+
+<Accordion title="Do I need a license key for running a single node cluster?">
+
+No license key is required for developers running [single-node clusters](/docs/v24.3/cockroach-start-single-node) using the following [`cockroach` commands](/docs/v24.3/cockroach-commands):
+
+- [`cockroach start-single-node`](/docs/v24.3/cockroach-start-single-node)
+- [`cockroach demo`](/docs/v24.3/cockroach-demo)
+
+Single-node clusters are not [throttled](#throttling).
+
+Generally, single-node clusters used for design, prototyping, testing, or development purposes in non-production, internal development environments do not require a license key.
+
+</Accordion>
+
+<Accordion title="Can a company with less than &#36;10 million in annual revenue use the Enterprise Free license if the aggregate revenue of its parent company and affiliates exceeds this threshold?">
+
+No, the **Enterprise Free** license is intended solely for organizations whose combined annual revenue, including the parent company and all affiliates, is under &#36;10 million. If total annual revenues exceed this limit, the affiliate does not qualify for the **Enterprise Free** license.
+
+</Accordion>
+
+</AccordionGroup>
+
+## See also
+
+- [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license)
+- [Enterprise support](https://www.cockroachlabs.com/support)
+- [Contact Sales](mailto:sales@cockroachlabs.com)

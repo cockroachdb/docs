@@ -1,0 +1,577 @@
+---
+title: "MOLT Schema Conversion Tool"
+old_description: "Use the MOLT Schema Conversion Tool to begin a database migration to CockroachDB."
+---
+
+The **Migrations** page on the CockroachDB Cloud Console features the MOLT Schema Conversion Tool. This tool helps you:
+
+- Convert a schema from a PostgreSQL, MySQL, Oracle, or Microsoft SQL Server database for use with CockroachDB.
+- Migrate directly to a CockroachDB Cloud database that uses the converted schema. You specify the target database and database owner when [migrating the schema](#migrate-the-schema).
+- [Export the converted schema.](#export-the-schema) To migrate to a CockroachDB self-hosted database, you can execute the statements in <a href="/docs/VERSION_PLACEHOLDER/cockroach-sql" data-versioned="true">`cockroach sql`</a>, or use a third-party schema migration tool such as <a href="/docs/VERSION_PLACEHOLDER/alembic" data-versioned="true">Alembic</a>, <a href="/docs/VERSION_PLACEHOLDER/flyway" data-versioned="true">Flyway</a>, or <a href="/docs/VERSION_PLACEHOLDER/liquibase" data-versioned="true">Liquibase</a>.
+
+    <Note>
+    The **Migrations** page is used to convert a schema for use with CockroachDB and to create a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see the <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy" data-versioned="true">Migration Overview</a>.
+    </Note>
+
+To view this page, select a cluster from the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-management#view-clusters-page" data-versioned="true">**Clusters** page</a>, and click **Migration** in the **Data** section of the left side navigation.
+
+## Required permissions
+
+To access the **Migrations** page, as user must have either of the following roles:
+
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-admin" data-versioned="true">Cluster Admin</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-operator" data-versioned="true">Cluster Operator</a>
+
+## Convert a schema
+
+The steps to convert your schema depend on your source dialect.
+
+<Tabs>
+<Tab title="PostgreSQL">
+
+1. With the **Schemas** tab open, click the **Add Schema** button. This opens the **Add SQL Schema** dialog.
+2. In step 1 of the **Add SQL Schema** dialog, select the appropriate **Dialect** from the pulldown menu.
+3. Configure the following defaults for schema conversion:
+    - **INT type conversion**: On CockroachDB, `INT` is an alias for `INT8`, which creates 64-bit signed integers. On PostgreSQL, `INT` defaults to `INT4`. For details, see <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy#schema-design-best-practices" data-versioned="true">Schema design best practices</a>.
+4. Click **Next**.
+
+### Upload File
+
+The Schema Conversion Tool expects to analyze a SQL dump file containing only <a href="/docs/VERSION_PLACEHOLDER/sql-statements#data-definition-statements" data-versioned="true">data definition statements</a>.
+
+To generate an appropriate PostgreSQL schema file, run the [`pg_dump` utility](https://www.postgresql.org/docs/current/app-pgdump) and specify the `-s` or `--schema-only` options to extract **only the schema** of a PostgreSQL database to a `.sql` file.
+
+The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be ignored in schema conversion. To add a schema file:
+
+1. In step 2 of the **Add SQL Schema** dialog, click **Upload File**. Click the upload box and select a `.sql` file, or drop a `.sql` file directly into the box.
+2. Click **Convert** and wait for the schema to be analyzed. A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
+3. When analysis is complete, review the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
+
+### Use Credentials
+
+The Schema Conversion Tool can connect directly to a PostgreSQL or MySQL database to obtain the schema. To add a schema using credentials:
+
+1. In step 2 of the **Add SQL Schema** dialog, click **Use Credential**. Select the credentials to use. If the list is empty, this is because no credentials have been created for the selected database type. You can [add credentials](#add-database-credentials) directly from the pulldown menu.
+2. Click **Convert** and wait for the schema to be analyzed. In the background, the Schema Conversion Tool runs the [`pg_dump`](https://www.postgresql.org/docs/current/app-pgdump) or [`mysqldump`](https://dev.mysql.com/doc/refman/8.0/en/mysqldump) utility to obtain the schema.
+
+    A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
+3. When analysis is complete, review errors and suggestions in the [**Summary Report**](#summary-report). Apply bulk actions in the **Summary Report** and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
+
+#### Add database credentials
+
+<Note>
+Credentials can be added for PostgreSQL and MySQL databases.
+</Note>
+
+1. With the **Credentials** tab open, click the **Add Credential** button.
+2. Provide the following information:
+    - A **Credential Name** to associate with the credentials.
+    - The **Dialect** of the database you are connecting to. Currently, PostgreSQL and MySQL are supported.
+    - The **Host** (i.e., hostname or IP address) for accessing the database, excluding the protocol (e.g., `tcp://` ). For example, `migrations.cockroachlabs.com`. The following are not allowed:
+        - Local hosts such as `localhost` and `127.0.0.1`.
+        - Private IPs, including `127.0.0.0/8`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.0.0/16`, `::1/128`, `fe80::/10`, and `fc00::/7`.
+    - The **Port** for accessing the database.
+    - A valid **Username** and **Password** for accessing the database.
+    - The **Database Name** to access. The Schema Conversion Tool will obtain the schema for this database.
+    - The **SSL Mode** for accessing the database:
+        - `None`: Do not force a secure connection.
+        - `Verify CA`: Force a secure connection and verify that the server certificate is signed by a known CA.
+        - `Verify Full`: Force a secure connection, verify that the server certificate is signed by a known CA, and verify that the server address matches that specified in the certificate.
+
+If the credentials are valid, they will be added to the [**Credentials** table](#credentials-table) with a `VERIFIED` badge.
+
+<Note>
+The Schema Conversion Tool creates the following internal objects when you convert a schema:
+
+- A database prefixed with `_migration_internal_` is created on the Cloud cluster when you [add a schema](#convert-a-schema) and each time you [retry a schema migration](#retry-the-migration). It does not contain any data apart from the statements in the `_migration_internal_statements` table. When you successfully [migrate a schema](#migrate-the-schema) to the Cloud cluster, the final `_migration_internal_` database is renamed to your specified database name, and the other `_migration_internal_` databases associated with the schema are removed. `_migration_internal_` databases are also removed when you delete their associated schema from the [**Schemas** table](#schemas-table).
+- A table called `_migration_internal_statements` is created on each `_migration_internal_` database. It contains the statements displayed in the [**Statements** list](#statements-list), along with metadata related to the schema conversion. This table is stored indefinitely because it enables you to [review](#review-the-schema) and [export the converted schema](#export-the-schema) even after [migrating it to a Cloud cluster](#migrate-the-schema).
+</Note>
+
+## Review the schema
+
+Use the **Summary Report** and **Statements** list to [update the schema](#update-the-schema) and finalize it for migration.
+
+The banner at the top of the page displays:
+
+- The number of **Statements Total** in the uploaded `.sql` file that were analyzed.
+- The number of **Errors** in SQL statements that are blocking [schema migration](#migrate-the-schema). Errors are further categorized and counted in the [**Summary Report**](#summary-report).
+- The number of **Incidental Errors** in SQL statements that are caused by errors in other SQL statements.
+
+### Summary Report
+
+<Note>
+**This feature is in <a href="/docs/VERSION_PLACEHOLDER/cockroachdb-feature-availability" data-versioned="true">preview</a>** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+The **Summary Report** displays the results of the schema analysis and provides bulk actions you can apply to [update the schema](#update-the-schema).
+
+To apply bulk actions to statements, refer to the tables in the Summary Report:
+
+- [Required Fixes](#required-fixes)
+- [Compatibility Notes](#compatibility-notes)
+- [Suggestions](#suggestions)
+
+<Warning>
+Bulk actions **cannot** be undone after you [retry the migration](#retry-the-migration).
+</Warning>
+
+To edit, add, or delete individual statements, click the **Statements** tab to open the [**Statements** list](#statements-list). Errors and suggestions are displayed for each statement.
+
+After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new CockroachDB Cloud database.
+
+#### Required Fixes
+
+**Required Fixes** indicate errors that must be resolved before you can [migrate the schema](#migrate-the-schema).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>A summary of the error type.</td></tr><tr><td>Category</td><td>The category of error:<br/><br/>- <strong>Unimplemented Feature:</strong> A statement that uses an <a href="/docs/molt/migration-strategy#unimplemented-features-and-syntax-incompatibilities">unimplemented feature</a>.<br/><br/>- <strong>Uncreated User:</strong> A statement that references a nonexistent user.<br/><br/>- <strong>Incompatibility:</strong> (Non-PostgreSQL schemas) A statement that could not be converted because it has no equivalent syntax on CockroachDB.<br/><br/>- <strong>Uncategorized:</strong> A statement that the tool did not or could not execute.<br/><br/>- <strong>Incidental:</strong> A statement that failed because another SQL statement encountered one of the preceding error types.</td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the error.</td></tr><tr><td>Remaining Instances</td><td>The number of times the error still occurs on the provided schema. This number will change as you <a href="#update-the-schema">update the schema</a> to fix errors. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Add User</strong> to add a missing SQL user, or <strong>Delete</strong> all statements that contain the error type. This cannot be undone after you <a href="#retry-the-migration">retry the migration</a>.</td></tr></tbody></table>
+
+#### Compatibility Notes
+
+**Compatibility Notes** indicate compatibility issues that do not block [schema migration](#migrate-the-schema). These are only displayed for non-PostgreSQL schemas.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>A summary of the SQL compatibility issue.</td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the suggestion.</td></tr><tr><td>Instances</td><td>The number of times the compatibility note occurs on the provided schema. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Acknowledge</strong> all instances of the compatibility note. This is not required for schema migration.</td></tr></tbody></table>
+
+#### Suggestions
+
+**Suggestions** relate to <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy#schema-design-best-practices" data-versioned="true">schema design best practices</a>. They do not block [schema migration](#migrate-the-schema).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>One of the following suggestion types:<br/><br/>- <strong>Sequences:</strong> A statement that uses a sequence to define a primary key column. <a href="/docs/v25.4/create-sequence#considerations">Using a sequence for a primary key column is not recommended.</a><br/><br/>- <strong>Missing Primary Key:</strong> A statement that does not define an explicit primary key for a table. <a href="/docs/v25.4/schema-design-table#select-primary-key-columns">Defining an explicit primary key on every table is recommended.</a><br/><br/>- <strong>Index Set On Timestamp Related Column:</strong> A statement that creates an index on a <a href="/docs/v25.4/timestamp"><code>TIMESTAMP</code>/<code>TIMESTAMPTZ</code></a> column. <a href="/docs/v25.4/schema-design-indexes#best-practices">Indexing on sequential keys can negatively affect performance.</a></td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the suggestion.</td></tr><tr><td>Instances</td><td>The number of times the suggestion occurs on the provided schema. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Acknowledge</strong> all instances of the suggestion. This is not required for schema migration.</td></tr></tbody></table>
+
+### Statements list
+
+The **Statements** list displays the result of analyzing each statement in the `.sql` file that you provided. The numbers from the [**Summary Report**](#summary-report) are displayed above the list of statements.
+
+- To [migrate the schema](#migrate-the-schema) and create a new database for migration, click **Migrate Schema**. The schema must have zero errors.
+- If the **Migrate Schema** button is disabled, use the **Statements** list to [update the schema](#update-the-schema). Navigate the list by scrolling or by clicking the arrows and **Scroll to Top** button on the bottom-right.
+
+Statements are displayed as follows:
+
+- A statement that succeeded is displayed without further detail.
+- A statement that failed is displayed with `[error]` and a message with error details. If the failure was due to an incidental error, the message also states: `This error may automatically resolve once an earlier statement no longer errors`.
+
+</Tab>
+<Tab title="MySQL">
+
+1. With the **Schemas** tab open, click the **Add Schema** button. This opens the **Add SQL Schema** dialog.
+2. In step 1 of the **Add SQL Schema** dialog, select the appropriate **Dialect** from the pulldown menu.
+3. Configure the following defaults for schema conversion:
+    - **Casing of Identifiers:** Select **Keep case sensitivity** to enclose identifiers in double quotes, and **Make case insensitive** to convert identifiers to lowercase. For details on how CockroachDB handles identifiers, see <a href="/docs/VERSION_PLACEHOLDER/keywords-and-identifiers#identifiers" data-versioned="true">Identifiers</a>.
+    - **AUTO_INCREMENT Conversion Option:** We do not recommend using a sequence to define a primary key column. For details, see <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy#schema-design-best-practices" data-versioned="true">Schema design best practices</a>. To understand the differences between the `UUID` and `unique_rowid()` options, see the <a href="/docs/VERSION_PLACEHOLDER/sql-faqs#what-are-the-differences-between-uuid-sequences-and-unique_rowid" data-versioned="true">SQL FAQs</a>.
+    - **Enum Preferences:** On CockroachDB, <a href="/docs/VERSION_PLACEHOLDER/enum" data-versioned="true">`ENUMS`</a> are a standalone type. On MySQL, they are part of column definitions. You can select to either deduplicate the `ENUM` definitions or create a separate type for each column.
+4. Click **Next**.
+
+### Upload File
+
+The Schema Conversion Tool expects to analyze a SQL dump file containing only <a href="/docs/VERSION_PLACEHOLDER/sql-statements#data-definition-statements" data-versioned="true">data definition statements</a>.
+
+To generate an appropriate MySQL schema file, run the [`mysqldump` utility](https://dev.mysql.com/doc/refman/8.0/en/mysqldump) and specify the `-d` or `--no-data` options to extract **only the schema** of the MySQL database to a `.sql` file.
+
+The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be ignored in schema conversion. To add a schema file:
+
+1. In step 2 of the **Add SQL Schema** dialog, click **Upload File**. Click the upload box and select a `.sql` file, or drop a `.sql` file directly into the box.
+2. Click **Convert** and wait for the schema to be analyzed. A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
+3. When analysis is complete, review the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
+
+### Use Credentials
+
+The Schema Conversion Tool can connect directly to a PostgreSQL or MySQL database to obtain the schema. To add a schema using credentials:
+
+1. In step 2 of the **Add SQL Schema** dialog, click **Use Credential**. Select the credentials to use. If the list is empty, this is because no credentials have been created for the selected database type. You can [add credentials](#add-database-credentials) directly from the pulldown menu.
+2. Click **Convert** and wait for the schema to be analyzed. In the background, the Schema Conversion Tool runs the [`pg_dump`](https://www.postgresql.org/docs/current/app-pgdump) or [`mysqldump`](https://dev.mysql.com/doc/refman/8.0/en/mysqldump) utility to obtain the schema.
+
+    A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
+3. When analysis is complete, review errors and suggestions in the [**Summary Report**](#summary-report). Apply bulk actions in the **Summary Report** and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
+
+#### Add database credentials
+
+<Note>
+Credentials can be added for PostgreSQL and MySQL databases.
+</Note>
+
+1. With the **Credentials** tab open, click the **Add Credential** button.
+2. Provide the following information:
+    - A **Credential Name** to associate with the credentials.
+    - The **Dialect** of the database you are connecting to. Currently, PostgreSQL and MySQL are supported.
+    - The **Host** (i.e., hostname or IP address) for accessing the database, excluding the protocol (e.g., `tcp://` ). For example, `migrations.cockroachlabs.com`. The following are not allowed:
+        - Local hosts such as `localhost` and `127.0.0.1`.
+        - Private IPs, including `127.0.0.0/8`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.0.0/16`, `::1/128`, `fe80::/10`, and `fc00::/7`.
+    - The **Port** for accessing the database.
+    - A valid **Username** and **Password** for accessing the database.
+    - The **Database Name** to access. The Schema Conversion Tool will obtain the schema for this database.
+    - The **SSL Mode** for accessing the database:
+        - `None`: Do not force a secure connection.
+        - `Verify CA`: Force a secure connection and verify that the server certificate is signed by a known CA.
+        - `Verify Full`: Force a secure connection, verify that the server certificate is signed by a known CA, and verify that the server address matches that specified in the certificate.
+
+If the credentials are valid, they will be added to the [**Credentials** table](#credentials-table) with a `VERIFIED` badge.
+
+<Note>
+The Schema Conversion Tool creates the following internal objects when you convert a schema:
+
+- A database prefixed with `_migration_internal_` is created on the Cloud cluster when you [add a schema](#convert-a-schema) and each time you [retry a schema migration](#retry-the-migration). It does not contain any data apart from the statements in the `_migration_internal_statements` table. When you successfully [migrate a schema](#migrate-the-schema) to the Cloud cluster, the final `_migration_internal_` database is renamed to your specified database name, and the other `_migration_internal_` databases associated with the schema are removed. `_migration_internal_` databases are also removed when you delete their associated schema from the [**Schemas** table](#schemas-table).
+- A table called `_migration_internal_statements` is created on each `_migration_internal_` database. It contains the statements displayed in the [**Statements** list](#statements-list), along with metadata related to the schema conversion. This table is stored indefinitely because it enables you to [review](#review-the-schema) and [export the converted schema](#export-the-schema) even after [migrating it to a Cloud cluster](#migrate-the-schema).
+</Note>
+
+## Review the schema
+
+Use the **Summary Report** and **Statements** list to [update the schema](#update-the-schema) and finalize it for migration.
+
+The banner at the top of the page displays:
+
+- The number of **Statements Total** in the uploaded `.sql` file that were analyzed.
+- The number of **Errors** in SQL statements that are blocking [schema migration](#migrate-the-schema). Errors are further categorized and counted in the [**Summary Report**](#summary-report).
+- The number of **Incidental Errors** in SQL statements that are caused by errors in other SQL statements.
+
+### Summary Report
+
+<Note>
+**This feature is in <a href="/docs/VERSION_PLACEHOLDER/cockroachdb-feature-availability" data-versioned="true">preview</a>** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+The **Summary Report** displays the results of the schema analysis and provides bulk actions you can apply to [update the schema](#update-the-schema).
+
+To apply bulk actions to statements, refer to the tables in the Summary Report:
+
+- [Required Fixes](#required-fixes)
+- [Compatibility Notes](#compatibility-notes)
+- [Suggestions](#suggestions)
+
+<Warning>
+Bulk actions **cannot** be undone after you [retry the migration](#retry-the-migration).
+</Warning>
+
+To edit, add, or delete individual statements, click the **Statements** tab to open the [**Statements** list](#statements-list). Errors and suggestions are displayed for each statement.
+
+After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new CockroachDB Cloud database.
+
+#### Required Fixes
+
+**Required Fixes** indicate errors that must be resolved before you can [migrate the schema](#migrate-the-schema).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>A summary of the error type.</td></tr><tr><td>Category</td><td>The category of error:<br/><br/>- <strong>Unimplemented Feature:</strong> A statement that uses an <a href="/docs/molt/migration-strategy#unimplemented-features-and-syntax-incompatibilities">unimplemented feature</a>.<br/><br/>- <strong>Uncreated User:</strong> A statement that references a nonexistent user.<br/><br/>- <strong>Incompatibility:</strong> (Non-PostgreSQL schemas) A statement that could not be converted because it has no equivalent syntax on CockroachDB.<br/><br/>- <strong>Uncategorized:</strong> A statement that the tool did not or could not execute.<br/><br/>- <strong>Incidental:</strong> A statement that failed because another SQL statement encountered one of the preceding error types.</td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the error.</td></tr><tr><td>Remaining Instances</td><td>The number of times the error still occurs on the provided schema. This number will change as you <a href="#update-the-schema">update the schema</a> to fix errors. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Add User</strong> to add a missing SQL user, or <strong>Delete</strong> all statements that contain the error type. This cannot be undone after you <a href="#retry-the-migration">retry the migration</a>.</td></tr></tbody></table>
+
+#### Compatibility Notes
+
+**Compatibility Notes** indicate compatibility issues that do not block [schema migration](#migrate-the-schema). These are only displayed for non-PostgreSQL schemas.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>A summary of the SQL compatibility issue.</td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the suggestion.</td></tr><tr><td>Instances</td><td>The number of times the compatibility note occurs on the provided schema. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Acknowledge</strong> all instances of the compatibility note. This is not required for schema migration.</td></tr></tbody></table>
+
+#### Suggestions
+
+**Suggestions** relate to <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy#schema-design-best-practices" data-versioned="true">schema design best practices</a>. They do not block [schema migration](#migrate-the-schema).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>One of the following suggestion types:<br/><br/>- <strong>Sequences:</strong> A statement that uses a sequence to define a primary key column. <a href="/docs/v25.4/create-sequence#considerations">Using a sequence for a primary key column is not recommended.</a><br/><br/>- <strong>Missing Primary Key:</strong> A statement that does not define an explicit primary key for a table. <a href="/docs/v25.4/schema-design-table#select-primary-key-columns">Defining an explicit primary key on every table is recommended.</a><br/><br/>- <strong>Index Set On Timestamp Related Column:</strong> A statement that creates an index on a <a href="/docs/v25.4/timestamp"><code>TIMESTAMP</code>/<code>TIMESTAMPTZ</code></a> column. <a href="/docs/v25.4/schema-design-indexes#best-practices">Indexing on sequential keys can negatively affect performance.</a></td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the suggestion.</td></tr><tr><td>Instances</td><td>The number of times the suggestion occurs on the provided schema. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Acknowledge</strong> all instances of the suggestion. This is not required for schema migration.</td></tr></tbody></table>
+
+### Statements list
+
+The **Statements** list displays the result of analyzing each statement in the `.sql` file that you provided. The numbers from the [**Summary Report**](#summary-report) are displayed above the list of statements.
+
+- To [migrate the schema](#migrate-the-schema) and create a new database for migration, click **Migrate Schema**. The schema must have zero errors.
+- If the **Migrate Schema** button is disabled, use the **Statements** list to [update the schema](#update-the-schema). Navigate the list by scrolling or by clicking the arrows and **Scroll to Top** button on the bottom-right.
+
+Statements are displayed as follows:
+
+- A statement that succeeded is displayed without further detail.
+- A statement that failed is displayed with `[error]` and a message with error details. If the failure was due to an incidental error, the message also states: `This error may automatically resolve once an earlier statement no longer errors`.
+- A statement that failed due to incompatible syntax is displayed with `[incompat]`, a message with syntax details, and an **Acknowledge** checkbox.
+- A statement that has a SQL compatibility issue is displayed with `[compat note]`, a message with syntax details, and an **Acknowledge** checkbox.
+
+    <Note>
+    Some statements with compatibility issues are automatically removed during conversion. If a statement was removed from the schema, this is stated in the statement's `[incompat]` or `[compat note]` message.
+    </Note>
+
+</Tab>
+<Tab title="Oracle">
+
+<Note>
+**This feature is in <a href="/docs/VERSION_PLACEHOLDER/cockroachdb-feature-availability" data-versioned="true">preview</a>** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+1. With the **Schemas** tab open, click the **Add Schema** button. This opens the **Add SQL Schema** dialog.
+2. In step 1 of the **Add SQL Schema** dialog, select the appropriate **Dialect** from the pulldown menu.
+3. Configure the following defaults for schema conversion:
+    - **Casing of Identifiers:** Select **Keep case sensitivity** to enclose identifiers in double quotes, and **Make case insensitive** to convert identifiers to lowercase. For details on how CockroachDB handles identifiers, see <a href="/docs/VERSION_PLACEHOLDER/keywords-and-identifiers#identifiers" data-versioned="true">Identifiers</a>.
+    - **GENERATED AS IDENTITY Conversion Option:** We do not recommend using a sequence to define a primary key column. For details, see <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy#schema-design-best-practices" data-versioned="true">Schema design best practices</a>. To understand the differences between the `UUID` and `unique_rowid()` options, see the <a href="/docs/VERSION_PLACEHOLDER/sql-faqs#what-are-the-differences-between-uuid-sequences-and-unique_rowid" data-versioned="true">SQL FAQs</a>.
+4. Click **Next**.
+
+### Upload File
+
+The Schema Conversion Tool expects to analyze a SQL dump file containing only <a href="/docs/VERSION_PLACEHOLDER/sql-statements#data-definition-statements" data-versioned="true">data definition statements</a>.
+
+To generate an appropriate Oracle schema file, run the [`expdp` utility](https://docs.oracle.com/cd/E11882_01/server.112/e22490/dp_export.htm#i1007509) to extract **only the schema** of the Oracle database to a `.sql` file.
+
+The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be ignored in schema conversion. To add a schema file:
+
+1. In step 2 of the **Add SQL Schema** dialog, click **Upload File**. Click the upload box and select a `.sql` file, or drop a `.sql` file directly into the box.
+2. Click **Convert** and wait for the schema to be analyzed. A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
+3. When analysis is complete, review the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
+
+<Note>
+The Schema Conversion Tool creates the following internal objects when you convert a schema:
+
+- A database prefixed with `_migration_internal_` is created on the Cloud cluster when you [add a schema](#convert-a-schema) and each time you [retry a schema migration](#retry-the-migration). It does not contain any data apart from the statements in the `_migration_internal_statements` table. When you successfully [migrate a schema](#migrate-the-schema) to the Cloud cluster, the final `_migration_internal_` database is renamed to your specified database name, and the other `_migration_internal_` databases associated with the schema are removed. `_migration_internal_` databases are also removed when you delete their associated schema from the [**Schemas** table](#schemas-table).
+- A table called `_migration_internal_statements` is created on each `_migration_internal_` database. It contains the statements displayed in the [**Statements** list](#statements-list), along with metadata related to the schema conversion. This table is stored indefinitely because it enables you to [review](#review-the-schema) and [export the converted schema](#export-the-schema) even after [migrating it to a Cloud cluster](#migrate-the-schema).
+</Note>
+
+## Review the schema
+
+Use the **Summary Report** and **Statements** list to [update the schema](#update-the-schema) and finalize it for migration.
+
+The banner at the top of the page displays:
+
+- The number of **Statements Total** in the uploaded `.sql` file that were analyzed.
+- The number of **Errors** in SQL statements that are blocking [schema migration](#migrate-the-schema). Errors are further categorized and counted in the [**Summary Report**](#summary-report).
+- The number of **Incidental Errors** in SQL statements that are caused by errors in other SQL statements.
+
+### Summary Report
+
+<Note>
+**This feature is in <a href="/docs/VERSION_PLACEHOLDER/cockroachdb-feature-availability" data-versioned="true">preview</a>** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+The **Summary Report** displays the results of the schema analysis and provides bulk actions you can apply to [update the schema](#update-the-schema).
+
+To apply bulk actions to statements, refer to the tables in the Summary Report:
+
+- [Required Fixes](#required-fixes)
+- [Compatibility Notes](#compatibility-notes)
+- [Suggestions](#suggestions)
+
+<Warning>
+Bulk actions **cannot** be undone after you [retry the migration](#retry-the-migration).
+</Warning>
+
+To edit, add, or delete individual statements, click the **Statements** tab to open the [**Statements** list](#statements-list). Errors and suggestions are displayed for each statement.
+
+After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new CockroachDB Cloud database.
+
+#### Required Fixes
+
+**Required Fixes** indicate errors that must be resolved before you can [migrate the schema](#migrate-the-schema).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>A summary of the error type.</td></tr><tr><td>Category</td><td>The category of error:<br/><br/>- <strong>Unimplemented Feature:</strong> A statement that uses an <a href="/docs/molt/migration-strategy#unimplemented-features-and-syntax-incompatibilities">unimplemented feature</a>.<br/><br/>- <strong>Uncreated User:</strong> A statement that references a nonexistent user.<br/><br/>- <strong>Incompatibility:</strong> (Non-PostgreSQL schemas) A statement that could not be converted because it has no equivalent syntax on CockroachDB.<br/><br/>- <strong>Uncategorized:</strong> A statement that the tool did not or could not execute.<br/><br/>- <strong>Incidental:</strong> A statement that failed because another SQL statement encountered one of the preceding error types.</td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the error.</td></tr><tr><td>Remaining Instances</td><td>The number of times the error still occurs on the provided schema. This number will change as you <a href="#update-the-schema">update the schema</a> to fix errors. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Add User</strong> to add a missing SQL user, or <strong>Delete</strong> all statements that contain the error type. This cannot be undone after you <a href="#retry-the-migration">retry the migration</a>.</td></tr></tbody></table>
+
+#### Compatibility Notes
+
+**Compatibility Notes** indicate compatibility issues that do not block [schema migration](#migrate-the-schema). These are only displayed for non-PostgreSQL schemas.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>A summary of the SQL compatibility issue.</td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the suggestion.</td></tr><tr><td>Instances</td><td>The number of times the compatibility note occurs on the provided schema. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Acknowledge</strong> all instances of the compatibility note. This is not required for schema migration.</td></tr></tbody></table>
+
+#### Suggestions
+
+**Suggestions** relate to <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy#schema-design-best-practices" data-versioned="true">schema design best practices</a>. They do not block [schema migration](#migrate-the-schema).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>One of the following suggestion types:<br/><br/>- <strong>Sequences:</strong> A statement that uses a sequence to define a primary key column. <a href="/docs/v25.4/create-sequence#considerations">Using a sequence for a primary key column is not recommended.</a><br/><br/>- <strong>Missing Primary Key:</strong> A statement that does not define an explicit primary key for a table. <a href="/docs/v25.4/schema-design-table#select-primary-key-columns">Defining an explicit primary key on every table is recommended.</a><br/><br/>- <strong>Index Set On Timestamp Related Column:</strong> A statement that creates an index on a <a href="/docs/v25.4/timestamp"><code>TIMESTAMP</code>/<code>TIMESTAMPTZ</code></a> column. <a href="/docs/v25.4/schema-design-indexes#best-practices">Indexing on sequential keys can negatively affect performance.</a></td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the suggestion.</td></tr><tr><td>Instances</td><td>The number of times the suggestion occurs on the provided schema. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Acknowledge</strong> all instances of the suggestion. This is not required for schema migration.</td></tr></tbody></table>
+
+### Statements list
+
+The **Statements** list displays the result of analyzing each statement in the `.sql` file that you provided. The numbers from the [**Summary Report**](#summary-report) are displayed above the list of statements.
+
+- To [migrate the schema](#migrate-the-schema) and create a new database for migration, click **Migrate Schema**. The schema must have zero errors.
+- If the **Migrate Schema** button is disabled, use the **Statements** list to [update the schema](#update-the-schema). Navigate the list by scrolling or by clicking the arrows and **Scroll to Top** button on the bottom-right.
+
+Statements are displayed as follows:
+
+- A statement that succeeded is displayed without further detail.
+- A statement that failed is displayed with `[error]` and a message with error details. If the failure was due to an incidental error, the message also states: `This error may automatically resolve once an earlier statement no longer errors`.
+- A statement that failed due to incompatible syntax is displayed with `[incompat]`, a message with syntax details, and an **Acknowledge** checkbox.
+- A statement that has a SQL compatibility issue is displayed with `[compat note]`, a message with syntax details, and an **Acknowledge** checkbox.
+
+    <Note>
+    Some statements with compatibility issues are automatically removed during conversion. If a statement was removed from the schema, this is stated in the statement's `[incompat]` or `[compat note]` message.
+    </Note>
+
+</Tab>
+<Tab title="SQL Server">
+
+<Note>
+**This feature is in <a href="/docs/VERSION_PLACEHOLDER/cockroachdb-feature-availability" data-versioned="true">preview</a>** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+1. With the **Schemas** tab open, click the **Add Schema** button. This opens the **Add SQL Schema** dialog.
+2. In step 1 of the **Add SQL Schema** dialog, select the appropriate **Dialect** from the pulldown menu.
+3. Configure the following defaults for schema conversion:
+    - **Casing of Identifiers:** Select **Keep case sensitivity** to enclose identifiers in double quotes, and **Make case insensitive** to convert identifiers to lowercase. For details on how CockroachDB handles identifiers, see <a href="/docs/VERSION_PLACEHOLDER/keywords-and-identifiers#identifiers" data-versioned="true">Identifiers</a>.
+    - **IDENTITY Conversion Option:** We do not recommend using a sequence to define a primary key column. For details, see <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy#schema-design-best-practices" data-versioned="true">Schema design best practices</a>. To understand the differences between the `UUID` and `unique_rowid()` options, see the <a href="/docs/VERSION_PLACEHOLDER/sql-faqs#what-are-the-differences-between-uuid-sequences-and-unique_rowid" data-versioned="true">SQL FAQs</a>.
+4. Click **Next**.
+
+### Upload File
+
+The Schema Conversion Tool expects to analyze a SQL dump file containing only <a href="/docs/VERSION_PLACEHOLDER/sql-statements#data-definition-statements" data-versioned="true">data definition statements</a>.
+
+To generate an appropriate Microsoft SQL Server schema file, use either [SQL Server Management Studio](https://learn.microsoft.com/en-us/sql/ssms/tutorials/scripting-ssms?view=sql-server-ver16#script-a-database-by-using-the-script-option) or the equivalent [`mssql-scripter` utility](https://github.com/microsoft/mssql-scripter) to extract **only the schema** of the SQL Server database to a `.sql` file.
+
+The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be ignored in schema conversion. To add a schema file:
+
+1. In step 2 of the **Add SQL Schema** dialog, click **Upload File**. Click the upload box and select a `.sql` file, or drop a `.sql` file directly into the box.
+2. Click **Convert** and wait for the schema to be analyzed. A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
+3. When analysis is complete, review the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
+
+<Note>
+The Schema Conversion Tool creates the following internal objects when you convert a schema:
+
+- A database prefixed with `_migration_internal_` is created on the Cloud cluster when you [add a schema](#convert-a-schema) and each time you [retry a schema migration](#retry-the-migration). It does not contain any data apart from the statements in the `_migration_internal_statements` table. When you successfully [migrate a schema](#migrate-the-schema) to the Cloud cluster, the final `_migration_internal_` database is renamed to your specified database name, and the other `_migration_internal_` databases associated with the schema are removed. `_migration_internal_` databases are also removed when you delete their associated schema from the [**Schemas** table](#schemas-table).
+- A table called `_migration_internal_statements` is created on each `_migration_internal_` database. It contains the statements displayed in the [**Statements** list](#statements-list), along with metadata related to the schema conversion. This table is stored indefinitely because it enables you to [review](#review-the-schema) and [export the converted schema](#export-the-schema) even after [migrating it to a Cloud cluster](#migrate-the-schema).
+</Note>
+
+## Review the schema
+
+Use the **Summary Report** and **Statements** list to [update the schema](#update-the-schema) and finalize it for migration.
+
+The banner at the top of the page displays:
+
+- The number of **Statements Total** in the uploaded `.sql` file that were analyzed.
+- The number of **Errors** in SQL statements that are blocking [schema migration](#migrate-the-schema). Errors are further categorized and counted in the [**Summary Report**](#summary-report).
+- The number of **Incidental Errors** in SQL statements that are caused by errors in other SQL statements.
+
+### Summary Report
+
+<Note>
+**This feature is in <a href="/docs/VERSION_PLACEHOLDER/cockroachdb-feature-availability" data-versioned="true">preview</a>** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+The **Summary Report** displays the results of the schema analysis and provides bulk actions you can apply to [update the schema](#update-the-schema).
+
+To apply bulk actions to statements, refer to the tables in the Summary Report:
+
+- [Required Fixes](#required-fixes)
+- [Compatibility Notes](#compatibility-notes)
+- [Suggestions](#suggestions)
+
+<Warning>
+Bulk actions **cannot** be undone after you [retry the migration](#retry-the-migration).
+</Warning>
+
+To edit, add, or delete individual statements, click the **Statements** tab to open the [**Statements** list](#statements-list). Errors and suggestions are displayed for each statement.
+
+After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new CockroachDB Cloud database.
+
+#### Required Fixes
+
+**Required Fixes** indicate errors that must be resolved before you can [migrate the schema](#migrate-the-schema).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>A summary of the error type.</td></tr><tr><td>Category</td><td>The category of error:<br/><br/>- <strong>Unimplemented Feature:</strong> A statement that uses an <a href="/docs/molt/migration-strategy#unimplemented-features-and-syntax-incompatibilities">unimplemented feature</a>.<br/><br/>- <strong>Uncreated User:</strong> A statement that references a nonexistent user.<br/><br/>- <strong>Incompatibility:</strong> (Non-PostgreSQL schemas) A statement that could not be converted because it has no equivalent syntax on CockroachDB.<br/><br/>- <strong>Uncategorized:</strong> A statement that the tool did not or could not execute.<br/><br/>- <strong>Incidental:</strong> A statement that failed because another SQL statement encountered one of the preceding error types.</td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the error.</td></tr><tr><td>Remaining Instances</td><td>The number of times the error still occurs on the provided schema. This number will change as you <a href="#update-the-schema">update the schema</a> to fix errors. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Add User</strong> to add a missing SQL user, or <strong>Delete</strong> all statements that contain the error type. This cannot be undone after you <a href="#retry-the-migration">retry the migration</a>.</td></tr></tbody></table>
+
+#### Compatibility Notes
+
+**Compatibility Notes** indicate compatibility issues that do not block [schema migration](#migrate-the-schema). These are only displayed for non-PostgreSQL schemas.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>A summary of the SQL compatibility issue.</td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the suggestion.</td></tr><tr><td>Instances</td><td>The number of times the compatibility note occurs on the provided schema. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Acknowledge</strong> all instances of the compatibility note. This is not required for schema migration.</td></tr></tbody></table>
+
+#### Suggestions
+
+**Suggestions** relate to <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy#schema-design-best-practices" data-versioned="true">schema design best practices</a>. They do not block [schema migration](#migrate-the-schema).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>One of the following suggestion types:<br/><br/>- <strong>Sequences:</strong> A statement that uses a sequence to define a primary key column. <a href="/docs/v25.4/create-sequence#considerations">Using a sequence for a primary key column is not recommended.</a><br/><br/>- <strong>Missing Primary Key:</strong> A statement that does not define an explicit primary key for a table. <a href="/docs/v25.4/schema-design-table#select-primary-key-columns">Defining an explicit primary key on every table is recommended.</a><br/><br/>- <strong>Index Set On Timestamp Related Column:</strong> A statement that creates an index on a <a href="/docs/v25.4/timestamp"><code>TIMESTAMP</code>/<code>TIMESTAMPTZ</code></a> column. <a href="/docs/v25.4/schema-design-indexes#best-practices">Indexing on sequential keys can negatively affect performance.</a></td></tr><tr><td>Complexity</td><td>The estimated difficulty of addressing the suggestion.</td></tr><tr><td>Instances</td><td>The number of times the suggestion occurs on the provided schema. Click the <code>+</code> icon on the row to view up to 20 individual statements where this occurs.</td></tr><tr><td>Actions</td><td>The option to <strong>Acknowledge</strong> all instances of the suggestion. This is not required for schema migration.</td></tr></tbody></table>
+
+### Statements list
+
+The **Statements** list displays the result of analyzing each statement in the `.sql` file that you provided. The numbers from the [**Summary Report**](#summary-report) are displayed above the list of statements.
+
+- To [migrate the schema](#migrate-the-schema) and create a new database for migration, click **Migrate Schema**. The schema must have zero errors.
+- If the **Migrate Schema** button is disabled, use the **Statements** list to [update the schema](#update-the-schema). Navigate the list by scrolling or by clicking the arrows and **Scroll to Top** button on the bottom-right.
+
+Statements are displayed as follows:
+
+- A statement that succeeded is displayed without further detail.
+- A statement that failed is displayed with `[error]` and a message with error details. If the failure was due to an incidental error, the message also states: `This error may automatically resolve once an earlier statement no longer errors`.
+- A statement that failed due to incompatible syntax is displayed with `[incompat]`, a message with syntax details, and an **Acknowledge** checkbox.
+- A statement that has a SQL compatibility issue is displayed with `[compat note]`, a message with syntax details, and an **Acknowledge** checkbox.
+
+    <Note>
+    Some statements with compatibility issues are automatically removed during conversion. If a statement was removed from the schema, this is stated in the statement's `[incompat]` or `[compat note]` message.
+    </Note>
+
+</Tab>
+</Tabs>
+
+To edit a statement, click the **Edit** button or the statement itself and enter your changes. Your changes are saved when you click outside the statement, or when you click the **Save** button. Click **Cancel** to discard your changes.
+
+To edit multiple statements, click **Find &amp; Replace** above the list.
+
+- Enter a search term. Click **Prev** and **Next** to display each matching result.
+- Click **&gt;** to expand the menu. Enter a replace term and click **Replace**, **Replace &amp; Find Next**, or **Replace All** to replace the matching results.
+
+    This will update the corresponding statements. **You cannot undo the replace operation.**
+
+    <Note>
+    Replace operations are not currently supported for regex matches.
+    </Note>
+
+To remove or add a statement, click the ellipsis above the statement and then click **Delete statement**, **Add statement above**, or **Add statement below**.
+
+#### Filter the Statements list
+
+To filter the statements that are displayed in the **Statements** list, click the dropdown menu above the list.
+
+The available filters match the results displayed in the **Summary Report**:
+
+- [Required Fixes](#required-fixes)
+- [Suggestions](#suggestions)
+- [Compatibility Notes](#compatibility-notes) (non-PostgreSQL schemas)
+
+<Note>
+If a filter is not available, `No Options` is displayed.
+</Note>
+
+Click **Apply** to filter the **Statements** list using the selected filters.
+
+To remove a filter, click the `x` next to the active filter. To remove all active filters, click **Clear filters** above the **Statements** list.
+
+## Export the schema
+
+To export the current schema, click **Download File** at the top of the [**Statements** list](#statements-list).
+
+## Update the schema
+
+To update the schema:
+
+- Apply bulk actions in the [**Summary Report**](#summary-report).
+- Edit, add, or remove statements in the [**Statements** list](#statements-list).
+
+<table><thead><tr><th>Category</th><th>Solution</th><th>Bulk Actions</th><th>Required for schema migration?</th></tr></thead><tbody><tr><td>Unimplemented feature</td><td>The feature does not yet exist on CockroachDB. Implement a workaround by editing the statement and adding statements. Otherwise, remove the statement from the schema. If a link to a tracking issue is included, click the link for further context. For more information about unimplemented features, see the <a href="/docs/molt/migration-strategy#unimplemented-features-and-syntax-incompatibilities">Migration Overview</a>.</td><td>Delete</td><td>Yes</td></tr><tr><td>Uncreated user</td><td>Click the <strong>Add User</strong> button next to the error message. You must be a member of the <a href="/docs/cockroachcloud/managing-access"><code>admin</code> role</a>. This adds the missing user to the cluster.</td><td>Add User, Delete</td><td>Yes</td></tr><tr><td>Incidental</td><td>Resolve the error in the earlier failed statement that caused the incidental error.</td><td>Delete</td><td>Yes</td></tr><tr><td>Incompatibility (non-PostgreSQL schemas)</td><td>There is no equivalent syntax on CockroachDB. Implement a workaround by replacing the statement. Otherwise, remove the statement from the schema. Then check <strong>Acknowledge</strong>.</td><td>Delete</td><td>Yes</td></tr><tr><td>Uncategorized</td><td>Edit the statement to fix the error. Otherwise, remove the statement from the schema.</td><td>Delete</td><td>Yes</td></tr><tr><td>Compatibility note (non-PostgreSQL schemas)</td><td>Edit the statement to match the CockroachDB syntax. Then optionally check <strong>Acknowledge</strong>.</td><td>Acknowledge</td><td>No</td></tr><tr><td>Suggestion</td><td>Review and take any relevant actions indicated by the message. Then optionally check <strong>Acknowledge</strong>.</td><td>Acknowledge</td><td>No</td></tr></tbody></table>
+
+After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new CockroachDB Cloud database.
+
+### Retry the migration
+
+To analyze a schema that you have [updated](#update-the-schema), click **Retry Migration** at the top of the **Summary Report** or **Statements** list.
+
+This will verify that the schema has zero errors and can be [migrated](#migrate-the-schema).
+
+### Migrate the schema
+
+You can migrate the schema directly to a new CockroachDB Cloud database when the number of errors is zero. This value is displayed on the [Schemas table](#schemas-table), [**Summary Report**](#summary-report), and [**Statements** list](#statements-list).
+
+<Tip>
+If you want to migrate to a CockroachDB self-hosted database, you can [export the schema](#export-the-schema).
+</Tip>
+
+To migrate the schema, click **Migrate Schema** when viewing the **Summary Report** or **Statements** list. A modal will open:
+
+1. Name the new database and select a SQL user to own the database.
+2. Click **Migrate**.
+
+After migrating the schema and creating the new database, you can <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy#load-test-data" data-versioned="true">load some test data</a> and <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy#validate-queries" data-versioned="true">validate your queries</a>.
+
+## Schemas table
+
+If you have [added a schema to convert](#convert-a-schema), the following details are displayed when the **Schemas** tab is open:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Schema Name</td><td>The filename of the <code>.sql</code> file that you added.</td></tr><tr><td>Status</td><td>The status of the schema migration: <code>READY FOR REVIEW</code>, <code>READY TO MIGRATE</code>, or <code>MIGRATED</code>. You can <a href="#migrate-the-schema">migrate</a> schemas with <code>READY TO MIGRATE</code> status.</td></tr><tr><td>Date Imported</td><td>The timestamp when the SQL dump was uploaded.</td></tr><tr><td>Last Updated</td><td>The timestamp when the <a href="#statements-list">SQL statements</a> were updated.</td></tr><tr><td>Errors</td><td>The number of SQL errors preventing a schema from attaining <code>READY TO MIGRATE</code> status.</td></tr></tbody></table>
+
+To view the [**Summary Report**](#summary-report) or [**Statements** list](#statements-list) for a migration, click the migration name.
+
+## Credentials table
+
+If you have added any external database credentials (PostgreSQL or MySQL only), the following details are displayed when the **Credentials** tab is open:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Credential Name</td><td>The name associated with the access credentials. A <code>VERIFIED</code> badge will display if the credentials are verified.</td></tr><tr><td>Dialect</td><td>The type of database being accessed.</td></tr><tr><td>Host / Port</td><td>The host and port used to access the database.</td></tr><tr><td>Database Name</td><td>The name of the database being accessed.</td></tr><tr><td>Created At</td><td>The timestamp when the credentials were successfully created.</td></tr></tbody></table>
+
+To delete or verify a set of credentials, select the appropriate option in the **Actions** column.
+
+## See also
+
+- <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy" data-versioned="true">Migration Overview</a>
+- <a href="/docs/VERSION_PLACEHOLDER/molt/molt-fetch" data-versioned="true">MOLT Fetch</a>
+- <a href="/docs/VERSION_PLACEHOLDER/molt/molt-verify" data-versioned="true">MOLT Verify</a>

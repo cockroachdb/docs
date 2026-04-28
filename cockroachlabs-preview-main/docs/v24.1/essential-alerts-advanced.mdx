@@ -1,0 +1,187 @@
+---
+title: "Essential Alerts for CockroachDB Advanced Deployments"
+old_description: "Learn about the recommended essential alerts for monitoring your CockroachDB Advanced cluster."
+---
+
+## Storage
+
+### Node storage capacity
+
+A CockroachDB node will not able to operate if there is no free disk space on a CockroachDB [store](/docs/v24.1/cockroach-start#store) volume.
+
+**Metric**
+[`capacity`](/docs/v24.1/essential-metrics-advanced#capacity)
+[`capacity.available`](/docs/v24.1/essential-metrics-advanced#capacity-available)
+
+**Rule**
+Set alerts for each node:
+WARNING: `capacity.available`/`capacity` is less than `0.30` for `24 hours`
+CRITICAL: `capacity.available`/`capacity` is less than `0.10` for `1 hour`
+
+**Action**
+
+- Refer to [Storage Capacity](/docs/v24.1/common-issues-to-monitor#storage-capacity).
+- Increase the size of CockroachDB node storage capacity. CockroachDB storage volumes should not be utilized more than 60% (40% free space).
+- In a "disk full" situation, you may be able to get a node "unstuck" by removing the [automatically created emergency ballast file](/docs/v24.1/cluster-setup-troubleshooting#automatic-ballast-files).
+
+## SQL
+
+### Node not executing SQL
+
+Send an alert when a node is not executing SQL despite having connections. `sql.conns` shows the number of connections as well as the distribution, or balancing, of connections across cluster nodes. An imbalance can lead to nodes becoming overloaded.
+
+**Metric**
+[`sql.conns`](/docs/v24.1/essential-metrics-advanced#sql-conns)
+`sql.query.count`
+
+**Rule**
+Set alerts for each node:
+WARNING: `sql.conns` greater than `0` while `sql.query.count` equals `0`
+
+**Action**
+
+- Refer to [Connection Pooling](/docs/v24.1/connection-pooling).
+
+### SQL query failure
+
+Send an alert when the query failure count exceeds a user-determined threshold based on their application's SLA.
+
+**Metric**
+[`sql.failure.count`](/docs/v24.1/essential-metrics-advanced#sql-failure-count)
+
+**Rule**
+WARNING: `sql.failure.count` is greater than a threshold (based on the user’s application SLA)
+
+**Action**
+
+- Use the [**Insights** page](/docs/v24.1/ui-insights-page) to find failed executions with their error code to troubleshoot or use application-level logs, if instrumented, to determine the cause of error.
+
+### SQL queries experiencing high latency
+
+Send an alert when the query latency exceeds a user-determined threshold based on their application’s SLA.
+
+**Metric**
+[`sql.service.latency`](/docs/v24.1/essential-metrics-advanced#sql-service-latency)
+[`sql.conn.latency`](/docs/v24.1/essential-metrics-advanced#sql-conn-latency)
+
+**Rule**
+WARNING: (p99 or p90 of `sql.service.latency` plus average of `sql.conn.latency`) is greater than a threshold (based on the user’s application SLA)
+
+**Action**
+
+- Apply the time range of the alert to the [**SQL Activity** pages](/docs/v24.1/monitoring-and-alerting#sql-activity-pages) to investigate. Use the [**Statements** page](/docs/v24.1/ui-statements-page) P90 Latency and P99 latency columns to correlate [statement fingerprints](/docs/v24.1/ui-statements-page#sql-statement-fingerprints) with this alert.
+
+## Changefeeds
+
+<Note>
+During [rolling maintenance](/docs/v24.1/upgrade-cockroach-version), [changefeed jobs](/docs/v24.1/change-data-capture-overview) restart following node restarts. **Mute changefeed alerts described in the following sections during routine maintenance procedures** to avoid unnecessary distractions.
+</Note>
+
+### Changefeed failure
+
+Changefeeds can suffer permanent failures (that the [jobs system](/docs/v24.1/monitor-and-debug-changefeeds) will not try to restart). Any increase in this metric counter should prompt investigative action.
+
+**Metric**
+[`changefeed.failures`](/docs/v24.1/essential-metrics-advanced#changefeed-failures)
+
+**Rule**
+CRITICAL: If `changefeed.failures` is greater than `0`
+
+**Action**
+
+1. If the alert is triggered during cluster maintenance, mute it. Otherwise start investigation with the following query:
+
+    ```sql
+    SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency", created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused', 'pause-requested') ORDER BY created DESC;
+    ```
+2. If the cluster is not undergoing maintenance, check the health of [sink](/docs/v24.1/changefeed-sinks) endpoints. If the sink is [Kafka](/docs/v24.1/changefeed-sinks#kafka), check for sink connection errors such as `ERROR: connecting to kafka: path.to.cluster:port: kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`.
+
+### Frequent changefeed restarts
+
+Changefeeds automatically restart in case of transient errors. However too many restarts outside of a routine maintenance procedure may be due to a systemic condition and should be investigated.
+
+**Metric**
+[`changefeed.error_retries`](/docs/v24.1/essential-metrics-advanced#changefeed-error-retries)
+
+**Rule**
+WARNING: If `changefeed.error_retries` is greater than `50` for more than `15 minutes`
+
+**Action**
+
+- Follow the action for a [changefeed failure](#changefeed-failure).
+
+### Changefeed falling behind
+
+Changefeed has fallen behind. This is determined by the end-to-end lag between a committed change and that change applied at the destination. This can be due to cluster capacity or changefeed sink availability.
+
+**Metric**
+[`changefeed.commit_latency`](/docs/v24.1/essential-metrics-advanced#changefeed-commit-latency)
+
+**Rule**
+WARNING: `changefeed.commit_latency` is greater than `10 minutes`
+CRITICAL: `changefeed.commit_latency` is greater than `15 minutes`
+
+**Action**
+
+1. In the DB Console, navigate to **Metrics**, [**Changefeeds** dashboard](/docs/v24.1/ui-cdc-dashboard) for the cluster and check the maximum values on the [**Commit Latency** graph](/docs/v24.1/ui-cdc-dashboard#commit-latency). Alternatively, individual changefeed latency can be verified by using the following SQL query:
+
+    ```sql
+    SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency", created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused', 'pause-requested') ORDER BY created DESC;
+    ```
+2. Copy the `job_id` for the changefeed job with highest `changefeed latency` and pause the job:
+
+    ```sql
+    PAUSE JOB 681491311976841286;
+    ```
+3. Check the status of the pause request by running the query from step 1. If the job status is `pause-requested`, check again in a few minutes.
+4. After the job is `paused`, resume the job.
+
+    ```sql
+    RESUME JOB 681491311976841286;
+    ```
+5. If the changefeed latency does not progress after these steps due to lack of cluster resources or availability of the changefeed sink, [contact Support](https://support.cockroachlabs.com/).
+
+### Changefeed has been paused a long time
+
+Changefeed jobs should not be paused for a long time because [the protected timestamp prevents garbage collection](/docs/v24.1/protect-changefeed-data). To protect against an operational error, this alert guards against an inadvertently forgotten pause.
+
+**Metric**
+[`jobs.changefeed.currently_paused`](/docs/v24.1/essential-metrics-advanced#changefeed-currently-paused)
+
+**Rule**
+WARNING: `jobs.changefeed.currently_paused` is greater than `0` for more than `15 minutes`
+CRITICAL: `jobs.changefeed.currently_paused` is greater than `0` for more than `60 minutes`
+
+**Action**
+
+1. Check the status of each changefeed using the following SQL query:
+
+    ```sql
+    SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency",created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused','pause-requested') ORDER BY created DESC;
+    ```
+2. If all the changefeeds have status as `running`, one or more changefeeds may have run into an error and recovered. In the DB Console, navigate to **Metrics**, [**Changefeeds** dashboard](/docs/v24.1/ui-cdc-dashboard) for the cluster and check the [**Changefeed Restarts** graph](/docs/v24.1/ui-cdc-dashboard#changefeed-restarts).
+3. Resume paused changefeed(s) with the `job_id` using:
+
+    ```sql
+    RESUME JOB 681491311976841286;
+    ```
+
+### Changefeed experiencing high latency
+
+Send an alert when the maximum latency of any running changefeed exceeds a specified threshold, which is less than the [`gc.ttlseconds`](/docs/v24.1/configure-replication-zones#replication-zone-variables) variable set in the cluster. This alert ensures that the changefeed progresses faster than the garbage collection TTL, preventing a changefeed's protected timestamp from delaying garbage collection.
+
+**Metric**
+[`changefeed.checkpoint_progress`](/docs/v24.1/monitor-and-debug-changefeeds#metrics)
+
+**Rule**
+WARNING: (current time minus `changefeed.checkpoint_progress`) is greater than a threshold (that is less than `gc.ttlseconds` variable)
+
+**Action**
+
+- Refer to [Monitor and Debug Changefeeds](/docs/v24.1/monitor-and-debug-changefeeds#recommended-changefeed-metrics-to-track).
+
+## See also
+
+- [Events to alert on](/docs/v24.1/monitoring-and-alerting#events-to-alert-on)
+- [Common Issues to Monitor](/docs/v24.1/common-issues-to-monitor)
+- [Essential Metrics for CockroachDB Advanced Deployments](/docs/v24.1/essential-metrics-advanced)

@@ -1,0 +1,128 @@
+---
+title: "DROP TYPE"
+old_description: "The DROP TYPE statement drops a user-defined data type from the database."
+---
+
+import { DropType } from "/snippets/syntax-diagrams/DropType.jsx";
+
+The `DROP TYPE` [statement](/docs/v26.1/sql-statements) drops a specified [enumerated data type](/docs/v26.1/enum) from the current database.
+
+<Note>
+The `DROP TYPE` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v26.1/online-schema-changes).
+</Note>
+
+## Synopsis
+
+<DropType />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF EXISTS</code></td><td>Drop the type if it exists. If it does not exist, do not return an error.</td></tr><tr><td><code>type&#95;name&#95;list</code></td><td>A type name or a comma-separated list of type names to drop.</td></tr></tbody></table>
+
+## Required privileges
+
+The user must be the owner of the type.
+
+## Details
+
+- You cannot drop a type or view that is in use by a table.
+- You can only drop a user-defined type from the database that contains the type.
+
+## Examples
+
+### Drop a single type
+
+```sql
+> CREATE TYPE IF NOT EXISTS status AS ENUM ('open', 'closed', 'inactive');
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema |  name  |        value
+---------+--------+-----------------------
+  public | status | open|closed|inactive
+(1 row)
+```
+
+```sql
+> CREATE TABLE IF NOT EXISTS accounts (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        balance DECIMAL,
+        status status
+);
+```
+
+```sql
+-- sqlchecker: ignore
+> DROP TYPE status;
+```
+
+```text
+ERROR: cannot drop type "status" because other objects ([bank.public.accounts]) still depend on it
+SQLSTATE: 2BP01
+```
+
+```sql
+> DROP TABLE accounts;
+```
+
+```sql
+> DROP TYPE status;
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema | name | value
+---------+------+--------
+(0 rows)
+```
+
+### Drop multiple types
+
+```sql
+> CREATE TYPE weekday AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday');
+```
+
+```sql
+> CREATE TYPE weekend AS ENUM ('sunday', 'saturday');
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema |  name   |                  value
+---------+---------+-------------------------------------------
+  public | weekday | monday|tuesday|wednesday|thursday|friday
+  public | weekend | sunday|saturday
+(2 rows)
+```
+
+```sql
+> DROP TYPE weekday, weekend;
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema | name | value
+---------+------+--------
+(0 rows)
+```
+
+## See also
+
+- [`ENUM`](/docs/v26.1/enum)
+- [Data types](/docs/v26.1/data-types)
+- [`CREATE TYPE`](/docs/v26.1/create-type)
+- [`ALTER TYPE`](/docs/v26.1/alter-type)
+- [`SHOW ENUMS`](/docs/v26.1/show-enums)

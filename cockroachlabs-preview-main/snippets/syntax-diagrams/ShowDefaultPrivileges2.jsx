@@ -1,0 +1,94 @@
+export const ShowDefaultPrivileges2 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="327" width="759" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="64" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">SHOW</text>
+<rect height="32" rx="10" width="80" x="115" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="113" y="1"></rect>
+<text class="terminal" x="123" y="21">DEFAULT</text>
+<rect height="32" rx="10" width="104" x="215" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="104" x="213" y="1"></rect>
+<text class="terminal" x="223" y="21">PRIVILEGES</text>
+<rect height="32" rx="10" width="48" x="359" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="357" y="33"></rect>
+<text class="terminal" x="367" y="53">FOR</text>
+<rect height="32" rx="10" width="56" x="467" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="465" y="33"></rect>
+<text class="terminal" x="475" y="53">ROLE</text>
+<rect height="32" rx="10" width="56" x="467" y="79"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="465" y="77"></rect>
+<text class="terminal" x="475" y="97">USER</text>
+<rect height="32" rx="10" width="82" x="467" y="123"></rect>
+<rect class="terminal" height="32" rx="10" width="82" x="465" y="121"></rect>
+<text class="terminal" x="475" y="141">GRANTEE</text><a xlink:href="/docs/v23.2/sql-grammar#role_spec_list" xlink:title="role_spec_list">
+<rect height="32" width="108" x="589" y="35"></rect>
+<rect class="nonterminal" height="32" width="108" x="587" y="33"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="599" y="53">role_spec_list</text></a><rect height="32" rx="10" width="44" x="447" y="167"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="445" y="165"></rect>
+<text class="terminal" x="455" y="185">ALL</text>
+<rect height="32" rx="10" width="66" x="511" y="167"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="509" y="165"></rect>
+<text class="terminal" x="519" y="185">ROLES</text>
+<rect height="32" rx="10" width="36" x="333" y="277"></rect>
+<rect class="terminal" height="32" rx="10" width="36" x="331" y="275"></rect>
+<text class="terminal" x="341" y="295">IN</text>
+<rect height="32" rx="10" width="76" x="389" y="277"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="387" y="275"></rect>
+<text class="terminal" x="397" y="295">SCHEMA</text><a xlink:href="/docs/v23.2/sql-grammar#qualifiable_schema_name" xlink:title="qualifiable_schema_name">
+<rect height="32" width="186" x="505" y="277"></rect>
+<rect class="nonterminal" height="32" width="186" x="503" y="275"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="162" font-size="11" class="nonterminal" x="515" y="295">qualifiable_schema_name</text></a><rect height="32" rx="10" width="24" x="505" y="233"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="503" y="231"></rect>
+<text class="terminal" x="513" y="251">,</text>
+<path class="line" d="m17 17 h2 m0 0 h10 m64 0 h10 m0 0 h10 m80 0 h10 m0 0 h10 m104 0 h10 m20 0 h10 m0 0 h368 m-398 0 h20 m378 0 h20 m-418 0 q10 0 10 10 m398 0 q0 -10 10 -10 m-408 10 v12 m398 0 v-12 m-398 12 q0 10 10 10 m378 0 q10 0 10 -10 m-388 10 h10 m48 0 h10 m40 0 h10 m56 0 h10 m0 0 h26 m-122 0 h20 m102 0 h20 m-142 0 q10 0 10 10 m122 0 q0 -10 10 -10 m-132 10 v24 m122 0 v-24 m-122 24 q0 10 10 10 m102 0 q10 0 10 -10 m-112 10 h10 m56 0 h10 m0 0 h26 m-112 -10 v20 m122 0 v-20 m-122 20 v24 m122 0 v-24 m-122 24 q0 10 10 10 m102 0 q10 0 10 -10 m-112 10 h10 m82 0 h10 m20 -88 h10 m108 0 h10 m-290 0 h20 m270 0 h20 m-310 0 q10 0 10 10 m290 0 q0 -10 10 -10 m-300 10 v112 m290 0 v-112 m-290 112 q0 10 10 10 m270 0 q10 0 10 -10 m-280 10 h10 m44 0 h10 m0 0 h10 m66 0 h10 m0 0 h120 m42 -164 l2 0 m2 0 l2 0 m2 0 l2 0 m-468 274 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m36 0 h10 m0 0 h10 m76 0 h10 m20 0 h10 m186 0 h10 m-226 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m206 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-206 0 h10 m24 0 h10 m0 0 h162 m-398 44 h20 m398 0 h20 m-438 0 q10 0 10 10 m418 0 q0 -10 10 -10 m-428 10 v14 m418 0 v-14 m-418 14 q0 10 10 10 m398 0 q10 0 10 -10 m-408 10 h10 m0 0 h388 m23 -34 h-3"></path>
+<polygon points="749 291 757 287 757 295"></polygon>
+<polygon points="749 291 741 287 741 295"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

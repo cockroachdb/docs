@@ -1,0 +1,74 @@
+---
+title: "DROP SCHEDULES"
+old_description: "The DROP SCHEDULES statement lets you remove specified backup schedules."
+---
+
+import { DropSchedules } from "/snippets/syntax-diagrams/DropSchedules.jsx";
+
+The `DROP SCHEDULES` [statement](/docs/v26.1/sql-statements) can be used to remove [backup schedules](/docs/v26.1/create-schedule-for-backup) or [changefeed schedules](/docs/v26.1/create-schedule-for-changefeed).
+
+When `DROP SCHEDULES` removes a [full backup schedule](/docs/v26.1/create-schedule-for-backup#create-a-schedule-for-full-backups-only), it removes the associated [incremental backup schedule](/docs/v26.1/create-schedule-for-backup#incremental-backup-schedules), if it exists.
+
+<Warning>
+`DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs](/docs/v26.1/cancel-job) first, as you will not be able to look up the job ID once the schedule is dropped.
+</Warning>
+
+## Required privileges
+
+The following users can drop a schedule:
+
+- Members of the [`admin` role](/docs/v26.1/security-reference/authorization#default-roles). By default, the `root` user belongs to the `admin` role.
+- Owners of a backup schedule, i.e., the user that [created the backup schedule](/docs/v26.1/create-schedule-for-backup).
+- Owners of a changefeed schedule, i.e., the user that [created the changefeed schedule](/docs/v26.1/create-schedule-for-changefeed).
+
+## Synopsis
+
+<DropSchedules />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>selectclause</code></td><td>A <a href="/docs/v26.1/selection-queries">selection query</a> that returns <code>id</code>(s) to drop.</td></tr><tr><td><code>scheduleID</code></td><td>The <code>id</code> of the schedule you want to drop, which can be found with <a href="/docs/v26.1/show-schedules"><code>SHOW SCHEDULES</code></a>.</td></tr></tbody></table>
+
+## Examples
+
+### Drop a schedule
+
+```sql
+> DROP SCHEDULE 589963390487363585;
+```
+
+```text
+DROP SCHEDULES 1
+```
+
+### Drop multiple schedules
+
+To drop multiple schedules, nest a [`SELECT` clause](/docs/v26.1/select-clause) that retrieves `id`(s) inside the `DROP SCHEDULES` statement:
+
+```sql
+> DROP SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
+```
+
+```text
+DROP SCHEDULES 4
+```
+
+In this example, all schedules with the label `schedule_database` are dropped.
+
+## See also
+
+- [Manage a Backup Schedule](/docs/v26.1/manage-a-backup-schedule)
+- [`BACKUP`](/docs/v26.1/backup)
+- [`RESTORE`](/docs/v26.1/restore)
+- [`CREATE CHANGEFEED`](/docs/v26.1/create-changefeed)
+- [`CREATE SCHEDULE FOR CHANGEFEED`](/docs/v26.1/create-schedule-for-changefeed)
+- [`SHOW BACKUP`](/docs/v26.1/show-backup)
+- [`SHOW SCHEDULES`](/docs/v26.1/show-schedules)
+- [`PAUSE SCHEDULES`](/docs/v26.1/pause-schedules)
+- [`RESUME SCHEDULES`](/docs/v26.1/resume-schedules)
+- [`PAUSE JOB`](/docs/v26.1/pause-job)
+- [`RESUME JOB`](/docs/v26.1/pause-job)
+- [`CANCEL JOB`](/docs/v26.1/cancel-job)
+- [Take Full and Incremental Backups](/docs/v26.1/take-full-and-incremental-backups)
+- [Use the Built-in SQL Client](/docs/v26.1/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v26.1/cockroach-commands)

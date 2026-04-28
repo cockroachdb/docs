@@ -1,0 +1,78 @@
+<svg height="235" width="905" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="62" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">ALTER</text><a xlink:href="#role_or_group_or_user" xlink:title="role_or_group_or_user">
+<rect height="32" width="168" x="45" y="69"></rect>
+<rect class="nonterminal" height="32" width="168" x="43" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="144" font-size="11" class="nonterminal" x="55" y="87">role_or_group_or_user</text></a><rect height="32" rx="10" width="34" x="253" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="34" x="251" y="99"></rect>
+<text class="terminal" x="261" y="119">IF</text>
+<rect height="32" rx="10" width="70" x="307" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="305" y="99"></rect>
+<text class="terminal" x="315" y="119">EXISTS</text><a xlink:href="#role_spec" xlink:title="role_spec">
+<rect height="32" width="82" x="417" y="69"></rect>
+<rect class="nonterminal" height="32" width="82" x="415" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="427" y="87">role_spec</text></a><a xlink:href="#opt_role_options" xlink:title="opt_role_options">
+<rect height="32" width="128" x="539" y="69"></rect>
+<rect class="nonterminal" height="32" width="128" x="537" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="10" class="nonterminal" x="549" y="87">opt_role_options</text></a><a xlink:href="#opt_in_database" xlink:title="opt_in_database">
+<rect height="32" width="128" x="539" y="113"></rect>
+<rect class="nonterminal" height="32" width="128" x="537" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="11" class="nonterminal" x="549" y="131">opt_in_database</text></a><a xlink:href="#set_or_reset_clause" xlink:title="set_or_reset_clause">
+<rect height="32" width="150" x="687" y="113"></rect>
+<rect class="nonterminal" height="32" width="150" x="685" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="126" font-size="10" class="nonterminal" x="697" y="131">set_or_reset_clause</text></a><rect height="32" rx="10" width="90" x="65" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="90" x="63" y="155"></rect>
+<text class="terminal" x="73" y="175">ROLE_ALL</text>
+<rect height="32" rx="10" width="90" x="65" y="201"></rect>
+<rect class="terminal" height="32" rx="10" width="90" x="63" y="199"></rect>
+<text class="terminal" x="73" y="219">USER_ALL</text>
+<rect height="32" rx="10" width="44" x="195" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="193" y="155"></rect>
+<text class="terminal" x="203" y="175">ALL</text><a xlink:href="#opt_in_database" xlink:title="opt_in_database">
+<rect height="32" width="128" x="259" y="157"></rect>
+<rect class="nonterminal" height="32" width="128" x="257" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="11" class="nonterminal" x="269" y="175">opt_in_database</text></a><a xlink:href="#set_or_reset_clause" xlink:title="set_or_reset_clause">
+<rect height="32" width="150" x="407" y="157"></rect>
+<rect class="nonterminal" height="32" width="150" x="405" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="126" font-size="10" class="nonterminal" x="417" y="175">set_or_reset_clause</text></a><path class="line" d="m19 17 h2 m0 0 h10 m62 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-114 66 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m168 0 h10 m20 0 h10 m0 0 h134 m-164 0 h20 m144 0 h20 m-184 0 q10 0 10 10 m164 0 q0 -10 10 -10 m-174 10 v12 m164 0 v-12 m-164 12 q0 10 10 10 m144 0 q10 0 10 -10 m-154 10 h10 m34 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m82 0 h10 m20 0 h10 m128 0 h10 m0 0 h170 m-338 0 h20 m318 0 h20 m-358 0 q10 0 10 10 m338 0 q0 -10 10 -10 m-348 10 v24 m338 0 v-24 m-338 24 q0 10 10 10 m318 0 q10 0 10 -10 m-328 10 h10 m128 0 h10 m0 0 h10 m150 0 h10 m-832 -44 h20 m832 0 h20 m-872 0 q10 0 10 10 m852 0 q0 -10 10 -10 m-862 10 v68 m852 0 v-68 m-852 68 q0 10 10 10 m832 0 q10 0 10 -10 m-822 10 h10 m90 0 h10 m-130 0 h20 m110 0 h20 m-150 0 q10 0 10 10 m130 0 q0 -10 10 -10 m-140 10 v24 m130 0 v-24 m-130 24 q0 10 10 10 m110 0 q10 0 10 -10 m-120 10 h10 m90 0 h10 m20 -44 h10 m44 0 h10 m0 0 h10 m128 0 h10 m0 0 h10 m150 0 h10 m0 0 h300 m23 -88 h-3"></path>
+<polygon points="895 83 903 79 903 87"></polygon>
+<polygon points="895 83 887 79 887 87"></polygon></svg>

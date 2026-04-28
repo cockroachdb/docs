@@ -1,0 +1,109 @@
+export const IdentityOptionElem = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="593" width="701" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="44" x="51" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="49" y="1"></rect>
+<text class="terminal" x="59" y="21">SET</text>
+<rect height="32" rx="10" width="40" x="135" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="133" y="1"></rect>
+<text class="terminal" x="143" y="21">NO</text>
+<rect height="32" rx="10" width="62" x="215" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="213" y="1"></rect>
+<text class="terminal" x="223" y="21">CYCLE</text>
+<rect height="32" rx="10" width="92" x="215" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="213" y="45"></rect>
+<text class="terminal" x="223" y="65">MINVALUE</text>
+<rect height="32" rx="10" width="94" x="215" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="94" x="213" y="89"></rect>
+<text class="terminal" x="223" y="109">MAXVALUE</text>
+<rect height="32" rx="10" width="46" x="175" y="167"></rect>
+<rect class="terminal" height="32" rx="10" width="46" x="173" y="165"></rect>
+<text class="terminal" x="183" y="185">PER</text>
+<rect height="32" rx="10" width="58" x="261" y="167"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="259" y="165"></rect>
+<text class="terminal" x="269" y="185">NODE</text>
+<rect height="32" rx="10" width="82" x="261" y="211"></rect>
+<rect class="terminal" height="32" rx="10" width="82" x="259" y="209"></rect>
+<text class="terminal" x="269" y="229">SESSION</text>
+<rect height="32" rx="10" width="66" x="403" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="401" y="133"></rect>
+<text class="terminal" x="411" y="153">CACHE</text>
+<rect height="32" rx="10" width="92" x="155" y="255"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="153" y="253"></rect>
+<text class="terminal" x="163" y="273">MINVALUE</text>
+<rect height="32" rx="10" width="94" x="155" y="299"></rect>
+<rect class="terminal" height="32" rx="10" width="94" x="153" y="297"></rect>
+<text class="terminal" x="163" y="317">MAXVALUE</text>
+<rect height="32" rx="10" width="100" x="155" y="343"></rect>
+<rect class="terminal" height="32" rx="10" width="100" x="153" y="341"></rect>
+<text class="terminal" x="163" y="361">INCREMENT</text>
+<rect height="32" rx="10" width="38" x="295" y="375"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="293" y="373"></rect>
+<text class="terminal" x="303" y="393">BY</text>
+<rect height="32" rx="10" width="64" x="155" y="419"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="153" y="417"></rect>
+<text class="terminal" x="163" y="437">START</text>
+<rect height="32" rx="10" width="58" x="259" y="451"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="257" y="449"></rect>
+<text class="terminal" x="267" y="469">WITH</text><a xlink:href="#signed_iconst64" xlink:title="signed_iconst64">
+<rect height="32" width="124" x="509" y="135"></rect>
+<rect class="nonterminal" height="32" width="124" x="507" y="133"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="100" font-size="10" class="nonterminal" x="519" y="153">signed_iconst64</text></a><rect height="32" rx="10" width="82" x="51" y="495"></rect>
+<rect class="terminal" height="32" rx="10" width="82" x="49" y="493"></rect>
+<text class="terminal" x="59" y="513">RESTART</text>
+<rect height="32" rx="10" width="58" x="193" y="559"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="191" y="557"></rect>
+<text class="terminal" x="201" y="577">WITH</text><a xlink:href="#signed_iconst64" xlink:title="signed_iconst64">
+<rect height="32" width="124" x="291" y="527"></rect>
+<rect class="nonterminal" height="32" width="124" x="289" y="525"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="100" font-size="10" class="nonterminal" x="301" y="545">signed_iconst64</text></a><path class="line" d="m17 17 h2 m20 0 h10 m44 0 h10 m20 0 h10 m40 0 h10 m20 0 h10 m62 0 h10 m0 0 h32 m-134 0 h20 m114 0 h20 m-154 0 q10 0 10 10 m134 0 q0 -10 10 -10 m-144 10 v24 m134 0 v-24 m-134 24 q0 10 10 10 m114 0 q10 0 10 -10 m-124 10 h10 m92 0 h10 m0 0 h2 m-124 -10 v20 m134 0 v-20 m-134 20 v24 m134 0 v-24 m-134 24 q0 10 10 10 m114 0 q10 0 10 -10 m-124 10 h10 m94 0 h10 m20 -88 h304 m-538 0 h20 m518 0 h20 m-558 0 q10 0 10 10 m538 0 q0 -10 10 -10 m-548 10 v112 m538 0 v-112 m-538 112 q0 10 10 10 m518 0 q10 0 10 -10 m-488 10 h10 m0 0 h198 m-228 0 h20 m208 0 h20 m-248 0 q10 0 10 10 m228 0 q0 -10 10 -10 m-238 10 v12 m228 0 v-12 m-228 12 q0 10 10 10 m208 0 q10 0 10 -10 m-218 10 h10 m46 0 h10 m20 0 h10 m58 0 h10 m0 0 h24 m-122 0 h20 m102 0 h20 m-142 0 q10 0 10 10 m122 0 q0 -10 10 -10 m-132 10 v24 m122 0 v-24 m-122 24 q0 10 10 10 m102 0 q10 0 10 -10 m-112 10 h10 m82 0 h10 m40 -76 h10 m66 0 h10 m-354 0 h20 m334 0 h20 m-374 0 q10 0 10 10 m354 0 q0 -10 10 -10 m-364 10 v100 m354 0 v-100 m-354 100 q0 10 10 10 m334 0 q10 0 10 -10 m-344 10 h10 m92 0 h10 m0 0 h222 m-344 -10 v20 m354 0 v-20 m-354 20 v24 m354 0 v-24 m-354 24 q0 10 10 10 m334 0 q10 0 10 -10 m-344 10 h10 m94 0 h10 m0 0 h220 m-344 -10 v20 m354 0 v-20 m-354 20 v24 m354 0 v-24 m-354 24 q0 10 10 10 m334 0 q10 0 10 -10 m-344 10 h10 m100 0 h10 m20 0 h10 m0 0 h48 m-78 0 h20 m58 0 h20 m-98 0 q10 0 10 10 m78 0 q0 -10 10 -10 m-88 10 v12 m78 0 v-12 m-78 12 q0 10 10 10 m58 0 q10 0 10 -10 m-68 10 h10 m38 0 h10 m20 -32 h116 m-344 -10 v20 m354 0 v-20 m-354 20 v56 m354 0 v-56 m-354 56 q0 10 10 10 m334 0 q10 0 10 -10 m-344 10 h10 m64 0 h10 m20 0 h10 m0 0 h68 m-98 0 h20 m78 0 h20 m-118 0 q10 0 10 10 m98 0 q0 -10 10 -10 m-108 10 v12 m98 0 v-12 m-98 12 q0 10 10 10 m78 0 q10 0 10 -10 m-88 10 h10 m58 0 h10 m20 -32 h132 m20 -284 h10 m124 0 h10 m-622 -132 h20 m622 0 h20 m-662 0 q10 0 10 10 m642 0 q0 -10 10 -10 m-652 10 v472 m642 0 v-472 m-642 472 q0 10 10 10 m622 0 q10 0 10 -10 m-632 10 h10 m82 0 h10 m20 0 h10 m0 0 h252 m-282 0 h20 m262 0 h20 m-302 0 q10 0 10 10 m282 0 q0 -10 10 -10 m-292 10 v12 m282 0 v-12 m-282 12 q0 10 10 10 m262 0 q10 0 10 -10 m-252 10 h10 m0 0 h68 m-98 0 h20 m78 0 h20 m-118 0 q10 0 10 10 m98 0 q0 -10 10 -10 m-108 10 v12 m98 0 v-12 m-98 12 q0 10 10 10 m78 0 q10 0 10 -10 m-88 10 h10 m58 0 h10 m20 -32 h10 m124 0 h10 m20 -32 h218 m23 -492 h-3"></path>
+<polygon points="691 17 699 13 699 21"></polygon>
+<polygon points="691 17 683 13 683 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

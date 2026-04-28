@@ -1,0 +1,610 @@
+---
+title: "Build a Go App with CockroachDB and upper/db"
+old_description: "Learn how to use CockroachDB from a simple Go application with the upper/db data access layer."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v25.4/build-a-go-app-with-cockroachdb-upperdb"
+  items={[
+    {
+      title: "Use pgx",
+      href: "/docs/v25.4/build-a-go-app-with-cockroachdb",
+    },
+    {
+      title: "Use GORM",
+      href: "/docs/v25.4/build-a-go-app-with-cockroachdb-gorm",
+    },
+    {
+      title: "Use lib/pq",
+      href: "/docs/v25.4/build-a-go-app-with-cockroachdb-pq",
+    },
+    {
+      title: "Use upper/db",
+      href: "/docs/v25.4/build-a-go-app-with-cockroachdb-upperdb",
+    },
+  ]}
+/>
+
+This tutorial shows you how build a simple Go application with CockroachDB and the [upper/db](https://upper.io/) data access layer.
+
+## Before you begin
+
+1. [Install CockroachDB](/docs/v25.4/install-cockroachdb).
+2. Start up a [secure](/docs/v25.4/secure-a-cluster) or [insecure](/docs/v25.4/start-a-local-cluster) local cluster.
+3. Choose the instructions that correspond to whether your cluster is secure or insecure:
+
+<Tabs>
+<Tab title="Secure">
+
+## Step 1. Create the `maxroach` user and `bank` database
+
+Start the [built-in SQL shell](/docs/v25.4/cockroach-sql):
+
+```shell
+$ cockroach sql --certs-dir=certs
+```
+
+In the SQL shell, issue the following statements to create the `maxroach` user and `bank` database:
+
+```sql
+> CREATE USER IF NOT EXISTS maxroach;
+```
+
+```sql
+> CREATE DATABASE bank;
+```
+
+Give the `maxroach` user the necessary permissions:
+
+```sql
+> GRANT ALL ON DATABASE bank TO maxroach;
+```
+
+Exit the SQL shell:
+
+```sql
+> \q
+```
+
+## Step 2. Generate a certificate for the `maxroach` user
+
+Create a certificate and key for the `maxroach` user by running the following command:
+
+```shell
+$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
+```
+
+The code samples will run with `maxroach` as the user.
+
+## Step 3. Run the Go code
+
+The sample code shown below uses upper/db to map Go-specific objects to SQL operations. Specifically, the code:
+
+- Creates the `accounts` table, if it does not already exist.
+- Deletes any existing rows in the `accounts` table.
+- Inserts two rows into the `accounts` table.
+- Prints the rows in the `accounts` table to the terminal.
+- Deletes the first row in the `accounts` table.
+- Updates the rows in the `accounts` table within an explicit [transaction](/docs/v25.4/transactions).
+- Prints the rows in the `accounts` table to the terminal once more.
+
+```go
+package main
+
+import (
+    "fmt"
+    "log"
+    "time"
+
+    "github.com/upper/db/v4"
+    "github.com/upper/db/v4/adapter/cockroachdb"
+)
+
+// The settings variable stores connection details.
+var settings = cockroachdb.ConnectionURL{
+    Host:     "localhost",
+    Database: "bank",
+    User:     "maxroach",
+    Options: map[string]string{
+        // Secure node.
+         "sslrootcert": "certs/ca.crt",
+         "sslkey":      "certs/client.maxroach.key",
+         "sslcert":     "certs/client.maxroach.crt",
+    },
+}
+
+// Accounts is a handy way to represent a collection.
+func Accounts(sess db.Session) db.Store {
+    return sess.Collection("accounts")
+}
+
+// Account is used to represent a single record in the "accounts" table.
+type Account struct {
+    ID      uint64 `db:"id,omitempty"`
+    Balance int64  `db:"balance"`
+}
+
+// Collection is required in order to create a relation between the Account
+// struct and the "accounts" table.
+func (a *Account) Store(sess db.Session) db.Store {
+    return Accounts(sess)
+}
+
+// createTables creates all the tables that are neccessary to run this example.
+func createTables(sess db.Session) error {
+    _, err := sess.SQL().Exec(`
+        CREATE TABLE IF NOT EXISTS accounts (
+            ID SERIAL PRIMARY KEY,
+            balance INT
+        )
+    `)
+    if err != nil {
+        return err
+    }
+    return nil
+}
+
+// crdbForceRetry can be used to simulate a transaction error and
+// demonstrate upper/db's ability to retry the transaction automatically.
+//
+// By default, upper/db will retry the transaction five times, if you want
+// to modify this number use: sess.SetMaxTransactionRetries(n).
+//
+// This is only used for demonstration purposes and not intended
+// for production code.
+func crdbForceRetry(sess db.Session) error {
+    var err error
+
+    // The first statement in a transaction can be retried transparently on the
+    // server, so we need to add a placeholder statement so that our
+    // force_retry() statement isn't the first one.
+    _, err = sess.SQL().Exec(`SELECT 1`)
+    if err != nil {
+        return err
+    }
+
+    // If force_retry is called during the specified interval from the beginning
+    // of the transaction it returns a retryable error. If not, 0 is returned
+    // instead of an error.
+    _, err = sess.SQL().Exec(`SELECT crdb_internal.force_retry('1s'::INTERVAL)`)
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+
+func main() {
+    // Connect to the local CockroachDB node.
+    sess, err := cockroachdb.Open(settings)
+    if err != nil {
+        log.Fatal("cockroachdb.Open: ", err)
+    }
+    defer sess.Close()
+
+    // Adjust this number to fit your specific needs (set to 5, by default)
+    // sess.SetMaxTransactionRetries(10)
+
+    // Create the "accounts" table
+    createTables(sess)
+
+    // Delete all the previous items in the "accounts" table.
+    err = Accounts(sess).Truncate()
+    if err != nil {
+        log.Fatal("Truncate: ", err)
+    }
+
+    // Create a new account with a balance of 1000.
+    account1 := Account{Balance: 1000}
+    err = Accounts(sess).InsertReturning(&account1)
+    if err != nil {
+        log.Fatal("sess.Save: ", err)
+    }
+
+    // Create a new account with a balance of 250.
+    account2 := Account{Balance: 250}
+    err = Accounts(sess).InsertReturning(&account2)
+    if err != nil {
+        log.Fatal("sess.Save: ", err)
+    }
+
+    // Printing records
+    printRecords(sess)
+
+    // Change the balance of the first account.
+    account1.Balance = 500
+    err = sess.Save(&account1)
+    if err != nil {
+        log.Fatal("sess.Save: ", err)
+    }
+
+    // Change the balance of the second account.
+    account2.Balance = 999
+    err = sess.Save(&account2)
+    if err != nil {
+        log.Fatal("sess.Save: ", err)
+    }
+
+    // Printing records
+    printRecords(sess)
+
+    // Delete the first record.
+    err = sess.Delete(&account1)
+    if err != nil {
+        log.Fatal("Delete: ", err)
+    }
+
+    startTime := time.Now()
+
+    // Add a couple of new records within a transaction.
+    err = sess.Tx(func(tx db.Session) error {
+        var err error
+
+        if err = tx.Save(&Account{Balance: 887}); err != nil {
+            return err
+        }
+
+        if time.Now().Sub(startTime) < time.Second*1 {
+            // Will fail continuously for 2 seconds.
+            if err = crdbForceRetry(tx); err != nil {
+                return err
+            }
+        }
+
+        if err = tx.Save(&Account{Balance: 342}); err != nil {
+            return err
+        }
+
+        return nil
+    })
+    if err != nil {
+        log.Fatal("Could not commit transaction: ", err)
+    }
+
+    // Printing records
+    printRecords(sess)
+}
+
+func printRecords(sess db.Session) {
+    accounts := []Account{}
+    err := Accounts(sess).Find().All(&accounts)
+    if err != nil {
+        log.Fatal("Find: ", err)
+    }
+    log.Printf("Balances:")
+    for i := range accounts {
+        fmt.Printf("\taccounts[%d]: %d\n", accounts[i].ID, accounts[i].Balance)
+    }
+}
+```
+
+Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions](/docs/v25.4/transaction-retry-error-reference#client-side-retry-handling) when transaction errors are thrown. As a result, this function forces a transaction retry.
+
+To run the code, copy the sample above, or [download it directly](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v25.4/app/upperdb-basic-sample/main.go).
+
+<Tip>
+To clone a version of the code below that connects to insecure clusters, run the following command:
+
+`git clone https://github.com/cockroachlabs/hello-world-go-upperdb/`
+
+Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
+</Tip>
+
+</Tab>
+<Tab title="Insecure">
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+## Step 1. Create the `maxroach` user and `bank` database
+
+Start the [built-in SQL shell](/docs/v25.4/cockroach-sql):
+
+```shell
+$ cockroach sql --insecure
+```
+
+In the SQL shell, issue the following statements to create the `maxroach` user and `bank` database:
+
+```sql
+> CREATE USER IF NOT EXISTS maxroach;
+```
+
+```sql
+> CREATE DATABASE bank;
+```
+
+Give the `maxroach` user the necessary permissions:
+
+```sql
+> GRANT ALL ON DATABASE bank TO maxroach;
+```
+
+Exit the SQL shell:
+
+```sql
+> \q
+```
+
+## Step 2. Run the Go code
+
+The sample code shown below uses upper/db to map Go-specific objects to SQL operations. Specifically, the code:
+
+- Creates the `accounts` table, if it does not already exist.
+- Deletes any existing rows in the `accounts` table.
+- Inserts two rows into the `accounts` table.
+- Prints the rows in the `accounts` table to the terminal.
+- Deletes the first row in the `accounts` table.
+- Updates the rows in the `accounts` table within an explicit [transaction](/docs/v25.4/transactions).
+- Prints the rows in the `accounts` table to the terminal once more.
+
+```go
+package main
+
+import (
+    "fmt"
+    "log"
+    "time"
+
+    "github.com/upper/db/v4"
+    "github.com/upper/db/v4/adapter/cockroachdb"
+)
+
+// The settings variable stores connection details.
+var settings = cockroachdb.ConnectionURL{
+    Host:     "localhost",
+    Database: "bank",
+    User:     "maxroach",
+    Options: map[string]string{
+        // Insecure node.
+        "sslmode": "disable",
+    },
+}
+
+// Accounts is a handy way to represent a collection.
+func Accounts(sess db.Session) db.Store {
+    return sess.Collection("accounts")
+}
+
+// Account is used to represent a single record in the "accounts" table.
+type Account struct {
+    ID      uint64 `db:"id,omitempty"`
+    Balance int64  `db:"balance"`
+}
+
+// Collection is required in order to create a relation between the Account
+// struct and the "accounts" table.
+func (a *Account) Store(sess db.Session) db.Store {
+    return Accounts(sess)
+}
+
+// createTables creates all the tables that are neccessary to run this example.
+func createTables(sess db.Session) error {
+    _, err := sess.SQL().Exec(`
+        CREATE TABLE IF NOT EXISTS accounts (
+            ID SERIAL PRIMARY KEY,
+            balance INT
+        )
+    `)
+    if err != nil {
+        return err
+    }
+    return nil
+}
+
+// crdbForceRetry can be used to simulate a transaction error and
+// demonstrate upper/db's ability to retry the transaction automatically.
+//
+// By default, upper/db will retry the transaction five times, if you want
+// to modify this number use: sess.SetMaxTransactionRetries(n).
+//
+// This is only used for demonstration purposes and not intended
+// for production code.
+func crdbForceRetry(sess db.Session) error {
+    var err error
+
+    // The first statement in a transaction can be retried transparently on the
+    // server, so we need to add a placeholder statement so that our
+    // force_retry() statement isn't the first one.
+    _, err = sess.SQL().Exec(`SELECT 1`)
+    if err != nil {
+        return err
+    }
+
+    // If force_retry is called during the specified interval from the beginning
+    // of the transaction it returns a retryable error. If not, 0 is returned
+    // instead of an error.
+    _, err = sess.SQL().Exec(`SELECT crdb_internal.force_retry('1s'::INTERVAL)`)
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+
+func main() {
+    // Connect to the local CockroachDB node.
+    sess, err := cockroachdb.Open(settings)
+    if err != nil {
+        log.Fatal("cockroachdb.Open: ", err)
+    }
+    defer sess.Close()
+
+    // Adjust this number to fit your specific needs (set to 5, by default)
+    // sess.SetMaxTransactionRetries(10)
+
+    // Create the "accounts" table
+    createTables(sess)
+
+    // Delete all the previous items in the "accounts" table.
+    err = Accounts(sess).Truncate()
+    if err != nil {
+        log.Fatal("Truncate: ", err)
+    }
+
+    // Create a new account with a balance of 1000.
+    account1 := Account{Balance: 1000}
+    err = Accounts(sess).InsertReturning(&account1)
+    if err != nil {
+        log.Fatal("sess.Save: ", err)
+    }
+
+    // Create a new account with a balance of 250.
+    account2 := Account{Balance: 250}
+    err = Accounts(sess).InsertReturning(&account2)
+    if err != nil {
+        log.Fatal("sess.Save: ", err)
+    }
+
+    // Printing records
+    printRecords(sess)
+
+    // Change the balance of the first account.
+    account1.Balance = 500
+    err = sess.Save(&account1)
+    if err != nil {
+        log.Fatal("sess.Save: ", err)
+    }
+
+    // Change the balance of the second account.
+    account2.Balance = 999
+    err = sess.Save(&account2)
+    if err != nil {
+        log.Fatal("sess.Save: ", err)
+    }
+
+    // Printing records
+    printRecords(sess)
+
+    // Delete the first record.
+    err = sess.Delete(&account1)
+    if err != nil {
+        log.Fatal("Delete: ", err)
+    }
+
+    startTime := time.Now()
+
+    // Add a couple of new records within a transaction.
+    err = sess.Tx(func(tx db.Session) error {
+        var err error
+
+        if err = tx.Save(&Account{Balance: 887}); err != nil {
+            return err
+        }
+
+        if time.Now().Sub(startTime) < time.Second*1 {
+            // Will fail continuously for 2 seconds.
+            if err = crdbForceRetry(tx); err != nil {
+                return err
+            }
+        }
+
+        if err = tx.Save(&Account{Balance: 342}); err != nil {
+            return err
+        }
+
+        return nil
+    })
+    if err != nil {
+        log.Fatal("Could not commit transaction: ", err)
+    }
+
+    // Printing records
+    printRecords(sess)
+}
+
+func printRecords(sess db.Session) {
+    accounts := []Account{}
+    err := Accounts(sess).Find().All(&accounts)
+    if err != nil {
+        log.Fatal("Find: ", err)
+    }
+    log.Printf("Balances:")
+    for i := range accounts {
+        fmt.Printf("\taccounts[%d]: %d\n", accounts[i].ID, accounts[i].Balance)
+    }
+}
+```
+
+Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions](/docs/v25.4/transaction-retry-error-reference#client-side-retry-handling) when transaction errors are thrown. As a result, this function forces a transaction retry.
+
+Copy the code or [download it directly](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v25.4/app/insecure/upperdb-basic-sample/main.go).
+
+<Tip>
+To clone a version of the code below that connects to insecure clusters, run the following command:
+
+`git clone https://github.com/cockroachlabs/hello-world-go-upperdb/`
+</Tip>
+
+</Tab>
+</Tabs>
+
+Change to the directory where you cloned the repo and get the dependencies with `go mod init`:
+
+```shell
+$ go mod init hello-world-go-upperdb
+```
+
+Then run the code:
+
+```shell
+$ go run main.go
+```
+
+The output should look similar to the following:
+
+```text
+go: finding module for package github.com/upper/db/v4
+go: finding module for package github.com/upper/db/v4/adapter/cockroachdb
+go: found github.com/upper/db/v4 in github.com/upper/db/v4 v4.0.0
+2020/09/16 10:31:55 Balances:
+    accounts[590467288222990337]: 1000
+    accounts[590467288229576705]: 250
+2020/09/16 10:31:55 Balances:
+    accounts[590467288222990337]: 500
+    accounts[590467288229576705]: 999
+2020/09/16 10:31:55 upper/db: log_level=WARNING file=go/pkg/mod/github.com/upper/db/v4@v4.0.0/internal/sqladapter/session.go:642
+    Session ID:     00006
+    Transaction ID: 00005
+    Query:          SELECT crdb_internal.force_retry('1ms'::INTERVAL)
+    Error:          pq: restart transaction: crdb_internal.force_retry(): TransactionRetryWithProtoRefreshError: forced by crdb_internal.force_retry()
+    Time taken:     0.00171s
+    Context:        context.Background
+
+2020/09/16 10:31:55 upper/db: log_level=WARNING file=go/pkg/mod/github.com/upper/db/v4@v4.0.0/internal/sqladapter/session.go:642
+    Session ID:     00006
+    Transaction ID: 00005
+    Query:          INSERT INTO "accounts" ("balance") VALUES ($1) RETURNING "id"
+    Arguments:      []interface {}{887}
+    Error:          pq: current transaction is aborted, commands ignored until end of transaction block
+    Time taken:     0.00065s
+    Context:        context.Background
+
+2020/09/16 10:31:56 Balances:
+    accounts[590467288229576705]: 999
+    accounts[590467288342757377]: 887
+    accounts[590467288350064641]: 342
+```
+
+Note that the forced transaction errors result in errors printed to the terminal, but the transactions are retried until they succeed.
+
+## What's next?
+
+Read more about upper/db:
+
+- [Introduction to upper/db](https://upper.io/v4/getting-started)
+- [The upper/db tour](https://tour.upper.io/)
+- [upper/db reference docs](https://pkg.go.dev/github.com/upper/db/v4)
+
+You might also be interested in the following pages:
+
+- [Client Connection Parameters](/docs/v25.4/connection-parameters)
+- [Connection Pooling](/docs/v25.4/connection-pooling)
+- [Data Replication](/docs/v25.4/demo-replication-and-rebalancing)
+- [CockroachDB Resilience](/docs/v25.4/demo-cockroachdb-resilience)
+- [Replication &amp; Rebalancing](/docs/v25.4/demo-replication-and-rebalancing)
+- [Cross-Cloud Migration](/docs/v25.4/demo-automatic-cloud-migration)
+- [Automated Operations](/docs/v25.4/orchestrate-a-local-cluster-with-kubernetes-insecure)

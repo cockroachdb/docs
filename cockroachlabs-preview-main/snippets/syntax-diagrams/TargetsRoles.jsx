@@ -1,0 +1,75 @@
+export const TargetsRoles = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="213" width="373" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="56" x="51" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="49" y="1"></rect>
+<text class="terminal" x="59" y="21">ROLE</text><a xlink:href="#role_spec_list" xlink:title="role_spec_list">
+<rect height="32" width="108" x="127" y="3"></rect>
+<rect class="nonterminal" height="32" width="108" x="125" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="137" y="21">role_spec_list</text></a><rect height="32" rx="10" width="76" x="51" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="49" y="45"></rect>
+<text class="terminal" x="59" y="65">SCHEMA</text><a xlink:href="#schema_name_list" xlink:title="schema_name_list">
+<rect height="32" width="138" x="167" y="47"></rect>
+<rect class="nonterminal" height="32" width="138" x="165" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="114" font-size="11" class="nonterminal" x="177" y="65">schema_name_list</text></a><a xlink:href="#schema_wildcard" xlink:title="schema_wildcard">
+<rect height="32" width="128" x="167" y="91"></rect>
+<rect class="nonterminal" height="32" width="128" x="165" y="89"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="11" class="nonterminal" x="177" y="109">schema_wildcard</text></a><rect height="32" rx="10" width="54" x="51" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="49" y="133"></rect>
+<text class="terminal" x="59" y="153">TYPE</text><a xlink:href="#type_name_list" xlink:title="type_name_list">
+<rect height="32" width="118" x="125" y="135"></rect>
+<rect class="nonterminal" height="32" width="118" x="123" y="133"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="94" font-size="10" class="nonterminal" x="135" y="153">type_name_list</text></a><a xlink:href="#grant_targets" xlink:title="grant_targets">
+<rect height="32" width="108" x="51" y="179"></rect>
+<rect class="nonterminal" height="32" width="108" x="49" y="177"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="61" y="197">grant_targets</text></a><path class="line" d="m17 17 h2 m20 0 h10 m56 0 h10 m0 0 h10 m108 0 h10 m0 0 h90 m-314 0 h20 m294 0 h20 m-334 0 q10 0 10 10 m314 0 q0 -10 10 -10 m-324 10 v24 m314 0 v-24 m-314 24 q0 10 10 10 m294 0 q10 0 10 -10 m-304 10 h10 m76 0 h10 m20 0 h10 m138 0 h10 m-178 0 h20 m158 0 h20 m-198 0 q10 0 10 10 m178 0 q0 -10 10 -10 m-188 10 v24 m178 0 v-24 m-178 24 q0 10 10 10 m158 0 q10 0 10 -10 m-168 10 h10 m128 0 h10 m0 0 h10 m-284 -54 v20 m314 0 v-20 m-314 20 v68 m314 0 v-68 m-314 68 q0 10 10 10 m294 0 q10 0 10 -10 m-304 10 h10 m54 0 h10 m0 0 h10 m118 0 h10 m0 0 h82 m-304 -10 v20 m314 0 v-20 m-314 20 v24 m314 0 v-24 m-314 24 q0 10 10 10 m294 0 q10 0 10 -10 m-304 10 h10 m108 0 h10 m0 0 h166 m23 -176 h-3"></path>
+<polygon points="363 17 371 13 371 21"></polygon>
+<polygon points="363 17 355 13 355 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

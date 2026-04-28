@@ -1,0 +1,130 @@
+---
+title: "Runtime Dashboard"
+old_description: "The Runtime dashboard lets you monitor runtime metrics for you cluster, such as node count, memory usage, and CPU time."
+---
+
+The **Runtime** dashboard in the DB Console lets you monitor runtime metrics for you cluster, such as node count, memory usage, and CPU time.
+
+To view this dashboard, [access the DB Console](/docs/v23.2/ui-overview#db-console-access), click **Metrics** on the left-hand navigation bar, and select **Dashboard** &gt; **Runtime**.
+
+## Dashboard navigation
+
+Use the **Graph** menu to display metrics for your entire cluster or for a specific node.
+
+To the right of the Graph and Dashboard menus, a time interval selector allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected in the [SQL Activity](/docs/v23.2/ui-overview#sql-activity) pages. However, if you select 10 or 30 minutes, the interval defaults to 1 hour in SQL Activity pages.
+
+Hovering your mouse pointer over the graph title will display a tooltip with a description and the [metrics](/docs/v23.2/essential-metrics-self-hosted) used to create the graph.
+
+When hovering on graphs, crosshair lines will appear at your mouse pointer. The series' values corresponding to the given time in the cross hairs are displayed in the legend under the graph. Hovering the mouse pointer on a given series displays the corresponding value near the mouse pointer and highlights the series line (graying out other series lines). Click anywhere within the graph to freeze the values in place. Click anywhere within the graph again to cause the values to change with your mouse movements once more.
+
+In the legend, click on an individual series to isolate it on the graph. The other series will be hidden, while the hover will still work. Click the individual series again to make the other series visible. If there are many series, a scrollbar may appear on the right of the legend. This is to limit the size of the legend so that it does not get endlessly large, particularly on clusters with many nodes.
+
+The **Runtime** dashboard displays the following time series graphs:
+
+## Live Node Count
+
+<Frame>
+  ![DB Console Node Count](/images/v23.2/ui_node_count.png)
+</Frame>
+
+In the node view as well as the cluster view, the graph shows the number of live nodes in the cluster.
+
+A dip in the graph indicates decommissioned nodes, dead nodes, or nodes that are not responding. To troubleshoot the dip in the graph, refer to the [Summary panel](#summary-panel).
+
+## Memory Usage
+
+<Frame>
+  ![DB Console Memory Usage](/images/v23.2/ui_memory_usage.png)
+</Frame>
+
+- In the node view, the graph shows the memory in use for the selected node.
+- In the cluster view, the graph shows the memory in use across all nodes in the cluster.
+
+On hovering over the graph, the values for the following metrics are displayed:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>RSS</td><td>Total memory in use by CockroachDB.</td></tr><tr><td>Go Allocated</td><td>Memory allocated by the Go layer.</td></tr><tr><td>Go Total</td><td>Total memory managed by the Go layer.</td></tr><tr><td>CGo Allocated</td><td>Memory allocated by the C layer.</td></tr><tr><td>CGo Total</td><td>Total memory managed by the C layer.</td></tr></tbody></table>
+
+**Expected values for a healthy cluster**: Go Allocated will depend on workload but should not exceed [`--max-sql-memory`](/docs/v23.2/cockroach-start#flags) by more than 100%. CGo Allocated should not exceed the [`--cache`](/docs/v23.2/cockroach-start#flags) size and CGo Total should not exceed the [`--cache`](/docs/v23.2/cockroach-start#flags) size by more than 15%.
+
+## Runnable Goroutines per CPU
+
+This graph shows the number of [Goroutines](https://golangbot.com/goroutines) waiting to run per CPU. This graph should rise and fall based on CPU load. Values greater than 50 are considered high.
+
+- In the node view, the graph shows the number of Goroutines waiting per CPU on the selected node.
+- In the cluster view, the graph shows the number of Goroutines waiting per CPU across all nodes in the cluster.
+
+## CPU Time
+
+<Frame>
+  ![DB Console CPU Time](/images/v23.2/ui_cpu_time.png)
+</Frame>
+
+- In the node view, the graph shows the [CPU time](https://wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations for the selected node.
+- In the cluster view, the graph shows the [CPU time](https://wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations across all nodes in the cluster.
+
+On hovering over the CPU Time graph, the values for the following metrics are displayed:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>User CPU Time</td><td>Total CPU seconds per second used by the CockroachDB process across all nodes.</td></tr><tr><td>Sys CPU Time</td><td>Total CPU seconds per second used for CockroachDB system-level operations across all nodes.</td></tr></tbody></table>
+
+## Clock Offset
+
+<Frame>
+  ![DB Console Clock Offset](/images/v23.2/ui_clock_offset.png)
+</Frame>
+
+- In the node view, the graph shows the mean clock offset of the node against the rest of the cluster.
+- In the cluster view, the graph shows the mean clock offset of each node against the rest of the cluster.
+
+## Other graphs
+
+The **Runtime** dashboard shows other time series graphs that are important for CockroachDB developers:
+
+- Goroutine Count
+- GC Runs
+- GC Pause Time
+
+For monitoring CockroachDB, it is sufficient to use the [**Live Node Count**](#live-node-count), [**Memory Usage**](#memory-usage), [**CPU Time**](#cpu-time), and [**Clock Offset**](#clock-offset) graphs.
+
+## Summary and events
+
+### Summary panel
+
+A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Total Nodes</td><td>The total number of nodes in the cluster. <a href="/docs/v23.2/node-shutdown?filters=decommission">Decommissioned nodes</a> are not included in this count.</td></tr><tr><td>Capacity Used</td><td>The storage capacity used as a percentage of <a href="/docs/v23.2/ui-cluster-overview-page#capacity-metrics">usable capacity</a> allocated across all nodes.</td></tr><tr><td>Unavailable Ranges</td><td>The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.</td></tr><tr><td>Queries per second</td><td>The total number of <code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, and <code>DELETE</code> queries executed per second across the cluster.</td></tr><tr><td>P99 Latency</td><td>The 99th percentile of service latency.</td></tr></tbody></table>
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v23.2/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v23.2/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+### Events panel
+
+Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
+
+<Frame>
+  ![DB Console Events](/images/v23.2/ui_events.png)
+</Frame>
+
+The following types of events are listed:
+
+- Database created
+- Database dropped
+- Table created
+- Table dropped
+- Table altered
+- Index created
+- Index dropped
+- View created
+- View dropped
+- Schema change reversed
+- Schema change finished
+- Node joined
+- Node decommissioned
+- Node restarted
+- Cluster setting changed
+
+## See also
+
+- [Troubleshooting Overview](/docs/v23.2/troubleshooting-overview)
+- [Support Resources](/docs/v23.2/support-resources)
+- [Raw Status Endpoints](/docs/v23.2/monitoring-and-alerting#raw-status-endpoints)

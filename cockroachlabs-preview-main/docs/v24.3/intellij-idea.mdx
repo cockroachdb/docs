@@ -1,0 +1,94 @@
+---
+title: "Use IntelliJ IDEA with CockroachDB"
+old_description: "Learn how to use IntelliJ IDEA with a CockroachDB cluster."
+---
+
+You can use CockroachDB in [IntelliJ IDEA](https://www.jetbrains.com/idea) as a [database data source](https://www.jetbrains.com/help/idea/managing-data-sources#data_sources), which lets you accomplish tasks like managing your database's schema from within your IDE.
+
+## Support
+
+As of CockroachDB v24.3, IntelliJ IDEA only has **partial support**. This means that the application is mostly functional, but its integration still has a few rough edges.
+
+### Versions
+
+The level of support in this document was tested as of the following versions:
+
+- CockroachDB v19.1.0-beta.20190225
+- IntelliJ IDEA Ultimate 18.1.3
+- PostgreSQL JDBC 41.1
+
+<Note>
+This feature should also work with other JetBrains IDEs, such as PyCharm, but Cockroach Labs has not yet tested its integration.
+</Note>
+
+### Warnings and errors
+
+Users can expect to encounter the following behaviors when using CockroachDB within IntelliJ IDEA.
+
+- **Warnings** do not require any action on the user's end and can be ignored. Note that even if a message indicates that it is an "error", it can still be treated as a warning by this definition.
+- **Errors** require the user to take action to resolve the problem and cannot be ignored.
+
+#### Warnings
+
+##### [XXUUU] ERROR: could not decorrelate subquery
+
+<Frame>
+  ![DBeaver - Select CockroachDB](/images/common/intellij/XX000_error_could_not_decorrelate_subquery.png)
+</Frame>
+
+Displays once per load of schema.
+
+---
+
+##### [42883] ERROR: unknown function: pg_function_is_visible() Failed to retrieve
+
+<Frame>
+  ![DBeaver - Select CockroachDB](/images/common/intellij/42883_error_pg_function_is_visible.png)
+</Frame>
+
+Display periodically. Does not impact functionality.
+
+#### Errors
+
+##### [42703] org.postgresql.util.PSQLException: ERROR: column "n.xmin" does not exist
+
+<Frame>
+  ![DBeaver - Select CockroachDB](/images/common/intellij/42073_error_column_n_xmin_does_not_exist.png)
+</Frame>
+
+Requires setting **Introspect using JDBC metadata** ([details below](#set-cockroachdb-as-a-data-source-in-intellij)).
+
+---
+
+## Set CockroachDB as a data source in IntelliJ
+
+1. Launch the **Database** tool window. ( **View** &gt; **Tool Windows** &gt; **Database** )![DBeaver - Select CockroachDB](/images/common/intellij/01_database_tool_window.png)
+2. Add a PostgreSQL data source. ( **New (+)** &gt; **Data Source** &gt; **PostgreSQL** )![DBeaver - Select CockroachDB](/images/common/intellij/02_postgresql_data_source.png)
+3. On the **General** tab, enter your database's connection string:
+
+    <table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td><strong>Host</strong></td><td>Your CockroachDB cluster's hostname</td></tr><tr><td><strong>Port</strong></td><td>Your CockroachDB cluster's port. By default, CockroachDB uses port <strong>26257</strong>.</td></tr><tr><td><strong>Database</strong></td><td>The database you want to connect to. Note that CockroachDB's notion of database differs from PostgreSQL's; you can see your cluster's databases through the <a href="/docs/v24.3/show-databases"><code>SHOW DATABASES</code></a> command.</td></tr><tr><td><strong>User</strong></td><td>The user to connect as. By default, you can use <strong>root</strong>.</td></tr><tr><td><strong>Password</strong></td><td>If your cluster uses password authentication, enter the password.</td></tr><tr><td><strong>Driver</strong></td><td>Select or install <strong>PostgreSQL</strong> using a version greater than or equal to 41.1. (Older drivers have not been tested.)</td></tr></tbody></table>
+
+    <Frame>
+      ![DBeaver - Select CockroachDB](/images/common/intellij/03_general_tab.png)
+    </Frame>
+4. Install or select a **PostgreSQL** driver. We recommend a version greater than or equal to 41.1.
+5. If your cluster uses SSL authentication, go to the **SSH/SSL** tab, select **Use SSL** and provide the location of your certificate files.
+6. Go to the **Options** tab, and then select **Introspect using JDBC metadata**.![DBeaver - Select CockroachDB](/images/common/intellij/04_options_tab.png)
+7. Click **OK**.
+
+You can now use IntelliJ's [database tool window](https://www.jetbrains.com/help/idea/working-with-the-database-tool-window) to interact with your CockroachDB cluster.
+
+## Report issues with IntelliJ IDEA &amp; CockroachDB
+
+If you encounter issues other than those outlined above, please [file an issue on the `cockroachdb/cockroach` GitHub repo](https://github.com/cockroachdb/cockroach/issues/new?template=bug_report.md), including the following details about the environment where you encountered the issue:
+
+- CockroachDB version ( [`cockroach version`](/docs/v24.3/cockroach-version) )
+- IntelliJ IDEA version
+- Operating system
+- Steps to reproduce the behavior
+- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging](/docs/v24.3/logging-use-cases#sql_exec).
+
+## See also
+
+- [Client connection parameters](/docs/v24.3/connection-parameters)
+- [Third-Party Database Tools](/docs/v24.3/third-party-database-tools)

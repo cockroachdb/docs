@@ -1,0 +1,68 @@
+export const TransactionMode = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="213" width="307" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="#transaction_iso_level" xlink:title="transaction_iso_level">
+<rect height="32" width="156" x="51" y="3"></rect>
+<rect class="nonterminal" height="32" width="156" x="49" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="132" font-size="10" class="nonterminal" x="61" y="21">transaction_iso_level</text></a><a xlink:href="#transaction_user_priority" xlink:title="transaction_user_priority">
+<rect height="32" width="180" x="51" y="47"></rect>
+<rect class="nonterminal" height="32" width="180" x="49" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="156" font-size="10" class="nonterminal" x="61" y="65">transaction_user_priority</text></a><a xlink:href="#transaction_read_mode" xlink:title="transaction_read_mode">
+<rect height="32" width="172" x="51" y="91"></rect>
+<rect class="nonterminal" height="32" width="172" x="49" y="89"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="148" font-size="11" class="nonterminal" x="61" y="109">transaction_read_mode</text></a><a xlink:href="#as_of_clause" xlink:title="as_of_clause">
+<rect height="32" width="104" x="51" y="135"></rect>
+<rect class="nonterminal" height="32" width="104" x="49" y="133"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="80" font-size="10" class="nonterminal" x="61" y="153">as_of_clause</text></a><a xlink:href="#transaction_deferrable_mode" xlink:title="transaction_deferrable_mode">
+<rect height="32" width="208" x="51" y="179"></rect>
+<rect class="nonterminal" height="32" width="208" x="49" y="177"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="184" font-size="10" class="nonterminal" x="61" y="197">transaction_deferrable_mode</text></a><path class="line" d="m17 17 h2 m20 0 h10 m156 0 h10 m0 0 h52 m-248 0 h20 m228 0 h20 m-268 0 q10 0 10 10 m248 0 q0 -10 10 -10 m-258 10 v24 m248 0 v-24 m-248 24 q0 10 10 10 m228 0 q10 0 10 -10 m-238 10 h10 m180 0 h10 m0 0 h28 m-238 -10 v20 m248 0 v-20 m-248 20 v24 m248 0 v-24 m-248 24 q0 10 10 10 m228 0 q10 0 10 -10 m-238 10 h10 m172 0 h10 m0 0 h36 m-238 -10 v20 m248 0 v-20 m-248 20 v24 m248 0 v-24 m-248 24 q0 10 10 10 m228 0 q10 0 10 -10 m-238 10 h10 m104 0 h10 m0 0 h104 m-238 -10 v20 m248 0 v-20 m-248 20 v24 m248 0 v-24 m-248 24 q0 10 10 10 m228 0 q10 0 10 -10 m-238 10 h10 m208 0 h10 m23 -176 h-3"></path>
+<polygon points="297 17 305 13 305 21"></polygon>
+<polygon points="297 17 289 13 289 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

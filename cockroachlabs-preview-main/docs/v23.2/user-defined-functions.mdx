@@ -1,0 +1,367 @@
+---
+title: "User-Defined Functions"
+old_description: "A user-defined function is a named function defined at the database level that can be called in queries and other contexts."
+---
+
+A user-defined function (UDF) is a named function defined at the database level that can be called in queries and other contexts. CockroachDB supports invoking UDFs in `SELECT`, `FROM`, and `WHERE` clauses of [DML statements](/docs/v23.2/sql-statements#data-manipulation-statements).
+
+Both [stored procedures](/docs/v23.2/stored-procedures) and user-defined functions are types of *routines*. However, they differ in the following ways:
+
+- Functions return a value, and procedures do not return a value.
+- Procedures must be invoked using a [`CALL`](/docs/v23.2/call) statement. Functions can be invoked in nearly any context, such as `SELECT`, `FROM`, and `WHERE` clauses, [`DEFAULT`](/docs/v23.2/default-value) expressions, and [computed column](/docs/v23.2/computed-columns) expressions.
+- Functions have [volatility](/docs/v23.2/functions-and-operators#function-volatility) settings, and procedures do not.
+
+## Overview
+
+The basic components of a user-defined function are a name, list of arguments, return type, volatility, language, and function body.
+
+- An argument has a *mode* and a *type*. CockroachDB supports the `IN` argument mode. The type can be a built-in type, [user-defined `ENUM`](/docs/v23.2/enum), or implicit record type. CockroachDB **does not** support default values for arguments.
+- The return type can be a built-in [SQL type](/docs/v23.2/data-types), user-defined [`ENUM`](/docs/v23.2/enum), [`RECORD`](/docs/v23.2/create-function#create-a-function-that-returns-a-record-type), PL/pgSQL [`REFCURSOR`](/docs/v23.2/plpgsql#declare-cursor-variables) type, implicit record type, or `VOID`.
+    - Preceding a type with `SETOF` indicates that a set, or multiple rows, may be returned. For an example, see [Create a function that returns a set of results](/docs/v23.2/create-function#create-a-function-that-returns-a-set-of-results).
+    - `VOID` indicates that there is no return type and `NULL` will always be returned.
+- The [volatility](/docs/v23.2/functions-and-operators#function-volatility) indicates whether the function has side effects. `VOLATILE` and `NOT LEAKPROOF` are the default.
+    - Annotate a function with side effects with `VOLATILE`. This also prevents the [cost-based optimizer](/docs/v23.2/cost-based-optimizer) from pre-evaluating the function.
+    - A `STABLE` or `IMMUTABLE` function does not mutate data. You cannot create a `STABLE` or `IMMUTABLE` function that executes a mutation ( `INSERT`, `UPSERT`, `UPDATE`, `DELETE` ) statement.
+    - `LEAKPROOF` indicates that a function has no side effects and that it communicates nothing that depends on its arguments besides the return value (i.e., it cannot throw an error that depends on the value of its arguments). You must precede `LEAKPROOF` with `IMMUTABLE`, and only `IMMUTABLE` can be set to `LEAKPROOF`. `NOT LEAKPROOF` is allowed with any other volatility.
+    - Non- `VOLATILE` functions can be optimized through inlining. For more information, see [Create an inlined UDF](#create-an-inlined-udf).
+- `LANGUAGE` specifies the language of the function body. CockroachDB supports the languages `SQL` and [`PLpgSQL` (PL/pgSQL)](/docs/v23.2/plpgsql).
+- The function body:
+    - Can reference arguments by name or by their ordinal in the function definition with the syntax `$1`.
+    - Can be enclosed in a single line with single quotes `''` or multiple lines with `$$`.
+    - Can reference tables.
+    - Can reference only the `SELECT` statement.
+
+## Examples
+
+### Create a UDF
+
+The following is a UDF that returns the sum of two integers:
+
+```sql
+CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT a + b';
+```
+
+Where:
+
+- name: `add`
+- arguments: `a` of type `INT`, `b` of type `INT`
+- return type: `INT`
+- volatility: `IMMUTABLE LEAKPROOF`
+- language: `SQL`
+- function body: `'SELECT a + b'`
+
+Alternatively, you could define this function as:
+
+```sql
+CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
+```
+
+Or as:
+
+```sql
+CREATE FUNCTION add(a INT, b INT) RETURNS INT LANGUAGE SQL AS $$
+  SELECT a + b;
+$$;
+```
+
+For more examples of UDF creation, see [`CREATE FUNCTION`](/docs/v23.2/create-function).
+
+### View a UDF definition
+
+To view the definition for the `add()` function:
+
+```sql
+SHOW CREATE FUNCTION add;
+```
+
+If you do not specify a schema for the function `add` when you create it, the default schema is `public`:
+
+```text
+  function_name |                 create_statement
+----------------+---------------------------------------------------
+ add            | CREATE FUNCTION public.add(IN a INT8, IN b INT8)
+                |     RETURNS INT8
+                |     IMMUTABLE
+                |     LEAKPROOF
+                |     CALLED ON NULL INPUT
+                |     LANGUAGE SQL
+                |     AS $$
+                |     SELECT a + b;
+                | $$
+(1 row)
+```
+
+### Invoke a UDF
+
+You invoke a UDF like a [built-in function](/docs/v23.2/functions-and-operators).
+
+To invoke the `add()` function:
+
+```sql
+SELECT add(3,5) as sum;
+```
+
+```text
+  sum
+-------
+    8
+(1 row)
+```
+
+### Create a UDF using PL/pgSQL
+
+The following user-defined function returns the `n`th integer in the Fibonacci sequence.
+
+It uses the [PL/pgSQL](/docs/v23.2/plpgsql) [`LOOP`](/docs/v23.2/plpgsql#write-loops) syntax to iterate through a simple calculation, and [`RAISE EXCEPTION`](/docs/v23.2/plpgsql#report-messages-and-handle-exceptions) to return an error message if the specified `n` is negative.
+
+```sql
+CREATE FUNCTION fib(n int) RETURNS INT AS $$
+    DECLARE
+        tmp INT;
+        a INT := 0;
+        b INT := 1;
+        i INT := 2;
+    BEGIN
+        IF n < 0 THEN
+            RAISE EXCEPTION 'n must be non-negative';
+        END IF;
+        IF n = 0 THEN RETURN 0; END IF;
+        IF n = 1 THEN RETURN 1; END IF;
+        LOOP
+            IF i > n THEN EXIT; END IF;
+            tmp := a + b;
+            a := b;
+            b := tmp;
+            i := i + 1;
+        END LOOP;
+        RETURN b;
+    END
+  $$ LANGUAGE PLpgSQL;
+```
+
+```sql
+SELECT fib(8);
+```
+
+```text
+  fib
+-------
+   21
+```
+
+### Create an inlined UDF
+
+When possible, the [cost-based optimizer](/docs/v23.2/cost-based-optimizer) will improve a function's performance by inlining the UDF within the query plan. The UDF must have the following attributes:
+
+- It is labeled as `IMMUTABLE`, `STABLE`, or `LEAKPROOF` (i.e., non- `VOLATILE` ).
+- It has a single statement.
+- It is not a [set-returning function](/docs/v23.2/create-function#create-a-function-that-returns-a-set-of-results).
+- Its arguments are only variable or constant expressions.
+- It is not a [record-returning function](/docs/v23.2/create-function#create-a-function-that-returns-a-record-type).
+
+The following example demonstrates how inlining improves a UDF's performance.
+
+1. Create tables `a` and `b`:
+
+    ```sql
+    CREATE TABLE a (
+      a INT
+    );
+
+    CREATE TABLE b (
+      b INT PRIMARY KEY
+    );
+    ```
+2. Insert a value (`10`) into 1000 rows in `a` and 1 row in `b`:
+
+    ```sql
+    INSERT INTO a SELECT 10 FROM generate_series(1, 1000);
+    INSERT INTO b VALUES (10);
+    ```
+3. Create a `VOLATILE` function `foo_v()` and a `STABLE` function `foo_s()`:
+
+    ```sql
+    CREATE FUNCTION foo_v(x INT) RETURNS INT VOLATILE LANGUAGE SQL AS $$
+      SELECT b FROM b WHERE b = x
+    $$;
+
+    CREATE FUNCTION foo_s(x INT) RETURNS INT STABLE LANGUAGE SQL AS $$
+      SELECT b FROM b WHERE b = x
+    $$;
+    ```
+
+    Each function returns a specified value from table `b`.
+4. View the query plan when `foo_v()` (the `VOLATILE` function) is used in a selection query to retrieve equal values from table `a`:
+
+    ```sql
+    EXPLAIN ANALYZE SELECT foo_v(a) FROM a WHERE a = 10;
+    ```
+
+    ```text
+                                                info
+    --------------------------------------------------------------------------------------------
+      planning time: 2ms
+      execution time: 77ms
+      distribution: local
+      vectorized: true
+      rows read from KV: 1,000 (39 KiB, 1 gRPC calls)
+      cumulative time spent in KV: 330µs
+      maximum memory usage: 80 KiB
+      network usage: 0 B (0 messages)
+      sql cpu time: 75ms
+      estimated RUs consumed: 0
+
+      • render
+      │
+      └── • filter
+          │ nodes: n1
+          │ actual row count: 1,000
+          │ sql cpu time: 75ms
+          │ estimated row count: 1,000
+          │ filter: a = 10
+          │
+          └── • scan
+                nodes: n1
+                actual row count: 1,000
+                KV time: 330µs
+                KV contention time: 0µs
+                KV rows read: 1,000
+                KV bytes read: 39 KiB
+                KV gRPC calls: 1
+                estimated max memory allocated: 60 KiB
+                sql cpu time: 87µs
+                estimated row count: 1,000 (100% of the table; stats collected 19 seconds ago)
+                table: a@a_pkey
+                spans: FULL SCAN
+    (33 rows)
+    ```
+
+    The query takes `77ms` to execute because the function is invoked for each row scanned in table `a`.
+5. View the query plan when using `foo_s()` (the `STABLE` function) instead:
+
+    ```sql
+    EXPLAIN ANALYZE SELECT foo_s(a) FROM a WHERE a = 10;
+    ```
+
+    ```text
+                                                  info
+    ------------------------------------------------------------------------------------------------
+      planning time: 5ms
+      execution time: 4ms
+      distribution: local
+      vectorized: true
+      rows read from KV: 1,001 (39 KiB, 2 gRPC calls)
+      cumulative time spent in KV: 832µs
+      maximum memory usage: 420 KiB
+      network usage: 0 B (0 messages)
+      sql cpu time: 3ms
+      estimated RUs consumed: 0
+
+      • render
+      │
+      └── • merge join (left outer)
+          │ nodes: n1
+          │ actual row count: 1,000
+          │ estimated max memory allocated: 340 KiB
+          │ estimated max sql temp disk usage: 0 B
+          │ sql cpu time: 3ms
+          │ estimated row count: 1,000
+          │ equality: (a) = (b)
+          │ right cols are key
+          │
+          ├── • filter
+          │   │ nodes: n1
+          │   │ actual row count: 1,000
+          │   │ sql cpu time: 5µs
+          │   │ estimated row count: 1,000
+          │   │ filter: a = 10
+          │   │
+          │   └── • scan
+          │         nodes: n1
+          │         actual row count: 1,000
+          │         KV time: 722µs
+          │         KV contention time: 0µs
+          │         KV rows read: 1,000
+          │         KV bytes read: 39 KiB
+          │         KV gRPC calls: 1
+          │         estimated max memory allocated: 60 KiB
+          │         sql cpu time: 202µs
+          │         estimated row count: 1,000 (100% of the table; stats collected 42 seconds ago)
+          │         table: a@a_pkey
+          │         spans: FULL SCAN
+          │
+          └── • scan
+                nodes: n1
+                actual row count: 1
+                KV time: 110µs
+                KV contention time: 0µs
+                KV rows read: 1
+                KV bytes read: 30 B
+                KV gRPC calls: 1
+                estimated max memory allocated: 20 KiB
+                sql cpu time: 11µs
+                estimated row count: 1 (100% of the table; stats collected 42 seconds ago)
+                table: b@b_pkey
+                spans: FULL SCAN
+    (57 rows)
+    ```
+
+    The query takes only `4ms` to execute because the function is inlined and transformed to a [join](/docs/v23.2/joins) with an equality comparison `(a) = (b)`, which has much less overhead than invoking a function for each row scanned in table `a`.
+
+### Video Demo
+
+For a deep-dive demo on UDFs, watch the following video:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/glveuxrzZB4" title="YouTube video player" width="560"></iframe>
+</Frame>
+
+## Known limitations
+
+### Limitations on use of UDFs
+
+User-defined functions are not currently supported in:
+
+- Expressions (column, index, constraint) in tables.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
+- Views.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
+- Other user-defined functions.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+
+### Limitations on UDF creation
+
+The following cannot be used in UDF definitions:
+
+- `OUT` and `INOUT` argument modes.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100405)
+- `RECORD` input arguments.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105713)
+
+### Limitations on expressions allowed within UDFs
+
+The following are not currently allowed within the body of a UDF:
+
+- CTEs (common table expressions).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
+- References to other user-defined functions.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+- [DDL statements](/docs/v23.2/sql-statements#data-definition-statements) (e.g., `CREATE TABLE`, `CREATE INDEX`).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110080)
+
+## See also
+
+- [`CREATE FUNCTION`](/docs/v23.2/create-function)
+- [`ALTER FUNCTION`](/docs/v23.2/alter-function)
+- [`DROP FUNCTION`](/docs/v23.2/drop-function)
+- [`SHOW CREATE`](/docs/v23.2/show-create)
+- [SQL Statements](/docs/v23.2/sql-statements)
+- [Functions and Operators](/docs/v23.2/functions-and-operators)

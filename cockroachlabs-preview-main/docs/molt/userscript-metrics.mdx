@@ -1,0 +1,58 @@
+---
+title: "Userscript Metrics"
+old_description: "A list of the available userscript metrics, for improving observability and dubugging."
+---
+
+To improve observability and debugging in the field, [MOLT Replicator](/docs/molt/molt-replicator) exposes Prometheus metrics that provide insight into userscript activity, performance, and stability. These metrics help identify issues such as slow script execution, overly aggressive filtering, handlers not being called when expected, and unhandled errors in user-defined logic.
+
+All userscript metrics include a `script_` prefix and are automatically labeled with the relevant schema or table for each configured handler (for example, `schema="target.public"`). If a userscript defines both schema-level and table-level handlers, separate label values will be created for each.
+
+These metrics are part of the default [Replicator Prometheus metrics](/docs/molt/replicator-metrics) set and can be visualized immediately using the provided [`replicator.json` Grafana dashboard file](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json). They are also included in [Replicator metrics snapshots](/docs/molt/replicator-metrics#metrics-snapshots).
+
+Consider using these metrics to:
+
+- Correlate script performance and errors with replication throughput.
+- Identify high-latency or error-prone scripts impacting replication health.
+- Debug unexpected filtering or transformation logic in field environments.
+
+## Metrics
+
+- `script_invocations_total` (counter)
+    - Description: Number of times [userscript](/docs/molt/userscript-overview) handler functions (such as `onRowUpsert`, `onRowDelete`, and `onWrite` ) are invoked.
+    - Interpretation: Use to confirm that userscripts are actively being called, and detect misconfigurations where scripts filter out all data or never run.
+
+- `script_rows_filtered_total` (counter)
+    - Description: Number of rows filtered out by the [userscript](/docs/molt/userscript-overview) (for example, handlers that returned `null` or produced no output).
+    - Interpretation: Use to identify scripts that unintentionally drop incoming data, and confirm that logic for filtering out data rows is working as intended.
+
+- `script_rows_processed_total` (counter)
+    - Description: Number of rows successfully processed and passed through the [userscript](/docs/molt/userscript-overview).
+    - Interpretation: Use to measure how many rows are being transformed or routed successfully. Compare with [`script_rows_filtered_total`](#script-rows-filtered-total) to understand filtering ratios and validate script logic.
+
+- `script_exec_time_seconds` (histogram)
+    - Description: Measures the execution time of each [userscript](/docs/molt/userscript-overview) function call.
+    - Interpretation: Use to detect slow or inefficient userscripts that could introduce replication lag, and identify performance bottlenecks caused by complex transformations or external lookups.
+
+- `script_entry_wait_seconds` (histogram)
+    - Description: Measures the latency between a row entering the Replicator [userscript](/docs/molt/userscript-overview) queue and the start of its execution inside the JavaScript runtime.
+    - Interpretation: Use to detect whether userscripts are queuing up before execution (higher values indicate longer wait times), and monitor how busy the userscript runtime pool is under load.
+
+- `script_errors_total` (counter)
+    - Description: Number of errors that occurred during [userscript](/docs/molt/userscript-overview) execution (for example, JavaScript exceptions or runtime errors).
+    - Interpretation: Use to surface failing scripts or invalid assumptions about incoming data, and monitor script stability over time and catch regressions early.
+
+### Example Metric Labels
+
+Each metric may include the following standard labels:
+
+- `schema`: The schema name associated with the userscript handler.
+- `table`: The table name associated with the userscript handler. A wildcard value of "*" means it is a shared or global metric applying to all tables.
+- `function`: The handler function being observed.
+
+## See also
+
+- [Userscript Overview](/docs/molt/userscript-overview)
+- [Userscript Quickstart](/docs/molt/userscript-quickstart)
+- [Userscript API](/docs/molt/userscript-api)
+- [MOLT Replicator](/docs/molt/molt-replicator)
+- [Replicator Metrics](/docs/molt/replicator-metrics)

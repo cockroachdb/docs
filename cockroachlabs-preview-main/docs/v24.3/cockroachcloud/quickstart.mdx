@@ -1,0 +1,20 @@
+---
+title: "Quickstart with CockroachDB"
+old_description: "Learn how to use free trial credits to deploy a CockroachDB cluster on CockroachDB Standard (Preview) and run your first queries."
+---
+
+import Quickstart from "/snippets/cockroachcloud/quickstart.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<Quickstart />

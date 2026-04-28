@@ -1,0 +1,322 @@
+---
+title: "CREATE USER"
+old_description: "The CREATE USER statement creates SQL users, which let you control privileges on your databases and tables."
+---
+
+The `CREATE USER` [statement](/docs/v24.3/sql-statements) creates SQL users, which let you control [privileges](/docs/v24.3/security-reference/authorization#managing-privileges) on your databases and tables.
+
+You can use the keywords `ROLE` and `USER` interchangeably. `CREATE USER` is equivalent to [`CREATE ROLE`](/docs/v24.3/create-role), with one exception: `CREATE ROLE` sets the `NOLOGIN` [role option](#role-options), which prevents the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` [role option](#role-options) to achieve the same result as `CREATE USER`.
+
+<Note>
+The `CREATE USER` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v24.3/online-schema-changes).
+</Note>
+
+## Considerations
+
+- After creating users, you must [grant them privileges to databases and tables](/docs/v24.3/grant).
+- All users belong to the `public` role, to which you can [grant](/docs/v24.3/grant) and [revoke](/docs/v24.3/revoke) privileges.
+- On secure clusters, you must [create client certificates for users](/docs/v24.3/cockroach-cert#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
+
+## Required privileges
+
+To create other users, the user must be a member of the `admin` role or have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
+
+## Synopsis
+
+See [`CREATE ROLE`: Synopsis](/docs/v24.3/create-role#synopsis).
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td>The name of the user to create.</td></tr><tr><td><code>WITH role&#95;option</code></td><td>Apply a <a href="#role-options">role option</a> to the role.</td></tr></tbody></table>
+
+### User names
+
+- Are case-insensitive.
+- Must start with a letter or underscore.
+- Must contain only letters, numbers, periods, or underscores.
+- Must be between 1 and 63 characters.
+- Cannot be `none`.
+- Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](/docs/v24.3/system-catalogs).
+- User and role names share the same namespace and must be unique.
+
+### Role options
+
+<table><thead><tr><th>Role option</th><th>Description</th></tr></thead><tbody><tr><td><code>CANCELQUERY</code>/<code>NOCANCELQUERY</code></td><td><strong>Deprecated in v22.2: Use the <code>CANCELQUERY</code><a href="/docs/v24.3/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to cancel <a href="/docs/v24.3/cancel-query">queries</a> and <a href="/docs/v24.3/cancel-session">sessions</a> of other roles. Without this role option, roles can only cancel their own queries and sessions. Even with the <code>CANCELQUERY</code> role option, non-<code>admin</code> roles cannot cancel <code>admin</code> queries or sessions. This option should usually be combined with <code>VIEWACTIVITY</code> so that the role can view other roles' query and session information.<br/><br/>By default, the role option is set to <code>NOCANCELQUERY</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CONTROLCHANGEFEED</code>/<code>NOCONTROLCHANGEFEED</code></td><td><strong>Deprecated in v23.1: Use the <code>CHANGEFEED</code><a href="/docs/v24.3/security-reference/authorization#supported-privileges">privilege</a>.</strong> Allow or disallow a role to run <a href="/docs/v24.3/create-changefeed"><code>CREATE CHANGEFEED</code></a> on tables they have <code>SELECT</code> privileges on.<br/><br/>By default, the role option is set to <code>NOCONTROLCHANGEFEED</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CONTROLJOB</code>/<code>NOCONTROLJOB</code></td><td>Allow or disallow a role to <a href="/docs/v24.3/pause-job">pause</a>, <a href="/docs/v24.3/resume-job">resume</a>, and <a href="/docs/v24.3/cancel-job">cancel</a> jobs. Non-<code>admin</code> roles cannot control jobs created by <code>admin</code> roles.<br/><br/>By default, the role option is set to <code>NOCONTROLJOB</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CREATEDB</code>/<code>NOCREATEDB</code></td><td>Allow or disallow a role to <a href="/docs/v24.3/create-database">create</a> or <a href="/docs/v24.3/alter-database#rename-to">rename</a> a database. The role is assigned as the owner of the database.<br/><br/>By default, the role option is set to <code>NOCREATEDB</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CREATELOGIN</code>/<code>NOCREATELOGIN</code></td><td>Allow or disallow a role to manage authentication using the <code>WITH PASSWORD</code>, <code>VALID UNTIL</code>, and <code>LOGIN/NOLOGIN</code> role options.<br/><br/>By default, the role option is set to <code>NOCREATELOGIN</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CREATEROLE</code>/<code>NOCREATEROLE</code></td><td>Allow or disallow the new role to <a href="/docs/v24.3/create-role">create</a>, alter, and <a href="/docs/v24.3/drop-role">drop</a> other non-<code>admin</code> roles.<br/><br/>By default, the role option is set to <code>NOCREATEROLE</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>LOGIN</code>/<code>NOLOGIN</code></td><td>Allow or disallow a role to log in with one of the <a href="/docs/v24.3/authentication#client-authentication">client authentication methods</a>. Setting the role option to <code>NOLOGIN</code> prevents the role from logging in using any authentication method.</td></tr><tr><td><code>MODIFYCLUSTERSETTING</code>/<code>NOMODIFYCLUSTERSETTING</code></td><td>Allow or disallow a role to modify the <a href="/docs/v24.3/cluster-settings">cluster settings</a> with the <code>sql.defaults</code> prefix.<br/><br/>By default, the role option is set to <code>NOMODIFYCLUSTERSETTING</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>PASSWORD password</code>/<code>PASSWORD NULL</code></td><td>The credential the role uses to <a href="/docs/v24.3/authentication#client-authentication">authenticate their access to a secure cluster</a>. A password should be entered as a <a href="/docs/v24.3/sql-constants#string-literals">string literal</a>. For compatibility with PostgreSQL, a password can also be entered as an identifier.<br/><br/>To prevent a role from using <a href="/docs/v24.3/authentication#client-authentication">password authentication</a> and to mandate <a href="/docs/v24.3/authentication#client-authentication">certificate-based client authentication</a>, <a href="/docs/v24.3/create-role#prevent-a-role-from-using-password-authentication">set the password as <code>NULL</code></a>.</td></tr><tr><td><code>SQLLOGIN</code>/<code>NOSQLLOGIN</code></td><td><strong>Deprecated in v22.2: Use the <code>NOSQLLOGIN</code><a href="/docs/v24.3/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to log in using the SQL CLI with one of the <a href="/docs/v24.3/authentication#client-authentication">client authentication methods</a>. The role option to <code>NOSQLLOGIN</code> prevents the role from logging in using the SQL CLI with any authentication method while retaining the ability to log in to DB Console. It is possible to have both <code>NOSQLLOGIN</code> and <code>LOGIN</code> set for a role and <code>NOSQLLOGIN</code> takes precedence on restrictions.<br/><br/>Without any role options all login behavior is permitted.</td></tr><tr><td><code>VALID UNTIL</code></td><td>The date and time (in the <a href="/docs/v24.3/timestamp"><code>timestamp</code></a> format) after which the <a href="#parameters">password</a> is not valid.</td></tr><tr><td><code>VIEWACTIVITY</code>/<code>NOVIEWACTIVITY</code></td><td><strong>Deprecated in v22.2: Use the <code>VIEWACTIVITY</code><a href="/docs/v24.3/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to see other roles' <a href="/docs/v24.3/show-statements">queries</a> and <a href="/docs/v24.3/show-sessions">sessions</a> using <code>SHOW STATEMENTS</code>, <code>SHOW SESSIONS</code>, and the <a href="/docs/v24.3/ui-statements-page"><strong>Statements</strong></a> and <a href="/docs/v24.3/ui-transactions-page"><strong>Transactions</strong></a> pages in the DB Console. <code>VIEWACTIVITY</code> also permits visibility of node hostnames and IP addresses in the DB Console. With <code>NOVIEWACTIVITY</code>, the <code>SHOW</code> commands show only the role's own data, and DB Console pages redact node hostnames and IP addresses.<br/><br/>By default, the role option is set to <code>NOVIEWACTIVITY</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>VIEWCLUSTERSETTING</code> / <code>NOVIEWCLUSTERSETTING</code></td><td><strong>Deprecated in v22.2: Use the <code>VIEWCLUSTERSETTING</code><a href="/docs/v24.3/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to view the <a href="/docs/v24.3/cluster-settings">cluster settings</a> with <code>SHOW CLUSTER SETTING</code> or to access the <a href="/docs/v24.3/ui-debug-pages"><strong>Cluster Settings</strong></a> page in the DB Console.<br/><br/>By default, the role option is set to <code>NOVIEWCLUSTERSETTING</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>VIEWACTIVITYREDACTED</code>/<code>NOVIEWACTIVITYREDACTED</code></td><td><strong>Deprecated in v22.2: Use the <code>VIEWACTIVITYREDACTED</code><a href="/docs/v24.3/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to see other roles' queries and sessions using <code>SHOW STATEMENTS</code>, <code>SHOW SESSIONS</code>, and the Statements and Transactions pages in the DB Console. With <code>VIEWACTIVITYREDACTED</code>, a user will not have access to the usage of statements diagnostics bundle (which can contain PII information) in the DB Console, and will not be able to list queries containing <a href="/docs/v24.3/sql-constants">constants</a> for other users when using the <code>listSessions</code> endpoint through the <a href="/docs/v24.3/cluster-api">Cluster API</a>. It is possible to have both <code>VIEWACTIVITY</code> and <code>VIEWACTIVITYREDACTED</code>, and <code>VIEWACTIVITYREDACTED</code> takes precedence on restrictions. If the user has <code>VIEWACTIVITY</code> but doesn't have <code>VIEWACTIVITYREDACTED</code>, they will be able to see DB Console pages and have access to the statements diagnostics bundle.<br/><br/>By default, the role option is set to <code>NOVIEWACTIVITYREDACTED</code> for all non-<code>admin</code> roles.</td></tr></tbody></table>
+
+## User authentication
+
+Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers three methods for this:
+
+- [Client certificate and key authentication](/docs/v24.3/authentication#client-authentication), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
+- [Password authentication](#create-a-user-with-a-password), which is available to users and roles who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. To add a password to an existing user, use the [`ALTER USER`](/docs/v24.3/alter-user) statement.
+
+    Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
+
+    Password creation is supported only in secure clusters.
+- [GSSAPI authentication](/docs/v24.3/gssapi_authentication).
+
+## Examples
+
+To run the following examples, [start a secure single-node cluster](/docs/v24.3/cockroach-start-single-node) and use the built-in SQL shell:
+
+```shell
+$ cockroach sql --certs-dir=certs
+```
+
+```sql
+> SHOW USERS;
+```
+
+```text
+username | options | member_of
+---------+---------+------------
+admin    |         | {}
+root     |         | {admin}
+(2 rows)
+```
+
+<Note>
+The following statements are run by the `root` user that is a member of the `admin` role and has `ALL` privileges.
+</Note>
+
+### Create a user
+
+Usernames are case-insensitive; must start with a letter or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
+
+```sql
+root@:26257/defaultdb> CREATE USER no_options;
+```
+
+```sql
+root@:26257/defaultdb> SHOW USERS;
+```
+
+```text
+ username  | options | member_of
+-------------+---------+------------
+admin      |         | {}
+no_options |         | {}
+root       |         | {admin}
+(3 rows)
+```
+
+After creating users, you must:
+
+- [Grant them privileges to databases](/docs/v24.3/grant).
+- For secure clusters, you must also [create their client certificates](/docs/v24.3/cockroach-cert#create-the-certificate-and-key-pair-for-a-client).
+
+### Create a user with a password
+
+```sql
+root@:26257/defaultdb> CREATE USER with_password WITH LOGIN PASSWORD '$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
+```
+
+```sql
+root@:26257/defaultdb> SHOW USERS;
+```
+
+```text
+  username    |                options                | member_of
+--------------+---------------------------------------+------------
+admin         |                                       | {}
+no_options    |                                       | {}
+root          |                                       | {admin}
+with_password | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(4 rows)
+```
+
+### Prevent a user from using password authentication
+
+The following statement prevents the user from using password authentication and mandates certificate-based client authentication:
+
+```sql
+root@:26257/defaultdb> CREATE USER no_password WITH PASSWORD NULL;
+```
+
+```sql
+root@:26257/defaultdb> SHOW USERS;
+```
+
+```text
+  username    |                options                | member_of
+--------------+---------------------------------------+------------
+admin         |                                       | {}
+no_options    |                                       | {}
+no_password   |                                       | {}
+root          |                                       | {admin}
+with_password | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(5 rows)
+```
+
+### Create a user that can create other users and manage authentication methods for the new users
+
+The following example allows the user to [create other users](/docs/v24.3/create-user) and [manage authentication methods](/docs/v24.3/authentication#client-authentication) for them:
+
+```sql
+root@:26257/defaultdb> CREATE USER can_create_users WITH CREATEROLE CREATELOGIN;
+```
+
+```sql
+root@:26257/defaultdb> SHOW USERS;
+```
+
+```text
+    username     |                options                | member_of
+-----------------+---------------------------------------+------------
+admin            |                                       | {}
+can_create_users | CREATELOGIN, CREATEROLE               | {}
+no_options       |                                       | {}
+no_password      |                                       | {}
+root             |                                       | {admin}
+with_password    | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(6 rows)
+```
+
+### Create a user that can create and rename databases
+
+The following example allows the user to [create](/docs/v24.3/create-database) or [rename](/docs/v24.3/alter-database#rename-to) databases:
+
+```sql
+root@:26257/defaultdb> CREATE USER can_create_db WITH CREATEDB;
+```
+
+```sql
+root@:26257/defaultdb> SHOW USERS;
+```
+
+```text
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_create_db         | CREATEDB                              | {}
+can_create_users      | CREATELOGIN, CREATEROLE               | {}
+no_options            |                                       | {}
+no_password           |                                       | {}
+root                  |                                       | {admin}
+with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(7 rows)
+```
+
+### Create a user that can pause, resume, and cancel non-admin jobs
+
+The following example allows the user to cancel [queries](/docs/v24.3/cancel-query) and [sessions](/docs/v24.3/cancel-session) for other non-`admin` roles:
+
+The following example allows the user to [pause](/docs/v24.3/pause-job), [resume](/docs/v24.3/resume-job), and [cancel](/docs/v24.3/cancel-job) jobs:
+
+```sql
+root@:26257/defaultdb> CREATE USER can_control_job WITH CONTROLJOB;
+```
+
+```sql
+root@:26257/defaultdb> SHOW USERS;
+```
+
+```text
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_control_job       | CONTROLJOB                            | {}
+can_create_db         | CREATEDB                              | {}
+can_create_users      | CREATELOGIN, CREATEROLE               | {}
+no_options            |                                       | {}
+no_password           |                                       | {}
+root                  |                                       | {admin}
+with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(8 rows)
+```
+
+### Create a user that can see and cancel non-admin queries and sessions
+
+The following example allows the user to cancel [queries](/docs/v24.3/cancel-query) and [sessions](/docs/v24.3/cancel-session) for other non-`admin` roles:
+
+```sql
+root@:26257/defaultdb> CREATE USER can_manage_queries WITH CANCELQUERY VIEWACTIVITY;
+```
+
+```sql
+root@:26257/defaultdb> SHOW USERS;
+```
+
+```text
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_control_job       | CONTROLJOB                            | {}
+can_create_db         | CREATEDB                              | {}
+can_create_users      | CREATELOGIN, CREATEROLE               | {}
+can_manage_queries    | CANCELQUERY, VIEWACTIVITY             | {}
+no_options            |                                       | {}
+no_password           |                                       | {}
+root                  |                                       | {admin}
+with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(9 rows)
+```
+
+### Create a user that can control changefeeds
+
+The following example allows the user to run [`CREATE CHANGEFEED`](/docs/v24.3/create-changefeed):
+
+```sql
+root@:26257/defaultdb> CREATE USER can_control_changefeed WITH CONTROLCHANGEFEED;
+```
+
+```sql
+root@:26257/defaultdb> SHOW USERS;
+```
+
+```text
+       username        |                options                | member_of
+-----------------------+---------------------------------------+------------
+admin                  |                                       | {}
+can_control_changefeed | CONTROLCHANGEFEED                     | {}
+can_control_job        | CONTROLJOB                            | {}
+can_create_db          | CREATEDB                              | {}
+can_create_users       | CREATELOGIN, CREATEROLE               | {}
+can_manage_queries     | CANCELQUERY, VIEWACTIVITY             | {}
+no_options             |                                       | {}
+no_password            |                                       | {}
+root                   |                                       | {admin}
+with_password          | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(10 rows)
+```
+
+### Create a user that can modify cluster settings
+
+The following example allows the user to modify [cluster settings](/docs/v24.3/cluster-settings):
+
+```sql
+root@:26257/defaultdb> CREATE USER can_modify_cluster_setting WITH MODIFYCLUSTERSETTING;
+```
+
+```sql
+root@:26257/defaultdb> SHOW USERS;
+```
+
+```text
+         username          |                options                | member_of
+---------------------------+---------------------------------------+------------
+admin                      |                                       | {}
+can_control_changefeed     | CONTROLCHANGEFEED                     | {}
+can_control_job            | CONTROLJOB                            | {}
+can_create_db              | CREATEDB                              | {}
+can_create_users           | CREATELOGIN, CREATEROLE               | {}
+can_manage_queries         | CANCELQUERY, VIEWACTIVITY             | {}
+can_modify_cluster_setting | MODIFYCLUSTERSETTING                  | {}
+no_options                 |                                       | {}
+no_password                |                                       | {}
+root                       |                                       | {admin}
+with_password              | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(11 rows)
+```
+
+## See also
+
+- [Authorization](/docs/v24.3/authorization)
+- [`ALTER USER`](/docs/v24.3/alter-user)
+- [`DROP USER`](/docs/v24.3/drop-user)
+- [`SHOW USERS`](/docs/v24.3/show-users)
+- [`GRANT`](/docs/v24.3/grant)
+- [`SHOW GRANTS`](/docs/v24.3/show-grants)
+- [Create Security Certificates](/docs/v24.3/cockroach-cert)
+- [SQL Statements](/docs/v24.3/sql-statements)
+- [Online Schema Changes](/docs/v24.3/online-schema-changes)

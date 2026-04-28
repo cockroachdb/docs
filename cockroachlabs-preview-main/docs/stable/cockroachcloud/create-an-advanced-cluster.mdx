@@ -1,0 +1,20 @@
+---
+title: "Create a CockroachDB Advanced Cluster"
+old_description: "Learn how to create your CockroachDB Advanced cluster."
+---
+
+import CreateAnAdvancedCluster from "/snippets/cockroachcloud/create-an-advanced-cluster.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CreateAnAdvancedCluster />

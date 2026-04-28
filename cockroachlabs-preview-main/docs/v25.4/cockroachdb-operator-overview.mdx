@@ -1,0 +1,36 @@
+---
+title: "CockroachDB Operator Overview"
+old_description: "An overview of deployment and management of a CockroachDB cluster using the CockroachDB operator with Kubernetes."
+---
+
+The CockroachDB operator is a fully-featured [Kubernetes operator](https://kubernetes.io/docs/concepts/extend-kubernetes/operator) that allows you to deploy and manage CockroachDB self-hosted clusters.
+
+<Note>
+The CockroachDB operator is in [Preview](/docs/v25.4/cockroachdb-feature-availability).
+
+For information on the generally-available Public operator, read the [Public operator documentation](/docs/v25.4/kubernetes-overview) and see the [GitHub repository](https://github.com/cockroachdb/cockroach-operator).
+</Note>
+
+With the CockroachDB operator, you can deploy CockroachDB clusters across multiple regions with separate operator instances per region. Using [Helm](https://helm.sh/), set configurations that manage the operator and CockroachDB nodes across regions.
+
+## CockroachDB operator
+
+This section describes how to:
+
+- [Deploy a CockroachDB cluster using the CockroachDB operator](/docs/v25.4/deploy-cockroachdb-with-cockroachdb-operator).
+- Migrate from an existing CockroachDB Kubernetes deployment using [Helm](/docs/v25.4/migrate-cockroachdb-kubernetes-helm) or the [Public operator](/docs/v25.4/migrate-cockroachdb-kubernetes-operator).
+- Operate a CockroachDB cluster:
+    - [Manage pod scheduling](/docs/v25.4/schedule-cockroachdb-operator).
+    - [Manage cluster resources](/docs/v25.4/configure-cockroachdb-operator).
+    - [Manage certificates](/docs/v25.4/secure-cockroachdb-operator).
+    - [Scale a cluster](/docs/v25.4/scale-cockroachdb-operator).
+    - [Monitor a cluster](/docs/v25.4/monitor-cockroachdb-operator).
+    - [Upgrade a cluster](/docs/v25.4/upgrade-cockroachdb-operator).
+    - [Override deployment templates](/docs/v25.4/override-templates-cockroachdb-operator).
+    - [Improve cluster performance](/docs/v25.4/cockroachdb-operator-performance).
+
+## Kubernetes terminology
+
+Before starting, review some basic Kubernetes terminology. Note that CockroachDB [nodes](/docs/v25.4/architecture/glossary#cockroachdb-architecture-terms) are distinct from Kubernetes "nodes" or "worker nodes".
+
+<table><thead><tr><th>Feature</th><th>Description</th></tr></thead><tbody><tr><td><a href="https://kubernetes.io/docs/concepts/architecture/nodes">node</a></td><td>A physical or virtual machine. In the <a href="/docs/v25.4/deploy-cockroachdb-with-cockroachdb-operator">deployment guide</a>, you'll create instances and join them as worker nodes into a single Kubernetes cluster.</td></tr><tr><td><a href="http://kubernetes.io/docs/user-guide/pods">pod</a></td><td>A pod is a group of one of more Docker containers. In the <a href="/docs/v25.4/deploy-cockroachdb-with-cockroachdb-operator">deployment guide</a>, each pod will run on a separate Kubernetes worker node and include one Docker container running a single CockroachDB node, reflecting our <a href="/docs/v25.4/recommended-production-settings#topology">topology recommendations</a>.</td></tr><tr><td><a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator">operator</a></td><td>An operator is an extension to Kubernetes that uses custom resources to efficiently manage specific applications. The CockroachDB operator includes two custom resource definitions to manage CockroachDB, <code>CrdbCluster</code> and <code>CrdbNode</code>. Unlike the older <a href="https://github.com/cockroachdb/cockroach-operator">Public operator</a>, the CockroachDB operator does not use StatefulSets and is designed to simplify multi-region deployments.</td></tr><tr><td><a href="http://kubernetes.io/docs/user-guide/persistent-volumes">persistent volume</a></td><td>A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br/><br/>The <a href="/docs/v25.4/deploy-cockroachdb-with-cockroachdb-operator">deployment guide</a> assumes that dynamic volume provisioning is available. When that is not the case, <a href="http://kubernetes.io/docs/user-guide/persistent-volumes#persistentvolumeclaims">persistent volume claims</a> need to be created manually.</td></tr><tr><td><a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac">RBAC</a></td><td>RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., <code>get</code> or <code>create</code>) on an API resource (e.g., a <code>pod</code>), the client must have a <code>Role</code> that allows it to do so. The <a href="/docs/v25.4/deploy-cockroachdb-with-cockroachdb-operator">deployment guide</a> creates the RBAC resources necessary for CockroachDB to create and access certificates.</td></tr></tbody></table>

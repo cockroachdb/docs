@@ -1,0 +1,81 @@
+---
+title: "RESUME SCHEDULES"
+old_description: "The RESUME SCHEDULES statement lets you resume jobs that were previously paused with PAUSE SCHEDULE."
+---
+
+import { ResumeSchedules3 } from "/snippets/syntax-diagrams/ResumeSchedules3.jsx";
+
+The `RESUME SCHEDULES` [statement](/docs/v24.1/sql-statements) can be used to resume [paused schedules](/docs/v24.1/pause-schedules):
+
+- [Backup schedule](/docs/v24.1/create-schedule-for-backup)
+- [Changefeed schedule](/docs/v24.1/create-schedule-for-changefeed)
+
+When a schedule is resumed, the `next_run` will be set to the next `TIMESTAMP` that conforms to the schedule.
+
+## Required privileges
+
+The following users can resume a schedule:
+
+- Members of the [`admin` role](/docs/v24.1/security-reference/authorization#default-roles). By default, the `root` user belongs to the `admin` role.
+- Owners of a backup schedule, i.e., the user that [created the backup schedule](/docs/v24.1/create-schedule-for-backup).
+- Owners of a changefeed schedule, i.e., the user that [created the changefeed schedule](/docs/v24.1/create-schedule-for-changefeed).
+
+## Synopsis
+
+<ResumeSchedules3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>selectclause</code></td><td>A <a href="/docs/v24.1/selection-queries">selection query</a> that returns <code>id</code>(s) to resume.</td></tr><tr><td><code>scheduleID</code></td><td>The <code>id</code> of the schedule you want to resume, which can be found with <a href="/docs/v24.1/show-schedules"><code>SHOW SCHEDULES</code></a>.</td></tr></tbody></table>
+
+## Examples
+
+### Pause a schedule
+
+```sql
+> PAUSE SCHEDULE 589963390487363585;
+```
+
+```text
+PAUSE SCHEDULES 1
+```
+
+### Resume a single schedule
+
+```sql
+> RESUME SCHEDULE 589963390487363585;
+```
+
+```text
+RESUME SCHEDULES 1
+```
+
+### Resume multiple schedules
+
+To resume multiple schedules, nest a [`SELECT` clause](/docs/v24.1/select-clause) that retrieves `id`(s) inside the `RESUME SCHEDULES` statement:
+
+```sql
+> RESUME SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
+```
+
+```text
+RESUME SCHEDULES 4
+```
+
+All schedules with the label `schedule_database` are resumed.
+
+## See also
+
+- [Manage a Backup Schedule](/docs/v24.1/manage-a-backup-schedule)
+- [`BACKUP`](/docs/v24.1/backup)
+- [`RESTORE`](/docs/v24.1/restore)
+- [`SHOW BACKUP`](/docs/v24.1/show-backup)
+- [`SHOW SCHEDULES`](/docs/v24.1/show-schedules)
+- [`PAUSE SCHEDULES`](/docs/v24.1/pause-schedules)
+- [`DROP SCHEDULES`](/docs/v24.1/drop-schedules)
+- [`PAUSE JOB`](/docs/v24.1/pause-job)
+- [`RESUME JOB`](/docs/v24.1/pause-job)
+- [`CANCEL JOB`](/docs/v24.1/cancel-job)
+- [Take Full and Incremental Backups](/docs/v24.1/take-full-and-incremental-backups)
+- [Use the Built-in SQL Client](/docs/v24.1/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v24.1/cockroach-commands)

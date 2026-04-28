@@ -1,0 +1,1158 @@
+---
+title: "CREATE TABLE"
+old_description: "The CREATE TABLE statement creates a new table in a database."
+---
+
+import { CreateTable17 } from "/snippets/syntax-diagrams/CreateTable17.jsx";
+import { CreateTable18 } from "/snippets/syntax-diagrams/CreateTable18.jsx";
+import { CreateTable19 } from "/snippets/syntax-diagrams/CreateTable19.jsx";
+import { CreateTable20 } from "/snippets/syntax-diagrams/CreateTable20.jsx";
+import { CreateTable21 } from "/snippets/syntax-diagrams/CreateTable21.jsx";
+import { CreateTable22 } from "/snippets/syntax-diagrams/CreateTable22.jsx";
+import { CreateTable23 } from "/snippets/syntax-diagrams/CreateTable23.jsx";
+import { CreateTable24 } from "/snippets/syntax-diagrams/CreateTable24.jsx";
+
+The `CREATE TABLE` [statement](/docs/v24.1/sql-statements) creates a new table in a database.
+
+<Note>
+The `CREATE TABLE` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v24.1/online-schema-changes).
+</Note>
+
+## Required privileges
+
+To create a table, the user must have one of the following:
+
+- Membership to the [`admin`](/docs/v24.1/security-reference/authorization#roles) role for the cluster.
+- Membership to the [owner](/docs/v24.1/security-reference/authorization#object-ownership) role for the database.
+- The [`CREATE` privilege](/docs/v24.1/security-reference/authorization#supported-privileges) on the database.
+
+## Synopsis
+
+<Tabs>
+<Tab title="Basic">
+
+<CreateTable18 />
+
+</Tab>
+<Tab title="Expanded">
+
+<CreateTable18 />
+
+**opt_persistence_temp_table::=**
+
+<CreateTable19 />
+
+**col_qualification::=**
+
+<CreateTable20 />
+
+**index_def::=**
+
+<CreateTable21 />
+
+**family_def::=**
+
+<CreateTable22 />
+
+**table_constraint::=**
+
+<CreateTable23 />
+
+**like_table_option_list::=**
+
+<CreateTable17 />
+
+**opt_locality::=**
+
+<CreateTable24 />
+
+</Tab>
+</Tabs>
+
+<Tip>
+To create a table from the results of a `SELECT` statement, use [`CREATE TABLE AS`](/docs/v24.1/create-table-as).
+</Tip>
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>opt&#95;persistence&#95;temp&#95;table</code></td><td>Defines the table as a session-scoped temporary table. For more information, see <a href="/docs/v24.1/temporary-tables">Temporary Tables</a>.<br/><br/>Note that the <code>LOCAL</code>, <code>GLOBAL</code>, and <code>UNLOGGED</code> options are no-ops, allowed by the parser for PostgreSQL compatibility.<br/><br/><strong>Support for temporary tables is <a href="/docs/v24.1/cockroachdb-feature-availability#temporary-objects">in preview</a></strong>.</td></tr><tr><td><code>IF NOT EXISTS</code></td><td>Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br/><br/>Note that <code>IF NOT EXISTS</code> checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.</td></tr><tr><td><code>table&#95;name</code></td><td>The name of the table to create, which must be unique within its database and follow these <a href="/docs/v24.1/keywords-and-identifiers#identifiers">identifier rules</a>. When the parent database is not set as the default, the name must be formatted as <code>database.name</code>.<br/><br/>The <a href="/docs/v24.1/upsert"><code>UPSERT</code></a> and <a href="/docs/v24.1/insert"><code>INSERT ON CONFLICT</code></a> statements use a temporary table called <code>excluded</code> to handle uniqueness conflicts during execution. It's therefore not recommended to use the name <code>excluded</code> for any of your tables.</td></tr><tr><td><code>column&#95;def</code></td><td>A comma-separated list of column definitions. Each column requires a <a href="/docs/v24.1/keywords-and-identifiers#identifiers">name/identifier</a> and <a href="/docs/v24.1/data-types">data type</a>. Column names must be unique within the table but can have the same name as indexes or constraints.<br/><br/>You can optionally specify a <a href="#column-qualifications">column qualification</a> (e.g., a <a href="/docs/v24.1/constraints">column-level constraint</a>). Any <code>PRIMARY KEY</code>, <code>UNIQUE</code>, and <code>CHECK</code><a href="/docs/v24.1/constraints">constraints</a> defined at the column level are moved to the table-level as part of the table's creation. Use the <a href="/docs/v24.1/show-create"><code>SHOW CREATE</code></a> statement to view them at the table level.</td></tr><tr><td><code>index&#95;def</code></td><td>An optional, comma-separated list of <a href="/docs/v24.1/indexes">index definitions</a>. For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these <a href="/docs/v24.1/keywords-and-identifiers#identifiers">identifier rules</a>. See the <a href="#create-a-table-with-secondary-and-gin-indexes">Create a Table with Secondary Indexes and GIN Indexes</a> example below.<br/><br/>For examples, see <a href="#create-a-table-with-a-hash-sharded-primary-index">Create a table with hash-sharded indexes</a> below.<br/><br/>The <a href="/docs/v24.1/create-index"><code>CREATE INDEX</code></a> statement can be used to create an index separate from table creation.</td></tr><tr><td><code>family&#95;def</code></td><td>An optional, comma-separated list of <a href="/docs/v24.1/column-families">column family definitions</a>. Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br/><br/>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see <a href="/docs/v24.1/column-families">Column Families</a>.</td></tr><tr><td><code>table&#95;constraint</code></td><td>An optional, comma-separated list of <a href="/docs/v24.1/constraints">table-level constraints</a>. Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.</td></tr><tr><td><code>LIKE table&#95;name like&#95;table&#95;option&#95;list</code></td><td>Create a new table based on the schema of an existing table, using supported specifiers. For details, see <a href="#create-a-table-like-an-existing-table">Create a table like an existing table</a>. For examples, see <a href="#create-a-new-table-from-an-existing-one">Create a new table from an existing one</a>.</td></tr><tr><td><code>opt&#95;partition&#95;by</code></td><td>An option that lets you define table partitions at the row level. You can define table partitions by list or by range. See <a href="/docs/v24.1/partitioning">Define Table Partitions</a> for more information.</td></tr><tr><td><code>opt&#95;locality</code></td><td>Specify a <a href="/docs/v24.1/multiregion-overview#table-locality">locality</a> for the table. In order to set a locality, the table must belong to a <a href="/docs/v24.1/multiregion-overview">multi-region database</a>.</td></tr><tr><td><code>opt&#95;where&#95;clause</code></td><td>An optional <code>WHERE</code> clause that defines the predicate boolean expression of a <a href="/docs/v24.1/partial-indexes">partial index</a>.</td></tr><tr><td><code>opt&#95;index&#95;visible</code></td><td>An optional <code>VISIBLE</code> or <code>NOT VISIBLE</code> clause that indicates whether an index is visible to the <a href="/docs/v24.1/cost-based-optimizer#control-whether-the-optimizer-uses-an-index">cost-based optimizer</a>. If <code>NOT VISIBLE</code>, the index will not be used in queries unless it is specifically selected with an <a href="/docs/v24.1/indexes#selection">index hint</a> or the property is overridden with the <a href="/docs/v24.1/set-vars#optimizer-use-not-visible-indexes"><code>optimizer&#95;use&#95;not&#95;visible&#95;indexes</code> session variable</a>. For an example, see <a href="/docs/v24.1/alter-index#set-an-index-to-be-not-visible">Set an index to be not visible</a>.<br/><br/>Indexes that are not visible are still used to enforce <code>UNIQUE</code> and <code>FOREIGN KEY</code><a href="/docs/v24.1/constraints">constraints</a>. For more considerations, see <a href="/docs/v24.1/alter-index#not-visible">Index visibility considerations</a>.</td></tr><tr><td><code>opt&#95;with&#95;storage&#95;parameter&#95;list</code></td><td>A comma-separated list of <a href="/docs/v24.1/spatial-indexes#index-tuning-parameters">spatial index tuning parameters</a>. Supported parameters include <code>fillfactor</code>, <code>s2&#95;max&#95;level</code>, <code>s2&#95;level&#95;mod</code>, <code>s2&#95;max&#95;cells</code>, <code>geometry&#95;min&#95;x</code>, <code>geometry&#95;max&#95;x</code>, <code>geometry&#95;min&#95;y</code>, and <code>geometry&#95;max&#95;y</code>. The <code>fillfactor</code> parameter is a no-op, allowed for PostgreSQL-compatibility.<br/><br/>For details, see <a href="/docs/v24.1/spatial-indexes#index-tuning-parameters">Spatial index tuning parameters</a>. For an example, see <a href="/docs/v24.1/spatial-indexes#create-a-spatial-index-that-uses-all-of-the-tuning-parameters">Create a spatial index that uses all of the tuning parameters</a>.</td></tr><tr><td><code>ON COMMIT PRESERVE ROWS</code></td><td>This clause is a no-op, allowed by the parser for PostgreSQL compatibility. CockroachDB only supports session-scoped <a href="/docs/v24.1/temporary-tables">temporary tables</a>, and does not support the clauses <code>ON COMMIT DELETE ROWS</code> and <code>ON COMMIT DROP</code>, which are used to define transaction-scoped temporary tables in PostgreSQL.</td></tr></tbody></table>
+
+## Column qualifications
+
+CockroachDB supports the following column qualifications:
+
+- [Column-level constraints](/docs/v24.1/constraints)
+- [Collations](/docs/v24.1/collate)
+- [Column family assignments](/docs/v24.1/column-families)
+- [`DEFAULT` expressions](/docs/v24.1/default-value)
+- [`ON UPDATE` expressions](#on-update-expressions)
+- [Identity columns](#identity-columns) (sequence-populated columns)
+- [`NOT VISIBLE`](#not-visible-property)
+
+### `ON UPDATE` expressions
+
+`ON UPDATE` expressions update column values in the following cases:
+
+- An [`UPDATE`](/docs/v24.1/update) or [`UPSERT`](/docs/v24.1/upsert) statement modifies a different column value in the same row.
+- An `ON UPDATE CASCADE` [foreign key action](/docs/v24.1/foreign-key#foreign-key-actions) modifies a different column value in the same row.
+
+`ON UPDATE` expressions **do not** update column values in the following cases:
+
+- An `UPDATE` or `UPSERT` statement directly modifies the value of a column with an `ON UPDATE` expression.
+- An `UPSERT` statement creates a new row.
+- A new column is backfilled with values (e.g., by a `DEFAULT` expression).
+
+Note the following limitations of `ON UPDATE` expressions:
+
+- `ON UPDATE` expressions allow context-dependent expressions, but not expressions that reference other columns. For example, the `current_timestamp()` [built-in function](/docs/v24.1/functions-and-operators) is allowed, but `CONCAT(<column_one>, <column_two>)` is not.
+- You cannot add a [foreign key constraint](/docs/v24.1/foreign-key) and an `ON UPDATE` expression to the same column.
+
+For an example of `ON UPDATE`, see [Add a column with an `ON UPDATE` expression](/docs/v24.1/alter-table#add-a-column-with-an-on-update-expression).
+
+### Identity columns
+
+*Identity columns* are columns that are populated with values in a [sequence](/docs/v24.1/create-sequence). When you create an identity column, CockroachDB creates a sequence and sets the default value for the identity column to the result of the `nextval()` [built-in function](/docs/v24.1/functions-and-operators) on the sequence.
+
+To create an identity column, add a `GENERATED BY DEFAULT AS IDENTITY`/`GENERATED ALWAYS AS IDENTITY` clause to the column definition, followed by [sequence options](/docs/v24.1/create-sequence#parameters). If you do not specify any sequence options in the column definition, the column assumes the default options of [`CREATE SEQUENCE`](/docs/v24.1/create-sequence).
+
+If you use `GENERATED BY DEFAULT AS IDENTITY` to define the identity column, any [`INSERT`](/docs/v24.1/insert)/[`UPSERT`](/docs/v24.1/upsert)/[`UPDATE`](/docs/v24.1/update) operations that specify a new value for the identity column will overwrite the default sequential values in the column. If you use `GENERATED ALWAYS AS IDENTITY`, the column's sequential values cannot be overwritten.
+
+Note the following limitations of identity columns:
+
+- `GENERATED ALWAYS AS IDENTITY` / `GENERATED BY DEFAULT AS IDENTITY` is supported in [`ALTER TABLE... ADD COLUMN`](/docs/v24.1/alter-table#add-column) statements only when the table being altered is empty, as [CockroachDB does not support back-filling sequential column data](/docs/v24.1/known-limitations#adding-a-column-with-sequence-based-default-values). For more information, see [#42508](https://github.com/cockroachdb/cockroach/issues/42508).
+- Unlike PostgreSQL, CockroachDB does not support using the `OVERRIDING SYSTEM VALUE` clause in `INSERT` / `UPDATE` / `UPSERT` statements to overwrite `GENERATED ALWAYS AS IDENTITY` identity column values.
+
+For an example of an identity column, see [Create a table with an identity column](#create-a-table-with-an-identity-column).
+
+### `NOT VISIBLE` property
+
+The `NOT VISIBLE` property of a column specifies that a column will not be returned when using `*` in a [`SELECT` clause](/docs/v24.1/select-clause). You can apply the `NOT VISIBLE` property only to individual columns. For an example, refer to [Show the `CREATE TABLE` statement for a table with a hidden column](/docs/v24.1/show-create#show-the-create-table-statement-for-a-table-with-a-hidden-column).
+
+## Create a table like an existing table
+
+CockroachDB supports the `CREATE TABLE LIKE` syntax for creating a new table based on the schema of an existing table.
+
+The following options are supported:
+
+- `INCLUDING CONSTRAINTS` adds all [`CHECK`](/docs/v24.1/check) constraints from the source table.
+- `INCLUDING DEFAULTS` adds all [`DEFAULT`](/docs/v24.1/default-value) column expressions from the source table.
+- `INCLUDING GENERATED` adds all [computed column](/docs/v24.1/computed-columns) expressions from the source table.
+- `INCLUDING INDEXES` adds all [indexes](/docs/v24.1/indexes) from the source table.
+- `INCLUDING ALL` includes all of the specifiers above.
+
+To exclude specifiers, use the `EXCLUDING` keyword. Excluding specifiers can be useful if you want to use `INCLUDING ALL`, and exclude just one or two specifiers. The last `INCLUDING`/`EXCLUDING` keyword for a given specifier takes priority.
+
+<Note>
+`CREATE TABLE LIKE` statements cannot copy [column families](/docs/v24.1/column-families), [partitions](/docs/v24.1/partitioning), and [foreign key constraints](/docs/v24.1/foreign-key) from existing tables. If you want these column qualifications in a new table, you must recreate them manually.
+
+`CREATE TABLE LIKE` copies all hidden columns (e.g., the hidden [`crdb_region`](/docs/v24.1/alter-table#crdb_region) column in multi-region tables) from the existing table to the new table.
+</Note>
+
+Supported `LIKE` specifiers can also be mixed with ordinary `CREATE TABLE` specifiers. For example:
+
+```sql
+CREATE TABLE table1 (a INT PRIMARY KEY, b INT NOT NULL DEFAULT 3 CHECK (b > 0), INDEX(b));
+
+CREATE TABLE table2 (LIKE table1 INCLUDING ALL EXCLUDING CONSTRAINTS, c INT, INDEX(b,c));
+```
+
+In this example, `table2` is created with the indexes and default values of `table1`, but not the `CHECK` constraints, because `EXCLUDING CONSTRAINTS` was specified after `INCLUDING ALL`. `table2` also includes an additional column and index.
+
+For additional examples, see [Create a new table from an existing one](#create-a-new-table-from-an-existing-one).
+
+## Examples
+
+### Create a table
+
+In this example, we create the `users` table with a single [primary key](/docs/v24.1/primary-key) column defined. In CockroachDB, every table requires a [primary key](/docs/v24.1/primary-key). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
+
+For performance recommendations on primary keys, see the [Schema Design: Create a Table](/docs/v24.1/schema-design-table) page and the [SQL Performance Best Practices](/docs/v24.1/performance-best-practices-overview#use-multi-column-primary-keys) page.
+
+<Note>
+If no primary key is explicitly defined in a `CREATE TABLE` statement, you can add a primary key to the table with [`ADD CONSTRAINT... PRIMARY KEY`](/docs/v24.1/alter-table#add-constraint) or [`ALTER PRIMARY KEY`](/docs/v24.1/alter-table#alter-primary-key). If the `ADD` or `ALTER` statement follows the `CREATE TABLE` statement, and is part of the same transaction, no default primary key will be created. If the table has already been created and the transaction committed, the `ADD` or `ALTER` statements replace the default primary key.
+</Note>
+
+<Note>
+Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like `SHOW INDEX`.
+</Note>
+
+```sql
+> CREATE TABLE users (
+        id UUID PRIMARY KEY,
+        city STRING,
+        name STRING,
+        address STRING,
+        credit_card STRING,
+        dl STRING
+);
+```
+
+```sql
+> SHOW COLUMNS FROM users;
+```
+
+```text
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
+  id          | UUID      |    false    | NULL           |                       | {primary} |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  dl          | STRING    |    true     | NULL           |                       | {primary} |   false
+(6 rows)
+```
+
+```sql
+> SHOW INDEX FROM users;
+```
+
+```text
+  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
++------------+------------+------------+--------------+-------------+-----------+---------+----------+
+  users      | users_pkey |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey |   false    |            6 | dl          | N/A       |  true   |  false
+(6 rows)
+```
+
+### Create a table with secondary and GIN indexes
+
+In this example, we create secondary and GIN indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. [GIN indexes](/docs/v24.1/inverted-indexes) allow efficient access to the schemaless data in a [`JSONB`](/docs/v24.1/jsonb) column.
+
+```sql
+> CREATE TABLE vehicles (
+        id UUID NOT NULL,
+        city STRING NOT NULL,
+        type STRING,
+        owner_id UUID,
+        creation_time TIMESTAMP,
+        status STRING,
+        current_location STRING,
+        ext JSONB,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        INDEX index_status (status),
+        INVERTED INDEX ix_vehicle_ext (ext),
+        FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+);
+```
+
+```sql
+> SHOW INDEX FROM vehicles;
+```
+
+```text
+  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+----------------+------------+--------------+-------------+-----------+---------+-----------
+  vehicles   | index_status   |    true    |            1 | status           | ASC       |  false  |  false
+  vehicles   | index_status   |    true    |            2 | city             | ASC       |  false  |   true
+  vehicles   | index_status   |    true    |            3 | id               | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext |    true    |            1 | ext              | ASC       |  false  |  false
+  vehicles   | ix_vehicle_ext |    true    |            2 | city             | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext |    true    |            3 | id               | ASC       |  false  |   true
+  vehicles   | vehicles_pkey  |   false    |            1 | city             | ASC       |  false  |  false
+  vehicles   | vehicles_pkey  |   false    |            2 | id               | ASC       |  false  |  false
+  vehicles   | vehicles_pkey  |   false    |            3 | type             | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            4 | owner_id         | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            5 | creation_time    | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            6 | status           | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            7 | current_location | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            8 | ext              | N/A       |  true   |  false
+(14 rows)
+```
+
+We also have other resources on indexes:
+
+- Create indexes for existing tables using [`CREATE INDEX`](/docs/v24.1/create-index).
+- [Learn more about indexes](/docs/v24.1/indexes).
+
+### Create a table with auto-generated unique row IDs
+
+To auto-generate unique row identifiers, you can use the following [functions](/docs/v24.1/functions-and-operators#id-generation-functions):
+
+- [Use `gen_random_uuid()`](#use-gen_random_uuid): Generates a UUIDv4 with `UUID` data type.
+- [Use `uuid_v4()`](#use-uuid_v4): Generates a UUIDv4 with `BYTES` data type.
+- [Use `unique_rowid()`](#use-unique_rowid): Generates a globally unique `INT` data type
+
+<Tip>
+For performance reasons, if you are going to use UUIDs, Cockroach Labs strongly recommends using **UUIDv4** as defined by [RFC 4122](https://www.ietf.org/rfc/rfc4122.txt). This is the format generated by the [`gen_random_uuid()` and `uuid_v4()` built-in functions](/docs/v24.1/functions-and-operators#id-generation-functions). Other types of UUID are largely untested with CockroachDB and will require performance testing to avoid [hotspots](/docs/v24.1/performance-best-practices-overview#hotspots).
+</Tip>
+
+#### Use `gen_random_uuid()`
+
+To use the [`UUID`](/docs/v24.1/uuid) column with the `gen_random_uuid()` [function](/docs/v24.1/functions-and-operators#id-generation-functions) as the [default value](/docs/v24.1/default-value):
+
+```sql
+CREATE TABLE users (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    city STRING NOT NULL,
+    name STRING NULL,
+    address STRING NULL,
+    credit_card STRING NULL,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+    FAMILY "primary" (id, city, name, address, credit_card)
+);
+```
+
+```sql
+INSERT INTO users (name, city) VALUES ('Petee', 'new york'), ('Eric', 'seattle'), ('Dan', 'seattle');
+```
+
+```sql
+SELECT * FROM users;
+```
+
+```text
+                   id                  |   city   | name  | address | credit_card
++--------------------------------------+----------+-------+---------+-------------+
+  cf8ee4e2-cd74-449a-b6e6-a0fb2017baa4 | new york | Petee | NULL    | NULL
+  2382564e-702f-42d9-a139-b6df535ae00a | seattle  | Eric  | NULL    | NULL
+  7d27e40b-263a-4891-b29b-d59135e55650 | seattle  | Dan   | NULL    | NULL
+(3 rows)
+```
+
+#### Use `uuid_v4()`
+
+Alternatively, you can use the [`BYTES`](/docs/v24.1/bytes) column with the `uuid_v4()` function as the default value:
+
+```sql
+CREATE TABLE users2 (
+    id BYTES DEFAULT uuid_v4(),
+    city STRING NOT NULL,
+    name STRING NULL,
+    address STRING NULL,
+    credit_card STRING NULL,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+    FAMILY "primary" (id, city, name, address, credit_card)
+);
+```
+
+```sql
+INSERT INTO users2 (name, city) VALUES ('Anna', 'new york'), ('Jonah', 'seattle'), ('Terry', 'chicago');
+```
+
+```sql
+SELECT * FROM users;
+```
+
+```text
+                        id                       |   city   | name  | address | credit_card
++------------------------------------------------+----------+-------+---------+-------------+
+  4\244\277\323/\261M\007\213\275*\0060\346\025z | chicago  | Terry | NULL    | NULL
+  \273*t=u.F\010\274f/}\313\332\373a             | new york | Anna  | NULL    | NULL
+  \004\\\364nP\024L)\252\364\222r$\274O0         | seattle  | Jonah | NULL    | NULL
+(3 rows)
+```
+
+In either case, generated IDs will be 128-bit, sufficiently large to generate unique values. Once the table grows beyond a single key-value range's [default size](/docs/v24.1/configure-replication-zones#range-max-bytes), new IDs will be scattered across all of the table's ranges and, therefore, likely across different nodes. This means that multiple nodes will share in the load.
+
+This approach has the disadvantage of creating a primary key that may not be useful in a query directly, which can require a join with another table or a secondary index.
+
+#### Use `unique_rowid()`
+
+If it is important for generated IDs to be stored in the same key-value range, you can use an [integer type](/docs/v24.1/int) with the `unique_rowid()` [function](/docs/v24.1/functions-and-operators#id-generation-functions) as the default value, either explicitly or via the [`SERIAL` pseudo-type](/docs/v24.1/serial):
+
+```sql
+CREATE TABLE users3 (
+    id INT DEFAULT unique_rowid(),
+    city STRING NOT NULL,
+    name STRING NULL,
+    address STRING NULL,
+    credit_card STRING NULL,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+    FAMILY "primary" (id, city, name, address, credit_card)
+);
+```
+
+```sql
+INSERT INTO users3 (name, city) VALUES ('Blake', 'chicago'), ('Hannah', 'seattle'), ('Bobby', 'seattle');
+```
+
+```sql
+SELECT * FROM users3;
+```
+
+```text
+          id         |  city   |  name  | address | credit_card
++--------------------+---------+--------+---------+-------------+
+  469048192112197633 | chicago | Blake  | NULL    | NULL
+  469048192112263169 | seattle | Hannah | NULL    | NULL
+  469048192112295937 | seattle | Bobby  | NULL    | NULL
+(3 rows)
+```
+
+Upon insert or upsert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert. Such time-ordered values are likely to be globally unique except in cases where a very large number of IDs (100,000+) are generated per node per second. Also, there can be gaps and the order is not completely guaranteed.
+
+To understand the differences between the `UUID` and `unique_rowid()` options, see the [SQL FAQs](/docs/v24.1/sql-faqs#what-are-the-differences-between-uuid-sequences-and-unique_rowid). For further background on UUIDs, see [What is a UUID, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-a-uuid).
+
+### Create a table with a foreign key constraint
+
+[Foreign key constraints](/docs/v24.1/foreign-key) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
+
+There are a [number of rules](/docs/v24.1/foreign-key#rules-for-creating-foreign-keys) that govern foreign keys, but the most important rule is that referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [primary key](/docs/v24.1/primary-key) or [unique](/docs/v24.1/unique) constraint.
+
+You can include a [foreign key action](/docs/v24.1/foreign-key#foreign-key-actions) to specify what happens when a column referenced by a foreign key constraint is updated or deleted. The default actions are `ON UPDATE NO ACTION` and `ON DELETE NO ACTION`.
+
+In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a foreign key constraint is deleted, all dependent rows are also deleted).
+
+```sql
+> CREATE TABLE users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        city STRING,
+        name STRING,
+        address STRING,
+        credit_card STRING,
+        dl STRING UNIQUE CHECK (LENGTH(dl) < 8)
+);
+```
+
+```sql
+> CREATE TABLE vehicles (
+        id UUID NOT NULL DEFAULT gen_random_uuid(),
+        city STRING NOT NULL,
+        type STRING,
+        owner_id UUID REFERENCES users(id) ON DELETE CASCADE,
+        creation_time TIMESTAMP,
+        status STRING,
+        current_location STRING,
+        ext JSONB,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+        INVERTED INDEX ix_vehicle_ext (ext),
+        FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+);
+```
+
+```sql
+> SHOW CREATE TABLE vehicles;
+```
+
+```text
+  table_name |                                          create_statement
++------------+-----------------------------------------------------------------------------------------------------+
+  vehicles   | CREATE TABLE vehicles (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     city STRING NOT NULL,
+             |     type STRING NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status STRING NULL,
+             |     current_location STRING NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     INVERTED INDEX ix_vehicle_ext (ext),
+             |     CONSTRAINT fk_owner_id_ref_users FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
+             |     INDEX vehicles_auto_index_fk_owner_id_ref_users (owner_id ASC),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | )
+(1 row)
+```
+
+```sql
+> INSERT INTO users (name, dl) VALUES ('Annika', 'ABC-123');
+```
+
+```sql
+> SELECT * FROM users;
+```
+
+```text
+                   id                  | city |  name  | address | credit_card |   dl
++--------------------------------------+------+--------+---------+-------------+---------+
+  26da1fce-59e1-4290-a786-9068242dd195 | NULL | Annika | NULL    | NULL        | ABC-123
+(1 row)
+```
+
+```sql
+> INSERT INTO vehicles (city, owner_id) VALUES ('seattle', '26da1fce-59e1-4290-a786-9068242dd195');
+```
+
+```sql
+> SELECT * FROM vehicles;
+```
+
+```text
+                   id                  |  city   | type |               owner_id               | creation_time | status | current_location | ext
++--------------------------------------+---------+------+--------------------------------------+---------------+--------+------------------+------+
+  fc6f7a8c-4ba9-42e1-9c37-7be3c906050c | seattle | NULL | 26da1fce-59e1-4290-a786-9068242dd195 | NULL          | NULL   | NULL             | NULL
+(1 row)
+```
+
+```sql
+> DELETE FROM users WHERE id = '26da1fce-59e1-4290-a786-9068242dd195';
+```
+
+```sql
+> SELECT * FROM vehicles;
+```
+
+```text
+  id | city | type | owner_id | creation_time | status | current_location | ext
++----+------+------+----------+---------------+--------+------------------+-----+
+(0 rows)
+```
+
+### Create a table with a check constraint
+
+In this example, we create the `users` table, but with some column [constraints](/docs/v24.1/constraints). One column is the [primary key](/docs/v24.1/primary-key), and another column is given a [unique constraint](/docs/v24.1/unique) and a [check constraint](/docs/v24.1/check) that limits the length of the string. Primary key columns and columns with unique constraints are automatically indexed.
+
+```sql
+> CREATE TABLE users (
+        id UUID PRIMARY KEY,
+        city STRING,
+        name STRING,
+        address STRING,
+        credit_card STRING,
+        dl STRING UNIQUE CHECK (LENGTH(dl) < 8)
+);
+```
+
+```sql
+> SHOW COLUMNS FROM users;
+```
+
+```text
+  column_name | data_type | is_nullable | column_default | generation_expression |           indices           | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-----------------------------+------------
+  id          | UUID      |    false    | NULL           |                       | {users_name_idx,users_pkey} |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {users_name_idx,users_pkey} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {users_name_idx,users_pkey} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {users_pkey}                |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {users_pkey}                |   false
+  dl          | STRING    |    true     | NULL           |                       | {users_dl_key}              |   false
+(6 rows)
+```
+
+```sql
+> SHOW INDEX FROM users;
+```
+
+```text
+  table_name |  index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit
++------------+--------------+------------+--------------+-------------+-----------+---------+----------+
+  users      | users_pkey   |   false    |            1 | id          | ASC       |  false  |  false
+  users      | users_dl_key |   false    |            1 | dl          | ASC       |  false  |  false
+  users      | users_dl_key |   false    |            2 | id          | ASC       |  false  |   true
+(3 rows)
+```
+
+### Create a table that mirrors key-value storage
+
+CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key:
+
+```sql
+> CREATE TABLE kv (k INT PRIMARY KEY, v BYTES);
+```
+
+When such a "simple" table has no indexes or foreign keys, [`INSERT`](/docs/v24.1/insert)/[`UPSERT`](/docs/v24.1/upsert)/[`UPDATE`](/docs/v24.1/update)/[`DELETE`](/docs/v24.1/delete) statements translate to key-value operations with minimal overhead (single digit percent slowdowns). For example, the following `UPSERT` to add or replace a row in the table would translate into a single key-value Put operation:
+
+```sql
+> UPSERT INTO kv VALUES (1, b'hello')
+```
+
+This SQL table approach also offers you a well-defined query language, a known transaction model, and the flexibility to add more columns to the table if the need arises.
+
+### Create a table from a `SELECT` statement
+
+You can use the [`CREATE TABLE AS`](/docs/v24.1/create-table-as) statement to create a new table from the results of a `SELECT` statement. For example, suppose you have a number of rows of user data in the `users` table, and you want to create a new table from the subset of users that are located in New York.
+
+```sql
+> SELECT * FROM users WHERE city = 'new york';
+```
+
+```text
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+(5 rows)
+```
+
+```sql
+> CREATE TABLE users_ny AS SELECT * FROM users WHERE city = 'new york';
+```
+
+```sql
+> SELECT * FROM users_ny;
+```
+
+```text
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+(5 rows)
+```
+
+### Create a table with a computed column
+
+In this example, let's create a simple table with a computed column:
+
+```sql
+> CREATE TABLE users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        city STRING,
+        first_name STRING,
+        last_name STRING,
+        full_name STRING AS (CONCAT(first_name, ' ', last_name)) STORED,
+        address STRING,
+        credit_card STRING,
+        dl STRING UNIQUE CHECK (LENGTH(dl) < 8)
+);
+```
+
+Then, insert a few rows of data:
+
+```sql
+> INSERT INTO users (first_name, last_name) VALUES
+    ('Lola', 'McDog'),
+    ('Carl', 'Kimball'),
+    ('Ernie', 'Narayan');
+```
+
+```sql
+> SELECT * FROM users;
+```
+
+```text
+                   id                  | city | first_name | last_name |   full_name   | address | credit_card |  dl
++--------------------------------------+------+------------+-----------+---------------+---------+-------------+------+
+  5740da29-cc0c-47af-921c-b275d21d4c76 | NULL | Ernie      | Narayan   | Ernie Narayan | NULL    | NULL        | NULL
+  e7e0b748-9194-4d71-9343-cd65218848f0 | NULL | Lola       | McDog     | Lola McDog    | NULL    | NULL        | NULL
+  f00e4715-8ca7-4d5a-8de5-ef1d5d8092f3 | NULL | Carl       | Kimball   | Carl Kimball  | NULL    | NULL        | NULL
+(3 rows)
+```
+
+The `full_name` column is computed from the `first_name` and `last_name` columns without the need to define a [view](/docs/v24.1/views).
+
+### Create a table with a hash-sharded primary index
+
+We [discourage indexing on sequential keys](/docs/v24.1/schema-design-indexes#best-practices). If a table **must** be indexed on sequential keys, use [hash-sharded indexes](/docs/v24.1/hash-sharded-indexes). Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range [hot spots](/docs/v24.1/performance-best-practices-overview#hot-spots) and improving write performance on sequentially-keyed indexes at a small cost to read performance.
+
+Let's create the `products` table and add a hash-sharded primary key on the `ts` column:
+
+```sql
+> CREATE TABLE products (
+    ts DECIMAL PRIMARY KEY USING HASH,
+    product_id INT8
+    );
+```
+
+```sql
+> SHOW INDEX FROM products;
+```
+
+```text
+  table_name |  index_name   | non_unique | seq_in_index |        column_name        | direction | storing | implicit
+-------------+---------------+------------+--------------+---------------------------+-----------+---------+-----------
+  products   | products_pkey |   false    |            1 | crdb_internal_ts_shard_16 | ASC       |  false  |   true
+  products   | products_pkey |   false    |            2 | ts                        | ASC       |  false  |  false
+  products   | products_pkey |   false    |            3 | product_id                | N/A       |  true   |  false
+(3 rows)
+```
+
+```sql
+> SHOW COLUMNS FROM products;
+```
+
+```text
+         column_name        | data_type | is_nullable | column_default |               generation_expression               |     indices     | is_hidden
+----------------------------+-----------+-------------+----------------+---------------------------------------------------+-----------------+------------
+  crdb_internal_ts_shard_16 | INT8      |    false    | NULL           | mod(fnv32(crdb_internal.datums_to_bytes(ts)), 16) | {products_pkey} |   true
+  ts                        | DECIMAL   |    false    | NULL           |                                                   | {products_pkey} |   false
+  product_id                | INT8      |    true     | NULL           |                                                   | {products_pkey} |   false
+(3 rows)
+```
+
+### Create a table with a hash-sharded secondary index
+
+Let's now create the `events` table and add a secondary index on the `ts` column in a single statement:
+
+```sql
+> CREATE TABLE events (
+    product_id INT8,
+    owner UUID,
+    serial_number VARCHAR,
+    event_id UUID,
+    ts TIMESTAMP,
+    data JSONB,
+    PRIMARY KEY (product_id, owner, serial_number, ts, event_id),
+    INDEX (ts) USING HASH
+);
+```
+
+```sql
+> SHOW INDEX FROM events;
+```
+
+```text
+  table_name |  index_name   | non_unique | seq_in_index |        column_name        | direction | storing | implicit
+-------------+---------------+------------+--------------+---------------------------+-----------+---------+-----------
+  events     | events_pkey   |   false    |            1 | product_id                | ASC       |  false  |  false
+  events     | events_pkey   |   false    |            2 | owner                     | ASC       |  false  |  false
+  events     | events_pkey   |   false    |            3 | serial_number             | ASC       |  false  |  false
+  events     | events_pkey   |   false    |            4 | ts                        | ASC       |  false  |  false
+  events     | events_pkey   |   false    |            5 | event_id                  | ASC       |  false  |  false
+  events     | events_pkey   |   false    |            6 | data                      | N/A       |  true   |  false
+  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_16 | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            2 | ts                        | ASC       |  false  |  false
+  events     | events_ts_idx |    true    |            3 | product_id                | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            4 | owner                     | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            5 | serial_number             | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            6 | event_id                  | ASC       |  false  |   true
+(12 rows)
+```
+
+```sql
+> SHOW COLUMNS FROM events;
+```
+
+```text
+         column_name        | data_type | is_nullable | column_default |               generation_expression               |           indices           | is_hidden
+----------------------------+-----------+-------------+----------------+---------------------------------------------------+-----------------------------+------------
+  product_id                | INT8      |    false    | NULL           |                                                   | {events_pkey,events_ts_idx} |   false
+  owner                     | UUID      |    false    | NULL           |                                                   | {events_pkey,events_ts_idx} |   false
+  serial_number             | VARCHAR   |    false    | NULL           |                                                   | {events_pkey,events_ts_idx} |   false
+  event_id                  | UUID      |    false    | NULL           |                                                   | {events_pkey,events_ts_idx} |   false
+  ts                        | TIMESTAMP |    false    | NULL           |                                                   | {events_pkey,events_ts_idx} |   false
+  data                      | JSONB     |    true     | NULL           |                                                   | {events_pkey}               |   false
+  crdb_internal_ts_shard_16 | INT8      |    false    | NULL           | mod(fnv32(crdb_internal.datums_to_bytes(ts)), 16) | {events_ts_idx}             |   true
+(7 rows)
+```
+
+### Create a new table from an existing one
+
+#### Create a table including all supported source specifiers
+
+```sql
+> SHOW CREATE TABLE vehicles;
+```
+
+```text
+  table_name |                                              create_statement
+-------------+-------------------------------------------------------------------------------------------------------------
+  vehicles   | CREATE TABLE public.vehicles (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     city STRING NOT NULL,
+             |     type STRING NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status STRING NULL,
+             |     current_location STRING NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     CONSTRAINT fk_owner_id_ref_users FOREIGN KEY (owner_id) REFERENCES public.users(id) ON DELETE CASCADE,
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     INVERTED INDEX ix_vehicle_ext (ext),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | )
+(1 row
+```
+
+```sql
+> CREATE TABLE vehicles2 (
+        LIKE vehicles INCLUDING ALL
+);
+```
+
+```sql
+> SHOW CREATE TABLE vehicles2;
+```
+
+```text
+  table_name |                                       create_statement
+-------------+------------------------------------------------------------------------------------------------
+  vehicles2  | CREATE TABLE public.vehicles2 (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     city STRING NOT NULL,
+             |     type STRING NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status STRING NULL,
+             |     current_location STRING NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     INVERTED INDEX ix_vehicle_ext (ext),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | )
+(1 row)
+```
+
+Note that the foreign key constraint `fk_owner_id_ref_users` in the source table is not included in the new table.
+
+#### Create a table with some source specifiers and a foreign key constraint
+
+```sql
+> CREATE TABLE vehicles3 (
+        LIKE vehicles INCLUDING DEFAULTS INCLUDING INDEXES,
+        CONSTRAINT fk_owner_id_ref_users FOREIGN KEY (owner_id) REFERENCES public.users(id) ON DELETE CASCADE
+);
+```
+
+```sql
+> SHOW CREATE TABLE vehicles3;
+```
+
+```text
+  table_name |                                              create_statement
+-------------+-------------------------------------------------------------------------------------------------------------
+  vehicles3  | CREATE TABLE public.vehicles3 (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     city STRING NOT NULL,
+             |     type STRING NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status STRING NULL,
+             |     current_location STRING NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     CONSTRAINT fk_owner_id_ref_users FOREIGN KEY (owner_id) REFERENCES public.users(id) ON DELETE CASCADE,
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     INVERTED INDEX ix_vehicle_ext (ext),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | )
+(1 row)
+```
+
+### Create a table in a multi-region database
+
+To create a table with a specific [table locality](/docs/v24.1/multiregion-overview#table-locality) in a [multi-region database](/docs/v24.1/multiregion-overview), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
+
+<Note>
+In order to set table localities, the database that contains the table must have [database regions](/docs/v24.1/multiregion-overview#database-regions).
+
+By default, all tables in a multi-region database have a [`REGIONAL BY TABLE IN PRIMARY REGION`](/docs/v24.1/table-localities#regional-tables) locality.
+</Note>
+
+#### Create a table with a global locality
+
+To create a table with a [`GLOBAL`](/docs/v24.1/table-localities#global-tables) locality, add a `LOCALITY GLOBAL` clause to the end of the `CREATE TABLE` statement.
+
+The `GLOBAL` locality is useful for "read-mostly" tables of reference data that are rarely updated, but need to be read with low latency from all regions.
+
+For example, the `promo_codes` table of the [`movr` database](/docs/v24.1/movr) is rarely updated after being initialized, but it needs to be read by nodes in all regions.
+
+```sql
+> CREATE TABLE promo_codes (
+    code STRING PRIMARY KEY,
+    description STRING,
+    creation_time TIMESTAMP,
+    expiration_time TIMESTAMP,
+    rules JSONB)
+    LOCALITY GLOBAL;
+```
+
+```sql
+> WITH x AS (SHOW TABLES)
+SELECT * FROM x WHERE table_name='promo_codes';
+```
+
+```text
+  schema_name | table_name  | type  | owner | estimated_row_count | locality
+--------------+-------------+-------+-------+---------------------+-----------
+  public      | promo_codes | table | demo  |                   0 | GLOBAL
+(1 row)
+```
+
+#### Create a table with a regional-by-table locality
+
+To create a table with a [`REGIONAL BY TABLE`](/docs/v24.1/table-localities#regional-tables) locality, add a `LOCALITY REGIONAL BY TABLE` clause to the end of the `CREATE TABLE` statement.
+
+<Note>
+`REGIONAL BY TABLE IN PRIMARY REGION` is the default locality for all tables created in a multi-region database.
+</Note>
+
+The `REGIONAL BY TABLE` locality is useful for tables that require low-latency reads and writes from specific region.
+
+For example, suppose you want to create a table for your application's end users in a specific state:
+
+```sql
+> CREATE TABLE users_ny (
+    id UUID PRIMARY KEY,
+    name STRING,
+    address STRING)
+    LOCALITY REGIONAL BY TABLE IN "us-east1";
+```
+
+```sql
+> WITH x AS (SHOW TABLES) SELECT * FROM x WHERE table_name='users_ny';
+```
+
+```text
+  schema_name | table_name | type  | owner | estimated_row_count |            locality
+--------------+------------+-------+-------+---------------------+----------------------------------
+  public      | users_ny   | table | demo  |                   0 | REGIONAL BY TABLE IN "us-east1"
+(1 row)
+```
+
+<Tip>
+`LOCALITY REGIONAL` is an alias for `LOCALITY REGIONAL BY TABLE`.
+</Tip>
+
+#### Create a table with a regional-by-row locality
+
+To create a table with a [`REGIONAL-BY-ROW`](/docs/v24.1/table-localities#regional-by-row-tables) locality, add a `LOCALITY REGIONAL BY ROW` clause to the end of the `CREATE TABLE` statement.
+
+The `REGIONAL BY ROW` locality is useful for tables that require low-latency reads and writes from different regions, where the low-latency region is specified at the row level.
+
+For example, the `vehicles` table of the [`movr` database](/docs/v24.1/movr) is read to and written from nodes in different regions.
+
+```sql
+> CREATE TABLE vehicles (
+    id UUID PRIMARY KEY,
+    type STRING,
+    city STRING,
+    owner_id UUID,
+    creation_time TIMESTAMP,
+    status STRING,
+    current_location STRING,
+    ext JSONB)
+    LOCALITY REGIONAL BY ROW;
+```
+
+CockroachDB will automatically assign each row to a region based on the locality of the node from which the row is inserted. It will then optimize subsequent read and write queries executed from nodes located in the region assigned to the rows being queried.
+
+<Note>
+If the node from which a row is inserted has a locality that does not correspond to a region in the database, then the row will be assigned to the database's primary region.
+</Note>
+
+To assign rows to regions, CockroachDB creates and manages a hidden [`crdb_region` column](/docs/v24.1/alter-table#crdb_region), of [`ENUM`](/docs/v24.1/enum) type `crdb_internal_region`. To override the automatic region assignment and choose the region in which rows will be placed, you can provide a value for the `crdb_region` column in `INSERT` and `UPDATE` queries on the table.
+
+<Note>
+The region value for `crdb_region` must be one of the regions added to the database, and present in the `crdb_internal_region` `ENUM`. To return the available regions, use a [`SHOW REGIONS FROM DATABASE <database name>`](/docs/v24.1/show-regions) statement, or a [`SHOW ENUMS`](/docs/v24.1/show-enums) statement.
+</Note>
+
+For example:
+
+```sql
+> CREATE TABLE vehicles (
+    id UUID PRIMARY KEY,
+    type STRING,
+    city STRING,
+    owner_id UUID,
+    creation_time TIMESTAMP,
+    status STRING,
+    current_location STRING,
+    ext JSONB)
+    LOCALITY REGIONAL BY ROW;
+```
+
+```sql
+> SHOW REGIONS FROM DATABASE movr;
+```
+
+```text
+  database |    region    | primary |  zones
+-----------+--------------+---------+----------
+  movr     | us-east1     |  true   | {b,c,d}
+  movr     | europe-west1 |  false  | {b,c,d}
+  movr     | us-west1     |  false  | {a,b,c}
+(3 rows)
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema |         name         |              values              | owner
+---------+----------------------+----------------------------------+--------
+  public | crdb_internal_region | {europe-west1,us-east1,us-west1} | root
+(1 row)
+```
+
+You can then manually set the values of the region with each [`INSERT`](/docs/v24.1/insert) statement:
+
+```sql
+> INSERT INTO vehicles (crdb_region, ...) VALUES ('us-east1', ...);
+```
+
+Alternatively, you could update the rows in the `crdb_region` column to compute the region based on the value of another column, like the `city` column.
+
+```sql
+> UPDATE vehicles SET crdb_region = 'us-east1' WHERE city IN (...) ...
+```
+
+#### Create a table with a regional-by-row locality, using a custom region column
+
+To create a table with a [`REGIONAL-BY-ROW`](/docs/v24.1/table-localities#regional-by-row-tables) locality, where the region of each row in a table is based on the value of a specific column that you create, you can add a `LOCALITY REGIONAL BY ROW AS <region>` clause to the end of the `CREATE TABLE` statement.
+
+Using the `LOCALITY REGIONAL BY ROW AS <region>` clause, you can assign rows to regions based on the value of any custom column of type `crdb_internal_region`.
+
+For example:
+
+```sql
+> CREATE TABLE vehicles (
+    id UUID PRIMARY KEY,
+    type STRING,
+    city STRING,
+    region crdb_internal_region AS (
+      CASE
+        WHEN city IN ('new york', 'boston', 'washington dc', 'chicago', 'detroit', 'minneapolis') THEN 'us-east1'
+        WHEN city IN ('san francisco', 'seattle', 'los angeles') THEN 'us-west1'
+        WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'europe-west1'
+      END) STORED,
+    owner_id UUID,
+    creation_time TIMESTAMP,
+    status STRING,
+    current_location STRING,
+    ext JSONB)
+    LOCALITY REGIONAL BY ROW AS region;
+```
+
+CockroachDB will then assign a region to each row, based on the value of the `region` column. In this example, the `region` column is computed from the value of the `city` column.
+
+### Create a table with an identity column
+
+[Identity columns](#identity-columns) define a sequence from which to populate a column when a new row is inserted.
+
+For example:
+
+```sql
+> CREATE TABLE bank (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    order_index INT8 UNIQUE,
+    balance INT8,
+    payload STRING,
+    numerical INT8 GENERATED BY DEFAULT AS IDENTITY (INCREMENT 1 MINVALUE 0 START 0)
+);
+```
+
+CockroachDB creates a sequence to use as the `numerical` column's default value.
+
+```sql
+> SHOW SEQUENCES;
+```
+
+```text
+  sequence_schema |   sequence_name
+------------------+---------------------
+  public          | bank_numerical_seq
+(1 row)
+```
+
+```sql
+> SHOW COLUMNS FROM bank;
+```
+
+```text
+  column_name | data_type | is_nullable |                 column_default                 | generation_expression |            indices             | is_hidden
+--------------+-----------+-------------+------------------------------------------------+-----------------------+--------------------------------+------------
+  id          | UUID      |    false    | gen_random_uuid()                              |                       | {bank_order_index_key,primary} |   false
+  order_index | INT8      |    true     | NULL                                           |                       | {bank_order_index_key,primary} |   false
+  balance     | INT8      |    true     | NULL                                           |                       | {primary}                      |   false
+  payload     | STRING    |    true     | NULL                                           |                       | {primary}                      |   false
+  numerical   | INT8      |    false    | nextval('public.bank_numerical_seq'::REGCLASS) |                       | {primary}                      |   false
+(5 rows)
+```
+
+When a new row is added to the table, CockroachDB populates the `numerical` column with the result of the `nextval('bank_numerical_seq')` [built-in function](/docs/v24.1/functions-and-operators).
+
+```sql
+> INSERT INTO bank (order_index, balance) VALUES (1, 0), (2, 0), (3, 0);
+```
+
+```sql
+> SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
+```
+
+```text
+                   id                  | order_index | balance | numerical
+---------------------------------------+-------------+---------+------------
+  0b533801-052e-4837-8e13-0ef2fa6f8883 |           1 |       0 |         0
+  9acc87ad-ced6-4744-9397-6a081a7a9c79 |           2 |       0 |         1
+  4f929768-e3da-49cf-b8a6-5381e47953ca |           3 |       0 |         2
+(3 rows)
+```
+
+The `numerical` column in this example follows the `BY DEFAULT` rule. According to this rule, if the value of an identity is explicitly updated, the sequence value is overwritten:
+
+```sql
+> UPDATE bank SET numerical = 500 WHERE id = '0b533801-052e-4837-8e13-0ef2fa6f8883';
+```
+
+```sql
+> SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
+```
+
+```text
+                   id                  | order_index | balance | numerical
+---------------------------------------+-------------+---------+------------
+  0b533801-052e-4837-8e13-0ef2fa6f8883 |           1 |       0 |       500
+  9acc87ad-ced6-4744-9397-6a081a7a9c79 |           2 |       0 |         1
+  4f929768-e3da-49cf-b8a6-5381e47953ca |           3 |       0 |         2
+(3 rows)
+```
+
+Inserting explicit values does not affect the next value of the sequence:
+
+```sql
+> INSERT INTO bank (order_index, balance, numerical) VALUES (4, 0, 3);
+```
+
+```sql
+> INSERT INTO bank (order_index, balance) VALUES (5, 0);
+```
+
+```sql
+> SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
+```
+
+```text
+                   id                  | order_index | balance | numerical
+---------------------------------------+-------------+---------+------------
+  0b533801-052e-4837-8e13-0ef2fa6f8883 |           1 |       0 |       500
+  9acc87ad-ced6-4744-9397-6a081a7a9c79 |           2 |       0 |         1
+  4f929768-e3da-49cf-b8a6-5381e47953ca |           3 |       0 |         2
+  9165ab56-c41c-4a8a-ac0c-15e82243dc4d |           4 |       0 |         3
+  40b5620f-cd56-4c03-b0ab-b4a63956dfe6 |           5 |       0 |         3
+(5 rows)
+```
+
+<Note>
+If the `numerical` column were to follow the `ALWAYS` rule instead, then the sequence values in the column could not be overwritten.
+</Note>
+
+### Create a table with data excluded from backup
+
+In some situations, you may want to exclude a table's row data from a [backup](/docs/v24.1/backup). For example, a table could contain high-churn data that you would like to [garbage collect](/docs/v24.1/architecture/storage-layer#garbage-collection) more quickly than the [incremental backup](/docs/v24.1/take-full-and-incremental-backups#incremental-backups) schedule for the database or cluster that will hold the table. You can use the `exclude_data_from_backup = true` parameter with `CREATE TABLE` to mark a table's row data for exclusion from a backup:
+
+```sql
+CREATE TABLE promo_codes (
+    code VARCHAR NOT NULL,
+    description VARCHAR NULL,
+    creation_time TIMESTAMP NULL,
+    expiration_time TIMESTAMP NULL,
+    rules JSONB NULL,
+    CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC)
+  )
+WITH (exclude_data_from_backup = true);
+```
+
+To set `exclude_data_from_backup` on an existing table, see the [Exclude a table's data from backups](/docs/v24.1/take-full-and-incremental-backups#exclude-a-tables-data-from-backups) example.
+
+## See also
+
+- [`INSERT`](/docs/v24.1/insert)
+- [`ALTER TABLE`](/docs/v24.1/alter-table)
+- [`DELETE`](/docs/v24.1/delete)
+- [`DROP TABLE`](/docs/v24.1/drop-table)
+- [`ALTER TABLE... RENAME TO`](/docs/v24.1/alter-table#rename-to)
+- [`SHOW CREATE`](/docs/v24.1/show-create)
+- [`SHOW TABLES`](/docs/v24.1/show-tables)
+- [`SHOW COLUMNS`](/docs/v24.1/show-columns)
+- [Column Families](/docs/v24.1/column-families)
+- [Table-Level Replication Zones](/docs/v24.1/configure-replication-zones#create-a-replication-zone-for-a-table)
+- [Define Table Partitions](/docs/v24.1/partitioning)
+- [Online Schema Changes](/docs/v24.1/online-schema-changes)

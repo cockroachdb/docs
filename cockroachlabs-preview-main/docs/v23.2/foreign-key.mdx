@@ -1,0 +1,696 @@
+---
+title: "Foreign Key Constraint"
+old_description: "The `FOREIGN KEY` constraint specifies a column can contain only values exactly matching existing values from the column it references."
+---
+
+import { ForeignKey3 } from "/snippets/syntax-diagrams/ForeignKey3.jsx";
+import { ForeignKey4 } from "/snippets/syntax-diagrams/ForeignKey4.jsx";
+
+A foreign key is a column (or combination of columns) in a table whose values must match values of a column in some other table. `FOREIGN KEY` constraints enforce [referential integrity](https://wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.
+
+For example, given an `orders` table and a `customers` table, if you create a column `orders.customer_id` that references the `customers.id` primary key:
+
+- Each value inserted or updated in `orders.customer_id` must exactly match a value in `customers.id`, or be `NULL`.
+- Values in `customers.id` that are referenced by `orders.customer_id` cannot be deleted or updated, unless you have [cascading actions](#use-a-foreign-key-constraint-with-cascade). However, values of `customers.id` that are *not* present in `orders.customer_id` can be deleted or updated.
+
+To learn more about the basics of foreign keys, watch the following video:
+
+<ForeignKey3 />
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table you're creating.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the foreign key column.</td></tr><tr><td><code>column&#95;type</code></td><td>The foreign key column's <a href="/docs/v23.2/data-types">data type</a>.</td></tr><tr><td><code>parent&#95;table</code></td><td>The name of the table the foreign key references.</td></tr><tr><td><code>ref&#95;column&#95;name</code></td><td>The name of the column the foreign key references.<br/><br/>If you do not include the <code>ref&#95;column&#95;name</code> you want to reference from the <code>parent&#95;table</code>, CockroachDB uses the first column of <code>parent&#95;table</code>'s primary key.</td></tr><tr><td><code>column&#95;constraints</code></td><td>Any other column-level <a href="/docs/v23.2/constraints">constraints</a> you want to apply to this column.</td></tr><tr><td><code>column&#95;def</code></td><td>Definitions for any other columns in the table.</td></tr><tr><td><code>table&#95;constraints</code></td><td>Any table-level <a href="/docs/v23.2/constraints">constraints</a> you want to apply.</td></tr></tbody></table>
+
+**Example**
+
+```sql
+> CREATE TABLE IF NOT EXISTS orders (
+    id INT PRIMARY KEY,
+    customer INT NOT NULL REFERENCES customers (id) ON DELETE CASCADE,
+    orderTotal DECIMAL(9,2),
+    INDEX (customer)
+  );
+```
+
+<Warning>
+`CASCADE` does not list objects it drops or updates, so it should be used cautiously.
+</Warning>
+
+### Table level
+
+<ForeignKey4 />
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table you're creating.</td></tr><tr><td><code>column&#95;def</code></td><td>Definitions for the table's columns.</td></tr><tr><td><code>name</code></td><td>The name of the constraint.</td></tr><tr><td><code>fk&#95;column&#95;name</code></td><td>The name of the foreign key column.</td></tr><tr><td><code>parent&#95;table</code></td><td>The name of the table the foreign key references.</td></tr><tr><td><code>ref&#95;column&#95;name</code></td><td>The name of the column the foreign key references.<br/><br/>If you do not include the <code>column&#95;name</code> you want to reference from the <code>parent&#95;table</code>, CockroachDB uses the first column of <code>parent&#95;table</code>'s primary key.</td></tr><tr><td><code>table&#95;constraints</code></td><td>Any other table-level <a href="/docs/v23.2/constraints">constraints</a> you want to apply.</td></tr></tbody></table>
+
+**Example**
+
+```sql
+CREATE TABLE packages (
+    customer INT,
+    "order" INT,
+    id INT,
+    address STRING(50),
+    delivered BOOL,
+    delivery_date DATE,
+    PRIMARY KEY (customer, "order", id),
+    CONSTRAINT fk_order FOREIGN KEY (customer, "order") REFERENCES orders
+    );
+```
+
+## Usage examples
+
+### Use a foreign key constraint with default actions
+
+In this example, we'll create a table with a foreign key constraint with the default [actions](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`).
+
+1. Create the referenced table:
+
+    ```sql
+    > CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
+    ```
+2. Create the referencing table:
+
+    ```sql
+    > CREATE TABLE IF NOT EXISTS orders (
+        id INT PRIMARY KEY,
+        customer INT NOT NULL REFERENCES customers (id),
+        orderTotal DECIMAL(9,2),
+        INDEX (customer)
+      );
+    ```
+3. Insert a record into each table:
+
+    ```sql
+    > INSERT INTO customers VALUES (1001, 'a@co.tld'), (1234, 'info@cockroachlabs.com');
+    ```
+
+    ```sql
+    > INSERT INTO orders VALUES (1, 1002, 29.99);
+    ```
+
+    ```text
+    pq: foreign key violation: value [1002] not found in customers@primary [id]
+    ```
+
+    The second record insertion returns an error because the customer `1002` doesn't exist in the referenced table.
+4. Insert a record into the referencing table and try to update the referenced table:
+
+    ```sql
+    > INSERT INTO orders VALUES (1, 1001, 29.99);
+    ```
+
+    ```sql
+    > UPDATE customers SET id = 1002 WHERE id = 1001;
+    ```
+
+    ```text
+    pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
+    ```
+
+    The update to the referenced table returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions) is enabled (`ON UPDATE NO ACTION`). However, `id = 1234` is not referenced and can be updated.
+5. Update the `id`:
+
+    ```sql
+    > UPDATE customers SET id = 1111 WHERE id = 1234;
+    ```
+
+    ```sql
+    > SELECT * FROM customers;
+    ```
+
+    ```text
+      id  |         email
+    +------+------------------------+
+      1001 | a@co.tld
+      1111 | info@cockroachlabs.com
+    (2 rows)
+    ```
+6. Try to delete a referenced row:
+
+    ```sql
+    > DELETE FROM customers WHERE id = 1001;
+    ```
+
+    ```text
+    pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "orders"
+    ```
+
+    Similarly, the deletion returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions) is enabled (`ON DELETE NO ACTION`). However, `id = 1111` is not referenced and can be deleted.
+7. Delete the row:
+
+    ```sql
+    > DELETE FROM customers WHERE id = 1111;
+    ```
+
+    ```sql
+    > SELECT * FROM customers;
+    ```
+
+    ```text
+      id  |  email
+    +------+----------+
+      1001 | a@co.tld
+    (1 row)
+    ```
+
+### Use a Foreign Key Constraint with `CASCADE`
+
+In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE CASCADE` and `ON DELETE CASCADE`.
+
+1. Create the referenced table:
+
+    ```sql
+    > CREATE TABLE customers_2 (
+        id INT PRIMARY KEY
+      );
+    ```
+2. Create the referencing table:
+
+    ```sql
+    > CREATE TABLE orders_2 (
+        id INT PRIMARY KEY,
+        customer_id INT REFERENCES customers_2(id) ON UPDATE CASCADE ON DELETE CASCADE
+      );
+    ```
+3. Insert a few records into the referenced table:
+
+    ```sql
+    > INSERT INTO customers_2 VALUES (1), (2), (3);
+    ```
+4. Insert some records into the referencing table:
+
+    ```sql
+    > INSERT INTO orders_2 VALUES (100,1), (101,2), (102,3), (103,1);
+    ```
+5. Update an `id` in the referenced table:
+
+    ```sql
+    > UPDATE customers_2 SET id = 23 WHERE id = 1;
+    ```
+
+    ```sql
+    > SELECT * FROM customers_2;
+    ```
+
+    ```text
+      id
+    +----+
+      2
+      3
+      23
+    (3 rows)
+    ```
+
+    ```sql
+    > SELECT * FROM orders_2;
+    ```
+
+    ```text
+      id  | customer_id
+    +-----+-------------+
+      100 |          23
+      101 |           2
+      102 |           3
+      103 |          23
+    (4 rows)
+    ```
+
+    When `id = 1` was updated to `id = 23` in `customers_2`, the update propagated to the referencing table `orders_2`.
+
+    Similarly, a deletion will cascade.
+6. Delete `id = 23` from `customers_2`:
+
+    ```sql
+    > DELETE FROM customers_2 WHERE id = 23;
+    ```
+
+    ```sql
+    > SELECT * FROM customers_2;
+    ```
+
+    ```text
+      id
+    +----+
+      2
+      3
+    (2 rows)
+    ```
+7. Check to make sure the rows in `orders_2` where `customers_id = 23` were also deleted:
+
+    ```sql
+    > SELECT * FROM orders_2;
+    ```
+
+    ```text
+      id  | customer_id
+    +-----+-------------+
+      101 |           2
+      102 |           3
+    (2 rows)
+    ```
+
+### Use a Foreign Key Constraint with `SET NULL`
+
+In this example, we'll create a table with a foreign key constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET NULL` and `ON DELETE SET NULL`.
+
+1. Create the referenced table:
+
+    ```sql
+    > CREATE TABLE customers_3 (
+        id INT PRIMARY KEY
+      );
+    ```
+2. Create the referencing table:
+
+    ```sql
+    > CREATE TABLE orders_3 (
+        id INT PRIMARY KEY,
+        customer_id INT REFERENCES customers_3(id) ON UPDATE SET NULL ON DELETE SET NULL
+      );
+    ```
+3. Insert a few records into the referenced table:
+
+    ```sql
+    > INSERT INTO customers_3 VALUES (1), (2), (3);
+    ```
+4. Insert some records into the referencing table:
+
+    ```sql
+    > INSERT INTO orders_3 VALUES (100,1), (101,2), (102,3), (103,1);
+    ```
+
+    ```sql
+    > SELECT * FROM orders_3;
+    ```
+
+    ```text
+      id  | customer_id
+    +-----+-------------+
+      100 |           1
+      101 |           2
+      102 |           3
+      103 |           1
+    (4 rows)
+    ```
+5. Update an `id` in the referenced table:
+
+    ```sql
+    > UPDATE customers_3 SET id = 23 WHERE id = 1;
+    ```
+
+    ```sql
+    > SELECT * FROM customers_3;
+    ```
+
+    ```text
+      id
+    +----+
+      2
+      3
+      23
+    (3 rows)
+    ```
+
+    ```sql
+    > SELECT * FROM orders_3;
+    ```
+
+    ```text
+      id  | customer_id
+    +-----+-------------+
+      100 |        NULL
+      101 |           2
+      102 |           3
+      103 |        NULL
+    (4 rows)
+    ```
+
+    When `id = 1` was updated to `id = 23` in `customers_3`, the referencing `customer_id` was set to `NULL`.
+
+    Similarly, a deletion will set the referencing `customer_id` to `NULL`.
+6. Delete `id = 2` from `customers_3`:
+
+    ```sql
+      > DELETE FROM customers_3 WHERE id = 2;
+    ```
+
+    ```sql
+      > SELECT * FROM customers_3;
+    ```
+
+    ```text
+        id
+      +----+
+        3
+        23
+      (2 rows)
+    ```
+7. Check to make sure the row in `orders_3` where `customers_id = 2` was updated to `NULL`:
+
+    ```sql
+    > SELECT * FROM orders_3;
+    ```
+
+    ```text
+      id  | customer_id
+    +-----+-------------+
+      100 |        NULL
+      101 |        NULL
+      102 |           3
+      103 |        NULL
+    (4 rows)
+    ```
+
+### Use a Foreign Key Constraint with `SET DEFAULT`
+
+In this example, we'll create a table with a `FOREIGN` constraint with the [foreign key actions](#foreign-key-actions) `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT`.
+
+1. Create the referenced table:
+
+    ```sql
+    > CREATE TABLE customers_4 (
+        id INT PRIMARY KEY
+      );
+    ```
+2. Create the referencing table with the `DEFAULT` value for `customer_id` set to `9999`:
+
+    ```sql
+    > CREATE TABLE orders_4 (
+        id INT PRIMARY KEY,
+        customer_id INT DEFAULT 9999 REFERENCES customers_4(id) ON UPDATE SET DEFAULT ON DELETE SET DEFAULT
+      );
+    ```
+3. Insert a few records into the referenced table:
+
+    ```sql
+    > INSERT INTO customers_4 VALUES (1), (2), (3), (9999);
+    ```
+4. Insert some records into the referencing table:
+
+    ```sql
+    > INSERT INTO orders_4 VALUES (100,1), (101,2), (102,3), (103,1);
+    ```
+
+    ```sql
+    > SELECT * FROM orders_4;
+    ```
+
+    ```text
+      id  | customer_id
+    +-----+-------------+
+      100 |           1
+      101 |           2
+      102 |           3
+      103 |           1
+    (4 rows)
+    ```
+5. Update an `id` in the referenced table:
+
+    ```sql
+    > UPDATE customers_4 SET id = 23 WHERE id = 1;
+    ```
+
+    ```sql
+    > SELECT * FROM customers_4;
+    ```
+
+    ```text
+      id
+    +------+
+        2
+        3
+        23
+      9999
+    (4 rows)
+    ```
+
+    ```sql
+    > SELECT * FROM orders_4;
+    ```
+
+    ```text
+      id  | customer_id
+    +-----+-------------+
+      100 |        9999
+      101 |           2
+      102 |           3
+      103 |        9999
+    (4 rows)
+    ```
+
+    When `id = 1` was updated to `id = 23` in `customers_4`, the referencing `customer_id` was set to `DEFAULT` (i.e., `9999`). You can see this in the first and last rows of `orders_4`, where `id = 100` and the `customer_id` is now `9999`
+
+    Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` value.
+6. Delete `id = 2` from `customers_4`:
+
+    ```sql
+    > DELETE FROM customers_4 WHERE id = 2;
+    ```
+
+    ```sql
+    > SELECT * FROM customers_4;
+    ```
+
+    ```text
+      id
+    +------+
+        3
+        23
+      9999
+    (3 rows)
+    ```
+7. Check to make sure the corresponding `customer_id` value to `id = 101`, was updated to the `DEFAULT` value (i.e., `9999`) in `orders_4`:
+
+    ```sql
+    > SELECT * FROM orders_4;
+    ```
+
+    ```text
+      id  | customer_id
+    +-----+-------------+
+      100 |        9999
+      101 |        9999
+      102 |           3
+      103 |        9999
+    (4 rows)
+    ```
+
+    If the default value for the `customer_id` column is not set, and the column does not have a [`NOT NULL`](/docs/v23.2/not-null) constraint, `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions set referenced column values to `NULL`.
+8. Create a new `customers_5` table:
+
+    ```sql
+    > CREATE TABLE customers_5 (
+        id INT PRIMARY KEY
+      );
+    ```
+9. Insert some values:
+
+    ```sql
+    > INSERT INTO customers_5 VALUES (1), (2), (3), (4);
+    ```
+10. Create a new `orders_5` table that references the `customers_5` table, but with no default value specified for the `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions:
+
+    ```sql
+    > CREATE TABLE orders_5 (
+        id INT PRIMARY KEY,
+        customer_id INT REFERENCES customers_5(id) ON UPDATE SET DEFAULT ON DELETE SET DEFAULT
+      );
+    ```
+11. Insert some values:
+
+    ```sql
+    > INSERT INTO orders_5 VALUES (200,1), (201,2), (202,3), (203,4);
+    ```
+12. Delete and update the values in the `customers_5` table to set the referenced values in `orders_5` to `NULL`:
+
+    ```sql
+    > DELETE FROM customers_5 WHERE id = 3;
+    ```
+
+    ```sql
+    > UPDATE customers_5 SET id = 0 WHERE id = 1;
+    ```
+
+    ```sql
+    > SELECT * FROM orders_5;
+    ```
+
+    ```text
+      id  | customer_id
+    +-----+-------------+
+      200 |        NULL
+      201 |           2
+      202 |        NULL
+      203 |           4
+    (4 rows)
+    ```
+
+### Add multiple foreign key constraints to a single column
+
+You can add more than one foreign key constraint to a single column.
+
+1. Create the following tables:
+
+    ```sql
+    > CREATE TABLE customers (
+        id INT PRIMARY KEY,
+        name STRING,
+        email STRING
+    );
+    ```
+
+    ```sql
+    > CREATE TABLE orders (
+        id INT PRIMARY KEY,
+        customer_id INT UNIQUE,
+        item_number INT
+    );
+    ```
+2. Create a table with a column that references columns in both the `customers` and `orders` tables:
+
+    ```sql
+    > CREATE TABLE shipments (
+        tracking_number UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+        carrier STRING,
+        status STRING,
+        customer_id INT,
+        CONSTRAINT fk_customers FOREIGN KEY (customer_id) REFERENCES customers(id),
+        CONSTRAINT fk_orders FOREIGN KEY (customer_id) REFERENCES orders(customer_id)
+      );
+    ```
+
+    Inserts into the `shipments` table must fulfill both foreign key constraints on `customer_id` (`fk_customers` and `fk_customers_2`).
+3. Insert a record into each table:
+
+    ```sql
+    > INSERT INTO customers VALUES (1001, 'Alexa', 'a@co.tld'), (1234, 'Evan', 'info@cockroachlabs.com');
+    ```
+
+    ```sql
+    > INSERT INTO orders VALUES (1, 1001, 25), (2, 1234, 15), (3, 2000, 5);
+    ```
+
+    ```sql
+    > INSERT INTO shipments (carrier, status, customer_id) VALUES ('USPS', 'Out for delivery', 1001);
+    ```
+
+    The last statement succeeds because `1001` matches a unique `id` value in the `customers` table and a unique `customer_id` value in the `orders` table. If `1001` was in neither of the referenced columns, or in just one of them, the statement would return an error.
+
+    For instance, the following statement fulfills just one of the foreign key constraints and returns an error:
+
+    ```sql
+    > INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
+    ```
+
+    ```text
+    ERROR: insert on table "shipments" violates foreign key constraint "fk_customers"
+    SQLSTATE: 23503
+    DETAIL: Key (customer_id)=(2000) is not present in table "customers".
+    ```
+4. Add multiple foreign key constraints on the same column, that reference the same column:
+
+    ```sql
+    > ALTER TABLE shipments ADD CONSTRAINT fk_customers_2 FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE;
+    ```
+
+    ```sql
+    > SHOW CONSTRAINTS FROM shipments;
+    ```
+
+    ```text
+      table_name | constraint_name | constraint_type |                               details                                | validated
+    -------------+-----------------+-----------------+----------------------------------------------------------------------+------------
+      shipments  | fk_customers    | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id)                   |   true
+      shipments  | fk_customers_2  | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE |   true
+      shipments  | fk_orders       | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES orders(customer_id)             |   true
+      shipments  | shipments_pkey  | PRIMARY KEY     | PRIMARY KEY (tracking_number ASC)                                    |   true
+    (4 rows)
+    ```
+
+    There are now two foreign key constraints on `customer_id` that reference the `customers(id)` column (i.e., `fk_customers` and `fk_customers_2`).
+5. In the event of a `DELETE` or `UPDATE` to the referenced column (`customers(id)`), the action for the first foreign key specified takes precedence. In this case, that will be the default [action](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`) on the first foreign key constraint (`fk_customers`). This means that `DELETE`s on referenced columns will fail, even though the second foreign key constraint (`fk_customer_2`) is defined with the `ON DELETE CASCADE` action.
+
+    ```sql
+    > DELETE FROM orders WHERE customer_id = 1001;
+    ```
+
+    ```text
+    ERROR: delete on table "orders" violates foreign key constraint "fk_orders" on table "shipments"
+    SQLSTATE: 23503
+    DETAIL: Key (customer_id)=(1001) is still referenced from table "shipments".
+    ```
+
+### Match composite foreign keys with `MATCH SIMPLE` and `MATCH FULL`
+
+The examples in this section show how composite foreign key matching works for both the `MATCH SIMPLE` and `MATCH FULL` algorithms. For a conceptual overview, see [Composite foreign key matching](#composite-foreign-key-matching).
+
+1. Create a `parent` tables with a composite key:
+
+    ```sql
+    > CREATE TABLE parent (x INT, y INT,  z INT, UNIQUE (x, y, z));
+    ```
+2. Createa `full_test` table with a foreign key on `parent` that uses the `MATCH FULL` algorithm:
+
+    ```sql
+    > CREATE TABLE full_test (
+        x INT,
+        y INT,
+        z INT,
+        FOREIGN KEY (x, y, z) REFERENCES parent (x, y, z) MATCH FULL ON DELETE CASCADE ON UPDATE CASCADE
+      );
+    ```
+3. Create a `simple_test` table with a foreign key on `parent` that uses the `MATCH SIMPLE` algorithm (the default):
+
+    ```sql
+    > CREATE TABLE simple_test (
+        x INT,
+        y INT,
+        z INT,
+        FOREIGN KEY (x, y, z) REFERENCES parent (x, y, z) ON DELETE CASCADE ON UPDATE CASCADE
+      );
+    ```
+4. Populate `parent` with some values:
+
+    ```sql
+    > INSERT
+        INTO parent
+      VALUES (1, 1, 1),
+            (2, 1, 1),
+            (1, 2, 1),
+            (1, 1, 2),
+            (NULL, NULL, NULL),
+            (1, NULL, NULL),
+            (NULL, 1, NULL),
+            (NULL, NULL, 1),
+            (1, 1, NULL),
+            (1, NULL, 1),
+            (NULL, 1, 1);
+    ```
+
+Now let's look at some `INSERT` statements to see how the different key matching algorithms work.
+
+- [MATCH SIMPLE](#match-simple)
+- [MATCH FULL](#match-full)
+
+#### MATCH SIMPLE
+
+Inserting values into the table using the `MATCH SIMPLE` algorithm (described [above](#composite-foreign-key-matching)) gives the following results:
+
+<table><thead><tr><th>Statement</th><th>Can insert?</th><th>Throws error?</th><th>Notes</th></tr></thead><tbody><tr><td><code>INSERT INTO simple&#95;test VALUES (1,1,1)</code></td><td>Yes</td><td>No</td><td>References <code>parent (1,1,1)</code>.</td></tr><tr><td><code>INSERT INTO simple&#95;test VALUES (NULL,NULL,NULL)</code></td><td>Yes</td><td>No</td><td>Does not reference <code>parent</code>.</td></tr><tr><td><code>INSERT INTO simple&#95;test VALUES (1,NULL,NULL)</code></td><td>Yes</td><td>No</td><td>Does not reference <code>parent</code>.</td></tr><tr><td><code>INSERT INTO simple&#95;test VALUES (NULL,1,NULL)</code></td><td>Yes</td><td>No</td><td>Does not reference <code>parent</code>.</td></tr><tr><td><code>INSERT INTO simple&#95;test VALUES (NULL,NULL,1)</code></td><td>Yes</td><td>No</td><td>Does not reference <code>parent</code>.</td></tr><tr><td><code>INSERT INTO simple&#95;test VALUES (1,1,NULL)</code></td><td>Yes</td><td>No</td><td>Does not reference <code>parent</code>.</td></tr><tr><td><code>INSERT INTO simple&#95;test VALUES (1,NULL,1)</code></td><td>Yes</td><td>No</td><td>Does not reference <code>parent</code>.</td></tr><tr><td><code>INSERT INTO simple&#95;test VALUES (NULL,1,1)</code></td><td>Yes</td><td>No</td><td>Does not reference <code>parent</code>.</td></tr><tr><td><code>INSERT INTO simple&#95;test VALUES (2,2,NULL)</code></td><td>Yes</td><td>No</td><td>Does not reference <code>parent</code>.</td></tr><tr><td><code>INSERT INTO simple&#95;test VALUES (2,2,2)</code></td><td>No</td><td>Yes</td><td>No <code>parent</code> reference exists.</td></tr></tbody></table>
+
+#### MATCH FULL
+
+Inserting values into the table using the `MATCH FULL` algorithm (described [above](#composite-foreign-key-matching)) gives the following results:
+
+<table><thead><tr><th>Statement</th><th>Can insert?</th><th>Throws error?</th><th>Notes</th></tr></thead><tbody><tr><td><code>INSERT INTO full&#95;test VALUES (1,1,1)</code></td><td>Yes</td><td>No</td><td>References <code>parent(1,1,1)</code>.</td></tr><tr><td><code>INSERT INTO full&#95;test VALUES (NULL,NULL,NULL)</code></td><td>Yes</td><td>No</td><td>Does not reference <code>parent</code>.</td></tr><tr><td><code>INSERT INTO full&#95;test VALUES (1,NULL,NULL)</code></td><td>No</td><td>Yes</td><td>Can't mix null and non-null values in <code>MATCH FULL</code>.</td></tr><tr><td><code>INSERT INTO full&#95;test VALUES (NULL,1,NULL)</code></td><td>No</td><td>Yes</td><td>Can't mix null and non-null values in <code>MATCH FULL</code>.</td></tr><tr><td><code>INSERT INTO full&#95;test VALUES (NULL,NULL,1)</code></td><td>No</td><td>Yes</td><td>Can't mix null and non-null values in <code>MATCH FULL</code>.</td></tr><tr><td><code>INSERT INTO full&#95;test VALUES (1,1,NULL)</code></td><td>No</td><td>Yes</td><td>Can't mix null and non-null values in <code>MATCH FULL</code>.</td></tr><tr><td><code>INSERT INTO full&#95;test VALUES (1,NULL,1)</code></td><td>No</td><td>Yes</td><td>Can't mix null and non-null values in <code>MATCH FULL</code>.</td></tr><tr><td><code>INSERT INTO full&#95;test VALUES (NULL,1,1)</code></td><td>No</td><td>Yes</td><td>Can't mix null and non-null values in <code>MATCH FULL</code>.</td></tr><tr><td><code>INSERT INTO full&#95;test VALUES (2,2,NULL)</code></td><td>No</td><td>Yes</td><td>Can't mix null and non-null values in <code>MATCH FULL</code>.</td></tr><tr><td><code>INSERT INTO full&#95;test VALUES (2,2,2)</code></td><td>No</td><td>Yes</td><td>No <code>parent</code> reference exists.</td></tr></tbody></table>
+
+## See also
+
+- [Constraints](/docs/v23.2/constraints)
+- [`DROP CONSTRAINT`](/docs/v23.2/alter-table#drop-constraint)
+- [`ADD CONSTRAINT`](/docs/v23.2/alter-table#add-constraint)
+- [`CHECK` constraint](/docs/v23.2/check)
+- [`DEFAULT` constraint](/docs/v23.2/default-value)
+- [`NOT NULL` constraint](/docs/v23.2/not-null)
+- [`PRIMARY KEY` constraint](/docs/v23.2/primary-key)
+- [`UNIQUE` constraint](/docs/v23.2/unique)
+- [`SHOW CONSTRAINTS`](/docs/v23.2/show-constraints)
+- [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key)

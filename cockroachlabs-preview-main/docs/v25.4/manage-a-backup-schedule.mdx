@@ -1,0 +1,286 @@
+---
+title: "Manage a Backup Schedule"
+old_description: "Learn about how to create, manage, and restore from a schedule of periodic backups."
+---
+
+You can create schedules in CockroachDB for periodic backups. Once a [backup schedule is created](#create-a-new-backup-schedule), you can do the following:
+
+- [Set up monitoring for the backup schedule](#set-up-monitoring-for-the-backup-schedule)
+- [View scheduled backup details](#view-scheduled-backup-details)
+- [View and control the backup schedule](#view-and-control-the-backup-schedule)
+- [View and control a backup initiated by a schedule](#view-and-control-a-backup-initiated-by-a-schedule)
+- [Restore from a scheduled backup](#restore-from-a-scheduled-backup)
+
+## Supported products
+
+The feature described on this page is available in **CockroachDB Basic**, **CockroachDB Standard**, **CockroachDB Advanced**, and **CockroachDB self-hosted** clusters when you are running [self-managed backups](/docs/cockroachcloud/take-and-restore-self-managed-backups). For a full list of features, refer to [Backup and restore product support](/docs/v25.4/backup-and-restore-overview#backup-and-restore-support).
+
+## Considerations
+
+### Protected timestamps and scheduled backups
+
+Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of [protected timestamps](/docs/v25.4/architecture/storage-layer#protected-timestamps) means that you can run scheduled backups at a cadence independent from the [GC TTL](/docs/v25.4/configure-replication-zones#gc-ttlseconds) of the data. This is unlike non-scheduled backups that are tightly coupled to the GC TTL. See [Garbage collection and backups](/docs/v25.4/take-full-and-incremental-backups#garbage-collection-and-backups) for more detail.
+
+The data being backed up will not be eligible for garbage collection until a successful backup completes. At this point, the schedule will release the existing protected timestamp record and write a new one to protect data for the next backup that is scheduled to run. It is important to consider that when a scheduled backup fails there will be an accumulation of data until the next successful backup. Resolving the backup failure or [dropping the backup schedule](/docs/v25.4/drop-schedules) will make the data eligible for garbage collection once again.
+
+You can also use the `exclude_data_from_backup` option with a scheduled backup as a way to prevent protected timestamps from prolonging garbage collection on a table. See the example [Exclude a table's data from backups](/docs/v25.4/take-full-and-incremental-backups#exclude-a-tables-data-from-backups) for usage information.
+
+### Backup collection storage URI and schedule backups
+
+You will encounter an error if you run multiple [backup collections](/docs/v25.4/take-full-and-incremental-backups#backup-collections) to the same storage URI. Backup collections can contain multiple full and incremental backups, but each collection's URI must be unique. If you are using backup schedules, each schedule must have a unique URI.
+
+For example, if you have a backup schedule running backups for the database `users` the full backup and incremental backup should have the same storage URI for the full and incremental schedule. (`CREATE SCHEDULE FOR BACKUP` will automatically create two schedules for the full and incremental backup to the same storage URI.) If there is another backup schedule, for the database `accounts`, the full and incremental backups for `accounts` should have the same storage URI. However, the storage URI for the `accounts` backup collection should be different to the storage URI for the `users` backup collection.
+
+## Create a new backup schedule
+
+To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](/docs/v25.4/create-schedule-for-backup) statement. For example:
+
+```sql
+> CREATE SCHEDULE schedule_label
+  FOR BACKUP INTO 's3://test/backups/test_schedule_1?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+    WITH revision_history
+    RECURRING '@daily'
+    WITH SCHEDULE OPTIONS first_run = 'now';
+```
+
+In this example, a schedule labeled `schedule_label` is created to take daily (incremental) backups with revision history in AWS S3, with the first backup being taken now. A second [schedule for weekly full backups](/docs/v25.4/create-schedule-for-backup#full-backup-clause) is also created by default. Both schedules have the same `label` (i.e., `schedule_label`).
+
+For more information about the different options available when creating a backup schedule, see [`CREATE SCHEDULE FOR BACKUP`](/docs/v25.4/create-schedule-for-backup).
+
+<Note>
+Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options is outlined in [Use Cloud Storage](/docs/v25.4/use-cloud-storage).
+</Note>
+
+## Set up monitoring for the backup schedule
+
+We recommend that you [monitor your backup schedule with Prometheus](/docs/v25.4/prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time—at which point, you can inspect schedules by running [`SHOW SCHEDULES`](/docs/v25.4/show-schedules).
+
+Metrics for scheduled backups fall into two categories:
+
+- Backup schedule-specific metrics, aggregated across all schedules:
+    - `schedules.BACKUP.started`: The total number of backups started by a schedule.
+    - `schedules.BACKUP.succeeded`: The number of backups started by a schedule that succeeded.
+    - `schedules.BACKUP.failed`: The number of backups started by a schedule that failed.
+
+        When `schedules.BACKUP.failed` increments, run [`SHOW SCHEDULES`](/docs/v25.4/show-schedules) to check which schedule is affected and to inspect the error in the `status` column. If a backup job encounters too many retryable errors, it will enter a [`failed` state](/docs/v25.4/show-jobs#job-status) with the most recent error, which allows subsequent backups the chance to succeed. Refer to the [Backup and Restore Monitoring](/docs/v25.4/backup-and-restore-monitoring) page for metrics to track backup failures.
+    - `schedules.BACKUP.protected_age_sec`: The age of the oldest [protected timestamp](/docs/v25.4/architecture/storage-layer#protected-timestamps) record protected by backup schedules.
+    - `schedules.BACKUP.protected_record_count`: The number of [protected timestamp](/docs/v25.4/architecture/storage-layer#protected-timestamps) records held by backup schedules.
+- Scheduler-specific metrics:
+    - `schedules.round.reschedule-wait`: The number of schedules that were rescheduled due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=wait`](/docs/v25.4/create-schedule-for-backup#on-previous-running-option) schedule option.
+    - `schedules.round.reschedule-skip`: The number of schedules that were skipped due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=skip`](/docs/v25.4/create-schedule-for-backup#on-previous-running-option) schedule option.
+
+<Note>
+`schedules.round.reschedule-wait` and `schedules.round.reschedule-skip` are gauge metrics and can be graphed. A continual positive value for either of these metrics may indicate a misconfigured backup cadence, and you should consider adjusting the cadence to avoid waiting for or skipping the next backup.
+</Note>
+
+For a tutorial on how to use Prometheus to set up monitoring and alerting, see [Monitor CockroachDB with Prometheus](/docs/v25.4/monitor-cockroachdb-with-prometheus).
+
+## View scheduled backup details
+
+When a [backup is created by a schedule](/docs/v25.4/create-schedule-for-backup), it is stored within a collection of backups in the given location. To view details for a backup created by a schedule, you can use the following:
+
+- `SHOW BACKUPS IN collectionURI` statement to [view a list of the full backup's subdirectories](/docs/v25.4/show-backup#view-a-list-of-the-available-full-backup-subdirectories).
+- `SHOW BACKUP FROM subdirectory IN collectionURI` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](/docs/v25.4/show-backup#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
+- Use the [Schedules page](/docs/v25.4/ui-schedules-page) in the [DB Console](/docs/v25.4/ui-overview) to view a list of created backup schedules and their individual details.
+
+For more details, see [`SHOW BACKUP`](/docs/v25.4/show-backup).
+
+## View and control the backup schedule
+
+Once a backup schedule is successfully created, you can [view the schedule](#view-the-schedule), [pause the schedule](#pause-the-schedule), [resume the schedule](#resume-the-schedule), or [drop the schedule](#drop-the-schedule).
+
+### View the schedule
+
+```text
+> SHOW SCHEDULES FOR BACKUP;
+```
+
+For more information, see [`SHOW SCHEDULES`](/docs/v25.4/show-schedules).
+
+### Pause the schedule
+
+To pause a schedule, you can either specify the schedule's `id`:
+
+```sql
+> PAUSE SCHEDULE 589963390487363585;
+```
+
+Or nest a [`SELECT` clause](/docs/v25.4/select-clause) that retrieves `id`(s) inside the `PAUSE SCHEDULES` statement:
+
+```sql
+> PAUSE SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
+```
+
+For more information, see [`PAUSE SCHEDULES`](/docs/v25.4/pause-schedules).
+
+### Resume the schedule
+
+To resume a paused schedule, you can either specify the schedule's `id`:
+
+```sql
+> RESUME SCHEDULE 589963390487363585;
+```
+
+Or nest a [`SELECT` clause](/docs/v25.4/select-clause) that retrieves `id`(s) inside the `RESUME SCHEDULES` statement:
+
+```sql
+> RESUME SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
+```
+
+For more information, see [`RESUME SCHEDULES`](/docs/v25.4/resume-schedules).
+
+### Drop the schedule
+
+To drop a schedule, you can either specify the schedule's `id`:
+
+```sql
+> DROP SCHEDULE 589963390487363585;
+```
+
+Or nest a [`SELECT` clause](/docs/v25.4/select-clause) that retrieves `id`(s) inside the `DROP SCHEDULES` statement:
+
+```sql
+> DROP SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
+```
+
+When `DROP SCHEDULES` removes a [full backup schedule](/docs/v25.4/create-schedule-for-backup#create-a-schedule-for-full-backups-only), it removes the associated [incremental backup schedule](/docs/v25.4/create-schedule-for-backup#incremental-backup-schedules), if it exists. For more information, see [`DROP SCHEDULES`](/docs/v25.4/drop-schedules).
+
+<Warning>
+`DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs](/docs/v25.4/cancel-job) first, as you will not be able to look up the job ID once the schedule is dropped.
+</Warning>
+
+## View and control a backup initiated by a schedule
+
+After CockroachDB successfully initiates a scheduled backup, it registers the backup as a job. You can [view](#view-the-backup-job), [pause](#pause-the-backup-job), [resume](#resume-the-backup-job), or [cancel](#cancel-the-backup-job) each individual backup job.
+
+### View the backup job
+
+To view jobs for a specific [backup schedule](/docs/v25.4/create-schedule-for-backup), use the schedule's `id`:
+
+```sql
+> SHOW JOBS FOR SCHEDULE 590204387299262465;
+```
+
+```text
+        job_id       | job_type |                                                                                                             description                                                                                   | statement | user_name | status  | running_status |             created              | started | finished |             modified             | fraction_completed | error | coordinator_id
+---------------------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+-----------+---------+----------------+----------------------------------+---------+----------+----------------------------------+--------------------+-------+-----------------
+  590205481558802434 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup-0915?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=redacted' AS OF SYSTEM TIME '2020-09-15 16:20:00+00:00' WITH revision_history, detached |           | root      | running | NULL           | 2020-09-15 16:20:18.347383+00:00 | NULL    | NULL     | 2020-09-15 16:20:18.347383+00:00 |                  0 |       |              0
+(1 row)
+```
+
+You can also view multiple schedules by nesting a [`SELECT` clause](/docs/v25.4/select-clause) that retrieves `id`(s) inside the `SHOW JOBS` statement:
+
+```sql
+> SHOW JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
+```
+
+```text
+        job_id       | job_type |                                                                                                                 description                                                                                      | statement | user_name |  status   | running_status |             created              | started |             finished             |             modified             | fraction_completed | error | coordinator_id
+---------------------+----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+-----------+-----------+----------------+----------------------------------+---------+----------------------------------+----------------------------------+--------------------+-------+-----------------
+  590204496007299074 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup-0915?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=redacted' AS OF SYSTEM TIME '2020-09-15 16:14:44.991631+00:00' WITH revision_history, detached |           | root      | succeeded | NULL           | 2020-09-15 16:15:17.720725+00:00 | NULL    | 2020-09-15 16:15:20.913789+00:00 | 2020-09-15 16:15:20.910594+00:00 |                  1 |       |              0
+  590205481558802434 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup-0915?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=redacted' AS OF SYSTEM TIME '2020-09-15 16:20:00+00:00' WITH revision_history, detached        |           | root      | succeeded | NULL           | 2020-09-15 16:20:18.347383+00:00 | NULL    | 2020-09-15 16:20:48.37873+00:00  | 2020-09-15 16:20:48.374256+00:00 |                  1 |       |              0
+(2 rows)
+```
+
+For more information, see [`SHOW JOBS`](/docs/v25.4/show-jobs).
+
+### Pause the backup job
+
+To pause jobs for a specific [backup schedule](/docs/v25.4/create-schedule-for-backup), use the schedule's `id`:
+
+```sql
+> PAUSE JOBS FOR SCHEDULE 590204387299262465;
+```
+
+```text
+PAUSE JOBS FOR SCHEDULES 1
+```
+
+You can also pause multiple schedules by nesting a [`SELECT` clause](/docs/v25.4/select-clause) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
+
+```sql
+> PAUSE JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
+```
+
+```text
+PAUSE JOBS FOR SCHEDULES 2
+```
+
+For more information, see [`PAUSE JOB`](/docs/v25.4/pause-job).
+
+### Resume the backup job
+
+To resume jobs for a specific [backup schedule](/docs/v25.4/create-schedule-for-backup), use the schedule's `id`:
+
+```sql
+> RESUME JOBS FOR SCHEDULE 590204387299262465;
+```
+
+```text
+RESUME JOBS FOR SCHEDULES 1
+```
+
+You can also resume multiple schedules by nesting a [`SELECT` clause](/docs/v25.4/select-clause) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
+
+```sql
+> RESUME JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
+```
+
+```text
+RESUME JOBS FOR SCHEDULES 2
+```
+
+For more information, see [`RESUME JOB`](/docs/v25.4/resume-job).
+
+### Cancel the backup job
+
+To cancel jobs for a specific [backup schedule](/docs/v25.4/create-schedule-for-backup), use the schedule's `id`:
+
+```sql
+> CANCEL JOBS FOR SCHEDULE 590204387299262465;
+```
+
+```text
+CANCEL JOBS FOR SCHEDULES 1
+```
+
+You can also CANCEL multiple schedules by nesting a [`SELECT` clause](/docs/v25.4/select-clause) that retrieves `id`(s) inside the `CANCEL JOBS` statement:
+
+```sql
+> CANCEL JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
+```
+
+```text
+CANCEL JOBS FOR SCHEDULES 2
+```
+
+For more information, see [`CANCEL JOB`](/docs/v25.4/cancel-job).
+
+## Restore from a scheduled backup
+
+To restore from a scheduled backup, use the [`RESTORE`](/docs/v25.4/restore) statement:
+
+```sql
+> RESTORE
+    FROM '2020/08/19-035600.00' IN 's3://test/backups/test_schedule_1?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+    AS OF SYSTEM TIME '2020-08-19 03:50:00+00:00';
+```
+
+To view the backups stored within a collection, use the [`SHOW BACKUP`](#view-scheduled-backup-details) statement.
+
+## See also
+
+- [`CREATE SCHEDULE FOR BACKUP`](/docs/v25.4/create-schedule-for-backup)
+- [`BACKUP`](/docs/v25.4/backup)
+- [`RESTORE`](/docs/v25.4/restore)
+- [`SHOW BACKUP`](/docs/v25.4/show-backup)
+- [`SHOW SCHEDULES`](/docs/v25.4/show-schedules)
+- [`PAUSE SCHEDULES`](/docs/v25.4/pause-schedules)
+- [`RESUME SCHEDULES`](/docs/v25.4/resume-schedules)
+- [`DROP SCHEDULES`](/docs/v25.4/drop-schedules)
+- [`PAUSE JOB`](/docs/v25.4/pause-job)
+- [`RESUME JOB`](/docs/v25.4/pause-job)
+- [`CANCEL JOB`](/docs/v25.4/cancel-job)
+- [Take Full and Incremental Backups](/docs/v25.4/take-full-and-incremental-backups)
+- [Use the Built-in SQL Client](/docs/v25.4/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v25.4/cockroach-commands)

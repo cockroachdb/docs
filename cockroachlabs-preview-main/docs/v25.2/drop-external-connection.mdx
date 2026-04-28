@@ -1,0 +1,47 @@
+---
+title: "DROP EXTERNAL CONNECTION"
+old_description: "The DROP EXTERNAL CONNECTION statement deletes external connections."
+---
+
+You can use external connections to specify and interact with resources that are external from CockroachDB. When creating an external connection, you define a name for an external connection while passing the provider URI and query parameters. The `DROP EXTERNAL CONNECTION` statement allows you to delete external connections.
+
+You can also use the following SQL statements to work with external connections:
+
+- [`CREATE EXTERNAL CONNECTION`](/docs/v25.2/create-external-connection)
+- [`SHOW CREATE EXTERNAL CONNECTION`](/docs/v25.2/show-create-external-connection)
+- [`SHOW EXTERNAL CONNECTION`](/docs/v25.2/show-external-connection)
+
+## Required privileges
+
+Users must have the [`DROP` privilege](/docs/v25.2/security-reference/authorization#supported-privileges) or be a member of the [`admin` role](/docs/v25.2/security-reference/authorization#admin-role) to drop an external connection.
+
+For example:
+
+```sql
+GRANT DROP ON EXTERNAL CONNECTION backup_bucket TO user;
+```
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v25.2/drop-external-connection/syntax-diagram-9698e0e9272a.svg)
+</Frame>
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>connection&#95;name</code></td><td>The name of the external connection to pass in operation statements.</td></tr></tbody></table>
+
+## Examples
+
+### Drop an external connection
+
+To delete an external connection named `backup_storage`, run the following:
+
+```sql
+DROP EXTERNAL CONNECTION backup_storage;
+```
+
+## See also
+
+- [Use Cloud Storage](/docs/v25.2/use-cloud-storage)
+- [Changefeed Sinks](/docs/v25.2/changefeed-sinks)

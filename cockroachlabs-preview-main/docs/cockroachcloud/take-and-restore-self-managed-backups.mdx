@@ -1,0 +1,389 @@
+---
+title: "Take and Restore Self-Managed Backups on CockroachDB Cloud"
+old_description: "Run backups and restores from your CockroachDB Cloud cluster."
+---
+
+This page describes how to take and restore [*self-managed backups*](/docs/cockroachcloud/backup-and-restore-overview) on CockroachDB Standard, Advanced, and Basic clusters.
+
+The [examples](#examples) on this page provide a quick overview of the backup features you can run to your own storage bucket. For more technical detail on the complete list of backup features, refer to:
+
+- [Full backup](/docs/v25.4/take-full-and-incremental-backups#full-backups)
+- [Incremental backup](/docs/v25.4/take-full-and-incremental-backups#incremental-backups)
+- [Scheduled backup](/docs/v25.4/manage-a-backup-schedule)
+- [Backups with revision history](/docs/v25.4/take-backups-with-revision-history-and-restore-from-a-point-in-time)
+- [Point-in-time restore](/docs/v25.4/take-backups-with-revision-history-and-restore-from-a-point-in-time)
+- [Encrypted backup and restore](/docs/v25.4/take-and-restore-encrypted-backups)
+- [Locality-aware backup and restore](/docs/v25.4/take-and-restore-locality-aware-backups)
+- [Locality-restricted backup execution](/docs/v25.4/take-locality-restricted-backups)
+
+## Examples
+
+Before you begin, connect to your cluster:
+
+- [Connect to a CockroachDB Standard Cluster](/docs/cockroachcloud/connect-to-your-cluster).
+- [Connect to a CockroachDB Advanced Cluster](/docs/cockroachcloud/connect-to-an-advanced-cluster).
+- [Connect to a CockroachDB Basic Cluster](/docs/cockroachcloud/connect-to-a-basic-cluster).
+
+The examples on this page demonstrate how to back up and restore from your own storage bucket.
+
+### Full backup
+
+To take a [full backup](/docs/v25.4/take-full-and-incremental-backups#full-backups) of a cluster:
+
+```sql
+BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+To take a [full backup](/docs/v25.4/take-full-and-incremental-backups#full-backups) of a single database:
+
+```sql
+BACKUP DATABASE bank INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+To take a [full backup](/docs/v25.4/take-full-and-incremental-backups#full-backups) of a single table or view:
+
+```sql
+BACKUP bank.customers INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+### Backup subdirectories
+
+`BACKUP... INTO` adds a backup to a [backup collection](/docs/v25.4/take-full-and-incremental-backups#backup-collections) location. To view the backup paths in a given collection location (your storage bucket), use [`SHOW BACKUPS`](/docs/v25.4/show-backup):
+
+```sql
+SHOW BACKUPS IN 's3://bucket/path?AUTH=implicit';
+```
+
+```text
+       path
+-------------------------
+/2023/12/14-190909.83
+/2023/12/20-155249.37
+/2023/12/21-142943.73
+(3 rows)
+```
+
+When you want to restore a specific backup, add the backup's subdirectory path (e.g., `/2023/12/21-142943.73`) to the `RESTORE` statement.
+
+### Restore
+
+To restore from the most recent backup ([full or incremental](/docs/v25.4/take-full-and-incremental-backups)) in the collection's location, use the `LATEST` syntax:
+
+```sql
+RESTORE FROM LATEST IN 's3://bucket/path?AUTH=implicit';
+```
+
+If you are restoring an incremental backup, the storage location **must** contain a full backup.
+
+<Warning>
+You cannot restore a backup of a multi-region database into a single-region database.
+</Warning>
+
+To restore a specific full or incremental backup, specify that backup's subdirectory in the `RESTORE` statement. To view the available subdirectories, use [`SHOW BACKUPS`](/docs/v25.4/show-backup). If you are restoring an incremental backup, the URI must point to the storage location that contains the full backup:
+
+```sql
+RESTORE FROM '2023/03/23-213101.37' IN 's3://bucket/path?AUTH=implicit';
+```
+
+### Incremental backup
+
+When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](/docs/v25.4/take-full-and-incremental-backups#backup-collections) storage location.
+
+To take an incremental backup using the `LATEST` keyword:
+
+```sql
+BACKUP INTO LATEST IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+To store the backup in an existing subdirectory in the collection:
+
+```sql
+BACKUP INTO {'subdirectory'} IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+<Note>
+If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
+</Note>
+
+To explicitly control where you store your incremental backups, use the [`incremental_location`](/docs/v25.4/backup#options) option. For more detail, see [this example](/docs/v25.4/take-full-and-incremental-backups#incremental-backups-with-explicitly-specified-destinations) demonstrating the `incremental_location` option.
+
+### Scheduled backup
+
+This example [creates a schedule](/docs/v25.4/create-schedule-for-backup) for a cluster backup with revision history that is taken every day at midnight:
+
+```sql
+CREATE SCHEDULE schedule_label
+  FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    WITH revision_history
+    RECURRING '@daily';
+```
+
+```text
+     schedule_id     |     name       |                     status                     |            first_run             | schedule |                                                                               backup_stmt
+---------------------+----------------+------------------------------------------------+----------------------------------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------
+  588796190000218113 | schedule_label | PAUSED: Waiting for initial backup to complete | NULL                             | @daily   | BACKUP INTO LATEST IN 's3://test/schedule-test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+  588796190012702721 | schedule_label | ACTIVE                                         | 2020-09-10 16:52:17.280821+00:00 | @weekly  | BACKUP INTO 's3://test/schedule-test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+(2 rows)
+```
+
+Because the `FULL BACKUP` clause is not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` &gt; 1 hour but &lt;= 1 day.
+
+### Encrypted backup
+
+You can take and restore encrypted backups in the following ways:
+
+- [Using AWS Key Management Service (KMS)](/docs/v25.4/take-and-restore-encrypted-backups#aws-kms-uri-format)
+- [Using Google Cloud Key Management Service (KMS)](/docs/v25.4/take-and-restore-encrypted-backups#google-cloud-kms-uri-format)
+- [Using Azure Key Vault](/docs/v25.4/take-and-restore-encrypted-backups#azure-key-vault-uri-format)
+- [Using a passphrase](/docs/v25.4/take-and-restore-encrypted-backups#use-a-passphrase)
+
+Refer to the [Take and Restore Encrypted Backups](/docs/v25.4/take-and-restore-encrypted-backups) page for technical detail and a full list of examples.
+
+For example, you can run a backup with AWS KMS with the `BACKUP` statement's `kms` option:
+
+```sql
+BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+    WITH kms = 'aws:///{key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
+```
+
+### Locality-aware backup
+
+<Note>
+CockroachDB Basic and Standard clusters operate with a different architecture compared to CockroachDB self-hosted and CockroachDB Advanced clusters. These architectural differences have implications for how locality-aware backups can run. Basic and Standard clusters will scale resources depending on whether they are actively in use, which means that it is less likely to have a SQL pod available in every locality. As a result, your cluster may not have a SQL pod in the locality where the data resides, which can lead to the cluster uploading that data to a storage bucket in a locality where you do have active SQL pods. You should consider this as you plan a backup strategy that must comply with [data domiciling](/docs/v25.4/data-domiciling) requirements.
+</Note>
+
+For example, to create a [locality-aware backup](/docs/v25.4/take-and-restore-locality-aware-backups) where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
+
+```sql
+BACKUP INTO
+      ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
+```
+
+When you run the `BACKUP` statement for a locality-aware backup, check the following:
+
+- The locality query string parameters must be [URL-encoded](https://wikipedia.org/wiki/Percent-encoding).
+- If you are creating an [external connection](/docs/v25.4/create-external-connection) with [`BACKUP` query parameters](/docs/v25.4/backup#query-parameters), you must pass them in uppercase otherwise you will receive an `unknown query parameters` error.
+- A successful locality-aware backup job requires that each node in the cluster has access to each storage location. This is because any node in the cluster can claim the job and become the [*coordinator*](/docs/v25.4/backup-architecture#job-creation-phase) node.
+
+You can restore the backup by running:
+
+```sql
+RESTORE FROM LATEST IN ('s3://us-east-bucket', 's3://us-west-bucket');
+```
+
+Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
+
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN...`](/docs/v25.4/restore#restore-a-specific-full-or-incremental-backup)
+
+### Backup and restore data from `userfile` storage
+
+To put files on your CockroachDB cluster without external servers, use [`userfile`](/docs/v25.4/use-userfile-storage), a per-user file storage.
+
+For information on `userfile` commands, visit the following pages:
+
+- [`cockroach userfile upload`](/docs/v25.4/cockroach-userfile-upload)
+- [`cockroach userfile list`](/docs/v25.4/cockroach-userfile-list)
+- [`cockroach userfile get`](/docs/v25.4/cockroach-userfile-get)
+- [`cockroach userfile delete`](/docs/v25.4/cockroach-userfile-delete)
+
+We recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](/docs/v25.4/as-of-system-time). Read our guidance in the [Performance](/docs/v25.4/backup#performance) section on the [`BACKUP`](/docs/v25.4/backup) page.
+
+<Note>
+Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
+</Note>
+
+When working on the same cluster, `userfile` storage allows for database and table-level backups.
+
+First, run the following statement to backup a database to a directory in the default `userfile` space:
+
+```sql
+BACKUP DATABASE bank INTO 'userfile://defaultdb.public.userfiles_$user/bank-backup' AS OF SYSTEM TIME '-10s';
+```
+
+This directory will hold the files that make up a backup; including the manifest file and data files.
+
+<Note>
+When backing up from a cluster and restoring a database or table that is stored in your `userfile` space to a different cluster, you can run [`cockroach userfile get`](/docs/v25.4/cockroach-userfile-get) to download the backup files to a local machine and [`cockroach userfile upload --url {CONNECTION STRING}`](/docs/v25.4/cockroach-userfile-upload) to upload to the `userfile` of the alternate cluster.
+</Note>
+
+`BACKUP... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme by default, unless an [explicit subdirectory](/docs/v25.4/backup#subdirectory) is passed with the `BACKUP` statement. To view the backup paths in a given destination, use [`SHOW BACKUPS`](/docs/v25.4/restore#view-the-backup-subdirectories):
+
+```sql
+> SHOW BACKUPS IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
+```
+
+```text
+       path
+------------------------
+2021/03/23-213101.37
+2021/03/24-172553.85
+2021/03/24-210532.53
+(3 rows)
+```
+
+<Note>
+Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
+</Note>
+
+In cases when you need to restore a specific backup, add the backup subdirectory to the `RESTORE` statement:
+
+```sql
+RESTORE DATABASE bank FROM '2021/03/24-210532.53' IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
+```
+
+It is also possible to run `userfile:///bank-backup` as `userfile:///` refers to the default path `userfile://defaultdb.public.userfiles_$user/`.
+
+To restore from the most recent backup, use [`RESTORE FROM LATEST IN...`](/docs/v25.4/restore#restore-the-most-recent-full-or-incremental-backup):
+
+```sql
+RESTORE FROM LATEST IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
+```
+
+Once the backup data is no longer needed, delete from the `userfile` storage:
+
+```shell
+cockroach userfile delete bank-backup --url {CONNECTION STRING}
+```
+
+If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection](/docs/v25.4/configure-replication-zones#gc-ttlseconds) to be removed from disk.
+
+### Back up a CockroachDB Cloud cluster and restore into a new cluster
+
+You can move an existing CockroachDB Cloud cluster's contents to a new cluster by creating a self-managed backup and restoring the backup in the new cluster.
+
+<Warning>
+This method of migration requires a period of downtime during which application traffic to the cluster must be stopped. If minimal downtime on the cluster is a requirement, contact the [Cockroach Labs Support team](/docs/v25.4/support-resources).
+</Warning>
+
+To move to a new cluster, follow these steps:
+
+1. Create a [full backup](/docs/cockroachcloud/take-and-restore-self-managed-backups#full-backup) of the source cluster if a self-managed backup of the cluster does not already exist. If the backup storage is in AWS S3 or Google Cloud GCS, append `?AUTH=specified` to the storage URL.
+2. Provision the [new cluster](/docs/cockroachcloud/create-your-cluster).
+3. Stop application traffic to the source cluster.
+4. Perform a [final backup](/docs/cockroachcloud/take-and-restore-self-managed-backups) to include any last-minute changes to data on the cluster.
+5. [Connect to the new cluster](/docs/cockroachcloud/connect-to-your-cluster):
+
+    <CodeGroup>
+    
+    ```shell Mac
+    cockroach sql --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
+    ```
+
+    
+    ```shell Linux
+    cockroach sql --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
+    ```
+
+    
+    ```shell Windows
+    cockroach sql --url "postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert=$env:appdata\CockroachCloud\certs\$<cluster-name>-ca.crt"
+    ```
+
+    </CodeGroup>
+
+    Where:
+
+    - `<user>` is the SQL user. By default, this is your CockroachDB Cloud account username.
+    - `<cluster-name>-<short-id>` is the short name of your cluster plus the short ID. For example, `funny-skunk-3ab`.
+    - `<cluster-id>` is a unique string used to identify your cluster when downloading the CA certificate. For example, `12a3bcde-4fa5-6789-1234-56bc7890d123`.
+    - `<region>` is the region in which your cluster is running. If you have a multi-region cluster, you can choose any of the regions in which your cluster is running. For example, `aws-us-east-1`.
+    - `<database>` is the name for your database. For example, `defaultdb`.
+
+        You can find these settings in the **Connection parameters** tab of the **Connection info** dialog.
+6. [Restore](/docs/v25.4/restore) the latest backup to the new cluster:
+
+    a. Use `SHOW BACKUPS` with your external location to find the backup's subdirectory:
+
+    ```sql
+      SHOW BACKUPS IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ```
+
+    ```text
+              path
+      ------------------------
+      2021/03/23-213101.37
+      2021/03/24-172553.85
+      2021/03/24-210532.53
+      (3 rows)
+    ```
+
+    b. Use the subdirectory to specify the backup to restore:
+
+    ```sql
+      RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ```
+7. Update application connection strings to use the new cluster.
+8. Resume application traffic and monitor performance on the new cluster.
+9. [Decommission the source cluster](/docs/cockroachcloud/basic-cluster-management#delete-cluster).
+
+### Back up a self-hosted CockroachDB cluster and restore into a CockroachDB Cloud cluster
+
+To back up a self-hosted CockroachDB cluster and restore into a CockroachDB Cloud cluster:
+
+1. While [connected to your self-hosted CockroachDB cluster](/docs/v25.4/connect-to-the-database), [back up](/docs/v25.4/backup) your databases and/or tables to an [external location](/docs/v25.4/backup#backup-file-urls):
+
+    ```sql
+    BACKUP DATABASE example_database INTO 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ```
+
+    <Warning>
+    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as CockroachDB Cloud will need the `specified` credentials upon [`RESTORE`](/docs/v25.4/restore). For more information on authentication parameters to cloud storage providers, see [Cloud Storage Authentication](/docs/v25.4/cloud-storage-authentication).
+    </Warning>
+2. [Connect to your CockroachDB Cloud cluster](/docs/cockroachcloud/connect-to-your-cluster):
+
+    <CodeGroup>
+    
+    ```shell Mac
+    cockroach sql --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
+    ```
+
+    
+    ```shell Linux
+    cockroach sql --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
+    ```
+
+    
+    ```shell Windows
+    cockroach sql --url "postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert=$env:appdata\CockroachCloud\certs\$<cluster-name>-ca.crt"
+    ```
+
+    </CodeGroup>
+
+    Where:
+
+    - `<user>` is the SQL user. By default, this is your CockroachDB Cloud account username.
+    - `<cluster-name>-<short-id>` is the short name of your cluster plus the short ID. For example, `funny-skunk-3ab`.
+    - `<cluster-id>` is a unique string used to identify your cluster when downloading the CA certificate. For example, `12a3bcde-4fa5-6789-1234-56bc7890d123`.
+    - `<region>` is the region in which your cluster is running. If you have a multi-region cluster, you can choose any of the regions in which your cluster is running. For example, `aws-us-east-1`.
+    - `<database>` is the name for your database. For example, `defaultdb`.
+
+        You can find these settings in the **Connection parameters** tab of the **Connection info** dialog.
+3. [Restore](/docs/v25.4/restore) to your CockroachDB Cloud cluster.
+
+    a. Use `SHOW BACKUPS` with your external location to find the backup's subdirectory:
+
+    ```sql
+      SHOW BACKUPS IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ```
+
+    ```text
+              path
+      ------------------------
+      2021/03/23-213101.37
+      2021/03/24-172553.85
+      2021/03/24-210532.53
+      (3 rows)
+    ```
+
+    b. Use the subdirectory to specify the backup to restore:
+
+    ```sql
+      RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ```
+
+## See also
+
+- [Use Userfile Storage](/docs/v25.4/use-userfile-storage)
+- [Scheduled Backups](/docs/v25.4/manage-a-backup-schedule)
+- [Take Full and Incremental Backups](/docs/v25.4/take-full-and-incremental-backups)
+- [Use Cloud Storage](/docs/v25.4/use-cloud-storage)

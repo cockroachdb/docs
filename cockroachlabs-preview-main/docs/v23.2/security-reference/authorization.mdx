@@ -1,0 +1,179 @@
+---
+title: "Authorization in CockroachDB"
+old_description: "Overview of Users/Roles and Privilege Grants in CockroachDB"
+---
+
+Authorization, generally, is the control over **who** (users/roles) can perform **which actions** (e.g read, write, update, delete, grant, etc.) to **which resources or targets** (databases, functions, tables, clusters, schemas, rows, users, jobs, etc.).
+
+This page describes authorization of SQL users on particular [CockroachDB database clusters](/docs/v23.2/architecture/glossary#cluster). This is distinct from authorization of CockroachDB Cloud Console users on CockroachDB Cloud organizations.
+
+Learn more about the [CockroachDB Cloud authorization model](/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-authorization-model)
+
+## Authorization models
+
+Authorization in CockroachDB is *unified*, meaning that a given SQL user's permissions on a given cluster are governed by the same policies in different contexts such as accessing the SQL shell or viewing data from the DB Console.
+
+<Note>
+Starting in v22.2, CockroachDB introduces a new granular [system-level privilege model](#supported-privileges) that provides finer control over a user's ability to work with the database. This new system-level privilege model is intended to replace the existing [role options model](#role-options) in a future release of CockroachDB. As such, any legacy role options that now have corresponding system-level privilege versions are **deprecated in CockroachDB v22.2**, though both are supported alongside each other in v22.2. We recommend familiarizing yourself with the new system-level privilege model, and implementing it where possible.
+</Note>
+
+CockroachDB offers two authorization models:
+
+<table><thead><tr><th>Authorization Model</th><th>Features</th></tr></thead><tbody><tr><td><a href="#supported-privileges">System-level Privileges</a></td><td>- Introduced in CockroachDB v22.2.<br/><br/>- Supported in CockroachDB v22.2, alongside the existing role options.<br/><br/>- Apply cluster-wide. A system-level privilege is granted at the cluster level, and is inherited via role membership, similar to how <a href="#privileges">object-level privileges</a> are inherited.<br/><br/>- Are granted with the <a href="/docs/v23.2/grant"><code>GRANT</code></a> statement using the <code>SYSTEM</code> parameter, and viewed with the <a href="/docs/v23.2/show-system-grants"><code>SHOW SYSTEM GRANTS</code></a> statement.<br/><br/>- May be assigned with the <a href="/docs/v23.2/grant"><code>GRANT OPTION</code></a>, which allows the assigned user or role to further grant that same system-level privilege to other users or roles.</td></tr><tr><td><a href="#role-options">Role Options</a></td><td>- <a href="#supported-privileges">Specific role options</a> which have had corresponding system-level privileges introduced in CockroachDB v22.2 are now <strong>deprecated</strong>.<br/><br/>- Supported in CockroachDB v22.2, alongside the new system-level privileges.<br/><br/>- Apply only to specific users, and are not inheritable via role membership.<br/><br/>- Are granted with the <a href="/docs/v23.2/grant"><code>GRANT</code></a> statement, and viewed with the <a href="/docs/v23.2/show-grants"><code>SHOW GRANTS</code></a> statement.<br/><br/>- May be assigned with the <a href="/docs/v23.2/grant"><code>GRANT OPTION</code></a>, which allows the assigned user or role to further grant that same role option to other users or roles.</td></tr></tbody></table>
+
+If a system-level privilege exists with the same name as a role option, the system-level privilege should be used.
+
+## Users and roles
+
+Both [authorization models](#authorization-models) make use of the concept of user and roles. There is no technical distinction between a role or user in CockroachDB. A role/user can:
+
+- Be permitted to log in to the [SQL shell](/docs/v23.2/cockroach-sql).
+- Be granted [privileges](#privileges) to specific actions and database objects.
+- Be a member of other users/roles, inheriting their privileges.
+- Have other users/roles as members that inherit its privileges.
+- Be configured with other [role options](#role-options).
+
+We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
+
+The SQL statements [`CREATE USER`](/docs/v23.2/create-user) and [`CREATE ROLE`](/docs/v23.2/create-role) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
+
+Throughout the documentation, however, we will refer to a "user" or "role" based on the intended purpose of the entity.
+
+## SQL users
+
+A SQL user can interact with a CockroachDB database using the [built-in SQL shell](/docs/v23.2/cockroach-sql) or through an application.
+
+### Create and manage users
+
+Use the [`CREATE USER`](/docs/v23.2/create-user) and [`DROP USER`](/docs/v23.2/drop-user) statements to create and remove users, the [`ALTER USER`](/docs/v23.2/alter-user) statement to add or change a user's password and role options, the [`GRANT`](/docs/v23.2/grant) and [`REVOKE`](/docs/v23.2/revoke) statements to manage the user’s privileges, and the [`SHOW USERS`](/docs/v23.2/show-users) statement to list users.
+
+A new user must be granted the required privileges for each database and table that the user needs to access.
+
+<Note>
+By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role.
+</Note>
+
+### Reserved identities
+
+These identities are reserved within CockroachDB. These identities are created automatically and cannot be removed.
+
+<table><thead><tr><th>Identity</th><th>Description</th></tr></thead><tbody><tr><td><code>node</code></td><td>Used for all internode communications and for executing internal SQL operations that are run as part of regular node background processes. The <code>node</code> user does not appear when listing a cluster's users.</td></tr><tr><td><a></a><code>root</code></td><td>Used for administrator access in cases where it is required to manage other admins, such as when deploying a new cluster. The <code>root</code> user is created by default for each cluster. The <code>root</code> user is assigned to the <a href="#admin-role"><code>admin</code> role</a> and has all privileges across the cluster.<br/>For routine administration in production, Cockroach Labs recommends that you:<br/><br/>- Assign a password for the <code>root</code> user using the <a href="/docs/v23.2/alter-user"><code>ALTER USER</code></a> statement, and restrict access to the password.<br/><br/>- Avoid relying on the <code>root</code> user, and instead <a href="/docs/v23.2/authorization#create-and-manage-roles">grant the <code>admin</code> role</a> to users.</td></tr></tbody></table>
+
+In production, access to the `node` and `root` cluster certificates must be handled with care due to the broad level of access they confer on their holders.
+
+## Roles
+
+<Note>
+This section describes roles. For role options like `CREATEROLE`, see [role options](#role-options).
+</Note>
+
+A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
+
+### Default roles
+
+The `admin` and `public` roles exist by default.
+
+#### `admin` role
+
+The `admin` role is created by default and cannot be dropped. Users belonging to the `admin` role have all privileges for all database objects across the cluster. The `root` user belongs to the `admin` role by default.
+
+An `admin` user is a member of the `admin` role. Only `admin` users can use [`CREATE ROLE`](/docs/v23.2/create-role) and [`DROP ROLE`](/docs/v23.2/drop-role).
+
+To assign a user to the `admin` role:
+
+```sql
+> GRANT admin TO <username>;
+```
+
+#### `public` role
+
+All new users and roles belong to the `public` role by default. You can grant and revoke the privileges on the `public` role.
+
+### Terminology
+
+#### Role admin
+
+`Role admin` is a [role option](#role-options) that allows a given user or role to *administrate* itself, by granting and revoking it to other users and roles.
+
+To create a `role admin`, use [`WITH ADMIN OPTION`](/docs/v23.2/grant#grant-the-admin-option).
+
+<Tip>
+The terms “`admin` role” and “`role admin`” can be confusing. The `admin` role is a role (specifically the role granting all privileges on all database resources across a cluster), whereas `role admin` is a role option that is either enabled or disabled or not on any given role or grant of a role to another user or role.
+
+Learn more about [`role options`](/docs/v23.2/create-user#role-options).
+</Tip>
+
+#### Direct member
+
+A user or role that is an immediate member of the role.
+
+Example: A is a member of B.
+
+#### Indirect member
+
+A user or role that is a member of the role by association.
+
+Example: A is a member of C... is a member of B where "..." is an arbitrary number of memberships.
+
+## Object ownership
+
+All CockroachDB objects (such as databases, tables, schemas, and types) must have owners. The user that created the object is the default owner of the object and has `ALL` privileges on the object. Similarly, any roles that are members of the owner role also have all privileges on the object.
+
+All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner, with the exception of system objects. System objects without owners have `node` as their owner.
+
+To allow another user to use the object, the owner can [assign privileges](#managing-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
+
+Users that own objects cannot be dropped until the [ownership is transferred to another user](/docs/v23.2/alter-database#change-a-databases-owner).
+
+## Privileges
+
+When a user connects to a database, either via the built-in SQL client or a client driver, CockroachDB checks the user and role's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB gives an error.
+
+### Supported privileges
+
+System-level privileges (also known as global privileges) offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model](/docs/v23.2/create-role#role-options).
+
+You can work with system-level privileges using the [`GRANT`](/docs/v23.2/grant) statement with the `SYSTEM` parameter, and the [`SHOW SYSTEM GRANTS`](/docs/v23.2/show-system-grants) statement.
+
+Roles and users can be granted the following privileges:
+
+<table><thead><tr><th>Privilege</th><th>Levels</th><th>Description</th></tr></thead><tbody><tr><td><code>ALL</code></td><td>System, Database, Schema, Table, Sequence, Type</td><td>For the object to which <code>ALL</code> is applied, grants all privileges at the system, database, schema, table, sequence, or type level.</td></tr><tr><td><code>BACKUP</code></td><td>System, Database, Table</td><td>Grants the ability to create <a href="/docs/v23.2/backup-and-restore-overview">backups</a> at the system, database, or table level.</td></tr><tr><td><code>CANCELQUERY</code></td><td>System</td><td>Grants the ability to cancel queries.</td></tr><tr><td><code>CHANGEFEED</code></td><td>Table</td><td>Grants the ability to create <a href="/docs/v23.2/change-data-capture-overview">changefeeds</a> on a table.</td></tr><tr><td><code>CONNECT</code></td><td>Database</td><td>Grants the ability to view a database's metadata, which consists of objects in a database's <code>information&#95;schema</code> and <code>pg&#95;catalog</code> system catalogs. This allows the role to view the database's table, schemas, user-defined types, and list the database when running <code>SHOW DATABASES</code>. The <code>CONNECT</code> privilege is also required to run backups of the database.</td></tr><tr><td><code>CONTROLJOB</code></td><td>System</td><td>Grants the ability to <a href="/docs/v23.2/pause-job">pause</a>, <a href="/docs/v23.2/resume-job">resume</a>, and <a href="/docs/v23.2/cancel-job">cancel</a> jobs. Non-admin roles cannot control jobs created by admin roles.</td></tr><tr><td><code>CREATE</code></td><td>Database, Schema, Table, Sequence</td><td>Grants the ability to create objects at the database, schema, table, or sequence level. When applied at the database level, grants the ability to configure <a href="/docs/v23.2/zone-config-extensions">multi-region zone configs</a>. In CockroachDB v23.2 and later, the <a href="/docs/v23.2/cluster-settings">cluster setting</a><code>sql.auth.public&#95;schema&#95;create&#95;privilege.enabled</code> controls whether users receive <code>CREATE</code> privileges on the public schema or not. The setting applies at the time that the <a href="/docs/v23.2/create-schema">public schema is created</a>, which happens whenever <a href="/docs/v23.2/create-database">a database is created</a>. The setting is <code>true</code> by default, but can be set to <code>false</code> for increased compatibility with <a href="https://www.postgresql.org/about/news/postgresql-15-released-2526">PostgreSQL version 15</a> as described in <a href="https://git.postgresql.org/gitweb?p=postgresql.git;a=commitdiff;h=b073c3ccd06e4cb845e121387a43faa8c68a7b62">this commit</a>.</td></tr><tr><td><code>CREATEDB</code></td><td>System</td><td>Grants the ability to <a href="/docs/v23.2/create-database">create</a> or <a href="/docs/v23.2/alter-database#rename-to">rename</a> a database.</td></tr><tr><td><code>CREATELOGIN</code></td><td>System</td><td>Grants the ability to manage authentication using the <code>WITH PASSWORD</code>, <code>VALID UNTIL</code>, and <code>LOGIN</code>/<code>NOLOGIN</code> role options.</td></tr><tr><td><code>CREATEROLE</code></td><td>System</td><td>Grants the ability to <a href="/docs/v23.2/create-role">create</a>, modify, or <a href="/docs/v23.2/drop-role">delete</a> non-admin roles.</td></tr><tr><td><code>DELETE</code></td><td>Table, Sequence</td><td>Grants the ability to delete objects at the table or sequence level.</td></tr><tr><td><code>DROP</code></td><td>Database, Table, Sequence</td><td>Grants the ability to drop objects at the database, table, or sequence level.</td></tr><tr><td><code>EXECUTE</code></td><td>Function</td><td>Grants the ability to execute <a href="/docs/v23.2/functions-and-operators">functions</a>.</td></tr><tr><td><code>EXTERNALCONNECTION</code></td><td>System</td><td>Grants the ability to connect to external systems such as object stores, key management systems, Kafka feeds, or external file systems. Often used in conjunction with the <code>BACKUP</code>, <code>RESTORE</code>, and <code>CHANGEFEED</code> privilege.</td></tr><tr><td><code>EXTERNALIOIMPLICITACCESS</code></td><td>System</td><td>Grants the ability to interact with external resources that require implicit access.</td></tr><tr><td><code>INSERT</code></td><td>Table, Sequence</td><td>Grants the ability to insert objects at the table or sequence level.</td></tr><tr><td><a></a><code>MODIFYCLUSTERSETTING</code></td><td>System</td><td>Grants the ability to modify <a href="/docs/v23.2/cluster-settings">cluster settings</a>.</td></tr><tr><td><code>MODIFYSQLCLUSTERSETTING</code></td><td>System</td><td>Grants the ability to modify SQL <a href="/docs/v23.2/cluster-settings">cluster settings</a> (cluster settings prefixed with <code>sql.</code>).</td></tr><tr><td><code>NOSQLLOGIN</code></td><td>System</td><td>Prevents roles from connecting to the SQL interface of a cluster.</td></tr><tr><td><a></a><code>REPAIRCLUSTER</code>, <code>REPAIRCLUSTERMETADATA</code></td><td>System</td><td>Grants the ability to perform cluster debugging and repair operations, including: edit <a href="/docs/v23.2/show-create-schedule">scheduled jobs</a>, edit <a href="/docs/v23.2/show-create-external-connection">external connections</a>, <a href="/docs/v23.2/ui-transactions-page#transaction-statistics">reset SQL statistics</a>, update <a href="/docs/v23.2/configure-replication-zones">zone configurations</a>, <a href="/docs/v23.2/alter-range#relocate">relocate ranges</a>, and check for constraint violations with <a href="/docs/v23.2/cockroachdb-feature-availability#check-for-constraint-violations-with-scrub"><code>SCRUB</code></a>. See also: <a href="#viewclustermetadata"><code>VIEWCLUSTERMETADATA</code></a>.</td></tr><tr><td><code>RESTORE</code></td><td>System, Database</td><td>Grants the ability to restore <a href="/docs/v23.2/backup-and-restore-overview">backups</a> at the system or database level. Refer to <code>RESTORE</code><a href="/docs/v23.2/restore#required-privileges">Required privileges</a> for more details.</td></tr><tr><td><code>SELECT</code></td><td>Table, Sequence</td><td>Grants the ability to run <a href="/docs/v23.2/query-data">selection queries</a> at the table or sequence level.</td></tr><tr><td><code>UPDATE</code></td><td>Table, Sequence</td><td>Grants the ability to run <a href="/docs/v23.2/update-data">update statements</a> at the table or sequence level.</td></tr><tr><td><code>USAGE</code></td><td>Schema, Sequence, Type</td><td>Grants the ability to use <a href="/docs/v23.2/schema-design-overview">schemas</a>, <a href="/docs/v23.2/create-sequence">sequences</a>, or <a href="/docs/v23.2/create-type">user-defined types</a>.</td></tr><tr><td><a></a><code>VIEWACTIVITY</code></td><td>System</td><td>Grants the ability to view other user's activity statistics of a cluster.</td></tr><tr><td><a></a><code>VIEWACTIVITYREDACTED</code></td><td>System</td><td>Grants the ability to view other user's activity statistics, but prevents the role from accessing the statement diagnostics bundle in the DB Console, and viewing some columns in introspection queries that contain data about the cluster.</td></tr><tr><td><a></a><code>VIEWCLUSTERMETADATA</code></td><td>System</td><td>Grants the ability to view range information, data distribution, store information, and Raft information.</td></tr><tr><td><a></a><code>VIEWCLUSTERSETTING</code></td><td>System</td><td>Grants the ability to view <a href="/docs/v23.2/cluster-settings">cluster settings</a> and their values.</td></tr><tr><td><a></a><code>VIEWDEBUG</code></td><td>System</td><td>Grants the ability to view the <a href="/docs/v23.2/ui-debug-pages">Advanced Debug Page</a> of the DB Console and work with the debugging and profiling endpoints.</td></tr><tr><td><a></a><code>VIEWJOB</code></td><td>System</td><td>Grants the ability to view <a href="/docs/v23.2/show-jobs">jobs</a> on the cluster.</td></tr><tr><td><code>VIEWSYSTEMTABLE</code></td><td>System</td><td>Grants read-only access (<code>SELECT</code>) on all tables in the <code>system</code> database, without granting the ability to modify the cluster. This privilege was introduced in v23.1.11.</td></tr><tr><td><code>ZONECONFIG</code></td><td>Database, Table, Sequence</td><td>Grants the ability to configure <a href="/docs/v23.2/configure-replication-zones">replication zones</a> at the database, table, and sequence level.</td></tr></tbody></table>
+
+If a system-level privilege exists with the same name as a role option, the system-level privilege should be used. Some role options do not have a corresponding system-level privilege, since they configure per-user attributes. For those system-level privileges that replace legacy role options (such as `VIEWACTIVITY`), if both the system-level privilege and its legacy role option are specified for a user/role, the system-level privilege will take precedence and the legacy role option will be ignored.
+
+### Managing privileges
+
+Use the [`GRANT`](/docs/v23.2/grant) and [`REVOKE`](/docs/v23.2/revoke) statements to manage privileges for users and roles.
+
+Take the following points into consideration while granting privileges to roles and users:
+
+- When a role or user is granted privileges for a database, that role or user is not automatically granted access to any new or existing objects within that database. To change access to those objects, see [Default privileges](#default-privileges). This does not apply to system-level privileges, which apply cluster-wide.
+- When a role or user is granted privileges for a table, the privileges are limited to the table.
+- In CockroachDB, privileges are granted to users and roles at the database and table levels, or cluster-wide at the system level. They are not yet supported for other granularities such as columns or rows.
+- The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
+- For privileges required by specific statements, see the documentation for the respective [SQL statement](/docs/v23.2/sql-statements).
+
+### Default privileges
+
+By default, CockroachDB grants the current role/user `ALL` privileges on the objects that they create.
+
+To view the default privileges for a role, or for a set of roles, use the [`SHOW DEFAULT PRIVILEGES`](/docs/v23.2/show-default-privileges) statement.
+
+To change the default privileges on objects that a user creates, use the [`ALTER DEFAULT PRIVILEGES`](/docs/v23.2/alter-default-privileges) statement.
+
+The creator of an object is also the object's [owner](#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object, independent of the default privileges. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
+
+For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`](/docs/v23.2/show-default-privileges#examples) and [`ALTER DEFAULT PRIVILEGES`](/docs/v23.2/alter-default-privileges#examples) statement pages.
+
+## Authorization best practices
+
+We recommend the following best practices to set up access control for your clusters:
+
+- Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#managing-privileges) based on your application’s access requirements.
+- Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
+
+For improved performance, CockroachDB securely caches [authentication information for users](/docs/v23.2/authentication#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`](/docs/v23.2/create-role), [`ALTER ROLE`](/docs/v23.2/alter-role), [`DROP ROLE`](/docs/v23.2/drop-role)):
+
+- Run bulk `ROLE` operations inside a transaction.
+- Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
+- Generally, if a [system-level privilege](#supported-privileges) exists with the same name as a [role option](#role-options), the system-level privilege should be used.

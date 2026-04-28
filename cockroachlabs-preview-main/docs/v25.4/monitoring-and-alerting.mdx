@@ -1,0 +1,1107 @@
+---
+title: "Monitoring and Alerting"
+old_description: "Monitor the health and performance of a cluster and alert on critical events and metrics."
+---
+
+In addition to CockroachDB's [built-in safeguards against failure](/docs/v25.4/frequently-asked-questions#how-does-cockroachdb-survive-failures), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
+
+This page describes the monitoring and observability tools that are built into CockroachDB self-hosted and shows how to collect your cluster's metrics using external tools like Prometheus's AlertManager for event-based alerting. To export metrics from a CockroachDB Cloud cluster, refer to [Export Metrics From a CockroachDB Advanced Cluster](/docs/cockroachcloud/export-metrics) instead of this page. For more details, refer to:
+
+- [Monitor CockroachDB with Prometheus](/docs/v25.4/monitor-cockroachdb-with-prometheus)
+- [Third-party Monitoring Tools](/docs/v25.4/third-party-monitoring-tools)
+
+<Note>
+If the cluster becomes unavailable, the DB Console and Cluster API will also become unavailable. You can continue to monitor the cluster via the [Prometheus endpoint](/docs/v25.4/prometheus-endpoint) and [logs](/docs/v25.4/logging-overview).
+</Note>
+
+## Built-in monitoring tools
+
+CockroachDB includes several tools to help you monitor your cluster's workloads and performance.
+
+<Warning>
+If a cluster becomes unavailable, most of the monitoring tools in the following sections become unavailable. In that case, Cockroach Labs recommends that you consult the [cluster logs](/docs/v25.4/logging-overview). To maintain access to a cluster's historical metrics when the cluster is unavailable, configure a [third-party monitoring tool](/docs/v25.4/third-party-monitoring-tools) like Prometheus or Datadog to collect metrics periodically from the [Prometheus endpoint](/docs/v25.4/prometheus-endpoint). The metrics are stored outside the cluster, and can be used to help troubleshoot what led up to an outage.
+</Warning>
+
+### DB Console
+
+The [DB Console](/docs/v25.4/ui-overview) collects time-series cluster metrics and displays basic information about a cluster's health, such as node status, number of unavailable ranges, and queries per second and service latency across the cluster. This tool is designed to help you optimize cluster performance and troubleshoot issues. The DB Console is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
+
+The DB Console automatically runs in the cluster. The following sections describe some of the pages that can help you to monitor and observe your cluster. For more information on accessing the DB Console, see [Access DB Console](/docs/v25.4/ui-overview#db-console-access).
+
+#### Metrics dashboards
+
+The [Metrics dashboards](/docs/v25.4/ui-overview-dashboard), which are located within **Metrics** in DB Console, provide information about a cluster's performance, load, and resource utilization. The Metrics dashboards are built using time-series metrics collected from the cluster. By default, metrics are collected every 10 minutes and stored within the cluster, and data is retained at 10-second granularity for 10 days, and at 30-minute granularity for 90 days.
+
+To learn more, refer to [Overview Dashboard](/docs/v25.4/ui-overview-dashboard).
+
+Each cluster automatically exposes its metrics at an [endpoint in Prometheus format](/docs/v25.4/prometheus-endpoint), enabling you to collect them in an external tool like Datadog or your own Prometheus, Grafana, and AlertManager instances. These tools:
+
+- Collect metrics from the cluster's Prometheus endpoint at an interval you define.
+- Store historical metrics according to your data retention requirements.
+- Allow you to create and share dashboards, reports, and alerts based on metrics.
+- Do not run within the cluster, and can help you to investigate a situation that led up to cluster outage even if the cluster is unavailable.
+
+Metrics collected by the DB Console are stored within the cluster, and the SQL queries that create the reports on the Metrics dashboards also impose load on the cluster.
+
+#### SQL Activity pages
+
+The SQL Activity pages, which are located within **SQL Activity** in DB Console, provide information about SQL [statements](/docs/v25.4/ui-statements-page), [transactions](/docs/v25.4/ui-transactions-page), and [sessions](/docs/v25.4/ui-sessions-page).
+
+The information on the SQL Activity pages comes from the cluster's [`crdb_internal` system catalog](#crdb_internal-system-catalog). It is not exported via the cluster's [Prometheus endpoint](/docs/v25.4/prometheus-endpoint).
+
+### Cluster API
+
+The [Cluster API](/docs/v25.4/cluster-api) is a REST API that runs in the cluster and provides much of the same information about your cluster and nodes as is available from the [DB Console](#db-console) or the [Prometheus endpoint](/docs/v25.4/prometheus-endpoint), and is accessible from each node at the same address and port as the DB Console.
+
+If the cluster is unavailable, the Cluster API is also unavailable.
+
+For more information, see the Cluster API [overview](/docs/v25.4/cluster-api) and [reference](/docs/api/cluster/v2).
+
+### `crdb_internal` system catalog
+
+The `crdb_internal` system catalog is a schema in each database that contains information about internal objects, processes, and metrics about that database. [DBMarlin](https://docs.dbmarlin.com/docs/Monitored-Technologies/Databases/cockroachdb) provides a third-party tool that collects metrics from a cluster's `crdb_internal` system catalogs rather than the cluster's Prometheus endpoint. Refer to [Monitor CockroachDB with DBmarlin](/docs/v25.4/dbmarlin).
+
+If the cluster is unavailable, a database's `crdb_internal` system catalog cannot be queried.
+
+For details, see [`crdb_internal`](/docs/v25.4/crdb-internal).
+
+### Health endpoints
+
+CockroachDB provides two HTTP endpoints for checking the health of individual nodes.
+
+These endpoints are also available through the [Cluster API](/docs/v25.4/cluster-api) under `/v2/health/`.
+
+If the cluster is unavailable, these endpoints are also unavailable.
+
+#### /health
+
+If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connection refused` error:
+
+```shell
+$ curl http://localhost:8080/health
+```
+
+```text
+curl: (7) Failed to connect to localhost port 8080: Connection refused
+```
+
+Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
+
+```text
+{
+
+}
+```
+
+The `/health` endpoint does not returns details about the node such as its private IP address. These details could be considered privileged information in some deployments. If you need to retrieve node details, you can use the `/_status/details` endpoint along with a valid authentication cookie.
+
+#### /health?ready=1
+
+The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
+
+- The node is in the [wait phase of the node shutdown sequence](/docs/v25.4/node-shutdown#draining). This causes load balancers and connection managers to reroute traffic to other nodes before the node is drained of SQL client connections and leases, and is a necessary check during [rolling upgrades](/docs/v25.4/upgrade-cockroach-version).
+
+    <Tip>
+    If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.initial_wait` [cluster setting](/docs/v25.4/cluster-settings) (previously named `server.shutdown.drain_wait`) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
+    </Tip>
+- The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
+
+```shell
+$ curl http://localhost:8080/health?ready=1
+```
+
+```text
+{
+  "error": "node is not healthy",
+  "code": 14,
+  "message": "node is not healthy",
+  "details": [
+  ]
+}
+```
+
+Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
+
+```text
+{
+
+}
+```
+
+### Raw status endpoints
+
+<Note>
+The JSON endpoints are deprecated in favor of the [Cluster API](#cluster-api).
+
+The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecated. For more information, refer to [Prometheus endpoint](/docs/v25.4/prometheus-endpoint).
+</Note>
+
+Several endpoints return raw status meta information in JSON at `http://<host>:<http-port>/#/debug`. You can investigate and use these endpoints, but note that they are subject to change.
+
+<Frame>
+  ![Raw Status Endpoints](/images/v25.4/raw-status-endpoints.png)
+</Frame>
+
+### Node status command
+
+The [`cockroach node status`](/docs/v25.4/cockroach-node) command gives you metrics about the health and status of each node.
+
+- With the `--ranges` flag, you get granular range and replica details, including unavailability and under-replication.
+- With the `--stats` flag, you get granular disk usage details.
+- With the `--decommission` flag, you get details about the [node decommissioning](/docs/v25.4/node-shutdown?filters=decommission#cockroach-node-status) process.
+- With the `--all` flag, you get all of the above.
+
+### Prometheus endpoint
+
+Each node in a CockroachDB cluster exports granular time-series metrics at two available endpoints:
+
+- [`http://<host>:<http-port>/_status/vars`](/docs/v25.4/prometheus-endpoint#_status-vars)
+- [`http://<host>:<http-port>/metrics`](/docs/v25.4/prometheus-endpoint#metrics)
+
+For more information, refer to the [Prometheus Endpoint page](/docs/v25.4/prometheus-endpoint).
+
+### Critical nodes endpoint
+
+The critical nodes status endpoint is used to:
+
+- Check if any of your nodes are in a critical state. A node is *critical* if that node becoming unreachable would cause [replicas to become unavailable](/docs/v25.4/ui-cluster-overview-page#replication-status).
+- Check if any ranges are [under-replicated or unavailable](/docs/v25.4/ui-cluster-overview-page#replication-status). This is useful when determining whether a node is ready for [decommissioning](/docs/v25.4/node-shutdown#decommissioning).
+- Check if any of your cluster's data placement constraints (set via [multi-region SQL](/docs/v25.4/multiregion-overview) or direct [configuration of replication zones](/docs/v25.4/configure-replication-zones) ) are being violated. This is useful when implementing [data domiciling](/docs/v25.4/data-domiciling) or [troubleshooting zone configurations](/docs/v25.4/troubleshoot-replication-zones) generally.
+
+If you find under-replicated ranges or constraint violations, you will need to [Troubleshoot your replication zones](/docs/v25.4/troubleshoot-replication-zones).
+
+#### Fields
+
+The JSON object returned by the critical nodes status endpoint contains the following top-level fields.
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>criticalNodes</code></td><td>A list of nodes that are critical. Critical nodes are not safe to terminate because data loss could occur.</td></tr><tr><td><code>report.overReplicated</code></td><td>A list of ranges that are over-replicated vs. your <a href="/docs/v25.4/configure-replication-zones">zone config settings</a>.</td></tr><tr><td><code>report.violatingConstraints</code></td><td>A list of ranges that are in violation of your <a href="/docs/v25.4/configure-replication-zones">zone config settings</a>.</td></tr><tr><td><code>report.unavailable</code></td><td>A list of ranges that are unavailable.</td></tr><tr><td><code>report.unavailableNodeIds</code></td><td>A list of node IDs with unavailable ranges.</td></tr><tr><td><code>report.underReplicated</code></td><td>A list of ranges that are under-replicated vs. your <a href="/docs/v25.4/configure-replication-zones">zone config settings</a>.</td></tr></tbody></table>
+
+The `criticalNodes` portion of the response contains a (possibly empty) list of objects, each of which has the following fields.
+
+<table><thead><tr><th>Field</th><th>Example</th><th>Description</th></tr></thead><tbody><tr><td><code>nodeId</code></td><td><code>2</code></td><td>The node ID of the critical node.</td></tr><tr><td><code>address</code></td><td><code>&#123;...&#125;</code></td><td>An object representing the network address of the node.</td></tr><tr><td><code>locality</code></td><td><code>&#123;...&#125;</code></td><td>An object representing the <a href="/docs/v25.4/cockroach-start#locality">locality</a> of the node.</td></tr><tr><td><code>ServerVersion</code></td><td><code>&#123;...&#125;</code></td><td>An object representing the CockroachDB version of the node.</td></tr><tr><td><code>buildTag</code></td><td><code>"v23.1.0-rc.2"</code></td><td>The git build tag of the CockroachDB release of the node.</td></tr><tr><td><code>startedAt</code></td><td><code>"1683655799845426000"</code></td><td>The UNIX epoch timestamp at which the node was started.</td></tr><tr><td><code>clusterName</code></td><td><code>""</code></td><td>The <a href="/docs/v25.4/cockroach-start#flags-cluster-name">name of the cluster</a> (if any) with which the node is associated.</td></tr><tr><td><code>sqlAddress</code></td><td><code>&#123;...&#125;</code></td><td>The <a href="/docs/v25.4/cockroach-start#flags-sql-addr">network address for SQL connections</a> to the node.</td></tr><tr><td><code>httpAddress</code></td><td><code>&#123;...&#125;</code></td><td>The <a href="/docs/v25.4/cockroach-start#flags-http-addr">address for DB Console HTTP connections</a> to the node.</td></tr></tbody></table>
+
+Each report subtype (e.g., `report.unavailable`, `report.violatingConstraints`, etc.) returns a (possibly empty) list of objects describing the [ranges](/docs/v25.4/architecture/overview#architecture-range) that report applies to. Each object contains a `rangeDescriptor` and a `config` that describes the range.
+
+<table><thead><tr><th>Field</th><th>Example</th><th>Description</th></tr></thead><tbody><tr><td><code>rangeDescriptor.rangeId</code></td><td><code>"89"</code></td><td>The <a href="/docs/v25.4/alter-range#find-range-id-and-leaseholder-information">range ID</a> this section of the report is referring to.</td></tr><tr><td><code>rangeDescriptor.startKey</code></td><td><code>"8okSYW1zdGVyZGFtAAE="</code></td><td>The <a href="/docs/v25.4/show-ranges#start-key">start key for the range</a>.</td></tr><tr><td><code>rangeDescriptor.endKey</code></td><td><code>"8okSYW1zdGVyZGFtAAESszMzMzMzQAD/gAD/AP8A/wD/AP8A/yMAAQ=="</code></td><td>The <a href="/docs/v25.4/show-ranges#end-key">end key for the range</a>.</td></tr><tr><td><code>config.rangeMinBytes</code></td><td><code>134217728</code></td><td>The <a href="/docs/v25.4/configure-replication-zones#range-min-bytes">target minimum size</a> for the range.</td></tr><tr><td><code>config.rangeMaxBytes</code></td><td><code>536870912</code></td><td>The <a href="/docs/v25.4/configure-replication-zones#range-min-bytes">target maximum size</a> for the range.</td></tr><tr><td><code>config.gcPolicy</code></td><td><code>&#123;...&#125;</code></td><td>An object representing the garbage collection settings for the range (e.g. <a href="/docs/v25.4/configure-replication-zones#gc-ttlseconds"><code>gc.ttlseconds</code></a>).</td></tr><tr><td><code>config.globalReads</code></td><td><code>false</code></td><td>Whether the range enables fast <a href="/docs/v25.4/configure-replication-zones#global_reads">global reads</a>.</td></tr><tr><td><code>config.numReplicas</code></td><td><code>9</code></td><td>The <a href="/docs/v25.4/configure-replication-zones#num_replicas">replication factor</a> for the range.</td></tr><tr><td><code>config.numVoters</code></td><td><code>0</code></td><td>The <a href="/docs/v25.4/configure-replication-zones#num_voters">number of voting replicas</a> for the range.</td></tr><tr><td><code>config.constraints</code></td><td><code>&#91;...&#93;</code></td><td>The <a href="/docs/v25.4/configure-replication-zones#constraints">constraints</a> for the range.</td></tr><tr><td><code>config.voterConstraints</code></td><td><code>&#91;...&#93;</code></td><td>The <a href="/docs/v25.4/configure-replication-zones#voter_constraints">voting replica constraints</a> for the range.</td></tr><tr><td><code>config.leasePreferences</code></td><td><code>&#91;...&#93;</code></td><td>The <a href="/docs/v25.4/configure-replication-zones#lease_preferences">lease preferences</a> for the range.</td></tr><tr><td><code>config.rangefeedEnabled</code></td><td><code>false</code></td><td>Whether <a href="/docs/v25.4/create-and-configure-changefeeds#enable-rangefeeds">rangefeeds</a> are enabled for this range.</td></tr><tr><td><code>config.excludeDataFromBackup</code></td><td><code>false</code></td><td>Whether this range's data should be excluded from <a href="/docs/v25.4/backup">backups</a>.</td></tr></tbody></table>
+
+#### Examples
+
+- [Replication status - normal](#replication-status-normal)
+- [Replication status - constraint violation](#replication-status-constraint-violation)
+- [Replication status - under-replicated ranges](#replication-status-under-replicated-ranges)
+- [Replication status - ranges in critical localities](#replication-status-ranges-in-critical-localities)
+
+##### Replication status - normal
+
+The following example assumes you are running a newly started, local multi-region [`cockroach demo`](/docs/v25.4/cockroach-demo) cluster started using the following command:
+
+```shell
+cockroach demo --global --nodes 9 --insecure
+```
+
+Execute the following statements to set the [database regions](/docs/v25.4/multiregion-overview#database-regions) for the [`movr` database](/docs/v25.4/movr#the-movr-database):
+
+```sql
+ ALTER DATABASE movr SET PRIMARY REGION "us-east1";
+ ALTER DATABASE movr ADD REGION "us-west1";
+ ALTER DATABASE movr ADD REGION "europe-west1";
+```
+
+```shell
+curl -X POST http://localhost:8080/_status/critical_nodes
+```
+
+```json
+{
+  "criticalNodes": [
+  ],
+  "report": {
+    "underReplicated": [
+    ],
+    "overReplicated": [
+    ],
+    "violatingConstraints": [
+    ],
+    "unavailable": [
+    ],
+    "unavailableNodeIds": [
+    ]
+  }
+}
+```
+
+<Note>
+You may have to wait a few minutes after setting the database regions before getting the 'all clear' output above. This can happen because it takes time for [replica movement](/docs/v25.4/architecture/replication-layer) to occur in order to meet the constraints given by the [multi-region SQL abstractions](/docs/v25.4/multiregion-overview).
+</Note>
+
+##### Replication status - constraint violation
+
+The following example assumes you are running a newly started, local multi-region [`cockroach demo`](/docs/v25.4/cockroach-demo) cluster started using the following command:
+
+```shell
+cockroach demo --global --nodes 9 --insecure
+```
+
+Execute the following statements to set the [database regions](/docs/v25.4/multiregion-overview#database-regions) for the [`movr` database](/docs/v25.4/movr#the-movr-database):
+
+```sql
+ ALTER DATABASE movr SET PRIMARY REGION "us-east1";
+ ALTER DATABASE movr ADD REGION "us-west1";
+ ALTER DATABASE movr ADD REGION "europe-west1";
+```
+
+By default, this multi-region demo cluster will not have any constraint violations.
+
+To introduce a violation that you can then query for, you'll [set the table locality to `REGIONAL BY TABLE`](/docs/v25.4/alter-table#set-the-table-locality-to-regional-by-table) for the [`movr.users`](/docs/v25.4/movr#the-movr-database) table.
+
+You can use [`SHOW CREATE TABLE`](/docs/v25.4/show-create) to see what existing [table locality](/docs/v25.4/table-localities) is attached to the `users` table, so you know what to modify.
+
+```sql
+SHOW CREATE TABLE users;
+```
+
+```text
+  table_name |                     create_statement
+-------------+-----------------------------------------------------------
+  users      | CREATE TABLE public.users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
+             | ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION
+(1 row)
+```
+
+To create a constraint violation, use the [`ALTER TABLE... SET LOCALITY`](/docs/v25.4/alter-table#set-the-table-locality-to-regional-by-table) statement to tell the [ranges](/docs/v25.4/architecture/overview#architecture-range) in the `PRIMARY REGION` (`us-east1`) that they are supposed to be in the `europe-west1` locality:
+
+```sql
+ALTER TABLE users SET LOCALITY REGIONAL BY TABLE IN "europe-west1";
+```
+
+Once the statement above executes, the ranges currently stored in the `us-east1` locality will now be in a state where they are explicitly now supposed to be in the `europe-west1` locality, and are thus in violation of a constraint.
+
+In other words, this tells the ranges that "where you are now is *not* where you are supposed to be". This will cause the cluster to rebalance the ranges, which will take some time. During the time it takes for the rebalancing to occur, the ranges will be in violation of a constraint.
+
+The critical nodes endpoint should now report a constraint violation in the `violatingConstraints` field of the response, similar to the one shown below.
+
+<Tip>
+Use the [`SHOW RANGES`](/docs/v25.4/show-ranges) statement to find out more information about the ranges that are in violation of constraints.
+
+In a real life constraint violation scenario, you will need to [Troubleshoot your replication zones](/docs/v25.4/troubleshoot-replication-zones).
+</Tip>
+
+```shell
+curl -X POST http://localhost:8080/_status/critical_nodes
+```
+
+```json
+{
+  "criticalNodes": [
+  ],
+  "report": {
+    "underReplicated": [
+    ],
+    "overReplicated": [
+    ],
+    "violatingConstraints": [
+      {
+        "rangeDescriptor": {
+          "rangeId": "71",
+          "startKey": "8okSYW1zdGVyZGFtAAESszMzMzMzQAD/gAD/AP8A/wD/AP8A/yMAAQ==",
+          "endKey": "8okSYm9zdG9uAAESMzMzMzMzRAD/gAD/AP8A/wD/AP8A/woAAQ==",
+          "internalReplicas": [
+            {
+              "nodeId": 8,
+              "storeId": 8,
+              "replicaId": 9,
+              "type": 0
+            },
+            {
+              "nodeId": 7,
+              "storeId": 7,
+              "replicaId": 8,
+              "type": 0
+            },
+            {
+              "nodeId": 1,
+              "storeId": 1,
+              "replicaId": 7,
+              "type": 5
+            },
+            {
+              "nodeId": 2,
+              "storeId": 2,
+              "replicaId": 5,
+              "type": 0
+            },
+            {
+              "nodeId": 6,
+              "storeId": 6,
+              "replicaId": 6,
+              "type": 5
+            }
+          ],
+          "nextReplicaId": 10,
+          "generation": "32",
+          "stickyBit": {
+            "wallTime": "9223372036854775807",
+            "logical": 2147483647,
+            "synthetic": false
+          }
+        },
+        "config": {
+          "rangeMinBytes": "134217728",
+          "rangeMaxBytes": "536870912",
+          "gcPolicy": {
+            "ttlSeconds": 14400,
+            "protectionPolicies": [
+            ],
+            "ignoreStrictEnforcement": false
+          },
+          "globalReads": false,
+          "numReplicas": 5,
+          "numVoters": 3,
+          "constraints": [
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-west1"
+                }
+              ]
+            }
+          ],
+          "voterConstraints": [
+            {
+              "numReplicas": 0,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            }
+          ],
+          "leasePreferences": [
+            {
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            }
+          ],
+          "rangefeedEnabled": false,
+          "excludeDataFromBackup": false
+        }
+      },
+      ...
+    ],
+    "unavailable": [
+    ],
+    "unavailableNodeIds": [
+    ]
+  }
+}
+```
+
+##### Replication status - under-replicated ranges
+
+The following example assumes you are running a newly started, local multi-region [`cockroach demo`](/docs/v25.4/cockroach-demo) cluster started using the following command:
+
+```shell
+cockroach demo --global --nodes 9 --insecure
+```
+
+Execute the following statements to set the [database regions](/docs/v25.4/multiregion-overview#database-regions) for the [`movr` database](/docs/v25.4/movr#the-movr-database):
+
+```sql
+ ALTER DATABASE movr SET PRIMARY REGION "us-east1";
+ ALTER DATABASE movr ADD REGION "us-west1";
+ ALTER DATABASE movr ADD REGION "europe-west1";
+```
+
+By default, this multi-region demo cluster will not have any [under-replicated ranges](/docs/v25.4/ui-replication-dashboard#under-replicated-ranges).
+
+To put the cluster into a state where some [ranges](/docs/v25.4/architecture/overview#architecture-range) are under-replicated, issue the following [`ALTER DATABASE... ALTER LOCALITY... CONFIGURE ZONE`](/docs/v25.4/alter-database#alter-locality) statement, which tells it to store 9 copies of each range underlying the `movr` database.
+
+```sql
+ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING num_replicas = 9;
+```
+
+Once the statement above executes, the cluster will rebalance so that it's storing 9 copies of each range underlying the `movr` database. During the time it takes for the rebalancing to occur, these ranges will be considered under-replicated, since there are not yet as many copies (9) of each range as you have just specified.
+
+The critical nodes endpoint should now report ranges in the `underReplicated` field of the response, similar to the one shown below.
+
+<Tip>
+Use the [`SHOW RANGES`](/docs/v25.4/show-ranges) statement to find out more information about the under-replicated ranges.
+
+In a real life under-replication scenario, you may need to [Troubleshoot your replication zones](/docs/v25.4/troubleshoot-replication-zones).
+</Tip>
+
+```shell
+curl -X POST http://localhost:8080/_status/critical_nodes
+```
+
+```json
+{
+  "criticalNodes": [
+    {
+      "nodeId": 3,
+      "address": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:26359"
+      },
+      "attrs": {
+        "attrs": [
+        ]
+      },
+      "locality": {
+        "tiers": [
+          {
+            "key": "region",
+            "value": "us-east1"
+          },
+          {
+            "key": "az",
+            "value": "d"
+          }
+        ]
+      },
+      "ServerVersion": {
+        "majorVal": 23,
+        "minorVal": 2,
+        "patch": 0,
+        "internal": 0
+      },
+      "buildTag": "v23.2.0-rc.2",
+      "startedAt": "1705098699112441000",
+      "localityAddress": [
+      ],
+      "clusterName": "",
+      "sqlAddress": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:26259"
+      },
+      "httpAddress": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:8082"
+      }
+    },
+    ...
+  ],
+  "report": {
+    "underReplicated": [
+      {
+        "rangeDescriptor": {
+          "rangeId": "74",
+          "startKey": "84kSc2FuIGZyYW5jaXNjbwABEnd3d3d3d0gA/4AA/wD/AP8A/wD/AP8HAAE=",
+          "endKey": "84kSc2FuIGZyYW5jaXNjbwABEoiIiIiIiEgA/4AA/wD/AP8A/wD/AP8IAAE=",
+          "internalReplicas": [
+            {
+              "nodeId": 3,
+              "storeId": 3,
+              "replicaId": 1,
+              "type": 0
+            },
+            {
+              "nodeId": 1,
+              "storeId": 1,
+              "replicaId": 6,
+              "type": 0
+            },
+            {
+              "nodeId": 2,
+              "storeId": 2,
+              "replicaId": 7,
+              "type": 0
+            },
+            {
+              "nodeId": 4,
+              "storeId": 4,
+              "replicaId": 4,
+              "type": 5
+            },
+            {
+              "nodeId": 8,
+              "storeId": 8,
+              "replicaId": 5,
+              "type": 5
+            },
+            {
+              "nodeId": 5,
+              "storeId": 5,
+              "replicaId": 8,
+              "type": 5
+            },
+            {
+              "nodeId": 9,
+              "storeId": 9,
+              "replicaId": 9,
+              "type": 5
+            },
+            {
+              "nodeId": 6,
+              "storeId": 6,
+              "replicaId": 10,
+              "type": 5
+            }
+          ],
+          "nextReplicaId": 11,
+          "generation": "43",
+          "stickyBit": {
+            "wallTime": "9223372036854775807",
+            "logical": 2147483647,
+            "synthetic": false
+          }
+        },
+        "config": {
+          "rangeMinBytes": "134217728",
+          "rangeMaxBytes": "536870912",
+          "gcPolicy": {
+            "ttlSeconds": 14400,
+            "protectionPolicies": [
+            ],
+            "ignoreStrictEnforcement": false
+          },
+          "globalReads": false,
+          "numReplicas": 9,
+          "numVoters": 3,
+          "constraints": [
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-west1"
+                }
+              ]
+            }
+          ],
+          "voterConstraints": [
+            {
+              "numReplicas": 0,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            }
+          ],
+          "leasePreferences": [
+            {
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            }
+          ],
+          "rangefeedEnabled": false,
+          "excludeDataFromBackup": false
+        }
+      },
+      ...
+    ],
+    "overReplicated": [
+    ],
+    "violatingConstraints": [
+    ],
+    "unavailable": [
+    ],
+    "unavailableNodeIds": [
+    ]
+  }
+}
+```
+
+##### Replication status - ranges in critical localities
+
+The following example assumes you are running a newly started, local multi-region [`cockroach demo`](/docs/v25.4/cockroach-demo) cluster started using the following command:
+
+```shell
+cockroach demo --global --nodes 9 --insecure
+```
+
+Execute the following statements to set the [database regions](/docs/v25.4/multiregion-overview#database-regions) for the [`movr` database](/docs/v25.4/movr#the-movr-database):
+
+```sql
+ ALTER DATABASE movr SET PRIMARY REGION "us-east1";
+ ALTER DATABASE movr ADD REGION "us-west1";
+ ALTER DATABASE movr ADD REGION "europe-west1";
+```
+
+By default, this multi-region demo cluster will not have any [nodes](/docs/v25.4/architecture/overview#node) in a critical state. A node is *critical* if that node becoming unreachable would cause [replicas to become unavailable](/docs/v25.4/ui-cluster-overview-page#replication-status).
+
+The status endpoint describes which of your nodes (if any) are critical via the `criticalNodes` field in the response.
+
+To artificially put the nodes in this demo cluster in "critical" status, we can issue the following SQL statement, which uses [`ALTER DATABASE... ALTER LOCALITY... CONFIGURE ZONE`](/docs/v25.4/alter-database#alter-locality) to tell the cluster to store more copies of each range underlying the `movr` database than there are nodes in the cluster.
+
+```sql
+ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING num_replicas = 128;
+```
+
+The critical nodes endpoint should now report that all of the cluster's nodes are critical by listing them in the `criticalNodes` field of the response.
+
+<Tip>
+Use the [`SHOW RANGES`](/docs/v25.4/show-ranges) statement to find out more information about the ranges in critical localities.
+
+In a real life critical localities scenario, you may need to [Troubleshoot your replication zones](/docs/v25.4/troubleshoot-replication-zones).
+</Tip>
+
+```shell
+curl -X POST http://localhost:8080/_status/critical_nodes
+```
+
+```json
+{
+  "criticalNodes": [
+    {
+      "nodeId": 3,
+      "address": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:26359"
+      },
+      "attrs": {
+        "attrs": [
+        ]
+      },
+      "locality": {
+        "tiers": [
+          {
+            "key": "region",
+            "value": "us-east1"
+          },
+          {
+            "key": "az",
+            "value": "d"
+          }
+        ]
+      },
+      "ServerVersion": {
+        "majorVal": 23,
+        "minorVal": 2,
+        "patch": 0,
+        "internal": 0
+      },
+      "buildTag": "v23.2.0-rc.2",
+      "startedAt": "1705098699112441000",
+      "localityAddress": [
+      ],
+      "clusterName": "",
+      "sqlAddress": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:26259"
+      },
+      "httpAddress": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:8082"
+      }
+    },
+    ...
+  ],
+  "report": {
+    "underReplicated": [
+      {
+        "rangeDescriptor": {
+          "rangeId": "100",
+          "startKey": "8w==",
+          "endKey": "84kSYm9zdG9uAAESIiIiIiIiQgD/gAD/AP8A/wD/AP8A/wIAAQ==",
+          "internalReplicas": [
+            {
+              "nodeId": 3,
+              "storeId": 3,
+              "replicaId": 1,
+              "type": 0
+            },
+            {
+              "nodeId": 5,
+              "storeId": 5,
+              "replicaId": 2,
+              "type": 5
+            },
+            {
+              "nodeId": 1,
+              "storeId": 1,
+              "replicaId": 3,
+              "type": 0
+            },
+            {
+              "nodeId": 2,
+              "storeId": 2,
+              "replicaId": 4,
+              "type": 0
+            },
+            {
+              "nodeId": 9,
+              "storeId": 9,
+              "replicaId": 5,
+              "type": 5
+            },
+            {
+              "nodeId": 4,
+              "storeId": 4,
+              "replicaId": 6,
+              "type": 5
+            },
+            {
+              "nodeId": 7,
+              "storeId": 7,
+              "replicaId": 7,
+              "type": 5
+            },
+            {
+              "nodeId": 6,
+              "storeId": 6,
+              "replicaId": 8,
+              "type": 5
+            },
+            {
+              "nodeId": 8,
+              "storeId": 8,
+              "replicaId": 9,
+              "type": 5
+            }
+          ],
+          "nextReplicaId": 10,
+          "generation": "38",
+          "stickyBit": {
+            "wallTime": "0",
+            "logical": 0,
+            "synthetic": false
+          }
+        },
+        "config": {
+          "rangeMinBytes": "134217728",
+          "rangeMaxBytes": "536870912",
+          "gcPolicy": {
+            "ttlSeconds": 14400,
+            "protectionPolicies": [
+            ],
+            "ignoreStrictEnforcement": false
+          },
+          "globalReads": false,
+          "numReplicas": 128,
+          "numVoters": 3,
+          "constraints": [
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-west1"
+                }
+              ]
+            }
+          ],
+          "voterConstraints": [
+            {
+              "numReplicas": 0,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            }
+          ],
+          "leasePreferences": [
+            {
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            }
+          ],
+          "rangefeedEnabled": false,
+          "excludeDataFromBackup": false
+        }
+      },
+      ...
+    ],
+    "overReplicated": [
+    ],
+    "violatingConstraints": [
+    ],
+    "unavailable": [
+    ],
+    "unavailableNodeIds": [
+    ]
+  }
+}
+```
+
+### Store status endpoint
+
+The store status endpoint at `/_status/stores` provides information about the [stores](/docs/v25.4/cockroach-start#store) attached to each [node](/docs/v25.4/architecture/overview#node) of your cluster.
+
+The response is a JSON object containing a `stores` array of objects. Each store object has the following fields:
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>storeId</code></td><td>The <a href="/docs/v25.4/alter-range#find-the-cluster-store-ids">store ID</a> associated with this <a href="/docs/v25.4/cockroach-start#store">store</a>.</td></tr><tr><td><code>nodeId</code></td><td>The <a href="/docs/v25.4/cockroach-node#list-node-ids">node ID</a> associated with this <a href="/docs/v25.4/cockroach-start#store">store</a>.</td></tr><tr><td><code>encryptionStatus</code></td><td>The <a href="/docs/v25.4/encryption#checking-encryption-status">encryption status</a> of this <a href="/docs/v25.4/cockroach-start#store">store</a>.</td></tr><tr><td><code>totalFiles</code></td><td>If the store is <a href="/docs/v25.4/encryption">encrypted</a>, the total number of encrypted files on the store.</td></tr><tr><td><code>totalBytes</code></td><td>If the store is <a href="/docs/v25.4/encryption">encrypted</a>, the total number of encrypted bytes on the store.</td></tr><tr><td><code>activeKeyFiles</code></td><td>If the store is <a href="/docs/v25.4/encryption">encrypted</a>,, the number of files using the <a href="/docs/v25.4/encryption#changing-encryption-algorithm-or-keys">active data key</a>.</td></tr><tr><td><code>activeKeyBytes</code></td><td>If the store is <a href="/docs/v25.4/encryption">encrypted</a>,, the number of bytes using the <a href="/docs/v25.4/encryption#changing-encryption-algorithm-or-keys">active data key</a>.</td></tr><tr><td><code>dir</code></td><td>The directory on disk where the <a href="/docs/v25.4/cockroach-start#store">store</a> is located.</td></tr><tr><td><code>walFailoverPath</code></td><td>If <a href="/docs/v25.4/cockroach-start#enable-wal-failover">WAL failover is enabled</a>, this field encodes the path to the secondary WAL directory used for failover in the event of high write latency to the primary WAL.</td></tr></tbody></table>
+
+For example, to get the status of the stores of nodeID `1`, use the following:
+
+```shell
+curl http://localhost:8080/_status/stores/1
+```
+
+```json
+{
+  "stores": [
+    {
+      "storeId": 1,
+      "nodeId": 1,
+      "encryptionStatus": null,
+      "totalFiles": "0",
+      "totalBytes": "0",
+      "activeKeyFiles": "0",
+      "activeKeyBytes": "0",
+      "dir": "/tmp/node0",
+      "walFailoverPath": ""
+    }
+  ]
+}
+```
+
+## Alerting tools
+
+In addition to actively monitoring the overall health and performance of a cluster, it is also essential to configure alerting rules that promptly send notifications when CockroachDB experiences events that require investigation or intervention.
+
+Many of the [third-party monitoring integrations](/docs/v25.4/third-party-monitoring-tools), such as [Datadog](/docs/v25.4/datadog) and [Kibana](/docs/v25.4/kibana), also support event-based alerting using metrics collected from a cluster's [Prometheus endpoint](/docs/v25.4/prometheus-endpoint). Refer to the documentation for an integration for more details. This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager) service.
+
+### Alertmanager
+
+If you have configured [Prometheus](/docs/v25.4/monitor-cockroachdb-with-prometheus) to monitor your CockroachDB instance, you can also configure alerting rule definitions to have Alertmanager detect [important events](#events-to-alert-on) and alert you when they occur.
+
+#### Prometheus alerting rules endpoint
+
+Every CockroachDB node exports an alerting rules template at `http://<host>:<http-port>/api/v2/rules/`. These rule definitions are formatted for easy integration with Alertmanager.
+
+```shell
+$ curl http://localhost:8080/api/v2/rules/
+```
+
+```text
+rules/alerts:
+    rules:
+        - alert: UnavailableRanges
+          expr: (sum by(instance, cluster) (ranges_unavailable)) > 0
+          for: 10m0s
+          annotations:
+            summary: Instance {{ $labels.instance }} has {{ $value }} unavailable ranges
+        - alert: TrippedReplicaCircuitBreakers
+          expr: (sum by(instance, cluster) (kv_replica_circuit_breaker_num_tripped_replicas)) > 0
+          for: 10m0s
+          annotations:
+            summary: Instance {{ $labels.instance }} has {{ $value }} tripped per-Replica circuit breakers
+...
+```
+
+#### Working with Alertmanager rules
+
+To add a rule from the `api/v2/rules/` rules endpoint, create or edit your `alerts.rules.yml` file and copy the rule definition for the event you want to alert on. For example, to add a rule to alert you when unavailable ranges are detected, copy the following from the rules endpoint into your `alerts.rules.yml` file:
+
+```text
+- alert: UnavailableRanges
+  expr: (sum by(instance, cluster) (ranges_unavailable)) > 0
+  for: 10m0s
+  annotations:
+    summary: Instance {{ $labels.instance }} has {{ $value }} unavailable ranges
+```
+
+If you already followed the steps from [Monitor CockroachDB with Prometheus](/docs/v25.4/monitor-cockroachdb-with-prometheus), you should already have a `alerts.rules.yml` file. If you are creating a new `alerts.rules.yml` file, be sure that it begins with the following three lines:
+
+```text
+groups:
+- name: rules/alerts.rules
+  rules:
+```
+
+Place your desired rule(s) underneath the `rules:` header. For example, the following shows an `alerts.rules.yml` file with the unavailable ranges rule defined:
+
+```text
+groups:
+- name: rules/alerts.rules
+  rules:
+  - alert: UnavailableRanges
+    expr: (sum by(instance, cluster) (ranges_unavailable)) > 0
+    for: 10m0s
+    annotations:
+      summary: Instance {{ $labels.instance }} has {{ $value }} unavailable ranges
+```
+
+Once you have created or edited your `alerts.rules.yml` file, reference it in your `prometheus.yml` configuration file with the following:
+
+```text
+rule_files:
+- "rules/alerts.rules.yml"
+```
+
+If you already followed the steps from [Monitor CockroachDB with Prometheus](/docs/v25.4/monitor-cockroachdb-with-prometheus), this reference is already present in your `prometheus.yml` file.
+
+Start Prometheus and Alertmanager to begin watching for events to alert on. You can view imported rules on your Prometheus server's web interface at `http://<host>:<http-port>/rules`. Use the "State" column to verify that the rules were imported correctly.
+
+### Events to alert on
+
+<Note>
+Currently, not all events listed have corresponding alert rule definitions available from the `api/v2/rules/` endpoint. Many events not yet available in this manner are defined in the [pre-defined alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml). For more details, see [Monitor CockroachDB with Prometheus](/docs/v25.4/monitor-cockroachdb-with-prometheus).
+</Note>
+
+#### Node is down
+
+- **Rule:** Send an alert when a node has been down for 15 minutes or more.
+- **How to detect:** If a node is down, its Prometheus endpoint will return a `Connection refused` error. Otherwise, the `liveness_livenodes` metric will be the total number of live nodes in the cluster.
+- **Rule definition:** Use the `InstanceDead` alert from our [pre-defined alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml).
+
+#### Node is restarting too frequently
+
+- **Rule:** Send an alert if a node has restarted more than once in the last 10 minutes.
+- **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's Prometheus endpoint output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
+- **Rule definition:** Use the `InstanceFlapping` alert from our [pre-defined alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml).
+
+#### Node is running low on disk space
+
+- **Rule:** Send an alert when a node has less than 15% of free space remaining.
+- **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's Prometheus endpoint output.
+- **Rule definition:** Use the `StoreDiskLow` alert from our [pre-defined alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml).
+
+For instructions on how to free up disk space as quickly as possible after dropping a table, see [How can I free up disk space that was used by a dropped table?](/docs/v25.4/operational-faqs#how-can-i-free-up-disk-space-when-dropping-a-table)
+
+#### Node is not executing SQL
+
+- **Rule:** Send an alert when a node is not executing SQL despite having connections.
+- **How to detect:** The `sql_conns` metric in the node's Prometheus endpoint output will be greater than `0` while the `sql_query_count` metric will be `0`. You can also break this down by statement type using `sql_select_count`, `sql_insert_count`, `sql_update_count`, and `sql_delete_count`.
+
+#### CA certificate expires soon
+
+- **Rule:** Send an alert when the CA certificate on a node will expire in less than a year.
+- **How to detect:** Calculate this using the `security_certificate_expiration_ca` metric in the node's Prometheus endpoint output.
+- **Rule definition:** Use the `CACertificateExpiresSoon` alert from our [pre-defined alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml).
+
+#### Node certificate expires soon
+
+- **Rule:** Send an alert when a node's certificate will expire in less than a year.
+- **How to detect:** Calculate this using the `security_certificate_expiration_node` metric in the node's Prometheus endpoint output.
+- **Rule definition:** Use the `NodeCertificateExpiresSoon` alert from our [pre-defined alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml).
+
+#### Changefeed is experiencing high latency
+
+- **Rule:** Send an alert when the latency of any changefeed running on any node is higher than the set threshold, which depends on the [`gc.ttlseconds`](/docs/v25.4/configure-replication-zones#replication-zone-variables) variable set in the cluster.
+- **How to detect:** Calculate this using a threshold, where the threshold is less than the value of the [`gc.ttlseconds`](/docs/v25.4/configure-replication-zones#replication-zone-variables) variable. For example, `changefeed.max_behind_nanos > [some threshold]`.
+
+#### Unavailable ranges
+
+- **Rule:** Send an alert when the number of ranges with fewer live replicas than needed for quorum is non-zero for too long.
+- **How to detect:** Calculate this using the `ranges_unavailable` metric in the node's Prometheus endpoint output.
+- **Rule definition:** Use the `UnavailableRanges` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
+
+#### Tripped replica circuit breakers
+
+- **Rule:** Send an alert when a replica stops serving traffic due to other replicas being offline for too long.
+- **How to detect:** Calculate this using the `kv_replica_circuit_breaker_num_tripped_replicas` metric in the node's Prometheus endpoint output.
+- **Rule definition:** Use the `TrippedReplicaCircuitBreakers` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
+
+#### Under-replicated ranges
+
+- **Rule:** Send an alert when the number of ranges with replication below the [replication factor](/docs/v25.4/configure-replication-zones#num_replicas) is non-zero for too long.
+- **How to detect:** Calculate this using the `ranges_underreplicated` metric in the node's Prometheus endpoint output.
+- **Rule definition:** Use the `UnderreplicatedRanges` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
+
+#### Requests stuck in Raft
+
+- **Rule:** Send an alert when requests are taking a very long time in replication. This can be a symptom of a [leader-leaseholder split](/docs/v25.4/architecture/replication-layer#leader-leaseholder-splits).
+- **How to detect:** Calculate this using the `requests_slow_raft` metric in the node's Prometheus endpoint output.
+- **Rule definition:** Use the `RequestsStuckInRaft` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
+
+#### High open file descriptor count
+
+- **Rule:** Send an alert when a cluster is getting close to the [open file descriptor limit](/docs/v25.4/recommended-production-settings#file-descriptors-limit).
+- **How to detect:** Calculate this using the `sys_fd_softlimit` metric in the node's Prometheus endpoint output.
+- **Rule definition:** Use the `HighOpenFDCount` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
+
+## See also
+
+- [Production Checklist](/docs/v25.4/recommended-production-settings)
+- [Manual Deployment](/docs/v25.4/manual-deployment)
+- [Orchestrated Deployment](/docs/v25.4/kubernetes-overview)
+- [Local Deployment](/docs/v25.4/start-a-local-cluster)
+- [Third-Party Monitoring Integrations](/docs/v25.4/third-party-monitoring-tools)
+- [Metrics](/docs/v25.4/metrics)
+- [Troubleshoot Replication Zones](/docs/v25.4/troubleshoot-replication-zones)

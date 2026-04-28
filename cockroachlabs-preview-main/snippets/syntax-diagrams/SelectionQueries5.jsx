@@ -1,0 +1,73 @@
+export const SelectionQueries5 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="125" width="593" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="/docs/stable/sql-grammar#select_clause" xlink:title="select_clause">
+<rect height="32" width="106" x="31" y="3"></rect>
+<rect class="nonterminal" height="32" width="106" x="29" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="82" font-size="10" class="nonterminal" x="41" y="21">select_clause</text></a><rect height="32" rx="10" width="66" x="177" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="175" y="1"></rect>
+<text class="terminal" x="185" y="21">UNION</text>
+<rect height="32" rx="10" width="96" x="177" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="96" x="175" y="45"></rect>
+<text class="terminal" x="185" y="65">INTERSECT</text>
+<rect height="32" rx="10" width="72" x="177" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="175" y="89"></rect>
+<text class="terminal" x="185" y="109">EXCEPT</text>
+<rect height="32" rx="10" width="44" x="333" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="331" y="33"></rect>
+<text class="terminal" x="341" y="53">ALL</text>
+<rect height="32" rx="10" width="86" x="333" y="79"></rect>
+<rect class="terminal" height="32" rx="10" width="86" x="331" y="77"></rect>
+<text class="terminal" x="341" y="97">DISTINCT</text><a xlink:href="/docs/stable/sql-grammar#select_clause" xlink:title="select_clause">
+<rect height="32" width="106" x="459" y="3"></rect>
+<rect class="nonterminal" height="32" width="106" x="457" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="82" font-size="10" class="nonterminal" x="469" y="21">select_clause</text></a><path class="line" d="m17 17 h2 m0 0 h10 m106 0 h10 m20 0 h10 m66 0 h10 m0 0 h30 m-136 0 h20 m116 0 h20 m-156 0 q10 0 10 10 m136 0 q0 -10 10 -10 m-146 10 v24 m136 0 v-24 m-136 24 q0 10 10 10 m116 0 q10 0 10 -10 m-126 10 h10 m96 0 h10 m-126 -10 v20 m136 0 v-20 m-136 20 v24 m136 0 v-24 m-136 24 q0 10 10 10 m116 0 q10 0 10 -10 m-126 10 h10 m72 0 h10 m0 0 h24 m40 -88 h10 m0 0 h96 m-126 0 h20 m106 0 h20 m-146 0 q10 0 10 10 m126 0 q0 -10 10 -10 m-136 10 v12 m126 0 v-12 m-126 12 q0 10 10 10 m106 0 q10 0 10 -10 m-116 10 h10 m44 0 h10 m0 0 h42 m-116 -10 v20 m126 0 v-20 m-126 20 v24 m126 0 v-24 m-126 24 q0 10 10 10 m106 0 q10 0 10 -10 m-116 10 h10 m86 0 h10 m20 -76 h10 m106 0 h10 m3 0 h-3"></path>
+<polygon points="583 17 591 13 591 21"></polygon>
+<polygon points="583 17 575 13 575 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

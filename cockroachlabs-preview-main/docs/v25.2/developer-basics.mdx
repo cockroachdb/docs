@@ -1,0 +1,41 @@
+---
+title: "Developer Basics"
+old_description: "A short overview of key concepts developers need to know about CockroachDB"
+---
+
+Before you start using CockroachDB, you should understand the following important mechanics of the database:
+
+- [How transactions work in CockroachDB](#how-transactions-work-in-cockroachdb), including [serializability](#serializability-and-transaction-contention) and [transaction retries](#transaction-retries)
+- [How applications interact with CockroachDB](#how-applications-interact-with-cockroachdb)
+
+Note that the sections that follow were written for the purposes of orienting application developers. For more detailed technical documentation on CockroachDB's architecture, see our [architecture documentation](/docs/v25.2/architecture/overview).
+
+### How transactions work in CockroachDB
+
+CockroachDB is designed to make your data scalable and consistent. All stored records are replicated across a distributed deployment of database instances, and all database transactions committed in CockroachDB satisfy [ACID properties](https://en.wikipedia.org/wiki/ACID).
+
+To guarantee that database operations are [atomic](https://wikipedia.org/wiki/Atomicity_(database_systems)) (the "A" of the [ACID properties](https://en.wikipedia.org/wiki/ACID)), CockroachDB executes all statements in the context of an atomic [database transaction](https://wikipedia.org/wiki/Database_transaction). If a transaction succeeds, all data mutations are applied together simultaneously from the perspective of operations outside of the transaction. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged.
+
+Managing transactions is an important part of CockroachDB application development. When creating your application's persistence layer, you must understand how CockroachDB interacts with your application framework's transaction management system. You should also have some knowledge of CockroachDB's [transaction syntax](/docs/v25.2/transactions#syntax). We go into more detail about transaction management in [Manage Transactions](/docs/v25.2/transactions).
+
+#### Serializability and transaction contention
+
+By default, CockroachDB uses [`SERIALIZABLE`](/docs/v25.2/demo-serializable) transaction [isolation](https://wikipedia.org/wiki/Isolation_(database_systems)) (the "I" of ACID semantics). If transactions are executed concurrently, the final state of the database will appear as if the transactions were executed serially. `SERIALIZABLE` isolation, the strictest level of isolation, provides the highest level of data consistency and protects against concurrency anomalies.
+
+To guarantee data consistency, CockroachDB [locks](/docs/v25.2/architecture/transaction-layer#concurrency-control) the data targeted by an open transaction. If a separate transaction attempts to modify data that are locked by an open transaction, the newest transaction will not succeed, as committing it could result in incorrect data. This scenario is called *transaction contention*, and should be avoided when possible. For a more detailed explanation of transaction contention, and tips on how to avoid it, see [Transaction contention](/docs/v25.2/performance-best-practices-overview#transaction-contention).
+
+#### Transaction retries
+
+In some cases, [transaction contention](/docs/v25.2/performance-best-practices-overview#transaction-contention) is unavoidable. If a transaction fails due to contention, CockroachDB will automatically retry the transaction. If the transaction is `SERIALIZABLE` and cannot automatically be retried without allowing [serialization](/docs/v25.2/demo-serializable) anomalies, CockroachDB will return a [transaction retry error](/docs/v25.2/transaction-retry-error-reference) to the client.
+
+Most [official CockroachDB client libraries](/docs/v25.2/install-client-drivers) include a transaction-retrying wrapper function to make writing your persistence layer easier. If your framework's client library does not include a retry wrapper, you will need to write transaction retry logic in your application. We go into more detail about transaction retries later in the guide, in [Retry Transactions](/docs/v25.2/advanced-client-side-transaction-retries).
+
+#### Read Committed isolation
+
+CockroachDB can be configured to execute transactions at [`READ COMMITTED`](/docs/v25.2/read-committed) instead of `SERIALIZABLE` isolation. `READ COMMITTED` permits some concurrency anomalies in exchange for minimizing transaction aborts and removing the need for client-side retries. Depending on your workload requirements, this may be desirable. For more information, see [Read Committed Transactions](/docs/v25.2/read-committed).
+
+### How applications interact with CockroachDB
+
+CockroachDB supports the PostgreSQL wire protocol, and CockroachDB supports [most PostgreSQL syntax and features](/docs/v25.2/postgresql-compatibility), making most PostgreSQL client libraries compatible with CockroachDB. Cockroach Labs also maintains official CockroachDB adapters for some of the most popular PostgreSQL drivers and ORMs. Using an official CockroachDB adapter can help simplify transaction management and performance optimization in your application. If an official CockroachDB adapter does not yet exist for your application's data framework, we recommend just using the PostgreSQL client library that works for your application.
+
+A growing number of popular third-party database tools offer full support for CockroachDB. Because CockroachDB uses the PostgreSQL wire protocol and supports PostgreSQL syntax, most PostgreSQL-compatible third-party tools are also compatible with CockroachDB. For a list of libraries and tools that we have tested against CockroachDB, see [Third-party Database Tools](/docs/v25.2/third-party-database-tools).

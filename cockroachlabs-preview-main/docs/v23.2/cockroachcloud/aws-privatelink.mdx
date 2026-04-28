@@ -1,0 +1,20 @@
+---
+title: "Manage AWS PrivateLink"
+old_description: "Instructions for establishing AWS PrivateLink network access for a cluster in CockroachDB Cloud."
+---
+
+import AwsPrivatelink from "/snippets/cockroachcloud/aws-privatelink.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<AwsPrivatelink />

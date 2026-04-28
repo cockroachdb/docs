@@ -1,0 +1,39 @@
+import Mac from "/snippets/v25.2/connect-to-database/self-hosted/mac/index.mdx";
+import Linux from "/snippets/v25.2/connect-to-database/self-hosted/linux/index.mdx";
+import Windows from "/snippets/v25.2/connect-to-database/self-hosted/windows/index.mdx";
+
+To connect to a CockroachDB self-hosted cluster, you need the [general connection string](/docs/v25.2/connection-parameters#connect-using-a-url) or [connection parameters](/docs/v25.2/connection-parameters#connect-using-discrete-parameters) for your cluster.
+
+The connection strings and parameters for your cluster are output when you [start the cluster](/docs/v25.2/cockroach-start#standard-output).
+
+## Step 2. Select your OS
+
+<Tabs>
+<Tab title="Mac">
+
+<Mac/>
+
+</Tab>
+<Tab title="Linux">
+
+<Linux/>
+
+</Tab>
+<Tab title="Windows">
+
+<Windows/>
+
+</Tab>
+</Tabs>
+
+## Connection parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;username&#125;</code></td><td>The <a href="/docs/v25.2/security-reference/authorization#sql-users">SQL user</a> connecting to the cluster.</td></tr><tr><td><code>&#123;host&#125;</code></td><td>The host on which the CockroachDB node is running.</td></tr><tr><td><code>&#123;port&#125;</code></td><td>The port at which the CockroachDB node is listening.</td></tr><tr><td><code>&#123;database&#125;</code></td><td>The name of the (existing) database.</td></tr><tr><td><code>&#123;root-cert&#125;</code></td><td>The path to the root certificate.<br/>You can generate this certificate with <a href="/docs/v25.2/cockroach-cert#subcommands"><code>cockroach cert create-ca</code></a>, or you can use a <a href="/docs/v25.2/create-security-certificates-custom-ca">custom CA cert</a>.</td></tr><tr><td><code>&#123;client-cert&#125;</code></td><td>The path to the <a href="/docs/v25.2/cockroach-cert#client-key-and-certificates">client certificate</a> for the user connecting to the cluster.<br/>You can generate this certificate with <a href="/docs/v25.2/cockroach-cert#subcommands"><code>cockroach cert create-client</code></a>.</td></tr><tr><td><code>&#123;client-key&#125;</code></td><td>The path to the <a href="/docs/v25.2/cockroach-cert#client-key-and-certificates">client key</a> for the user connecting to the cluster.<br/>You can generate this key with <a href="/docs/v25.2/cockroach-cert#subcommands"><code>cockroach cert create-client</code></a>.</td></tr></tbody></table>
+
+<Note>
+The connection information shown on this page uses [client certificate and key authentication](/docs/v25.2/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v25.2/authentication#using-digital-certificates-with-cockroachdb).
+
+For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v25.2/secure-a-cluster).
+</Note>

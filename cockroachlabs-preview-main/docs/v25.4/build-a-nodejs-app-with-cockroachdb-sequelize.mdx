@@ -1,0 +1,321 @@
+---
+title: "Build a Node.js App with CockroachDB and Sequelize"
+old_description: "Learn how to use CockroachDB from a simple Node.js application with the Sequelize ORM."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v25.4/build-a-nodejs-app-with-cockroachdb-sequelize"
+  items={[
+    {
+      title: "Use node-postgres",
+      href: "/docs/v25.4/build-a-nodejs-app-with-cockroachdb",
+    },
+    {
+      title: "Use Sequelize",
+      href: "/docs/v25.4/build-a-nodejs-app-with-cockroachdb-sequelize",
+    },
+    {
+      title: "Use Knex.js",
+      href: "/docs/v25.4/build-a-nodejs-app-with-cockroachdb-knexjs",
+    },
+    {
+      title: "Use Prisma",
+      href: "/docs/v25.4/build-a-nodejs-app-with-cockroachdb-prisma",
+    },
+    {
+      title: "Use TypeORM",
+      href: "/docs/v25.4/build-a-typescript-app-with-cockroachdb",
+    },
+  ]}
+/>
+
+This tutorial shows you how build a simple Node.js application with CockroachDB and the [Sequelize](https://sequelize.org/) ORM.
+
+## Step 1. Start CockroachDB
+
+<Tabs>
+<Tab title="Use CockroachDB Basic">
+
+### Choose your installation method
+
+You can install a CockroachDB Basic cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or `ccloud`, a command-line interface (CLI) tool.
+
+<Tabs>
+<Tab title="Use the Cloud Console (GUI)">
+
+### Create a free cluster
+
+<Note>
+Organizations without billing information on file can only create one CockroachDB Basic cluster.
+</Note>
+
+1. If you haven't already, [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?referralId=docs_node_sequelize).
+2. [Log in](https://cockroachlabs.cloud/) to your CockroachDB Cloud account.
+3. On the **Clusters** page, click **Create cluster**.
+4. On the **Select a plan** page, select **Basic**.
+5. On the **Cloud &amp; Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section.
+6. In the **Regions** section, select a region for the cluster. Refer to [CockroachDB Cloud Regions](/docs/cockroachcloud/regions) for the regions where CockroachDB Basic clusters can be deployed. To create a multi-region cluster, click **Add region** and select additional regions.
+7. Click **Next: Capacity**.
+8. On the **Capacity** page, select **Start for free**. Click **Next: Finalize**.
+9. On the **Finalize** page, click **Create cluster**.
+
+    Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.
+
+### Create a SQL user
+
+The **Create SQL user** dialog allows you to create a new SQL user and password.
+
+1. Enter a username in the **SQL user** field or use the one provided by default.
+2. Click **Generate &amp; save password**.
+3. Copy the generated password and save it in a secure location.
+4. Click **Next**.
+
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Manage SQL users on a cluster](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster).
+
+### Get the connection string
+
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **General connection string** from the **Select option** dropdown.
+2. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
+
+    The sample application used in this tutorial uses system CA certificates for server certificate verification, so you can skip the **Download CA Cert** instructions.
+
+    <Note>
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
+    </Note>
+
+</Tab>
+<Tab title="Use ccloud (CLI)">
+
+Follow these steps to create a CockroachDB Basic cluster using the `ccloud` CLI tool.
+
+<Note>
+The `ccloud` CLI tool is in Preview.
+</Note>
+
+### Install `ccloud`
+
+Choose your OS:
+
+<Tabs>
+<Tab title="Mac">
+
+You can install `ccloud` using either Homebrew or by downloading the binary.
+
+### Use Homebrew
+
+1. [Install Homebrew](http://brew.sh/).
+2. Install using the `ccloud` tap:
+
+    ```shell
+    brew install cockroachdb/tap/ccloud
+    ```
+
+### Download the binary
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-amd64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+Use the ARM 64 binary if you have an M-series Mac:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-arm64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Linux">
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.6.12.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Windows">
+
+In a PowerShell window, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud/ccloud_windows-amd64_0.6.12.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force ccloud/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
+```
+
+</Tab>
+</Tabs>
+
+### Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrieve the connection string.
+
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB Basic cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+
+```shell
+ccloud quickstart
+```
+
+The `ccloud quickstart` command will open a browser window to log you in to CockroachDB Cloud. If you are new to CockroachDB Cloud, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
+
+The `ccloud quickstart` command will prompt you for the cluster name, cloud provider, and cloud provider region, then ask if you want to connect to the cluster. Each prompt has default values that you can select, or change if you want a different option.
+
+Select **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting `postgresql://`.
+
+```text
+? How would you like to connect? General connection string
+Retrieving cluster info: succeeded
+ Downloading cluster cert to /Users/maxroach/.postgresql/root.crt: succeeded
+postgresql://maxroach:ThisIsNotAGoodPassword@blue-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
+```
+
+</Tab>
+</Tabs>
+
+## Step 2. Get the code
+
+Clone the sample code's GitHub repo:
+
+```shell
+$ git clone https://github.com/cockroachlabs/example-app-node-sequelize
+```
+
+The sample code uses Sequelize to map Node.js-specific objects to some read and write SQL operations.
+
+## Step 3. Run the code
+
+To start the app:
+
+1. Set the `DATABASE_URL` environment variable to the connection string:
+
+    ```shell
+    $ export DATABASE_URL="<connection-string>"
+    ```
+
+    Where `<connection-string>` is the connection string you copied earlier.
+
+    The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
+2. Install the app dependencies:
+
+    ```shell
+    $ cd example-app-node-sequelize
+    ```
+
+    ```shell
+    $ npm install
+    ```
+3. Run the code:
+
+    ```shell
+    $ node app.js
+    ```
+
+    The output should look similar to the following:
+
+    ```shell
+    Executing (default): SELECT version() AS version
+    Executing (default): DROP TABLE IF EXISTS "accounts" CASCADE;
+    Executing (default): SELECT crdb_internal.increment_feature_counter(concat('Sequelize ', '6.17'))
+    Executing (default): SELECT crdb_internal.increment_feature_counter(concat('sequelize-cockroachdb ', '6.0.5'))
+    Executing (default): CREATE TABLE IF NOT EXISTS "accounts" ("id" INTEGER , "balance" INTEGER, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL, "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL, PRIMARY KEY ("id"));
+    Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'accounts' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;
+    Executing (default): INSERT INTO "accounts" ("id","balance","createdAt","updatedAt") VALUES (1,1000,'2022-03-30 19:56:34.483 +00:00','2022-03-30 19:56:34.483 +00:00'),(2,250,'2022-03-30 19:56:34.483 +00:00','2022-03-30 19:56:34.483 +00:00') RETURNING "id","balance","createdAt","updatedAt";
+    Executing (default): SELECT "id", "balance", "createdAt", "updatedAt" FROM "accounts" AS "accounts";
+    1 1000
+    2 250
+    ```
+
+</Tab>
+<Tab title="Use a Local Cluster">
+
+1. If you haven't already, [download the CockroachDB binary](/docs/v25.4/install-cockroachdb).
+2. Run the [`cockroach start-single-node`](/docs/v25.4/cockroach-start-single-node) command:
+
+    ```shell
+    $ cockroach start-single-node --advertise-addr 'localhost' --insecure
+    ```
+
+    This starts an insecure, single-node cluster.
+3. Take note of the following connection information in the SQL shell welcome text:
+
+    ```text
+    CockroachDB node starting at 2021-08-30 17:25:30.06524 +0000 UTC (took 4.3s)
+    build:               CCL v21.1.6 @ 2021/07/20 15:33:43 (go1.15.11)
+    webui:               http://localhost:8080
+    sql:                 postgresql://root@localhost:26257?sslmode=disable
+    ```
+
+    You'll use the `sql` connection string to connect to the cluster later in this tutorial.
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+## Step 2. Get the code
+
+Clone the sample code's GitHub repo:
+
+```shell
+$ git clone https://github.com/cockroachlabs/example-app-node-sequelize
+```
+
+The sample code uses Sequelize to map Node.js-specific objects to some read and write SQL operations.
+
+## Step 3. Run the code
+
+To start the app:
+
+1. Set the `DATABASE_URL` environment variable to the connection string:
+
+    ```shell
+    $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
+    ```
+
+    The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
+2. Install the app dependencies:
+
+    ```shell
+    $ cd example-app-node-sequelize
+    ```
+
+    ```shell
+    $ npm install
+    ```
+3. Run the code:
+
+    ```shell
+    $ node app.js
+    ```
+
+    The output should look similar to the following:
+
+    ```shell
+    Executing (default): SELECT version() AS version
+    Executing (default): DROP TABLE IF EXISTS "accounts" CASCADE;
+    Executing (default): SELECT crdb_internal.increment_feature_counter(concat('Sequelize ', '6.17'))
+    Executing (default): SELECT crdb_internal.increment_feature_counter(concat('sequelize-cockroachdb ', '6.0.5'))
+    Executing (default): CREATE TABLE IF NOT EXISTS "accounts" ("id" INTEGER , "balance" INTEGER, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL, "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL, PRIMARY KEY ("id"));
+    Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'accounts' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;
+    Executing (default): INSERT INTO "accounts" ("id","balance","createdAt","updatedAt") VALUES (1,1000,'2022-03-30 19:56:34.483 +00:00','2022-03-30 19:56:34.483 +00:00'),(2,250,'2022-03-30 19:56:34.483 +00:00','2022-03-30 19:56:34.483 +00:00') RETURNING "id","balance","createdAt","updatedAt";
+    Executing (default): SELECT "id", "balance", "createdAt", "updatedAt" FROM "accounts" AS "accounts";
+    1 1000
+    2 250
+    ```
+
+</Tab>
+</Tabs>
+
+## What's next?
+
+Read more about using the [Sequelize ORM](https://sequelize.org/), or check out a more realistic implementation of Sequelize with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+
+You might also be interested in the following pages:
+
+- [Client Connection Parameters](/docs/v25.4/connection-parameters)
+- [Connection Pooling](/docs/v25.4/connection-pooling)
+- [Data Replication](/docs/v25.4/demo-replication-and-rebalancing)
+- [CockroachDB Resilience](/docs/v25.4/demo-cockroachdb-resilience)
+- [Replication &amp; Rebalancing](/docs/v25.4/demo-replication-and-rebalancing)
+- [Cross-Cloud Migration](/docs/v25.4/demo-automatic-cloud-migration)
+- [Automated Operations](/docs/v25.4/orchestrate-a-local-cluster-with-kubernetes-insecure)

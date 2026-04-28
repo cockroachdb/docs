@@ -1,0 +1,20 @@
+---
+title: "Take and Restore Self-Managed Backups on CockroachDB Cloud"
+old_description: "Run backups and restores from your CockroachDB Cloud cluster."
+---
+
+import TakeAndRestoreSelfManagedBackups from "/snippets/cockroachcloud/take-and-restore-self-managed-backups.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<TakeAndRestoreSelfManagedBackups />

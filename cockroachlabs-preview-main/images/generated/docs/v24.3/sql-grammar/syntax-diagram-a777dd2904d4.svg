@@ -1,0 +1,70 @@
+<svg height="289" width="433" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="118" x="51" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="118" x="49" y="1"></rect>
+<text class="terminal" x="59" y="21">FORCE_INDEX</text>
+<rect height="32" rx="10" width="30" x="189" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="187" y="1"></rect>
+<text class="terminal" x="197" y="21">=</text><a xlink:href="#index_name" xlink:title="index_name">
+<rect height="32" width="98" x="239" y="3"></rect>
+<rect class="nonterminal" height="32" width="98" x="237" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="74" font-size="11" class="nonterminal" x="249" y="21">index_name</text></a><rect height="32" rx="10" width="138" x="51" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="138" x="49" y="45"></rect>
+<text class="terminal" x="59" y="65">NO_INDEX_JOIN</text>
+<rect height="32" rx="10" width="146" x="51" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="146" x="49" y="89"></rect>
+<text class="terminal" x="59" y="109">NO_ZIGZAG_JOIN</text>
+<rect height="32" rx="10" width="130" x="51" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="130" x="49" y="133"></rect>
+<text class="terminal" x="59" y="153">NO_FULL_SCAN</text>
+<rect height="32" rx="10" width="154" x="51" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="154" x="49" y="177"></rect>
+<text class="terminal" x="59" y="197">AVOID_FULL_SCAN</text>
+<rect height="32" rx="10" width="126" x="51" y="223"></rect>
+<rect class="terminal" height="32" rx="10" width="126" x="49" y="221"></rect>
+<text class="terminal" x="59" y="241">FORCE_ZIGZAG</text>
+<rect height="32" rx="10" width="30" x="217" y="255"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="215" y="253"></rect>
+<text class="terminal" x="225" y="273">=</text><a xlink:href="#index_name" xlink:title="index_name">
+<rect height="32" width="98" x="267" y="255"></rect>
+<rect class="nonterminal" height="32" width="98" x="265" y="253"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="74" font-size="11" class="nonterminal" x="277" y="273">index_name</text></a><path class="line" d="m17 17 h2 m20 0 h10 m118 0 h10 m0 0 h10 m30 0 h10 m0 0 h10 m98 0 h10 m0 0 h48 m-374 0 h20 m354 0 h20 m-394 0 q10 0 10 10 m374 0 q0 -10 10 -10 m-384 10 v24 m374 0 v-24 m-374 24 q0 10 10 10 m354 0 q10 0 10 -10 m-364 10 h10 m138 0 h10 m0 0 h196 m-364 -10 v20 m374 0 v-20 m-374 20 v24 m374 0 v-24 m-374 24 q0 10 10 10 m354 0 q10 0 10 -10 m-364 10 h10 m146 0 h10 m0 0 h188 m-364 -10 v20 m374 0 v-20 m-374 20 v24 m374 0 v-24 m-374 24 q0 10 10 10 m354 0 q10 0 10 -10 m-364 10 h10 m130 0 h10 m0 0 h204 m-364 -10 v20 m374 0 v-20 m-374 20 v24 m374 0 v-24 m-374 24 q0 10 10 10 m354 0 q10 0 10 -10 m-364 10 h10 m154 0 h10 m0 0 h180 m-364 -10 v20 m374 0 v-20 m-374 20 v24 m374 0 v-24 m-374 24 q0 10 10 10 m354 0 q10 0 10 -10 m-364 10 h10 m126 0 h10 m20 0 h10 m0 0 h158 m-188 0 h20 m168 0 h20 m-208 0 q10 0 10 10 m188 0 q0 -10 10 -10 m-198 10 v12 m188 0 v-12 m-188 12 q0 10 10 10 m168 0 q10 0 10 -10 m-178 10 h10 m30 0 h10 m0 0 h10 m98 0 h10 m43 -252 h-3"></path>
+<polygon points="423 17 431 13 431 21"></polygon>
+<polygon points="423 17 415 13 415 21"></polygon></svg>

@@ -1,0 +1,663 @@
+---
+title: "Table Expressions"
+old_description: "Table expressions define a data source in selection clauses."
+---
+
+import { TableExpressions4 } from "/snippets/syntax-diagrams/TableExpressions4.jsx";
+
+A _table expression_ defines a data source in the `FROM` sub-clause of a [`SELECT` clause](/docs/v24.3/select-clause) or as parameter to a [`TABLE` clause](/docs/v24.3/selection-queries#table-clause).
+
+A [join](/docs/v24.3/joins) is a particular kind of table expression.
+
+## Synopsis
+
+<TableExpressions4 />
+
+## Parameters
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>table&#95;name</code>
+      </td>
+      <td>
+        A <a href="#table-and-view-names">table or view name</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>table&#95;alias&#95;name</code>
+      </td>
+      <td>
+        A name to use in an <a href="#aliased-table-expressions">aliased table expression</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>name</code>
+      </td>
+      <td>
+        One or more aliases for the column names, to use in an{" "}
+        <a href="#aliased-table-expressions">aliased table expression</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>index&#95;name</code>
+      </td>
+      <td>
+        Optional syntax to <a href="#force-index-selection">force index selection</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>func&#95;application</code>
+      </td>
+      <td>
+        <a href="#result-from-a-function">Result from a function</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>row&#95;source&#95;extension&#95;stmt</code>
+      </td>
+      <td>
+        <a href="#use-the-output-of-another-statement">Result rows</a> from a{" "}
+        <a href="/docs/v24.3/sql-grammar#row_source_extension_stmt">supported statement</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>select&#95;stmt</code>
+      </td>
+      <td>
+        A <a href="/docs/v24.3/selection-queries">selection query</a> to use as <a href="#use-a-subquery">subquery</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>joined&#95;table</code>
+      </td>
+      <td>
+        A <a href="/docs/v24.3/joins">join expression</a>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Table expressions language
+
+The synopsis defines a mini-language to construct complex table expressions from simpler parts.
+
+<table>
+  <thead>
+    <tr>
+      <th>Construct</th>
+      <th>Description</th>
+      <th>Examples</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>table&#95;name &#91;@ scan&#95;parameters&#93;</code>
+      </td>
+      <td>
+        <a href="#table-and-view-names">Access a table or view</a>.
+      </td>
+      <td>
+        <code>accounts</code>, <code>accounts@name&#95;idx</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>function&#95;name ( exprs ... )</code>
+      </td>
+      <td>
+        Generate tabular data using a <a href="#scalar-function-as-data-source">scalar function</a> or{" "}
+        <a href="#table-generator-functions">table generator function</a>.
+      </td>
+      <td>
+        <code>sin(1.2)</code>, <code>generate&#95;series(1,10)</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>&lt;table expr&gt; &#91;AS&#93; name &#91;( name &#91;, ...&#93; )&#93;</code>
+      </td>
+      <td>
+        <a href="#aliased-table-expressions">Rename a table and optionally columns</a>.
+      </td>
+      <td>
+        <code>accounts a</code>, <code>accounts AS a</code>, <code>accounts AS a(id, b)</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>&lt;table expr&gt; WITH ORDINALITY</code>
+      </td>
+      <td>
+        <a href="#ordinality-annotation">Enumerate the result rows</a>.
+      </td>
+      <td>
+        <code>accounts WITH ORDINALITY</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>&lt;table expr&gt; JOIN &lt;table expr&gt; ON ...</code>
+      </td>
+      <td>
+        <a href="/docs/v24.3/joins">Join expression</a>.
+      </td>
+      <td>
+        <code>orders o JOIN customers c ON o.customer&#95;id = c.id</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>(... subquery ...)</code>
+      </td>
+      <td>
+        A <a href="/docs/v24.3/selection-queries">selection query</a> used as <a href="#use-a-subquery">subquery</a>.
+      </td>
+      <td>
+        <code>(SELECT &#42; FROM customers c)</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>&#91;... statement ...&#93;</code>
+      </td>
+      <td>
+        Use the result rows of an <a href="/docs/v24.3/sql-grammar#preparable_stmt">explainable statement</a>.<br />
+        <br />
+        This is a CockroachDB extension. However, Cockroach Labs recommends that you use the standard SQL{" "}
+        <a href="/docs/v24.3/common-table-expressions">CTE syntax</a> instead. See{" "}
+        <a href="#use-the-output-of-another-statement">Use the output of another statement</a> for an example.
+      </td>
+      <td>
+        <code>&#91;SHOW COLUMNS FROM accounts&#93;</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+The following sections provide details on each of these options.
+
+## Table expressions that generate data
+
+The following sections describe primary table expressions that produce data.
+
+### Table and view names
+
+#### Syntax
+
+```text
+identifier
+identifier.identifier
+identifier.identifier.identifier
+```
+
+A single SQL identifier in a table expression designates the contents of the table, [view](/docs/v24.3/views), or sequence with that name in the current database, as configured by [`SET DATABASE`](/docs/v24.3/set-vars).
+
+If the name is composed of two or more identifiers, [name resolution](/docs/v24.3/sql-name-resolution) rules apply.
+
+For example:
+
+```sql
+> SELECT * FROM users; -- uses table `users` in the current database
+```
+
+```sql
+> SELECT * FROM mydb.users; -- uses table `users` in database `mydb`
+```
+
+### Force index selection
+
+By using the explicit index annotation, you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2) and use a specific [index](/docs/v24.3/indexes) when reading from a named table.
+
+<Note>
+  Index selection can impact [performance](/docs/v24.3/performance-best-practices-overview), but does not change the
+  result of a query.
+</Note>
+
+##### Force index scan
+
+To force a scan of a specific index:
+
+```sql
+SELECT * FROM table@my_idx;
+```
+
+This is equivalent to the longer expression:
+
+```sql
+SELECT * FROM table@{FORCE_INDEX=my_idx};
+```
+
+##### Force reverse scan
+
+To force a reverse scan of a specific index:
+
+```sql
+SELECT * FROM table@{FORCE_INDEX=my_idx,DESC};
+```
+
+Forcing a reverse scan can help with [performance tuning](/docs/v24.3/performance-best-practices-overview). To choose an index and its scan direction:
+
+```sql
+SELECT * FROM table@{FORCE_INDEX=idx[,DIRECTION]};
+```
+
+where the optional `DIRECTION` is either `ASC` (ascending) or `DESC` (descending).
+
+When a direction is specified, that scan direction is forced; otherwise the [cost-based optimizer](/docs/v24.3/cost-based-optimizer) is free to choose the direction it calculates will result in the best performance.
+
+You can verify that the optimizer is choosing your desired scan direction using [`EXPLAIN (OPT)`](/docs/v24.3/explain#opt-option). For example, given the table
+
+```sql
+CREATE TABLE kv (K INT PRIMARY KEY, v INT);
+```
+
+you can check the scan direction with:
+
+```sql
+EXPLAIN (opt) SELECT * FROM users@{FORCE_INDEX=primary,DESC};
+```
+
+```text
+                 text
++-------------------------------------+
+  scan users,rev
+   └── flags: force-index=primary,rev
+(2 rows)
+```
+
+#### Force inverted index scan
+
+To force a scan of any [inverted index](/docs/v24.3/inverted-indexes) of the hinted table:
+
+```sql
+SELECT * FROM table@{FORCE_INVERTED_INDEX};
+```
+
+The `FORCE_INVERTED_INDEX` hint does not allow specifying an inverted index. If no query plan can be generated, the query will result in the error:
+
+```text
+ERROR: could not produce a query plan conforming to the FORCE_INVERTED_INDEX hint
+```
+
+##### Force partial index scan
+
+To force a [partial index scan](/docs/v24.3/partial-indexes), your statement must have a `WHERE` clause that implies the partial index filter.
+
+```sql
+CREATE TABLE t (
+  a INT,
+  INDEX idx (a) WHERE a > 0);
+INSERT INTO t(a) VALUES (5);
+SELECT * FROM t@idx WHERE a > 0;
+```
+
+```text
+CREATE TABLE
+
+Time: 13ms total (execution 12ms / network 0ms)
+
+INSERT 1
+
+Time: 22ms total (execution 21ms / network 0ms)
+
+  a
+-----
+  5
+(1 row)
+
+Time: 1ms total (execution 1ms / network 0ms)
+```
+
+##### Force partial GIN index scan
+
+To force a [partial GIN index](/docs/v24.3/inverted-indexes#partial-gin-indexes) scan, your statement must have a `WHERE` clause that:
+
+- Implies the partial index.
+- Constrains the GIN index scan.
+
+```sql
+DROP TABLE t;
+CREATE TABLE t (
+  j JSON,
+  INVERTED INDEX idx (j) WHERE j->'a' = '1');
+INSERT INTO t(j)
+  VALUES ('{"a": 1}'),
+         ('{"a": 3, "b": 2}'),
+         ('{"a": 1, "b": 2}');
+SELECT * FROM t@idx WHERE j->'a' = '1' AND j->'b' = '2';
+```
+
+```text
+DROP TABLE
+
+Time: 68ms total (execution 22ms / network 45ms)
+
+CREATE TABLE
+
+Time: 10ms total (execution 10ms / network 0ms)
+
+INSERT 3
+
+Time: 22ms total (execution 22ms / network 0ms)
+
+         j
+--------------------
+  {"a": 1, "b": 2}
+(1 row)
+
+Time: 1ms total (execution 1ms / network 0ms)
+```
+
+##### Prevent full scan
+
+- To prevent the optimizer from planning a full scan for a specific table, specify the `NO_FULL_SCAN` index hint. For example:
+
+  ```sql
+  SELECT * FROM table_name@{NO_FULL_SCAN};
+  ```
+
+- To prevent a full scan of a [partial index](/docs/v24.3/partial-indexes) for a specific table, you must specify `NO_FULL_SCAN` in combination with the index name using [`FORCE_INDEX`](/docs/v24.3/table-expressions#force-index-selection). For example:
+
+  ```sql
+  SELECT * FROM table_name@{FORCE_INDEX=index_name,NO_FULL_SCAN} WHERE b > 0;
+  ```
+
+  This forces a constrained scan of the partial index. If a constrained scan of the partial index is not possible, an error is returned.
+
+<Tip>
+  For other ways to prevent full scans, refer to [Prevent the optimizer from planning full
+  scans](/docs/v24.3/performance-best-practices-overview#prevent-the-optimizer-from-planning-full-scans).
+</Tip>
+
+<Note>
+  You can also force index selection for [`DELETE`](/docs/v24.3/delete#force-index-selection-for-deletes) and
+  [`UPDATE`](/docs/v24.3/update#force-index-selection-for-updates) statements.
+</Note>
+
+### Access a common table expression
+
+A single identifier in a table expression can refer to a [common table expression](/docs/v24.3/common-table-expressions) defined earlier.
+
+For example:
+
+```sql
+> WITH a AS (SELECT * FROM users)
+  SELECT * FROM a; -- "a" refers to "WITH a AS .."
+```
+
+### Result from a function
+
+A table expression can use the result from a function application as a data source.
+
+#### Syntax
+
+```text
+name ( arguments... )
+```
+
+The name of a function, followed by an opening parenthesis, followed by zero or more [scalar expressions](/docs/v24.3/scalar-expressions), followed by a closing parenthesis.
+
+The resolution of the function name follows the same rules as the resolution of table names. See [Name Resolution](/docs/v24.3/sql-name-resolution) for more details.
+
+#### Scalar function as data source
+
+When a [function returning a single value](/docs/v24.3/scalar-expressions#function-calls-and-sql-special-forms) is used as a table expression, it is interpreted as tabular data with a single column and single row containing the function result.
+
+For example:
+
+```sql
+> SELECT * FROM sin(3.2)
+```
+
+```text
++-----------------------+
+|          sin          |
++-----------------------+
+| -0.058374143427580086 |
++-----------------------+
+```
+
+<Note>
+  CockroachDB supports this syntax for compatibility with PostgreSQL. The canonical syntax to evaluate [scalar
+  functions](/docs/v24.3/scalar-expressions) is as a direct target of `SELECT`, for example `SELECT sin(3.2)`.
+</Note>
+
+#### Table generator functions
+
+Some functions directly generate tabular data with multiple rows from a single function application. This is also called a _set-returning function_ (SRF).
+
+For example:
+
+```sql
+> SELECT * FROM generate_series(1, 3);
+```
+
+```text
++-----------------+
+| generate_series |
++-----------------+
+|               1 |
+|               2 |
+|               3 |
++-----------------+
+```
+
+You access SRFs using `(SRF).x` where `x` is one of the following:
+
+- The name of a column returned from the function.
+- `*`, to denote all columns.
+
+For example (the output of queries against [`information_schema`](/docs/v24.3/information-schema) will vary per database):
+
+```sql
+> SELECT (i.keys).* FROM (SELECT information_schema._pg_expandarray(indkey) AS keys FROM pg_index) AS i;
+```
+
+```text
+ x | n
+---+---
+ 1 | 1
+ 2 | 1
+(2 rows)
+```
+
+<Note>
+  CockroachDB supports the generator functions compatible with [the PostgreSQL set-generating functions with the same
+  names](https://www.postgresql.org/docs/9.6/static/functions-srf).
+</Note>
+
+## Operators that extend a table expression
+
+The following sections describe table expressions that change the metadata around tabular data, or add more data, without modifying the data of the underlying operand.
+
+### Aliased table expressions
+
+Aliased table expressions rename tables and columns temporarily in the context of the current query.
+
+#### Syntax
+
+```text
+<table expr> AS <name>
+<table expr> AS <name>(<colname>, <colname>, ...)
+```
+
+In the first form, the table expression is equivalent to its left operand with a new name for the entire table, and where columns retain their original name.
+
+In the second form, the columns are also renamed.
+
+For example:
+
+```sql
+> SELECT c.x FROM (SELECT COUNT(*) AS x FROM users) AS c;
+```
+
+```sql
+> SELECT c.x FROM (SELECT COUNT(*) FROM users) AS c(x);
+```
+
+### Ordinality annotation
+
+Appends a column named `ordinality`, whose values describe the ordinality of each row, to the data source specified in the table expression operand.
+
+#### Syntax
+
+```text
+<table expr> WITH ORDINALITY
+```
+
+For example:
+
+```sql
+> SELECT * FROM (VALUES('a'),('b'),('c'));
+```
+
+```text
++---------+
+| column1 |
++---------+
+| a       |
+| b       |
+| c       |
++---------+
+```
+
+```sql
+> SELECT * FROM (VALUES ('a'), ('b'), ('c')) WITH ORDINALITY;
+```
+
+```text
++---------+------------+
+| column1 | ordinality |
++---------+------------+
+| a       |          1 |
+| b       |          2 |
+| c       |          3 |
++---------+------------+
+```
+
+<Note>
+  `WITH ORDINALITY` necessarily prevents some optimizations of the surrounding query. Use it sparingly if performance is
+  a concern, and always check the output of [`EXPLAIN`](/docs/v24.3/explain) in case of doubt.
+</Note>
+
+## `JOIN` expressions
+
+`JOIN` expressions combine the results of two or more table expressions based on conditions on the values of particular columns.
+
+See [`JOIN` expressions](/docs/v24.3/joins) for more details.
+
+## Use another query as a table expression
+
+The following sections describe how to use the result produced by another SQL query or statement as a table expression.
+
+### Use a subquery
+
+You can use a [selection query](/docs/v24.3/selection-queries) enclosed between parentheses `()` as a table expression. This is called a _[subquery](/docs/v24.3/subqueries)_.
+
+#### Syntax
+
+```text
+( ... subquery ... )
+```
+
+For example:
+
+```sql
+> SELECT c+2 FROM (SELECT COUNT(*) AS c FROM users);
+```
+
+```sql
+> SELECT * FROM (VALUES(1), (2), (3));
+```
+
+```sql
+> SELECT firstname || ' ' || lastname FROM (TABLE employees);
+```
+
+<Note>
+  - See [Subqueries](/docs/v24.3/subqueries) for more details and performance best practices. - To use other statements
+  that produce data in a table expression, for example `SHOW`, see [Use the output of another
+  statement](#use-the-output-of-another-statement).
+</Note>
+
+### Use the output of another statement
+
+#### Syntax
+
+```text
+WITH table_expr AS ( <stmt> ) SELECT .. FROM table_expr
+```
+
+A [`WITH` query](/docs/v24.3/common-table-expressions) designates the output of executing a statement as a row source. The following statements are supported as row sources for table expressions:
+
+- [`DELETE`](/docs/v24.3/delete)
+- [`EXPLAIN`](/docs/v24.3/explain)
+- [`INSERT`](/docs/v24.3/insert)
+- [`SELECT`](/docs/v24.3/select-clause)
+- [`SHOW`](/docs/v24.3/sql-statements#data-definition-statements)
+- [`UPDATE`](/docs/v24.3/update)
+- [`UPSERT`](/docs/v24.3/upsert)
+
+For example:
+
+```sql
+> WITH x AS (SHOW COLUMNS from customer) SELECT "column_name" FROM x;
+```
+
+```text
++-------------+
+| column_name |
++-------------+
+| id          |
+| name        |
+| address     |
++-------------+
+(3 rows)
+```
+
+The following statement inserts `Albert` in the `employee` table and immediately creates a matching entry in the `management` table with the auto-generated employee ID, without requiring a round trip with the SQL client:
+
+```sql
+> INSERT INTO management(manager, reportee)
+    VALUES ((SELECT id FROM employee WHERE name = 'Diana'),
+            (WITH x AS (INSERT INTO employee(name) VALUES ('Albert') RETURNING id) SELECT id FROM x));
+```
+
+## Composability
+
+You can use table expressions in the [`SELECT` clause](/docs/v24.3/select-clause) and [`TABLE` clause](/docs/v24.3/selection-queries#table-clause) variants of [selection clauses](/docs/v24.3/selection-queries#selection-clauses). Thus they can appear everywhere where a selection clause is possible. For example:
+
+```sql
+> SELECT ... FROM <table expr>, <table expr>, ...
+> TABLE <table expr>
+> INSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
+> INSERT INTO ... TABLE <table expr>
+> CREATE TABLE ... AS SELECT ... FROM <table expr>, <table expr>, ...
+> UPSERT INTO ... SELECT ... FROM <table expr>, <table expr>, ...
+```
+
+For more options to compose query results, see [Selection Queries](/docs/v24.3/selection-queries).
+
+## See also
+
+- [Constants](/docs/v24.3/sql-constants)
+- [Explainable statements](/docs/v24.3/sql-grammar#preparable_stmt)
+- [Scalar Expressions](/docs/v24.3/scalar-expressions)
+- [Data Types](/docs/v24.3/data-types)
+- [Subqueries](/docs/v24.3/subqueries)

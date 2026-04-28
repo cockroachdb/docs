@@ -1,0 +1,36 @@
+---
+title: "CockroachDB Security Overview"
+old_description: "An comparison of CockroachDB Cloud's Security Features"
+---
+
+## Ways to Use CockroachDB
+
+### CockroachDB Cloud
+
+CockroachDB Cloud provides fast and easy access (including a *free* tier) to CockroachDB as a web service, hosted by Cockroach Labs. Clusters run in multi-tenant Google Cloud Platform (GCP) or Amazon Web Services (AWS) environments with shared compute and networking resources.
+
+CockroachDB Advanced offers a single-tenant cluster running in its own Virtual Private Cloud (VPC). Compute and networking resources are isolated. CockroachDB Advanced provides additional security-enhancing features such as single sign-on (SSO) and SQL audit logging.
+
+[Sign up for a CockroachDB Cloud account!](https://www.cockroachlabs.com/get-started-cockroachdb)
+
+<Note>
+CockroachDB Dedicated clusters comply with the Payment Card Industry Data Security Standard (PCI DSS). Compliance is certified by a PCI Qualified Security Assessor (QSA).
+
+To achieve compliance with PCI DSS on a CockroachDB Dedicated cluster, you must enable all required features in your CockroachDB Cloud organization and your cluster, and you must take additional steps to ensure that your organization's applications and procedures comply with PCI DSS. For details, refer to [PCI DSS Compliance in CockroachDB Dedicated advanced](https://cockroachlabs.com/docs/cockroachcloud/pci-dss).
+
+To learn more about achieving PCI DSS compliance with CockroachDB Dedicated, contact your Cockroach Labs account team.
+</Note>
+
+Learn more: [Integrate CockroachDB Advanced with Satori](/docs/v23.2/satori-integration)
+
+### Self-Hosted
+
+CockroachDB self-hosted here refers to the situation of a user deploying and operating their own cluster.
+
+Enterprise refers to an ongoing license relationship with Cockroach Labs. In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of Cockroach Labs' Enterprise Support staff.
+
+For more information, see the [licensing FAQ](/docs/v23.2/licensing-faqs)
+
+## Comparison of security features
+
+<table><thead><tr><td width="100">Security Domain</td><td>Basic</td><td>Standard</td><td>Advanced</td><td>self-hosted Enterprise</td><td width="120">Feature</td></tr></thead><tbody><tr><td rowspan="8"><a href="/docs/v23.2/security-reference/authentication">Authentication</a></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Inter-node and node identity authentication using TLS 1.3</td></tr><tr><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Client identity authentication using username/password</td></tr><tr><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td><a href="/docs/v23.2/security-reference/scram-authentication">SASL/SCRAM-SHA-256 secure password-based authentication</a></td></tr><tr><td></td><td></td><td></td><td>✓</td><td>SQL client identity authentication using TLS 1.2/1.3</td></tr><tr><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Web console authentication with third-party <a href="/docs/v23.2/sso-db-console">Single Sign-on (SSO)</a> using <a href="https://openid.net/connect">OpenID Connect OIDC</a></td></tr><tr><td></td><td></td><td></td><td>✓</td><td>Client identity authentication with <a href="/docs/v23.2/gssapi_authentication">GSSAPI and Kerberos</a></td></tr><tr><td></td><td></td><td></td><td>✓</td><td>HTTP API access using login tokens</td></tr><tr><td></td><td></td><td></td><td>✓</td><td><a href="https://wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a> certificate revocation protocol</td></tr><tr><td rowspan="5"><a href="/docs/v23.2/security-reference/encryption">Encryption</a></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Encryption in transit using TLS 1.3</td></tr><tr><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Backups for AWS clusters are encrypted at rest using <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption">AWS S3’s server-side encryption</a></td></tr><tr><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Backups for GCP clusters are encrypted at rest using <a href="https://cloud.google.com/storage/docs/encryption/default-keys">Google-managed server-side encryption keys</a></td></tr><tr><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Industry-standard encryption at rest is provided at the infrastructure level by your chosen deployment environment, such as Google Cloud Platform (GCP), Amazon Web Services (AWS), or Microsoft Azure. You can learn more about <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">GCP persistent disk encryption</a>, <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption">AWS Elastic Block Storage</a>, or <a href="https://docs.microsoft.com/azure/virtual-machines/disk-encryption-overview">Azure managed disk encryption</a>.</td></tr><tr><td></td><td></td><td></td><td>✓</td><td>Cockroach Labs's proprietary storage-level <a href="/docs/v23.2/security-reference/encryption#encryption-at-rest-enterprise">Enterprise Encryption At Rest service</a> implementing the <a href="https://wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AES)</a></td></tr><tr><td rowspan="2"><a href="/docs/v23.2/security-reference/authorization">Authorization</a></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Users and privileges</td></tr><tr><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Role-based access control (RBAC)</td></tr><tr><td rowspan="3">Network Security</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td><a href="/docs/v23.2/security-reference/authentication"></a>SQL-level configuration allowed authentication attempts by IP address</td></tr><tr><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Network-level Configuration of allowed IP addresses</td></tr><tr><td></td><td>✓</td><td>✓</td><td>✓</td><td><a href="/docs/cockroachcloud/connect-to-your-cluster#gcp-private-service-connect">GCP Private Service Connect (PSC) (Preview)</a> or <a href="/docs/cockroachcloud/connect-to-your-cluster#vpc-peering">VPC Peering</a> for GCP clusters and <a href="/docs/cockroachcloud/aws-privatelink">AWS PrivateLink</a> for AWS clusters</td></tr><tr><td><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td><a href="/docs/v23.2/sql-audit-logging">SQL Audit Logging</a></td></tr><tr><td><a href="/docs/v23.2/demo-fault-tolerance-and-recovery">Availability/Resilience</a></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="/docs/v23.2/demo-fault-tolerance-and-recovery">Disaster Recovery.</a></td></tr></tbody></table>

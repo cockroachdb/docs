@@ -1,0 +1,435 @@
+---
+title: "Common Table Expressions (WITH Queries)"
+old_description: "Common table expressions (CTEs) simplify the definition and use of subqueries"
+---
+
+import { CommonTableExpressions6 } from "/snippets/syntax-diagrams/CommonTableExpressions6.jsx";
+
+A *common table expression* (CTE), also called a `WITH` query, provides a shorthand name to a possibly complex [subquery](/docs/v25.4/subqueries) before it is used in a larger query context. This improves the readability of SQL code.
+
+You can use CTEs in combination with [`SELECT` clauses](/docs/v25.4/select-clause) and [`INSERT`](/docs/v25.4/insert), [`DELETE`](/docs/v25.4/delete), [`UPDATE`](/docs/v25.4/update), and [`UPSERT`](/docs/v25.4/upsert) data-modifying statements.
+
+For many workloads, CTEs are an effective alternative to [temporary tables](/docs/v25.4/temporary-tables) for intermediate results within a single statement. CTEs avoid the [performance overhead of temp tables](/docs/v25.4/temporary-tables#performance-considerations), and the [optimizer](/docs/v25.4/cost-based-optimizer) can choose whether to materialize them.
+
+## Synopsis
+
+<CommonTableExpressions6 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;alias&#95;name</code></td><td>The name to use to refer to the common table expression from the accompanying query or statement.</td></tr><tr><td><code>name</code></td><td>A name for one of the columns in the newly defined common table expression.</td></tr><tr><td><code>preparable&#95;stmt</code></td><td>The statement or subquery to use as common table expression.</td></tr><tr><td><code>MATERIALIZED</code>/<code>NOT MATERIALIZED</code></td><td>Override the <a href="/docs/v25.4/cost-based-optimizer">optimizer</a>'s decision to materialize (i.e., store the results) of the common table expression. By default, the optimizer materializes the common table expression if it affects other objects in the database, or if it is used in the query multiple times.</td></tr></tbody></table>
+
+## Overview
+
+<Note>
+The examples on this page use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. To follow along, run [`cockroach demo`](/docs/v25.4/cockroach-demo) from the command line to start a temporary, in-memory cluster with the `movr` dataset preloaded.
+
+For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](/docs/v25.4/movr).
+</Note>
+
+A query or statement of the form `WITH x AS (y) z` creates the temporary table name `x` for the results of the subquery `y`, to be reused in the context of `z`.
+
+For example:
+
+```sql
+> WITH r AS (SELECT * FROM rides WHERE revenue > 98)
+  SELECT * FROM users AS u, r WHERE r.rider_id = u.id;
+```
+
+```text
+                   id                  |     city      |       name       |            address             | credit_card |                  id                  |     city      | vehicle_city  |               rider_id               |              vehicle_id              |           start_address           |        end_address        |        start_time         |         end_time          | revenue
+---------------------------------------+---------------+------------------+--------------------------------+-------------+--------------------------------------+---------------+---------------+--------------------------------------+--------------------------------------+-----------------------------------+---------------------------+---------------------------+---------------------------+----------
+  ae147ae1-47ae-4800-8000-000000000022 | amsterdam     | Tyler Dalton     | 88194 Angela Gardens Suite 94  | 4443538758  | bbe76c8b-4395-4000-8000-00000000016f | amsterdam     | amsterdam     | ae147ae1-47ae-4800-8000-000000000022 | aaaaaaaa-aaaa-4800-8000-00000000000a | 45295 Brewer View Suite 52        | 62188 Jade Causeway       | 2018-12-17 03:04:05+00:00 | 2018-12-17 13:04:05+00:00 |   99.00
+  c7ae147a-e147-4000-8000-000000000027 | paris         | Tina Miller      | 97521 Mark Extensions          | 8880478663  | d5810624-dd2f-4800-8000-0000000001a1 | paris         | paris         | c7ae147a-e147-4000-8000-000000000027 | cccccccc-cccc-4000-8000-00000000000c | 47713 Reynolds Mountains Suite 39 | 1417 Stephanie Villages   | 2018-12-17 03:04:05+00:00 | 2018-12-18 22:04:05+00:00 |   99.00
+  75c28f5c-28f5-4400-8000-000000000017 | san francisco | William Wood     | 36021 Steven Cove Apt. 89      | 5669281259  | 8ac08312-6e97-4000-8000-00000000010f | san francisco | san francisco | 75c28f5c-28f5-4400-8000-000000000017 | 77777777-7777-4800-8000-000000000007 | 84407 Tony Crest                  | 55336 Jon Manors          | 2018-12-10 03:04:05+00:00 | 2018-12-11 13:04:05+00:00 |   99.00
+  8a3d70a3-d70a-4000-8000-00000000001b | san francisco | Jessica Martinez | 96676 Jennifer Knolls Suite 91 | 1601930189  | 7d70a3d7-0a3d-4000-8000-0000000000f5 | san francisco | san francisco | 8a3d70a3-d70a-4000-8000-00000000001b | 77777777-7777-4800-8000-000000000007 | 78978 Stevens Ramp Suite 8        | 7340 Alison Field Apt. 44 | 2018-12-19 03:04:05+00:00 | 2018-12-21 10:04:05+00:00 |   99.00
+  47ae147a-e147-4000-8000-00000000000e | washington dc | Patricia Herrera | 80588 Perez Camp               | 6812041796  | 4083126e-978d-4000-8000-00000000007e | washington dc | washington dc | 47ae147a-e147-4000-8000-00000000000e | 44444444-4444-4400-8000-000000000004 | 33055 Julie Dale Suite 93         | 17280 Jill Drives         | 2019-01-01 03:04:05+00:00 | 2019-01-01 14:04:05+00:00 |   99.00
+(5 rows)
+```
+
+In this example, the `WITH` clause defines the temporary name `r` for the subquery over `rides`, and that name becomes a table name for use in any [table expression](/docs/v25.4/table-expressions) of the subsequent `SELECT` clause.
+
+This query is equivalent to, but simpler to read than:
+
+```sql
+> SELECT * FROM users AS u, (SELECT * FROM rides WHERE revenue > 98) AS r
+  WHERE r.rider_id = u.id;
+```
+
+It is also possible to define multiple common table expressions simultaneously with a single `WITH` clause, separated by commas. Later subqueries can refer to earlier subqueries by name. For example, the following query is equivalent to the two preceding examples:
+
+```sql
+> WITH r AS (SELECT * FROM rides WHERE revenue > 98),
+    results AS (SELECT * FROM users AS u, r WHERE r.rider_id = u.id)
+  SELECT * FROM results;
+```
+
+In this example, the second CTE `results` refers to the first CTE `r` by name. The final query refers to the CTE `results`.
+
+## Nested `WITH` clauses
+
+You can use a `WITH` clause in a subquery and a `WITH` clause within another `WITH` clause. For example:
+
+```sql
+> WITH u AS
+    (SELECT * FROM
+        (WITH u_tab AS (SELECT * FROM users) SELECT * FROM u_tab))
+  SELECT * FROM u;
+```
+
+When analyzing [table expressions](/docs/v25.4/table-expressions) that mention a CTE name, CockroachDB will choose the CTE definition that is closest to the table expression. For example:
+
+```sql
+> WITH
+  u AS (SELECT * FROM users),
+  v AS (WITH u AS (SELECT * from vehicles) SELECT * FROM u)
+    SELECT * FROM v;
+```
+
+In this example, the inner subquery `SELECT * FROM v` will select from table `vehicles` (closest `WITH` clause), not from table `users`.
+
+<Note>
+CockroachDB does not support nested `WITH` clauses containing [data-modifying statements](#data-modifying-statements). `WITH` clauses containing data-modifying statements must be at the top level of the query.
+</Note>
+
+## Data-modifying statements
+
+You can use a [data-modifying statement](/docs/v25.4/sql-statements#data-manipulation-statements) (`INSERT`, `DELETE`, etc.) as a common table expression, as long as the `WITH` clause containing the data-modifying statement is at the top level of the query.
+
+For example:
+
+```sql
+> WITH final_code AS
+  (INSERT INTO promo_codes(code, description, rules)
+  VALUES ('half_off', 'Half-price ride!', '{"type": "percent_discount", "value": "50%"}'), ('free_ride', 'Free ride!', '{"type": "percent_discount", "value": "100%"}')
+  returning rules)
+  SELECT rules FROM final_code;
+```
+
+```text
+                      rules
++-----------------------------------------------+
+  {"type": "percent_discount", "value": "50%"}
+  {"type": "percent_discount", "value": "100%"}
+(2 rows)
+```
+
+If the `WITH` clause containing the data-modifying statement is at a lower level, the statement results in an error:
+
+```sql
+> SELECT (WITH final_code AS
+  (INSERT INTO promo_codes(code, description, rules)
+  VALUES ('half_off', 'Half-price ride!', '{"type": "percent_discount", "value": "50%"}'), ('free_ride', 'Free ride!', '{"type": "percent_discount", "value": "100%"}')
+  returning rules)
+  SELECT rules FROM final_code);
+```
+
+```text
+ERROR: WITH clause containing a data-modifying statement must be at the top level
+SQLSTATE: 0A000
+```
+
+<Note>
+If a common table expression contains a data-modifying statement (`INSERT`, `DELETE`, etc.), the modifications are performed fully even if only part of the results are used, e.g., with [`LIMIT`](/docs/v25.4/limit-offset). See [Data writes in subqueries](/docs/v25.4/subqueries#data-writes-in-subqueries) for details.
+</Note>
+
+## Reference multiple common table expressions
+
+You can reference multiple CTEs in a single query using a `WITH` operator.
+
+For example:
+
+```sql
+> WITH
+    users_ny AS (SELECT name, id FROM users WHERE city='new york'),
+    vehicles_ny AS (SELECT type, id, owner_id FROM vehicles WHERE city='new york')
+    SELECT * FROM users_ny JOIN vehicles_ny ON users_ny.id = vehicles_ny.owner_id;
+```
+
+```text
+        name       |                  id                  |    type    |                  id                  |               owner_id
++------------------+--------------------------------------+------------+--------------------------------------+--------------------------------------+
+  James Hamilton   | 051eb851-eb85-4ec0-8000-000000000001 | skateboard | 00000000-0000-4000-8000-000000000000 | 051eb851-eb85-4ec0-8000-000000000001
+  Catherine Nelson | 147ae147-ae14-4b00-8000-000000000004 | scooter    | 11111111-1111-4100-8000-000000000001 | 147ae147-ae14-4b00-8000-000000000004
+(2 rows)
+```
+
+In this single query, you define two CTEs and then reference them in a table join.
+
+## Recursive common table expressions
+
+[Recursive common table expressions](https://wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL#Common_table_expression) are common table expressions that contain subqueries that refer to their own output.
+
+Recursive CTE definitions take the following form:
+
+```text
+WITH RECURSIVE <cte name> (<columns>) AS (
+    <initial subquery>
+  [UNION | UNION ALL]
+    <recursive subquery>
+)
+<query>
+```
+
+To write a recursive CTE:
+
+1. Add the `RECURSIVE` keyword directly after the `WITH` operator in the CTE definition, and before the CTE name.
+2. Define an initial, non-recursive subquery. This subquery defines the initial values of the CTE.
+3. Add the `UNION` or `UNION ALL` keyword after the initial subquery. The `UNION` variant deduplicates rows.
+4. Define a recursive subquery that references its own output. This subquery can also reference the CTE name, unlike the initial subquery.
+5. Write a parent query that evaluates the results of the CTE.
+
+CockroachDB evaluates recursive CTEs as follows:
+
+1. The initial query is evaluated. Its results are stored as the result rows of the CTE and copied to a temporary, working table.
+2. If the working table is not empty, the recursive subquery is evaluated iteratively, using the contents of the working table for the self-reference. The results of each iteration replace the contents of the working table, and are also added to the result rows of the CTE. When the recursive subquery returns no rows, the working table is empty and iteration stops.
+
+<Note>
+Recursive subqueries must eventually return no results, or the query will run indefinitely.
+</Note>
+
+### Example
+
+The following recursive CTE calculates the factorial of the numbers 0 through 9:
+
+```sql
+WITH RECURSIVE cte (n, factorial) AS (
+    VALUES (0, 1) -- initial subquery
+  UNION ALL
+    SELECT n+1, (n+1)*factorial FROM cte WHERE n < 9 -- recursive subquery
+)
+SELECT * FROM cte;
+```
+
+```text
+  n | factorial
++---+-----------+
+  0 |         1
+  1 |         1
+  2 |         2
+  3 |         6
+  4 |        24
+  5 |       120
+  6 |       720
+  7 |      5040
+  8 |     40320
+  9 |    362880
+(10 rows)
+```
+
+The initial subquery (`VALUES (0, 1)`) initializes the working table with the values `0` for the `n` column and `1` for the `factorial` column. The recursive subquery (`SELECT n+1, (n+1)*factorial FROM cte WHERE n < 9`) evaluates over the initial values of the working table and replaces its contents with the results. It then iterates over the contents of the working table, replacing its contents at each iteration, until `n` reaches `9`, when the [`WHERE` clause](/docs/v25.4/select-clause#filter-rows) evaluates as false.
+
+If no `WHERE` clause were defined in the example, the recursive subquery would always return results and loop indefinitely, resulting in an error:
+
+```sql
+WITH RECURSIVE cte (n, factorial) AS (
+    VALUES (0, 1) -- initial subquery
+  UNION ALL
+    SELECT n+1, (n+1)*factorial FROM cte -- recursive subquery with no WHERE clause
+)
+SELECT * FROM cte;
+```
+
+```text
+ERROR: integer out of range
+SQLSTATE: 22003
+```
+
+If you are unsure if your recursive subquery will loop indefinitely, you can limit the results of the CTE with the [`LIMIT`](/docs/v25.4/limit-offset) keyword. For example, if you remove the `WHERE` clause from the factorial example, you can use `LIMIT` to limit the results and avoid the `integer out of range` error:
+
+```sql
+WITH RECURSIVE cte (n, factorial) AS (
+    VALUES (0, 1) -- initial subquery
+  UNION ALL
+    SELECT n+1, (n+1)*factorial FROM cte -- recursive subquery
+)
+SELECT * FROM cte LIMIT 10;
+```
+
+```text
+  n | factorial
++---+-----------+
+  0 |         1
+  1 |         1
+  2 |         2
+  3 |         6
+  4 |        24
+  5 |       120
+  6 |       720
+  7 |      5040
+  8 |     40320
+  9 |    362880
+(10 rows)
+```
+
+While adding a limit to prevent infinite recursion works for testing and debugging, Cockroach Labs does not recommend it in production. It is best practice to ensure that recursive subqueries have an explicit end condition.
+
+### Loose index scan using a recursive CTE
+
+You can use a recursive CTE to perform a loose index scan, which speeds up certain queries that would otherwise require a full scan. A loose index scan reads noncontiguous ranges of an index by performing multiple shorter scans.
+
+In this example, compare the latencies when scanning an index with and without a recursive CTE:
+
+Create a table:
+
+```sql
+CREATE TABLE test (n INT);
+```
+
+Populate the table with many random values from 0 to 9:
+
+```sql
+INSERT INTO test SELECT floor(random() * 10)
+FROM generate_series(1, 1000000);
+```
+
+Create an index:
+
+```sql
+CREATE INDEX ON test (n);
+```
+
+Issue a statement to count the number of distinct values, without using a recursive CTE:
+
+```sql
+SELECT COUNT(DISTINCT n) FROM test;
+```
+
+```text
+SELECT COUNT(DISTINCT n) FROM test;
+  count
+---------
+     10
+(1 row)
+
+Time: 273ms total (execution 273ms / network 0ms)
+```
+
+This statement has a high latency because it reads every row in the index. You can see this using [`EXPLAIN`](/docs/v25.4/explain):
+
+```sql
+EXPLAIN ANALYZE SELECT COUNT(DISTINCT n) FROM test;
+```
+
+```text
+                                              info
+------------------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • group (scalar)
+  │ estimated row count: 1
+  │
+  └── • distinct
+      │ estimated row count: 10
+      │ distinct on: n
+      │ order key: n
+      │
+      └── • scan
+            estimated row count: 1,000,000 (100% of the table; stats collected 37 minutes ago)
+            table: test@test_n_idx
+            spans: FULL SCAN
+```
+
+Instead, use a recursive CTE to perform a loose index scan:
+
+```sql
+WITH RECURSIVE temp (i) AS (
+    (SELECT n FROM test ORDER BY n ASC LIMIT 1) -- initial subquery
+  UNION ALL
+    (SELECT n FROM test INNER JOIN (SELECT i FROM temp LIMIT 1) ON n > i ORDER BY n ASC LIMIT 1) -- recursive subquery
+)
+SELECT COUNT(*) FROM temp;
+```
+
+The initial subquery uses the [`LIMIT`](/docs/v25.4/limit-offset) and [`ORDER BY`](/docs/v25.4/order-by) clauses to select the lowest value in the table. The recursive subquery uses an [inner join](/docs/v25.4/joins#inner-joins) to select the next lowest value until all unique values are retrieved. To get the number of distinct values in table `test`, you only need to count the number of values returned by the recursive CTE:
+
+```text
+  count
+---------
+     10
+(1 row)
+
+Time: 13ms total (execution 13ms / network 0ms)
+```
+
+The recursive CTE has a low latency because it performs 10 limited scans of the index, each reading only one row and skipping the rest. You can see this using [`EXPLAIN`](/docs/v25.4/explain):
+
+```sql
+EXPLAIN ANALYZE WITH RECURSIVE temp (i) AS (
+    (SELECT n FROM test ORDER BY n ASC LIMIT 1)
+  UNION ALL
+    (SELECT n FROM test INNER JOIN (SELECT i FROM temp LIMIT 1) ON n > i ORDER BY n ASC LIMIT 1)
+)
+SELECT COUNT(*) FROM temp;
+```
+
+```text
+                                           info
+------------------------------------------------------------------------------------------
+  planning time: 755µs
+  execution time: 22ms
+  distribution: local
+  vectorized: true
+  rows read from KV: 1 (39 B, 1 gRPC calls)
+  cumulative time spent in KV: 3ms
+  maximum memory usage: 100 KiB
+  network usage: 0 B (0 messages)
+
+  • group (scalar)
+  │ nodes: n1
+  │ actual row count: 1
+  │
+  └── • recursive cte
+      │ nodes: n1
+      │ actual row count: 10
+      │
+      └── • scan
+            nodes: n1
+            actual row count: 1
+            KV time: 3ms
+            KV contention time: 0µs
+            KV rows read: 1
+            KV bytes read: 39 B
+            KV gRPC calls: 1
+            estimated max memory allocated: 20 KiB
+            estimated row count: 1 (<0.01% of the table; stats collected 39 minutes ago)
+            table: test@test_n_idx
+            spans: LIMITED SCAN
+            limit: 1
+```
+
+Because this pattern incurs the overhead of a new scan for each iteration, it is slower per row than a full scan. It is therefore faster than a full scan in cases (such as this one) where many rows are skipped, but is slower if they are not.
+
+<Note>
+Some recursive CTEs are not not yet optimized. For details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/89954).
+</Note>
+
+## Correlated common table expressions
+
+If a common table expression is contained in a subquery, the CTE can reference columns defined outside of the subquery. This is called a *correlated common table expression*. For example, in the following query, the expression `(SELECT 1 + x)` references `x` in the outer scope.
+
+```sql
+SELECT
+    *
+    FROM (VALUES (1), (2)) AS v(x),
+    LATERAL (SELECT * FROM (WITH foo(incrementedx) AS (SELECT 1 + x) SELECT * FROM foo))
+```
+
+```text
+  x | incrementedx
+----+---------------
+  1 |            2
+  2 |            3
+(2 rows)
+```
+
+CTEs containing statements (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) that modify data can appear only at the upper level, so they **cannot** be correlated.
+
+## See also
+
+- [Subqueries](/docs/v25.4/subqueries)
+- [Selection Queries](/docs/v25.4/selection-queries)
+- [Table Expressions](/docs/v25.4/table-expressions)
+- [`EXPLAIN`](/docs/v25.4/explain)
+- [Temporary tables](/docs/v25.4/temporary-tables)

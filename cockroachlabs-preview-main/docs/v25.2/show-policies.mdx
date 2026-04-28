@@ -1,0 +1,95 @@
+---
+title: "SHOW POLICIES"
+old_description: "The SHOW POLICIES statement lists the row-level security policies for a table"
+---
+
+The `SHOW POLICIES` statement lists the [row-level security (RLS)](/docs/v25.2/row-level-security) policies for a [table](/docs/v25.2/schema-design-table).
+
+## Syntax
+
+```text
+SHOW POLICIES FOR table_name;
+```
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table to which the policy applies.</td></tr></tbody></table>
+
+## Examples
+
+In this example, you will create a table, a role, and some policies to view:
+
+- The `user_orders_policy` is a permissive policy allowing any user to access their own orders.
+- The `archived_orders_policy` is a restrictive policy ensuring that customer service roles can only view non-archived orders that are assigned to them.
+
+Create the table, enable RLS, and add a role and policies:
+
+```sql
+CREATE TABLE orders (
+    user_id TEXT PRIMARY KEY,
+    order_details TEXT,
+    is_archived BOOLEAN DEFAULT FALSE NOT NULL
+);
+
+-- Enable RLS
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+
+-- Add role
+CREATE ROLE customer_service;
+
+-- Example policies
+CREATE POLICY user_orders_policy ON orders
+    FOR ALL
+    TO PUBLIC
+    USING (user_id = current_user)
+    WITH CHECK (user_id = current_user);
+
+CREATE POLICY archived_orders_policy ON orders
+    AS RESTRICTIVE
+    FOR SELECT
+    TO customer_service
+    USING (user_id = current_user AND is_archived = FALSE);
+```
+
+To view the RLS policies applied to the `orders` table, use the `SHOW POLICIES` statement:
+
+```sql
+SHOW POLICIES FOR orders;
+```
+
+```text
+           name          |  cmd   |    type     |       roles        |                      using_expr                      |     with_check_expr
+-------------------------+--------+-------------+--------------------+------------------------------------------------------+---------------------------
+  user_orders_policy     | ALL    | permissive  | {public}           | user_id = current_user()                             | user_id = current_user()
+  archived_orders_policy | SELECT | restrictive | {customer_service} | (user_id = current_user()) AND (is_archived = false) |
+(2 rows)
+```
+
+### Use `pg_policies` to view all row-level security policies in the system
+
+Use the following query to view all RLS policies. This example uses the schema and policies from the [Row-Level Security Overview](/docs/v25.2/row-level-security).
+
+```sql
+SELECT * FROM pg_policies;
+```
+
+```text
+  schemaname | tablename |     policyname     | permissive |      roles      | cmd |               qual                |        with_check
+-------------+-----------+--------------------+------------+-----------------+-----+-----------------------------------+---------------------------
+  public     | orders    | user_orders_policy | permissive | {public}        | ALL | user_id = current_user()          | user_id = current_user()
+  public     | employees | self_access        | permissive | {public}        | ALL | username = current_user()         | NULL
+  public     | employees | manager_access     | permissive | {public}        | ALL | manager_username = current_user() | NULL
+  public     | invoices  | tenant_isolation   | permissive | {public}        | ALL | NULL                              | NULL
+  public     | employees | hr_access          | permissive | {hr_department} | ALL | NULL                              | NULL
+(5 rows)
+```
+
+## See also
+
+- [Row-level security (RLS) overview](/docs/v25.2/row-level-security)
+- [`CREATE POLICY`](/docs/v25.2/create-policy)
+- [`ALTER POLICY`](/docs/v25.2/alter-policy)
+- [`DROP POLICY`](/docs/v25.2/drop-policy)
+- [`ALTER TABLE... ENABLE ROW LEVEL SECURITY`](/docs/v25.2/alter-table#enable-row-level-security)
+- [`ALTER ROLE... WITH BYPASSRLS`](/docs/v25.2/alter-role#allow-a-role-to-bypass-row-level-security-rls)
+- [`CREATE ROLE... WITH BYPASSRLS`](/docs/v25.2/create-role#create-a-role-that-can-bypass-row-level-security-rls)

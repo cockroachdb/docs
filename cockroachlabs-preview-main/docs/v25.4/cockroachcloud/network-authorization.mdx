@@ -1,0 +1,20 @@
+---
+title: "Network Authorization for CockroachDB Cloud"
+old_description: "Learn about the network authorization features for CockroachDB Cloud."
+---
+
+import NetworkAuthorization from "/snippets/cockroachcloud/network-authorization.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<NetworkAuthorization />

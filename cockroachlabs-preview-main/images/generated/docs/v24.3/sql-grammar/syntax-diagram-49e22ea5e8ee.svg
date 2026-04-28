@@ -1,0 +1,90 @@
+<svg height="421" width="519" xmlns="http://www.w3.org/2000/svg"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="72" x="71" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="69" y="1"></rect>
+<text class="terminal" x="79" y="21">CALLED</text>
+<rect height="32" rx="10" width="84" x="71" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="69" y="45"></rect>
+<text class="terminal" x="79" y="65">RETURNS</text>
+<rect height="32" rx="10" width="56" x="175" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="173" y="45"></rect>
+<text class="terminal" x="183" y="65">NULL</text>
+<rect height="32" rx="10" width="40" x="271" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="269" y="1"></rect>
+<text class="terminal" x="279" y="21">ON</text>
+<rect height="32" rx="10" width="56" x="331" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="329" y="1"></rect>
+<text class="terminal" x="339" y="21">NULL</text>
+<rect height="32" rx="10" width="64" x="407" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="405" y="1"></rect>
+<text class="terminal" x="415" y="21">INPUT</text>
+<rect height="32" rx="10" width="70" x="51" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="49" y="89"></rect>
+<text class="terminal" x="59" y="109">STRICT</text>
+<rect height="32" rx="10" width="102" x="51" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="102" x="49" y="133"></rect>
+<text class="terminal" x="59" y="153">IMMUTABLE</text>
+<rect height="32" rx="10" width="72" x="51" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="49" y="177"></rect>
+<text class="terminal" x="59" y="197">STABLE</text>
+<rect height="32" rx="10" width="88" x="51" y="223"></rect>
+<rect class="terminal" height="32" rx="10" width="88" x="49" y="221"></rect>
+<text class="terminal" x="59" y="241">VOLATILE</text>
+<rect height="32" rx="10" width="90" x="71" y="299"></rect>
+<rect class="terminal" height="32" rx="10" width="90" x="69" y="297"></rect>
+<text class="terminal" x="79" y="317">EXTERNAL</text>
+<rect height="32" rx="10" width="88" x="201" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="88" x="199" y="265"></rect>
+<text class="terminal" x="209" y="285">SECURITY</text>
+<rect height="32" rx="10" width="80" x="329" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="327" y="265"></rect>
+<text class="terminal" x="337" y="285">DEFINER</text>
+<rect height="32" rx="10" width="84" x="329" y="311"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="327" y="309"></rect>
+<text class="terminal" x="337" y="329">INVOKER</text>
+<rect height="32" rx="10" width="48" x="71" y="387"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="69" y="385"></rect>
+<text class="terminal" x="79" y="405">NOT</text>
+<rect height="32" rx="10" width="102" x="159" y="355"></rect>
+<rect class="terminal" height="32" rx="10" width="102" x="157" y="353"></rect>
+<text class="terminal" x="167" y="373">LEAKPROOF</text>
+<path class="line" d="m17 17 h2 m40 0 h10 m72 0 h10 m0 0 h88 m-200 0 h20 m180 0 h20 m-220 0 q10 0 10 10 m200 0 q0 -10 10 -10 m-210 10 v24 m200 0 v-24 m-200 24 q0 10 10 10 m180 0 q10 0 10 -10 m-190 10 h10 m84 0 h10 m0 0 h10 m56 0 h10 m20 -44 h10 m40 0 h10 m0 0 h10 m56 0 h10 m0 0 h10 m64 0 h10 m-460 0 h20 m440 0 h20 m-480 0 q10 0 10 10 m460 0 q0 -10 10 -10 m-470 10 v68 m460 0 v-68 m-460 68 q0 10 10 10 m440 0 q10 0 10 -10 m-450 10 h10 m70 0 h10 m0 0 h350 m-450 -10 v20 m460 0 v-20 m-460 20 v24 m460 0 v-24 m-460 24 q0 10 10 10 m440 0 q10 0 10 -10 m-450 10 h10 m102 0 h10 m0 0 h318 m-450 -10 v20 m460 0 v-20 m-460 20 v24 m460 0 v-24 m-460 24 q0 10 10 10 m440 0 q10 0 10 -10 m-450 10 h10 m72 0 h10 m0 0 h348 m-450 -10 v20 m460 0 v-20 m-460 20 v24 m460 0 v-24 m-460 24 q0 10 10 10 m440 0 q10 0 10 -10 m-450 10 h10 m88 0 h10 m0 0 h332 m-450 -10 v20 m460 0 v-20 m-460 20 v24 m460 0 v-24 m-460 24 q0 10 10 10 m440 0 q10 0 10 -10 m-430 10 h10 m0 0 h100 m-130 0 h20 m110 0 h20 m-150 0 q10 0 10 10 m130 0 q0 -10 10 -10 m-140 10 v12 m130 0 v-12 m-130 12 q0 10 10 10 m110 0 q10 0 10 -10 m-120 10 h10 m90 0 h10 m20 -32 h10 m88 0 h10 m20 0 h10 m80 0 h10 m0 0 h4 m-124 0 h20 m104 0 h20 m-144 0 q10 0 10 10 m124 0 q0 -10 10 -10 m-134 10 v24 m124 0 v-24 m-124 24 q0 10 10 10 m104 0 q10 0 10 -10 m-114 10 h10 m84 0 h10 m20 -44 h38 m-450 -10 v20 m460 0 v-20 m-460 20 v68 m460 0 v-68 m-460 68 q0 10 10 10 m440 0 q10 0 10 -10 m-430 10 h10 m0 0 h58 m-88 0 h20 m68 0 h20 m-108 0 q10 0 10 10 m88 0 q0 -10 10 -10 m-98 10 v12 m88 0 v-12 m-88 12 q0 10 10 10 m68 0 q10 0 10 -10 m-78 10 h10 m48 0 h10 m20 -32 h10 m102 0 h10 m0 0 h210 m23 -352 h-3"></path>
+<polygon points="509 17 517 13 517 21"></polygon>
+<polygon points="509 17 501 13 501 21"></polygon></svg>

@@ -1,0 +1,94 @@
+---
+title: "ST_Overlaps"
+old_description: "ST_Overlaps(A, B) returns true if the shapes intersect, but neither is contained within the other."
+---
+
+Given two shapes _A_ and _B_, `ST_Overlaps(A, B)` returns `true` if the following criteria are met:
+
+- The shapes share any of the same space -- that is, if any point in the set that comprises _A_ is also a member of the set of points that make up _B_.
+- Neither of the shapes is contained by the other, in the [`ST_Contains`](/docs/v26.1/st_contains) sense.
+
+In other words, `ST_Overlaps` returns `true` if the shapes intersect (in the [`ST_Intersects`](/docs/v26.1/st_intersects) sense), but neither is contained within the other.
+
+`ST_Overlaps` works on the following spatial data types:
+
+- [`GEOMETRY`](/docs/v26.1/architecture/glossary#geometry)
+
+<Note>
+  `ST_Overlaps` will attempt to use any available [spatial index](/docs/v26.1/spatial-indexes) to speed up its
+  operation. Use the prefixed variant `_ST_Overlaps` if you do not want any spatial indexes to be used.
+</Note>
+
+## Examples
+
+<Note>
+  The screenshots in these examples were generated using [geojson.io](http://geojson.io/), but they are designed to
+  showcase the shapes, not the map. Representing `GEOMETRY` data in GeoJSON can lead to unexpected results if using
+  geometries with [SRIDs](/docs/v26.1/architecture/glossary#srid) other than 4326 (as shown below).
+</Note>
+
+### True
+
+In this example, `ST_Overlaps` returns `true` because:
+
+- There is a Point in the set that comprises Polygon _A_ that is also a member of the set of Points that make up Polygon _B_.
+- Neither of the shapes is contained by the other, in the [`ST_Contains`](/docs/v26.1/st_contains) sense.
+
+```sql
+SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;POLYGON((-84.191605 39.758949, -75.165222 39.952583, -78.878738 42.880230, -84.191605 39.758949))'));
+```
+
+```text
+  st_overlaps
+---------------
+     true
+
+(1 row)
+```
+
+<Frame>![ST_Overlaps - true](/images/v26.1/geospatial/st_overlaps_true.png)</Frame>
+
+### False
+
+In this example, `ST_Overlaps` returns `false` because:
+
+- - There is not any Point in the set that comprises Polygon _A_ that is also a member of the set of Points that make up Polygon _B_.
+
+```sql
+SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-79.995888 40.440624,-74.666728 40.358244, -76.5 42.443333, -79.995888 40.440624))'), st_geomfromtext('SRID=4326;POLYGON((-79.976111 40.374444, -74.621157 40.323294, -76.609383 39.299236, -79.976111 40.374444))'));
+```
+
+```text
+  st_overlaps
+---------------
+     false
+(1 row)
+```
+
+<Frame>![ST_Overlaps - false](/images/v26.1/geospatial/st_overlaps_false.png)</Frame>
+
+## See also
+
+- [Export Spatial Data](/docs/v26.1/export-spatial-data)
+- [Spatial tutorial](/docs/v26.1/spatial-tutorial)
+- [Spatial and GIS Glossary of Terms](/docs/v26.1/architecture/glossary)
+- [Spatial indexes](/docs/v26.1/spatial-indexes)
+- [Spatial functions](/docs/v26.1/functions-and-operators#spatial-functions)
+- [`ST_Covers`](/docs/v26.1/st_covers)
+- [`ST_CoveredBy`](/docs/v26.1/st_coveredby)
+- [`ST_Contains`](/docs/v26.1/st_contains)
+- [`ST_Within`](/docs/v26.1/st_within)
+- [`ST_Intersects`](/docs/v26.1/st_intersects)
+- [`ST_CoveredBy`](/docs/v26.1/st_coveredby)
+- [`ST_Covers`](/docs/v26.1/st_covers)
+- [`ST_Disjoint`](/docs/v26.1/st_disjoint)
+- [`ST_Equals`](/docs/v26.1/st_equals)
+- [`ST_Touches`](/docs/v26.1/st_touches)
+- [`ST_ConvexHull`](/docs/v26.1/st_convexhull)
+- [`ST_Union`](/docs/v26.1/st_union)
+- [Migrate from Shapefiles](/docs/v26.1/migrate-from-shapefiles)
+- [Migrate from GeoJSON](/docs/v26.1/migrate-from-geojson)
+- [Migrate from GeoPackage](/docs/v26.1/migrate-from-geopackage)
+- [Migrate from OpenStreetMap](/docs/v26.1/migrate-from-openstreetmap)
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data) (blog post)
+- [Using GeoServer with CockroachDB](/docs/v26.1/geoserver)

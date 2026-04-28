@@ -1,0 +1,59 @@
+---
+title: "Cluster API v2.0"
+old_description: "Programmatically access and monitor cluster and node status information with a RESTful API."
+---
+
+The CockroachDB Cluster API is a REST API that provides information about a cluster and its nodes. The API offers programmatic access to much of the information available in the [DB Console](/docs/v24.1/ui-overview) user interface, enabling you to monitor and troubleshoot your cluster using your choice of tooling.
+
+The Cluster API is hosted by all nodes of your cluster and provides information about all nodes. The API is available on the same port that is listening for HTTP connections to the DB Console. This defaults to `8080` and can be specified using `--http-addr={server}:{port}` when configuring your node.
+
+## Resources
+
+The following endpoints are available as URLs under the `/api/v2` base path (for example, `https://localhost:8080/api/v2/health/`). For more information about the support policies for endpoints, see [API Support Policy](/docs/v24.1/api-support-policy).
+
+Each listed endpoint links to its full [API reference documentation](https://cockroachlabs.com/docs/api/cluster/v2).
+
+<table><thead><tr><th>Endpoint</th><th>Name</th><th>Description</th><th>Support</th></tr></thead><tbody><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/listDatabases"><code>/databases</code></a></td><td>List databases</td><td>Get all databases in the cluster.</td><td>Stable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/databaseDetails"><code>/databases/&#123;database&#125;</code></a></td><td>Get database details</td><td>Get the descriptor ID of a specified database.</td><td>Stable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/databaseGrants"><code>/databases/&#123;database&#125;/grants</code></a></td><td>List database grants</td><td>List all <a href="/docs/v24.1/security-reference/authorization#managing-privileges">privileges</a> granted to users for a specified database.</td><td>Stable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/databaseTables"><code>/databases/&#123;database&#125;/tables</code></a></td><td>List database tables</td><td>List all tables in a specified database.</td><td>Stable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/tableDetails"><code>/databases/&#123;database&#125;/tables/&#123;table&#125;</code></a></td><td>Get table details</td><td>Get details on a specified table, including schema, grants, indexes, range count, and <a href="/docs/v24.1/configure-replication-zones">zone configurations</a>.</td><td>Stable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/listEvents"><code>/events</code></a></td><td>List events</td><td>List the latest <a href="/docs/v24.1/eventlog">events</a> on the cluster, in descending order.</td><td>Unstable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/health"><code>/health</code></a></td><td>Check node health</td><td>Determine if the node is running and ready to accept SQL connections.</td><td>Stable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/listNodes"><code>/nodes</code></a></td><td>List nodes</td><td>Get details on all nodes in the cluster, including node IDs, software versions, and hardware.</td><td>Stable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/listNodeRanges"><code>/nodes/&#123;node&#95;id&#125;/ranges</code></a></td><td>List node ranges</td><td>Get details on the ranges on a specified node.</td><td>Unstable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/listHotRanges"><code>/ranges/hot</code></a></td><td>List hot ranges</td><td>Get information on ranges receiving a high number of reads or writes.</td><td>Stable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/listRange"><code>/ranges/&#123;range&#95;id&#125;</code></a></td><td>Get range details</td><td>Get detailed technical information on a range. Typically used by Cockroach Labs engineers.</td><td>Unstable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/listSessions"><code>/sessions</code></a></td><td>List sessions</td><td>Get SQL session details of all current users or a specified user.</td><td>Unstable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/listUsers"><code>/users</code></a></td><td>List users</td><td>List all SQL users on the cluster.</td><td>Stable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/login"><code>/login</code></a></td><td>Log in</td><td>Authenticate as a <a href="/docs/v24.1/create-role#create-a-role-that-can-log-in-to-the-database">SQL role</a> that is a member of the <a href="/docs/v24.1/security-reference/authorization#admin-role"><code>admin</code> role</a> to retrieve a session token to use with further API calls.</td><td>Stable</td></tr><tr><td><a href="https://cockroachlabs.com/docs/api/cluster/v2#operation/logout"><code>/logout</code></a></td><td>Log out</td><td>Invalidate the session token.</td><td>Stable</td></tr></tbody></table>
+
+## Requirements
+
+All endpoints except `/health` and `/login` require authentication using a session token. To obtain a session token, you will need:
+
+- A [SQL role](/docs/v24.1/create-role) that is a member of the [`admin` role](/docs/v24.1/security-reference/authorization#admin-role) and has login permissions and a password.
+
+To connect with the API on a secure cluster, you will need:
+
+- The CA cert used by the cluster or any intermediary proxy server, either in the client's cert store as a trusted certificate authority or as a file manually specified by the HTTP request (for example, using curl's [cacert](https://curl.se/docs/manpage#--cacert) ).
+
+## Authentication
+
+To create and manage web sessions and authentication tokens to the Cluster API from the command line, use the [`cockroach auth-session`](/docs/v24.1/cockroach-auth-session) CLI command.
+
+Alternatively, you may also request a token directly from the `/login` endpoint using the following instructions:
+
+1. Request a session token using the `/login` endpoint. For example:
+
+    ```shell
+    curl -d "username=user&password=pass" \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    https://localhost:8080/api/v2/login/
+    ```
+2. Record the token (`session` value) that is returned.
+
+    ```shell
+    {"session":"CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow=="}
+    ```
+3. Pass the token with each call using the `X-Cockroach-API-Session` header. For example:
+
+    ```shell
+    curl -H "X-Cockroach-API-Session: CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow==" \
+    https://localhost:8080/api/v2/nodes/
+    ```
+
+## Versioning and stability
+
+The Cluster API version is defined in the request path. For example: `<cluster>/api/v2/health`.
+
+Future versions of CockroachDB may provide multiple API versions and will continue to provide access to this v2.0 API until it is deprecated.
+
+All endpoint paths and payloads will remain available within a major API version number (`v2.x`). Patch versions could add new endpoints but will not remove existing endpoints. For more information, see [API Support Policy](/docs/v24.1/api-support-policy).

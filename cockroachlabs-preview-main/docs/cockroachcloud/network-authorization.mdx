@@ -1,0 +1,120 @@
+---
+title: "Network Authorization for CockroachDB Cloud"
+old_description: "Learn about the network authorization features for CockroachDB Cloud."
+---
+
+To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, Cockroach Labs recommends restricting your network to allow access only from specific IP address ranges controlled by your organization. These might include specific networks for your application deployments, hardened administrator access points, or disaster recovery pipelines.
+
+This page describes these options and how they help to protect clusters in CockroachDB Cloud.
+
+## Options for controlling network access
+
+You can authorize network access to your cluster by:
+
+- [Adding an authorized range of public IP addresses](#ip-allowlisting).
+- Setting up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet, for enhanced network security and reduced network latency. Available for CockroachDB Advanced and CockroachDB Standard. If you use IP allowlisting rules together with private connectivity, private networks do not need to be added to that allowlist.
+    - CockroachDB Advanced or Standard clusters deployed on GCP can connect privately using GCP Private Service Connect (PSC) or GCP VPC peering. PSC allows you to connect your cluster directly to a VPC within your Google Cloud project, while VPC Peering allows you to peer your cluster's VPC in CockroachDB Cloud to a VPC within your Google Cloud project.
+    - CockroachDB Advanced or Standard clusters deployed on AWS can connect privately using AWS PrivateLink, which allows you to connect your cluster to a VPC within your AWS account.
+    - CockroachDB Advanced clusters deployed on Azure can connect privately using Azure Private Link, which allows you to connect your cluster to a virtual network within your Azure tenant.
+
+        For detailed instructions, refer to [Establish private connectivity](/docs/cockroachcloud/connect-to-your-cluster#establish-private-connectivity).
+
+<Note>
+[VPC Peering](/docs/cockroachcloud/network-authorization#vpc-peering) and [AWS PrivateLink](/docs/cockroachcloud/network-authorization#aws-privatelink) in CockroachDB Advanced clusters do **not** support connecting to a [Kafka](/docs/v25.4/changefeed-sinks#kafka) sink's internal IP addresses for [changefeeds](/docs/v25.4/change-data-capture-overview). To connect to a Kafka sink from CockroachDB Advanced, it is necessary to expose the Kafka cluster's external IP address and open ports with firewall rules to allow access from the cluster.
+</Note>
+
+**Prerequisite**: Either the [Cluster Operator](/docs/cockroachcloud/authorization#cluster-operator) or [Cluster Admin](/docs/cockroachcloud/authorization#cluster-admin) role on an existing cluster, or the [Cluster Creator](/docs/cockroachcloud/authorization#cluster-creator) role in order to create a new cluster.
+
+Use private connectivity if:
+
+- You need to allowlist more defined IP address ranges than the [default maximum](#ip-allowlisting).
+- Your servers’ IP addresses are not static.
+- You have a requirement to avoid exposing your cluster to the public internet.
+
+Learn more about [Private Clusters (Preview)](/docs/cockroachcloud/private-clusters), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
+
+<Note>
+Neither Azure Private Link nor private clusters are available for [CockroachDB Advanced on Azure](/docs/cockroachcloud/cockroachdb-advanced-on-azure).
+</Note>
+
+## Cluster default network configuration
+
+CockroachDB Advanced clusters differ from CockroachDB Standard clusters in their default network configuration:
+
+- On creation, a CockroachDB Standard cluster is open to all traffic as it is created with a `0.0.0.0/0` IP allowlist entry.
+- On creation, a CockroachDB Advanced cluster is "locked down" and has no access until an authorized network is created.
+
+CockroachDB Cloud clusters can accept SQL connections only from [allowed IP addresses](#ip-allowlisting).
+
+## IP allowlisting
+
+Authorized network access can be managed from the CockroachDB Cloud console Network Authorization page at:
+
+`https://cockroachlabs.cloud/cluster/{ your cluster UUID}/networking`
+
+Standard and Advanced clusters support different maximum numbers of IP allowlist rules:
+
+<table><thead><tr><th>Cluster Type</th><th>IP allowlist rule max</th></tr></thead><tbody><tr><td>Advanced (AWS)</td><td>20</td></tr><tr><td>Advanced (GCP and Azure)</td><td>200</td></tr><tr><td>Standard or Basic</td><td>50</td></tr></tbody></table>
+
+If you need to add more than the maximum number of allowlist rules, [contact Support](https://support.cockroachlabs.com/).
+
+<Note>
+While developing and testing your application, you may add `0.0.0.0/0` to the allowlist, which allows all networks. However, before moving into production, it is recommenced that you remove the `0.0.0.0/0` network from the allowlist.
+</Note>
+
+If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to a CockroachDB Advanced cluster privately instead.
+
+Refer to:
+
+- [Connect to a CockroachDB Basic Cluster: Authorize your network](/docs/cockroachcloud/connect-to-a-basic-cluster#authorize-your-network).
+- - [Connect to a CockroachDB Standard Cluster: Authorize your network](/docs/cockroachcloud/connect-to-your-cluster#authorize-your-network).
+- [Connect to a CockroachDB Advanced Cluster: Authorize your network](/docs/cockroachcloud/connect-to-an-advanced-cluster#authorize-your-network).
+
+## DB Console
+
+The DB Console provides details about a CockroachDB Advanced cluster's configuration, and helps you optimize cluster performance. The DB Console is not available on CockroachDB Standard or Basic.
+
+<Note>
+Users must have the Cluster Developer, Cluster Operator, Cluster Admin, or Cluster Creator on a specific cluster role to access its DB Console. Refer to [Organization user roles](/docs/cockroachcloud/authorization#organization-user-roles)
+</Note>
+
+For information on functionality, refer to: [DB Console Overview](/docs/v25.4/ui-overview).
+
+To access the DB Console, you must first authorize your current IP address:
+
+1. Visit your cluster's IP allowlist page:
+
+    ```txt
+    https://cockroachlabs.cloud/cluster/{ your cluster UUID }/networking/allowlist
+    ```
+2. Click **Add Network**.
+3. Add your **Current Network**:
+    1. Give it a **Name** indicating its use for DB Console access from your current location.
+    2. Under **Allow this network to access**, select **DB Console to monitor the cluster**.
+    3. Click **Apply**.
+
+<Warning>
+When you have finished your work with the DB Console, it is recommended to remove your authorized network from the allowlist, in the interest of the general best practice of restricting network access as much as possible.
+
+Remove an authorized network by selecting **Delete** from the **Action** dropdown its row on the the cluster's **Networking** page.
+</Warning>
+
+To access your cluster's DB Console:
+
+1. Navigate to your CockroachDB Advanced cluster's [**Tools** page](/docs/cockroachcloud/tools-page) in the **Monitoring** section of the CockroachDB Cloud Console.
+2. Click **Open DB Console**. Your browser will attempt to access the DB console in a new tab.
+
+You can also access the DB Console by navigating to `https://admin-{cluster-name}.crdb.io:8080/#/metrics/overview/cluster`. Replace the `{cluster-name}` placeholder with the name of your cluster.
+
+(Optional) To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL that opens in the browser. These IP addresses are static for the lifecycle of the cluster. For example, to use the `dig` command:
+
+```shell
+dig examplary-advanced-clusterberry-77tq.cockroachlabs.cloud | grep -A3 'ANSWER SECTION'
+```
+
+```txt
+;; ANSWER SECTION:
+examplary-advanced-clusterberry-77tq.cockroachlabs.cloud. 300 IN A 35.245.55.160
+examplary-advanced-clusterberry-77tq.cockroachlabs.cloud. 300 IN A 34.129.61.133
+examplary-advanced-clusterberry-77tq.cockroachlabs.cloud. 300 IN A 34.117.21.266
+```

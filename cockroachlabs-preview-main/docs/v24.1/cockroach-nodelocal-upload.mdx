@@ -1,0 +1,88 @@
+---
+title: "cockroach nodelocal upload"
+old_description: "The cockroach nodelocal upload command uploads a file to the external IO directory on a node's (the gateway node, by default) local file system."
+---
+
+The `cockroach nodelocal upload` [command](/docs/v24.1/cockroach-commands) uploads a file to the external IO directory on a node's (the gateway node, by default) local file system.
+
+This command takes in a source file to upload and a destination filename. It will then use a SQL connection to upload the file to the node's local file system, at `externalIODir/destination/filename`.
+
+<Note>
+The source file is only uploaded to one node, not all of the nodes.
+</Note>
+
+<Note>
+CockroachDB now supports uploading files to a [user-scoped file storage](/docs/v24.1/use-userfile-storage) using a SQL connection. We recommend using `userfile` instead of `nodelocal`, as it is user-scoped and more secure.
+</Note>
+
+## Required privileges
+
+Only members of the `admin` role can run `cockroach nodelocal upload`. By default, the `root` user belongs to the `admin` role.
+
+## Considerations
+
+The [`--external-io`](/docs/v24.1/cockroach-start#general) flag on the node you're uploading to **cannot** be set to `disabled`.
+
+## Synopsis
+
+Upload a file:
+
+```shell
+$ cockroach nodelocal upload <location/of/file> <destination/of/file> [flags]
+```
+
+View help:
+
+```shell
+$ cockroach nodelocal upload --help
+```
+
+## Flags
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v24.1/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr><tr><td><code>--echo-sql</code></td><td>Reveal the SQL statements sent implicitly by the command-line utility.</td></tr><tr><td><code>--host</code></td><td>The server host and port number to connect to. This can be the address of any node in the cluster.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;HOST</code><br/><strong>Default:</strong><code>localhost:26257</code></td></tr><tr><td><code>--insecure</code></td><td>Use an insecure connection.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;INSECURE</code><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--url</code></td><td>A <a href="/docs/v24.1/connection-parameters#connect-using-a-url">connection URL</a> to use instead of the other arguments.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;URL</code><br/><strong>Default:</strong> no URL</td></tr><tr><td><code>--user</code><br/><code>-u</code></td><td>The <a href="/docs/v24.1/create-user">SQL user</a> that will own the client session.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;USER</code><br/><strong>Default:</strong><code>root</code></td></tr></tbody></table>
+
+## Examples
+
+### Upload a file
+
+To upload a file to the default node (i.e., the gateway node):
+
+```shell
+$ cockroach nodelocal upload ./grants.csv test/grants.csv --certs-dir=certs
+```
+
+```text
+successfully uploaded to nodelocal://1/test/grants.csv
+```
+
+Then, you can use the file to [`IMPORT INTO`](/docs/v24.1/import-into) data.
+
+### Upload a file to a specific node
+
+To upload a file to a specific node (e.g., node 2), use the `--host` flag:
+
+```shell
+$ cockroach nodelocal upload ./grants.csv grants.csv --host=localhost:26259 --insecure
+```
+
+```text
+successfully uploaded to nodelocal://2/grants.csv
+```
+
+Or, use the `--url` flag:
+
+```shell
+$ cockroach nodelocal upload ./grants.csv grants.csv --url=postgresql://root@localhost:26258?sslmode=disable --insecure
+```
+
+```text
+successfully uploaded to nodelocal://3/grants.csv
+```
+
+Then, you can use the file to [`IMPORT INTO`](/docs/v24.1/import-into) data.
+
+## See also
+
+- [`cockroach` Commands Overview](/docs/v24.1/cockroach-commands)
+- [Troubleshooting Overview](/docs/v24.1/troubleshooting-overview)
+- [`IMPORT INTO`](/docs/v24.1/import-into)

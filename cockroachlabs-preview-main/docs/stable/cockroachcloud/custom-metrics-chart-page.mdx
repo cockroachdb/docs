@@ -1,0 +1,20 @@
+---
+title: "Custom Metrics Chart Page"
+old_description: "The Custom Metrics Chart page lets you create custom charts showing the time series data for an available metric or combination of metrics."
+---
+
+import CustomMetricsChartPage from "/snippets/cockroachcloud/custom-metrics-chart-page.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CustomMetricsChartPage />

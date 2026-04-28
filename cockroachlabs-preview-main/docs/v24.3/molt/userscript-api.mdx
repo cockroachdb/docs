@@ -1,0 +1,20 @@
+---
+title: "Userscript API"
+old_description: "A list of the available userscript functions, including descriptions and examples."
+---
+
+import UserscriptApi from "/snippets/molt/userscript-api.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<UserscriptApi />

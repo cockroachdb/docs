@@ -1,0 +1,65 @@
+---
+title: "LINESTRING"
+old_description: "A LINESTRING is a collection of POINTs joined into a line."
+---
+
+A `LINESTRING` is a collection of [Points](/docs/v25.4/point) that are "strung together" into one geometric object. A LineString can be used to represent an arbitrary curve, such as a [Bézier curve](https://wikipedia.org/wiki/B%C3%A9zier_curve). In practice, this means that LineStrings are useful for representing real-world objects such as roads and rivers.
+
+The coordinates of each Point that makes up the LineString are translated according to the current [spatial reference system](/docs/v25.4/architecture/glossary#spatial-reference-system) (denoted by an [SRID](/docs/v25.4/architecture/glossary#srid)) to determine what the Point "is", or what it "means" relative to the [other spatial objects](/docs/v25.4/spatial-data-overview#spatial-objects) (if any) in the data set.
+
+You can also store a `LINESTRING` with the following additional dimensions:
+
+- A third dimension coordinate `Z` ( `LINESTRINGZ` ).
+- A measure coordinate `M` ( `LINESTRINGM` ).
+- Both a third dimension and a measure coordinate ( `LINESTRINGZM` ).
+
+The `Z` and `M` dimensions can be accessed or modified using a number of [built-in functions](/docs/v25.4/functions-and-operators#spatial-functions), including:
+
+- `ST_Z`
+- `ST_M`
+- `ST_Affine`
+- `ST_Zmflag`
+- `ST_MakePoint`
+- `ST_MakePointM`
+- `ST_Force3D`
+- `ST_Force3DZ`
+- `ST_Force3DM`
+- `ST_Force4D`
+- `ST_Snap`
+- `ST_SnapToGrid`
+- `ST_RotateZ`
+- `ST_AddMeasure`
+
+Note that CockroachDB's [spatial indexing](/docs/v25.4/spatial-indexes) is still based on the 2D coordinate system. This means that:
+
+- The Z/M dimension is not index accelerated when using spatial predicates.
+- Some spatial functions ignore the Z/M dimension, with transformations discarding the Z/M value.
+
+## Examples
+
+A LineString can be created from SQL by calling the `st_geomfromtext` function on a LineString definition expressed in the [Well Known Text (WKT)](/docs/v25.4/architecture/glossary#wkt) format as shown below.
+
+```sql
+SELECT ST_GeomFromText('LINESTRING(0 0, 1440 900)');
+```
+
+```text
+                                   st_geomfromtext
+--------------------------------------------------------------------------------------
+  0102000000020000000000000000000000000000000000000000000000008096400000000000208C40
+(1 row)
+```
+
+You can also make a LineString using the [aggregate function form](/docs/v25.4/functions-and-operators#aggregate-functions) of `st_makeline`.
+
+## See also
+
+- [Spatial tutorial](/docs/v25.4/spatial-tutorial)
+- [Spatial objects](/docs/v25.4/spatial-data-overview#spatial-objects)
+- [POINT](/docs/v25.4/point)
+- [POLYGON](/docs/v25.4/polygon)
+- [MULTIPOINT](/docs/v25.4/multipoint)
+- [MULTILINESTRING](/docs/v25.4/multilinestring)
+- [MULTIPOLYGON](/docs/v25.4/multipolygon)
+- [GEOMETRYCOLLECTION](/docs/v25.4/geometrycollection)
+- [Using GeoServer with CockroachDB](/docs/v25.4/geoserver)

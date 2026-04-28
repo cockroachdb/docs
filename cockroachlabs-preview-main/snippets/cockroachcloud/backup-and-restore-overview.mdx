@@ -1,0 +1,123 @@
+---
+title: "Backup and Restore in CockroachDB Cloud Overview"
+old_description: "An overview of backup and restore for CockroachDB Cloud."
+---
+
+CockroachDB is built to be <a href="/docs/VERSION_PLACEHOLDER/demo-cockroachdb-resilience" data-versioned="true">fault-tolerant through automatic recovery</a>, but unforeseen disasters can happen. Backup and restore is an important part of a resilient disaster recovery plan. CockroachDB Cloud clusters run routine *managed backups* that are stored by Cockroach Labs in cloud storage. Additionally, you can also manually create *self-managed backups* using [CockroachDB's backup features](#get-started-with-self-managed-backups).
+
+## CockroachDB Cloud backups
+
+CockroachDB Cloud clusters can run two types of backups:
+
+- Automated [managed backups](#managed-backups)
+- Manual [self-managed backups](#self-managed-backups)
+
+### Managed backups
+
+<a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/backup-and-restore-overview" data-versioned="true">*Managed backups*</a> are automated backups of CockroachDB Cloud clusters that are stored by Cockroach Labs in cloud storage. By default, Cockroach Labs takes and retains managed backups in all Cloud clusters. In Standard and Advanced clusters, you can adjust the default managed backup settings to meet your organization's disaster recovery requirements. For details on the available settings for each cluster tier, refer to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/managed-backups#managed-backup-settings" data-versioned="true">Managed backup settings</a>.
+
+You can view and configure managed backups through the **Backup and Restore** menu in the Cloud Console and with the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api" data-versioned="true">CockroachDB Cloud API</a>.
+
+<Note>
+When a cluster is deleted, Cockroach Labs will retain the managed backups for for the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/managed-backups#managed-backup-settings" data-versioned="true">configured retention time</a>, after which the backups will be deleted.
+
+If a customer’s agreement with Cockroach Labs has terminated, all managed backups will be retained for a maximum of 30 days and then deleted. If a backup's retention time was set to **less** than 30 days, Cockroach Labs will retain the managed backups for the configured retention time, after which the backups will be deleted.
+
+To restore a backup from a deleted cluster, you must contact the <a href="/docs/VERSION_PLACEHOLDER/support-resources" data-versioned="true">Cockroach Labs Support team</a>.
+</Note>
+
+### Self-managed backups
+
+You can take manual backups and store them in your <a href="/docs/VERSION_PLACEHOLDER/use-cloud-storage" data-versioned="true">cloud storage buckets</a> using the <a href="/docs/VERSION_PLACEHOLDER/backup" data-versioned="true">`BACKUP`</a> statement. Self-managed backups are supported in all CockroachDB Cloud products. For a list of backup features that are available, refer to the following section [Get started with self-managed backups](#get-started-with-self-managed-backups).
+
+## Get started with self-managed backups
+
+The following sections outline some of the features and resources for taking backups to your own storage bucket. For more practical examples, refer to the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/take-and-restore-self-managed-backups" data-versioned="true">Take and Restore Self-Managed Backups</a> page and the [Video demo](#video-demo).
+
+You can run the following types of self-managed backups:
+
+- <a href="/docs/VERSION_PLACEHOLDER/take-full-and-incremental-backups#full-backups" data-versioned="true">Full backup</a>: An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups.
+- <a href="/docs/VERSION_PLACEHOLDER/take-full-and-incremental-backups#incremental-backups" data-versioned="true">Incremental backup</a>: A copy of the changes in your data since the specified base backup (either a full backup or a full backup plus an incremental backup).
+- <a href="/docs/VERSION_PLACEHOLDER/manage-a-backup-schedule" data-versioned="true">Scheduled backup</a>: A schedule for periodic backups.
+- <a href="/docs/VERSION_PLACEHOLDER/take-backups-with-revision-history-and-restore-from-a-point-in-time" data-versioned="true">Backup with revision history</a>: A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp.
+- <a href="/docs/VERSION_PLACEHOLDER/take-backups-with-revision-history-and-restore-from-a-point-in-time" data-versioned="true">Point-in-time restore</a>: A restore from an arbitrary point in time within the revision history of a backup.
+- <a href="/docs/VERSION_PLACEHOLDER/take-and-restore-encrypted-backups" data-versioned="true">Encrypted backup and restore</a>: An encrypted backup using a KMS or passphrase.
+- <a href="/docs/VERSION_PLACEHOLDER/take-and-restore-locality-aware-backups" data-versioned="true">Locality-aware backup</a>: A backup where each node writes files to the backup destination that matches the node locality configured at node startup.
+- <a href="/docs/VERSION_PLACEHOLDER/take-locality-restricted-backups" data-versioned="true">Locality-restricted backup execution</a>: A backup with the `EXECUTION LOCALITY` option restricts the nodes that can execute a backup job with a defined locality filter.
+
+### Scheduled backups
+
+<Tip>
+We recommend using scheduled backups to automate daily backups of your cluster.
+</Tip>
+
+CockroachDB supports <a href="/docs/VERSION_PLACEHOLDER/create-schedule-for-backup" data-versioned="true">creating schedules for periodic backups</a>. Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of <a href="/docs/VERSION_PLACEHOLDER/architecture/storage-layer#protected-timestamps" data-versioned="true">protected timestamps</a> means that you can run scheduled backups at a cadence independent from the <a href="/docs/VERSION_PLACEHOLDER/configure-replication-zones#gc-ttlseconds" data-versioned="true">GC TTL</a> of the data.
+
+For detail on scheduled backup features CockroachDB supports:
+
+- <a href="/docs/VERSION_PLACEHOLDER/manage-a-backup-schedule#set-up-monitoring-for-the-backup-schedule" data-versioned="true">Set up monitoring for the backup schedule</a>
+- <a href="/docs/VERSION_PLACEHOLDER/manage-a-backup-schedule#view-the-schedule" data-versioned="true">View</a>, <a href="/docs/VERSION_PLACEHOLDER/manage-a-backup-schedule#pause-the-schedule" data-versioned="true">pause</a>, <a href="/docs/VERSION_PLACEHOLDER/manage-a-backup-schedule#resume-the-schedule" data-versioned="true">resume</a>, or <a href="/docs/VERSION_PLACEHOLDER/manage-a-backup-schedule#drop-the-schedule" data-versioned="true">drop</a> the schedule.
+
+### Backup and restore SQL statements
+
+The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:
+
+<table><thead><tr><th>SQL Statement</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/v25.4/backup"><code>BACKUP</code></a></td><td>Create full and incremental backups.</td></tr><tr><td><a href="/docs/v25.4/show-jobs"><code>SHOW JOBS</code></a></td><td>Show a list of all running jobs or show the details of a specific job by its <code>job ID</code>.</td></tr><tr><td><a href="/docs/v25.4/pause-job"><code>PAUSE JOB</code></a></td><td>Pause a backup or restore job with its <code>job ID</code>.</td></tr><tr><td><a href="/docs/v25.4/resume-job"><code>RESUME JOB</code></a></td><td>Resume a backup or restore job with its <code>job ID</code>.</td></tr><tr><td><a href="/docs/v25.4/cancel-job"><code>CANCEL JOB</code></a></td><td>Cancel a backup or restore job with its <code>job ID</code>.</td></tr><tr><td><a href="/docs/v25.4/show-backup"><code>SHOW BACKUP</code></a></td><td>Show a backup's details at the <a href="/docs/v25.4/take-full-and-incremental-backups#backup-collections">backup collection's</a> storage location.</td></tr><tr><td><a href="/docs/v25.4/restore"><code>RESTORE</code></a></td><td>Restore full and incremental backups.</td></tr><tr><td><a href="/docs/v25.4/alter-backup"><code>ALTER BACKUP</code></a></td><td>Add a new <a href="/docs/v25.4/take-and-restore-encrypted-backups#use-key-management-service">KMS encryption key</a> to an encrypted backup.</td></tr><tr><td><a href="/docs/v25.4/create-schedule-for-backup"><code>CREATE SCHEDULE FOR BACKUP</code></a></td><td>Create a schedule for periodic backups.</td></tr><tr><td><a href="/docs/v25.4/alter-backup-schedule"><code>ALTER BACKUP SCHEDULE</code></a></td><td>Alter an existing backup schedule.</td></tr><tr><td><a href="/docs/v25.4/show-schedules"><code>SHOW SCHEDULES</code></a></td><td>View information on backup schedules.</td></tr><tr><td><a href="/docs/v25.4/pause-schedules"><code>PAUSE SCHEDULES</code></a></td><td>Pause backup schedules.</td></tr><tr><td><a href="/docs/v25.4/resume-schedules"><code>RESUME SCHEDULES</code></a></td><td>Resume paused backup schedules.</td></tr><tr><td><a href="/docs/v25.4/drop-schedules"><code>DROP SCHEDULES</code></a></td><td>Drop backup schedules.</td></tr></tbody></table>
+
+### Backup storage
+
+We recommend taking backups to <a href="/docs/VERSION_PLACEHOLDER/use-cloud-storage" data-versioned="true">cloud storage</a> and enabling object locking to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups. Read the following usage information:
+
+- <a href="/docs/VERSION_PLACEHOLDER/use-cloud-storage#example-file-urls" data-versioned="true">Example file URLs</a> to form the URL that you pass to `BACKUP` and `RESTORE` statements.
+- <a href="/docs/VERSION_PLACEHOLDER/cloud-storage-authentication" data-versioned="true">Authentication</a> to set up authentication to a cloud storage bucket and include those credentials in the URL.
+
+<Warning>
+Cockroach Labs does not officially support S3-compatible storage solutions other than AWS S3, Google Cloud Storage (GCS), and Azure Blob Storage. Some common compatibility issues may be fixed by adding the `AWS_SKIP_CHECKSUM` option to the S3 URLs.
+
+The <a href="/docs/VERSION_PLACEHOLDER/support-resources" data-versioned="true">Cockroach Labs Support team</a> is available to offer assistance where possible. If you encounter issues when using unsupported S3-compatible storage, drivers, or frameworks, contact the maintainer directly.
+</Warning>
+
+For detail on additional cloud storage features CockroachDB supports:
+
+- Prevent backups from being overwritten or deleted with <a href="/docs/VERSION_PLACEHOLDER/use-cloud-storage#immutable-storage" data-versioned="true">immutable storage buckets</a>.
+- Set a specific storage class for your backups with <a href="/docs/VERSION_PLACEHOLDER/use-cloud-storage#amazon-s3-storage-classes" data-versioned="true">Storage Class (AWS S3 only)</a>.
+- <a href="/docs/VERSION_PLACEHOLDER/expire-past-backups" data-versioned="true">Expire past backups</a> from cloud storage.
+
+<Note>
+Cockroach Labs recommends enabling Egress Perimeter Controls on CockroachDB Advanced clusters to mitigate the risk of data exfiltration when accessing external resources, such as cloud storage for change data capture or backup and restore operations. See <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/egress-perimeter-controls" data-versioned="true">Egress Perimeter Controls</a> for detail and setup instructions.
+</Note>
+
+### Backup and restore observability
+
+You can verify that your stored backups are restorable with backup validation. While a successful restore completely validates a backup, the validation tools offer a faster alternative and return an error message if a backup is not valid. There are three "levels" of verifying backups that give increasing validation coverage depending on the amount of runtime you want to invest in validating backups.
+
+Refer to the <a href="/docs/VERSION_PLACEHOLDER/backup-validation" data-versioned="true">Backup Validation</a> page for detail and examples.
+
+You can track backup jobs using metrics that cover scheduled backups, status of running jobs, and details on completed or failed jobs. Depending on your CockroachDB Cloud deployment, you can track these metrics with:
+
+<table><thead><tr><th></th><th>CockroachDB Standard</th><th>CockroachDB Advanced</th><th>CockroachDB Basic</th></tr></thead><tbody><tr><td><a href="/docs/cockroachcloud/metrics#cockroachdb-cloud-console-metrics-page">Cloud Console Metrics page</a></td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><a href="/docs/cockroachcloud/backup-and-restore-monitoring#prometheus">Prometheus</a></td><td>✔</td><td>✔</td><td></td></tr><tr><td><a href="/docs/cockroachcloud/backup-and-restore-monitoring#datadog">Datadog</a></td><td>✔</td><td>✔</td><td></td></tr></tbody></table>
+
+### Backup jobs with locality requirements
+
+CockroachDB supports two backup features that use a node's locality to determine how a backup job runs or where the backup data is stored:
+
+- <a href="/docs/VERSION_PLACEHOLDER/take-locality-restricted-backups" data-versioned="true">Locality-restricted backup execution</a>: Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
+- <a href="/docs/VERSION_PLACEHOLDER/take-and-restore-locality-aware-backups" data-versioned="true">Locality-aware backup</a>: Partition and store backup data in a way that is optimized for locality. When you run a locality-aware backup, nodes write backup data to the <a href="/docs/VERSION_PLACEHOLDER/use-cloud-storage" data-versioned="true">cloud storage</a> bucket that is closest to the node locality configured at <a href="/docs/VERSION_PLACEHOLDER/cockroach-start" data-versioned="true">node startup</a>.
+
+<Note>
+CockroachDB Basic and Standard clusters operate with a different architecture compared to CockroachDB self-hosted and CockroachDB Advanced clusters. These architectural differences have implications for how locality-aware backups can run. Basic and Standard clusters will scale resources depending on whether they are actively in use, which means that it is less likely to have a SQL pod available in every locality. As a result, your cluster may not have a SQL pod in the locality where the data resides, which can lead to the cluster uploading that data to a storage bucket in a locality where you do have active SQL pods. You should consider this as you plan a backup strategy that must comply with <a href="/docs/VERSION_PLACEHOLDER/data-domiciling" data-versioned="true">data domiciling</a> requirements.
+</Note>
+
+## Video demo
+
+For practical examples of running backup and restore jobs, watch the following video:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/t_ocOi_iYQ8" title="YouTube video player" width="560"></iframe>
+</Frame>
+
+## See also
+
+- Considerations for using <a href="/docs/VERSION_PLACEHOLDER/backup#considerations" data-versioned="true">backup</a> and <a href="/docs/VERSION_PLACEHOLDER/restore#considerations" data-versioned="true">restore</a>.
+- <a href="/docs/VERSION_PLACEHOLDER/take-full-and-incremental-backups#backup-collections" data-versioned="true">Backup collections</a> for details on how CockroachDB stores backups.
+- <a href="/docs/VERSION_PLACEHOLDER/restoring-backups-across-versions" data-versioned="true">Restoring backups</a> across major versions of CockroachDB.

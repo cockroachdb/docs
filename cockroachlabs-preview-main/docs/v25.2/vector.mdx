@@ -1,0 +1,94 @@
+---
+title: "VECTOR"
+old_description: "The VECTOR data type stores fixed-length arrays of floating-point numbers, which represent data points in multi-dimensional space."
+---
+
+<Note>
+**This feature is in [preview](/docs/v25.2/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+The `VECTOR` data type stores fixed-length arrays of floating-point numbers, which represent data points in multi-dimensional space. Vector search is often used in AI applications such as Large Language Models (LLMs) that rely on vector representations.
+
+For details on valid `VECTOR` comparison operators, refer to [Syntax](#syntax). For the list of supported `VECTOR` functions, refer to [Functions and Operators](/docs/v25.2/functions-and-operators#pgvector-functions).
+
+<Note>
+`VECTOR` functionality is compatible with the [`pgvector`](https://github.com/pgvector/pgvector) extension for PostgreSQL.
+</Note>
+
+## Syntax
+
+A `VECTOR` value is expressed as an [array](/docs/v25.2/array) of [floating-point numbers](/docs/v25.2/float). The array size corresponds to the number of `VECTOR` dimensions. For example, the following `VECTOR` has 3 dimensions:
+
+```text
+[1.0, 0.0, 0.0]
+```
+
+You can specify the dimensions when defining a `VECTOR` column. This will enforce the number of dimensions in the column values. For example:
+
+```sql
+ALTER TABLE foo ADD COLUMN bar VECTOR(3);
+```
+
+The following `VECTOR` comparison operators are valid:
+
+- `=` (equals). Compare vectors for equality in filtering and conditional queries.
+- `<>` (not equal to). Compare vectors for inequality in filtering and conditional queries.
+- `<->` (L2 distance). Calculate the Euclidean distance between two vectors, as used in [nearest neighbor search](https://en.wikipedia.org/wiki/Nearest_neighbor_search) and clustering algorithms.
+- `<#>` (negative inner product). Calculate the [inner product](https://en.wikipedia.org/wiki/Inner_product_space) of two vectors, as used in similarity searches where the inner product can represent the similarity score.
+- `<=>` (cosine distance). Calculate the [cosine distance](https://en.wikipedia.org/wiki/Cosine_similarity) between vectors, such as in text and image similarity measures where the orientation of vectors is more important than their magnitude.
+
+## Size
+
+The size of a `VECTOR` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](/docs/v25.2/architecture/storage-layer#write-amplification) and other considerations may cause significant performance degradation.
+
+## Functions
+
+For the list of supported `VECTOR` functions, refer to [Functions and Operators](/docs/v25.2/functions-and-operators#pgvector-functions).
+
+## Example
+
+Create a table with a `VECTOR` column, specifying `3` dimensions:
+
+```sql
+CREATE TABLE items (
+    category STRING,
+    vector VECTOR(3),
+    INDEX (category)
+);
+```
+
+Insert some sample data into the table:
+
+```sql
+INSERT INTO items (category, vector) VALUES
+    ('electronics', '[1.0, 0.0, 0.0]'),
+    ('electronics', '[0.9, 0.1, 0.0]'),
+    ('furniture', '[0.0, 1.0, 0.0]'),
+    ('furniture', '[0.0, 0.9, 0.1]'),
+    ('clothing', '[0.0, 0.0, 1.0]');
+```
+
+<Note>
+Large batch inserts of [`VECTOR`](/docs/v25.2/vector) types can cause performance degradation. When inserting vectors, batching should be avoided. For an example, refer to [Create and query a vector index](/docs/v25.2/vector-indexes#create-and-query-a-vector-index).
+</Note>
+
+Use the [`<->` operator](#syntax) to sort values with the `electronics` category by their similarity to `[1.0, 0.0, 0.0]`, based on geographic distance.
+
+```sql
+SELECT category, vector FROM items WHERE category = 'electronics' ORDER BY vector <-> '[1.0, 0.0, 0.0]' LIMIT 5;
+```
+
+```text
+   category   |   vector
+--------------+--------------
+  electronics | [1,0,0]
+  electronics | [0.9,0.1,0]
+```
+
+You can use a [vector index](/docs/v25.2/vector-indexes) to make searches on large numbers of high-dimensional `VECTOR` rows more efficient.
+
+## See also
+
+- [Vector Indexes](/docs/v25.2/vector-indexes)
+- [Functions and Operators](/docs/v25.2/functions-and-operators#pgvector-functions)
+- [Data Types](/docs/v25.2/data-types)

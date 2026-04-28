@@ -1,0 +1,1579 @@
+---
+title: "Build a Simple CRUD Java App with CockroachDB and JDBC"
+old_description: "Learn how to use CockroachDB from a simple Java application with the JDBC driver."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v26.1/build-a-java-app-with-cockroachdb"
+  items={[
+    {
+      title: "Use JDBC",
+      href: "/docs/v26.1/build-a-java-app-with-cockroachdb",
+    },
+    {
+      title: "Use Hibernate",
+      href: "/docs/v26.1/build-a-java-app-with-cockroachdb-hibernate",
+    },
+    {
+      title: "Use jOOQ",
+      href: "/docs/v26.1/build-a-java-app-with-cockroachdb-jooq",
+    },
+    {
+      title: "Use MyBatis-Spring",
+      href: "/docs/v26.1/build-a-spring-app-with-cockroachdb-mybatis",
+    },
+  ]}
+/>
+
+This tutorial shows you how to build a simple CRUD Java application with CockroachDB and the Java JDBC driver.
+
+<Note>
+We recommend using Java versions 8+ with CockroachDB.
+</Note>
+
+## Step 1. Start CockroachDB
+
+<Tabs>
+<Tab title="Use CockroachDB Basic">
+
+### Choose your installation method
+
+You can create a CockroachDB Basic cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or `ccloud`, a command-line interface (CLI) tool.
+
+<Tabs>
+<Tab title="Use the Cloud Console (GUI)">
+
+### Create a free cluster
+
+<Note>
+Organizations without billing information on file can only create one CockroachDB Basic cluster.
+</Note>
+
+1. If you haven't already, [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?referralId=docs_java_jdbc).
+2. [Log in](https://cockroachlabs.cloud/) to your CockroachDB Cloud account.
+3. On the **Clusters** page, click **Create cluster**.
+4. On the **Select a plan** page, select **Basic**.
+5. On the **Cloud &amp; Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section.
+6. In the **Regions** section, select a region for the cluster. Refer to [CockroachDB Cloud Regions](/docs/stable/cockroachcloud/regions) for the regions where CockroachDB Basic clusters can be deployed. To create a multi-region cluster, click **Add region** and select additional regions.
+7. Click **Next: Capacity**.
+8. On the **Capacity** page, select **Start for free**. Click **Next: Finalize**.
+9. On the **Finalize** page, click **Create cluster**.
+
+    Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.
+
+### Create a SQL user
+
+The **Create SQL user** dialog allows you to create a new SQL user and password.
+
+1. Enter a username in the **SQL user** field or use the one provided by default.
+2. Click **Generate &amp; save password**.
+3. Copy the generated password and save it in a secure location.
+4. Click **Next**.
+
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Manage SQL users on a cluster](/docs/stable/cockroachcloud/managing-access#manage-sql-users-on-a-cluster).
+
+### Get the connection string
+
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **Java** from the **Select option/language** dropdown.
+2. Select **JDBC** from the **Select tool** dropdown.
+3. Copy the command provided to set the `JDBC_DATABASE_URL` environment variable.
+
+    <Note>
+    The JDBC connection URL is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
+    </Note>
+
+</Tab>
+<Tab title="Use ccloud (CLI)">
+
+Follow these steps to create a CockroachDB Basic cluster using the `ccloud` CLI tool.
+
+<Note>
+The `ccloud` CLI tool is in Preview.
+</Note>
+
+### Install `ccloud`
+
+Choose your OS:
+
+<Tabs>
+<Tab title="Mac">
+
+You can install `ccloud` using either Homebrew or by downloading the binary.
+
+### Use Homebrew
+
+1. [Install Homebrew](http://brew.sh/).
+2. Install using the `ccloud` tap:
+
+    ```shell
+    brew install cockroachdb/tap/ccloud
+    ```
+
+### Download the binary
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-amd64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+Use the ARM 64 binary if you have an M-series Mac:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-arm64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Linux">
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.6.12.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Windows">
+
+In a PowerShell window, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud/ccloud_windows-amd64_0.6.12.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force ccloud/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
+```
+
+</Tab>
+</Tabs>
+
+### Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrieve the connection string.
+
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB Basic cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+
+```shell
+ccloud quickstart
+```
+
+The `ccloud quickstart` command will open a browser window to log you in to CockroachDB Cloud. If you are new to CockroachDB Cloud, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
+
+The `ccloud quickstart` command will prompt you for the cluster name, cloud provider, and cloud provider region, then ask if you want to connect to the cluster. Each prompt has default values that you can select, or change if you want a different option.
+
+Select **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting `postgresql://`.
+
+```text
+? How would you like to connect? General connection string
+Retrieving cluster info: succeeded
+ Downloading cluster cert to /Users/maxroach/.postgresql/root.crt: succeeded
+postgresql://maxroach:ThisIsNotAGoodPassword@blue-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
+```
+
+</Tab>
+</Tabs>
+
+## Step 2. Get the code
+
+Clone the code's GitHub repo:
+
+```shell
+git clone https://github.com/cockroachlabs/example-app-java-jdbc/
+```
+
+The project has the following directory structure:
+
+```text
+├── README.md
+├── app
+│   ├── build.gradle
+│   └── src
+│       └── main
+│           ├── java
+│           │   └── com
+│           │       └── cockroachlabs
+│           │           └── BasicExample.java
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+└── settings.gradle
+```
+
+The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDATE` SQL operations. The file also contains the `main` method of the program.
+
+```java
+package com.cockroachlabs;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import javax.sql.DataSource;
+import org.postgresql.ds.PGSimpleDataSource;
+
+/**
+ * Main class for the basic JDBC example.
+ **/
+public class BasicExample {
+
+    public static void main(String[] args) {
+
+        // Configure the database connection.
+        PGSimpleDataSource ds = new PGSimpleDataSource();
+        ds.setApplicationName("docs_simplecrud_jdbc");
+        ds.setUrl(System.getenv("JDBC_DATABASE_URL"));
+
+        // Create DAO.
+        BasicExampleDAO dao = new BasicExampleDAO(ds);
+
+        // Test our retry handling logic if FORCE_RETRY is true.  This
+        // method is only used to test the retry logic.  It is not
+        // necessary in production code.
+        dao.testRetryHandling();
+
+        // Create the accounts table if it doesn't exist 
+        dao.createAccountsTable();
+
+        // Insert a few accounts "by hand", using INSERTs on the backend.
+        Map<String, String> balances = new HashMap<>();
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+        balances.put(id1.toString(), "1000");
+        balances.put(id2.toString(), "250");
+        int updatedAccounts = dao.updateAccounts(balances);
+        System.out.printf("BasicExampleDAO.updateAccounts:\n    => %s total updated accounts\n", updatedAccounts);
+
+        // How much money is in these accounts?
+        BigDecimal balance1 = dao.getAccountBalance(id1);
+        BigDecimal balance2 = dao.getAccountBalance(id2);
+        System.out.printf("main:\n    => Account balances at time '%s':\n    ID %s => $%s\n    ID %s => $%s\n", LocalTime.now(), 1, balance1, 2, balance2);
+
+        // Transfer $100 from account 1 to account 2
+        UUID fromAccount = UUID.randomUUID();
+        UUID toAccount = UUID.randomUUID();
+        BigDecimal transferAmount = BigDecimal.valueOf(100);
+        int transferredAccounts = dao.transferFunds(fromAccount, toAccount, transferAmount);
+        if (transferredAccounts != -1) {
+            System.out.printf("BasicExampleDAO.transferFunds:\n    => $%s transferred between accounts %s and %s, %s rows updated\n", transferAmount, fromAccount, toAccount, transferredAccounts);
+        }
+
+        balance1 = dao.getAccountBalance(id1);
+        balance2 = dao.getAccountBalance(id2);
+        System.out.printf("main:\n    => Account balances at time '%s':\n    ID %s => $%s\n    ID %s => $%s\n", LocalTime.now(), 1, balance1, 2, balance2);
+
+        // Bulk insertion example using JDBC's batching support.
+        int totalRowsInserted = dao.bulkInsertRandomAccountData();
+        System.out.printf("\nBasicExampleDAO.bulkInsertRandomAccountData:\n    => finished, %s total rows inserted\n", totalRowsInserted);
+
+        // Print out 10 account values.
+        int accountsRead = dao.readAccounts(10);
+    }
+}
+
+/**
+ * Data access object used by 'BasicExample'.  Abstraction over some
+ * common CockroachDB operations, including:
+ *
+ * - Auto-handling transaction retries in the 'runSQL' method
+ *
+ * - Example of bulk inserts in the 'bulkInsertRandomAccountData'
+ *   method
+ */
+
+class BasicExampleDAO {
+
+    private static final int MAX_RETRY_COUNT = 3;
+    private static final String RETRY_SQL_STATE = "40001";
+    private static final boolean FORCE_RETRY = false;
+
+    private final DataSource ds;
+
+    private final Random rand = new Random();
+
+    BasicExampleDAO(DataSource ds) {
+        this.ds = ds;
+    }
+
+    /**
+       Used to test the retry logic in 'runSQL'.  It is not necessary
+       in production code.
+    */
+    void testRetryHandling() {
+        if (BasicExampleDAO.FORCE_RETRY) {
+            runSQL("SELECT crdb_internal.force_retry('1s':::INTERVAL)");
+        }
+    }
+
+    /**
+     * Run SQL code in a way that automatically handles the
+     * transaction retry logic so we don't have to duplicate it in
+     * various places.
+     *
+     * @param sqlCode a String containing the SQL code you want to
+     * execute.  Can have placeholders, e.g., "INSERT INTO accounts
+     * (id, balance) VALUES (?, ?)".
+     *
+     * @param args String Varargs to fill in the SQL code's
+     * placeholders.
+     * @return Integer Number of rows updated, or -1 if an error is thrown.
+     */
+    public Integer runSQL(String sqlCode, String... args) {
+
+        // This block is only used to emit class and method names in
+        // the program output.  It is not necessary in production
+        // code.
+        StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+        StackTraceElement elem = stacktrace[2];
+        String callerClass = elem.getClassName();
+        String callerMethod = elem.getMethodName();
+
+        int rv = 0;
+
+        try (Connection connection = ds.getConnection()) {
+
+            // We're managing the commit lifecycle ourselves so we can
+            // automatically issue transaction retries.
+            connection.setAutoCommit(false);
+
+            int retryCount = 0;
+
+            while (retryCount <= MAX_RETRY_COUNT) {
+
+                if (retryCount == MAX_RETRY_COUNT) {
+                    String err = String.format("hit max of %s retries, aborting", MAX_RETRY_COUNT);
+                    throw new RuntimeException(err);
+                }
+
+                // This block is only used to test the retry logic.
+                // It is not necessary in production code.  See also
+                // the method 'testRetryHandling()'.
+                if (FORCE_RETRY) {
+                    forceRetry(connection); // SELECT 1
+                }
+
+                try (PreparedStatement pstmt = connection.prepareStatement(sqlCode)) {
+
+                    // Loop over the args and insert them into the
+                    // prepared statement based on their types.  In
+                    // this simple example we classify the argument
+                    // types as "integers" and "everything else"
+                    // (a.k.a. strings).
+                    for (int i=0; i<args.length; i++) {
+                        int place = i + 1;
+                        String arg = args[i];
+
+                        try {
+                            int val = Integer.parseInt(arg);
+                            pstmt.setInt(place, val);
+                        } catch (NumberFormatException e) {
+                            pstmt.setString(place, arg);
+                        }
+                    }
+
+                    if (pstmt.execute()) {
+                        // We know that `pstmt.getResultSet()` will
+                        // not return `null` if `pstmt.execute()` was
+                        // true
+                        ResultSet rs = pstmt.getResultSet();
+                        ResultSetMetaData rsmeta = rs.getMetaData();
+                        int colCount = rsmeta.getColumnCount();
+
+                        // This printed output is for debugging and/or demonstration
+                        // purposes only.  It would not be necessary in production code.
+                        System.out.printf("\n%s.%s:\n    '%s'\n", callerClass, callerMethod, pstmt);
+
+                        while (rs.next()) {
+                            for (int i=1; i <= colCount; i++) {
+                                String name = rsmeta.getColumnName(i);
+                                String type = rsmeta.getColumnTypeName(i);
+
+                                // In this "bank account" example we know we are only handling
+                                // integer values (technically 64-bit INT8s, the CockroachDB
+                                // default).  This code could be made into a switch statement
+                                // to handle the various SQL types needed by the application.
+                                if ("int8".equals(type)) {
+                                    int val = rs.getInt(name);
+
+                                    // This printed output is for debugging and/or demonstration
+                                    // purposes only.  It would not be necessary in production code.
+                                    System.out.printf("    %-8s => %10s\n", name, val);
+                                }
+                            }
+                        }
+                    } else {
+                        int updateCount = pstmt.getUpdateCount();
+                        rv += updateCount;
+
+                        // This printed output is for debugging and/or demonstration
+                        // purposes only.  It would not be necessary in production code.
+                        System.out.printf("\n%s.%s:\n    '%s'\n", callerClass, callerMethod, pstmt);
+                    }
+
+                    connection.commit();
+                    break;
+
+                } catch (SQLException e) {
+
+                    if (RETRY_SQL_STATE.equals(e.getSQLState())) {
+                        // Since this is a transaction retry error, we
+                        // roll back the transaction and sleep a
+                        // little before trying again.  Each time
+                        // through the loop we sleep for a little
+                        // longer than the last time
+                        // (A.K.A. exponential backoff).
+                        System.out.printf("retryable exception occurred:\n    sql state = [%s]\n    message = [%s]\n    retry counter = %s\n", e.getSQLState(), e.getMessage(), retryCount);
+                        connection.rollback();
+                        retryCount++;
+                        int sleepMillis = (int)(Math.pow(2, retryCount) * 100) + rand.nextInt(100);
+                        System.out.printf("Hit 40001 transaction retry error, sleeping %s milliseconds\n", sleepMillis);
+                        try {
+                            Thread.sleep(sleepMillis);
+                        } catch (InterruptedException ignored) {
+                            // Necessary to allow the Thread.sleep()
+                            // above so the retry loop can continue.
+                        }
+
+                        rv = -1;
+                    } else {
+                        rv = -1;
+                        throw e;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.printf("BasicExampleDAO.runSQL ERROR: { state => %s, cause => %s, message => %s }\n",
+                              e.getSQLState(), e.getCause(), e.getMessage());
+            rv = -1;
+        }
+
+        return rv;
+    }
+
+    /**
+     * Helper method called by 'testRetryHandling'.  It simply issues
+     * a "SELECT 1" inside the transaction to force a retry.  This is
+     * necessary to take the connection's session out of the AutoRetry
+     * state, since otherwise the other statements in the session will
+     * be retried automatically, and the client (us) will not see a
+     * retry error. Note that this information is taken from the
+     * following test:
+     * https://github.com/cockroachdb/cockroach/blob/master/pkg/sql/logictest/testdata/logic_test/manual_retry
+     *
+     * @param connection Connection
+     */
+    private void forceRetry(Connection connection) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("SELECT 1")){
+            statement.executeQuery();
+        }
+    }
+
+    /**
+     * Update accounts by passing in a Map of (ID, Balance) pairs.
+     *
+     * @param accounts (Map)
+     * @return The number of updated accounts (int)
+     */
+    public int updateAccounts(Map<String, String> accounts) {
+        int rows = 0;
+        for (Map.Entry<String, String> account : accounts.entrySet()) {
+
+            String k = account.getKey();
+            String v = account.getValue();
+
+            String[] args = {k, v};
+            rows += runSQL("INSERT INTO accounts (id, balance) VALUES (?, ?)", args);
+        }
+        return rows;
+    }
+
+    /**
+     * Transfer funds between one account and another.  Handles
+     * transaction retries in case of conflict automatically on the
+     * backend.
+     * @param fromId (UUID)
+     * @param toId (UUID)
+     * @param amount (int)
+     * @return The number of updated accounts (int)
+     */
+    public int transferFunds(UUID fromId, UUID toId, BigDecimal amount) {
+            String sFromId = fromId.toString();
+            String sToId = toId.toString();
+            String sAmount = amount.toPlainString();
+
+            // We have omitted explicit BEGIN/COMMIT statements for
+            // brevity.  Individual statements are treated as implicit
+            // transactions by CockroachDB (see
+            // https://www.cockroachlabs.com/docs/stable/transactions.html#individual-statements).
+
+            String sqlCode = "UPSERT INTO accounts (id, balance) VALUES" +
+                "(?, ((SELECT balance FROM accounts WHERE id = ?) - ?))," +
+                "(?, ((SELECT balance FROM accounts WHERE id = ?) + ?))";
+
+            return runSQL(sqlCode, sFromId, sFromId, sAmount, sToId, sToId, sAmount);
+    }
+
+    /**
+     * Get the account balance for one account.
+     *
+     * We skip using the retry logic in 'runSQL()' here for the
+     * following reasons:
+     *
+     * 1. Since this is a single read ("SELECT"), we don't expect any
+     *    transaction conflicts to handle
+     *
+     * 2. We need to return the balance as an integer
+     *
+     * @param id (UUID)
+     * @return balance (int)
+     */
+    public BigDecimal getAccountBalance(UUID id) {
+        BigDecimal balance = BigDecimal.valueOf(0);
+
+        try (Connection connection = ds.getConnection()) {
+
+                // Check the current balance.
+                ResultSet res = connection.createStatement()
+                    .executeQuery(String.format("SELECT balance FROM accounts WHERE id = '%s'", id.toString()));
+                if(!res.next()) {
+                    System.out.printf("No users in the table with id %d", id);
+                } else {
+                    balance = res.getBigDecimal("balance");
+                }
+        } catch (SQLException e) {
+            System.out.printf("BasicExampleDAO.getAccountBalance ERROR: { state => %s, cause => %s, message => %s }\n",
+                              e.getSQLState(), e.getCause(), e.getMessage());
+        }
+
+        return balance;
+    }
+
+    /**
+     * Insert randomized account data (ID, balance) using the JDBC
+     * fast path for bulk inserts.  The fastest way to get data into
+     * CockroachDB is the IMPORT statement.  However, if you must bulk
+     * ingest from the application using INSERT statements, the best
+     * option is the method shown here. It will require the following:
+     *
+     * 1. Add `rewriteBatchedInserts=true` to your JDBC connection
+     *    settings (see the connection info in 'BasicExample.main').
+     *
+     * 2. Inserting in batches of 128 rows, as used inside this method
+     *    (see BATCH_SIZE), since the PGJDBC driver's logic works best
+     *    with powers of two, such that a batch of size 128 can be 6x
+     *    faster than a batch of size 250.
+     * @return The number of new accounts inserted (int)
+     */
+    public int bulkInsertRandomAccountData() {
+
+        Random random = new Random();
+        int BATCH_SIZE = 128;
+        int totalNewAccounts = 0;
+
+        try (Connection connection = ds.getConnection()) {
+
+            // We're managing the commit lifecycle ourselves so we can
+            // control the size of our batch inserts.
+            connection.setAutoCommit(false);
+
+            // In this example we are adding 500 rows to the database,
+            // but it could be any number.  What's important is that
+            // the batch size is 128.
+            try (PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts (id, balance) VALUES (?, ?)")) {
+                for (int i=0; i<=(500/BATCH_SIZE);i++) {
+                    for (int j=0; j<BATCH_SIZE; j++) {
+                        String id = UUID.randomUUID().toString();
+                        BigDecimal balance = BigDecimal.valueOf(random.nextInt(1000000000));
+                        pstmt.setString(1, id);
+                        pstmt.setBigDecimal(2, balance);
+                        pstmt.addBatch();
+                    }
+                    int[] count = pstmt.executeBatch();
+                    totalNewAccounts += count.length;
+                    System.out.printf("\nBasicExampleDAO.bulkInsertRandomAccountData:\n    '%s'\n", pstmt.toString());
+                    System.out.printf("    => %s row(s) updated in this batch\n", count.length);
+                }
+                connection.commit();
+            } catch (SQLException e) {
+                System.out.printf("BasicExampleDAO.bulkInsertRandomAccountData ERROR: { state => %s, cause => %s, message => %s }\n",
+                                  e.getSQLState(), e.getCause(), e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.printf("BasicExampleDAO.bulkInsertRandomAccountData ERROR: { state => %s, cause => %s, message => %s }\n",
+                              e.getSQLState(), e.getCause(), e.getMessage());
+        }
+        return totalNewAccounts;
+    }
+
+    /**
+     * Read out a subset of accounts from the data store.
+     *
+     * @param limit (int)
+     * @return Number of accounts read (int)
+     */
+    public int readAccounts(int limit) {
+        return runSQL("SELECT id, balance FROM accounts LIMIT ?", Integer.toString(limit));
+    }
+
+    /**
+     * Create the accounts table if it doesn't already exist.
+     *
+     */
+    public void createAccountsTable() {
+        runSQL("CREATE TABLE IF NOT EXISTS accounts (id UUID PRIMARY KEY, balance int8)");
+    }
+
+}
+```
+
+The sample app uses JDBC and the [Data Access Object (DAO)](https://wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
+
+1. `BasicExample`, which is where the application logic lives.
+2. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class also includes a helper function ( `runSql` ) that runs SQL statements inside a transaction, [retrying statements](/docs/v26.1/transactions#transaction-retries) as needed.
+
+The `main` method of the app performs the following steps which roughly correspond to method calls in the `BasicExample` class.
+
+<table><thead><tr><th>Step</th><th>Method</th></tr></thead><tbody><tr><td>1. Insert account data using a <code>Map</code> that corresponds to the input to <code>INSERT</code> on the backend</td><td><code>BasicExampleDAO.updateAccounts(Map balance)</code></td></tr><tr><td>2. Transfer money from one account to another, printing out account balances before and after the transfer</td><td><code>BasicExampleDAO.transferFunds(UUID from, UUID to, BigDecimal amount)</code></td></tr><tr><td>3. Insert random account data using JDBC's bulk insertion support</td><td><code>BasicExampleDAO.bulkInsertRandomAccountData()</code></td></tr><tr><td>4. Print out some account data</td><td><code>BasicExampleDAO.readAccounts(int limit)</code></td></tr></tbody></table>
+
+It does all of the above using the practices we recommend for using JDBC with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
+
+## Step 3. Update the connection configuration
+
+1. Navigate to the `example-app-java-jdbc` directory:
+
+    ```shell
+    cd example-app-java-jdbc
+    ```
+<Tabs>
+<Tab title="Use the Cloud Console (GUI)">
+
+2. Set the `JDBC_DATABASE_URL` environment variable to a JDBC-compatible connection string:
+    1. Paste in the command you copied earlier:
+
+        ```shell
+        export JDBC_DATABASE_URL="{connection-string}"
+        ```
+
+        Where `{connection-string}` is the JDBC connection string from the command you copied earlier.
+
+</Tab>
+<Tab title="Use ccloud (CLI)">
+
+2. Set the `JDBC_DATABASE_URL` environment variable to a JDBC-compatible connection string:
+    1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](/docs/v26.1/connect-to-the-database?filters=java):
+
+        ```shell
+        cockroach convert-url --url $DATABASE_URL
+        ```
+
+        ```text
+        ...
+
+        # Connection URL for JDBC (Java and JVM-based languages):
+        jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&user={username}
+        ```
+    2. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
+
+        ```shell
+        export JDBC_DATABASE_URL="{jdbc-connection-string}"
+        ```
+
+</Tab>
+</Tabs>
+
+## Step 4. Run the code
+
+Compile and run the code:
+
+```shell
+./gradlew run
+```
+
+The output will look like the following:
+
+```text
+com.cockroachlabs.BasicExampleDAO.createAccountsTable:
+    'CREATE TABLE IF NOT EXISTS accounts (id UUID PRIMARY KEY, balance int8)'
+
+com.cockroachlabs.BasicExampleDAO.updateAccounts:
+    'INSERT INTO accounts (id, balance) VALUES ('b5679853-b968-4206-91ec-68945fa3e716', 250)'
+
+com.cockroachlabs.BasicExampleDAO.updateAccounts:
+    'INSERT INTO accounts (id, balance) VALUES ('d1c41041-6589-4b06-8d7c-b9d6d901727e', 1000)'
+BasicExampleDAO.updateAccounts:
+    => 2 total updated accounts
+main:
+    => Account balances at time '15:09:08.902':
+    ID 1 => $1000
+    ID 2 => $250
+
+com.cockroachlabs.BasicExampleDAO.transferFunds:
+    'UPSERT INTO accounts (id, balance) VALUES('d99e6bb5-ecd1-48e5-b6b6-47fc9a4bc752', ((SELECT balance FROM accounts WHERE id = 'd99e6bb5-ecd1-48e5-b6b6-47fc9a4bc752') - 100)),('6f0c1f94-509a-47e3-a9ab-6a9e3965945c', ((SELECT balance FROM accounts WHERE id = '6f0c1f94-509a-47e3-a9ab-6a9e3965945c') + 100))'
+BasicExampleDAO.transferFunds:
+    => $100 transferred between accounts d99e6bb5-ecd1-48e5-b6b6-47fc9a4bc752 and 6f0c1f94-509a-47e3-a9ab-6a9e3965945c, 2 rows updated
+main:
+    => Account balances at time '15:09:09.142':
+    ID 1 => $1000
+    ID 2 => $250
+
+BasicExampleDAO.bulkInsertRandomAccountData:
+    'INSERT INTO accounts (id, balance) VALUES ('b70a0c48-fdf4-42ea-b07a-2fea83d77c7d', '287108674'::numeric)'
+    => 128 row(s) updated in this batch
+
+BasicExampleDAO.bulkInsertRandomAccountData:
+    'INSERT INTO accounts (id, balance) VALUES ('75a5f894-532a-464d-b37e-a4b9ec1c1db6', '189904311'::numeric)'
+    => 128 row(s) updated in this batch
+
+BasicExampleDAO.bulkInsertRandomAccountData:
+    'INSERT INTO accounts (id, balance) VALUES ('0803968f-ba07-4ece-82d5-24d4da9fdee9', '832474731'::numeric)'
+    => 128 row(s) updated in this batch
+
+BasicExampleDAO.bulkInsertRandomAccountData:
+    'INSERT INTO accounts (id, balance) VALUES ('082e634d-4930-41eb-9839-298632a5530a', '665918272'::numeric)'
+    => 128 row(s) updated in this batch
+
+BasicExampleDAO.bulkInsertRandomAccountData:
+    => finished, 512 total rows inserted
+
+com.cockroachlabs.BasicExampleDAO.readAccounts:
+    'SELECT id, balance FROM accounts LIMIT 10'
+    balance  =>  424934060
+    balance  =>   62220740
+    balance  =>  454671673
+    balance  =>  556061618
+    balance  =>  450164589
+    balance  =>  996867752
+    balance  =>   55869978
+    balance  =>  747446662
+    balance  =>  175832969
+    balance  =>  181799597
+
+BUILD SUCCESSFUL in 8s
+3 actionable tasks: 3 executed
+```
+
+## Recommended Practices
+
+### Set session variables
+
+[Session variables](/docs/v26.1/session-variables) can be set in the JDBC connection string or as properties of the JDBC data source.
+
+To set the session variable in the JDBC connection string, add them to the [`options` parameter](/docs/v26.1/connection-parameters#supported-options-parameters):
+
+```shell
+export JDBC_DATABASE_URL=jdbc:postgresql://{host}:{port}/{database}?options=-c%20{session variable name}%3D{session variable value}
+```
+
+Where:
+
+- `{session variable name}` is the name of the session variable.
+- `{session variable value}` is the value of the session variable.
+
+URL encode the `options` parameter to make sure the JDBC connection URL is parsed correctly. For example, the following URL encoded `options` parameter:
+
+```shell
+export JDBC_DATABASE_URL=jdbc:postgres://localhost:26257/movr?options=-c%20sql_safe_updates%3Dtrue
+```
+
+is equivalent to:
+
+```text
+options=-c unbounded_parallel_scans=on
+```
+
+To set session variables as properties of the JDBC data source, set `options` using `setProperty`:
+
+```java
+Properties props = new Properties();
+props.setProperty("options", "-c {session variable name}={session variable value}");
+Connection conn = DriverManager.getConnection(url, props);
+```
+
+Where:
+
+- `{session variable name}` is the name of the session variable.
+- `{session variable value}` is the value of the session variable.
+
+To add more than one session variable, append additional `-c` settings:
+
+```shell
+props.setProperty("options", "-c sql_safe_updates=true -c statement_timeout=30");
+```
+
+### Generate PKCS8 keys for user authentication
+
+You can pass the [`--also-generate-pkcs8-key` flag](/docs/v26.1/cockroach-cert#flag-pkcs8) to [`cockroach cert`](/docs/v26.1/cockroach-cert) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. For example, if you have the user `max`:
+
+```shell
+$ cockroach cert create-client max --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
+```
+
+The generated PKCS8 key will be named `client.max.key.pk8`.
+
+<Note>
+CockroachDB Cloud does not yet support certificate-based user authentication.
+</Note>
+
+</Tab>
+<Tab title="Use a Local Cluster">
+
+1. If you haven't already, [download the CockroachDB binary](/docs/v26.1/install-cockroachdb).
+2. Run the [`cockroach start-single-node`](/docs/v26.1/cockroach-start-single-node) command:
+
+    ```shell
+    $ cockroach start-single-node --advertise-addr 'localhost' --insecure
+    ```
+
+    This starts an insecure, single-node cluster.
+3. Take note of the following connection information in the SQL shell welcome text:
+
+    ```text
+    CockroachDB node starting at 2021-08-30 17:25:30.06524 +0000 UTC (took 4.3s)
+    build:               CCL v21.1.6 @ 2021/07/20 15:33:43 (go1.15.11)
+    webui:               http://localhost:8080
+    sql:                 postgresql://root@localhost:26257?sslmode=disable
+    ```
+
+    You'll use the `sql` connection string to connect to the cluster later in this tutorial.
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+## Step 2. Get the code
+
+Clone the code's GitHub repo:
+
+```shell
+git clone https://github.com/cockroachlabs/example-app-java-jdbc/
+```
+
+The project has the following directory structure:
+
+```text
+├── README.md
+├── app
+│   ├── build.gradle
+│   └── src
+│       └── main
+│           ├── java
+│           │   └── com
+│           │       └── cockroachlabs
+│           │           └── BasicExample.java
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+└── settings.gradle
+```
+
+The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDATE` SQL operations. The file also contains the `main` method of the program.
+
+```java
+package com.cockroachlabs;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import javax.sql.DataSource;
+import org.postgresql.ds.PGSimpleDataSource;
+
+/**
+ * Main class for the basic JDBC example.
+ **/
+public class BasicExample {
+
+    public static void main(String[] args) {
+
+        // Configure the database connection.
+        PGSimpleDataSource ds = new PGSimpleDataSource();
+        ds.setApplicationName("docs_simplecrud_jdbc");
+        ds.setUrl(System.getenv("JDBC_DATABASE_URL"));
+
+        // Create DAO.
+        BasicExampleDAO dao = new BasicExampleDAO(ds);
+
+        // Test our retry handling logic if FORCE_RETRY is true.  This
+        // method is only used to test the retry logic.  It is not
+        // necessary in production code.
+        dao.testRetryHandling();
+
+        // Create the accounts table if it doesn't exist 
+        dao.createAccountsTable();
+
+        // Insert a few accounts "by hand", using INSERTs on the backend.
+        Map<String, String> balances = new HashMap<>();
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+        balances.put(id1.toString(), "1000");
+        balances.put(id2.toString(), "250");
+        int updatedAccounts = dao.updateAccounts(balances);
+        System.out.printf("BasicExampleDAO.updateAccounts:\n    => %s total updated accounts\n", updatedAccounts);
+
+        // How much money is in these accounts?
+        BigDecimal balance1 = dao.getAccountBalance(id1);
+        BigDecimal balance2 = dao.getAccountBalance(id2);
+        System.out.printf("main:\n    => Account balances at time '%s':\n    ID %s => $%s\n    ID %s => $%s\n", LocalTime.now(), 1, balance1, 2, balance2);
+
+        // Transfer $100 from account 1 to account 2
+        UUID fromAccount = UUID.randomUUID();
+        UUID toAccount = UUID.randomUUID();
+        BigDecimal transferAmount = BigDecimal.valueOf(100);
+        int transferredAccounts = dao.transferFunds(fromAccount, toAccount, transferAmount);
+        if (transferredAccounts != -1) {
+            System.out.printf("BasicExampleDAO.transferFunds:\n    => $%s transferred between accounts %s and %s, %s rows updated\n", transferAmount, fromAccount, toAccount, transferredAccounts);
+        }
+
+        balance1 = dao.getAccountBalance(id1);
+        balance2 = dao.getAccountBalance(id2);
+        System.out.printf("main:\n    => Account balances at time '%s':\n    ID %s => $%s\n    ID %s => $%s\n", LocalTime.now(), 1, balance1, 2, balance2);
+
+        // Bulk insertion example using JDBC's batching support.
+        int totalRowsInserted = dao.bulkInsertRandomAccountData();
+        System.out.printf("\nBasicExampleDAO.bulkInsertRandomAccountData:\n    => finished, %s total rows inserted\n", totalRowsInserted);
+
+        // Print out 10 account values.
+        int accountsRead = dao.readAccounts(10);
+    }
+}
+
+/**
+ * Data access object used by 'BasicExample'.  Abstraction over some
+ * common CockroachDB operations, including:
+ *
+ * - Auto-handling transaction retries in the 'runSQL' method
+ *
+ * - Example of bulk inserts in the 'bulkInsertRandomAccountData'
+ *   method
+ */
+
+class BasicExampleDAO {
+
+    private static final int MAX_RETRY_COUNT = 3;
+    private static final String RETRY_SQL_STATE = "40001";
+    private static final boolean FORCE_RETRY = false;
+
+    private final DataSource ds;
+
+    private final Random rand = new Random();
+
+    BasicExampleDAO(DataSource ds) {
+        this.ds = ds;
+    }
+
+    /**
+       Used to test the retry logic in 'runSQL'.  It is not necessary
+       in production code.
+    */
+    void testRetryHandling() {
+        if (BasicExampleDAO.FORCE_RETRY) {
+            runSQL("SELECT crdb_internal.force_retry('1s':::INTERVAL)");
+        }
+    }
+
+    /**
+     * Run SQL code in a way that automatically handles the
+     * transaction retry logic so we don't have to duplicate it in
+     * various places.
+     *
+     * @param sqlCode a String containing the SQL code you want to
+     * execute.  Can have placeholders, e.g., "INSERT INTO accounts
+     * (id, balance) VALUES (?, ?)".
+     *
+     * @param args String Varargs to fill in the SQL code's
+     * placeholders.
+     * @return Integer Number of rows updated, or -1 if an error is thrown.
+     */
+    public Integer runSQL(String sqlCode, String... args) {
+
+        // This block is only used to emit class and method names in
+        // the program output.  It is not necessary in production
+        // code.
+        StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+        StackTraceElement elem = stacktrace[2];
+        String callerClass = elem.getClassName();
+        String callerMethod = elem.getMethodName();
+
+        int rv = 0;
+
+        try (Connection connection = ds.getConnection()) {
+
+            // We're managing the commit lifecycle ourselves so we can
+            // automatically issue transaction retries.
+            connection.setAutoCommit(false);
+
+            int retryCount = 0;
+
+            while (retryCount <= MAX_RETRY_COUNT) {
+
+                if (retryCount == MAX_RETRY_COUNT) {
+                    String err = String.format("hit max of %s retries, aborting", MAX_RETRY_COUNT);
+                    throw new RuntimeException(err);
+                }
+
+                // This block is only used to test the retry logic.
+                // It is not necessary in production code.  See also
+                // the method 'testRetryHandling()'.
+                if (FORCE_RETRY) {
+                    forceRetry(connection); // SELECT 1
+                }
+
+                try (PreparedStatement pstmt = connection.prepareStatement(sqlCode)) {
+
+                    // Loop over the args and insert them into the
+                    // prepared statement based on their types.  In
+                    // this simple example we classify the argument
+                    // types as "integers" and "everything else"
+                    // (a.k.a. strings).
+                    for (int i=0; i<args.length; i++) {
+                        int place = i + 1;
+                        String arg = args[i];
+
+                        try {
+                            int val = Integer.parseInt(arg);
+                            pstmt.setInt(place, val);
+                        } catch (NumberFormatException e) {
+                            pstmt.setString(place, arg);
+                        }
+                    }
+
+                    if (pstmt.execute()) {
+                        // We know that `pstmt.getResultSet()` will
+                        // not return `null` if `pstmt.execute()` was
+                        // true
+                        ResultSet rs = pstmt.getResultSet();
+                        ResultSetMetaData rsmeta = rs.getMetaData();
+                        int colCount = rsmeta.getColumnCount();
+
+                        // This printed output is for debugging and/or demonstration
+                        // purposes only.  It would not be necessary in production code.
+                        System.out.printf("\n%s.%s:\n    '%s'\n", callerClass, callerMethod, pstmt);
+
+                        while (rs.next()) {
+                            for (int i=1; i <= colCount; i++) {
+                                String name = rsmeta.getColumnName(i);
+                                String type = rsmeta.getColumnTypeName(i);
+
+                                // In this "bank account" example we know we are only handling
+                                // integer values (technically 64-bit INT8s, the CockroachDB
+                                // default).  This code could be made into a switch statement
+                                // to handle the various SQL types needed by the application.
+                                if ("int8".equals(type)) {
+                                    int val = rs.getInt(name);
+
+                                    // This printed output is for debugging and/or demonstration
+                                    // purposes only.  It would not be necessary in production code.
+                                    System.out.printf("    %-8s => %10s\n", name, val);
+                                }
+                            }
+                        }
+                    } else {
+                        int updateCount = pstmt.getUpdateCount();
+                        rv += updateCount;
+
+                        // This printed output is for debugging and/or demonstration
+                        // purposes only.  It would not be necessary in production code.
+                        System.out.printf("\n%s.%s:\n    '%s'\n", callerClass, callerMethod, pstmt);
+                    }
+
+                    connection.commit();
+                    break;
+
+                } catch (SQLException e) {
+
+                    if (RETRY_SQL_STATE.equals(e.getSQLState())) {
+                        // Since this is a transaction retry error, we
+                        // roll back the transaction and sleep a
+                        // little before trying again.  Each time
+                        // through the loop we sleep for a little
+                        // longer than the last time
+                        // (A.K.A. exponential backoff).
+                        System.out.printf("retryable exception occurred:\n    sql state = [%s]\n    message = [%s]\n    retry counter = %s\n", e.getSQLState(), e.getMessage(), retryCount);
+                        connection.rollback();
+                        retryCount++;
+                        int sleepMillis = (int)(Math.pow(2, retryCount) * 100) + rand.nextInt(100);
+                        System.out.printf("Hit 40001 transaction retry error, sleeping %s milliseconds\n", sleepMillis);
+                        try {
+                            Thread.sleep(sleepMillis);
+                        } catch (InterruptedException ignored) {
+                            // Necessary to allow the Thread.sleep()
+                            // above so the retry loop can continue.
+                        }
+
+                        rv = -1;
+                    } else {
+                        rv = -1;
+                        throw e;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.printf("BasicExampleDAO.runSQL ERROR: { state => %s, cause => %s, message => %s }\n",
+                              e.getSQLState(), e.getCause(), e.getMessage());
+            rv = -1;
+        }
+
+        return rv;
+    }
+
+    /**
+     * Helper method called by 'testRetryHandling'.  It simply issues
+     * a "SELECT 1" inside the transaction to force a retry.  This is
+     * necessary to take the connection's session out of the AutoRetry
+     * state, since otherwise the other statements in the session will
+     * be retried automatically, and the client (us) will not see a
+     * retry error. Note that this information is taken from the
+     * following test:
+     * https://github.com/cockroachdb/cockroach/blob/master/pkg/sql/logictest/testdata/logic_test/manual_retry
+     *
+     * @param connection Connection
+     */
+    private void forceRetry(Connection connection) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("SELECT 1")){
+            statement.executeQuery();
+        }
+    }
+
+    /**
+     * Update accounts by passing in a Map of (ID, Balance) pairs.
+     *
+     * @param accounts (Map)
+     * @return The number of updated accounts (int)
+     */
+    public int updateAccounts(Map<String, String> accounts) {
+        int rows = 0;
+        for (Map.Entry<String, String> account : accounts.entrySet()) {
+
+            String k = account.getKey();
+            String v = account.getValue();
+
+            String[] args = {k, v};
+            rows += runSQL("INSERT INTO accounts (id, balance) VALUES (?, ?)", args);
+        }
+        return rows;
+    }
+
+    /**
+     * Transfer funds between one account and another.  Handles
+     * transaction retries in case of conflict automatically on the
+     * backend.
+     * @param fromId (UUID)
+     * @param toId (UUID)
+     * @param amount (int)
+     * @return The number of updated accounts (int)
+     */
+    public int transferFunds(UUID fromId, UUID toId, BigDecimal amount) {
+            String sFromId = fromId.toString();
+            String sToId = toId.toString();
+            String sAmount = amount.toPlainString();
+
+            // We have omitted explicit BEGIN/COMMIT statements for
+            // brevity.  Individual statements are treated as implicit
+            // transactions by CockroachDB (see
+            // https://www.cockroachlabs.com/docs/stable/transactions.html#individual-statements).
+
+            String sqlCode = "UPSERT INTO accounts (id, balance) VALUES" +
+                "(?, ((SELECT balance FROM accounts WHERE id = ?) - ?))," +
+                "(?, ((SELECT balance FROM accounts WHERE id = ?) + ?))";
+
+            return runSQL(sqlCode, sFromId, sFromId, sAmount, sToId, sToId, sAmount);
+    }
+
+    /**
+     * Get the account balance for one account.
+     *
+     * We skip using the retry logic in 'runSQL()' here for the
+     * following reasons:
+     *
+     * 1. Since this is a single read ("SELECT"), we don't expect any
+     *    transaction conflicts to handle
+     *
+     * 2. We need to return the balance as an integer
+     *
+     * @param id (UUID)
+     * @return balance (int)
+     */
+    public BigDecimal getAccountBalance(UUID id) {
+        BigDecimal balance = BigDecimal.valueOf(0);
+
+        try (Connection connection = ds.getConnection()) {
+
+                // Check the current balance.
+                ResultSet res = connection.createStatement()
+                    .executeQuery(String.format("SELECT balance FROM accounts WHERE id = '%s'", id.toString()));
+                if(!res.next()) {
+                    System.out.printf("No users in the table with id %d", id);
+                } else {
+                    balance = res.getBigDecimal("balance");
+                }
+        } catch (SQLException e) {
+            System.out.printf("BasicExampleDAO.getAccountBalance ERROR: { state => %s, cause => %s, message => %s }\n",
+                              e.getSQLState(), e.getCause(), e.getMessage());
+        }
+
+        return balance;
+    }
+
+    /**
+     * Insert randomized account data (ID, balance) using the JDBC
+     * fast path for bulk inserts.  The fastest way to get data into
+     * CockroachDB is the IMPORT statement.  However, if you must bulk
+     * ingest from the application using INSERT statements, the best
+     * option is the method shown here. It will require the following:
+     *
+     * 1. Add `rewriteBatchedInserts=true` to your JDBC connection
+     *    settings (see the connection info in 'BasicExample.main').
+     *
+     * 2. Inserting in batches of 128 rows, as used inside this method
+     *    (see BATCH_SIZE), since the PGJDBC driver's logic works best
+     *    with powers of two, such that a batch of size 128 can be 6x
+     *    faster than a batch of size 250.
+     * @return The number of new accounts inserted (int)
+     */
+    public int bulkInsertRandomAccountData() {
+
+        Random random = new Random();
+        int BATCH_SIZE = 128;
+        int totalNewAccounts = 0;
+
+        try (Connection connection = ds.getConnection()) {
+
+            // We're managing the commit lifecycle ourselves so we can
+            // control the size of our batch inserts.
+            connection.setAutoCommit(false);
+
+            // In this example we are adding 500 rows to the database,
+            // but it could be any number.  What's important is that
+            // the batch size is 128.
+            try (PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts (id, balance) VALUES (?, ?)")) {
+                for (int i=0; i<=(500/BATCH_SIZE);i++) {
+                    for (int j=0; j<BATCH_SIZE; j++) {
+                        String id = UUID.randomUUID().toString();
+                        BigDecimal balance = BigDecimal.valueOf(random.nextInt(1000000000));
+                        pstmt.setString(1, id);
+                        pstmt.setBigDecimal(2, balance);
+                        pstmt.addBatch();
+                    }
+                    int[] count = pstmt.executeBatch();
+                    totalNewAccounts += count.length;
+                    System.out.printf("\nBasicExampleDAO.bulkInsertRandomAccountData:\n    '%s'\n", pstmt.toString());
+                    System.out.printf("    => %s row(s) updated in this batch\n", count.length);
+                }
+                connection.commit();
+            } catch (SQLException e) {
+                System.out.printf("BasicExampleDAO.bulkInsertRandomAccountData ERROR: { state => %s, cause => %s, message => %s }\n",
+                                  e.getSQLState(), e.getCause(), e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.printf("BasicExampleDAO.bulkInsertRandomAccountData ERROR: { state => %s, cause => %s, message => %s }\n",
+                              e.getSQLState(), e.getCause(), e.getMessage());
+        }
+        return totalNewAccounts;
+    }
+
+    /**
+     * Read out a subset of accounts from the data store.
+     *
+     * @param limit (int)
+     * @return Number of accounts read (int)
+     */
+    public int readAccounts(int limit) {
+        return runSQL("SELECT id, balance FROM accounts LIMIT ?", Integer.toString(limit));
+    }
+
+    /**
+     * Create the accounts table if it doesn't already exist.
+     *
+     */
+    public void createAccountsTable() {
+        runSQL("CREATE TABLE IF NOT EXISTS accounts (id UUID PRIMARY KEY, balance int8)");
+    }
+
+}
+```
+
+The sample app uses JDBC and the [Data Access Object (DAO)](https://wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
+
+1. `BasicExample`, which is where the application logic lives.
+2. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class also includes a helper function ( `runSql` ) that runs SQL statements inside a transaction, [retrying statements](/docs/v26.1/transactions#transaction-retries) as needed.
+
+The `main` method of the app performs the following steps which roughly correspond to method calls in the `BasicExample` class.
+
+<table><thead><tr><th>Step</th><th>Method</th></tr></thead><tbody><tr><td>1. Insert account data using a <code>Map</code> that corresponds to the input to <code>INSERT</code> on the backend</td><td><code>BasicExampleDAO.updateAccounts(Map balance)</code></td></tr><tr><td>2. Transfer money from one account to another, printing out account balances before and after the transfer</td><td><code>BasicExampleDAO.transferFunds(UUID from, UUID to, BigDecimal amount)</code></td></tr><tr><td>3. Insert random account data using JDBC's bulk insertion support</td><td><code>BasicExampleDAO.bulkInsertRandomAccountData()</code></td></tr><tr><td>4. Print out some account data</td><td><code>BasicExampleDAO.readAccounts(int limit)</code></td></tr></tbody></table>
+
+It does all of the above using the practices we recommend for using JDBC with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
+
+## Step 3. Update the connection configuration
+
+1. Navigate to the `example-app-java-jdbc` directory:
+
+    ```shell
+    cd example-app-java-jdbc
+    ```
+<Tabs>
+<Tab title="Use the Cloud Console (GUI)">
+
+2. Set the `JDBC_DATABASE_URL` environment variable to a JDBC-compatible connection string:
+
+    ```shell
+    export JDBC_DATABASE_URL=jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
+    ```
+
+    1. Paste in the command you copied earlier:
+
+        ```shell
+        export JDBC_DATABASE_URL="{connection-string}"
+        ```
+
+        Where `{connection-string}` is the JDBC connection string from the command you copied earlier.
+
+</Tab>
+<Tab title="Use ccloud (CLI)">
+
+2. Set the `JDBC_DATABASE_URL` environment variable to a JDBC-compatible connection string:
+
+    ```shell
+    export JDBC_DATABASE_URL=jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
+    ```
+
+    1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](/docs/v26.1/connect-to-the-database?filters=java):
+
+        ```shell
+        cockroach convert-url --url $DATABASE_URL
+        ```
+
+        ```text
+        ...
+
+        # Connection URL for JDBC (Java and JVM-based languages):
+        jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&user={username}
+        ```
+    2. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
+
+        ```shell
+        export JDBC_DATABASE_URL="{jdbc-connection-string}"
+        ```
+
+</Tab>
+</Tabs>
+
+## Step 4. Run the code
+
+Compile and run the code:
+
+```shell
+./gradlew run
+```
+
+The output will look like the following:
+
+```text
+com.cockroachlabs.BasicExampleDAO.createAccountsTable:
+    'CREATE TABLE IF NOT EXISTS accounts (id UUID PRIMARY KEY, balance int8)'
+
+com.cockroachlabs.BasicExampleDAO.updateAccounts:
+    'INSERT INTO accounts (id, balance) VALUES ('b5679853-b968-4206-91ec-68945fa3e716', 250)'
+
+com.cockroachlabs.BasicExampleDAO.updateAccounts:
+    'INSERT INTO accounts (id, balance) VALUES ('d1c41041-6589-4b06-8d7c-b9d6d901727e', 1000)'
+BasicExampleDAO.updateAccounts:
+    => 2 total updated accounts
+main:
+    => Account balances at time '15:09:08.902':
+    ID 1 => $1000
+    ID 2 => $250
+
+com.cockroachlabs.BasicExampleDAO.transferFunds:
+    'UPSERT INTO accounts (id, balance) VALUES('d99e6bb5-ecd1-48e5-b6b6-47fc9a4bc752', ((SELECT balance FROM accounts WHERE id = 'd99e6bb5-ecd1-48e5-b6b6-47fc9a4bc752') - 100)),('6f0c1f94-509a-47e3-a9ab-6a9e3965945c', ((SELECT balance FROM accounts WHERE id = '6f0c1f94-509a-47e3-a9ab-6a9e3965945c') + 100))'
+BasicExampleDAO.transferFunds:
+    => $100 transferred between accounts d99e6bb5-ecd1-48e5-b6b6-47fc9a4bc752 and 6f0c1f94-509a-47e3-a9ab-6a9e3965945c, 2 rows updated
+main:
+    => Account balances at time '15:09:09.142':
+    ID 1 => $1000
+    ID 2 => $250
+
+BasicExampleDAO.bulkInsertRandomAccountData:
+    'INSERT INTO accounts (id, balance) VALUES ('b70a0c48-fdf4-42ea-b07a-2fea83d77c7d', '287108674'::numeric)'
+    => 128 row(s) updated in this batch
+
+BasicExampleDAO.bulkInsertRandomAccountData:
+    'INSERT INTO accounts (id, balance) VALUES ('75a5f894-532a-464d-b37e-a4b9ec1c1db6', '189904311'::numeric)'
+    => 128 row(s) updated in this batch
+
+BasicExampleDAO.bulkInsertRandomAccountData:
+    'INSERT INTO accounts (id, balance) VALUES ('0803968f-ba07-4ece-82d5-24d4da9fdee9', '832474731'::numeric)'
+    => 128 row(s) updated in this batch
+
+BasicExampleDAO.bulkInsertRandomAccountData:
+    'INSERT INTO accounts (id, balance) VALUES ('082e634d-4930-41eb-9839-298632a5530a', '665918272'::numeric)'
+    => 128 row(s) updated in this batch
+
+BasicExampleDAO.bulkInsertRandomAccountData:
+    => finished, 512 total rows inserted
+
+com.cockroachlabs.BasicExampleDAO.readAccounts:
+    'SELECT id, balance FROM accounts LIMIT 10'
+    balance  =>  424934060
+    balance  =>   62220740
+    balance  =>  454671673
+    balance  =>  556061618
+    balance  =>  450164589
+    balance  =>  996867752
+    balance  =>   55869978
+    balance  =>  747446662
+    balance  =>  175832969
+    balance  =>  181799597
+
+BUILD SUCCESSFUL in 8s
+3 actionable tasks: 3 executed
+```
+
+## Recommended Practices
+
+### Set session variables
+
+[Session variables](/docs/v26.1/session-variables) can be set in the JDBC connection string or as properties of the JDBC data source.
+
+To set the session variable in the JDBC connection string, add them to the [`options` parameter](/docs/v26.1/connection-parameters#supported-options-parameters):
+
+```shell
+export JDBC_DATABASE_URL=jdbc:postgresql://{host}:{port}/{database}?options=-c%20{session variable name}%3D{session variable value}
+```
+
+Where:
+
+- `{session variable name}` is the name of the session variable.
+- `{session variable value}` is the value of the session variable.
+
+URL encode the `options` parameter to make sure the JDBC connection URL is parsed correctly. For example, the following URL encoded `options` parameter:
+
+```shell
+export JDBC_DATABASE_URL=jdbc:postgres://localhost:26257/movr?options=-c%20sql_safe_updates%3Dtrue
+```
+
+is equivalent to:
+
+```text
+options=-c unbounded_parallel_scans=on
+```
+
+To set session variables as properties of the JDBC data source, set `options` using `setProperty`:
+
+```java
+Properties props = new Properties();
+props.setProperty("options", "-c {session variable name}={session variable value}");
+Connection conn = DriverManager.getConnection(url, props);
+```
+
+Where:
+
+- `{session variable name}` is the name of the session variable.
+- `{session variable value}` is the value of the session variable.
+
+To add more than one session variable, append additional `-c` settings:
+
+```shell
+props.setProperty("options", "-c sql_safe_updates=true -c statement_timeout=30");
+```
+
+### Generate PKCS8 keys for user authentication
+
+You can pass the [`--also-generate-pkcs8-key` flag](/docs/v26.1/cockroach-cert#flag-pkcs8) to [`cockroach cert`](/docs/v26.1/cockroach-cert) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. For example, if you have the user `max`:
+
+```shell
+$ cockroach cert create-client max --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
+```
+
+The generated PKCS8 key will be named `client.max.key.pk8`.
+
+</Tab>
+</Tabs>
+
+### Use `IMPORT INTO` to read in large data sets
+
+If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT INTO`](/docs/v26.1/import-into) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](/docs/v26.1/insert) and [`UPDATE`s](/docs/v26.1/update). It bypasses the [SQL layer](/docs/v26.1/architecture/sql-layer) altogether and writes directly to the [storage layer](/docs/v26.1/architecture/storage-layer) of the database.
+
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL](/docs/stable/molt/migrate-to-cockroachdb).
+
+For more information about importing data from MySQL, see [Migrate from MySQL](/docs/stable/molt/migrate-to-cockroachdb?filters=mysql).
+
+### Use `reWriteBatchedInserts` for increased speed
+
+We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/use#connection-parameters):
+
+> This will change batch inserts from `insert into foo (col1, col2, col3) values (1,2,3)` into `insert into foo (col1, col2, col3) values (1,2,3), (4,5,6)` this provides 2-3x performance improvement
+
+### Use a batch size of 128
+
+PGJDBC's batching support only works with [powers of two](https://github.com/pgjdbc/pgjdbc/blob/7b52b0c9e5b9aa9a9c655bb68f23bf4ec57fd51c/pgjdbc/src/main/java/org/postgresql/jdbc/PgPreparedStatement.java#L1597), and will split batches of other sizes up into multiple sub-batches. This means that a batch of size 128 can be 6x faster than a batch of size 250.
+
+The code snippet below shows a pattern for using a batch size of 128, and is taken from the longer example above (specifically, the `BasicExampleDAO.bulkInsertRandomAccountData()` method).
+
+Specifically, it does the following:
+
+1. Turn off auto-commit so you can manage the transaction lifecycle and thus the size of the batch inserts.
+2. Given an overall update size of 500 rows (for example), split it into batches of size 128 and execute each batch in turn.
+3. Finally, commit the batches of statements you've just executed.
+
+```java
+int BATCH_SIZE = 128;
+connection.setAutoCommit(false);
+
+try (PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts (id, balance) VALUES (?, ?)")) {
+    for (int i=0; i<=(500/BATCH_SIZE);i++) {
+        for (int j=0; j<BATCH_SIZE; j++) {
+            int id = random.nextInt(1000000000);
+            BigDecimal balance = BigDecimal.valueOf(random.nextInt(1000000000));
+            pstmt.setInt(1, id);
+            pstmt.setBigDecimal(2, balance);
+            pstmt.addBatch();
+        }
+        int[] count = pstmt.executeBatch();
+        System.out.printf("    => %s row(s) updated in this batch\n", count.length); // Verifying 128 rows in the batch
+    }
+    connection.commit();
+}
+```
+
+### Retrieve large data sets in chunks using cursors
+
+CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org/) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT.. OFFSET`](/docs/v26.1/pagination).
+
+For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/query#getting-results-based-on-a-cursor) from the PGJDBC documentation.
+
+Note that interleaved execution (partial execution of multiple statements within the same connection and transaction) is not supported when [`Statement.setFetchSize()`](https://docs.oracle.com/javase/8/docs/api/java/sql/Statement#setFetchSize-int-) is used.
+
+### Connection pooling
+
+For guidance on connection pooling, with an example using JDBC and [HikariCP](https://github.com/brettwooldridge/HikariCP), see [Connection Pooling](/docs/v26.1/connection-pooling).
+
+## What's next?
+
+Read more about using the [Java JDBC driver](https://jdbc.postgresql.org/).
+
+You might also be interested in the following pages:
+
+- [Client Connection Parameters](/docs/v26.1/connection-parameters)
+- [Connection Pooling](/docs/v26.1/connection-pooling)
+- [Data Replication](/docs/v26.1/demo-replication-and-rebalancing)
+- [CockroachDB Resilience](/docs/v26.1/demo-cockroachdb-resilience)
+- [Replication &amp; Rebalancing](/docs/v26.1/demo-replication-and-rebalancing)
+- [Cross-Cloud Migration](/docs/v26.1/demo-automatic-cloud-migration)

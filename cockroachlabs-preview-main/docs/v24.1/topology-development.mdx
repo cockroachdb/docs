@@ -1,0 +1,66 @@
+---
+title: "Development Topology"
+old_description: "Guidance for a single-node cluster for local development."
+---
+
+While developing an application against CockroachDB, it's sufficient to deploy a single-node cluster close to your test application, whether that's on a single VM or on your laptop.
+
+<Tip>
+If you haven't already, [review the full range of topology patterns](/docs/v24.1/topology-patterns) to ensure you choose the right one for your use case.
+</Tip>
+
+## Before you begin
+
+- Multi-region topology patterns are almost always table-specific. If you haven't already, [review the full range of patterns](/docs/v24.1/topology-patterns#multi-region) to ensure you choose the right one for each of your tables.
+- Review how data is replicated and distributed across a cluster, and how this affects performance. It is especially important to understand the concept of the "leaseholder". For a summary, see [Reads and Writes in CockroachDB](/docs/v24.1/architecture/reads-and-writes-overview). For a deeper dive, see the CockroachDB [Architecture Overview](/docs/v24.1/architecture/overview).
+- Review the concept of [locality](/docs/v24.1/cockroach-start#locality), which CockroachDB uses to place and balance data based on how you define [replication controls](/docs/v24.1/configure-replication-zones).
+- Review the recommendations and requirements in our [Production Checklist](/docs/v24.1/recommended-production-settings).
+- This topology doesn't account for hardware specifications, so be sure to follow our [hardware recommendations](/docs/v24.1/recommended-production-settings#hardware) and perform a POC to size hardware for your use case. For optimal cluster performance, Cockroach Labs recommends that all nodes use the same hardware and operating system.
+- Adopt relevant [SQL Best Practices](/docs/v24.1/performance-best-practices-overview) to ensure optimal performance.
+
+## Configuration
+
+<Frame>
+  ![Development topology](/images/v24.1/topology-patterns/topology_development1.png)
+</Frame>
+
+For this pattern, you can either [run CockroachDB locally](/docs/v24.1/start-a-local-cluster) or [deploy a single-node cluster on a cloud VM](/docs/v24.1/manual-deployment).
+
+## Characteristics
+
+### Latency
+
+With the CockroachDB node in the same region as your client, and without the overhead of replication, both read and write latency are very low:
+
+<Frame>
+  ![Development topology read and write latency](/images/v24.1/topology-patterns/topology_development_latency.png)
+</Frame>
+
+### Resiliency
+
+In a single-node cluster, CockroachDB does not replicate data and, therefore, is not resilient to failures. If the machine where the node is running fails, or if the region or availability zone containing the machine fails, the cluster becomes unavailable:
+
+<Frame>
+  ![Development topology single failure](/images/v24.1/topology-patterns/topology_development2.png)
+</Frame>
+
+## See also
+
+- [Multi-Region Capabilities Overview](/docs/v24.1/multiregion-overview)
+- [How to Choose a Multi-Region Configuration](/docs/v24.1/choosing-a-multi-region-configuration)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](/docs/v24.1/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](/docs/v24.1/table-localities#when-to-use-regional-vs-global-tables)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.1/demo-low-latency-multi-region-deployment)
+- [Migrate to Multi-Region SQL](/docs/v24.1/migrate-to-multiregion-sql)
+- [Secondary regions](/docs/v24.1/multiregion-overview#secondary-regions)
+- [`ALTER DATABASE... SET SECONDARY REGION`](/docs/v24.1/alter-database#set-secondary-region)
+- [`ALTER DATABASE... DROP SECONDARY REGION`](/docs/v24.1/alter-database#drop-secondary-region)
+- [Topology Patterns Overview](/docs/v24.1/topology-patterns)
+    - Single-region patterns
+        - [Development](/docs/v24.1/topology-development)
+        - [Basic Production](/docs/v24.1/topology-basic-production)
+    - Multi-region patterns
+        - [`REGIONAL` Tables](/docs/v24.1/regional-tables)
+        - [`GLOBAL` Tables](/docs/v24.1/global-tables)
+        - [Follower Reads](/docs/v24.1/topology-follower-reads)
+        - [Follow-the-Workload](/docs/v24.1/topology-follow-the-workload)

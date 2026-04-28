@@ -1,0 +1,129 @@
+---
+title: "Logical Data Replication Dashboard"
+old_description: "The Logical Data Replication Dashboard lets you monitor and observe logical data replication jobs on the destination cluster."
+---
+
+The **Logical Data Replication** dashboard in the DB Console lets you monitor metrics related to the [logical data replication](/docs/v25.2/logical-data-replication-overview) (LDR) jobs on the destination cluster. These metrics are at the **cluster** level. This means that if there are multiple LDR jobs running on a cluster the DB Console will show the average metrics across jobs.
+
+To view this dashboard, [access the DB Console](/docs/v25.2/ui-overview#db-console-access) for the destination cluster, click **Metrics** on the left-hand navigation bar, and select **Logical Data Replication** from the **Dashboard** dropdown.
+
+<Note>
+The **Logical Data Replication** dashboard is distinct from the [**Replication** dashboard](/docs/v25.2/ui-replication-dashboard), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, etc.
+</Note>
+
+## Dashboard navigation
+
+Use the **Graph** menu to display metrics for your entire cluster or for a specific node.
+
+To the right of the Graph and Dashboard menus, a time interval selector allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected in the [SQL Activity](/docs/v25.2/ui-overview#sql-activity) pages. However, if you select 10 or 30 minutes, the interval defaults to 1 hour in SQL Activity pages.
+
+Hovering your mouse pointer over the graph title will display a tooltip with a description and the [metrics](/docs/v25.2/essential-metrics-self-hosted) used to create the graph.
+
+When hovering on graphs, crosshair lines will appear at your mouse pointer. The series' values corresponding to the given time in the cross hairs are displayed in the legend under the graph. Hovering the mouse pointer on a given series displays the corresponding value near the mouse pointer and highlights the series line (graying out other series lines). Click anywhere within the graph to freeze the values in place. Click anywhere within the graph again to cause the values to change with your mouse movements once more.
+
+In the legend, click on an individual series to isolate it on the graph. The other series will be hidden, while the hover will still work. Click the individual series again to make the other series visible. If there are many series, a scrollbar may appear on the right of the legend. This is to limit the size of the legend so that it does not get endlessly large, particularly on clusters with many nodes.
+
+---
+
+The **Logical Data Replication** dashboard displays the following time-series graphs:
+
+<Note>
+The specific node views do not apply for LDR metrics.
+</Note>
+
+## Replication Latency
+
+The graph shows the difference in commit times between the source cluster and the destination cluster.
+
+<table><thead><tr><th>Metric</th><th>CockroachDB Metric Name</th><th>Description</th></tr></thead><tbody><tr><td>p50,<br/>p99</td><td><code>logical&#95;replication.commit&#95;latency-p50</code>,<br/><code>logical&#95;replication.commit&#95;latency-p99</code></td><td>Event commit latency: a difference between event MVCC timestamp and the time it was flushed into disk. If we batch events, then the difference between the oldest event in the batch and flush is recorded.</td></tr></tbody></table>
+
+## Replication Lag
+
+The graph shows the age of the oldest row on the source cluster that has yet to replicate to the destination cluster.
+
+<table><thead><tr><th>Metric</th><th>CockroachDB Metric Name</th><th>Description</th></tr></thead><tbody><tr><td>Replication Lag</td><td><code>logical&#95;replication.replicated&#95;time&#95;seconds</code></td><td>The replicated time of the logical replication stream in seconds since the unix epoch.</td></tr></tbody></table>
+
+## Row Updates Applied
+
+The graph shows the rate at which row updates are applied by all logical replication jobs.
+
+<table><thead><tr><th>Metric</th><th>CockroachDB Metric Name</th><th>Description</th></tr></thead><tbody><tr><td>Row Updates Applied</td><td><code>logical&#95;replication.events&#95;ingested</code></td><td>Events ingested by all logical replication jobs.</td></tr><tr><td>Row Updates sent to DLQ</td><td><code>logical&#95;replication.events&#95;dlqed</code></td><td>Row update events sent to the dead letter queue (DLQ).</td></tr></tbody></table>
+
+## Logical Bytes Received
+
+- In the cluster view, the graph shows the rate at which the logical bytes (sum of keys + values) are received by all logical replication jobs across all nodes.
+- In the node view, the graph shows the rate at which the logical bytes (sum of keys + values) are received by all logical replication jobs on the node.
+
+<table><thead><tr><th>Metric</th><th>CockroachDB Metric Name</th><th>Description</th></tr></thead><tbody><tr><td>logical bytes</td><td><code>logical&#95;replication.logical&#95;bytes</code></td><td>Logical bytes (sum of keys + values) received by all replication jobs.</td></tr></tbody></table>
+
+## Batch Application Processing Time: 50th percentile
+
+- In the cluster view, the graph shows the 50th percentile in the time it takes to write a batch of row updates across all nodes.
+- In the node view, the graph shows the 50th percentile in the time it takes to write a batch of row updates on the node.
+
+<table><thead><tr><th>Metric</th><th>CockroachDB Metric Name</th><th>Description</th></tr></thead><tbody><tr><td>processing time</td><td><code>logical&#95;replication.batch&#95;hist&#95;nanos-p50</code></td><td>Time spent flushing a batch.</td></tr></tbody></table>
+
+## Batch Application Processing Time: 99th percentile
+
+- In the cluster view, the graph shows the 99th percentile in the time it takes to write a batch of row updates across all nodes.
+- In the node view, the graph shows the 99th percentile in the time it takes to write a batch of row updates on the node.
+
+<table><thead><tr><th>Metric</th><th>CockroachDB Metric Name</th><th>Description</th></tr></thead><tbody><tr><td>processing time</td><td><code>logical&#95;replication.batch&#95;hist&#95;nanos-p99</code></td><td>Time spent flushing a batch.</td></tr></tbody></table>
+
+## DLQ Causes
+
+The graph shows the reasons why events were sent to the [dead letter queue (DLQ)](/docs/v25.2/manage-logical-data-replication#dead-letter-queue-dlq)
+
+<table><thead><tr><th>Metric</th><th>CockroachDB Metric Name</th><th>Description</th></tr></thead><tbody><tr><td>Retry Duration Expired</td><td><code>logical&#95;replication.events&#95;dlqed&#95;age</code></td><td>Row update events sent to DLQ due to reaching the maximum time allowed in the retry queue.</td></tr><tr><td>Retry Queue Full</td><td><code>logical&#95;replication.events&#95;dlqed&#95;space</code></td><td>Row update events sent to DLQ due to capacity of the retry queue.</td></tr><tr><td>Non-retryable</td><td><code>logical&#95;replication.events&#95;dlqed&#95;errtype</code></td><td>Row update events sent to DLQ due to an error not considered retryable.</td></tr></tbody></table>
+
+## Retry Queue Size
+
+- In the cluster view, the graph shows the total size of the retry queues across all processors in all LDR jobs across all nodes.
+- In the node view, the graph shows the total size of the retry queues across all processors in all LDR jobs on the node.
+
+<table><thead><tr><th>Metric</th><th>CockroachDB Metric Name</th><th>Description</th></tr></thead><tbody><tr><td>retry queue bytes</td><td><code>logical&#95;replication.retry&#95;queue&#95;bytes</code></td><td>The size of the retry queue of the logical replication stream.</td></tr></tbody></table>
+
+## Summary and events
+
+### Summary panel
+
+A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Total Nodes</td><td>The total number of nodes in the cluster. <a href="/docs/v25.2/node-shutdown?filters=decommission">Decommissioned nodes</a> are not included in this count.</td></tr><tr><td>Capacity Used</td><td>The storage capacity used as a percentage of <a href="/docs/v25.2/ui-cluster-overview-page#capacity-metrics">usable capacity</a> allocated across all nodes.</td></tr><tr><td>Unavailable Ranges</td><td>The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.</td></tr><tr><td>Queries per second</td><td>The total number of <code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, and <code>DELETE</code> queries executed per second across the cluster.</td></tr><tr><td>P99 Latency</td><td>The 99th percentile of service latency.</td></tr></tbody></table>
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v25.2/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v25.2/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+### Events panel
+
+Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
+
+<Frame>
+  ![DB Console Events](/images/v24.2/ui_events.png)
+</Frame>
+
+The following types of events are listed:
+
+- Database created
+- Database dropped
+- Table created
+- Table dropped
+- Table altered
+- Index created
+- Index dropped
+- View created
+- View dropped
+- Schema change reversed
+- Schema change finished
+- Node joined
+- Node decommissioned
+- Node restarted
+- Cluster setting changed
+
+## See also
+
+- [Logical Data Replication Overview](/docs/v25.2/logical-data-replication-overview)
+- [Logical Data Replication Monitoring](/docs/v25.2/logical-data-replication-monitoring)
+- [Troubleshooting Overview](/docs/v25.2/troubleshooting-overview)
+- [Support Resources](/docs/v25.2/support-resources)

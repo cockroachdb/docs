@@ -1,0 +1,93 @@
+---
+title: "ALTER PROCEDURE"
+old_description: "The ALTER PROCEDURE statement modifies a stored procedure."
+---
+
+import { AlterProcedure4 } from "/snippets/syntax-diagrams/AlterProcedure4.jsx";
+
+The `ALTER PROCEDURE` [statement](/docs/v24.3/sql-statements) modifies a [stored procedure](/docs/v24.3/stored-procedures).
+
+## Required privileges
+
+Refer to the respective [subcommands](#subcommands).
+
+## Synopsis
+
+<AlterProcedure4 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>proc&#95;name</code></td><td>The name of the procedure to alter.</td></tr><tr><td><code>routine&#95;param</code></td><td>An optional list of procedure parameters.</td></tr></tbody></table>
+
+## Subcommands
+
+<table><thead><tr><th>Subcommand</th><th>Description</th></tr></thead><tbody><tr><td><a href="#owner-to"><code>OWNER TO</code></a></td><td>Change the owner of a procedure.</td></tr><tr><td><a href="#rename-to"><code>RENAME TO</code></a></td><td>Change the name of a procedure.</td></tr><tr><td><a href="#set-schema"><code>SET SCHEMA</code></a></td><td>Change the <a href="/docs/v24.3/sql-name-resolution">schema</a> of a procedure.</td></tr></tbody></table>
+
+### `OWNER TO`
+
+`ALTER PROCEDURE... OWNER TO` is used to change the owner of a procedure.
+
+#### Required privileges
+
+- To alter the owner of a procedure, the new owner must have [`CREATE` privilege](/docs/v24.3/security-reference/authorization#supported-privileges) on the schema of the procedure.
+- To alter a procedure, a user must [own](/docs/v24.3/security-reference/authorization#object-ownership) the procedure.
+- To alter a procedure, a user must have [`DROP` privilege](/docs/v24.3/security-reference/authorization#supported-privileges) on the schema of the procedure.
+
+#### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>role&#95;spec</code></td><td>The role to set as the owner of the procedure.</td></tr></tbody></table>
+
+See [Synopsis](#synopsis).
+
+### `RENAME TO`
+
+`ALTER PROCEDURE... RENAME TO` changes the name of a procedure.
+
+#### Required privileges
+
+- To alter a procedure, a user must [own](/docs/v24.3/security-reference/authorization#object-ownership) the procedure.
+- To alter a procedure, a user must have [`DROP` privilege](/docs/v24.3/security-reference/authorization#supported-privileges) on the schema of the procedure.
+
+#### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>proc&#95;new&#95;name</code></td><td>The new name of the procedure.</td></tr></tbody></table>
+
+See [Synopsis](#synopsis).
+
+### `SET SCHEMA`
+
+`ALTER PROCEDURE... SET SCHEMA` changes the [schema](/docs/v24.3/sql-name-resolution) of a procedure.
+
+<Note>
+CockroachDB supports `SET SCHEMA` as an [alias for setting the `search_path` session variable](/docs/v24.3/set-vars#supported-variables).
+</Note>
+
+#### Required privileges
+
+- To change the schema of a procedure, a user must have [`CREATE` privilege](/docs/v24.3/security-reference/authorization#supported-privileges) on the new schema.
+- To alter a procedure, a user must [own](/docs/v24.3/security-reference/authorization#object-ownership) the procedure.
+- To alter a procedure, a user must have [`DROP` privilege](/docs/v24.3/security-reference/authorization#supported-privileges) on the schema of the procedure.
+
+#### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>schema&#95;name</code></td><td>The name of the new schema for the procedure.</td></tr></tbody></table>
+
+See [Synopsis](#synopsis).
+
+## Examples
+
+### Rename a stored procedure
+
+The following statement renames the [`delete_earliest_histories` example procedure](/docs/v24.3/stored-procedures#create-a-stored-procedure-using-pl-pgsql) to `delete_histories`:
+
+```sql
+ALTER PROCEDURE delete_earliest_histories RENAME TO delete_histories;
+```
+
+## See also
+
+- [Stored Procedures](/docs/v24.3/stored-procedures)
+- [PL/pgSQL](/docs/v24.3/plpgsql)
+- [`CREATE PROCEDURE`](/docs/v24.3/create-procedure)
+- [`CALL`](/docs/v24.3/call)
+- [`DROP PROCEDURE`](/docs/v24.3/drop-procedure)

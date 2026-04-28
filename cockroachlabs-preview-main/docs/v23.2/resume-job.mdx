@@ -1,0 +1,110 @@
+---
+title: "RESUME JOB"
+old_description: "The RESUME JOB statement lets you resume jobs that were previously paused with PAUSE JOB."
+---
+
+import { ResumeJob2 } from "/snippets/syntax-diagrams/ResumeJob2.jsx";
+import { ResumeJob3 } from "/snippets/syntax-diagrams/ResumeJob3.jsx";
+
+The `RESUME JOB` [statement](/docs/v23.2/sql-statements) lets you resume the following types of jobs:
+
+- [`IMPORT`](/docs/v23.2/import) jobs
+- [`BACKUP`](/docs/v23.2/backup) and [`RESTORE`](/docs/v23.2/restore) jobs
+- [User-created table statistics](/docs/v23.2/create-statistics) jobs
+- [Automatic table statistics](/docs/v23.2/cost-based-optimizer#table-statistics) jobs
+- [Changefeeds](/docs/v23.2/create-changefeed)
+- [Schema change](/docs/v23.2/online-schema-changes) jobs
+- [Scheduled backup](/docs/v23.2/manage-a-backup-schedule) jobs
+
+## Required privileges
+
+To resume a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](/docs/v23.2/create-user#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) [role option](/docs/v23.2/security-reference/authorization#role-options) set. Non-admin users cannot resume admin users' jobs.
+
+For changefeeds, users with the [`CHANGEFEED`](/docs/v23.2/create-changefeed#required-privileges) privilege on a set of tables can resume changefeed jobs running on those tables.
+
+## Synopsis
+
+<ResumeJob2 />
+
+### Resume all jobs by type
+
+<ResumeJob3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>job&#95;id</code></td><td>The ID of the job you want to resume, which can be found with <a href="/docs/v23.2/show-jobs"><code>SHOW JOBS</code></a>.</td></tr><tr><td><code>select&#95;stmt</code></td><td>A <a href="/docs/v23.2/selection-queries">selection query</a> that returns <code>job&#95;id</code>(s) to resume.</td></tr><tr><td><code>for&#95;schedules&#95;clause</code></td><td>The schedule you want to resume jobs for. You can resume jobs for a specific schedule (<code>FOR SCHEDULE id</code>) or resume jobs for multiple schedules by nesting a <a href="/docs/v23.2/select-clause"><code>SELECT</code> clause</a> in the statement (<code>FOR SCHEDULES &lt;select&#95;clause&gt;</code>). See the <a href="#resume-jobs-for-a-schedule">examples</a> below.</td></tr><tr><td><code>BACKUP</code>, <code>CHANGEFEED</code>, <code>RESTORE</code>, <code>IMPORT</code></td><td>The job type to resume.</td></tr></tbody></table>
+
+## Examples
+
+### Pause a job
+
+```sql
+> SHOW JOBS;
+```
+
+```text
+      job_id     |  job_type |               description                      |...
+-----------------+-----------+------------------------------------------------+...
+  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
+```
+
+```sql
+> PAUSE JOB 27536791415282;
+```
+
+### Resume a single job
+
+```sql
+> RESUME JOB 27536791415282;
+```
+
+### Resume multiple jobs
+
+To resume multiple jobs, nest a [`SELECT` clause](/docs/v23.2/select-clause) that retrieves `job_id`(s) inside the `RESUME JOBS` statement:
+
+```sql
+> RESUME JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
+      WHERE user_name = 'maxroach');
+```
+
+All jobs created by `maxroach` will be resumed.
+
+### Resume by job type
+
+To resume all jobs by the type of job, use the `RESUME ALL {job} JOBS` statement. You can resume all `BACKUP`, `RESTORE`, `CHANGEFEED`, `IMPORT` jobs using this statement, for example:
+
+```sql
+RESUME ALL BACKUP JOBS;
+```
+
+### Resume jobs for a schedule
+
+To resume jobs for a specific [backup schedule](/docs/v23.2/create-schedule-for-backup), use the schedule's `id`:
+
+```sql
+> RESUME JOBS FOR SCHEDULE 590204387299262465;
+```
+
+```text
+RESUME JOBS FOR SCHEDULES 1
+```
+
+You can also resume multiple schedules by nesting a [`SELECT` clause](/docs/v23.2/select-clause) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
+
+```sql
+> RESUME JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
+```
+
+```text
+RESUME JOBS FOR SCHEDULES 2
+```
+
+## See also
+
+- [`PAUSE JOB`](/docs/v23.2/pause-job)
+- [`SHOW JOBS`](/docs/v23.2/show-jobs)
+- [`CANCEL JOB`](/docs/v23.2/cancel-job)
+- [`BACKUP`](/docs/v23.2/backup)
+- [`RESTORE`](/docs/v23.2/restore)
+- [`IMPORT`](/docs/v23.2/import)
+- [`CREATE CHANGEFEED`](/docs/v23.2/create-changefeed)

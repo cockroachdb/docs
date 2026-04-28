@@ -1,0 +1,123 @@
+---
+title: "Databases Page"
+old_description: "The Databases page provides details about databases configured, the tables in each database, and the grants assigned to each user."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+
+<Note>
+On a [secure cluster](/docs/v23.2/secure-a-cluster), you must be an `admin` user to access this area of the DB Console. Refer to [DB Console security](/docs/v23.2/ui-overview#db-console-access).
+</Note>
+
+The **Databases** page of the DB Console provides details of the following:
+
+- The databases configured.
+- The tables in each database and the indexes on each table.
+- The grants assigned to each role and user.
+- [Index recommendations](#index-recommendations).
+
+To view this page, [access the DB Console](/docs/v23.2/ui-overview#db-console-access) and click **Databases** in the left-hand navigation.
+
+## Index recommendations
+
+The [**Databases**](#databases), [table details](#table-details), and [index details](#index-details) pages show recommendations to drop indexes based on index usage. You can traverse the **Databases** page and **Tables** view to determine which indexes have recommendations.
+
+To configure the threshold for when CockroachDB will recommend that you drop an index due to low usage, change the [`sql.index_recommendation.drop_unused_duration` cluster setting](/docs/v23.2/cluster-settings). The default value is 7 days.
+
+## Databases
+
+The **Databases** page shows:
+
+- Whether [automatic statistics collection](/docs/v23.2/cost-based-optimizer#table-statistics) is enabled for the cluster.
+- A list of the databases on the cluster.
+
+The following information is displayed for each database:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Databases</td><td>The name of the database.</td></tr><tr><td>Size</td><td>Approximate disk size across all table replicas in the database.</td></tr><tr><td>Tables</td><td>The number of tables in the database.</td></tr><tr><td>Regions/Nodes</td><td>The regions and nodes on which the tables in the database are located. This is not displayed on a single-node cluster.<br/><br/>On a multi-node cluster, the display of this information is controlled by the cluster setting <a href="#ui-database_locality_metadata-enabled-cluster-setting"><code>ui.database&#95;locality&#95;metadata.enabled</code></a> (default <code>true</code>).</td></tr><tr><td>Index Recommendations</td><td>The number of index recommendations for the database.</td></tr></tbody></table>
+
+- Select **View: Tables** in the pulldown menu to display the [Tables view](#tables-view).
+- Select **View: Grants** in the pulldown menu to display the [Grants view](#grants-view).
+
+### `ui.database_locality_metadata.enabled` cluster setting
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2.17: Retrieving extended database and table region information can cause significant CPU load on large multi-node clusters with many ranges. You can prevent the retrieval of this data and the associated CPU load by disabling the [`ui.database_locality_metadata.enabled` cluster setting](/docs/v23.2/cluster-settings#setting-ui-database-locality-metadata-enabled). When set to `false`, “No data” will be displayed for region data and replica counts. If you require this data, use the SQL statement [`SHOW RANGES FROM {DATABASE|TABLE}`](/docs/v23.2/show-ranges) to compute this information.
+
+## Search and filter
+
+By default, the Databases page shows all databases running on the cluster. By default, the [**Tables** view](#tables-view) and the [**Grants** view](#grants-view) show all tables in a selected database.
+
+### Search databases or tables
+
+To search using the search field:
+
+1. Enter a string in the search box at the top of the tab. To search for exact terms in order, wrap the search string in quotes.
+2. Press `Enter`.
+
+    The list of databases or tables is filtered by the string.
+
+### Filter
+
+To filter the databases on the **Databases** page or tables on the [**Tables** view](#tables-view) or the [**Grants** view](#grants-view):
+
+1. Click the **Filters** field.
+    - To filter by one or more nodes on which the data reside for the database or table, select **Node** and select one or more nodes.
+2. Click **Apply**.
+
+## Tables view
+
+The **Tables** view shows the tables in your database.
+
+The following information is displayed for each table:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Tables</td><td>The name of the table.</td></tr><tr><td>Replication Size</td><td>The approximate disk size of all replicas of this table on the cluster.</td></tr><tr><td>Ranges</td><td>The number of ranges in the table.</td></tr><tr><td>Indexes</td><td>The number of indexes in the table.</td></tr><tr><td>Regions</td><td>The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.<br/><br/>On a multi-node cluster, the display of this information is controlled by the cluster setting <a href="#ui-database_locality_metadata-enabled-cluster-setting"><code>ui.database&#95;locality&#95;metadata.enabled</code></a> (default <code>true</code>).</td></tr><tr><td>% of Live Data</td><td>Percent of total uncompressed logical data that has not been modified (updated or deleted).</td></tr><tr><td>Table Stats Last Updated (UTC)</td><td>The last time table statistics were created or updated.</td></tr></tbody></table>
+
+Click a **table name** to view table details.
+
+### Table details
+
+The table details page contains details of a table. It contains an **Overview** tab and a **Grants** tab displays the users and [grants](/docs/v23.2/grant) associated with the table.
+
+#### Overview tab
+
+The **Overview** tab displays the SQL statements used to [create the table](/docs/v23.2/create-table), table details, and index statistics.
+
+The table details include:
+
+- **Size**: The approximate disk size of all replicas of this table on the cluster.
+- **Replicas**: The number of [replicas](/docs/v23.2/architecture/replication-layer) of this table on the cluster. On a multi-node cluster, the display of this information is controlled by the cluster setting [`ui.database_locality_metadata.enabled`](#ui-database_locality_metadata-enabled-cluster-setting) (default `true` ).
+- **Ranges**: The number of [ranges](/docs/v23.2/architecture/glossary#architecture-range) in this table.
+- **% of Live Data**: Percentage of total uncompressed logical data that has not been modified (updated or deleted).
+- **Table Stats Last Updated**: The last time table statistics were created or updated.
+- **Auto Stats Collection**: Whether [automatic statistics collection](/docs/v23.2/cost-based-optimizer#table-statistics) is enabled.
+- **Regions/Nodes**: The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. On a multi-node cluster, the display of this information is controlled by the cluster setting [`ui.database_locality_metadata.enabled`](#ui-database_locality_metadata-enabled-cluster-setting) (default `true`).
+- **Database**: The database in which the table is found.
+- **Indexes**: The names of the indexes defined on the table.
+
+#### Index details
+
+The **Index Stats** table displays index statistics for a table.
+
+Index statistics accumulate from the time an index was created or when statistics were reset. If desired, [admin users](/docs/v23.2/security-reference/authorization#admin-role) may reset index statistics for the cluster by clicking **Reset all index stats**. This link does not appear for non-admin users.
+
+The following information is displayed for each index:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Indexes</td><td>The name of the index.</td></tr><tr><td>Total Reads</td><td>The number of times the index was read since index statistics were reset.</td></tr><tr><td>Last Used (UTC)</td><td>The time the index was created, last read, or index statistics were reset.</td></tr><tr><td>Index Recommendations</td><td>A recommendation to drop the index if it is unused.</td></tr><tr><td><strong>Drop index</strong> button</td><td><a href="/docs/v23.2/security-reference/authorization#admin-role">Admin users</a> can click this to drop an unused index.</td></tr></tbody></table>
+
+Click an **index name** to view index details. The index details page displays the query used to create the index, the number of times the index was read since index statistics were reset, the time the index was last read, and the reason for the index recommendation. [Admin users](/docs/v23.2/security-reference/authorization#admin-role) also see a list of executed statement fingerprints using the index.
+
+## Grants view
+
+The **Grants** view shows the [privileges](/docs/v23.2/security-reference/authorization#managing-privileges) granted to users and roles for each database.
+
+The following information is displayed for each table:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Tables</td><td>The name of the table.</td></tr><tr><td>Users</td><td>The number of users of the table.</td></tr><tr><td>Roles</td><td>The list of roles on the table.</td></tr><tr><td>Grants</td><td>The list of grants of the table.</td></tr></tbody></table>
+
+For more details about grants and privileges, see [`GRANT`](/docs/v23.2/grant).
+
+## See also
+
+- [Statements page](/docs/v23.2/ui-statements-page)
+- [Assign privileges](/docs/v23.2/security-reference/authorization#managing-privileges)
+- [`GRANT`](/docs/v23.2/grant)
+- [Raw status endpoints](/docs/v23.2/monitoring-and-alerting#raw-status-endpoints)

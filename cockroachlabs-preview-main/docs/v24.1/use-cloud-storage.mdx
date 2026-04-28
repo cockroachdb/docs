@@ -1,0 +1,226 @@
+---
+title: "Use Cloud Storage"
+old_description: "CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to various operation statements."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+
+CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to one of the following statements:
+
+- [`BACKUP`](/docs/v24.1/backup)
+- [`RESTORE`](/docs/v24.1/restore)
+- [`IMPORT INTO`](/docs/v24.1/import-into)
+- [`EXPORT`](/docs/v24.1/export)
+- [`CREATE CHANGEFEED`](/docs/v24.1/create-changefeed)
+
+<Note>
+Cockroach Labs recommends enabling Egress Perimeter Controls on CockroachDB Advanced clusters to mitigate the risk of data exfiltration when accessing external resources, such as cloud storage for change data capture or backup and restore operations. See [Egress Perimeter Controls](/docs/cockroachcloud/egress-perimeter-controls) for detail and setup instructions.
+</Note>
+
+<Tip>
+We strongly recommend using cloud/remote storage.
+</Tip>
+
+## URL format
+
+URLs for the files you want to import must use the format shown below. For examples, see [Example file URLs](#example-file-urls).
+
+```text
+[scheme]://[host]/[path]?[parameters]
+```
+
+You can create an external connection to represent an external storage or sink URI. This allows you to specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](/docs/v24.1/create-external-connection) page.
+
+The following table provides a list of the parameters supported by each storage scheme. For detail on authenticating to each cloud storage provider, see the [Cloud Storage Authentication](/docs/v24.1/cloud-storage-authentication) page.
+
+<table><thead><tr><th>Location</th><th>Scheme</th><th>Host</th><th>Parameters</th></tr></thead><tbody><tr><td>Amazon S3</td><td><code>s3</code></td><td>Bucket name</td><td><a href="/docs/v24.1/cloud-storage-authentication#amazon-s3-specified"><code>AUTH</code></a>: <code>implicit</code> or <code>specified</code> (default: <code>specified</code>). When using <code>specified</code> pass user's <code>AWS&#95;ACCESS&#95;KEY&#95;ID</code> and <code>AWS&#95;SECRET&#95;ACCESS&#95;KEY</code>.<br/><br/><a href="/docs/v24.1/cloud-storage-authentication#set-up-amazon-s3-assume-role"><code>ASSUME&#95;ROLE</code></a> (optional): Pass the <a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces">ARN</a> of the role to assume. You must <a href="https://www.w3schools.com/tags/ref_urlencode.ASP">URL encode</a> this entire value. Use in combination with <code>AUTH=implicit</code> or <code>specified</code>.<br/><br/><code>AWS&#95;ENDPOINT</code> (optional): Specify a custom endpoint for Amazon S3 or S3-compatible services. Use to define a particular region or a Virtual Private Cloud (VPC) endpoint.<br/><br/><a href="/docs/v24.1/cloud-storage-authentication"><code>AWS&#95;SESSION&#95;TOKEN</code></a> (optional): Use as part of temporary security credentials when accessing AWS S3. For more information, refer to Amazon's guide on <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources">temporary credentials</a>.<br/><br/><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v24.1.10:<code>AWS&#95;USE&#95;PATH&#95;STYLE</code> (optional): Set the URL format to path style. In v24.3+, the default URL format is AWS S3 virtual-hosted–style URLs when connecting to Amazon S3 or S3-compatible services. Before upgrading to v24.3+, use <code>AWS&#95;USE&#95;PATH&#95;STYLE</code> to keep the URL format as path style.<br/><br/><a href="#amazon-s3-storage-classes"><code>S3&#95;STORAGE&#95;CLASS</code></a> (optional): Specify the Amazon S3 storage class for created objects. Note that Glacier Flexible Retrieval and Glacier Deep Archive are not compatible with incremental backups. <strong>Default</strong>: <code>STANDARD</code>.</td></tr><tr><td>Azure Blob Storage</td><td><code>azure-blob</code> / <code>azure</code></td><td>Storage container</td><td><code>AZURE&#95;ACCOUNT&#95;NAME</code>: The name of your Azure account.<br/><br/><code>AZURE&#95;ACCOUNT&#95;KEY</code>: Your Azure account key. You must <a href="https://wikipedia.org/wiki/Percent-encoding">url encode</a> your Azure account key before authenticating to Azure Storage. For more information, see <a href="/docs/v24.1/cloud-storage-authentication#azure-blob-storage-specified-authentication">Authentication - Azure Storage</a>.<br/><br/><code>AZURE&#95;ENVIRONMENT</code>: (optional) The <a href="https://learn.microsoft.com/azure/deployment-environments/concept-environments-key-concepts#environments">Azure environment</a> that the storage account belongs to. The accepted values are: <code>AZURECHINACLOUD</code>, <code>AZUREGERMANCLOUD</code>, <code>AZUREPUBLICCLOUD</code>, and <a href="https://learn.microsoft.com/azure/azure-government/documentation-government-developer-guide"><code>AZUREUSGOVERNMENTCLOUD</code></a>. These are cloud environments that meet security, compliance, and data privacy requirements for the respective instance of Azure cloud. If the parameter is not specified, it will default to <code>AZUREPUBLICCLOUD</code>.<br/><br/><code>AZURE&#95;CLIENT&#95;ID</code>: Application (client) ID for your <a href="https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application">App Registration</a>.<br/><br/><code>AZURE&#95;CLIENT&#95;SECRET</code>: Client credentials secret generated for your App Registration.<br/><br/><code>AZURE&#95;TENANT&#95;ID</code>: Directory (tenant) ID for your App Registration.<br/><br/>Cockroach Labs supports Azure's General Purpose v2 Standard storage account type. For more details, refer to the Azure <a href="https://learn.microsoft.com/azure/storage/blobs/storage-blobs-introduction#storage-accounts">Storage Account documentation</a>.<br/><br/><strong>Note:</strong> For <a href="/docs/v24.1/changefeed-sinks">changefeeds</a>, you must use the <code>azure://</code> scheme. For all other jobs, the <code>azure://</code> and <code>azure-storage://</code> schemes are also supported for backward compatibility, though <code>azure-blob://</code> is recommended.</td></tr><tr><td>Google Cloud Storage</td><td><code>gs</code></td><td>Bucket name</td><td><code>AUTH</code>: <code>implicit</code>, or <code>specified</code> (default: <code>specified</code>); <code>CREDENTIALS</code><br/><br/><a href="/docs/v24.1/cloud-storage-authentication#set-up-google-cloud-storage-assume-role"><code>ASSUME&#95;ROLE</code></a> (optional): Pass the <a href="https://cloud.google.com/iam/docs/understanding-service-accounts">service account name</a> of the service account to assume. You must <a href="https://www.w3schools.com/tags/ref_urlencode.ASP">URL encode</a> this entire value.<br/><br/>For more information, see <a href="/docs/v24.1/cloud-storage-authentication#google-cloud-storage-specified">Authentication - Google Cloud Storage</a>.</td></tr><tr><td>HTTP</td><td><code>file-http(s)</code> / <code>http(s)</code></td><td>Remote host</td><td>N/A<br/><br/><strong>Note:</strong> Using <code>http(s)</code> without the <code>file-</code> prefix is deprecated as a <a href="/docs/v24.1/changefeed-sinks">changefeed sink</a> scheme. There is continued support for <code>http(s)</code>, but it will be removed in a future release. We recommend implementing the <code>file-http(s)</code> scheme for changefeed messages.<br/><br/>For more information, refer to <a href="/docs/v24.1/cloud-storage-authentication#http-authentication">Authentication - HTTP</a>.</td></tr><tr><td>NFS/Local <a href="#considerations"><sup>1</sup></a></td><td><code>nodelocal</code></td><td><code>nodeID</code><a href="#considerations"><sup>2</sup></a> (see <a href="#example-file-urls">Example file URLs</a>)</td><td>N/A</td></tr><tr><td>S3-compatible services</td><td><code>s3</code></td><td>Bucket name</td><td>Warning:While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we <strong>do not</strong> test S3-compatible services (e.g., <a href="https://min.io/">MinIO</a>, <a href="https://docs.ceph.com/en/pacific/radosgw/s3">Red Hat Ceph</a>).<br/><br/><code>AWS&#95;ACCESS&#95;KEY&#95;ID</code>, <code>AWS&#95;SECRET&#95;ACCESS&#95;KEY</code>, <code>AWS&#95;SESSION&#95;TOKEN</code>, <code>AWS&#95;REGION</code><a href="#considerations"><sup>3</sup></a> (optional), <code>AWS&#95;ENDPOINT</code><br/><br/>For more information, see <a href="/docs/v24.1/cloud-storage-authentication#s3-compatible-services-authentication">Authentication - S3-compatible services</a>.</td></tr></tbody></table>
+
+<Tip>
+The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
+</Tip>
+
+<Note>
+You can disable the use of implicit credentials when accessing external cloud storage services for various operations by using the [`--external-io-disable-implicit-credentials` flag](/docs/v24.1/cockroach-start#security).
+</Note>
+
+1 The file system backup location on the NFS drive is relative to the path specified by the [`--external-io-dir`](/docs/v24.1/cockroach-start#flags-external-io-dir) flag set while [starting the node](/docs/v24.1/cockroach-start). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
+
+2 Using a `nodeID` is required and the data files will be in the `extern` directory of the specified node. In most cases (including single-node clusters), using `nodelocal://1/<path>` is sufficient. If every node has the [`--external-io-dir`](/docs/v24.1/cockroach-start#flags-external-io-dir) flag pointed to a common NFS mount, or other form of network-backed, shared, or synchronized storage, you can use the word `self` instead of a node ID to indicate that each node should write individual data files to its own `extern` directory.
+
+3 The `AWS_REGION` parameter is optional since it is not a required parameter for most S3-compatible services. Specify the parameter only if your S3-compatible service requires it.
+
+### Example file URLs
+
+Example URLs for [`BACKUP`](/docs/v24.1/backup), [`RESTORE`](/docs/v24.1/restore), or [`EXPORT`](/docs/v24.1/export) given a bucket or container name of `acme-co` and an `employees` subdirectory:
+
+<table><thead><tr><th>Location</th><th>Example</th></tr></thead><tbody><tr><td>Amazon S3</td><td><code>s3://acme-co/employees?AWS&#95;ACCESS&#95;KEY&#95;ID=123&amp;AWS&#95;SECRET&#95;ACCESS&#95;KEY=456</code></td></tr><tr><td>Azure Blob Storage</td><td><code>azure-blob://acme-co/employees?AUTH=specified&amp;AZURE&#95;ACCOUNT&#95;NAME=&#123;account name&#125;&amp;AZURE&#95;CLIENT&#95;ID=&#123;client ID&#125;&amp;AZURE&#95;CLIENT&#95;SECRET=&#123;client secret&#125;&amp;AZURE&#95;TENANT&#95;ID=&#123;tenant ID&#125;</code></td></tr><tr><td>Google Cloud Storage</td><td><code>gs://acme-co/employees?AUTH=specified&amp;CREDENTIALS=encoded-123</code></td></tr><tr><td>NFS/Local</td><td><code>nodelocal://1/path/employees</code></td></tr></tbody></table>
+
+For detail on forming the URLs and the different authentication methods, refer to the [Cloud Storage Authentication](/docs/v24.1/cloud-storage-authentication) page.
+
+Example URLs for [`IMPORT INTO`](/docs/v24.1/import-into) and given a bucket or container name of `acme-co` and a filename of `employees`:
+
+<table><thead><tr><th>Location</th><th>Example</th></tr></thead><tbody><tr><td>Amazon S3</td><td><code>s3://acme-co/employees.sql?AWS&#95;ACCESS&#95;KEY&#95;ID=123&amp;AWS&#95;SECRET&#95;ACCESS&#95;KEY=456</code></td></tr><tr><td>Azure Blob Storage</td><td><code>azure-blob://acme-co/employees.sql?AUTH=specified&amp;AZURE&#95;ACCOUNT&#95;NAME=&#123;account name&#125;&amp;AZURE&#95;CLIENT&#95;ID=&#123;client ID&#125;&amp;AZURE&#95;CLIENT&#95;SECRET=&#123;client secret&#125;&amp;AZURE&#95;TENANT&#95;ID=&#123;tenant ID&#125;</code></td></tr><tr><td>Google Cloud Storage</td><td><code>gs://acme-co/employees.sql?AUTH=specified&amp;CREDENTIALS=encoded-123</code></td></tr><tr><td>HTTP</td><td><code>http://localhost:8080/employees.sql</code></td></tr><tr><td>NFS/Local</td><td><code>nodelocal://1/path/employees</code></td></tr></tbody></table>
+
+Example URLs for [`CREATE CHANGEFEED`](/docs/v24.1/create-changefeed):
+
+<table><thead><tr><th>Location</th><th>Example</th></tr></thead><tbody><tr><td>Amazon S3</td><td><code>'s3://&#123;BUCKET NAME&#125;/&#123;PATH&#125;?AWS&#95;ACCESS&#95;KEY&#95;ID=&#123;KEY ID&#125;&amp;AWS&#95;SECRET&#95;ACCESS&#95;KEY=&#123;SECRET ACCESS KEY&#125;'</code></td></tr><tr><td>Azure Blob Storage</td><td><code>'azure://&#123;CONTAINER NAME&#125;/&#123;PATH&#125;?AZURE&#95;ACCOUNT&#95;NAME=&#123;ACCOUNT NAME&#125;&amp;AZURE&#95;ACCOUNT&#95;KEY=&#123;URL-ENCODED KEY&#125;'</code></td></tr><tr><td>Google Cloud</td><td><code>'gs://&#123;BUCKET NAME&#125;/&#123;PATH&#125;?AUTH=specified&amp;CREDENTIALS=&#123;ENCODED KEY&#125;'</code></td></tr><tr><td>HTTP</td><td><code>'file-http(s)://localhost:8080/&#123;PATH&#125;'</code> or <code>'http(s)://localhost:8080/&#123;PATH&#125;'</code><br/><br/><strong>Note:</strong> Using <code>http(s)</code> without the <code>file-</code> prefix is deprecated as a <a href="/docs/v24.1/changefeed-sinks">changefeed sink</a> scheme. There is continued support for <code>http(s)</code>, but it will be removed in a future release. We recommend implementing the <code>file-http(s)</code> scheme for changefeed messages.</td></tr></tbody></table>
+
+<Note>
+HTTP storage can only be used for [`IMPORT INTO`](/docs/v24.1/import-into) and [`CREATE CHANGEFEED`](/docs/v24.1/create-changefeed).
+</Note>
+
+## Encryption
+
+[Transport Layer Security (TLS)](https://wikipedia.org/wiki/Transport_Layer_Security) is used for encryption in transit when transmitting data to or from Amazon S3, Google Cloud Storage, and Azure.
+
+For encryption at rest, if your cloud provider offers transparent data encryption, you can use that to ensure that your backups are not stored on disk in cleartext.
+
+- [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption)
+- [Azure Blob Storage](https://docs.microsoft.com/azure/storage/common/storage-service-encryption#about-azure-storage-encryption)
+- [Google Cloud Storage](https://cloud.google.com/storage/docs/encryption)
+
+CockroachDB also provides client-side encryption of backup data, for more information, see [Take and Restore Encrypted Backups](/docs/v24.1/take-and-restore-encrypted-backups).
+
+## Storage permissions
+
+This section describes the minimum permissions required to run CockroachDB operations. While we provide the required permissions for Amazon S3 and Google Cloud Storage, the provider's documentation provides detail on the setup process and different options regarding access management.
+
+Depending on the actions an operation performs, it will require different access permissions to a cloud storage bucket.
+
+This table outlines the actions that each operation performs against the storage bucket:
+
+<table><thead><tr><th>Operation</th><th>Permission</th><th>Description</th></tr></thead><tbody><tr><td rowspan="4"><a href="/docs/v24.1/backup">Backup</a></td><td>Write</td><td>Backups write the backup data to the bucket/container. During a backup job, a <code>BACKUP CHECKPOINT</code> file will be written that tracks the progress of the backup.</td></tr><tr><td>Get</td><td>Backups need get access after a <a href="/docs/v24.1/pause-job">pause</a> to read the checkpoint files on <a href="/docs/v24.1/resume-job">resume</a>.</td></tr><tr><td>List</td><td>Backups need list access to the files already in the bucket. For example, <code>BACKUP</code> uses list to find previously taken backups when executing an incremental backup and to find the latest checkpoint file.</td></tr><tr><td>Delete (optional)</td><td>To clean up <code>BACKUP CHECKPOINT</code> files that the backup job has written, you need to also include a delete permission in your bucket policy (e.g., <code>s3:DeleteObject</code>). However, delete is <b>not</b> necessary for backups to complete successfully in v22.1 and later.</td></tr><tr><td rowspan="2"><a href="/docs/v24.1/restore">Restore</a></td><td>Get</td><td>Restores need access to retrieve files from the backup. Restore also requires access to the <code>LATEST</code> file in order to read the latest available backup.</td></tr><tr><td>List</td><td>Restores need list access to the files already in the bucket to find other backups in the <a href="/docs/v24.1/take-full-and-incremental-backups#backup-collections">backup collection</a>. This contains metadata files that describe the backup, the <code>LATEST</code> file, and other versioned subdirectories and files.</td></tr><tr><td><a href="/docs/v24.1/import-into">Import</a></td><td>Get</td><td>Imports read the requested file(s) from the storage bucket.</td></tr><tr><td><a href="/docs/v24.1/export">Export</a></td><td>Write</td><td>Exports need write access to the storage bucket to create individual export file(s) from the exported data.</td></tr><tr><td><a href="/docs/v24.1/create-changefeed">Enterprise changefeeds</a></td><td>Write</td><td>Changefeeds will write files to the storage bucket that contain row changes and resolved timestamps.</td></tr></tbody></table>
+
+<Tabs>
+<Tab title="Amazon S3">
+
+These [actions](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service) are the minimum access permissions to be set in an Amazon S3 bucket policy:
+
+<table><thead><tr><th>Operation</th><th>S3 permission</th></tr></thead><tbody><tr><td>Backup</td><td><code>s3:PutObject</code>, <code>s3:GetObject</code>, <code>s3:ListBucket</code></td></tr><tr><td>Restore</td><td><code>s3:GetObject</code>, <code>s3:ListBucket</code></td></tr><tr><td>Import</td><td><code>s3:GetObject</code></td></tr><tr><td>Export</td><td><code>s3:PutObject</code></td></tr><tr><td>Enterprise Changefeeds</td><td><code>s3:PutObject</code></td></tr></tbody></table>
+
+See [Policies and Permissions in Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview) for detail on setting policies and permissions in Amazon S3.
+
+An example S3 bucket policy for a **backup**:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Id": "Example_Policy",
+    "Statement": [
+        {
+            "Sid": "ExampleStatement01",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::{ACCOUNT_ID}:user/{USER}"
+            },
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::{BUCKET_NAME}",
+                "arn:aws:s3:::{BUCKET_NAME}/*"
+            ]
+        }
+    ]
+}
+```
+
+</Tab>
+<Tab title="Google Cloud Storage">
+
+In Google Cloud Storage, you can grant users roles that define their access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each operation. GCS provides different levels of granularity for defining the roles in which these permissions reside. You can assign roles that already have these [permissions](https://cloud.google.com/storage/docs/access-control/iam-permissions) configured, or make your own custom roles that include these permissions.
+
+For more detail about Predefined, Basic, and Custom roles, see [IAM roles for Cloud Storage](https://cloud.google.com/storage/docs/access-control/iam-roles).
+
+<table><thead><tr><th>Operation</th><th>GCS Permission</th></tr></thead><tbody><tr><td>Backup</td><td><code>storage.objects.create</code>, <code>storage.objects.get</code>, <code>storage.objects.list</code></td></tr><tr><td>Restore</td><td><code>storage.objects.get</code>, <code>storage.objects.list</code></td></tr><tr><td>Import</td><td><code>storage.objects.get</code></td></tr><tr><td>Export</td><td><code>storage.objects.create</code></td></tr><tr><td>Changefeeds</td><td><code>storage.objects.create</code></td></tr></tbody></table>
+
+For guidance on adding a user to a bucket's policy, see [Add a principal to a bucket-level policy](https://cloud.google.com/storage/docs/access-control/using-iam-permissions#bucket-add).
+
+</Tab>
+</Tabs>
+
+## Additional cloud storage feature support
+
+### Immutable storage
+
+To complete a backup successfully, `BACKUP` requires [read and write permissions](/docs/v24.1/backup#required-privileges) to cloud storage buckets. Delete and overwrite permissions are **not** required. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a *write-once-read-many (WORM)* model, which refers to storage that prevents any kind of deletion, encryption or modification to the objects once written.
+
+<Note>
+We recommend enabling object locking in cloud storage buckets to protect the validity of a backup for restores.
+</Note>
+
+For specific cloud-storage provider documentation, see the following:
+
+- [AWS S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock)
+- [Retention policies and Bucket Lock in Google Cloud Storage](https://cloud.google.com/storage/docs/bucket-lock)
+- [Immutable storage in Azure Storage](https://docs.microsoft.com/azure/storage/blobs/immutable-storage-overview)
+
+### Amazon S3 storage classes
+
+When storing objects in Amazon S3 buckets during [backups](/docs/v24.1/take-full-and-incremental-backups), [exports](/docs/v24.1/export), and [changefeeds](/docs/v24.1/change-data-capture-overview), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type.
+
+The following S3 connection URI uses the `INTELLIGENT_TIERING` storage class:
+
+```text
+'s3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
+```
+
+While Cockroach Labs supports configuring an AWS storage class, we only test against S3 Standard. We recommend implementing your own testing with other storage classes.
+
+#### Incremental backups and archive storage classes
+
+[Incremental backups](/docs/v24.1/take-full-and-incremental-backups#incremental-backups) are **not** compatible with the [S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro#sc-glacier). Incremental backups require the reading of previous backups on an ad-hoc basis, which is not possible with backup files already in Glacier Flexible Retrieval or Glacier Deep Archive. This is because these storage classes do not allow immediate access to an S3 object without first restoring the archived object to its S3 bucket.
+
+Refer to the AWS documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects) for steps.
+
+When you are restoring archived backup files from Glacier Flexible Retrieval or Glacier Deep Archive back to an S3 bucket, you must restore both the full backup and incremental backup layers for that backup. By default, CockroachDB stores the incremental backup layers in a separate top-level directory at the backup's storage location. Refer to [Backup collections](/docs/v24.1/take-full-and-incremental-backups#backup-collections) for detail on the backup directory structure at its storage location.
+
+Once you have restored all layers of a backup's archived files back to its S3 bucket, you can then [restore](/docs/v24.1/restore) the backup to your CockroachDB cluster.
+
+#### Supported storage classes
+
+This table lists the valid CockroachDB parameters that map to an S3 storage class:
+
+<table><thead><tr><th>CockroachDB parameter</th><th>AWS S3 storage class</th></tr></thead><tbody><tr><td><code>STANDARD</code></td><td><a href="https://aws.amazon.com/s3/storage-classes#General_purpose">S3 Standard</a></td></tr><tr><td><code>REDUCED&#95;REDUNDANCY</code></td><td><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro">Reduced redundancy</a><strong>Note</strong>: Amazon recommends against using this storage class.</td></tr><tr><td><code>STANDARD&#95;IA</code></td><td><a href="https://aws.amazon.com/s3/storage-classes#Infrequent_access">Standard Infrequent Access</a></td></tr><tr><td><code>ONEZONE&#95;IA</code></td><td><a href="https://aws.amazon.com/s3/storage-classes#__">One Zone Infrequent Access</a></td></tr><tr><td><code>INTELLIGENT&#95;TIERING</code></td><td><a href="https://aws.amazon.com/s3/storage-classes#Unknown_or_changing_access">Intelligent Tiering</a></td></tr><tr><td><code>GLACIER</code></td><td><a href="https://aws.amazon.com/s3/storage-classes#Flexible_Retrieval">Glacier Flexible Retrieval</a></td></tr><tr><td><code>DEEP&#95;ARCHIVE</code></td><td><a href="https://aws.amazon.com/s3/storage-classes#____">Glacier Deep Archive</a></td></tr><tr><td><code>OUTPOSTS</code></td><td><a href="https://aws.amazon.com/s3/storage-classes#S3_on_Outposts">Outpost</a></td></tr><tr><td><code>GLACIER&#95;IR</code></td><td><a href="https://aws.amazon.com/s3/storage-classes#Instant_Retrieval">Glacier Instant Retrieval</a></td></tr></tbody></table>
+
+You can view an object's storage class in the [Amazon S3 Console](https://s3.console.aws.amazon.com/) from the object's **Properties** tab. Alternatively, use the [AWS CLI](https://docs.aws.amazon.com/cli/latest/reference/s3api/list-objects-v2) to list objects in a bucket, which will also display the storage class:
+
+```shell
+aws s3api list-objects-v2 --bucket {bucket-name}
+```
+
+```text
+{
+    "Key": "2022/05/02-180752.65/metadata.sst",
+    "LastModified": "2022-05-02T18:07:54+00:00",
+    "ETag": "\"c0f499f21d7886e4289d55ccface7527\"",
+    "Size": 7865,
+    "StorageClass": "STANDARD"
+},
+    ...
+
+    "Key": "2022-05-06/202205061217256387084640000000000-1b4e610c63535061-1-2-00000000-
+users-7.ndjson",
+    "LastModified": "2022-05-06T12:17:26+00:00",
+    "ETag": "\"c60a013619439bf83c505cb6958b55e2\"",
+    "Size": 94596,
+    "StorageClass": "INTELLIGENT_TIERING"
+},
+```
+
+For a specific operation, see the following examples:
+
+- [Back up with an S3 storage class](/docs/v24.1/backup#back-up-with-an-s3-storage-class)
+- [Create a changefeed with an S3 storage class](/docs/v24.1/create-changefeed#create-a-changefeed-with-an-s3-storage-class)
+- [Export tabular data with an S3 storage class](/docs/v24.1/export#export-tabular-data-with-an-s3-storage-class)
+
+## See also
+
+- [`BACKUP`](/docs/v24.1/backup)
+- [`RESTORE`](/docs/v24.1/restore)
+- [`IMPORT INTO`](/docs/v24.1/import-into)
+- [`EXPORT`](/docs/v24.1/export)
+- [`CREATE CHANGEFEED`](/docs/v24.1/create-changefeed)
+- [Cluster Settings](/docs/v24.1/cluster-settings)

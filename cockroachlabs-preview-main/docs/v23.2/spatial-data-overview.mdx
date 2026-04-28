@@ -1,0 +1,67 @@
+---
+title: "Spatial Data Overview"
+old_description: "A summary of CockroachDB's support for storing and querying spatial data."
+---
+
+CockroachDB supports efficiently storing and querying spatial data.
+
+See the links below for more information about how to use CockroachDB for spatial use cases.
+
+## Getting Started
+
+- [Install CockroachDB](/docs/v23.2/install-cockroachdb)
+- [Spatial tutorial](/docs/v23.2/spatial-tutorial)
+
+## Migrating spatial data into and out of CockroachDB
+
+- [Migrate from Shapefiles](/docs/v23.2/migrate-from-shapefiles)
+- [Migrate from GeoJSON](/docs/v23.2/migrate-from-geojson)
+- [Migrate from GeoPackage](/docs/v23.2/migrate-from-geopackage)
+- [Migrate from OpenStreetMap](/docs/v23.2/migrate-from-openstreetmap)
+- [Export Spatial Data](/docs/v23.2/export-spatial-data)
+
+## Reference
+
+- [Spatial indexes](/docs/v23.2/spatial-indexes)
+- [Spatial and GIS Glossary of Terms](/docs/v23.2/architecture/glossary)
+- [Known Limitations](/docs/v23.2/known-limitations#spatial-support-limitations)
+- [Spatial functions](/docs/v23.2/functions-and-operators#spatial-functions)
+- [Client library compatibility](/docs/v23.2/query-spatial-data#compatibility)
+
+### Spatial objects
+
+- [POINT](/docs/v23.2/point)
+- [LINESTRING](/docs/v23.2/linestring)
+- [POLYGON](/docs/v23.2/polygon)
+- [MULTIPOINT](/docs/v23.2/multipoint)
+- [MULTILINESTRING](/docs/v23.2/multilinestring)
+- [MULTIPOLYGON](/docs/v23.2/multipolygon)
+- [GEOMETRYCOLLECTION](/docs/v23.2/geometrycollection)
+
+### Data representations
+
+- [Well known text](/docs/v23.2/well-known-text)
+- [Well known binary](/docs/v23.2/well-known-binary)
+- [GeoJSON](/docs/v23.2/geojson)
+- [SRID 4326 - longitude and latitude](/docs/v23.2/srid-4326)
+
+### Spatial functions
+
+In addition to the [generated reference documentation for spatial functions](/docs/v23.2/functions-and-operators#spatial-functions), we have written additional documentation for the following functions, including examples:
+
+- [`ST_Contains`](/docs/v23.2/st_contains)
+- [`ST_ConvexHull`](/docs/v23.2/st_convexhull)
+- [`ST_CoveredBy`](/docs/v23.2/st_coveredby)
+- [`ST_Covers`](/docs/v23.2/st_covers)
+- [`ST_Disjoint`](/docs/v23.2/st_disjoint)
+- [`ST_Equals`](/docs/v23.2/st_equals)
+- [`ST_Intersects`](/docs/v23.2/st_intersects)
+- [`ST_Overlaps`](/docs/v23.2/st_overlaps)
+- [`ST_Touches`](/docs/v23.2/st_touches)
+- [`ST_Union`](/docs/v23.2/st_union)
+- [`ST_Within`](/docs/v23.2/st_within)
+
+## See also
+
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data) (blog post)
+- [Using GeoServer with CockroachDB](/docs/v23.2/geoserver)

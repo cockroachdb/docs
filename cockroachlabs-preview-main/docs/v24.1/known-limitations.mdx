@@ -1,0 +1,1416 @@
+---
+title: "Known Limitations in CockroachDB v24.1"
+permalink: "https://www.cockroachlabs.com/docs/v24.1/known-limitations"
+og:title: "Known Limitations in CockroachDB v24.1"
+og:description: "Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases."
+og:image: "https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress"
+---
+
+## New limitations in v24.1
+
+This section describes newly identified limitations in CockroachDB v24.1.
+
+### PL/pgSQL
+
+-   It is not possible to use a variable as a target more than once in the same `INTO` clause. For example, `SELECT 1, 2 INTO x, x;`. [#121605](https://github.com/cockroachdb/cockroach/issues/121605)
+-   PLpgSQL variable declarations cannot inherit the type of a table row or column using `%TYPE` or `%ROWTYPE` syntax. [#114676](https://github.com/cockroachdb/cockroach/issues/114676)
+
+### UDFs and stored procedures
+
+-   Routines cannot be invoked with named arguments, e.g., `SELECT foo(a => 1, b => 2);` or `SELECT foo(b := 1, a := 2);`. [#122264](https://github.com/cockroachdb/cockroach/issues/122264)
+-   Routines cannot be created if they reference temporary tables. [#121375](https://github.com/cockroachdb/cockroach/issues/121375)
+-   Routines cannot be created with unnamed `INOUT` parameters. For example, `CREATE PROCEDURE p(INOUT INT) AS $$ BEGIN NULL; END; $$ LANGUAGE PLpgSQL;`. [#121251](https://github.com/cockroachdb/cockroach/issues/121251)
+-   Routines cannot be created if they return fewer columns than declared. For example, `CREATE FUNCTION f(OUT sum INT, INOUT a INT, INOUT b INT) LANGUAGE SQL AS $$ SELECT (a + b, b); $$;`. [#121247](https://github.com/cockroachdb/cockroach/issues/121247)
+-   A `RECORD`\-returning UDF cannot be created without a `RETURN` statement in the root block, which would restrict the wildcard type to a concrete one. [#122945](https://github.com/cockroachdb/cockroach/issues/122945)
+
+### Physical cluster replication fail back to primary cluster
+
+When you [fail back](/docs/v24.1/failover-replication#failback) to a cluster that was previously the primary cluster, you should fail over to the `LATEST` timestamp. Using a [historical timestamp](/docs/v24.1/as-of-system-time) may lead to the failback failing. [#117984](https://github.com/cockroachdb/cockroach/issues/117984)
+
+### Generic query plans
+
+-   Because [generic query plans](/docs/v24.1/cost-based-optimizer#query-plan-cache) use lookup joins instead of the scans and revscans used by custom query plans, generic query plans do not perform as well as custom query plans in some cases. [#128916](https://github.com/cockroachdb/cockroach/issues/128916)
+-   [Generic query plans](/docs/v24.1/cost-based-optimizer#query-plan-type) are not included in the [plan cache](/docs/v24.1/cost-based-optimizer#query-plan-cache). This means a generic query plan built and optimized for a prepared statement in one session cannot be used by another session. To reuse generic query plans for maximum performance, a prepared statement should be executed multiple times instead of prepared and executed once. [#128911](https://github.com/cockroachdb/cockroach/issues/128911)
+
+## Limitations from v23.2 and earlier
+
+This section describes limitations from previous CockroachDB versions that still impact v24.1.
+
+### SQL statements
+
+#### Syntax and behavior differences from PostgreSQL
+
+CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL](/docs/v24.1/postgresql-compatibility#features-that-differ-from-postgresql).
+
+#### `AS OF SYSTEM TIME` limitations
+
+-   CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`](/docs/v24.1/as-of-system-time). The time value must be a constant value embedded in the SQL string. [#30955](https://github.com/cockroachdb/cockroach/issues/30955)
+-   The `ANALYZE` alias of [`CREATE STATISTICS`](/docs/v24.1/create-statistics) does not support specifying an [`AS OF SYSTEM TIME`](/docs/v24.1/as-of-system-time) timestamp. `ANALYZE` statements use `AS OF SYSTEM TIME '-0.001ms'` automatically. For more control over the statistics interval, use the `CREATE STATISTICS` syntax instead. [#96430](https://github.com/cockroachdb/cockroach/issues/96430)
+
+#### `COPY` syntax not supported by CockroachDB
+
+CockroachDB does not yet support the following `COPY` syntax:
+
+-   `COPY ... WITH FREEZE`. [#85573](https://github.com/cockroachdb/cockroach/issues/85573)
+-   `COPY ... WITH QUOTE`. [#85574](https://github.com/cockroachdb/cockroach/issues/85574)
+-   `COPY ... FROM ... WHERE <expr>`. [#54580](https://github.com/cockroachdb/cockroach/issues/54580)
+
+#### `IMPORT INTO` limitations
+
+[`IMPORT INTO`](/docs/v24.1/import-into) has the following limitations:
+
+-   While importing into an existing table, the table is taken offline.
+-   After importing into an existing table, [constraints](/docs/v24.1/constraints) will be un-validated and need to be [re-validated](/docs/v24.1/alter-table#validate-constraint).
+-   Imported rows must not conflict with existing rows in the table or any unique secondary indexes.
+-   `IMPORT INTO` works for only a single existing table.
+-   `IMPORT INTO` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](/docs/v24.1/cluster-settings) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
+    
+     
+    
+    ```sql
+    SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
+    ```
+    
+
+#### `ALTER VIEW` limitations
+
+`ALTER VIEW` does not currently support:
+
+-   Changing the [`SELECT`](/docs/v24.1/select-clause) statement executed by a view. Instead, you must drop the existing view and create a new view.
+-   Renaming a view that other views depend on. This feature may be added in the future. [#10083](https://github.com/cockroachdb/cockroach/issues/10083)
+
+#### Row-Level TTL limitations
+
+-   Any queries you run against tables with Row-Level TTL enabled (or against tables that have [foreign keys](/docs/v24.1/foreign-key) that reference TTL-enabled tables) do not filter out expired rows from the result set (this includes [`UPDATE`s](/docs/v24.1/update) and [`DELETE`s](/docs/v24.1/delete)). This feature may be added in a future release. For now, follow the instructions in [Filter out expired rows from a selection query](/docs/v24.1/row-level-ttl#filter-out-expired-rows-from-a-selection-query).
+-   Tables with Row-Level TTL can be referenced by [foreign keys](/docs/v24.1/foreign-key). TTL deletes are issued as regular [`DELETE`](/docs/v24.1/delete) statements, so inbound foreign keys apply. If an inbound foreign key uses `ON DELETE RESTRICT` and referencing rows exist, the TTL job fails with a foreign key violation. [#101372](https://github.com/cockroachdb/cockroach/issues/101372)
+-   Enabling Row-Level TTL on a table with multiple [secondary indexes](/docs/v24.1/indexes) can have negative performance impacts on a cluster, including increased [latency](/docs/v24.1/common-issues-to-monitor#service-latency) and [contention](/docs/v24.1/performance-best-practices-overview#transaction-contention). This is particularly true for large tables with terabytes of data and billions of rows that are split up into multiple ranges across separate nodes.
+    -   Increased latency may occur because secondary indexes aren't necessarily stored on the same underlying [ranges](/docs/v24.1/architecture/overview#architecture-range) as a table's [primary indexes](/docs/v24.1/indexes). Further, the secondary indexes' ranges may have [leaseholders](/docs/v24.1/architecture/overview#architecture-leaseholder) located on different nodes than the primary index.
+    -   Increased contention may occur because [intents](/docs/v24.1/architecture/transaction-layer#write-intents) must be written as part of performing the deletions.
+    -   Finally, secondary indexes can also have a negative impact on the overall performance of [TTL jobs](/docs/v24.1/row-level-ttl#view-running-ttl-jobs). According to internal testing, the [TTL job processing rate](/docs/v24.1/ui-ttl-dashboard#processing-rate) is worse on tables with secondary indexes. If you encounter this situation, decreasing the [`ttl_delete_batch_size` storage parameter](/docs/v24.1/row-level-ttl#param-ttl-delete-batch-size) may help by decreasing the number of ranges that need to be accessed by the job.
+
+#### `CAST` expressions containing a subquery with an `ENUM` target are not supported
+
+Casting subqueries to ENUMs in views and UDFs is not supported. [#108184](https://github.com/cockroachdb/cockroach/issues/108184)
+
+#### Statements containing multiple modification subqueries of the same table are disallowed
+
+Statements containing multiple modification subqueries mutating the same row could cause corruption. These statements are disallowed by default, but you can enable multiple modification subqueries with one the following:
+
+-   Set the `sql.multiple_modifications_of_table.enabled` [cluster setting](/docs/v24.1/cluster-settings) to `true`.
+-   Use the `enable_multiple_modifications_of_table` [session variable](/docs/v24.1/set-vars).
+
+If multiple mutations inside the same statement affect different tables with [`FOREIGN KEY`](/docs/v24.1/foreign-key) relations and `ON CASCADE` clauses between them, the results will be different from what is expected in PostgreSQL. [#70731](https://github.com/cockroachdb/cockroach/issues/70731)
+
+#### Using `default_int_size` session variable in batch of statements
+
+When setting the `default_int_size` [session variable](/docs/v24.1/set-vars) in a batch of statements such as `SET default_int_size='int4'; SELECT 1::IN`, the `default_int_size` variable will not take effect until the next statement. Statement parsing is asynchronous with statement execution.
+
+As a workaround, set `default_int_size` via your database driver, or ensure that `SET default_int_size` is in its own statement. [#32846](https://github.com/cockroachdb/cockroach/issues/32846)
+
+#### Overload resolution for collated strings
+
+Many string operations are not properly overloaded for [collated strings](/docs/v24.1/collate), for example:
+
+ 
+
+```sql
+> SELECT 'string1' || 'string2';
+```
+
+```
+?column?
+------------------
+  string1string2
+(1 row)
+```
+
+ 
+
+```sql
+> SELECT ('string1' collate en) || ('string2' collate en);
+```
+
+```
+pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
+```
+
+[#10679](https://github.com/cockroachdb/cockroach/issues/10679)
+
+#### Current sequence value not checked when updating min/max value
+
+Altering the minimum or maximum value of a series does not check the current value of a series. This means that it is possible to silently set the maximum to a value less than, or a minimum value greater than, the current value. [#23719](https://github.com/cockroachdb/cockroach/issues/23719)
+
+#### `null_ordered_last` does not produce correct results with tuples
+
+By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable](/docs/v24.1/set-vars) was added, which changes the default to order `NULL` values after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it does not work when the ordering column is a tuple. [#93558](https://github.com/cockroachdb/cockroach/issues/93558)
+
+### Functions and procedures
+
+#### PL/pgSQL support
+
+-   PL/pgSQL arguments cannot be referenced with ordinals (e.g., `$1`, `$2`). [#114701](https://github.com/cockroachdb/cockroach/issues/114701)
+-   The following statements are not supported:
+    -   `FOR` loops, including `FOR` cursor loops, `FOR` query loops, and `FOREACH` loops. [#105246](https://github.com/cockroachdb/cockroach/issues/105246)
+    -   `RETURN NEXT` and `RETURN QUERY`. [#117744](https://github.com/cockroachdb/cockroach/issues/117744)
+    -   `PERFORM`, `EXECUTE`, `GET DIAGNOSTICS`, and `CASE`. [#117744](https://github.com/cockroachdb/cockroach/issues/117744)
+-   PL/pgSQL exception blocks cannot catch [transaction retry errors](/docs/v24.1/transaction-retry-error-reference). [#111446](https://github.com/cockroachdb/cockroach/issues/111446)
+-   `RAISE` statements cannot be annotated with names of schema objects related to the error (i.e., using `COLUMN`, `CONSTRAINT`, `DATATYPE`, `TABLE`, or `SCHEMA`). [#106237](https://github.com/cockroachdb/cockroach/issues/106237)
+-   `RAISE` statements message the client directly, and do not produce log output. [#117750](https://github.com/cockroachdb/cockroach/issues/117750)
+-   `ASSERT` debugging checks are not supported. [#117744](https://github.com/cockroachdb/cockroach/issues/117744)
+-   `RECORD` parameters and variables are not supported in [user-defined functions](/docs/v24.1/user-defined-functions). [#105713](https://github.com/cockroachdb/cockroach/issues/105713)
+-   Variable shadowing (e.g., declaring a variable with the same name in an inner block) is not supported in PL/pgSQL. [#117508](https://github.com/cockroachdb/cockroach/issues/117508)
+-   Syntax for accessing members of composite types without parentheses is not supported. [#114687](https://github.com/cockroachdb/cockroach/issues/114687)
+-   `NOT NULL` variable declarations are not supported. [#105243](https://github.com/cockroachdb/cockroach/issues/105243)
+-   Cursors opened in PL/pgSQL execute their queries on opening, affecting performance and resource usage. [#111479](https://github.com/cockroachdb/cockroach/issues/111479)
+-   Cursors in PL/pgSQL cannot be declared with arguments. [#117746](https://github.com/cockroachdb/cockroach/issues/117746)
+-   `OPEN FOR EXECUTE` is not supported for opening cursors. [#117744](https://github.com/cockroachdb/cockroach/issues/117744)
+-   The `print_strict_params` option is not supported in PL/pgSQL. [#123671](https://github.com/cockroachdb/cockroach/issues/123671)
+-   The `FOUND` local variable, which checks whether a statement affected any rows, is not supported in PL/pgSQL. [#122306](https://github.com/cockroachdb/cockroach/issues/122306)
+-   By default, when a PL/pgSQL variable conflicts with a column name, CockroachDB resolves the ambiguity by treating it as a column reference rather than a variable reference. This behavior differs from PostgreSQL, where an ambiguous column error is reported, and it is possible to change the `plpgsql.variable_conflict` setting in order to prefer either columns or variables. [#115680](https://github.com/cockroachdb/cockroach/issues/115680)
+-   It is not possible to define a `RECORD`\-returning PL/pgSQL function that returns different-typed expressions from different `RETURN` statements. CockroachDB requires a consistent return type for `RECORD`\-returning functions. [#115384](https://github.com/cockroachdb/cockroach/issues/115384)
+-   Variables cannot be declared with an associated collation using the `COLLATE` keyword. [#105245](https://github.com/cockroachdb/cockroach/issues/105245)
+-   Variables cannot be accessed using the `label.var_name` pattern. [#122322](https://github.com/cockroachdb/cockroach/issues/122322)
+
+#### UDF and stored procedure support
+
+-   Routines cannot be created with an `OUT` parameter of type `RECORD`. [#123448](https://github.com/cockroachdb/cockroach/issues/123448)
+-   DDL statements (e.g., `CREATE TABLE`, `CREATE INDEX`) are not allowed within UDFs or stored procedures. [#110080](https://github.com/cockroachdb/cockroach/issues/110080)
+-   Polymorphic types cannot be cast to other types (e.g., `TEXT`) within routine parameters. [#123536](https://github.com/cockroachdb/cockroach/issues/123536)
+    
+-   `COMMIT` and `ROLLBACK` statements are not supported within nested procedures. [#122266](https://github.com/cockroachdb/cockroach/issues/122266)
+    
+-   User-defined functions are not currently supported in:
+    
+    -   Expressions (column, index, constraint) in tables. [#87699](https://github.com/cockroachdb/cockroach/issues/87699)
+    -   Views. [#87699](https://github.com/cockroachdb/cockroach/issues/87699)
+-   User-defined functions cannot call themselves recursively. [#93049](https://github.com/cockroachdb/cockroach/issues/93049)
+    
+-   [Common table expressions](/docs/v24.1/common-table-expressions) (CTE), recursive or non-recursive, are not supported in [user-defined functions](/docs/v24.1/user-defined-functions) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF. [#92961](https://github.com/cockroachdb/cockroach/issues/92961)
+    
+-   The `setval` function cannot be resolved when used inside UDF bodies. [#110860](https://github.com/cockroachdb/cockroach/issues/110860)
+    
+-   Casting subqueries to [user-defined types](/docs/v24.1/create-type) in UDFs is not supported. [#108184](https://github.com/cockroachdb/cockroach/issues/108184)
+    
+
+### Transactions
+
+#### Read Committed features and performance
+
+[Read Committed isolation](/docs/v24.1/read-committed) has the following limitations:
+
+-   Schema changes (e.g., [`CREATE TABLE`](/docs/v24.1/create-table), [`CREATE SCHEMA`](/docs/v24.1/create-schema), [`CREATE INDEX`](/docs/v24.1/create-index)) cannot be performed within explicit `READ COMMITTED` transactions, and will cause transactions to abort. As a workaround, [set the transaction's isolation level](/docs/v24.1/read-committed#set-the-current-transaction-to-read-committed) to `SERIALIZABLE`. [#114778](https://github.com/cockroachdb/cockroach/issues/114778)
+-   `READ COMMITTED` transactions performing `INSERT`, `UPDATE`, or `UPSERT` cannot access [`REGIONAL BY ROW`](/docs/v24.1/table-localities#regional-by-row-tables) tables in which [`UNIQUE`](/docs/v24.1/unique) and [`PRIMARY KEY`](/docs/v24.1/primary-key) constraints exist, the region is not included in the constraint, and the region cannot be computed from the constraint columns. [#110873](https://github.com/cockroachdb/cockroach/issues/110873)
+-   Multi-column-family checks during updates are not supported under `READ COMMITTED` isolation. [#112488](https://github.com/cockroachdb/cockroach/issues/112488)
+-   Because locks acquired by [foreign key](/docs/v24.1/foreign-key) checks, [`SELECT FOR UPDATE`](/docs/v24.1/select-for-update), and [`SELECT FOR SHARE`](/docs/v24.1/select-for-update) are fully replicated under `READ COMMITTED` isolation, some queries experience a delay for Raft replication.
+-   [Foreign key](/docs/v24.1/foreign-key) checks are not performed in parallel under `READ COMMITTED` isolation.
+-   [`SELECT FOR UPDATE` and `SELECT FOR SHARE`](/docs/v24.1/select-for-update) statements are less optimized under `READ COMMITTED` isolation than under `SERIALIZABLE` isolation. Under `READ COMMITTED` isolation, `SELECT FOR UPDATE` and `SELECT FOR SHARE` usually perform an extra lookup join for every locked table when compared to the same queries under `SERIALIZABLE`. In addition, some optimization steps (such as de-correlation of correlated [subqueries](/docs/v24.1/subqueries)) are not currently performed on these queries.
+-   Regardless of isolation level, [`SELECT FOR UPDATE` and `SELECT FOR SHARE`](/docs/v24.1/select-for-update) statements in CockroachDB do not prevent insertion of new rows matching the search condition (i.e., [phantom reads](/docs/v24.1/read-committed#non-repeatable-reads-and-phantom-reads)). This matches PostgreSQL behavior at all isolation levels. [#120673](https://github.com/cockroachdb/cockroach/issues/120673)
+
+#### Follower reads
+
+##### Exact staleness reads and long-running writes
+
+Long-running write transactions will create [write intents](/docs/v24.1/architecture/transaction-layer#write-intents) with a timestamp near when the transaction began. When an exact staleness follower read encounters a write intent, it will often end up in a ["transaction wait queue"](/docs/v24.1/architecture/transaction-layer#txnwaitqueue), waiting for the operation to complete; however, this runs counter to the benefit exact staleness reads provide.
+
+To counteract this, you can issue all follower reads in explicit [transactions set with `HIGH` priority](/docs/v24.1/transactions#transaction-priorities):
+
+```sql
+BEGIN PRIORITY HIGH AS OF SYSTEM TIME follower_read_timestamp();
+SELECT ...
+SELECT ...
+COMMIT;
+```
+
+##### Exact staleness read timestamps must be far enough in the past
+
+If an exact staleness read is not using an [`AS OF SYSTEM TIME`](/docs/v24.1/as-of-system-time) value far enough in the past, CockroachDB cannot perform a follower read. Instead, the read must access the [leaseholder replica](/docs/v24.1/architecture/overview#architecture-leaseholder). This adds network latency if the leaseholder is not the closest replica to the gateway node. Most users will [use the `follower_read_timestamp()` function](/docs/v24.1/follower-reads#run-queries-that-use-exact-staleness-follower-reads) to get a timestamp far enough in the past that there is a high probability of getting a follower read.
+
+##### Bounded staleness read limitations
+
+Bounded staleness reads have the following limitations:
+
+-   They must be used in a [single-statement (aka implicit) transaction](/docs/v24.1/transactions#individual-statements).
+-   They must read from a single row.
+-   They must not require an [index](/docs/v24.1/indexes) [join](/docs/v24.1/joins). In other words, the index used by the read query must be either a [primary](/docs/v24.1/primary-key) [index](/docs/v24.1/indexes), or some other index that covers the entire query by [`STORING`](/docs/v24.1/create-index#store-columns) all columns.
+
+For example, let's look at a read query that cannot be served as a bounded staleness read. We will use a [demo cluster](/docs/v24.1/cockroach-demo), which automatically loads the [MovR dataset](/docs/v24.1/movr).
+
+ 
+
+```bash
+cockroach demo
+```
+
+ 
+
+```sql
+SELECT code FROM promo_codes AS OF SYSTEM TIME with_max_staleness('10s') LIMIT 1;
+ERROR: unimplemented: cannot use bounded staleness for queries that may touch more than one row or require an index join
+SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://go.crdb.dev/issue-v/67562/v23.2
+```
+
+As noted by the error message, this query cannot be served as a bounded staleness read because in this case it would touch more than one row. Even though we used a [`LIMIT 1` clause](/docs/v24.1/limit-offset), the query would still have to touch more than one row in order to filter out the additional results.
+
+We can verify that more than one row would be touched by issuing [`EXPLAIN`](/docs/v24.1/explain) on the same query, but without the [`AS OF SYSTEM TIME`](/docs/v24.1/as-of-system-time) clause:
+
+ 
+
+```sql
+EXPLAIN SELECT code FROM promo_codes LIMIT 5;
+```
+
+```
+info
+-------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • scan
+    estimated row count: 1 (0.10% of the table; stats collected 1 minute ago)
+    table: promo_codes@primary
+    spans: LIMITED SCAN
+    limit: 1
+(8 rows)
+```
+
+The output verifies that this query performs a scan of the primary [index](/docs/v24.1/indexes) on the `promo_codes` table, which is why it cannot be used for a bounded staleness read.
+
+For an example showing how to successfully perform a bounded staleness read, see [Run queries that use bounded staleness follower reads](/docs/v24.1/follower-reads#run-queries-that-use-bounded-staleness-follower-reads).
+
+#### `SELECT FOR UPDATE` locks are dropped on lease transfers and range splits/merges
+
+-   `SKIP LOCKED` cannot be used for tables with multiple [column families](/docs/v24.1/column-families). [#160961](https://github.com/cockroachdb/cockroach/issues/160961)
+-   By default under `SERIALIZABLE` isolation, locks acquired using `SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE` are implemented as fast, in-memory [unreplicated locks](/docs/v24.1/architecture/transaction-layer#unreplicated-locks). If a [lease transfer](/docs/v24.1/architecture/replication-layer#epoch-based-leases-table-data) or [range split/merge](/docs/v24.1/architecture/distribution-layer#range-merges) occurs on a range held by an unreplicated lock, the lock is dropped. The following behaviors can occur:
+    
+    -   The desired ordering of concurrent accesses to one or more rows of a table expressed by your use of `SELECT ... FOR UPDATE` may not be preserved (that is, a transaction _B_ against some table _T_ that was supposed to wait behind another transaction _A_ operating on _T_ may not wait for transaction _A_).
+    -   The transaction that acquired the (now dropped) unreplicated lock may fail to commit, leading to [transaction retry errors with code `40001`](/docs/v24.1/transaction-retry-error-reference) and the [`restart transaction` error message](/docs/v24.1/common-errors#restart-transaction).
+    
+    When running under `SERIALIZABLE` isolation, `SELECT ... FOR UPDATE` and `SELECT ... FOR SHARE` locks should be thought of as best-effort, and should not be relied upon for correctness. Note that [serialization](/docs/v24.1/demo-serializable) is preserved despite this limitation. This limitation is fixed when the `enable_durable_locking_for_serializable` [session setting](/docs/v24.1/session-variables#enable-durable-locking-for-serializable) is set to `true`. This limitation does **not** apply to [`READ COMMITTED`](/docs/v24.1/read-committed) transactions.
+    
+
+#### `SET` does not `ROLLBACK` in a transaction
+
+[`SET`](/docs/v24.1/set-vars) does not properly apply [`ROLLBACK`](/docs/v24.1/rollback-transaction) within a transaction. For example, in the following transaction, showing the `TIME ZONE` [variable](/docs/v24.1/set-vars#supported-variables) does not return `2` as expected after the rollback:
+
+```sql
+SET TIME ZONE +2;
+BEGIN;
+SET TIME ZONE +3;
+ROLLBACK;
+SHOW TIME ZONE;
+```
+
+```sql
+timezone
+------------
+3
+```
+
+[#69396](https://github.com/cockroachdb/cockroach/issues/69396)
+
+#### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
+
+1 Transactions with [priority `HIGH`](/docs/v24.1/transactions#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:
+
+```sql
+> BEGIN PRIORITY HIGH; SAVEPOINT s; CREATE TABLE t(x INT); ROLLBACK TO SAVEPOINT s;
+```
+
+```
+ERROR: unimplemented: cannot use ROLLBACK TO SAVEPOINT in a HIGH PRIORITY transaction containing DDL
+SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://github.com/cockroachdb/cockroach/issues/46414
+```
+
+[#46414](https://github.com/cockroachdb/cockroach/issues/46414)
+
+#### `CANCEL JOB` limitations
+
+-   To avoid transaction states that cannot properly [roll back](/docs/v24.1/rollback-transaction), the following statements cannot be cancelled with [`CANCEL JOB`](/docs/v24.1/cancel-job):
+    
+    -   `DROP` statements (e.g., [`DROP TABLE`](/docs/v24.1/drop-table)).
+    -   `ALTER ... RENAME` statements (e.g., [`ALTER TABLE ... RENAME TO`](/docs/v24.1/alter-table#rename-to)).
+    -   [`CREATE TABLE ... AS`](/docs/v24.1/create-table-as) statements.
+    -   [`ALTER TYPE`](/docs/v24.1/alter-type) statements, except for those that drop values.
+-   When an Enterprise [`RESTORE`](/docs/v24.1/restore) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+    
+
+#### SQL cursor support
+
+CockroachDB implements SQL [cursor](/docs/v24.1/cursors) support with the following limitations:
+
+-   `DECLARE` only supports forward cursors. Reverse cursors created with `DECLARE SCROLL` are not supported. [#77102](https://github.com/cockroachdb/cockroach/issues/77102)
+-   `FETCH` supports forward, relative, and absolute variants, but only for forward cursors. [#77102](https://github.com/cockroachdb/cockroach/issues/77102)
+-   `BINARY CURSOR`, which returns data in the Postgres binary format, is not supported. [#77099](https://github.com/cockroachdb/cockroach/issues/77099)
+-   `WITH HOLD`, which allows keeping a cursor open for longer than a transaction by writing its results into a buffer, is accepted as valid syntax within a single transaction but is not supported. It acts as a no-op and does not actually perform the function of `WITH HOLD`, which is to make the cursor live outside its parent transaction. Instead, if you are using `WITH HOLD`, you will be forced to close that cursor within the transaction it was created in. [#77101](https://github.com/cockroachdb/cockroach/issues/77101)
+    
+    -   This syntax is accepted (but does not have any effect):
+        
+         
+        
+        ```sql
+        BEGIN;
+        DECLARE test_cur CURSOR WITH HOLD FOR SELECT * FROM foo ORDER BY bar;
+        CLOSE test_cur;
+        COMMIT;
+        ```
+        
+    -   This syntax is not accepted, and will result in an error:
+        
+         
+        
+        ```sql
+        BEGIN;
+        DECLARE test_cur CURSOR WITH HOLD FOR SELECT * FROM foo ORDER BY bar;
+        COMMIT; -- This will fail with an error because CLOSE test_cur was not called inside the transaction.
+        ```
+        
+-   Scrollable cursor (also known as reverse `FETCH`) is not supported. [#77102](https://github.com/cockroachdb/cockroach/issues/77102)
+    
+-   [`SELECT ... FOR UPDATE`](/docs/v24.1/select-for-update) with a cursor is not supported. [#77103](https://github.com/cockroachdb/cockroach/issues/77103)
+    
+-   Respect for [`SAVEPOINT`s](/docs/v24.1/savepoint) is not supported. Cursor definitions do not disappear properly if rolled back to a `SAVEPOINT` from before they were created. [#77104](https://github.com/cockroachdb/cockroach/issues/77104)
+    
+
+#### Materialized views inside transactions
+
+-   CockroachDB cannot refresh [materialized views](/docs/v24.1/views#materialized-views) inside [explicit transactions](/docs/v24.1/begin-transaction). Trying to refresh a materialized view inside an explicit transaction will result in an error.
+    
+    1.  Start [`cockroach demo`](/docs/v24.1/cockroach-demo) with the sample `bank` data set:
+        
+         
+        
+        ```bash
+        cockroach demo bank
+        ```
+        
+    2.  Create the materialized view described in [Usage](/docs/v24.1/views#usage).
+        
+    3.  Start a new multi-statement transaction with [`BEGIN TRANSACTION`](/docs/v24.1/begin-transaction):
+        
+         
+        
+        ```sql
+        BEGIN TRANSACTION;
+        ```
+        
+    4.  Inside the open transaction, attempt to [refresh the view](/docs/v24.1/refresh). This will result in an error.
+        
+         
+        
+        ```sql
+        REFRESH MATERIALIZED VIEW overdrawn_accounts;
+        ```
+        
+        ```
+        ERROR: cannot refresh view in an explicit transaction
+          SQLSTATE: 25000
+        ```
+        
+    
+    [#66008](https://github.com/cockroachdb/cockroach/issues/66008)
+    
+
+### Schemas and indexes
+
+#### Online schema change limitations
+
+##### Schema changes within transactions
+
+Most schema changes should not be performed within an explicit transaction with multiple statements, as they do not have the same atomicity guarantees as other SQL statements. Execute schema changes either as single statements (as an implicit transaction), or in an explicit transaction consisting of the single schema change statement. There are some exceptions to this, detailed below.
+
+Schema changes keep your data consistent at all times, but they do not run inside \[transactions\]\[txns\] in the general case. Making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
+
+<Tip>
+New in v24.1: Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](/docs/v24.1/online-schema-changes#enable-automatic-commit-before-running-schema-changes-inside-transactions).
+</Tip>
+
+Some schema change operations can be run within explicit, multiple statement transactions. `CREATE TABLE` and `CREATE INDEX` statements can be run within the same transaction with the same atomicity guarantees as other SQL statements. There are no performance or rollback issues when using these statements within a multiple statement transaction.
+
+Within a single [transaction](/docs/v24.1/transactions):
+
+-   You can run schema changes inside the same transaction as a [`CREATE TABLE`](/docs/v24.1/create-table) statement. For more information, see [Run schema changes inside a transaction with `CREATE TABLE`](/docs/v24.1/online-schema-changes#run-schema-changes-inside-a-transaction-with-create-table). However, a `CREATE TABLE` statement containing [`FOREIGN KEY`](/docs/v24.1/foreign-key) clauses cannot be followed by statements that reference the new table.
+-   [Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
+-   [`DROP COLUMN`](/docs/v24.1/alter-table#drop-column) can result in data loss if one of the other schema changes in the transaction fails or is canceled. To work around this, move the `DROP COLUMN` statement to its own explicit transaction or run it in a single statement outside the existing transaction.
+
+<Note>
+If a schema change within a transaction fails, manual intervention may be needed to determine which statement has failed. After determining which schema change(s) failed, you can then retry the schema change.
+</Note>
+
+##### Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed
+
+Most schema change [DDL](https://wikipedia.org/wiki/Data_definition_language#ALTER_statement) statements that run inside a multi-statement transaction with non-DDL statements can fail at [`COMMIT`](/docs/v24.1/commit-transaction) time, even if other statements in the transaction succeed. This leaves such transactions in a "partially committed, partially aborted" state that may require manual intervention to determine whether the DDL statements succeeded.
+
+Some DDL statements do not have this limitation. `CREATE TABLE` and `CREATE INDEX` statements have the same atomicity guarantees as other statements within a transaction.
+
+If such a failure occurs, CockroachDB will emit a CockroachDB-specific error code, `XXA00`, and the following error message:
+
+```
+transaction committed but schema change aborted with error: <description of error>
+HINT: Some of the non-DDL statements may have committed successfully, but some of the DDL statement(s) failed.
+Manual inspection may be required to determine the actual state of the database.
+```
+
+<Danger>
+If you must execute schema change DDL statements inside a multi-statement transaction, we **strongly recommend** checking for this error code and handling it appropriately every time you execute such transactions.
+</Danger>
+
+This error will occur in various scenarios, including but not limited to:
+
+-   Creating a unique index fails because values aren't unique.
+-   The evaluation of a computed value fails.
+-   Adding a constraint (or a column with a constraint) fails because the constraint is violated for the default/computed values in the column.
+
+To see an example of this error, start by creating the following table.
+
+ 
+
+```sql
+CREATE TABLE T(x INT);
+INSERT INTO T(x) VALUES (1), (2), (3);
+```
+
+Then, enter the following multi-statement transaction, which will trigger the error.
+
+ 
+
+```sql
+BEGIN;
+ALTER TABLE t ADD CONSTRAINT unique_x UNIQUE(x);
+INSERT INTO T(x) VALUES (3);
+COMMIT;
+```
+
+```
+pq: transaction committed but schema change aborted with error: (23505): duplicate key value (x)=(3) violates unique constraint "unique_x"
+HINT: Some of the non-DDL statements may have committed successfully, but some of the DDL statement(s) failed.
+Manual inspection may be required to determine the actual state of the database.
+```
+
+In this example, the [`INSERT`](/docs/v24.1/insert) statement committed, but the [`ALTER TABLE`](/docs/v24.1/alter-table) statement adding a [`UNIQUE` constraint](/docs/v24.1/unique) failed. We can verify this by looking at the data in table `t` and seeing that the additional non-unique value `3` was successfully inserted.
+
+ 
+
+```sql
+SELECT * FROM t;
+```
+
+```
+x
++---+
+  1
+  2
+  3
+  3
+(4 rows)
+```
+
+##### No online schema changes if primary key change in progress
+
+You cannot start an online schema change on a table if a [primary key change](/docs/v24.1/alter-table#alter-primary-key) is currently in progress on the same table.
+
+##### No online schema changes between executions of prepared statements
+
+When the schema of a table targeted by a prepared statement changes after the prepared statement is created, future executions of the prepared statement could result in an error. For example, adding a column to a table referenced in a prepared statement with a `SELECT *` clause will result in an error:
+
+ 
+
+```sql
+CREATE TABLE users (id INT PRIMARY KEY);
+```
+
+ 
+
+```sql
+PREPARE prep1 AS SELECT * FROM users;
+```
+
+ 
+
+```sql
+ALTER TABLE users ADD COLUMN name STRING;
+```
+
+ 
+
+```sql
+INSERT INTO users VALUES (1, 'Max Roach');
+```
+
+ 
+
+```sql
+EXECUTE prep1;
+```
+
+```
+ERROR: cached plan must not change result type
+SQLSTATE: 0A000
+```
+
+It's therefore recommended to explicitly list result columns instead of using `SELECT *` in prepared statements, when possible.
+
+#### Adding a column with sequence-based `DEFAULT` values
+
+It is currently not possible to [add a column](/docs/v24.1/alter-table#add-column) to a table when the column uses a [sequence](/docs/v24.1/create-sequence) as the [`DEFAULT`](/docs/v24.1/default-value) value, for example:
+
+ 
+
+```sql
+> CREATE TABLE t (x INT);
+```
+
+ 
+
+```sql
+> INSERT INTO t(x) VALUES (1), (2), (3);
+```
+
+ 
+
+```sql
+> CREATE SEQUENCE s;
+```
+
+ 
+
+```sql
+> ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
+```
+
+```
+ERROR: failed to construct index entries during backfill: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
+SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://go.crdb.dev/issue-v/42508/v24.1
+```
+
+[#42508](https://github.com/cockroachdb/cockroach/issues/42508)
+
+#### Dropping a column referenced by a partial index
+
+CockroachDB prevents a column from being dropped using [`ALTER TABLE ... DROP COLUMN`](/docs/v24.1/alter-table#drop-column) if it is referenced by a partial index predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`](/docs/v24.1/drop-index). [#97813](https://github.com/cockroachdb/cockroach/issues/97813).
+
+#### Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed
+
+Most schema change [DDL](https://wikipedia.org/wiki/Data_definition_language#ALTER_statement) statements that run inside a multi-statement transaction with non-DDL statements can fail at [`COMMIT`](/docs/v24.1/commit-transaction) time, even if other statements in the transaction succeed. This leaves such transactions in a "partially committed, partially aborted" state that may require manual intervention to determine whether the DDL statements succeeded.
+
+Some DDL statements do not have this limitation. `CREATE TABLE` and `CREATE INDEX` statements have the same atomicity guarantees as other statements within a transaction.
+
+If such a failure occurs, CockroachDB will emit a CockroachDB-specific error code, `XXA00`, and the following error message:
+
+```
+transaction committed but schema change aborted with error: <description of error>
+HINT: Some of the non-DDL statements may have committed successfully, but some of the DDL statement(s) failed.
+Manual inspection may be required to determine the actual state of the database.
+```
+
+<Danger>
+If you must execute schema change DDL statements inside a multi-statement transaction, we **strongly recommend** checking for this error code and handling it appropriately every time you execute such transactions.
+</Danger>
+
+This error will occur in various scenarios, including but not limited to:
+
+-   Creating a unique index fails because values aren't unique.
+-   The evaluation of a computed value fails.
+-   Adding a constraint (or a column with a constraint) fails because the constraint is violated for the default/computed values in the column.
+
+To see an example of this error, start by creating the following table.
+
+ 
+
+```sql
+CREATE TABLE T(x INT);
+INSERT INTO T(x) VALUES (1), (2), (3);
+```
+
+Then, enter the following multi-statement transaction, which will trigger the error.
+
+ 
+
+```sql
+BEGIN;
+ALTER TABLE t ADD CONSTRAINT unique_x UNIQUE(x);
+INSERT INTO T(x) VALUES (3);
+COMMIT;
+```
+
+```
+pq: transaction committed but schema change aborted with error: (23505): duplicate key value (x)=(3) violates unique constraint "unique_x"
+HINT: Some of the non-DDL statements may have committed successfully, but some of the DDL statement(s) failed.
+Manual inspection may be required to determine the actual state of the database.
+```
+
+In this example, the [`INSERT`](/docs/v24.1/insert) statement committed, but the [`ALTER TABLE`](/docs/v24.1/alter-table) statement adding a [`UNIQUE` constraint](/docs/v24.1/unique) failed. We can verify this by looking at the data in table `t` and seeing that the additional non-unique value `3` was successfully inserted.
+
+ 
+
+```sql
+SELECT * FROM t;
+```
+
+```
+x
++---+
+  1
+  2
+  3
+  3
+(4 rows)
+```
+
+#### Schema changes between executions of prepared statements
+
+When the schema of a table targeted by a prepared statement changes after the prepared statement is created, future executions of the prepared statement could result in an error. For example, adding a column to a table referenced in a prepared statement with a `SELECT *` clause will result in an error:
+
+ 
+
+```sql
+CREATE TABLE users (id INT PRIMARY KEY);
+```
+
+ 
+
+```sql
+PREPARE prep1 AS SELECT * FROM users;
+```
+
+ 
+
+```sql
+ALTER TABLE users ADD COLUMN name STRING;
+```
+
+ 
+
+```sql
+INSERT INTO users VALUES (1, 'Max Roach');
+```
+
+ 
+
+```sql
+EXECUTE prep1;
+```
+
+```
+ERROR: cached plan must not change result type
+SQLSTATE: 0A000
+```
+
+It's therefore recommended to explicitly list result columns instead of using `SELECT *` in prepared statements, when possible.
+
+#### New values generated by `DEFAULT` expressions during `ALTER TABLE ADD COLUMN`
+
+When executing an [`ALTER TABLE ADD COLUMN`](/docs/v24.1/alter-table#add-column) statement with a [`DEFAULT`](/docs/v24.1/default-value) expression, new values generated:
+
+-   use the default [search path](/docs/v24.1/sql-name-resolution#search-path) regardless of the search path configured in the current session via `SET SEARCH_PATH`.
+-   use the UTC time zone regardless of the time zone configured in the current session via [`SET TIME ZONE`](/docs/v24.1/set-vars).
+-   have no default database regardless of the default database configured in the current session via [`SET DATABASE`](/docs/v24.1/set-vars), so you must specify the database of any tables they reference.
+-   use the transaction timestamp for the `statement_timestamp()` function regardless of the time at which the `ALTER` statement was issued.
+
+#### Some column-dropping schema changes do not roll back properly
+
+Some [schema changes](/docs/v24.1/online-schema-changes) that [drop columns](/docs/v24.1/alter-table#drop-column) cannot be [rolled back](/docs/v24.1/rollback-transaction) properly.
+
+In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change. [#46541](https://github.com/cockroachdb/cockroach/issues/46541)
+
+In other cases, the rollback will fail in such a way that will never be cleaned up properly, leaving the table descriptor in a state where no other schema changes can be run successfully. [#47712](https://github.com/cockroachdb/cockroach/issues/47712)
+
+To reduce the chance that a column drop will roll back incorrectly:
+
+-   Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures will not cause the column drop to be rolled back.
+    
+-   Drop all [constraints](/docs/v24.1/constraints) (including [unique indexes](/docs/v24.1/unique)) on the column in a separate transaction, before dropping the column.
+    
+-   Drop any [default values](/docs/v24.1/default-value) or [computed expressions](/docs/v24.1/computed-columns) on a column before attempting to drop the column. This prevents conflicts between constraints and default/computed values during a column drop rollback.
+    
+
+If you think a rollback of a column-dropping schema change has occurred, check the [jobs table](/docs/v24.1/show-jobs). Schema changes with an error prefaced by `cannot be reverted, manual cleanup may be required` might require manual intervention.
+
+#### `ALTER COLUMN` limitations
+
+You cannot alter the data type of a column if:
+
+-   The column is part of an [index](/docs/v24.1/indexes).
+-   The column has [`CHECK` constraints](/docs/v24.1/check).
+-   The column owns a [sequence](/docs/v24.1/create-sequence).
+-   The column has a [`DEFAULT` expression](/docs/v24.1/default-value). This will result in an `ERROR: ... column ... cannot also have a DEFAULT expression` with `SQLSTATE: 42P16`.
+-   The `ALTER COLUMN TYPE` statement is part of a combined `ALTER TABLE` statement.
+-   The `ALTER COLUMN TYPE` statement is inside an [explicit transaction](/docs/v24.1/begin-transaction).
+
+<Note>
+Most `ALTER COLUMN TYPE` changes are finalized asynchronously. Schema changes on the table with the altered column may be restricted, and writes to the altered column may be rejected until the schema change is finalized.
+</Note>
+
+#### `CREATE TABLE AS` limitations
+
+The [primary key](/docs/v24.1/primary-key) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key](/docs/v24.1/create-table-as#specify-a-primary-key).
+
+#### Remove a `UNIQUE` index created as part of `CREATE TABLE`
+
+[`UNIQUE` indexes](/docs/v24.1/create-index) created as part of a [`CREATE TABLE`](/docs/v24.1/create-table) statement cannot be removed without using [`CASCADE`](/docs/v24.1/drop-index#remove-an-index-and-dependent-objects-with-cascade). Unique indexes created with [`CREATE INDEX`](/docs/v24.1/create-index) do not have this limitation.
+
+#### Max size of a single column family
+
+When creating or updating a row, if the combined size of all values in a single [column family](/docs/v24.1/column-families) exceeds the [max range size](/docs/v24.1/configure-replication-zones#range-max-bytes) for the table, the operation may fail, or cluster performance may suffer.
+
+As a workaround, you can either [manually split a table's columns into multiple column families](/docs/v24.1/column-families#manual-override), or you can [create a table-specific zone configuration](/docs/v24.1/configure-replication-zones#create-a-replication-zone-for-a-table) with an increased max range size.
+
+#### Dropping a single partition
+
+CockroachDB does not currently support dropping a single partition from a table. In order to remove partitions, you can [repartition](/docs/v24.1/partitioning#repartition-a-table) the table.
+
+#### Placeholders in `PARTITION BY`
+
+When defining a [table partition](/docs/v24.1/partitioning), either during table creation or table alteration, it is not possible to use placeholders in the `PARTITION BY` clause. [#19464](https://github.com/cockroachdb/cockroach/issues/19464)
+
+#### Unsupported trigram syntax
+
+The following PostgreSQL syntax and features are currently unsupported for [trigrams](/docs/v24.1/trigram-indexes):
+
+-   `word_similarity()` built-in function.
+-   `strict_word_similarity()` built-in function.
+-   `%&gt;` and `&lt;%` comparisons and acceleration.
+-   `&lt;&lt;%` and `%&gt;&gt;` comparisons and acceleration.
+-   `&lt;-&gt;`, `&lt;&lt;-&gt;`, `&lt;-&gt;&gt;`, `&lt;&lt;&lt;-&gt;`, and `&lt;-&gt;&gt;&gt;` comparisons.
+-   Acceleration on [regex string matching](/docs/v24.1/scalar-expressions#string-matching-using-posix-regular-expressions).
+-   `%` comparisons, `show_trgm`, and trigram index creation on [collated strings](/docs/v24.1/collate).
+
+[#41285](https://github.com/cockroachdb/cockroach/issues/41285)
+
+#### Unsupported full-text search features
+
+The following PostgreSQL syntax and features are currently unsupported for [full-text search](/docs/v24.1/full-text-search):
+
+-   Aspects of [text search configurations](/docs/v24.1/full-text-search#text-search-configuration) other than the specified dictionary.
+-   `websearch_to_tsquery()` built-in function.
+-   `tsquery_phrase()` built-in function.
+-   `ts_rank_cd()` built-in function.
+-   `setweight()` built-in function.
+-   Inverted joins on `TSVECTOR` values.
+-   `tsvector || tsvector` comparisons.
+-   `tsquery || tsquery` comparisons.
+-   `tsquery && tsquery` comparisons.
+-   `tsquery &lt;-&gt; tsquery` comparisons.
+-   `!! tsquery` comparisons.
+-   `tsquery @&gt; tsquery` and `tsquery &lt;@ tsquery` comparisons.
+
+[#41288](https://github.com/cockroachdb/cockroach/issues/41288)
+
+#### CockroachDB does not allow inverted indexes with `STORING`
+
+CockroachDB does not allow inverted indexes with a [`STORING` column](/docs/v24.1/create-index#store-columns). [#88278](https://github.com/cockroachdb/cockroach/issues/88278)
+
+#### Multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`
+
+CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON CONFLICT DO UPDATE`](/docs/v24.1/insert#on-conflict-clause), and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification. [#53170](https://github.com/cockroachdb/cockroach/issues/53170)
+
+#### Expression index limitations
+
+-   The expression cannot reference columns outside the index's table.
+-   Functional expression output must be determined by the input arguments. For example, you can't use the [volatile function](/docs/v24.1/functions-and-operators#function-volatility) `now()` to create an index because its output depends on more than just the function arguments.
+-   CockroachDB does not allow [expression indexes](/docs/v24.1/expression-indexes) to reference [computed columns](/docs/v24.1/computed-columns). [#67900](https://github.com/cockroachdb/cockroach/issues/67900)
+-   CockroachDB does not support expressions as `ON CONFLICT` targets. This means that unique [expression indexes](/docs/v24.1/expression-indexes) cannot be selected as arbiters for [`INSERT .. ON CONFLICT`](/docs/v24.1/insert#on-conflict-clause) statements. For example:
+    
+     
+    
+    ```sql
+    CREATE TABLE t (a INT, b INT, UNIQUE INDEX ((a + b)));
+    ```
+    
+    ```
+    CREATE TABLE
+    ```
+    
+     
+    
+    ```sql
+    INSERT INTO t VALUES (1, 2) ON CONFLICT ((a + b)) DO NOTHING;
+    ```
+    
+    ```
+    invalid syntax: statement ignored: at or near "(": syntax error
+    SQLSTATE: 42601
+    DETAIL: source SQL:
+    INSERT INTO t VALUES (1, 2) ON CONFLICT ((a + b)) DO NOTHING
+                                        ^
+    HINT: try \h INSERT
+    ```
+    
+     
+    
+    ```sql
+    INSERT INTO t VALUES (1, 2) ON CONFLICT ((a + b)) DO UPDATE SET a = 10;
+    ```
+    
+    ```
+    invalid syntax: statement ignored: at or near "(": syntax error
+    SQLSTATE: 42601
+    DETAIL: source SQL:
+    INSERT INTO t VALUES (1, 2) ON CONFLICT ((a + b)) DO UPDATE SET a = 10
+                                        ^
+    HINT: try \h INSERT
+    ```
+    
+    [#67893](https://github.com/cockroachdb/cockroach/issues/67893)
+    
+
+#### Secondary regions and regional by row tables
+
+[Secondary regions](/docs/v24.1/multiregion-overview#secondary-regions) are not compatible with databases containing [`REGIONAL BY ROW`](/docs/v24.1/table-localities#regional-by-row-tables) tables. CockroachDB does not prevent you from defining secondary regions on databases with regional by row tables, but the interaction of these features is not supported.
+
+Therefore, Cockroach Labs recommends that you avoid defining secondary regions on databases that use regional by row table configurations.
+
+### Data types
+
+#### Spatial support limitations
+
+CockroachDB supports efficiently storing and querying [spatial data](/docs/v24.1/export-spatial-data), with the following limitations:
+
+-   Not all [PostGIS spatial functions](https://postgis.net/docs/reference.html) are supported. [#49203](https://github.com/cockroachdb/cockroach/issues/49203)
+    
+-   The `AddGeometryColumn` [spatial function](/docs/v24.1/functions-and-operators#spatial-functions) only allows constant arguments. [#49402](https://github.com/cockroachdb/cockroach/issues/49402)
+    
+-   The `AddGeometryColumn` spatial function only allows the `true` value for its `use_typmod` parameter. [#49448](https://github.com/cockroachdb/cockroach/issues/49448)
+    
+-   CockroachDB does not support the `@` operator. Instead of using `@` in spatial expressions, we recommend using the inverse, with `~`. For example, instead of `a @ b`, use `b ~ a`. [#56124](https://github.com/cockroachdb/cockroach/issues/56124)
+    
+-   CockroachDB does not yet support [`INSERT`](/docs/v24.1/insert)s into the [`spatial_ref_sys` table](/docs/v24.1/architecture/glossary#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f). [#55903](https://github.com/cockroachdb/cockroach/issues/55903)
+    
+-   CockroachDB does not yet support [k-nearest neighbors](https://wikipedia.org/wiki/K-nearest_neighbors_algorithm). [#55227](https://github.com/cockroachdb/cockroach/issues/55227)
+    
+-   CockroachDB does not support using [schema name prefixes](/docs/v24.1/sql-name-resolution#how-name-resolution-works) to refer to [data types](/docs/v24.1/data-types) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`). [#56492](https://github.com/cockroachdb/cockroach/issues/56492)
+    
+-   Defining a custom SRID by inserting rows into [`spatial_ref_sys`](/docs/v24.1/architecture/glossary#spatial_ref_sys) is not currently supported. [#55903](https://github.com/cockroachdb/cockroach/issues/55903)
+    
+
+#### `OID` limitations
+
+Refer to [`OID` best practices](/docs/v24.1/oid#best-practices).
+
+#### Limitations for composite types
+
+-   Changefeed types are not fully integrated with [user-defined composite types](/docs/v24.1/create-type). Running changefeeds with user-defined composite types is in [Preview](/docs/v24.1/cockroachdb-feature-availability#feature-availability-phases). Certain changefeed types do not support user-defined composite types. Refer to the change data capture [Known Limitations](/docs/v24.1/create-and-configure-changefeeds#known-limitations) for more detail. The following limitations apply:
+    
+    -   A changefeed in [Avro format](/docs/v24.1/changefeed-messages#avro) will not be able to serialize [user-defined composite (tuple) types](/docs/v24.1/create-type). [#102903](https://github.com/cockroachdb/cockroach/issues/102903)
+    -   A changefeed emitting [CSV](/docs/v24.1/changefeed-messages#csv) will include `AS` labels in the message format when the changefeed serializes a [user-defined composite type](/docs/v24.1/create-type). [#102905](https://github.com/cockroachdb/cockroach/issues/102905)
+-   Updating subfields of composite types using dot syntax results in a syntax error. [#102984](https://github.com/cockroachdb/cockroach/issues/102984)
+    
+-   Tuple elements cannot be accessed without enclosing the [composite variable](/docs/v24.1/create-type#create-a-composite-data-type) name in parentheses. For example, `(v).x`. [#114687](https://github.com/cockroachdb/cockroach/issues/114687)
+    
+
+#### `ALTER TYPE` limitations
+
+-   When running the [`ALTER TYPE`](/docs/v24.1/alter-type) statement, you can only reference a user-defined type from the database that contains the type.
+-   You can only [cancel](/docs/v24.1/cancel-job) `ALTER TYPE` [schema change jobs](/docs/v24.1/online-schema-changes) that drop values. This is because when you drop a value, CockroachDB searches through every row that could contain the type's value, which could take a long time. All other `ALTER TYPE` schema change jobs are [non-cancellable](/docs/v24.1/cancel-job#known-limitations).
+
+#### `JSONB` limitations
+
+-   You cannot use [primary key](/docs/v24.1/primary-key), [foreign key](/docs/v24.1/foreign-key), and [unique](/docs/v24.1/unique) [constraints](/docs/v24.1/constraints) on `JSONB` values.
+
+### Security and privileges
+
+#### `GRANT`/`REVOKE` limitations
+
+User/role management operations (such as [`GRANT`](/docs/v24.1/grant) and [`REVOKE`](/docs/v24.1/revoke)) are [schema changes](/docs/v24.1/online-schema-changes). As such, they inherit the [limitations of schema changes](/docs/v24.1/online-schema-changes#known-limitations).
+
+For example, schema changes wait for concurrent [transactions](/docs/v24.1/transactions) using the same resources as the schema changes to complete. In the case of [role memberships](/docs/v24.1/security-reference/authorization#roles) being modified inside a transaction, most transactions need access to the set of role memberships. Using the default settings, role modifications require schema leases to expire, which can take up to 5 minutes.
+
+This means that [long-running transactions](/docs/v24.1/query-behavior-troubleshooting#hanging-or-stuck-queries) elsewhere in the system can cause user/role management operations inside transactions to take several minutes to complete. This can have a cascading effect. When a user/role management operation inside a transaction takes a long time to complete, it can in turn block all user-initiated transactions being run by your application, since the user/role management operation in the transaction has to commit before any other transactions that access role memberships (i.e., most transactions) can make progress.
+
+If you want user/role management operations to finish more quickly, and do not care whether concurrent transactions will immediately see the side effects of those operations, set the [session variable](/docs/v24.1/set-vars) `allow_role_memberships_to_change_during_transaction` to `true`.
+
+When this session variable is enabled, any user/role management operations issued in the current session will only need to wait for the completion of statements in other sessions where `allow_role_memberships_to_change_during_transaction` is not enabled.
+
+To accelerate user/role management operations across your entire application, you have the following options:
+
+1.  Set the session variable in all sessions by [passing it in the client connection string](/docs/v24.1/connection-parameters#supported-options-parameters).
+2.  Apply the `allow_role_memberships_to_change_during_transaction` setting globally to an entire cluster using the [`ALTER ROLE ALL`](/docs/v24.1/alter-role#set-default-session-variable-values-for-all-users) statement:
+    
+     
+    
+    ```sql
+    ALTER ROLE ALL SET allow_role_memberships_to_change_during_transaction = true;
+    ```
+    
+
+#### `DROP OWNED BY` limitations
+
+-   [`ENUM`](/docs/v24.1/enum) types are not dropped.
+-   [`DROP OWNED BY`](/docs/v24.1/drop-owned-by) drops all owned objects as well as any [grants](/docs/v24.1/grant) on objects not owned by the [role](/docs/v24.1/security-reference/authorization#roles).
+-   If the [role](/docs/v24.1/security-reference/authorization#roles) for which you are trying to `DROP OWNED BY` was granted a [system-level privilege](/docs/v24.1/security-reference/authorization#supported-privileges) (i.e., using the [`GRANT SYSTEM ...`](/docs/v24.1/grant#grant-system-level-privileges-on-the-entire-cluster) statement), the following error will be signalled:
+    
+    ```
+    ERROR: cannot perform drop owned by if role has synthetic privileges; foo has entries in system.privileges
+    SQLSTATE: 0A000
+    HINT: perform REVOKE SYSTEM ... for the relevant privileges foo has in system.privileges
+    ```
+    
+    The phrase "synthetic privileges" in the error message refers to [system-level privileges](/docs/v24.1/security-reference/authorization#supported-privileges).
+    
+    The workaround is to use [`SHOW SYSTEM GRANTS FOR {role}`](/docs/v24.1/show-system-grants) and then use [`REVOKE SYSTEM ...`](/docs/v24.1/revoke#revoke-system-level-privileges-on-the-entire-cluster) for each privilege in the result. [#88149](https://github.com/cockroachdb/cockroach/issues/88149)
+    
+
+#### Privileges for `DELETE` and `UPDATE`
+
+Every [`DELETE`](/docs/v24.1/delete) or [`UPDATE`](/docs/v24.1/update) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](/docs/v24.1/security-reference/authorization#managing-privileges) on the table.
+
+### Deployment and operations
+
+#### Admission control
+
+Admission control works on the level of each node, not at the cluster level. The admission control system queues requests until the operations are processed or the request exceeds the timeout value (for example by using [`SET statement_timeout`](/docs/v24.1/set-vars#supported-variables)). If you specify aggressive timeout values, the system may operate correctly but have low throughput as the operations exceed the timeout value while only completing part of the work. There is no mechanism for preemptively rejecting requests when the work queues are long.
+
+Organizing operations by priority can mean that higher priority operations consume all the available resources while lower priority operations remain in the queue until the operation times out.
+
+#### Data domiciling
+
+-   When columns are [indexed](/docs/v24.1/indexes), a subset of data from the indexed columns may appear in [meta ranges](/docs/v24.1/architecture/distribution-layer#meta-ranges) or other system tables. CockroachDB synchronizes these system ranges and system tables across nodes. This synchronization does not respect any multi-region settings applied via either the [multi-region SQL statements](/docs/v24.1/multiregion-overview), or the low-level [zone configs](/docs/v24.1/configure-replication-zones) mechanism.
+-   [Zone configs](/docs/v24.1/configure-replication-zones) can be used for data placement but these features were historically built for performance, not for domiciling. The replication system's top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability. For more information, see [Replication Controls](/docs/v24.1/configure-replication-zones#types-of-constraints).
+-   If your [log files](/docs/v24.1/logging-overview) are kept in the region where they were generated, there is some cross-region leakage (like the system tables described previously), but the majority of user data that makes it into the logs is going to be homed in that region. If that's not strong enough, you can use the [log redaction functionality](/docs/v24.1/configure-logs#redact-logs) to strip all raw data from the logs. You can also limit your log retention entirely.
+-   If you start a node with a [`--locality`](/docs/v24.1/cockroach-start#locality) flag that says the node is in region _A_, but the node is actually running in some region _B_, data domiciling based on the inferred node placement will not work. A CockroachDB node only knows its locality based on the text supplied to the `--locality` flag; it can not ensure that it is actually running in that physical location.
+
+#### CockroachDB does not test for all connection failure scenarios
+
+CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a `Connection refused` error.
+
+However, if there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a TCP handshake can linger while the client network stack waits for a TCP packet in response to network requests. To work around this kind of scenario, we recommend the following:
+
+-   When migrating a node to a new machine, keep the server listening at the previous IP address until the cluster has completed the migration.
+-   Configure any active network firewalls to allow node-to-node traffic.
+-   Verify that orchestration tools (e.g., Kubernetes) are configured to use the correct network connection information.
+
+[#53410](https://github.com/cockroachdb/cockroach/issues/53410)
+
+#### No guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if `node decommission` is interrupted
+
+There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if [`node decommission`](/docs/v24.1/cockroach-node) is interrupted in one of the following ways:
+
+-   The `cockroach node decommission --wait-all` command was run and then interrupted
+-   The `cockroach node decommission --wait=none` command was run
+
+This is because the state flip is effected by the CLI program at the end. Only the CLI (or its underlying API call) is able to finalize the "decommissioned" state. If the command is interrupted, or `--wait=none` is used, the state will only flip to "decommissioned" when the CLI program is run again after decommissioning has done all its work. [#94430](https://github.com/cockroachdb/cockroach/issues/94430)
+
+#### Simultaneous client connections and running queries on a single node
+
+When a node has both a high number of client connections and running queries, the node may crash due to memory exhaustion. This is due to CockroachDB not accurately limiting the number of clients and queries based on the amount of available RAM on the node.
+
+To prevent memory exhaustion, monitor each node's memory usage and ensure there is some margin between maximum CockroachDB memory usage and available system RAM. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
+
+To control the maximum number of non-superuser ([`root`](/docs/v24.1/security-reference/authorization#root-user) user or other [`admin` role](/docs/v24.1/security-reference/authorization#admin-role)) connections a [gateway node](/docs/v24.1/architecture/sql-layer#gateway-node) can have open at one time, use the `server.max_connections_per_gateway` [cluster setting](/docs/v24.1/cluster-settings). If a new non-superuser connection would exceed this limit, the error message `"sorry, too many clients already"` is returned, along with error code `53300`. This may be useful in addition to your memory monitoring.
+
+#### Load-based lease rebalancing in uneven latency deployments
+
+When nodes are started with the [`--locality`](/docs/v24.1/cockroach-start#flags) flag, CockroachDB attempts to place the replica lease holder (the replica that client requests are forwarded to) on the node closest to the source of the request. This means as client requests move geographically, so too does the replica lease holder.
+
+However, you might see increased latency caused by a consistently high rate of lease transfers between datacenters in the following case:
+
+-   Your cluster runs in datacenters which are very different distances away from each other.
+-   Each node was started with a single tier of `--locality`, e.g., `--locality=datacenter=a`.
+-   Most client requests get sent to a single datacenter because that's where all your application traffic is.
+
+To detect if this is happening, open the [DB Console](/docs/v24.1/ui-overview), select the **Queues** dashboard, hover over the **Replication Queue** graph, and check the **Leases Transferred / second** data point. If the value is consistently larger than 0, you should consider stopping and restarting each node with additional tiers of locality to improve request latency.
+
+For example, let's say that latency is 10ms from nodes in datacenter A to nodes in datacenter B but is 100ms from nodes in datacenter A to nodes in datacenter C. To ensure A's and B's relative proximity is factored into lease holder rebalancing, you could restart the nodes in datacenter A and B with a common region, `--locality=region=foo,datacenter=a` and `--locality=region=foo,datacenter=b`, while restarting nodes in datacenter C with a different region, `--locality=region=bar,datacenter=c`.
+
+#### Size limits on statement input from SQL clients
+
+CockroachDB imposes a hard limit of 16MiB on the data input for a single statement passed to CockroachDB from a client (including the SQL shell). We do not recommend attempting to execute statements from clients with large input.
+
+#### Using `\|` to perform a large input in the SQL shell
+
+In the [built-in SQL shell](/docs/v24.1/cockroach-sql), using the [`\|`](/docs/v24.1/cockroach-sql#commands) operator to perform a large number of inputs from a file can cause the server to close the connection. This is because `\|` sends the entire file as a single query to the server, which can exceed the upper bound on the size of a packet the server can accept from any client (16MB).
+
+As a workaround, [execute the file from the command line](/docs/v24.1/cockroach-sql#execute-sql-statements-from-a-file) with `cat data.sql | cockroach sql` instead of from within the interactive shell.
+
+#### Spatial features disabled for ARM Macs
+
+[Spatial features](/docs/v24.1/spatial-data-overview) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary](/docs/v24.1/install-cockroachdb#install-binary) or use the [Docker image](/docs/v24.1/install-cockroachdb#use-docker) distribution. [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
+
+#### Logging system limitations
+
+Log files can only be accessed in the DB Console if they are stored in the same directory as the file sink for the `DEV` channel.
+
+#### Per-replica circuit breaker limitations
+
+[Per-replica circuit breakers](/docs/v24.1/architecture/replication-layer#per-replica-circuit-breakers) have the following limitations:
+
+-   They cannot prevent requests from hanging when the node's [liveness range](/docs/v24.1/architecture/replication-layer#epoch-based-leases-table-data) is unavailable. For more information about troubleshooting a cluster that's having node liveness issues, see [Node liveness issues](/docs/v24.1/cluster-setup-troubleshooting#node-liveness-issues).
+-   They are not tripped if _all_ replicas of a range [become unavailable](/docs/v24.1/cluster-setup-troubleshooting#db-console-shows-under-replicated-unavailable-ranges), because the circuit breaker mechanism operates per-replica. This means at least one replica needs to be available to receive the request in order for the breaker to trip.
+
+#### Kubernetes limitations
+
+Refer to [Kubernetes best practices](/docs/v24.1/deploy-cockroachdb-with-kubernetes#best-practices).
+
+### Observability
+
+#### Datadog
+
+The integration of your CockroachDB self-hosted cluster with Datadog only supports displaying cluster-wide averages of reported metrics. Filtering by a specific node is unsupported.
+
+#### DB Console may become inaccessible for secure clusters
+
+Accessing the DB Console for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
+
+#### Available capacity metric in the DB Console
+
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v24.1/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v24.1/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+
+### Disaster recovery
+
+#### Physical cluster replication
+
+-   Physical cluster replication is supported in CockroachDB self-hosted clusters on v23.2 or later. The primary cluster can be a [new](/docs/v24.1/set-up-physical-cluster-replication#step-1-create-the-primary-cluster) or [existing](/docs/v24.1/set-up-physical-cluster-replication#set-up-pcr-from-an-existing-cluster) cluster. The standby cluster must be a [new cluster started with the `--virtualized-empty` flag](/docs/v24.1/set-up-physical-cluster-replication#step-2-create-the-standby-cluster).
+-   Read queries are not supported on the standby cluster before [failover](/docs/v24.1/failover-replication).
+-   In CockroachDB self-hosted, the primary and standby clusters must have the same [zone configurations](/docs/v24.1/configure-replication-zones) in order to respect data placement configurations.
+    
+-   After the [failover process](/docs/v24.1/failover-replication) for [physical cluster replication](/docs/v24.1/physical-cluster-replication-overview), [scheduled changefeeds](/docs/v24.1/create-schedule-for-changefeed) will continue on the promoted cluster. You will need to manage [pausing](/docs/v24.1/pause-schedules) or [canceling](/docs/v24.1/drop-schedules) the schedule on the promoted standby cluster to avoid two clusters running the same changefeed to one sink. [#123776](https://github.com/cockroachdb/cockroach/issues/123776)
+    
+-   After a cutover, there is no mechanism to stop applications from connecting to the original primary cluster. It is necessary to redirect application traffic manually, such as by using a network load balancer or adjusting DNS records.
+    
+
+#### `RESTORE` limitations
+
+-   `RESTORE` will not restore a table that references a [UDF](/docs/v24.1/user-defined-functions), unless you skip restoring the function with the [`skip_missing_udfs`](/docs/v24.1/restore#skip-missing-udfs) option. Alternatively, take a [database-level backup](/docs/v24.1/backup#back-up-a-database) to include everything needed to restore the table. [#118195](https://github.com/cockroachdb/cockroach/issues/118195)
+-   Restoring [`GLOBAL`](/docs/v24.1/table-localities#global-tables) and [`REGIONAL BY TABLE`](/docs/v24.1/table-localities#regional-tables) tables into a **non**\-multi-region database is not supported. [#71502](https://github.com/cockroachdb/cockroach/issues/71502)
+    
+-   [`REGIONAL BY TABLE`](/docs/v24.1/table-localities#regional-tables) and [`REGIONAL BY ROW`](/docs/v24.1/table-localities#regional-by-row-tables) tables can be restored **only** if the regions of the backed-up table match those of the destination database. All of the following must be true for `RESTORE` to be successful:
+    
+    -   The [regions](/docs/v24.1/multiregion-overview#database-regions) of the source database and the regions of the destination database have the same set of regions.
+    -   The regions were added to each of the databases in the same order.
+    -   The databases have the same [primary region](/docs/v24.1/alter-database#set-primary-region).
+    
+    The following example would be considered as having **mismatched** regions because the database regions were not added in the same order and the primary regions do not match.
+    
+    Running on the source database:
+    
+    ```sql
+    ALTER DATABASE source_database SET PRIMARY REGION "us-east1";
+    ```
+    
+    ```sql
+    ALTER DATABASE source_database ADD region "us-west1";
+    ```
+    
+    Running on the destination database:
+    
+    ```sql
+    ALTER DATABASE destination_database SET PRIMARY REGION "us-west1";
+    ```
+    
+    ```sql
+    ALTER DATABASE destination_database ADD region "us-east1";
+    ```
+    
+    In addition, the following scenario has mismatched regions between the databases since the regions were not added to the database in the same order.
+    
+    Running on the source database:
+    
+    ```sql
+    ALTER DATABASE source_database SET PRIMARY REGION "us-east1";
+    ```
+    
+    ```sql
+    ALTER DATABASE source_database ADD region "us-west1";
+    ```
+    
+    Running on the destination database:
+    
+    ```sql
+    ALTER DATABASE destination_database SET PRIMARY REGION "us-west1";
+    ```
+    
+    ```sql
+    ALTER DATABASE destination_database ADD region "us-east1";
+    ```
+    
+    ```sql
+    ALTER DATABASE destination_database SET PRIMARY REGION "us-east1";
+    ```
+    
+    [#71071](https://github.com/cockroachdb/cockroach/issues/71071)
+    
+
+#### Enterprise `BACKUP` does not capture database/table/column comments
+
+The [`COMMENT ON`](/docs/v24.1/comment-on) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](/docs/v24.1/backup) of a table or database.
+
+As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups. [#44396](https://github.com/cockroachdb/cockroach/issues/44396)
+
+#### `SHOW BACKUP` does not support symlinks for nodelocal
+
+[`SHOW BACKUP`](/docs/v24.1/show-backup) does not support listing backups if the [`nodelocal`](/docs/v24.1/cockroach-nodelocal-upload) storage location is a symlink. [#70260](https://github.com/cockroachdb/cockroach/issues/70260)
+
+### Change data capture
+
+Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
+
+-   Changefeed target options are limited to tables and [column families](/docs/v24.1/changefeeds-on-tables-with-column-families). [#73435](https://github.com/cockroachdb/cockroach/issues/73435)
+-   [VPC Peering](/docs/cockroachcloud/network-authorization#vpc-peering) and [AWS PrivateLink](/docs/cockroachcloud/network-authorization#aws-privatelink) in CockroachDB Advanced clusters do **not** support connecting to a [Kafka](/docs/v24.1/changefeed-sinks#kafka) sink's internal IP addresses for [changefeeds](/docs/v24.1/change-data-capture-overview). To connect to a Kafka sink from CockroachDB Advanced, it is necessary to expose the Kafka cluster's external IP address and open ports with firewall rules to allow access from a CockroachDB Advanced cluster.
+    
+-   Webhook sinks only support HTTPS. Use the [`insecure_tls_skip_verify`](/docs/v24.1/create-changefeed#insecure-tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates. [#73431](https://github.com/cockroachdb/cockroach/issues/73431)
+    
+-   Formats for changefeed messages are not supported by all changefeed sinks. Refer to the [Changefeed Sinks](/docs/v24.1/changefeed-sinks) page for details on compatible formats with each sink and the [`format`](/docs/v24.1/create-changefeed) option to specify a changefeed message format. [#73432](https://github.com/cockroachdb/cockroach/issues/73432)
+    
+-   Using the [`split_column_families`](/docs/v24.1/create-changefeed#split-column-families) and [`resolved`](/docs/v24.1/create-changefeed#resolved) options on the same changefeed will cause an error when using the following [sinks](/docs/v24.1/changefeed-sinks): Kafka and Google Cloud Pub/Sub. Instead, use the individual `FAMILY` keyword to specify column families when creating a changefeed. [#79452](https://github.com/cockroachdb/cockroach/issues/79452)
+    
+-   Changefeed types are not fully integrated with [user-defined composite types](/docs/v24.1/create-type). Running changefeeds with user-defined composite types is in [Preview](/docs/v24.1/cockroachdb-feature-availability#feature-availability-phases). Certain changefeed types do not support user-defined composite types. Refer to the change data capture [Known Limitations](/docs/v24.1/create-and-configure-changefeeds#known-limitations) for more detail. The following limitations apply:
+    
+    -   A changefeed in [Avro format](/docs/v24.1/changefeed-messages#avro) will not be able to serialize [user-defined composite (tuple) types](/docs/v24.1/create-type). [#102903](https://github.com/cockroachdb/cockroach/issues/102903)
+    -   A changefeed emitting [CSV](/docs/v24.1/changefeed-messages#csv) will include `AS` labels in the message format when the changefeed serializes a [user-defined composite type](/docs/v24.1/create-type). [#102905](https://github.com/cockroachdb/cockroach/issues/102905)
+-   After the [failover process](/docs/v24.1/failover-replication) for [physical cluster replication](/docs/v24.1/physical-cluster-replication-overview), [scheduled changefeeds](/docs/v24.1/create-schedule-for-changefeed) will continue on the promoted cluster. You will need to manage [pausing](/docs/v24.1/pause-schedules) or [canceling](/docs/v24.1/drop-schedules) the schedule on the promoted standby cluster to avoid two clusters running the same changefeed to one sink. [#123776](https://github.com/cockroachdb/cockroach/issues/123776)
+    
+-   You can only apply CDC queries on a single table in each statement.
+    
+-   Some [stable functions](/docs/v24.1/functions-and-operators#built-in-functions), notably functions that return MVCC timestamps, are overridden to return the MVCC timestamp of the event, e.g., `transaction_timestamp` or `statement_timestamp`. Additionally, some [time-based functions](/docs/v24.1/functions-and-operators#date-and-time-functions), such as `now()` are not supported. We recommend using the `transaction_timestamp()` function or the [`crdb_internal_mvcc_timestamp`](/docs/v24.1/cdc-queries#crdb-internal-mvcc-timestamp) column instead.
+    
+-   The following are not permitted in CDC queries:
+    
+    -   [Volatile functions](/docs/v24.1/functions-and-operators#function-volatility).
+    -   Sub-select queries.
+    -   [Aggregate](/docs/v24.1/functions-and-operators#aggregate-functions) and [window functions](/docs/v24.1/window-functions) (i.e., functions operating over many rows). [#98237](https://github.com/cockroachdb/cockroach/issues/98237)
+-   `delete` changefeed events will only contain the [primary key](/docs/v24.1/primary-key). All other columns will emit as `NULL`. See [Capture delete messages](/docs/v24.1/cdc-queries#capture-delete-messages) for detail on running a CDC query that emits the deleted values. [#83835](https://github.com/cockroachdb/cockroach/issues/83835)
+    
+-   Creating a changefeed with [CDC queries](/docs/v24.1/cdc-queries) on tables with more than one [column family](/docs/v24.1/changefeeds-on-tables-with-column-families) is not supported. [#127761](https://github.com/cockroachdb/cockroach/issues/127761)
+    
+-   When you create a changefeed on a table with more than one [column family](/docs/v24.1/changefeeds-on-tables-with-column-families) , the changefeed will emit messages per column family in separate streams. As a result, [changefeed messages](/docs/v24.1/changefeed-messages) for different column families will arrive at the [sink](/docs/v24.1/changefeed-sinks) under separate topics. [#127736](https://github.com/cockroachdb/cockroach/issues/127736)
+    
+
+#### `ALTER CHANGEFEED` limitations
+
+-   It is necessary to [`PAUSE`](/docs/v24.1/pause-job) the changefeed before performing any [`ALTER CHANGEFEED`](/docs/v24.1/alter-changefeed) statement. [#77171](https://github.com/cockroachdb/cockroach/issues/77171)
+-   CockroachDB does not keep track of the [`initial_scan`](/docs/v24.1/create-changefeed#initial-scan) option applied to tables when it is set to `yes` or `only`. For example:
+    
+    ```sql
+    ALTER CHANGEFEED {job_ID} ADD table WITH initial_scan = 'yes';
+    ```
+    
+    This will trigger an initial scan of the table and the changefeed will track `table`. The changefeed will **not** track `initial_scan` specified as an option, so it will not display in the output or after a `SHOW CHANGEFEED JOB` statement.
+    
+-   [`ALTER CHANGEFEED`](/docs/v24.1/alter-changefeed) is not fully supported with changefeeds that use [CDC queries](/docs/v24.1/cdc-queries). You can alter the options that a changefeed uses, but you cannot alter the changefeed target tables. [#83033](https://github.com/cockroachdb/cockroach/issues/83033)
+    
+
+### Performance optimization
+
+#### Optimizer and locking behavior
+
+The SQL optimizer has limitations under certain isolation levels:
+
+-   The new implementation of `SELECT FOR UPDATE` is not yet the default setting under `SERIALIZABLE` isolation. It can be used under `SERIALIZABLE` isolation by setting the `optimizer_use_lock_op_for_serializable` [session setting](/docs/v24.1/session-variables) to `true`. [#114737](https://github.com/cockroachdb/cockroach/issues/114737)
+-   `SELECT FOR UPDATE` does not lock completely-`NULL` column families in multi-column-family tables. [#116836](https://github.com/cockroachdb/cockroach/issues/116836)
+
+#### Statistics limitations
+
+-   The [automatic statistics refresher](/docs/v24.1/cost-based-optimizer#control-statistics-refresh-rate) automatically checks whether it needs to refresh statistics for every table in the database upon startup of each node in the cluster. If statistics for a table have not been refreshed in a while, this will trigger collection of statistics for that table. If statistics have been refreshed recently, it will not force a refresh. As a result, the automatic statistics refresher does not necessarily perform a refresh of statistics after an [upgrade](/docs/v24.1/upgrade-cockroach-version). This could cause a problem, for example, if the upgrade moves from a version without [histograms](/docs/v24.1/cost-based-optimizer#control-histogram-collection) to a version with histograms. To refresh statistics manually, use [`CREATE STATISTICS`](/docs/v24.1/create-statistics). [#54816](https://github.com/cockroachdb/cockroach/issues/54816)
+    
+-   The following [cluster settings](/docs/v24.1/cluster-settings) do not immediately take effect, and instead only take effect when new statistics are collected for a table.
+    
+    -   [`sql.stats.forecasts.max_decrease`](/docs/v24.1/cluster-settings#setting-sql-stats-forecasts-max-decrease)
+    -   [`sql.stats.forecasts.min_goodness_of_fit`](/docs/v24.1/cluster-settings#setting-sql-stats-forecasts-min-goodness-of-fit)
+    -   [`sql.stats.forecasts.min_observations`](/docs/v24.1/cluster-settings#setting-sql-stats-forecasts-min-observations)
+    
+    Although [`SHOW STATISTICS WITH FORECAST`](/docs/v24.1/show-statistics#display-forecasted-statistics) shows the settings taking effect immediately, they do not actually take effect until new statistics are collected (as can be verified with [`EXPLAIN`](/docs/v24.1/explain)).
+    
+    As a workaround, disable and enable forecasting at the [cluster](/docs/v24.1/cost-based-optimizer#enable-and-disable-automatic-statistics-collection-for-clusters) or [table](/docs/v24.1/cost-based-optimizer#enable-and-disable-automatic-statistics-collection-for-tables) level. This will invalidate the statistics cache and cause these settings to take effect immediately. [#123852](https://github.com/cockroachdb/cockroach/issues/123852)
+    
+
+#### Incorrect query plans for partitions with `NULL` values
+
+In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so it is not likely to occur in production environments. [#82774](https://github.com/cockroachdb/cockroach/issues/82774)
+
+#### Vectorized engine limitations
+
+-   The vectorized engine does not support queries containing a join filtered with an [`ON` expression](/docs/v24.1/joins#supported-join-conditions). [#38018](https://github.com/cockroachdb/cockroach/issues/38018)
+-   The vectorized engine does not support [working with spatial data](/docs/v24.1/export-spatial-data). Queries with [geospatial functions](/docs/v24.1/functions-and-operators#spatial-functions) or [spatial data](/docs/v24.1/export-spatial-data) will revert to the row-oriented execution engine.
+
+#### `transaction_rows_read_err` and `transaction_rows_written_err` do not halt query execution
+
+The `transaction_rows_read_err` and `transaction_rows_written_err` [session settings](/docs/v24.1/set-vars) limit the number of rows read or written by a single [transaction](/docs/v24.1/transactions#limit-the-number-of-rows-written-or-read-in-a-transaction). These session settings will fail the transaction with an error, but not until the current query finishes executing and the results have been returned to the client. [#70473](https://github.com/cockroachdb/cockroach/issues/70473)
+
+#### `sql.guardrails.max_row_size_err` misses indexed virtual computed columns
+
+The `sql.guardrails.max_row_size_err` [cluster setting](/docs/v24.1/cluster-settings) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows. [#69540](https://github.com/cockroachdb/cockroach/issues/69540)
+
+#### Using `LIKE...ESCAPE` in `WHERE` and `HAVING` constraints
+
+CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g., `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used. [#30192](https://github.com/cockroachdb/cockroach/issues/30192)
+
+#### Import with a high amount of disk contention
+
+[`IMPORT INTO`](/docs/v24.1/import-into) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](/docs/v24.1/cluster-settings) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
+
+ 
+
+```sql
+> SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
+```
+
+#### CockroachDB does not properly optimize some left and anti joins with GIN indexes
+
+[Left joins](/docs/v24.1/joins#left-outer-joins) and anti joins involving [`JSONB`](/docs/v24.1/jsonb), [`ARRAY`](/docs/v24.1/array), or [spatial-typed](/docs/v24.1/export-spatial-data) columns with a multi-column or [partitioned](/docs/v24.1/alter-index#partition-by) [GIN index](/docs/v24.1/inverted-indexes) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
+
+To work around this limitation, make sure that the prefix columns of the index are either constrained to single constant values, or are part of an equality condition with an input column (e.g., `col1 = col2`, where `col1` is a prefix column and `col2` is an input column).
+
+For example, suppose you have the following [multi-region database](/docs/v24.1/multiregion-overview) and tables:
+
+```sql
+CREATE DATABASE multi_region_test_db PRIMARY REGION "europe-west1" REGIONS "us-west1", "us-east1" SURVIVE REGION FAILURE;
+USE multi_region_test_db;
+
+CREATE TABLE t1 (
+  k INT PRIMARY KEY,
+  geom GEOMETRY
+);
+
+CREATE TABLE t2 (
+  k INT PRIMARY KEY,
+  geom GEOMETRY,
+  INVERTED INDEX geom_idx (geom)
+) LOCALITY REGIONAL BY ROW;
+```
+
+And you [insert](/docs/v24.1/insert) some data into the tables:
+
+```sql
+INSERT INTO t1 SELECT generate_series(1, 1000), 'POINT(1.0 1.0)';
+INSERT INTO t2 (crdb_region, k, geom) SELECT 'us-east1', generate_series(1, 1000), 'POINT(1.0 1.0)';
+INSERT INTO t2 (crdb_region, k, geom) SELECT 'us-west1', generate_series(1001, 2000), 'POINT(2.0 2.0)';
+INSERT INTO t2 (crdb_region, k, geom) SELECT 'europe-west1', generate_series(2001, 3000), 'POINT(3.0 3.0)';
+```
+
+If you attempt a left join between `t1` and `t2` on only the geometry columns, CockroachDB will not be able to plan an [inverted join](/docs/v24.1/joins#inverted-joins):
+
+```
+> EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom);
+                info
+------------------------------------
+  distribution: full
+  vectorized: true
+
+  • cross join (right outer)
+  │ pred: st_contains(geom, geom)
+  │
+  ├── • scan
+  │     estimated row count: 3,000
+  │     table: t2@primary
+  │     spans: FULL SCAN
+  │
+  └── • scan
+        estimated row count: 1,000
+        table: t1@primary
+        spans: FULL SCAN
+(15 rows)
+```
+
+However, if you constrain the `crdb_region` column to a single value, CockroachDB can plan an inverted join:
+
+```
+> EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.crdb_region = 'us-east1';
+                       info
+--------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • lookup join (left outer)
+  │ table: t2@primary
+  │ equality: (crdb_region, k) = (crdb_region,k)
+  │ equality cols are key
+  │ pred: st_contains(geom, geom)
+  │
+  └── • inverted join (left outer)
+      │ table: t2@geom_idx
+      │
+      └── • render
+          │
+          └── • scan
+                estimated row count: 1,000
+                table: t1@primary
+                spans: FULL SCAN
+(18 rows)
+```
+
+If you do not know which region to use, you can combine queries with [`UNION ALL`](/docs/v24.1/selection-queries#union-combine-two-queries):
+
+```
+> EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.crdb_region = 'us-east1'
+UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.crdb_region = 'us-west1'
+UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.crdb_region = 'europe-west1';
+                           info
+----------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • union all
+  │
+  ├── • union all
+  │   │
+  │   ├── • lookup join (left outer)
+  │   │   │ table: t2@primary
+  │   │   │ equality: (crdb_region, k) = (crdb_region,k)
+  │   │   │ equality cols are key
+  │   │   │ pred: st_contains(geom, geom)
+  │   │   │
+  │   │   └── • inverted join (left outer)
+  │   │       │ table: t2@geom_idx
+  │   │       │
+  │   │       └── • render
+  │   │           │
+  │   │           └── • scan
+  │   │                 estimated row count: 1,000
+  │   │                 table: t1@primary
+  │   │                 spans: FULL SCAN
+  │   │
+  │   └── • lookup join (left outer)
+  │       │ table: t2@primary
+  │       │ equality: (crdb_region, k) = (crdb_region,k)
+  │       │ equality cols are key
+  │       │ pred: st_contains(geom, geom)
+  │       │
+  │       └── • inverted join (left outer)
+  │           │ table: t2@geom_idx
+  │           │
+  │           └── • render
+  │               │
+  │               └── • scan
+  │                     estimated row count: 1,000
+  │                     table: t1@primary
+  │                     spans: FULL SCAN
+  │
+  └── • lookup join (left outer)
+      │ table: t2@primary
+      │ equality: (crdb_region, k) = (crdb_region,k)
+      │ equality cols are key
+      │ pred: st_contains(geom, geom)
+      │
+      └── • inverted join (left outer)
+          │ table: t2@geom_idx
+          │
+          └── • render
+              │
+              └── • scan
+                    estimated row count: 1,000
+                    table: t1@primary
+                    spans: FULL SCAN
+(54 rows)
+```
+
+[#59649](https://github.com/cockroachdb/cockroach/issues/59649)
+
+#### Locality optimized search limitations
+
+-   [Locality optimized search](/docs/v24.1/cost-based-optimizer#locality-optimized-search-in-multi-region-clusters) does not work for queries that use [partitioned unique indexes](/docs/v24.1/partitioning#partition-using-a-secondary-index) on [virtual computed columns](/docs/v24.1/computed-columns#virtual-computed-columns). A workaround for computed columns is to make the virtual computed column a [stored computed column](/docs/v24.1/computed-columns#stored-computed-columns). Locality optimized search does not work for queries that use partitioned unique [expression indexes](/docs/v24.1/expression-indexes). [#68129](https://github.com/cockroachdb/cockroach/issues/68129)
+    
+-   [Locality optimized search](/docs/v24.1/cost-based-optimizer#locality-optimized-search-in-multi-region-clusters) works only for queries selecting a limited number of records (up to 100,000 unique keys).
+    
+
+#### Query plans for materialized views
+
+-   The optimizer may not select the most optimal query plan when querying materialized views because CockroachDB does not [collect statistics](/docs/v24.1/cost-based-optimizer#table-statistics) on materialized views. [#78181](https://github.com/cockroachdb/cockroach/issues/78181).
+
+#### Inverted join for `tsvector` and `tsquery` types is not supported
+
+CockroachDB cannot index-accelerate queries with `@@` predicates when both sides of the operator are variables. [#102731](https://github.com/cockroachdb/cockroach/issues/102731)

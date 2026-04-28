@@ -1,0 +1,20 @@
+---
+title: "Create a CockroachDB Basic Cluster"
+old_description: "Learn how to create a cluster using CockroachDB Basic."
+---
+
+import CreateABasicCluster from "/snippets/cockroachcloud/create-a-basic-cluster.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CreateABasicCluster />

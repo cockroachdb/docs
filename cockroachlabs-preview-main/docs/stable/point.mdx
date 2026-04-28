@@ -1,0 +1,80 @@
+---
+title: "POINT"
+old_description: "A POINT is a geometry object; a sizeless location identified by its X and Y coordinates."
+---
+
+A `POINT` is a sizeless location identified by its X and Y coordinates. These coordinates are then translated according to the current [spatial reference system](/docs/v26.1/architecture/glossary#spatial-reference-system) (denoted by an [SRID](/docs/v26.1/architecture/glossary#srid)) to determine what the Point "is", or what it "means" relative to the [other spatial objects](/docs/v26.1/spatial-data-overview#spatial-objects) (if any) in the data set.
+
+You can also store a `POINT` with the following additional dimensions:
+
+- A third dimension coordinate `Z` ( `POINTZ` ).
+- A measure coordinate `M` ( `POINTM` ).
+- Both a third dimension and a measure coordinate ( `POINTZM` ).
+
+The `Z` and `M` dimensions can be accessed or modified using a number of [built-in functions](/docs/v26.1/functions-and-operators#spatial-functions), including:
+
+- `ST_Z`
+- `ST_M`
+- `ST_Affine`
+- `ST_Zmflag`
+- `ST_MakePoint`
+- `ST_MakePointM`
+- `ST_Force3D`
+- `ST_Force3DZ`
+- `ST_Force3DM`
+- `ST_Force4D`
+- `ST_Snap`
+- `ST_SnapToGrid`
+- `ST_RotateZ`
+- `ST_AddMeasure`
+
+Note that CockroachDB's [spatial indexing](/docs/v26.1/spatial-indexes) is still based on the 2D coordinate system. This means that:
+
+- The Z/M dimension is not index accelerated when using spatial predicates.
+- Some spatial functions ignore the Z/M dimension, with transformations discarding the Z/M value.
+
+## Examples
+
+### SQL
+
+A Point can be created in SQL by the `st_point` function.
+
+The statement below creates a Point (using the common [SRID 4326](/docs/v26.1/architecture/glossary#srid)).
+
+```sql
+SELECT ST_SetSRID(ST_Makepoint(0,0), 4326);
+```
+
+```text
+                      st_setsrid
+------------------------------------------------------
+  0101000020E610000000000000000000000000000000000000
+(1 row)
+```
+
+### Well known text
+
+A Point can be created from SQL by calling the `st_geomfromtext` function on a Point definition expressed in the [Well Known Text (WKT)](/docs/v26.1/architecture/glossary#wkt) format as shown below.
+
+```sql
+SELECT ST_GeomFromText('POINT(0 0)');
+```
+
+```text
+               st_geomfromtext
+----------------------------------------------
+  010100000000000000000000000000000000000000
+(1 row)
+```
+
+## See also
+
+- [Spatial tutorial](/docs/v26.1/spatial-tutorial)
+- [Spatial objects](/docs/v26.1/spatial-data-overview#spatial-objects)
+- [LINESTRING](/docs/v26.1/linestring)
+- [POLYGON](/docs/v26.1/polygon)
+- [MULTIPOINT](/docs/v26.1/multipoint)
+- [MULTILINESTRING](/docs/v26.1/multilinestring)
+- [MULTIPOLYGON](/docs/v26.1/multipolygon)
+- [GEOMETRYCOLLECTION](/docs/v26.1/geometrycollection)
+- [Using GeoServer with CockroachDB](/docs/v26.1/geoserver)

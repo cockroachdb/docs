@@ -1,0 +1,177 @@
+---
+title: "CREATE VIEW"
+old_description: "The CREATE VIEW statement creates a view of a table"
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+import { CreateView5 } from "/snippets/syntax-diagrams/CreateView5.jsx";
+
+The `CREATE VIEW` statement creates a new [view](/docs/v25.2/views), which is a stored query represented as a virtual table.
+
+<Note>
+By default, views created in a database cannot reference objects in a different database. To enable cross-database references for views, set the `sql.cross_db_views.enabled` [cluster setting](/docs/v25.2/cluster-settings) to `true`.
+</Note>
+
+<Note>
+The `CREATE VIEW` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.2/online-schema-changes).
+</Note>
+
+## Required privileges
+
+The user must have the `CREATE` [privilege](/docs/v25.2/security-reference/authorization#managing-privileges) on the parent database and the `SELECT` privilege on any table(s) referenced by the view.
+
+## Synopsis
+
+<CreateView5 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>MATERIALIZED</code></td><td>Create a <a href="/docs/v25.2/views#materialized-views">materialized view</a>.</td></tr><tr><td><code>IF NOT EXISTS</code></td><td>Create a new view only if a view of the same name does not already exist. If one does exist, do not return an error.<br/><br/>Note that <code>IF NOT EXISTS</code> checks the view name only. It does not check if an existing view has the same columns as the new view.</td></tr><tr><td><code>OR REPLACE</code></td><td>Create a new view if a view of the same name does not already exist. If a view of the same name already exists, replace that view.<br/><br/>In order to replace an existing view, the new view must have the same columns as the existing view, or more. If the new view has additional columns, the old columns must be a prefix of the new columns. For example, if the existing view has columns <code>a, b</code>, the new view can have an additional column <code>c</code>, but must have columns <code>a, b</code> as a prefix. In this case, <code>CREATE OR REPLACE VIEW myview (a, b, c)</code> would be allowed, but <code>CREATE OR REPLACE VIEW myview (b, a, c)</code> would not.</td></tr><tr><td><code>view&#95;name</code></td><td>The name of the view to create, which must be unique within its database and follow these <a href="/docs/v25.2/keywords-and-identifiers#identifiers">identifier rules</a>. When the parent database is not set as the default, the name must be formatted as <code>database.name</code>.</td></tr><tr><td><code>name&#95;list</code></td><td>An optional, comma-separated list of column names for the view. If specified, these names will be used in the response instead of the columns specified in <code>AS select&#95;stmt</code>.</td></tr><tr><td><code>AS select&#95;stmt</code></td><td>The <a href="/docs/v25.2/selection-queries">selection query</a> to execute when the view is requested.<br/><br/>Note that it is not currently possible to use <code>&#42;</code> to select all columns from a referenced table or view; instead, you must specify specific columns.</td></tr><tr><td><code>AS OF SYSTEM TIME</code></td><td><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v25.2:</td></tr></tbody></table>
+
+When used with `CREATE MATERIALIZED VIEW`, populates the materialized view using historical data. This can reduce [contention](/docs/v25.2/performance-best-practices-overview#transaction-contention) by leveraging [follower reads](/docs/v25.2/follower-reads). The timestamp must be within the [garbage collection window](/docs/v25.2/configure-replication-zones#gc-ttlseconds). For more information, see [`AS OF SYSTEM TIME`](/docs/v25.2/as-of-system-time). `opt_temp` | Defines the view as a session-scoped temporary view. For more information, see [Temporary Views](/docs/v25.2/views#temporary-views).
+
+**Support for temporary views is [in preview](/docs/v25.2/cockroachdb-feature-availability#temporary-objects)**.
+
+## Example
+
+<Tip>
+This example highlights one key benefit to using views: simplifying complex queries. For additional benefits and examples, see [Views](/docs/v25.2/views).
+</Tip>
+
+### Setup
+
+The following examples use the [`startrek` demo database schema](/docs/v25.2/cockroach-demo#datasets).
+
+To follow along, run [`cockroach demo startrek`](/docs/v25.2/cockroach-demo) to start a temporary, in-memory cluster with the `startrek` schema and dataset preloaded:
+
+```shell
+$ cockroach demo startrek
+```
+
+### Create a view
+
+The sample `startrek` database contains two tables, `episodes` and `quotes`. The table also contains a foreign key constraint, between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
+
+```sql
+> SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
+  GROUP BY startrek.episodes.season;
+```
+
+```text
+  season | count
+---------+--------
+       1 |    78
+       2 |    76
+       3 |    46
+(3 rows)
+```
+
+Alternatively, to make it much easier to run this complex query, you could create a view:
+
+```sql
+> CREATE VIEW startrek.quotes_per_season (season, quotes)
+  AS SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
+  GROUP BY startrek.episodes.season;
+```
+
+The view is then represented as a virtual table alongside other tables in the database:
+
+```sql
+> SHOW TABLES FROM startrek;
+```
+
+```text
+  schema_name |    table_name     | type  | estimated_row_count
+--------------+-------------------+-------+----------------------
+  public      | episodes          | table |                  79
+  public      | quotes            | table |                 200
+  public      | quotes_per_season | view  |                   3
+(3 rows)
+```
+
+Executing the query is as easy as `SELECT`ing from the view, as you would from a standard table:
+
+```sql
+> SELECT * FROM startrek.quotes_per_season;
+```
+
+```text
+  season | quotes
+---------+---------
+       3 |     46
+       1 |     78
+       2 |     76
+(3 rows)
+```
+
+### Replace an existing view
+
+You can create a new view, or replace an existing view, with `CREATE OR REPLACE VIEW`:
+
+```sql
+> CREATE OR REPLACE VIEW startrek.quotes_per_season (season, quotes)
+  AS SELECT startrek.episodes.season, count(*)
+  FROM startrek.quotes
+  JOIN startrek.episodes
+  ON startrek.quotes.episode = startrek.episodes.id
+  GROUP BY startrek.episodes.season
+  ORDER BY startrek.episodes.season;
+```
+
+```sql
+> SELECT * FROM startrek.quotes_per_season;
+```
+
+```text
+  season | quotes
+---------+---------
+       3 |     46
+       1 |     78
+       2 |     76
+(3 rows)
+```
+
+### Create a materialized view with historical data using `AS OF SYSTEM TIME`
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v25.2: You can create a materialized view using historical data with the [`AS OF SYSTEM TIME`](/docs/v25.2/as-of-system-time) clause. This is useful for reducing [contention](/docs/v25.2/performance-best-practices-overview#transaction-contention) by performing a [follower read](/docs/v25.2/follower-reads) when populating the view.
+
+<Note>
+Historical data is available only within the [garbage collection window](/docs/v25.2/configure-replication-zones#gc-ttlseconds).
+</Note>
+
+The following example creates a materialized view using the most recent data that is available for [follower reads](/docs/v25.2/follower-reads):
+
+```sql
+CREATE MATERIALIZED VIEW overdrawn_accounts
+  AS SELECT id, balance
+  FROM bank
+  WHERE balance < 0
+  AS OF SYSTEM TIME follower_read_timestamp();
+```
+
+You can also specify an explicit timestamp:
+
+```sql
+CREATE MATERIALIZED VIEW overdrawn_accounts
+  AS SELECT id, balance
+  FROM bank
+  WHERE balance < 0
+  AS OF SYSTEM TIME '-10s';
+```
+
+## See also
+
+- [Selection Queries](/docs/v25.2/selection-queries)
+- [Views](/docs/v25.2/views)
+- [`SHOW CREATE`](/docs/v25.2/show-create)
+- [`ALTER VIEW`](/docs/v25.2/alter-view)
+- [`DROP VIEW`](/docs/v25.2/drop-view)
+- [Online Schema Changes](/docs/v25.2/online-schema-changes)
+- [`AS OF SYSTEM TIME`](/docs/v25.2/as-of-system-time)
+- [Follower Reads](/docs/v25.2/follower-reads)

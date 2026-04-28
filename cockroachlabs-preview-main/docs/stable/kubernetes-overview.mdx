@@ -1,0 +1,34 @@
+---
+title: "Kubernetes Overview"
+old_description: "An overview of deployment and management of a CockroachDB cluster on Kubernetes."
+---
+
+Kubernetes is a portable, extensible platform for managing containerized workloads and services. For a given workload, you provide Kubernetes with a configuration, and Kubernetes applies that configuration to all Kubernetes nodes that are running the application.
+
+<Warning>
+New deployments of CockroachDB on Kubernetes are recommended to use the newer, fully-featured CockroachDB operator that's easier to deploy and supports scaling of multi-region clusters. To migrate an existing deployment to use the CockroachDB operator, read the [Helm](/docs/v26.1/migrate-cockroachdb-kubernetes-helm) and [Public operator](/docs/v26.1/migrate-cockroachdb-kubernetes-operator) migration guides.
+</Warning>
+
+You can also deploy CockroachDB on Kubernetes using the following methods:
+
+- [Public operator](https://github.com/cockroachdb/cockroach-operator)
+
+    <Note>
+    The Public operator is also available on platforms such as [Red Hat OpenShift](/docs/v26.1/deploy-cockroachdb-with-kubernetes-openshift) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
+    </Note>
+- Manual [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets) configuration
+- [Helm](https://helm.sh/) package manager for Kubernetes
+
+## CockroachDB on Kubernetes
+
+This section describes how to:
+
+- [Deploy CockroachDB on a single Kubernetes cluster](/docs/v26.1/deploy-cockroachdb-with-kubernetes)
+- [Deploy CockroachDB on Red Hat OpenShift](/docs/v26.1/deploy-cockroachdb-with-kubernetes-openshift)
+- [Orchestrate CockroachDB across multiple Kubernetes clusters](/docs/v26.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster)
+
+## Kubernetes terminology
+
+Before starting, review some basic Kubernetes terminology. Note that CockroachDB [nodes](/docs/v26.1/architecture/glossary#cockroachdb-architecture-terms) are distinct from Kubernetes "nodes" or "worker nodes".
+
+<table><thead><tr><th>Feature</th><th>Description</th></tr></thead><tbody><tr><td><a href="https://kubernetes.io/docs/concepts/architecture/nodes">node</a></td><td>A physical or virtual machine. In the <a href="/docs/v26.1/deploy-cockroachdb-with-kubernetes">deployment tutorial</a>, you'll create GCE or AWS instances and join them as worker nodes into a single Kubernetes cluster from your local workstation.</td></tr><tr><td><a href="http://kubernetes.io/docs/user-guide/pods">pod</a></td><td>A pod is a group of one of more Docker containers. In the <a href="/docs/v26.1/deploy-cockroachdb-with-kubernetes">deployment tutorial</a>, each pod will run on a separate Kubernetes worker node and include one Docker container running a single CockroachDB node, reflecting our <a href="/docs/v26.1/recommended-production-settings#topology">topology recommendations</a>.</td></tr><tr><td><a href="http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets">StatefulSet</a></td><td>A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.</td></tr><tr><td><a href="http://kubernetes.io/docs/user-guide/persistent-volumes">persistent volume</a></td><td>A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br/><br/>The <a href="/docs/v26.1/deploy-cockroachdb-with-kubernetes">deployment tutorial</a> assumes that dynamic volume provisioning is available. When that is not the case, <a href="http://kubernetes.io/docs/user-guide/persistent-volumes#persistentvolumeclaims">persistent volume claims</a> need to be created manually.</td></tr><tr><td><a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac">RBAC</a></td><td>RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., <code>get</code> or <code>create</code>) on an API resource (e.g., a <code>pod</code>), the client must have a <code>Role</code> that allows it to do so. The <a href="/docs/v26.1/deploy-cockroachdb-with-kubernetes">deployment tutorial</a> creates the RBAC resources necessary for CockroachDB to create and access certificates.</td></tr></tbody></table>

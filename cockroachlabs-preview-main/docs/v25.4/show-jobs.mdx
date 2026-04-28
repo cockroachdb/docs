@@ -1,0 +1,263 @@
+---
+title: "SHOW JOBS"
+old_description: "The SHOW JOBS statement lists all currently active schema changes and backup/restore jobs."
+---
+
+import { ShowJobs6 } from "/snippets/syntax-diagrams/ShowJobs6.jsx";
+
+The `SHOW JOBS` [statement](/docs/v25.4/sql-statements) lists all of the types of long-running tasks your cluster has performed in the last 12 hours, including:
+
+- Schema changes through [`ALTER TABLE`](/docs/v25.4/alter-table), [`DROP DATABASE`](/docs/v25.4/drop-database), [`DROP TABLE`](/docs/v25.4/drop-table), and [`TRUNCATE`](/docs/v25.4/truncate)
+- [`IMPORT`](/docs/v25.4/import-into).
+- Enterprise [`BACKUP`](/docs/v25.4/backup) and [`RESTORE`](/docs/v25.4/restore).
+- [Scheduled backups](/docs/v25.4/manage-a-backup-schedule).
+- [User-created table statistics](/docs/v25.4/create-statistics) created for use by the [cost-based optimizer](/docs/v25.4/cost-based-optimizer). To view [automatic table statistics](/docs/v25.4/cost-based-optimizer#table-statistics), use [`SHOW AUTOMATIC JOBS`](#show-automatic-jobs).
+
+Details for [enterprise changefeeds](/docs/v25.4/create-changefeed), including the [sink URI](/docs/v25.4/create-changefeed#sink-uri) and full table name, are not displayed on running the `SHOW JOBS` statement. For details about [enterprise changefeeds](/docs/v25.4/create-changefeed), including the [sink URI](/docs/v25.4/create-changefeed#sink-uri) and the full table name, use [`SHOW CHANGEFEED JOBS`](#show-changefeed-jobs).
+
+To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a terminal state, use [`SHOW JOBS WHEN COMPLETE`](#show-job-when-complete). The statement will return a row per job ID, which provides details of the job execution. Note that while this statement is blocking, it will time out after 24 hours.
+
+## Considerations
+
+- The `SHOW JOBS` statement shows only long-running tasks.
+- While the `SHOW JOBS WHEN COMPLETE` statement is blocking, it will time out after 24 hours.
+- Garbage collection jobs are created for [dropped tables](/docs/v25.4/drop-table) and [dropped indexes](/docs/v25.4/drop-index), and will execute after the [GC TTL](/docs/v25.4/configure-replication-zones#gc-ttlseconds) has elapsed. These jobs cannot be canceled.
+- CockroachDB automatically retries jobs that fail due to [retry errors](/docs/v25.4/transaction-retry-error-reference) or job coordination failures, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff). The `jobs.registry.retry.initial_delay` [cluster setting](/docs/v25.4/cluster-settings) sets the initial delay between retries and `jobs.registry.retry.max_delay` sets the maximum delay.
+
+## Required privileges
+
+You must have at least one of the following to run `SHOW JOBS`:
+
+- The `VIEWJOB` privilege, which can view all jobs (including `admin` -owned jobs).
+- Be a member of the `admin` role.
+- The [`CONTROLJOB` role option](/docs/v25.4/security-reference/authorization#role-options).
+- For changefeeds, users with the [`CHANGEFEED`](/docs/v25.4/create-changefeed#required-privileges) privilege on a set of tables can view changefeed jobs running on those tables.
+
+## Synopsis
+
+<ShowJobs6 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>SHOW AUTOMATIC JOBS</code></td><td>Show jobs performed for internal CockroachDB operations. See <a href="#show-automatic-jobs">Show automatic jobs</a>.</td></tr><tr><td><code>SHOW JOBS WHEN COMPLETE</code></td><td>Block <code>SHOW JOB</code> until the provided job ID reaches a terminal state. For an example, see <a href="#show-job-when-complete">Show job when complete</a>.</td></tr><tr><td><code>select&#95;stmt</code></td><td>A <a href="/docs/v25.4/selection-queries">selection query</a> that specifies the <code>job&#95;id</code>(s) to view.</td></tr><tr><td><code>job&#95;id</code></td><td>The ID of the job to view.</td></tr><tr><td><code>for&#95;schedules&#95;clause</code></td><td>The schedule you want to view jobs for. You can view jobs for a specific schedule (<code>FOR SCHEDULE id</code>) or view jobs for multiple schedules by nesting a <a href="/docs/v25.4/select-clause"><code>SELECT</code> clause</a> in the statement (<code>FOR SCHEDULES &lt;select&#95;clause&gt;</code>). For an example, see <a href="#show-jobs-for-a-schedule">Show jobs for a schedule</a>.</td></tr><tr><td><code>SHOW CHANGEFEED JOBS</code></td><td>Show details about <a href="/docs/v25.4/create-changefeed">enterprise changefeeds</a>, including the <a href="/docs/v25.4/create-changefeed#sink-uri">sink URI</a> and the full table name. For an example, see <a href="#show-changefeed-jobs">Show changefeed jobs</a>.</td></tr></tbody></table>
+
+## Response
+
+The output of `SHOW JOBS` lists ongoing jobs first, then completed jobs within the last 12 hours. The list of ongoing jobs is sorted by starting time, whereas the list of completed jobs is sorted by finished time.
+
+To view details for jobs older than 12 hours, you can query the [`crdb_internal.jobs`](/docs/v25.4/crdb-internal) table. The `jobs.retention_time` [cluster setting](/docs/v25.4/cluster-settings#setting-jobs-retention-time) defines how long jobs will be retained in the `crdb_internal.jobs` table. When CockroachDB checks the jobs table, it will [garbage collect](/docs/v25.4/architecture/storage-layer#garbage-collection) jobs details for any completed job that has reached the configured retention time. The default value of `jobs.retention_time` is 14 days.
+
+The following fields are returned for each job:
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>job&#95;id</code></td><td>A unique ID to identify each job. This value is used if you want to control jobs (i.e., <a href="/docs/v25.4/pause-job">pause</a>, <a href="/docs/v25.4/resume-job">resume</a>, or <a href="/docs/v25.4/cancel-job">cancel</a> it).</td></tr><tr><td><code>job&#95;type</code></td><td>The type of job: <a href="/docs/v25.4/online-schema-changes"><code>SCHEMA CHANGE</code></a>, <a href="/docs/v25.4/online-schema-changes"><code>NEW SCHEMA CHANGE</code></a>, <a href="/docs/v25.4/ui-key-visualizer"><code>KEY VISUALIZER</code></a>, <a href="/docs/v25.4/upgrade-cockroach-version#overview"><code>MIGRATION</code></a>, <a href="/docs/v25.4/backup"><code>BACKUP</code></a>, <a href="/docs/v25.4/restore"><code>RESTORE</code></a>, <a href="/docs/v25.4/import-into"><code>IMPORT</code></a>, <a href="#show-changefeed-jobs"><code>CHANGEFEED</code></a>, <a href="/docs/v25.4/create-statistics"><code>CREATE STATS</code></a>, <a href="/docs/v25.4/row-level-ttl"><code>ROW LEVEL TTL</code></a>, <a href="/docs/v25.4/physical-cluster-replication-monitoring"><code>REPLICATION STREAM INGESTION</code></a>, <code>REPLICATION STREAM PRODUCER</code>(<a href="/docs/v25.4/physical-cluster-replication-monitoring">physical cluster replication</a> or <a href="/docs/v25.4/logical-data-replication-monitoring">logical data replication</a>), <a href="/docs/v25.4/logical-data-replication-monitoring"><code>LOGICAL REPLICATION</code></a>.<br/><br/>For job types of automatic jobs, see <a href="#show-automatic-jobs">Show automatic jobs</a>.</td></tr><tr><td><code>description</code></td><td>The statement that started the job, or a textual description of the job. When you run <code>SHOW JOBS</code>, the <code>description</code> field is limited to 100 characters. To view the full description for a job, run <code>SHOW JOB &#123;job ID&#125;</code>.</td></tr><tr><td><code>statement</code></td><td>When <code>description</code> is a textual description of the job, the statement that started the job is returned in this column. Currently, this field is populated only for the automatic table statistics jobs.</td></tr><tr><td><code>user&#95;name</code></td><td>The name of the <a href="/docs/v25.4/security-reference/authorization#create-and-manage-users">user</a> who started the job.</td></tr><tr><td><code>status</code></td><td>The job's current state. Possible values: <code>pending</code>, <code>paused</code>, <code>pause-requested</code>, <code>failed</code>, <code>succeeded</code>, <code>canceled</code>, <code>cancel-requested</code>, <code>running</code>, <code>retry-running</code>, <code>retry-reverting</code>, <code>reverting</code>, <code>revert-failed</code>.<br/><br/>Refer to <a href="#job-status">Jobs status</a> for a description of each status.</td></tr><tr><td><code>running&#95;status</code></td><td>The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., <a href="/docs/v25.4/drop-table"><code>DROP TABLE</code></a>, <a href="/docs/v25.4/drop-database"><code>DROP DATABASE</code></a>, or <a href="/docs/v25.4/truncate"><code>TRUNCATE</code></a>). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: <code>waiting for MVCC GC</code>, <code>deleting data</code>, <code>waiting for GC TTL</code>, <code>waiting in DELETE-ONLY</code>, <code>waiting in DELETE-AND-WRITE&#95;ONLY</code>, <code>waiting in MERGING</code>, <code>populating schema</code>, <code>validating schema</code>, or <code>NULL</code> (when the status cannot be determined).<br/><br/>For the <code>SHOW AUTOMATIC JOBS</code> statement, the value of this field is <code>NULL</code>.</td></tr><tr><td><code>created</code></td><td>The <a href="/docs/v25.4/timestamp"><code>TIMESTAMPTZ</code></a> when the job was created.</td></tr><tr><td><code>started</code></td><td>The <a href="/docs/v25.4/timestamp"><code>TIMESTAMPTZ</code></a> when the job first began running .</td></tr><tr><td><code>finished</code></td><td>The <a href="/docs/v25.4/timestamp"><code>TIMESTAMPTZ</code></a> when the job was <code>succeeded</code>, <code>failed</code>, or <code>canceled</code>.</td></tr><tr><td><code>modified</code></td><td>The <a href="/docs/v25.4/timestamp"><code>TIMESTAMPTZ</code></a> when the <a href="/docs/v25.4/backup-architecture#job-creation-phase">job record</a> was last updated with the job's progress, or when the job was paused or resumed.</td></tr><tr><td><code>fraction&#95;completed</code></td><td>The fraction (between <code>0.00</code> and <code>1.00</code>) of the job that's been completed.</td></tr><tr><td><code>error</code></td><td>If the job <code>failed</code> with a terminal error, this column will contain the error generated by the failure.</td></tr><tr><td><code>coordinator&#95;id</code></td><td>The ID of the node running the job.</td></tr><tr><td><code>trace&#95;id</code></td><td>The job's internal <a href="/docs/v25.4/show-trace#trace-description">trace ID</a> for inflight debugging. <strong>Note</strong>: This ID can only be used by the Cockroach Labs support team for internal observability.</td></tr><tr><td><code>execution&#95;errors</code></td><td>A list of any retryable errors that a job may have encountered during its lifetime.</td></tr></tbody></table>
+
+For details of changefeed-specific responses, see [`SHOW CHANGEFEED JOBS`](#show-changefeed-jobs).
+
+### Job status
+
+<table><thead><tr><th>Status</th><th>Description</th></tr></thead><tbody><tr><td><code>pending</code></td><td>Job is created but has not started running.</td></tr><tr><td><code>paused</code></td><td>Job is <a href="/docs/v25.4/pause-job">paused</a>.</td></tr><tr><td><code>pause-requested</code></td><td>A request has been issued to pause the job. The status will move to <code>paused</code> when the node running the job registers the request.</td></tr><tr><td><code>failed</code></td><td>Job failed to complete.</td></tr><tr><td><code>succeeded</code></td><td>Job successfully completed.</td></tr><tr><td><code>canceled</code></td><td>Job was <a href="/docs/v25.4/cancel-job">canceled</a>.</td></tr><tr><td><code>cancel-requested</code></td><td>A request has been issued to cancel the job. The status will move to <code>canceled</code> when the node running the job registers the request.</td></tr><tr><td><code>running</code></td><td>Job is running. A job that is running will be displayed with its percent completion and time remaining, rather than the <code>RUNNING</code> status.</td></tr><tr><td><code>retry-running</code></td><td>Job is retrying another job that failed.</td></tr><tr><td><code>retry-reverting</code></td><td>The retry failed or was canceled and its changes are being reverted.</td></tr><tr><td><code>reverting</code></td><td>Job failed or was canceled and its changes are being reverted.</td></tr><tr><td><code>revert-failed</code></td><td>Job encountered a non-retryable error when reverting the changes. It is necessary to manually clean up a job with this status.</td></tr></tbody></table>
+
+<Note>
+We recommend monitoring paused jobs to protect historical data from [garbage collection](/docs/v25.4/architecture/storage-layer#garbage-collection), or potential data accumulation in the case of [changefeeds](/docs/v25.4/protect-changefeed-data). See [Monitoring paused jobs](/docs/v25.4/pause-job#monitoring-paused-jobs) for detail on metrics to track paused jobs and [protected timestamps](/docs/v25.4/architecture/storage-layer#protected-timestamps).
+</Note>
+
+## Examples
+
+### Show jobs
+
+```sql
+> SHOW JOBS;
+```
+
+```text
+    job_id      | job_type  |               description                      |...
++---------------+-----------+------------------------------------------------+...
+ 27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
+```
+
+### Filter jobs
+
+You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](/docs/v25.4/select-clause) statement, and then filtering the values with the `WHERE` clause.
+
+```sql
+> WITH x as (SHOW JOBS) SELECT * FROM x WHERE job_type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;
+```
+
+```text
+    job_id      | job_type  |              description                       |...
++---------------+-----------+------------------------------------------------+...
+ 27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
+```
+
+### Show automatic jobs
+
+```sql
+> SHOW AUTOMATIC JOBS;
+```
+
+```text
+    job_id           |       job_type                  |                    description                       |...
++--------------------+---------------------------------+------------------------------------------------------+...
+  786475982730133505 | AUTO SPAN CONFIG RECONCILIATION | reconciling span configurations                      |...
+  786483120403382274 | AUTO SQL STATS COMPACTION       | automatic SQL Stats compaction                       |...
+  786476180299579393 | AUTO CREATE STATS               | Table statistics refresh for movr.public.promo_codes |...
+...
+(8 rows)
+```
+
+The job types of automatic jobs are:
+
+- `AUTO SPAN CONFIG RECONCILIATION`: A continuously running job that ensures that all declared [zone configurations](/docs/v25.4/configure-replication-zones) ( `ALTER … CONFIGURE ZONE …` ) are applied. For example, when `num_replicas = 7` is set on a table, the reconciliation job listens in on those changes and then informs the underlying [storage layer](/docs/v25.4/architecture/storage-layer) to maintain 7 replicas for the table.
+- `AUTO SQL STATS COMPACTION`: An hourly job that truncates the internal `system.statement_statistics` and `system.transaction_statistics` table row counts to the value of the `sql.stats.persisted_rows.max` [cluster setting](/docs/v25.4/cluster-settings). Both tables contribute to the [`crdb_internal.statement_statistics`](/docs/v25.4/crdb-internal#statement_statistics) and [`crdb_internal.transaction_statistics`](/docs/v25.4/crdb-internal#transaction_statistics) tables, respectively.
+- `AUTO CREATE STATS`: Creates and updates [table statistics](/docs/v25.4/cost-based-optimizer#table-statistics).
+
+### Filter automatic jobs
+
+You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SELECT`](/docs/v25.4/select-clause) statement, and then filtering the values with the `WHERE` clause.
+
+```sql
+> WITH x AS (SHOW AUTOMATIC JOBS) SELECT * FROM x WHERE status = ('succeeded') ORDER BY created DESC;
+```
+
+```text
+        job_id       |         job_type          |                             description                             |                                         statement                                          | user_name |  status   | ...
+  786483120403382274 | AUTO SQL STATS COMPACTION | automatic SQL Stats compaction                                      |                                                                                            | node      | succeeded | ...
+  786476180299579393 | AUTO CREATE STATS         | Table statistics refresh for movr.public.promo_codes                | CREATE STATISTICS __auto__ FROM [110] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded | ...
+...
+(7 rows)
+```
+
+### Show changefeed jobs
+
+You can display specific fields relating to [changefeed](/docs/v25.4/create-changefeed) jobs by running `SHOW CHANGEFEED JOBS`. These fields include:
+
+- [`high_water_timestamp`](/docs/v25.4/monitor-and-debug-changefeeds#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
+- `readable_high_water_timestamptz`: The `high_water_timestamp` value in [`TIMESTAMPTZ`](/docs/v25.4/timestamp) format for readability.
+- [`sink_uri`](/docs/v25.4/create-changefeed#sink-uri): The destination URI of the configured sink for a changefeed.
+- `full_table_names`: The full [name resolution](/docs/v25.4/sql-name-resolution) for a table. For example, `defaultdb.public.mytable` refers to the `defaultdb` database, the `public` schema, and the table `mytable`.
+- `topics`: The topic name to which [Kafka](/docs/v25.4/changefeed-sinks#kafka) and [Google Cloud Pub/Sub](/docs/v25.4/changefeed-sinks#google-cloud-pub-sub) changefeed messages will emit. If you start a changefeed with the [`split_column_families`](/docs/v25.4/create-changefeed#split-column-families) option targeting a table with [multiple column families](/docs/v25.4/changefeeds-on-tables-with-column-families), the `SHOW CHANGEFEED JOBS` output will show the topic name with a family placeholder. For example, `topic.{family}`.
+- [`format`](/docs/v25.4/create-changefeed#format): The format of the changefeed messages, e.g., `json`, `avro`.
+
+`SHOW CHANGEFEED JOBS` will return all changefeed jobs from the last 12 hours. For more information on the retention of job details, refer to the [Response](#response) section.
+
+```sql
+SHOW CHANGEFEED JOBS;
+```
+
+```text
+    job_id             |                                                                                   description                                                                  | ...
++----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+ ...
+  685724608744325121   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | ...
+  685723987509116929   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | ...
+(2 rows)
+```
+
+To show an individual changefeed:
+
+```sql
+SHOW CHANGEFEED JOB {job_id};
+```
+
+```text
+        job_id        |                                               description                                               | user_name | status  |              running_status              |            created            |            started            | finished |           modified            |      high_water_timestamp      | readable_high_water_timestamptz | error |                          sink_uri                          |         full_table_names         | topics | format
+----------------------+---------------------------------------------------------------------------------------------------------+-----------+---------+------------------------------------------+-------------------------------+-------------------------------+----------+-------------------------------+--------------------------------+---------------------------------+-------+------------------------------------------------------------+----------------------------------+--------+---------
+  1053639803034894337 | CREATE CHANGEFEED FOR TABLE customers INTO 'gs://bucket-name?AUTH=specified&CREDENTIALS=redacted'       | root      | running | running: resolved=1741616141.951323000,0 | 2025-03-10 14:09:10.047524+00 | 2025-03-10 14:09:10.047524+00 | NULL     | 2025-03-10 14:15:44.955653+00 | 1741616141951323000.0000000000 | 2025-03-10 14:15:41.951323+00   |       | gs://bucket-name?AUTH=specified&CREDENTIALS=redacted       | {online_retail.public.customers} | NULL   | json
+(1 row)
+```
+
+Changefeed jobs can be [paused](/docs/v25.4/create-and-configure-changefeeds#pause), [resumed](/docs/v25.4/create-and-configure-changefeeds#resume), [altered](/docs/v25.4/alter-changefeed), or [canceled](/docs/v25.4/create-and-configure-changefeeds#cancel).
+
+### Filter changefeed jobs
+
+You can filter jobs by using `SHOW CHANGEFEED JOBS` as the data source for a [`SELECT`](/docs/v25.4/select-clause) statement, and then filtering the values with a `WHERE` clause. For example, you can filter by the `status` of changefeed jobs:
+
+```sql
+WITH x AS (SHOW CHANGEFEED JOBS) SELECT * FROM x WHERE status = ('paused');
+```
+
+```text
+    job_id           |                                                              description         | ...
++--------------------+----------------------------------------------------------------------------------+ ...
+  685723987509116929 | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent | ...
+(1 row)
+```
+
+You can filter the columns that `SHOW CHANGEFEED JOBS` displays using a `SELECT` statement:
+
+```sql
+SELECT job_id, sink_uri, status, format FROM [SHOW CHANGEFEED JOBS] WHERE job_id = 997306743028908033;
+```
+
+```text
+        job_id       |    sink_uri      | status   | format
+---------------------+------------------+----------+---------
+  997306743028908033 | external://kafka | running  | json
+```
+
+### Show schema changes
+
+You can show just schema change jobs by using `SHOW JOBS` as the data source for a [`SELECT`](/docs/v25.4/select-clause) statement, and then filtering the `job_type` value with the `WHERE` clause:
+
+```sql
+> WITH x AS (SHOW JOBS) SELECT * FROM x WHERE job_type = 'SCHEMA CHANGE';
+```
+
+```text
+    job_id       | job_type        |              description                           |...
++----------------+-----------------+----------------------------------------------------+...
+  27536791415282 |  SCHEMA CHANGE  | ALTER TABLE test.public.foo ADD COLUMN bar VARCHAR |...
+```
+
+[Scheme change](/docs/v25.4/online-schema-changes) jobs can be [paused](/docs/v25.4/pause-job), [resumed](/docs/v25.4/resume-job), and [canceled](/docs/v25.4/cancel-job).
+
+### Show job when complete
+
+To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHOW JOB WHEN COMPLETE`:
+
+```sql
+> SHOW JOB WHEN COMPLETE 27536791415282;
+```
+
+```text
+    job_id       | job_type  |               description                      |...
++----------------+-----------+------------------------------------------------+...
+  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
+```
+
+### Show jobs for a schedule
+
+To view jobs for a specific [backup schedule](/docs/v25.4/create-schedule-for-backup), use the schedule's `id`:
+
+```sql
+> SHOW JOBS FOR SCHEDULE 590204387299262465;
+```
+
+```text
+    job_id           | job_type |              description                                          |...
++--------------------+----------+-------------------------------------------------------------------+...
+  590205481558802434 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup| ...
+(1 row)
+```
+
+You can also view multiple schedules by nesting a [`SELECT` clause](/docs/v25.4/select-clause) that retrieves `id`(s) inside the `SHOW JOBS` statement:
+
+```sql
+> SHOW JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
+```
+
+```text
+    job_id           | job_type  |              description                  |...
++--------------------+-----------+-------------------------------------------+...
+  590204496007299074 | BACKUP    | BACKUP INTO '/2020/09/15-161444.99' IN'   |...
+(2 rows)
+```
+
+## See also
+
+- [`PAUSE JOB`](/docs/v25.4/pause-job)
+- [`RESUME JOB`](/docs/v25.4/pause-job)
+- [`CANCEL JOB`](/docs/v25.4/cancel-job)
+- [`ALTER TABLE`](/docs/v25.4/alter-table)
+- [`BACKUP`](/docs/v25.4/backup)
+- [`RESTORE`](/docs/v25.4/restore)
+- [`CREATE CHANGEFEED`](/docs/v25.4/create-changefeed)

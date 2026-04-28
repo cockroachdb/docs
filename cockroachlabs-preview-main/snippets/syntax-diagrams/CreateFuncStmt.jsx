@@ -1,0 +1,96 @@
+export const CreateFuncStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="295" width="595" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="72" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">CREATE</text><a xlink:href="#opt_or_replace" xlink:title="opt_or_replace">
+<rect height="32" width="116" x="123" y="3"></rect>
+<rect class="nonterminal" height="32" width="116" x="121" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="92" font-size="10" class="nonterminal" x="133" y="21">opt_or_replace</text></a><rect height="32" rx="10" width="92" x="259" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="257" y="1"></rect>
+<text class="terminal" x="267" y="21">FUNCTION</text><a xlink:href="#routine_create_name" xlink:title="routine_create_name">
+<rect height="32" width="156" x="371" y="3"></rect>
+<rect class="nonterminal" height="32" width="156" x="369" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="132" font-size="11" class="nonterminal" x="381" y="21">routine_create_name</text></a><rect height="32" rx="10" width="26" x="547" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="545" y="1"></rect>
+<text class="terminal" x="555" y="21">(</text><a xlink:href="#opt_routine_param_with_default_list" xlink:title="opt_routine_param_with_default_list">
+<rect height="32" width="256" x="148" y="69"></rect>
+<rect class="nonterminal" height="32" width="256" x="146" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="232" font-size="10" class="nonterminal" x="158" y="87">opt_routine_param_with_default_list</text></a><rect height="32" rx="10" width="26" x="424" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="422" y="67"></rect>
+<text class="terminal" x="432" y="87">)</text>
+<rect height="32" rx="10" width="84" x="57" y="151"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="55" y="149"></rect>
+<text class="terminal" x="65" y="169">RETURNS</text><a xlink:href="#opt_return_set" xlink:title="opt_return_set">
+<rect height="32" width="116" x="181" y="151"></rect>
+<rect class="nonterminal" height="32" width="116" x="179" y="149"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="92" font-size="10" class="nonterminal" x="191" y="169">opt_return_set</text></a><a xlink:href="#routine_return_type" xlink:title="routine_return_type">
+<rect height="32" width="148" x="317" y="151"></rect>
+<rect class="nonterminal" height="32" width="148" x="315" y="149"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="124" font-size="10" class="nonterminal" x="327" y="169">routine_return_type</text></a><rect height="32" rx="10" width="62" x="181" y="195"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="179" y="193"></rect>
+<text class="terminal" x="189" y="213">TABLE</text>
+<rect height="32" rx="10" width="26" x="263" y="195"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="261" y="193"></rect>
+<text class="terminal" x="271" y="213">(</text><a xlink:href="#table_func_column_list" xlink:title="table_func_column_list">
+<rect height="32" width="166" x="309" y="195"></rect>
+<rect class="nonterminal" height="32" width="166" x="307" y="193"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="142" font-size="10" class="nonterminal" x="319" y="213">table_func_column_list</text></a><rect height="32" rx="10" width="26" x="495" y="195"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="493" y="193"></rect>
+<text class="terminal" x="503" y="213">)</text><a xlink:href="#opt_create_routine_opt_list" xlink:title="opt_create_routine_opt_list">
+<rect height="32" width="198" x="215" y="261"></rect>
+<rect class="nonterminal" height="32" width="198" x="213" y="259"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="174" font-size="10" class="nonterminal" x="225" y="279">opt_create_routine_opt_list</text></a><a xlink:href="#opt_routine_body" xlink:title="opt_routine_body">
+<rect height="32" width="134" x="433" y="261"></rect>
+<rect class="nonterminal" height="32" width="134" x="431" y="259"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="110" font-size="11" class="nonterminal" x="443" y="279">opt_routine_body</text></a><path class="line" d="m17 17 h2 m0 0 h10 m72 0 h10 m0 0 h10 m116 0 h10 m0 0 h10 m92 0 h10 m0 0 h10 m156 0 h10 m0 0 h10 m26 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-469 66 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m256 0 h10 m0 0 h10 m26 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-457 50 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h494 m-524 0 h20 m504 0 h20 m-544 0 q10 0 10 10 m524 0 q0 -10 10 -10 m-534 10 v12 m524 0 v-12 m-524 12 q0 10 10 10 m504 0 q10 0 10 -10 m-514 10 h10 m84 0 h10 m20 0 h10 m116 0 h10 m0 0 h10 m148 0 h10 m0 0 h56 m-380 0 h20 m360 0 h20 m-400 0 q10 0 10 10 m380 0 q0 -10 10 -10 m-390 10 v24 m380 0 v-24 m-380 24 q0 10 10 10 m360 0 q10 0 10 -10 m-370 10 h10 m62 0 h10 m0 0 h10 m26 0 h10 m0 0 h10 m166 0 h10 m0 0 h10 m26 0 h10 m42 -76 l2 0 m2 0 l2 0 m2 0 l2 0 m-390 142 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m198 0 h10 m0 0 h10 m134 0 h10 m3 0 h-3"></path>
+<polygon points="585 275 593 271 593 279"></polygon>
+<polygon points="585 275 577 271 577 279"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

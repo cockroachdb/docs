@@ -1,0 +1,78 @@
+---
+title: "SHOW LOCALITY"
+old_description: "The SHOW LOCALITY statement returns the locality of the current node."
+---
+
+The `SHOW LOCALITY` [statement](/docs/v23.2/sql-statements) returns the [locality](/docs/v23.2/cockroach-start#locality) of the current node.
+
+If locality was not specified on node startup, the statement returns an empty row.
+
+## Required privileges
+
+No [privileges](/docs/v23.2/security-reference/authorization#managing-privileges) are required to list the locality of the current node.
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v23.2/show-locality/syntax-diagram-a598667bc9d7.svg)
+</Frame>
+
+## Example
+
+### Setup
+
+The following example uses MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](/docs/v23.2/movr).
+
+To follow along, run [`cockroach demo movr`](/docs/v23.2/cockroach-demo) with the `--nodes` and `--demo-locality` tags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database](/docs/v23.2/sql-name-resolution#current-database).
+
+```shell
+$ cockroach demo movr --nodes=3 --demo-locality=region=us-east,az=a:region=us-central,az=b:region=us-west1,az=c
+```
+
+### Show locality
+
+```sql
+> SHOW LOCALITY;
+```
+
+```text
+       locality
++---------------------+
+  region=us-east,az=a
+(1 row)
+```
+
+### Show locality with a built-in function
+
+If you know the locality key, you can use the [`crdb_internal.locality_value`](/docs/v23.2/functions-and-operators#system-info-functions) built-in function to return the locality value for the current node:
+
+```sql
+> SELECT * FROM crdb_internal.locality_value('region');
+```
+
+```text
+  crdb_internal.locality_value
++------------------------------+
+  us-east
+(1 row)
+```
+
+```sql
+> SELECT * FROM crdb_internal.locality_value('az');
+```
+
+```text
+  crdb_internal.locality_value
++------------------------------+
+  a
+(1 row)
+```
+
+For a more extensive example, see [Create a table with node locality information](/docs/v23.2/cockroach-start#create-a-table-with-node-locality-information).
+
+## See also
+
+- [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v23.2/demo-low-latency-multi-region-deployment)
+- [Locality](/docs/v23.2/cockroach-start#locality)
+- [Orchestrated Deployment](/docs/v23.2/kubernetes-overview)
+- [Manual Deployment](/docs/v23.2/manual-deployment)

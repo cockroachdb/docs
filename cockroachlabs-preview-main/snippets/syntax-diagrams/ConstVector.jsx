@@ -1,0 +1,102 @@
+export const ConstVector = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="517" width="437" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="56" x="51" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="49" y="1"></rect>
+<text class="terminal" x="59" y="21">YEAR</text>
+<rect height="32" rx="10" width="38" x="147" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="145" y="33"></rect>
+<text class="terminal" x="155" y="53">TO</text>
+<rect height="32" rx="10" width="70" x="205" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="203" y="33"></rect>
+<text class="terminal" x="213" y="53">MONTH</text>
+<rect height="32" rx="10" width="70" x="51" y="79"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="49" y="77"></rect>
+<text class="terminal" x="59" y="97">MONTH</text>
+<rect height="32" rx="10" width="48" x="51" y="123"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="49" y="121"></rect>
+<text class="terminal" x="59" y="141">DAY</text>
+<rect height="32" rx="10" width="38" x="139" y="155"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="137" y="153"></rect>
+<text class="terminal" x="147" y="173">TO</text>
+<rect height="32" rx="10" width="60" x="217" y="155"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="215" y="153"></rect>
+<text class="terminal" x="225" y="173">HOUR</text>
+<rect height="32" rx="10" width="74" x="217" y="199"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="215" y="197"></rect>
+<text class="terminal" x="225" y="217">MINUTE</text><a xlink:href="#interval_second" xlink:title="interval_second">
+<rect height="32" width="120" x="217" y="243"></rect>
+<rect class="nonterminal" height="32" width="120" x="215" y="241"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="96" font-size="10" class="nonterminal" x="227" y="261">interval_second</text></a><rect height="32" rx="10" width="60" x="51" y="287"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="49" y="285"></rect>
+<text class="terminal" x="59" y="305">HOUR</text>
+<rect height="32" rx="10" width="38" x="151" y="319"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="149" y="317"></rect>
+<text class="terminal" x="159" y="337">TO</text>
+<rect height="32" rx="10" width="74" x="229" y="319"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="227" y="317"></rect>
+<text class="terminal" x="237" y="337">MINUTE</text><a xlink:href="#interval_second" xlink:title="interval_second">
+<rect height="32" width="120" x="229" y="363"></rect>
+<rect class="nonterminal" height="32" width="120" x="227" y="361"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="96" font-size="10" class="nonterminal" x="239" y="381">interval_second</text></a><rect height="32" rx="10" width="74" x="51" y="407"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="49" y="405"></rect>
+<text class="terminal" x="59" y="425">MINUTE</text>
+<rect height="32" rx="10" width="38" x="165" y="439"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="163" y="437"></rect>
+<text class="terminal" x="173" y="457">TO</text><a xlink:href="#interval_second" xlink:title="interval_second">
+<rect height="32" width="120" x="223" y="439"></rect>
+<rect class="nonterminal" height="32" width="120" x="221" y="437"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="96" font-size="10" class="nonterminal" x="233" y="457">interval_second</text></a><a xlink:href="#interval_second" xlink:title="interval_second">
+<rect height="32" width="120" x="51" y="483"></rect>
+<rect class="nonterminal" height="32" width="120" x="49" y="481"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="96" font-size="10" class="nonterminal" x="61" y="501">interval_second</text></a><path class="line" d="m17 17 h2 m20 0 h10 m56 0 h10 m20 0 h10 m0 0 h138 m-168 0 h20 m148 0 h20 m-188 0 q10 0 10 10 m168 0 q0 -10 10 -10 m-178 10 v12 m168 0 v-12 m-168 12 q0 10 10 10 m148 0 q10 0 10 -10 m-158 10 h10 m38 0 h10 m0 0 h10 m70 0 h10 m20 -32 h94 m-378 0 h20 m358 0 h20 m-398 0 q10 0 10 10 m378 0 q0 -10 10 -10 m-388 10 v56 m378 0 v-56 m-378 56 q0 10 10 10 m358 0 q10 0 10 -10 m-368 10 h10 m70 0 h10 m0 0 h268 m-368 -10 v20 m378 0 v-20 m-378 20 v24 m378 0 v-24 m-378 24 q0 10 10 10 m358 0 q10 0 10 -10 m-368 10 h10 m48 0 h10 m20 0 h10 m0 0 h228 m-258 0 h20 m238 0 h20 m-278 0 q10 0 10 10 m258 0 q0 -10 10 -10 m-268 10 v12 m258 0 v-12 m-258 12 q0 10 10 10 m238 0 q10 0 10 -10 m-248 10 h10 m38 0 h10 m20 0 h10 m60 0 h10 m0 0 h60 m-160 0 h20 m140 0 h20 m-180 0 q10 0 10 10 m160 0 q0 -10 10 -10 m-170 10 v24 m160 0 v-24 m-160 24 q0 10 10 10 m140 0 q10 0 10 -10 m-150 10 h10 m74 0 h10 m0 0 h46 m-150 -10 v20 m160 0 v-20 m-160 20 v24 m160 0 v-24 m-160 24 q0 10 10 10 m140 0 q10 0 10 -10 m-150 10 h10 m120 0 h10 m40 -120 h12 m-368 -10 v20 m378 0 v-20 m-378 20 v144 m378 0 v-144 m-378 144 q0 10 10 10 m358 0 q10 0 10 -10 m-368 10 h10 m60 0 h10 m20 0 h10 m0 0 h228 m-258 0 h20 m238 0 h20 m-278 0 q10 0 10 10 m258 0 q0 -10 10 -10 m-268 10 v12 m258 0 v-12 m-258 12 q0 10 10 10 m238 0 q10 0 10 -10 m-248 10 h10 m38 0 h10 m20 0 h10 m74 0 h10 m0 0 h46 m-160 0 h20 m140 0 h20 m-180 0 q10 0 10 10 m160 0 q0 -10 10 -10 m-170 10 v24 m160 0 v-24 m-160 24 q0 10 10 10 m140 0 q10 0 10 -10 m-150 10 h10 m120 0 h10 m-328 -86 v20 m378 0 v-20 m-378 20 v100 m378 0 v-100 m-378 100 q0 10 10 10 m358 0 q10 0 10 -10 m-368 10 h10 m74 0 h10 m20 0 h10 m0 0 h188 m-218 0 h20 m198 0 h20 m-238 0 q10 0 10 10 m218 0 q0 -10 10 -10 m-228 10 v12 m218 0 v-12 m-218 12 q0 10 10 10 m198 0 q10 0 10 -10 m-208 10 h10 m38 0 h10 m0 0 h10 m120 0 h10 m20 -32 h26 m-368 -10 v20 m378 0 v-20 m-378 20 v56 m378 0 v-56 m-378 56 q0 10 10 10 m358 0 q10 0 10 -10 m-368 10 h10 m120 0 h10 m0 0 h218 m23 -480 h-3"></path>
+<polygon points="427 17 435 13 435 21"></polygon>
+<polygon points="427 17 419 13 419 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

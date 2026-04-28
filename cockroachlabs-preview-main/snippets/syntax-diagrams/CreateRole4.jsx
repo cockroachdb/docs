@@ -1,0 +1,80 @@
+export const CreateRole4 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="167" width="595" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="72" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">CREATE</text>
+<rect height="32" rx="10" width="56" x="143" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="141" y="1"></rect>
+<text class="terminal" x="151" y="21">ROLE</text>
+<rect height="32" rx="10" width="56" x="143" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="141" y="45"></rect>
+<text class="terminal" x="151" y="65">USER</text>
+<rect height="32" rx="10" width="34" x="259" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="34" x="257" y="33"></rect>
+<text class="terminal" x="267" y="53">IF</text>
+<rect height="32" rx="10" width="48" x="313" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="311" y="33"></rect>
+<text class="terminal" x="321" y="53">NOT</text>
+<rect height="32" rx="10" width="70" x="381" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="379" y="33"></rect>
+<text class="terminal" x="389" y="53">EXISTS</text><a xlink:href="/docs/v24.3/sql-grammar#role_spec" xlink:title="role_spec">
+<rect height="32" width="82" x="491" y="3"></rect>
+<rect class="nonterminal" height="32" width="82" x="489" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="501" y="21">role_spec</text></a><a xlink:href="/docs/v24.3/sql-grammar#opt_with" xlink:title="opt_with">
+<rect height="32" width="74" x="353" y="133"></rect>
+<rect class="nonterminal" height="32" width="74" x="351" y="131"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="50" font-size="10" class="nonterminal" x="363" y="151">opt_with</text></a><a xlink:href="/docs/v24.3/sql-grammar#role_options" xlink:title="role_options">
+<rect height="32" width="100" x="447" y="133"></rect>
+<rect class="nonterminal" height="32" width="100" x="445" y="131"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="76" font-size="10" class="nonterminal" x="457" y="151">role_options</text></a><path class="line" d="m17 17 h2 m0 0 h10 m72 0 h10 m20 0 h10 m56 0 h10 m-96 0 h20 m76 0 h20 m-116 0 q10 0 10 10 m96 0 q0 -10 10 -10 m-106 10 v24 m96 0 v-24 m-96 24 q0 10 10 10 m76 0 q10 0 10 -10 m-86 10 h10 m56 0 h10 m40 -44 h10 m0 0 h202 m-232 0 h20 m212 0 h20 m-252 0 q10 0 10 10 m232 0 q0 -10 10 -10 m-242 10 v12 m232 0 v-12 m-232 12 q0 10 10 10 m212 0 q10 0 10 -10 m-222 10 h10 m34 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m82 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-284 98 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h204 m-234 0 h20 m214 0 h20 m-254 0 q10 0 10 10 m234 0 q0 -10 10 -10 m-244 10 v12 m234 0 v-12 m-234 12 q0 10 10 10 m214 0 q10 0 10 -10 m-224 10 h10 m74 0 h10 m0 0 h10 m100 0 h10 m23 -32 h-3"></path>
+<polygon points="585 115 593 111 593 119"></polygon>
+<polygon points="585 115 577 111 577 119"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

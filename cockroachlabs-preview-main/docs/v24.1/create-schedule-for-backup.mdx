@@ -1,0 +1,304 @@
+---
+title: "CREATE SCHEDULE FOR BACKUP"
+old_description: "The CREATE SCHEDULE FOR BACKUP statement creates a schedule for periodic backups."
+---
+
+The `CREATE SCHEDULE FOR BACKUP` [statement](/docs/v24.1/sql-statements) creates a schedule for periodic [backups](/docs/v24.1/backup).
+
+For more information about creating, managing, monitoring, and restoring from a scheduled backup, see [Manage a Backup Schedule](/docs/v24.1/manage-a-backup-schedule).
+
+## Required privileges
+
+<Note>
+Starting in v22.2, CockroachDB introduces a new [system-level privilege model](/docs/v24.1/security-reference/authorization#supported-privileges) that provides finer control over a user's privilege to work with the database, including taking backups.
+
+There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) for backups in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all new and existing backups.
+</Note>
+
+You can [grant](/docs/v24.1/grant#grant-privileges-on-specific-tables-in-a-database) the `BACKUP` privilege to a user or role depending on the type of backup:
+
+<table><thead><tr><th>Backup</th><th>Privilege</th></tr></thead><tbody><tr><td>Cluster</td><td>Grant a user the <code>BACKUP</code><a href="/docs/v24.1/security-reference/authorization#supported-privileges">system-level privilege</a>. For example, <code>GRANT SYSTEM BACKUP TO user;</code>.</td></tr><tr><td>Database</td><td>Grant a user the <code>BACKUP</code> privilege on the target database. For example, <code>GRANT BACKUP ON DATABASE test&#95;db TO user;</code>.</td></tr><tr><td>Table</td><td>Grant a user the <code>BACKUP</code> privilege at the table level. This gives the user the privilege to back up the schema and all user-defined types that are associated with the table. For example, <code>GRANT BACKUP ON TABLE test&#95;db.table TO user;</code>.</td></tr></tbody></table>
+
+The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted database-level `BACKUP` privileges, this does not give you the privilege to back up a table. If you need the `BACKUP` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](/docs/v24.1/security-reference/authorization#default-privileges). You can add `BACKUP` to the user or role's default privileges with [`ALTER DEFAULT PRIVILEGES`](/docs/v24.1/alter-default-privileges#grant-default-privileges-to-a-specific-role).
+
+<Note>
+You can grant the `BACKUP` privilege to a user or role **without** the `SELECT` privilege on a table. As a result, these users will be able to take backups, but they will not be able to run a `SELECT` query on that data directly. However, these users could still read this data indirectly, by restoring it from any backups they produce.
+</Note>
+
+Members of the [`admin` role](/docs/v24.1/security-reference/authorization#admin-role) can run all three types of backups (cluster, database, and table) without the need to grant a specific `BACKUP` privilege. However, we recommend using the `BACKUP` privilege model to create users or roles and grant them `BACKUP` privileges as necessary for stronger access control.
+
+### Privileges for managing a backup job
+
+To manage a backup job with [`PAUSE JOB`](/docs/v24.1/pause-job), [`RESUME JOB`](/docs/v24.1/resume-job), or [`CANCEL JOB`](/docs/v24.1/cancel-job), users must have at least one of the following:
+
+- Be a member of the [`admin` role](/docs/v24.1/security-reference/authorization#admin-role).
+- The [`CONTROLJOB` role option](/docs/v24.1/security-reference/authorization#role-options).
+
+To view a backup job with [`SHOW JOB`](/docs/v24.1/show-jobs), users must have at least one of the following:
+
+- The [`VIEWJOB` privilege](/docs/v24.1/security-reference/authorization#supported-privileges), which allows you to view all jobs (including `admin` -owned jobs).
+- Be a member of the [`admin` role](/docs/v24.1/security-reference/authorization#admin-role).
+- The [`CONTROLJOB` role option](/docs/v24.1/security-reference/authorization#role-options).
+
+See [`GRANT`](/docs/v24.1/grant) for detail on granting privileges to a role or user.
+
+## Required privileges using the legacy privilege model
+
+The following details the legacy privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release of CockroachDB:
+
+- [Full cluster backups](/docs/v24.1/take-full-and-incremental-backups#full-backups) can only be run by members of the [`admin` role](/docs/v24.1/security-reference/authorization#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other backups, the user must have [read access](/docs/v24.1/security-reference/authorization#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
+
+See the [Required privileges](#required-privileges) section for the updated privilege model.
+
+## Destination privileges
+
+You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege](/docs/v24.1/security-reference/authorization#supported-privileges).
+
+Either the `EXTERNALIOIMPLICITACCESS` system-level privilege or the [`admin`](/docs/v24.1/security-reference/authorization#admin-role) role is required for the following scenarios:
+
+- Interacting with a cloud storage resource using [`IMPLICIT` authentication](/docs/v24.1/cloud-storage-authentication).
+- Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints) on S3.
+- Using the [`cockroach nodelocal upload`](/docs/v24.1/cockroach-nodelocal-upload) command.
+
+No special privilege is required for:
+
+- Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
+- Using [Userfile](/docs/v24.1/use-userfile-storage) storage.
+
+We recommend using [cloud storage](/docs/v24.1/use-cloud-storage). You also need to ensure that the permissions at your storage destination are configured for the operation. See [Storage Permissions](/docs/v24.1/use-cloud-storage#storage-permissions) for a list of the necessary permissions that each bulk operation requires.
+
+## Synopsis
+
+```text
+CREATE SCHEDULE [IF NOT EXISTS] <label>
+FOR BACKUP [<targets>] INTO <location>
+[WITH <backup_options>[=<value>] [, ...]]
+RECURRING [crontab] [FULL BACKUP <crontab|ALWAYS>]
+[WITH SCHEDULE OPTIONS <schedule_option>[= <value>] [, ...] ]
+
+Targets:
+   Empty targets list: backup full cluster.
+   TABLE <table_pattern> [, ...]
+   DATABASE <database_name> [, ...]
+```
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF NOT EXISTS</code></td><td>Use to specify that a scheduled backup should not be created if the <a href="#label"><code>label</code></a> already exists. Produces an error if the schedule label already exists, or if the <code>label</code> is not specified.</td></tr><tr><td><a></a><code>label</code></td><td>The name used to identify the backup schedule. This is optional and does not need to be unique. If not provided, the schedule will be assigned the name <code>BACKUP</code>.</td></tr><tr><td><code>targets</code></td><td>The targets you want to back up:<br/><br/>- <a href="#create-a-scheduled-backup-for-a-cluster">cluster</a><code>&#91; &#93;</code><br/><br/>- <a href="#create-a-scheduled-backup-for-a-database">database</a><code>DATABASE &lt;database&#95;name&gt; &#91;, ...&#93;</code><br/><br/>- <a href="#create-a-scheduled-backup-for-a-table">table</a><code>TABLE &lt;table&#95;pattern&gt; &#91;, ...&#93;</code></td></tr><tr><td><code>table&#95;pattern</code></td><td>The <a href="/docs/v24.1/create-table">table(s)</a> or <a href="/docs/v24.1/views">view(s)</a> you want to back up.</td></tr><tr><td><code>database&#95;name</code></td><td>The name of the <a href="/docs/v24.1/create-database">database(s)</a> you want to back up (i.e., create backups of all tables and views in the database).</td></tr><tr><td><code>location</code></td><td>The URI where you want to store the backup. The backup files will be stored in year &gt; month &gt; day subdirectories. The location can be <a href="/docs/v24.1/use-cloud-storage">cloud storage</a>, or <code>nodelocal</code>.<br/><br/><b>Note:</b> If you want to schedule a backup using temporary credentials, we recommend that you use <code>implicit</code> authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.</td></tr><tr><td><code>backup&#95;options</code></td><td>Control the backup behavior with a comma-separated list of <a href="#backup-options">options</a>.</td></tr><tr><td><code>RECURRING crontab</code></td><td>Specifies when the backup should be taken. A separate schedule may be created automatically to write full backups at a regular cadence, depending on the frequency of the incremental backups. You can likewise modify this separate schedule with <a href="/docs/v24.1/alter-backup-schedule"><code>ALTER BACKUP SCHEDULE</code></a>. The schedule is specified as a <a href="/docs/v24.1/string"><code>STRING</code></a> in <a href="https://wikipedia.org/wiki/Cron">crontab format</a>. All times in UTC.<br/><br/>Example: <code>'@daily'</code> (run daily at midnight)</td></tr><tr><td><a></a><code>FULL BACKUP crontab</code></td><td>Specifies when to take a new full backup. The schedule is specified as a <a href="/docs/v24.1/string"><code>STRING</code></a> in <a href="https://wikipedia.org/wiki/Cron">crontab format</a> or as <code>ALWAYS</code>.<br/><br/>If <code>FULL BACKUP ALWAYS</code> is specified, then the backups triggered by the <code>RECURRING</code> clause will always be full backups.<br/><code>ALWAYS</code> is the only accepted value of <code>FULL BACKUP</code>.<br/><br/>If the <code>FULL BACKUP</code> clause is omitted, CockroachDB will default to the following full backup schedule:<br/><br/>- <code>RECURRING</code> &lt;= 1 hour: Default to <code>FULL BACKUP '@daily'</code><br/><br/>- <code>RECURRING</code> &gt; 1 hour and &lt;= 1 day: Default to <code>FULL BACKUP '@weekly'</code><br/><br/>- Otherwise: Default to <code>FULL BACKUP ALWAYS</code></td></tr><tr><td><code>WITH SCHEDULE OPTIONS schedule&#95;option</code></td><td>Control the schedule behavior with a comma-separated list of <a href="#schedule-options">these options</a>.</td></tr></tbody></table>
+
+<Note>
+For schedules that include both [full and incremental backups](/docs/v24.1/take-full-and-incremental-backups), CockroachDB will create two schedules (one for each type). See [Incremental backup schedules](#incremental-backup-schedules) for more information.
+</Note>
+
+### Backup options
+
+<table><thead><tr><th>Option</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>revision&#95;history</code><a></a></td><td><a href="/docs/v24.1/bool"><code>BOOL</code></a> / None</td><td>Create a backup with full <a href="/docs/v24.1/take-backups-with-revision-history-and-restore-from-a-point-in-time">revision history</a>, which records every change made to the cluster within the garbage collection period leading up to and including the given timestamp.<br/><br/>You can specify a backup with revision history without any value e.g., <code>WITH revision&#95;history</code>. Or, you can explicitly define <code>WITH revision&#95;history = 'true' / 'false'</code>. The <code>revision&#95;history</code> option defaults to <code>true</code> when used with <a href="/docs/v24.1/backup"><code>BACKUP</code></a> or <code>CREATE SCHEDULE FOR BACKUP</code>. A value is <strong>required</strong> when using <code>ALTER BACKUP SCHEDULE</code> to <a href="/docs/v24.1/alter-backup-schedule">alter a backup schedule</a>.</td></tr><tr><td><code>encryption&#95;passphrase</code><a></a></td><td><a href="/docs/v24.1/string"><code>STRING</code></a></td><td>The passphrase used to <a href="/docs/v24.1/take-and-restore-encrypted-backups">encrypt the files</a> (<code>BACKUP</code> manifest and data files) that the <code>BACKUP</code> statement generates. This same passphrase is needed to decrypt the file when it is used to <a href="/docs/v24.1/take-and-restore-encrypted-backups">restore</a> and to list the contents of the backup when using <a href="/docs/v24.1/show-backup"><code>SHOW BACKUP</code></a>. There is no practical limit on the length of the passphrase.</td></tr><tr><td><code>detached</code><a></a></td><td><a href="/docs/v24.1/bool"><code>BOOL</code></a> / None</td><td><strong>Note:</strong> Backups running on a schedule have the <code>detached</code> option applied implicitly. Therefore, you cannot modify this option for scheduled backups.<br/><br/>When a backup runs in <code>detached</code> mode, it will execute asynchronously. The job ID will be returned after the backup <a href="/docs/v24.1/backup-architecture#job-creation-phase">job creation</a> completes. Note that with <code>detached</code> specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the <a href="/docs/v24.1/backup#run-a-backup-asynchronously">example</a>. To check on the job status, use the <a href="/docs/v24.1/show-jobs"><code>SHOW JOBS</code></a> statement.</td></tr><tr><td><code>EXECUTION LOCALITY</code></td><td>Key-value pairs</td><td>Restricts the execution of the backup to nodes that match the defined locality filter requirements. For example, <code>WITH EXECUTION LOCALITY = 'region=us-west-1a,cloud=aws'</code>.<br/><br/>Refer to <a href="/docs/v24.1/take-locality-restricted-backups">Take Locality-restricted backups</a> for usage and reference detail.</td></tr><tr><td><code>kms</code></td><td><a href="/docs/v24.1/string"><code>STRING</code></a></td><td>The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to <a href="/docs/v24.1/take-and-restore-encrypted-backups#examples">take and restore encrypted backups</a>. Refer to <a href="/docs/v24.1/take-and-restore-encrypted-backups#uri-formats">URI Formats</a>. The key or keys are used to encrypt the manifest and data files that the <code>BACKUP</code> statement generates and to decrypt them during a <a href="/docs/v24.1/take-and-restore-encrypted-backups#examples">restore</a> operation, and to list the contents of the backup when using <a href="/docs/v24.1/show-backup"><code>SHOW BACKUP</code></a>.<br/><br/>AWS KMS, Google Cloud KMS, and Azure Key Vault are supported.</td></tr><tr><td><code>incremental&#95;location</code><a></a></td><td><a href="/docs/v24.1/string"><code>STRING</code></a></td><td>Create an incremental backup in a different location than the default incremental backup location.<br/><br/><code>WITH incremental&#95;location = 'explicit&#95;incrementals&#95;URI'</code><br/><br/>See <a href="/docs/v24.1/take-full-and-incremental-backups#incremental-backups-with-explicitly-specified-destinations">Incremental backups with explicitly specified destinations</a> for usage.<br/><br/><strong>Warning:</strong> The <code>incremental&#95;location</code> parameter is deprecated as of v25.4 and will be removed in a future release. Until the parameter is removed, you can continue to work with existing backups that use a custom <code>incremental&#95;location</code>.</td></tr></tbody></table>
+
+### Schedule options
+
+<table><thead><tr><th>Option</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>first&#95;run</code></td><td><a href="/docs/v24.1/timestamp"><code>TIMESTAMPTZ</code></a> / <code>now</code></td><td>Execute the schedule at the specified time in the future. If not specified, the default behavior is to execute the schedule based on its next <code>RECURRING</code> time.</td></tr><tr><td><code>on&#95;execution&#95;failure</code></td><td><code>retry</code> / <code>reschedule</code> / <code>pause</code></td><td>If an error occurs during the backup execution, do the following:<br/><br/>- <code>retry</code>: Retry the backup right away.<br/><br/>- <code>reschedule</code>: Retry the backup by rescheduling it based on the <code>RECURRING</code> expression.<br/><br/>- <code>pause</code>: Pause the schedule. This requires manual intervention to <a href="/docs/v24.1/resume-schedules">resume the schedule</a>.<br/><br/><strong>Default</strong>: <code>reschedule</code></td></tr><tr><td><a></a><code>on&#95;previous&#95;running</code></td><td><code>start</code> / <code>skip</code> / <code>wait</code></td><td>If the previous backup started by the schedule is still running, do the following:<br/><br/>- <code>start</code>: Start the new backup anyway, even if the previous one is still running.<br/><br/>- <code>skip</code>: Skip the new backup and run the next backup based on the <code>RECURRING</code> expression.<br/><br/>- <code>wait</code>: Wait for the previous backup to complete.<br/><br/><strong>Default</strong>: <code>wait</code>. The option affects backups started by the full backup schedule only. Incremental backups are always set to <code>wait</code>.</td></tr><tr><td><code>ignore&#95;existing&#95;backups</code></td><td>N/A</td><td>If backups were already created in the <a href="/docs/v24.1/use-cloud-storage">destination</a> that the new schedule references, this option must be passed to acknowledge that the new schedule may be backing up different objects.</td></tr><tr><td><code>updates&#95;cluster&#95;last&#95;backup&#95;time&#95;metric</code></td><td>N/A</td><td>(<a href="/docs/v24.1/security-reference/authorization#admin-role"><code>admin</code> privileges</a> required) When set during backup schedule creation, this option updates the <a href="/docs/v24.1/backup-and-restore-monitoring#available-metrics"><code>schedules&#95;backup&#95;last&#95;completed&#95;time</code></a> metric for the scheduled backup.</td></tr></tbody></table>
+
+## Considerations
+
+- We recommend that you schedule your backups at a cadence that your cluster can keep up with; for example, if a previous backup is still running when it is time to start the next one, adjust the schedule so the backups do not end up falling behind or update the [`on_previous_running` option](#on-previous-running-option).
+- To prevent scheduled backups from falling behind, first determine how long a single backup takes and use that as your starting point for the schedule's cadence.
+- Ensure you are monitoring your backup schedule (e.g., [Prometheus](/docs/v24.1/monitor-cockroachdb-with-prometheus) ) and alerting metrics that will confirm that your backups are completing, but also that they're not running more concurrently than you expect.
+- The `AS OF SYSTEM TIME` clause cannot be set on scheduled backups. Scheduled backups are started shortly after the scheduled time has passed by an internal polling mechanism and are automatically run with `AS OF SYSTEM TIME` set to the time at which the backup was scheduled to run.
+- If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
+
+### Protected timestamps and scheduled backups
+
+Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of [protected timestamps](/docs/v24.1/architecture/storage-layer#protected-timestamps) means that you can run scheduled backups at a cadence independent from the [GC TTL](/docs/v24.1/configure-replication-zones#gc-ttlseconds) of the data. This is unlike non-scheduled backups that are tightly coupled to the GC TTL. See [Garbage collection and backups](/docs/v24.1/take-full-and-incremental-backups#garbage-collection-and-backups) for more detail.
+
+The data being backed up will not be eligible for garbage collection until a successful backup completes. At this point, the schedule will release the existing protected timestamp record and write a new one to protect data for the next backup that is scheduled to run. It is important to consider that when a scheduled backup fails there will be an accumulation of data until the next successful backup. Resolving the backup failure or [dropping the backup schedule](/docs/v24.1/drop-schedules) will make the data eligible for garbage collection once again.
+
+You can also use the `exclude_data_from_backup` option with a scheduled backup as a way to prevent protected timestamps from prolonging garbage collection on a table. See the example [Exclude a table's data from backups](/docs/v24.1/take-full-and-incremental-backups#exclude-a-tables-data-from-backups) for usage information.
+
+We recommend monitoring your backup schedule to alert for failed backups:
+
+- See the [Backup and Restore Monitoring](/docs/v24.1/backup-and-restore-monitoring) page for a general overview and list of metrics available for backup, scheduled backup, and restore jobs.
+- See [Set up monitoring for the backup schedule](/docs/v24.1/manage-a-backup-schedule#set-up-monitoring-for-the-backup-schedule) for metrics and monitoring backup schedules specifically.
+
+### Incremental backup schedules
+
+The incremental backup schedule is created in a paused state, and is only un-paused on completion of the first, scheduled full backup. This ensures that the first incremental backup is only executed once it has a full backup to build a chain from. Thereafter, the incremental backups are scheduled to run at its specified cadence.
+
+Incremental backups always append to the latest, complete full backup. An incremental backup can run concurrently with a full backup, but in such a situation it will continue to append to the previous full backup that has already completed.
+
+An incremental backup will always wait for another incremental backup started by the same schedule to complete before running. This prevents incremental backups from backing up overlapping spans of time in the same backup chain. To enforce this, backup schedules created or altered using the [`on_previous_running` option](#on-previous-running-option) will have the full backup schedule created with the user specified option, but will **always default** the incremental backup schedule option to `on_previous_running = wait`.
+
+## View and control backup schedules
+
+Once a backup schedule is successfully created, you can do the following:
+
+<table><thead><tr><th>Action</th><th>SQL Statement</th></tr></thead><tbody><tr><td>View the schedule</td><td><a href="/docs/v24.1/show-schedules"><code>SHOW SCHEDULES</code></a></td></tr><tr><td>Pause the schedule</td><td><a href="/docs/v24.1/pause-schedules"><code>PAUSE SCHEDULES</code></a></td></tr><tr><td>Resume the schedule</td><td><a href="/docs/v24.1/resume-schedules"><code>RESUME SCHEDULES</code></a></td></tr><tr><td>Drop the schedule</td><td><a href="/docs/v24.1/drop-schedules"><code>DROP SCHEDULES</code></a></td></tr><tr><td>Alter the schedule</td><td><a href="/docs/v24.1/alter-backup-schedule"><code>ALTER BACKUP SCHEDULE</code></a></td></tr></tbody></table>
+
+## View and control a backup initiated by a schedule
+
+After CockroachDB successfully initiates a scheduled backup, it registers the backup as a job. You can do the following with each individual backup job:
+
+<table><thead><tr><th>Action</th><th>SQL Statement</th></tr></thead><tbody><tr><td>View the backup status</td><td><a href="/docs/v24.1/show-jobs"><code>SHOW JOBS</code></a></td></tr><tr><td>Pause the backup</td><td><a href="/docs/v24.1/pause-job"><code>PAUSE JOB</code></a></td></tr><tr><td>Resume the backup</td><td><a href="/docs/v24.1/resume-job"><code>RESUME JOB</code></a></td></tr><tr><td>Cancel the backup</td><td><a href="/docs/v24.1/cancel-job"><code>CANCEL JOB</code></a></td></tr></tbody></table>
+
+You can also visit the [**Jobs** page](/docs/v24.1/ui-jobs-page) of the DB Console to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
+
+## Examples
+
+### Create a schedule for full backups only
+
+To schedule full backups of clusters, databases, or tables, use the `FULL BACKUP ALWAYS` clause, for example:
+
+```sql
+> CREATE SCHEDULE core_schedule_label
+  FOR BACKUP INTO 's3://test/schedule-test-core?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    RECURRING '@daily'
+    FULL BACKUP ALWAYS
+    WITH SCHEDULE OPTIONS first_run = 'now';
+```
+
+```text
+     schedule_id     |        name         | status |         first_run         | schedule |                                                                                       backup_stmt
+---------------------+---------------------+--------+---------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 's3://test/schedule-test-core?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH detached
+(1 row)
+```
+
+### Create a scheduled backup for a cluster
+
+This example creates a schedule for a cluster backup with revision history that's taken every day at midnight:
+
+```sql
+> CREATE SCHEDULE schedule_label
+  FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    WITH revision_history
+    RECURRING '@daily';
+```
+
+```text
+     schedule_id     |     name       |                     status                     |            first_run             | schedule |                                                                               backup_stmt
+---------------------+----------------+------------------------------------------------+----------------------------------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------
+  588796190000218113 | schedule_label | PAUSED: Waiting for initial backup to complete | NULL                             | @daily   | BACKUP INTO LATEST IN 's3://test/schedule-test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+  588796190012702721 | schedule_label | ACTIVE                                         | 2020-09-10 16:52:17.280821+00:00 | @weekly  | BACKUP INTO 's3://test/schedule-test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+(2 rows)
+```
+
+Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` &gt; 1 hour but &lt;= 1 day.
+
+### Create a scheduled backup for a database
+
+This example creates a schedule for a backup of the database `movr` with revision history that's taken every day 1 minute past midnight (`00:00:01`):
+
+```sql
+> CREATE SCHEDULE schedule_database
+  FOR BACKUP DATABASE movr INTO 's3://test/schedule-database?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    WITH revision_history
+    RECURRING '1 0 * * *';
+```
+
+```text
+     schedule_id     |       name        |                     status                     |            first_run             | schedule  |                                                                           backup_stmt
+---------------------+-------------------+------------------------------------------------+----------------------------------+-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------
+  588819866656997377 | schedule_database | PAUSED: Waiting for initial backup to complete | NULL                             | 1 0 * * * | BACKUP DATABASE movr INTO LATEST IN 's3://test/schedule-database?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+  588819866674233345 | schedule_database | ACTIVE                                         | 2020-09-10 18:52:42.823003+00:00 | @weekly   | BACKUP DATABASE movr INTO 's3://test/schedule-database?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+(2 rows)
+```
+
+Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` &gt; 1 hour but &lt;= 1 day.
+
+<Note>
+You will encounter an error if you run multiple [backup collections](/docs/v24.1/take-full-and-incremental-backups#backup-collections) to the same storage URI. Each collection's URI must be unique.
+</Note>
+
+### Create a scheduled backup for a table
+
+This example creates a schedule for a backup of the table `movr.vehicles` with revision history that's taken every hour:
+
+```sql
+> CREATE SCHEDULE schedule_table
+  FOR BACKUP TABLE movr.vehicles INTO 's3://test/schedule-table?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    WITH revision_history
+    RECURRING '@hourly';
+```
+
+```text
+     schedule_id     |       name     |                     status                     |            first_run             | schedule |                                                                             backup_stmt
+---------------------+----------------+------------------------------------------------+----------------------------------+----------+------------------------------------------------------------------------------------------------------------------------------------------------------
+  588820615348027393 | schedule_table | PAUSED: Waiting for initial backup to complete | NULL                             | @hourly  | BACKUP TABLE movr.vehicles INTO LATEST IN 's3://test/schedule-table?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+  588820615382302721 | schedule_table | ACTIVE                                         | 2020-09-10 18:56:31.305782+00:00 | @daily   | BACKUP TABLE movr.vehicles INTO 's3://test/schedule-table?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+(2 rows)
+```
+
+Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` &lt;= 1 hour.
+
+### Create a scheduled backup with a scheduled first run
+
+This example creates a schedule for a backup of the table `movr.vehicles` with revision history that's taken every hour, with its first run scheduled for `2020-09-15 00:00:00.00` (UTC):
+
+```sql
+> CREATE SCHEDULE scheduled_first_run
+  FOR BACKUP TABLE movr.vehicles INTO 's3://test/schedule-table?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    WITH revision_history
+    RECURRING '@hourly'
+    WITH SCHEDULE OPTIONS first_run = '2020-09-15 00:00:00.00';
+```
+
+```text
+     schedule_id     |        name         |                     status                     |         first_run         | schedule |                                                                                backup_stmt
+---------------------+---------------------+------------------------------------------------+---------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------
+  589963390457741313 | scheduled_first_run | PAUSED: Waiting for initial backup to complete | NULL                      | @hourly  | BACKUP TABLE movr.vehicles INTO LATEST IN 's3://test/scheduled-first-run?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+  589963390487363585 | scheduled_first_run | ACTIVE                                         | 2020-09-15 00:00:00+00:00 | @daily   | BACKUP TABLE movr.vehicles INTO 's3://test/scheduled-first-run?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH revision_history, detached
+(2 rows)
+```
+
+Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` &lt;= 1 hour.
+
+### Create a scheduled backup with schedule options
+
+This example creates a schedule for a cluster backup with the `on_previous_running` option:
+
+```sql
+> CREATE SCHEDULE schedule_option
+  FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    RECURRING '@daily'
+    WITH SCHEDULE OPTIONS on_previous_running = 'start';
+```
+
+```text
+     schedule_id     |      label      |                     status                     |          first_run           | schedule |                                                         backup_stmt
+---------------------+-----------------+------------------------------------------------+------------------------------+----------+------------------------------------------------------------------------------------------------------------------------------
+  866226603264475137 | schedule_option | PAUSED: Waiting for initial backup to complete | NULL                         | @daily   | BACKUP INTO LATEST IN 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH detached
+  866226603270635521 | schedule_option | ACTIVE                                         | 2023-05-18 14:56:20.39198+00 | @weekly  | BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH detached
+(2 rows)
+```
+
+The schedule starts a new backup, even if the previous one is still running because the user specified option for `on_previous_running = 'start'`. The [incremental backup remains `PAUSED`](#incremental-backup-schedules) until the initial full backup is complete.
+
+Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also schedules a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` &lt;= 1 hour.
+
+### View scheduled backup details
+
+When a [backup is created by a schedule](/docs/v24.1/create-schedule-for-backup), it is stored within a collection of backups in the given location. To view details for a backup created by a schedule, you can use the following:
+
+- `SHOW BACKUPS IN collectionURI` statement to [view a list of the full backup's subdirectories](/docs/v24.1/show-backup#view-a-list-of-the-available-full-backup-subdirectories).
+- `SHOW BACKUP FROM subdirectory IN collectionURI` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](/docs/v24.1/show-backup#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
+- Use the [Schedules page](/docs/v24.1/ui-schedules-page) in the [DB Console](/docs/v24.1/ui-overview) to view a list of created backup schedules and their individual details.
+
+For more details, see [`SHOW BACKUP`](/docs/v24.1/show-backup).
+
+## See also
+
+- [Manage a Backup Schedule](/docs/v24.1/manage-a-backup-schedule)
+- [`BACKUP`](/docs/v24.1/backup)
+- [`RESTORE`](/docs/v24.1/restore)
+- [`SHOW BACKUP`](/docs/v24.1/show-backup)
+- [`SHOW SCHEDULES`](/docs/v24.1/show-schedules)
+- [`PAUSE SCHEDULES`](/docs/v24.1/pause-schedules)
+- [`RESUME SCHEDULES`](/docs/v24.1/resume-schedules)
+- [`DROP SCHEDULES`](/docs/v24.1/drop-schedules)
+- [`ALTER BACKUP SCHEDULE`](/docs/v24.1/alter-backup-schedule)
+- [`PAUSE JOB`](/docs/v24.1/pause-job)
+- [`RESUME JOB`](/docs/v24.1/pause-job)
+- [`CANCEL JOB`](/docs/v24.1/cancel-job)
+- [Take Full and Incremental Backups](/docs/v24.1/take-full-and-incremental-backups)
+- [Use the Built-in SQL Client](/docs/v24.1/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v24.1/cockroach-commands)

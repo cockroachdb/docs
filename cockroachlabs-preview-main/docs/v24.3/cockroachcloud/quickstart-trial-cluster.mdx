@@ -1,0 +1,23 @@
+---
+title: "Quickstart with CockroachDB Advanced"
+permalink: "https://www.cockroachlabs.com/docs/cockroachcloud/quickstart-trial-cluster"
+og:title: "Quickstart with CockroachDB Advanced"
+og:description: "Learn how to create and use a CockroachDB Advanced cluster."
+og:image: "https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress"
+---
+
+import QuickstartTrialCluster from "/snippets/cockroachcloud/quickstart-trial-cluster.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<QuickstartTrialCluster />

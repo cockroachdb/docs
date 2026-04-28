@@ -1,0 +1,95 @@
+---
+title: "ST_Touches"
+old_description: "ST_Touches(A, B) returns true if A and B have at least one point in common, but their interiors do not intersect."
+---
+
+Given two shapes *A* and *B*, `ST_Touches(A, B)` returns `true` if both the following are true:
+
+- At least one point in the set of points that comprises *A* is also a member of the set of points that make up *B*.
+- No points that make up the interior of *A* are also part of the interior of *B*.
+
+In other words, *A* and *B* have a point along their boundaries in common (i.e., they "touch"), but none of their interior points intersect. This distinction between shapes touching along a boundary vs. intersecting is also made by the [DE-9IM](/docs/v23.2/architecture/glossary#de-9im) standard.
+
+`ST_Touches` works on the following data types:
+
+- [`GEOMETRY`](/docs/v23.2/architecture/glossary#geometry)
+
+<Note>
+`ST_Touches` will attempt to use any available [spatial index](/docs/v23.2/spatial-indexes) to speed up its operation. Use the prefixed variant `_ST_Touches` if you do not want any spatial indexes to be used.
+</Note>
+
+## Examples
+
+<Note>
+The screenshots in these examples were generated using [geojson.io](http://geojson.io/), but they are designed to showcase the shapes, not the map. Representing `GEOMETRY` data in GeoJSON can lead to unexpected results if using geometries with [SRIDs](/docs/v23.2/architecture/glossary#srid) other than 4326 (as shown below).
+</Note>
+
+### True
+
+In this example, `ST_Touches` returns `true` because both of the following are true:
+
+- At least one point in the set of Points that comprise Polygon *A* is a member of the set of points that make up the LineString *B*.
+- No points from the interior of *A* are also part of the interior of *B*.
+
+```sql
+SELECT st_touches(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902), (-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832))'), st_geomfromtext('SRID=4326;LINESTRING(-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832)'));
+```
+
+```text
+   st_touches
+---------------
+     true
+
+(1 row)
+```
+
+<Frame>
+  ![ST_Touches - true](/images/v23.2/geospatial/st_touches_true.png)
+</Frame>
+
+### False
+
+In this example, `ST_Touches` returns `false` because:
+
+- Some points from the interior of the LineString *B* are also part of the interior of the Polygon *A*.
+
+```sql
+SELECT st_touches(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;LINESTRING(-88.243385 40.116421, -87.906471 43.038902, -95.992775 36.153980, -95.235278 38.971667)'));
+```
+
+```text
+   st_touches
+---------------
+     false
+(1 row)
+```
+
+<Frame>
+  ![ST_Touches - false](/images/v23.2/geospatial/st_touches_false.png)
+</Frame>
+
+## See also
+
+- [Export Spatial Data](/docs/v23.2/export-spatial-data)
+- [Spatial tutorial](/docs/v23.2/spatial-tutorial)
+- [Spatial and GIS Glossary of Terms](/docs/v23.2/architecture/glossary)
+- [Spatial indexes](/docs/v23.2/spatial-indexes)
+- [Spatial functions](/docs/v23.2/functions-and-operators#spatial-functions)
+- [`ST_Covers`](/docs/v23.2/st_covers)
+- [`ST_CoveredBy`](/docs/v23.2/st_coveredby)
+- [`ST_Contains`](/docs/v23.2/st_contains)
+- [`ST_Within`](/docs/v23.2/st_within)
+- [`ST_Intersects`](/docs/v23.2/st_intersects)
+- [`ST_CoveredBy`](/docs/v23.2/st_coveredby)
+- [`ST_Covers`](/docs/v23.2/st_covers)
+- [`ST_Disjoint`](/docs/v23.2/st_disjoint)
+- [`ST_Equals`](/docs/v23.2/st_equals)
+- [`ST_Overlaps`](/docs/v23.2/st_overlaps)
+- [`ST_ConvexHull`](/docs/v23.2/st_convexhull)
+- [`ST_Union`](/docs/v23.2/st_union)
+- [Migrate from Shapefiles](/docs/v23.2/migrate-from-shapefiles)
+- [Migrate from GeoJSON](/docs/v23.2/migrate-from-geojson)
+- [Migrate from GeoPackage](/docs/v23.2/migrate-from-geopackage)
+- [Migrate from OpenStreetMap](/docs/v23.2/migrate-from-openstreetmap)
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data) (blog post)
+- [Using GeoServer with CockroachDB](/docs/v23.2/geoserver)

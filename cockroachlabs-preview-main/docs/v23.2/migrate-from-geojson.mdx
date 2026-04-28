@@ -1,0 +1,97 @@
+---
+title: "Migrate from GeoJSON"
+old_description: "Learn how to migrate data from GeoJSON into a CockroachDB cluster."
+---
+
+CockroachDB supports efficiently storing and querying [spatial data](/docs/v23.2/export-spatial-data).
+
+This page has instructions for migrating data from the [GeoJSON](https://wikipedia.org/wiki/GeoJSON) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr) and [`IMPORT`](/docs/v23.2/import).
+
+In the example below we will import a data set with [the locations of underground storage tanks in the state of Vermont (USA)](https://anrweb.vt.gov/DEC/ERT/UST.aspx?ustfacilityid=96).
+
+## Before You Begin
+
+To follow along with the example below, you will need the following prerequisites:
+
+- CockroachDB [installed](/docs/v23.2/install-cockroachdb) and [running](/docs/v23.2/start-a-local-cluster)
+- [`ogr2ogr`](https://gdal.org/programs/ogr2ogr)
+- [Python 3](https://www.python.org/)
+
+<Note>
+An `ogr2ogr` version of 3.1.0 or higher is required to generate data that can be imported into CockroachDB.
+</Note>
+
+## Step 1. Download the GeoJSON data
+
+First, download the storage tank GeoJSON data:
+
+```shell
+curl -o tanks.geojson https://geodata.vermont.gov/datasets/986155613c5743239e7b1980b45bbf36_162.geojson
+```
+
+## Step 2. Convert the GeoJSON data to SQL
+
+Next, convert the GeoJSON data to SQL using the following `ogr2ogr` command:
+
+```shell
+ogr2ogr -f PGDUMP tanks.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF tanks.geojson
+```
+
+<Note>
+An `ogr2ogr` version of 3.1.0 or higher is required to generate data that can be imported into CockroachDB.
+</Note>
+
+## Step 3. Host the files where the cluster can access them
+
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`](/docs/v23.2/import) can pull from, see [import file locations](/docs/v23.2/import#import-file-location).
+
+For local testing, you can [start a local file server](/docs/v23.2/use-a-local-file-server). The following command will start a local file server listening on port 3000:
+
+```shell
+python3 -m http.server 3000
+```
+
+## Step 4. Prepare the database
+
+Next, create a database to hold the storage tank data:
+
+```shell
+cockroach sql --insecure
+```
+
+```sql
+CREATE DATABASE IF NOT EXISTS tanks;
+USE tanks;
+```
+
+## Step 5. Import the SQL
+
+Since the file is being served from a local server and is formatted as PostgreSQL-compatible SQL, we can import the data using the following [`IMPORT PGDUMP`](/docs/v23.2/import#import-a-postgresql-database-dump) statement:
+
+```sql
+IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
+```
+
+```text
+        job_id       |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+---------
+  588555793549328385 | succeeded |                  1 | 2709 |          2709 | 822504
+(1 row)
+```
+
+## See also
+
+- [`IMPORT`](/docs/v23.2/import)
+- [Export Spatial Data](/docs/v23.2/export-spatial-data)
+- [Spatial tutorial](/docs/v23.2/spatial-tutorial)
+- [Migrate from OpenStreetMap](/docs/v23.2/migrate-from-openstreetmap)
+- [Migrate from Shapefiles](/docs/v23.2/migrate-from-shapefiles)
+- [Migrate from GeoPackage](/docs/v23.2/migrate-from-geopackage)
+- [Spatial indexes](/docs/v23.2/spatial-indexes)
+- [Migration Overview](/docs/molt/migration-overview)
+- [Migrate from MySQL](/docs/molt/migrate-to-cockroachdb?filters=mysql)
+- [Migrate from PostgreSQL](/docs/molt/migrate-to-cockroachdb)
+- [Back Up and Restore Data](/docs/v23.2/take-full-and-incremental-backups)
+- [Use the Built-in SQL Client](/docs/v23.2/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v23.2/cockroach-commands)
+- [Using GeoServer with CockroachDB](/docs/v23.2/geoserver)

@@ -1,0 +1,138 @@
+---
+title: "Insert Data"
+old_description: "How to insert data into CockroachDB during application development"
+---
+
+This page has instructions for getting data into CockroachDB with various programming languages, using the [`INSERT`](/docs/v25.4/insert) SQL statement.
+
+## Before you begin
+
+Before reading this page, do the following:
+
+- [Create a CockroachDB Standard cluster](/docs/cockroachcloud/quickstart) or [start a local cluster](/docs/cockroachcloud/quickstart?filters=local).
+- [Install a Driver or ORM Framework](/docs/v25.4/install-client-drivers).
+- [Connect to the database](/docs/v25.4/connect-to-the-database).
+
+<Note>
+When running under the default [`SERIALIZABLE`](/docs/v25.4/demo-serializable) isolation level, your application should [use a retry loop to handle transaction retry errors](/docs/v25.4/query-behavior-troubleshooting#transaction-retry-errors) that can occur under [contention](/docs/v25.4/performance-best-practices-overview#understanding-and-avoiding-transaction-contention).
+</Note>
+
+## Insert rows
+
+When inserting multiple rows, a single [multi-row insert statement](/docs/v25.4/insert#insert-multiple-rows-into-an-existing-table) is faster than multiple single-row statements.
+
+<Tabs>
+<Tab title="SQL">
+
+```sql
+CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT);
+INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250);
+```
+
+For more information about how to use the built-in SQL client, see the [`cockroach sql`](/docs/v25.4/cockroach-sql) reference docs.
+
+</Tab>
+<Tab title="Go">
+
+```go
+// 'db' is an open database connection
+
+// Insert two rows into the "accounts" table.
+if _, err := db.Exec(
+    "INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)"); err != nil {
+    log.Fatal(err)
+}
+```
+
+For complete examples, see:
+
+- [Build a Go App with CockroachDB](/docs/v25.4/build-a-go-app-with-cockroachdb) (pgx)
+- [Build a Go App with CockroachDB and GORM](/docs/v25.4/build-a-go-app-with-cockroachdb)
+
+</Tab>
+<Tab title="Java">
+
+```java
+// ds is an org.postgresql.ds.PGSimpleDataSource
+
+try (Connection connection = ds.getConnection()) {
+    connection.setAutoCommit(false);
+    PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts (id, balance) VALUES (?, ?)");
+
+    pstmt.setInt(1, 1);
+    pstmt.setInt(2, 1000);
+    pstmt.addBatch();
+
+    pstmt.executeBatch();
+    connection.commit();
+} catch (SQLException e) {
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
+                      e.getSQLState(), e.getCause(), e.getMessage());
+}
+```
+
+For complete examples, see:
+
+- [Build a Java App with CockroachDB](/docs/v25.4/build-a-java-app-with-cockroachdb) (JDBC)
+- [Build a Java App with CockroachDB and Hibernate](/docs/v25.4/build-a-java-app-with-cockroachdb-hibernate)
+
+</Tab>
+<Tab title="Python">
+
+```python
+# conn is a psycopg2 connection
+
+with conn.cursor() as cur:
+    cur.execute('INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)')
+
+conn.commit()
+```
+
+For complete examples, see:
+
+- [Build a Python App with CockroachDB](/docs/v25.4/build-a-python-app-with-cockroachdb-psycopg3) (psycopg3)
+- [Build a Python App with CockroachDB and SQLAlchemy](/docs/v25.4/build-a-python-app-with-cockroachdb-sqlalchemy)
+- [Build a Python App with CockroachDB and Django](/docs/v25.4/build-a-python-app-with-cockroachdb-django)
+- [Build a Python App with CockroachDB and asyncpg](/docs/v25.4/build-a-python-app-with-cockroachdb-asyncpg)
+
+</Tab>
+</Tabs>
+
+## Limit the size of rows
+
+To help you avoid failures arising from misbehaving applications that bloat the size of rows, you can specify the behavior when a row or individual [column family](/docs/v25.4/column-families) larger than a specified size is written to the database. Use the [cluster settings](/docs/v25.4/cluster-settings) `sql.guardrails.max_row_size_log` to discover large rows and `sql.guardrails.max_row_size_err` to reject large rows.
+
+When you write a row that exceeds `sql.guardrails.max_row_size_log`:
+
+- `INSERT`, `UPSERT`, `UPDATE`, `CREATE TABLE AS`, `CREATE INDEX`, `ALTER TABLE`, `ALTER INDEX`, `IMPORT`, or `RESTORE` statements will log a `LargeRow` to the [`SQL_PERF`](/docs/v25.4/logging#sql_perf) channel.
+- `SELECT`, `DELETE`, `TRUNCATE`, and `DROP` are not affected.
+
+When you write a row that exceeds `sql.guardrails.max_row_size_err`:
+
+- `INSERT`, `UPSERT`, and `UPDATE` statements will fail with a code `54000 (program_limit_exceeded)` error.
+- `CREATE TABLE AS`, `CREATE INDEX`, `ALTER TABLE`, `ALTER INDEX`, `IMPORT`, and `RESTORE` statements will log a `LargeRowInternal` event to the [`SQL_INTERNAL_PERF`](/docs/v25.4/logging#sql_internal_perf) channel.
+- `SELECT`, `DELETE`, `TRUNCATE`, and `DROP` are not affected.
+
+You **cannot** update existing rows that violate the limit unless the update shrinks the size of the row below the limit. You **can** select, delete, alter, back up, and restore such rows. We recommend using the accompanying setting `sql.guardrails.max_row_size_log` in conjunction with `SELECT pg_column_size()` queries to detect and fix any existing large rows before lowering `sql.guardrails.max_row_size_err`.
+
+## See also
+
+Reference information related to this task:
+
+- [Migration Overview](/docs/molt/migration-overview)
+- [`INSERT`](/docs/v25.4/insert)
+- [`UPSERT`](/docs/v25.4/upsert)
+- [Transaction Contention](/docs/v25.4/performance-best-practices-overview#transaction-contention)
+- [Multi-row DML best practices](/docs/v25.4/performance-best-practices-overview#dml-best-practices)
+- [Insert Multiple Rows](/docs/v25.4/insert#insert-multiple-rows-into-an-existing-table)
+
+Other common tasks:
+
+- [Connect to the Database](/docs/v25.4/connect-to-the-database)
+- [Query Data](/docs/v25.4/query-data)
+- [Update Data](/docs/v25.4/update-data)
+- [Delete Data](/docs/v25.4/delete-data)
+- [Run Multi-Statement Transactions](/docs/v25.4/run-multi-statement-transactions)
+- [Troubleshoot SQL Statements](/docs/v25.4/query-behavior-troubleshooting)
+- [Optimize Statement Performance](/docs/v25.4/make-queries-fast)
+- [Example Apps](/docs/v25.4/example-apps)

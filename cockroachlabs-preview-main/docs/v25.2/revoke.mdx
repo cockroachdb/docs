@@ -1,0 +1,372 @@
+---
+title: "REVOKE"
+old_description: "The REVOKE statement revokes privileges from users and/or roles, or revokes privileges from users and/or roles."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+import { Revoke5 } from "/snippets/syntax-diagrams/Revoke5.jsx";
+
+The `REVOKE` [statement](/docs/v25.2/sql-statements) revokes [privileges](/docs/v25.2/security-reference/authorization#managing-privileges) from [users and/or roles](/docs/v25.2/security-reference/authorization#users-and-roles). For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](/docs/v25.2/grant).
+
+You can use `REVOKE` to directly revoke privileges from a role or user, or you can revoke membership to an existing role, which effectively revokes that role's privileges.
+
+<Note>
+The `REVOKE` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.2/online-schema-changes).
+</Note>
+
+## Syntax
+
+<Revoke5 />
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>ALL</code><br/><code>ALL PRIVILEGES</code></td><td>Revoke all <a href="#supported-privileges">privileges</a>.</td></tr><tr><td><code>privilege&#95;list</code></td><td>A comma-separated list of <a href="/docs/v25.2/security-reference/authorization#managing-privileges">privileges</a> to revoke.</td></tr><tr><td><code>grant&#95;targets</code></td><td>A comma-separated list of database, table, sequence, or function names. The list should be preceded by the object type (e.g., <code>DATABASE mydatabase</code>). If the object type is not specified, all names are interpreted as table or sequence names.</td></tr><tr><td><code>target&#95;types</code></td><td>A comma-separated list of <a href="/docs/v25.2/create-type">user-defined types</a>.</td></tr><tr><td><code>ALL SEQUENCES IN SCHEMA</code></td><td>Revoke <a href="#supported-privileges">privileges</a> on all sequences in a schema or list of schemas.</td></tr><tr><td><code>ALL TABLES IN SCHEMA</code></td><td>Revoke <a href="#supported-privileges">privileges</a> on all tables and sequences in a schema or list of schemas.</td></tr><tr><td><code>ALL FUNCTIONS IN SCHEMA</code>.</td><td>Revoke <a href="#supported-privileges">privileges</a> on all <a href="/docs/v25.2/user-defined-functions">user-defined functions</a> in a schema or list of schemas.</td></tr><tr><td><code>schema&#95;name&#95;list</code></td><td>A comma-separated list of <a href="/docs/v25.2/create-schema">schemas</a>.</td></tr><tr><td><code>role&#95;spec&#95;list</code></td><td>A comma-separated list of <a href="/docs/v25.2/security-reference/authorization#users-and-roles">roles</a>.</td></tr></tbody></table>
+
+## Supported privileges
+
+The following privileges can be revoked:
+
+<table><thead><tr><th>Privilege</th><th>Levels</th><th>Description</th></tr></thead><tbody><tr><td><code>ALL</code></td><td>System, Database, Schema, Table, Sequence, Type</td><td>For the object to which <code>ALL</code> is applied, grants all privileges at the system, database, schema, table, sequence, or type level.</td></tr><tr><td><code>BACKUP</code></td><td>System, Database, Table</td><td>Grants the ability to create <a href="/docs/v25.2/backup-and-restore-overview">backups</a> at the system, database, or table level.</td></tr><tr><td><a></a><code>BYPASSRLS</code></td><td>Table</td><td><strong>New in v25.2</strong> Grants the ability to bypass <a href="/docs/v25.2/row-level-security">row-level security (RLS)</a> policies on a table. This privilege controls the access from an RLS perspective only; the user also needs sufficient <a href="/docs/v25.2/grant"><code>GRANT</code></a> privileges to read or write to the table.</td></tr><tr><td><code>CANCELQUERY</code></td><td>System</td><td>Grants the ability to cancel queries.</td></tr><tr><td><code>CHANGEFEED</code></td><td>Table</td><td>Grants the ability to create <a href="/docs/v25.2/change-data-capture-overview">changefeeds</a> on a table.</td></tr><tr><td><a></a><code>CONNECT</code></td><td>Database</td><td>Grants the ability to view a database's metadata, which consists of objects in a database's <code>information&#95;schema</code> and <code>pg&#95;catalog</code> system catalogs. This allows the role to view the database's table, schemas, user-defined types, and list the database when running <code>SHOW DATABASES</code>. The <code>CONNECT</code> privilege is also required to run backups of the database.</td></tr><tr><td><code>CONTROLJOB</code></td><td>System</td><td>Grants the ability to <a href="/docs/v25.2/pause-job">pause</a>, <a href="/docs/v25.2/resume-job">resume</a>, and <a href="/docs/v25.2/cancel-job">cancel</a> jobs. Non-admin roles cannot control jobs created by admin roles.</td></tr><tr><td><code>CREATE</code></td><td>Database, Schema, Table, Sequence</td><td>Grants the ability to create objects at the database, schema, table, or sequence level. When applied at the database level, grants the ability to configure <a href="/docs/v25.2/zone-config-extensions">multi-region zone configs</a>. In CockroachDB v23.2 and later, the <a href="/docs/v25.2/cluster-settings">cluster setting</a><code>sql.auth.public&#95;schema&#95;create&#95;privilege.enabled</code> controls whether users receive <code>CREATE</code> privileges on the public schema or not. The setting applies at the time that the <a href="/docs/v25.2/create-schema">public schema is created</a>, which happens whenever <a href="/docs/v25.2/create-database">a database is created</a>. The setting is <code>true</code> by default, but can be set to <code>false</code> for increased compatibility with <a href="https://www.postgresql.org/about/news/postgresql-15-released-2526">PostgreSQL version 15</a> as described in <a href="https://git.postgresql.org/gitweb?p=postgresql.git;a=commitdiff;h=b073c3ccd06e4cb845e121387a43faa8c68a7b62">this commit</a>.</td></tr><tr><td><code>CREATEDB</code></td><td>System</td><td>Grants the ability to <a href="/docs/v25.2/create-database">create</a> or <a href="/docs/v25.2/alter-database#rename-to">rename</a> a database.</td></tr><tr><td><code>CREATELOGIN</code></td><td>System</td><td>Grants the ability to manage authentication using the <code>WITH PASSWORD</code>, <code>VALID UNTIL</code>, and <code>LOGIN</code>/<code>NOLOGIN</code> role options.</td></tr><tr><td><code>CREATEROLE</code></td><td>System</td><td>Grants the ability to <a href="/docs/v25.2/create-role">create</a>, modify, or <a href="/docs/v25.2/drop-role">delete</a> non-admin roles.</td></tr><tr><td><code>DELETE</code></td><td>Table, Sequence</td><td>Grants the ability to delete objects at the table or sequence level.</td></tr><tr><td><code>DROP</code></td><td>Database, Table, Sequence</td><td>Grants the ability to drop objects at the database, table, or sequence level.</td></tr><tr><td><code>EXECUTE</code></td><td>Function</td><td>Grants the ability to execute <a href="/docs/v25.2/functions-and-operators">functions</a>.</td></tr><tr><td><code>EXTERNALCONNECTION</code></td><td>System</td><td>Grants the ability to connect to external systems such as object stores, key management systems, Kafka feeds, or external file systems. Often used in conjunction with the <code>BACKUP</code>, <code>RESTORE</code>, and <code>CHANGEFEED</code> privilege.</td></tr><tr><td><code>EXTERNALIOIMPLICITACCESS</code></td><td>System</td><td>Grants the ability to interact with external resources that require implicit access.</td></tr><tr><td><code>INSERT</code></td><td>Table, Sequence</td><td>Grants the ability to insert objects at the table or sequence level.</td></tr><tr><td><a></a><code>MODIFYCLUSTERSETTING</code></td><td>System</td><td>Grants the ability to modify <a href="/docs/v25.2/cluster-settings">cluster settings</a>.</td></tr><tr><td><code>MODIFYSQLCLUSTERSETTING</code></td><td>System</td><td>Grants the ability to modify SQL <a href="/docs/v25.2/cluster-settings">cluster settings</a> (cluster settings prefixed with <code>sql.</code>).</td></tr><tr><td><code>NOSQLLOGIN</code></td><td>System</td><td>Prevents roles from connecting to the SQL interface of a cluster.</td></tr><tr><td><strong>Deprecated</strong><code>REPLICATION</code></td><td>System</td><td>As of v25.2 <code>REPLICATION</code> is <strong>deprecated</strong>. Instead, use the <code>REPLICATIONSOURCE</code> and <code>REPLICATIONDEST</code> privileges at the table level. Grants the ability to create a <a href="/docs/v25.2/logical-data-replication-overview">logical data replication</a> or <a href="/docs/v25.2/physical-cluster-replication-overview">physical cluster replication</a> stream.</td></tr><tr><td><a></a><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v25.2:<code>REPLICATIONDEST</code></td><td>Table</td><td>Grants the ability to run logical data replication into an existing table on the destination cluster. For more details, refer to the <a href="/docs/v25.2/set-up-logical-data-replication">Set Up Logical Data Replication</a> tutorial.</td></tr><tr><td><a></a><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v25.2:<code>REPLICATIONSOURCE</code></td><td>Table</td><td>Grants the ability to run logical data replication from a table on the source cluster. For more details, refer to the <a href="/docs/v25.2/set-up-logical-data-replication">Set Up Logical Data Replication</a> tutorial.</td></tr><tr><td><code>RESTORE</code></td><td>System, Database</td><td>Grants the ability to restore <a href="/docs/v25.2/backup-and-restore-overview">backups</a> at the system or database level. Refer to <code>RESTORE</code><a href="/docs/v25.2/restore#required-privileges">Required privileges</a> for more details.</td></tr><tr><td><code>SELECT</code></td><td>Table, Sequence</td><td>Grants the ability to run <a href="/docs/v25.2/query-data">selection queries</a> at the table or sequence level.</td></tr><tr><td><code>UPDATE</code></td><td>Table, Sequence</td><td>Grants the ability to run <a href="/docs/v25.2/update-data">update statements</a> at the table or sequence level.</td></tr><tr><td><code>USAGE</code></td><td>Schema, Sequence, Type</td><td>Grants the ability to use <a href="/docs/v25.2/schema-design-overview">schemas</a>, <a href="/docs/v25.2/create-sequence">sequences</a>, or <a href="/docs/v25.2/create-type">user-defined types</a>.</td></tr><tr><td><a></a><code>VIEWACTIVITY</code></td><td>System</td><td>Grants the ability to view other user's activity statistics of a cluster.</td></tr><tr><td><a></a><code>VIEWACTIVITYREDACTED</code></td><td>System</td><td>Grants the ability to view other user's activity statistics, but prevents the role from accessing the statement diagnostics bundle in the DB Console, and viewing some columns in introspection queries that contain data about the cluster.</td></tr><tr><td><a></a><code>VIEWCLUSTERMETADATA</code></td><td>System</td><td>Grants the ability to view range information, data distribution, store information, and Raft information.</td></tr><tr><td><a></a><code>VIEWCLUSTERSETTING</code></td><td>System</td><td>Grants the ability to view <a href="/docs/v25.2/cluster-settings">cluster settings</a> and their values.</td></tr><tr><td><a></a><code>VIEWDEBUG</code></td><td>System</td><td>Grants the ability to view the <a href="/docs/v25.2/ui-debug-pages">Advanced Debug Page</a> of the DB Console and work with the debugging and profiling endpoints.</td></tr><tr><td><a></a><code>VIEWJOB</code></td><td>System</td><td>Grants the ability to view <a href="/docs/v25.2/show-jobs">jobs</a> on the cluster.</td></tr><tr><td><code>VIEWSYSTEMTABLE</code></td><td>System</td><td>Grants read-only access (<code>SELECT</code>) on all tables in the <code>system</code> database, without granting the ability to modify the cluster. This privilege was introduced in v23.1.11.</td></tr><tr><td><code>ZONECONFIG</code></td><td>Database, Table, Sequence</td><td>Grants the ability to configure <a href="/docs/v25.2/configure-replication-zones">replication zones</a> at the database, table, and sequence level.</td></tr></tbody></table>
+
+## Required privileges
+
+- To revoke privileges, user revoking privileges must have the `GRANT` privilege on the target [database](/docs/v25.2/create-database), [schema](/docs/v25.2/create-schema), [table](/docs/v25.2/create-table), or [user-defined type](/docs/v25.2/enum). In addition to the `GRANT` privilege, the user revoking privileges must have the privilege being revoked on the target object. For example, a user revoking the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
+- To revoke role membership, the user revoking role membership must be a role admin (i.e., members with the `WITH ADMIN OPTION`) or a member of the `admin` role. To remove membership to the `admin` role, the user must have `WITH ADMIN OPTION` on the `admin` role.
+
+## Considerations
+
+- The `root` user cannot be revoked from the `admin` role.
+
+## Known limitations
+
+User/role management operations (such as [`GRANT`](/docs/v25.2/grant) and [`REVOKE`](/docs/v25.2/revoke)) are [schema changes](/docs/v25.2/online-schema-changes). As such, they inherit the [limitations of schema changes](/docs/v25.2/online-schema-changes#known-limitations).
+
+For example, schema changes wait for concurrent [transactions](/docs/v25.2/transactions) using the same resources as the schema changes to complete. In the case of [role memberships](/docs/v25.2/security-reference/authorization#roles) being modified inside a transaction, most transactions need access to the set of role memberships. Using the default settings, role modifications require schema leases to expire, which can take up to 5 minutes.
+
+This means that [long-running transactions](/docs/v25.2/query-behavior-troubleshooting#hanging-or-stuck-queries) elsewhere in the system can cause user/role management operations inside transactions to take several minutes to complete. This can have a cascading effect. When a user/role management operation inside a transaction takes a long time to complete, it can in turn block all user-initiated transactions being run by your application, since the user/role management operation in the transaction has to commit before any other transactions that access role memberships (i.e., most transactions) can make progress.
+
+If you want user/role management operations to finish more quickly, and do not care whether concurrent transactions will immediately see the side effects of those operations, set the [session variable](/docs/v25.2/set-vars) `allow_role_memberships_to_change_during_transaction` to `true`.
+
+When this session variable is enabled, any user/role management operations issued in the current session will only need to wait for the completion of statements in other sessions where `allow_role_memberships_to_change_during_transaction` is not enabled.
+
+To accelerate user/role management operations across your entire application, you have the following options:
+
+1. Set the session variable in all sessions by [passing it in the client connection string](/docs/v25.2/connection-parameters#supported-options-parameters).
+2. Apply the `allow_role_memberships_to_change_during_transaction` setting globally to an entire cluster using the [`ALTER ROLE ALL`](/docs/v25.2/alter-role#set-default-session-variable-values-for-all-users) statement:
+
+    ```sql
+    ALTER ROLE ALL SET allow_role_memberships_to_change_during_transaction = true;
+    ```
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v25.2/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v25.2/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Revoke privileges on databases
+
+```sql
+CREATE USER max WITH PASSWORD 'roach';
+```
+
+```sql
+GRANT CREATE ON DATABASE movr TO max;
+```
+
+```sql
+SHOW GRANTS ON DATABASE movr;
+```
+
+```text
+  database_name | grantee | privilege_type | is_grantable
+----------------+---------+----------------+---------------
+  movr          | admin   | ALL            |      t
+  movr          | max     | CREATE         |      f
+  movr          | root    | ALL            |      t
+(3 rows)
+```
+
+```sql
+REVOKE CREATE ON DATABASE movr FROM max;
+```
+
+```sql
+SHOW GRANTS ON DATABASE movr;
+```
+
+```text
+  database_name | grantee | privilege_type | is_grantable
+----------------+---------+----------------+---------------
+  movr          | admin   | ALL            |      t
+  movr          | root    | ALL            |      t
+(2 rows)
+```
+
+<Note>
+Any tables that previously inherited the database-level privileges retain the privileges.
+</Note>
+
+### Revoke privileges on specific tables in a database
+
+```sql
+GRANT ALL ON TABLE rides TO max;
+```
+
+```sql
+SHOW GRANTS ON TABLE rides;
+```
+
+```text
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  movr          | public      | rides      | admin   | ALL            |      t
+  movr          | public      | rides      | max     | ALL            |      f
+  movr          | public      | rides      | root    | ALL            |      t
+(3 rows)
+```
+
+```sql
+REVOKE ALL ON TABLE rides FROM max;
+```
+
+```sql
+SHOW GRANTS ON TABLE rides;
+```
+
+```text
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  movr          | public      | rides      | admin   | ALL            |      t
+  movr          | public      | rides      | root    | ALL            |      t
+(2 rows)
+```
+
+### Revoke privileges on all tables in a database or schema
+
+```sql
+GRANT ALL ON TABLE rides, users TO max;
+```
+
+```sql
+SHOW GRANTS ON TABLE movr.*;
+```
+
+```text
+  database_name | schema_name |         table_name         | grantee | privilege_type | is_grantable
+----------------+-------------+----------------------------+---------+----------------+---------------
+  movr          | public      | promo_codes                | admin   | ALL            |      t
+  movr          | public      | promo_codes                | root    | ALL            |      t
+  movr          | public      | rides                      | admin   | ALL            |      t
+  movr          | public      | rides                      | max     | ALL            |      f
+  movr          | public      | rides                      | root    | ALL            |      t
+  movr          | public      | user_promo_codes           | admin   | ALL            |      t
+  movr          | public      | user_promo_codes           | root    | ALL            |      t
+  movr          | public      | users                      | admin   | ALL            |      t
+  movr          | public      | users                      | max     | ALL            |      f
+  movr          | public      | users                      | root    | ALL            |      t
+  movr          | public      | usertable                  | admin   | ALL            |      t
+  movr          | public      | usertable                  | root    | ALL            |      t
+  movr          | public      | vehicle_location_histories | admin   | ALL            |      t
+  movr          | public      | vehicle_location_histories | root    | ALL            |      t
+  movr          | public      | vehicles                   | admin   | ALL            |      t
+  movr          | public      | vehicles                   | public  | SELECT         |      f
+  movr          | public      | vehicles                   | root    | ALL            |      t
+(17 rows)
+```
+
+```sql
+REVOKE ALL ON ALL TABLES IN SCHEMA public FROM max;
+```
+
+This is equivalent to the following syntax:
+
+```sql
+REVOKE ALL ON movr.public.* FROM max;
+```
+
+```sql
+SHOW GRANTS ON TABLE movr.*;
+```
+
+```text
+  database_name | schema_name |         table_name         | grantee | privilege_type | is_grantable
+----------------+-------------+----------------------------+---------+----------------+---------------
+  movr          | public      | promo_codes                | admin   | ALL            |      t
+  movr          | public      | promo_codes                | root    | ALL            |      t
+  movr          | public      | rides                      | admin   | ALL            |      t
+  movr          | public      | rides                      | root    | ALL            |      t
+  movr          | public      | user_promo_codes           | admin   | ALL            |      t
+  movr          | public      | user_promo_codes           | root    | ALL            |      t
+  movr          | public      | users                      | admin   | ALL            |      t
+  movr          | public      | users                      | root    | ALL            |      t
+  movr          | public      | usertable                  | admin   | ALL            |      t
+  movr          | public      | usertable                  | root    | ALL            |      t
+  movr          | public      | vehicle_location_histories | admin   | ALL            |      t
+  movr          | public      | vehicle_location_histories | root    | ALL            |      t
+  movr          | public      | vehicles                   | admin   | ALL            |      t
+  movr          | public      | vehicles                   | public  | SELECT         |      f
+  movr          | public      | vehicles                   | root    | ALL            |      t
+(15 rows)
+```
+
+### Revoke system-level privileges on the entire cluster
+
+[System-level privileges](/docs/v25.2/security-reference/authorization#supported-privileges) live above the database level and apply to the entire cluster.
+
+`root` and [`admin`](/docs/v25.2/security-reference/authorization#admin-role) users have system-level privileges by default, and are capable of revoking it from other users and roles using the `REVOKE` statement.
+
+For example, the following statement removes the ability to use the [`SET CLUSTER SETTING`](/docs/v25.2/set-cluster-setting) statement from the user `maxroach` by revoking the `MODIFYCLUSTERSETTING` system privilege:
+
+```sql
+REVOKE SYSTEM MODIFYCLUSTERSETTING FROM max;
+```
+
+### Revoke privileges on schemas
+
+```sql
+CREATE SCHEMA cockroach_labs;
+```
+
+```sql
+GRANT ALL ON SCHEMA cockroach_labs TO max;
+```
+
+```sql
+SHOW GRANTS ON SCHEMA cockroach_labs;
+```
+
+```text
+  database_name |  schema_name   | grantee | privilege_type | is_grantable
+----------------+----------------+---------+----------------+---------------
+  movr          | cockroach_labs | admin   | ALL            |      t
+  movr          | cockroach_labs | max     | ALL            |      t
+  movr          | cockroach_labs | root    | ALL            |      t
+(3 rows)
+```
+
+```sql
+REVOKE CREATE ON SCHEMA cockroach_labs FROM max;
+```
+
+```sql
+SHOW GRANTS ON SCHEMA cockroach_labs;
+```
+
+```text
+  database_name |  schema_name   | grantee | privilege_type | is_grantable
+----------------+----------------+---------+----------------+---------------
+  movr          | cockroach_labs | admin   | ALL            |      t
+  movr          | cockroach_labs | max     | USAGE          |      t
+  movr          | cockroach_labs | root    | ALL            |      t
+(3 rows)
+```
+
+### Revoke privileges on user-defined types
+
+To revoke privileges on [user-defined types](/docs/v25.2/create-type), use the following statements.
+
+```sql
+CREATE TYPE status AS ENUM ('available', 'unavailable');
+```
+
+```sql
+GRANT ALL ON TYPE status TO max;
+```
+
+```sql
+SHOW GRANTS ON TYPE status;
+```
+
+```text
+  database_name | schema_name | type_name | grantee | privilege_type | is_grantable
+----------------+-------------+-----------+---------+----------------+---------------
+  movr          | public      | status    | admin   | ALL            |      t
+  movr          | public      | status    | max     | ALL            |      f
+  movr          | public      | status    | public  | USAGE          |      f
+  movr          | public      | status    | root    | ALL            |      t
+(4 rows)
+```
+
+### Revoke role membership
+
+```sql
+CREATE ROLE developer WITH CREATEDB;
+```
+
+```sql
+CREATE USER abbey WITH PASSWORD 'lincoln';
+```
+
+```sql
+GRANT developer TO abbey;
+```
+
+```sql
+SHOW GRANTS ON ROLE developer;
+```
+
+```text
+  role_name | member | is_admin
+------------+--------+-----------
+  developer | abbey  |    f
+(1 row)
+```
+
+```sql
+REVOKE developer FROM abbey;
+```
+
+```sql
+SHOW GRANTS ON ROLE developer;
+```
+
+```text
+SHOW GRANTS ON ROLE 0
+```
+
+### Revoke the admin option
+
+```sql
+GRANT developer TO abbey WITH ADMIN OPTION;
+```
+
+```sql
+SHOW GRANTS ON ROLE developer;
+```
+
+```text
+  role_name | member | is_admin
+------------+--------+-----------
+  developer | abbey  |    t
+(1 row)
+```
+
+```sql
+REVOKE ADMIN OPTION FOR developer FROM abbey;
+```
+
+```sql
+SHOW GRANTS ON ROLE developer;
+```
+
+```text
+  role_name | member | is_admin
+------------+--------+-----------
+  developer | abbey  |    f
+(1 row)
+```
+
+## See also
+
+- [Authorization](/docs/v25.2/authorization)
+- [`GRANT`](/docs/v25.2/grant)
+- [`SHOW GRANTS`](/docs/v25.2/show-grants)
+- [`SHOW ROLES`](/docs/v25.2/show-roles)
+- [`CREATE USER`](/docs/v25.2/create-user)
+- [`DROP USER`](/docs/v25.2/drop-user)
+- [SQL Statements](/docs/v25.2/sql-statements)

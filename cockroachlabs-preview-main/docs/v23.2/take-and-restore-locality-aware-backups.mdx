@@ -1,0 +1,265 @@
+---
+title: "Take and Restore Locality-aware Backups"
+old_description: "Learn about the advanced options you can use when you backup and restore a CockroachDB cluster."
+---
+
+Locality-aware backups allow you to partition and store backup data in a way that is optimized for locality. When you run a locality-aware backup, nodes write backup data to the [cloud storage](/docs/v23.2/use-cloud-storage) bucket that is closest to the node locality configured at [node startup](/docs/v23.2/cockroach-start).
+
+<Warning>
+While a locality-aware backup will always match the node locality and storage bucket locality, a [range's](/docs/v23.2/architecture/overview#range) locality will not necessarily match the node's locality. The backup job will attempt to back up ranges through nodes matching that range's locality, however this is not always possible. As a result, **Cockroach Labs cannot guarantee that all ranges will be backed up to a cloud storage bucket with the same locality.** You should consider this as you plan a backup strategy that must comply with [data domiciling](/docs/v23.2/data-domiciling) requirements.
+</Warning>
+
+A locality-aware backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`. [Restore jobs can read from a locality-aware backup](#restore-from-a-locality-aware-backup) when you provide the list of URIs that together contain the locations of all of the files for a single locality-aware backup.
+
+A successful locality-aware backup job requires that each node in the cluster has access to each storage location. This is because any node in the cluster can claim the job and become the [*coordinator*](/docs/v23.2/backup-architecture#job-creation-phase) node.
+
+## Technical overview
+
+For a technical overview of how a locality-aware backup works, refer to [Job coordination and export of locality-aware backups](/docs/v23.2/backup-architecture#job-coordination-and-export-of-locality-aware-backups).
+
+## Supported products
+
+The feature described on this page is available in **CockroachDB Basic**, **CockroachDB Standard**, **CockroachDB Advanced**, and **CockroachDB self-hosted** clusters when you are running [self-managed backups](/docs/cockroachcloud/take-and-restore-self-managed-backups). For a full list of features, refer to [Backup and restore product support](/docs/v23.2/backup-and-restore-overview#backup-and-restore-support).
+
+<Note>
+CockroachDB Basic and Standard clusters operate with a different architecture compared to CockroachDB self-hosted and CockroachDB Advanced clusters. These architectural differences have implications for how locality-aware backups can run. Basic and Standard clusters will scale resources depending on whether they are actively in use, which means that it is less likely to have a SQL pod available in every locality. As a result, your cluster may not have a SQL pod in the locality where the data resides, which can lead to the cluster uploading that data to a storage bucket in a locality where you do have active SQL pods. You should consider this as you plan a backup strategy that must comply with [data domiciling](/docs/v23.2/data-domiciling) requirements.
+</Note>
+
+CockroachDB also supports *locality-restricted backup execution*, which allows you to specify a set of locality filters for a backup job to restrict the nodes that can participate in the backup process to that locality. This allows only nodes to execute a backup that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket. Refer to [Take Locality-restricted Backups](/docs/v23.2/take-locality-restricted-backups) for more detail.
+
+## Create a locality-aware backup
+
+For example, to create a locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
+
+```sql
+BACKUP INTO
+      ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
+```
+
+When you run the `BACKUP` statement for a locality-aware backup, check the following:
+
+- The locality query string parameters must be [URL-encoded](https://wikipedia.org/wiki/Percent-encoding).
+- If you are creating an [external connection](/docs/v23.2/create-external-connection) with [`BACKUP` query parameters](/docs/v23.2/backup#query-parameters) or [authentication](/docs/v23.2/cloud-storage-authentication) parameters, you must pass them in uppercase otherwise you will receive an `unknown query parameters` error.
+- A successful locality-aware backup job requires that each node in the cluster has access to each storage location. This is because any node in the cluster can claim the job and become the [*coordinator*](/docs/v23.2/backup-architecture#job-creation-phase) node.
+
+You can restore the backup by running:
+
+```sql
+RESTORE FROM LATEST IN ('s3://us-east-bucket', 's3://us-west-bucket');
+```
+
+Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
+
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN...`](/docs/v23.2/restore#restore-a-specific-full-or-incremental-backup)
+
+For guidance on how to identify the locality of a node to pass in a backup query, see [Show a node's locality](#show-a-nodes-locality).
+
+<Note>
+For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage](/docs/v23.2/use-cloud-storage).
+</Note>
+
+## Show a node's locality
+
+To determine the locality that a node was started with, run [`SHOW LOCALITY`](/docs/v23.2/show-locality):
+
+```sql
+SHOW LOCALITY;
+```
+
+```text
+    locality
++---------------------+
+region=us-east,az=az1
+(1 row)
+```
+
+The output shows the locality to which the node will write backup data. One of the single locality key-value pairs can be passed to `BACKUP` with the `COCKROACH_LOCALITY` parameter (e.g., `'s3://us-east-bucket?COCKROACH_LOCALITY=region%3Dus-east'`).
+
+<Note>
+Specifying both locality tier pairs (e.g., `region=us-east,az=az1`) from the output will cause the backup query to fail with: `tier must be in the form "key=value"`.
+</Note>
+
+## Show locality-aware backups
+
+<Note>
+`SHOW BACKUP` is able to display metadata using `check_files` for locality-aware backups taken with the [`incremental_location`](/docs/v23.2/show-backup#show-a-backup-taken-with-the-incremental-location-option) option.
+</Note>
+
+To view a list of [locality-aware backups](/docs/v23.2/take-and-restore-locality-aware-backups), pass the endpoint [collection URI](/docs/v23.2/backup#backup-file-urls) that is set as the `default` location with `COCKROACH_LOCALITY=default`:
+
+```sql
+> SHOW BACKUPS IN 's3://{default collection URI}/{path}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
+```
+
+```text
+        path
+-------------------------
+/2023/02/23-150925.62
+/2023/03/08-192859.44
+(2 rows)
+```
+
+To view a [locality-aware backup](/docs/v23.2/take-and-restore-locality-aware-backups), pass locality-aware backup URIs to `SHOW BACKUP`:
+
+```sql
+> SHOW BACKUP FROM LATEST IN ('s3://{bucket name}/locality?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}&COCKROACH_LOCALITY=default', 's3://{bucket name}/locality?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}&COCKROACH_LOCALITY=region%3Dus-west');
+```
+
+```text
+  database_name | parent_schema_name |        object_name         | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster
+----------------+--------------------+----------------------------+-------------+-------------+------------+----------------------------+------------+------+------------------
+  NULL          | NULL               | movr                       | database    | full        | NULL       | 2023-02-23 15:09:25.625777 |       NULL | NULL |        f
+  movr          | NULL               | public                     | schema      | full        | NULL       | 2023-02-23 15:09:25.625777 |       NULL | NULL |        f
+  movr          | public             | users                      | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |       5633 |   58 |        f
+  movr          | public             | vehicles                   | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |       3617 |   17 |        f
+  movr          | public             | rides                      | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |     159269 |  511 |        f
+  movr          | public             | vehicle_location_histories | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |      79963 | 1092 |        f
+  movr          | public             | promo_codes                | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |     221763 | 1003 |        f
+  movr          | public             | user_promo_codes           | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |        927 |   11 |        f
+(8 rows)
+```
+
+## Restore from a locality-aware backup
+
+Given a list of URIs that together contain the locations of all of the files for a single [locality-aware backup](#create-a-locality-aware-backup), [`RESTORE`](/docs/v23.2/restore) can read in that backup. Note that the list of URIs passed to [`RESTORE`](/docs/v23.2/restore) may be different from the URIs originally passed to [`BACKUP`](/docs/v23.2/backup). This is because it's possible to move the contents of one of the parts of a locality-aware backup (i.e., the files written to that destination) to a different location, or even to consolidate all the files for a locality-aware backup into a single location.
+
+When restoring a [full backup](/docs/v23.2/take-full-and-incremental-backups#full-backups), the cluster data is restored first, then the system table data "as is." This means that the restored [zone configurations](/docs/v23.2/alter-partition#create-a-replication-zone-for-a-partition) can point to regions that do not have active nodes in the new cluster. For example, if your full backup has the following zone configurations:
+
+```sql
+ALTER PARTITION europe_west OF INDEX movr.public.rides@rides_pkey \
+        CONFIGURE ZONE USING constraints = '[+region=europe-west1]';
+
+ALTER PARTITION us_east OF INDEX movr.public.rides@rides_pkey \
+        CONFIGURE ZONE USING constraints = '[+region=us-east1]';
+
+ALTER PARTITION us_west OF INDEX movr.public.rides@rides_pkey \
+        CONFIGURE ZONE USING constraints = '[+region=us-west1]';
+```
+
+And the restored cluster does not have [nodes with the locality](/docs/v23.2/partitioning#node-attributes) `region=us-west1`, the restored cluster will still have a zone configuration for `us-west1`. This means that the cluster's data will **not** be reshuffled to `us-west1` because the region does not exist. The data will be distributed as if the zone configuration does not exist. For the data to be distributed correctly, you can [add node(s)](/docs/v23.2/cockroach-start) with the missing region or [remove the zone configuration](/docs/v23.2/configure-replication-zones#remove-a-replication-zone).
+
+For example, use the following to create a locality-aware backup:
+
+```sql
+BACKUP INTO
+      ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west')
+```
+
+Restore a locality-aware backup with:
+
+```sql
+RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
+```
+
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN...`](/docs/v23.2/restore#restore-a-specific-full-or-incremental-backup).
+
+<Note>
+[`RESTORE`](/docs/v23.2/restore) is not truly locality-aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen in the cases that either the [`BACKUP`](/docs/v23.2/backup) or [`RESTORE`](/docs/v23.2/restore) was not of a [full cluster](/docs/v23.2/take-full-and-incremental-backups#full-backups). Note that during a locality-aware restore, some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you can [manually restore zone configurations from a locality-aware backup](#manually-restore-zone-configurations-from-a-locality-aware-backup).
+</Note>
+
+## Create an incremental locality-aware backup
+
+If you backup to a destination already containing a [full backup](/docs/v23.2/take-full-and-incremental-backups#full-backups), an [incremental backup](/docs/v23.2/take-full-and-incremental-backups#incremental-backups) will be appended to the full backup in a subdirectory. When you're taking an incremental backup, you must ensure that the incremental backup localities match the full backup localities otherwise you will receive an error. Alternatively, take another full backup with the matching localities before running the incremental backup.
+
+There is different syntax for taking an incremental backup depending on where you need to store the backups:
+
+- To append your incremental backup to the full backup in the [`incrementals` directory](/docs/v23.2/take-full-and-incremental-backups#backup-collections):
+
+    ```sql
+    BACKUP INTO LATEST IN
+        ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
+    ```
+
+    <Note>
+    When [restoring from an incremental locality-aware backup](#restore-from-an-incremental-locality-aware-backup), you need to include **every** locality ever used, even if it was only used once. At least one `COCKROACH_LOCALITY` must be the `default`.
+    </Note>
+- To explicitly control the subdirectory for your incremental backup:
+
+    ```sql
+    BACKUP INTO {subdirectory} IN
+            ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
+    ```
+
+    To view the available subdirectories, use [`SHOW BACKUPS`](/docs/v23.2/restore#view-the-backup-subdirectories).
+- To append your incremental backup to the full backup using the [`incremental_location`](/docs/v23.2/backup#options) option to send your incremental backups to a different location, you must include the same number of locality-aware URIs for the full backup destination and the `incremental_location` option:
+
+    ```sql
+    BACKUP INTO LATEST IN
+        ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west') WITH incremental_location = ('s3://us-east-bucket-2?COCKROACH_LOCALITY=default', 's3://us-west-bucket-2?COCKROACH_LOCALITY=region%3Dus-west');
+    ```
+
+    For more detail on using the `incremental_location` option, see [Incremental backups with explicitly specified destinations](/docs/v23.2/take-full-and-incremental-backups#incremental-backups-with-explicitly-specified-destinations).
+
+    <Warning>
+    The `incremental_location` parameter is deprecated as of v25.4 and will be removed in a future release. Until the parameter is removed, you can continue to work with existing backups that use a custom `incremental_location`.
+    </Warning>
+
+## Restore from an incremental locality-aware backup
+
+A locality-aware backup URI can also be used in place of any incremental backup URI in [`RESTORE`](/docs/v23.2/restore).
+
+For example, an incremental locality-aware backup created with
+
+```sql
+BACKUP INTO LATEST IN
+      ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west')
+```
+
+can be restored by running:
+
+```sql
+RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
+```
+
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN...`](/docs/v23.2/restore#restore-a-specific-full-or-incremental-backup).
+
+<Note>
+When [restoring from an incremental locality-aware backup](/docs/v23.2/take-and-restore-locality-aware-backups#restore-from-an-incremental-locality-aware-backup), you need to include **every** locality ever used, even if it was only used once.
+</Note>
+
+## Manually restore zone configurations from a locality-aware backup
+
+During a [locality-aware restore](#restore-from-a-locality-aware-backup), some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you need to manually restore [zone configurations](/docs/v23.2/configure-replication-zones) first:
+
+Once the locality-aware restore has started, [pause the restore](/docs/v23.2/pause-job):
+
+```sql
+PAUSE JOB 27536791415282;
+```
+
+The `system.zones` table stores your cluster's [zone configurations](/docs/v23.2/configure-replication-zones), which will prevent the data from rebalancing. To restore them, you must restore the `system.zones` table into a new database because you cannot drop the existing `system.zones` table:
+
+```sql
+RESTORE TABLE system.zones FROM '2021/03/23-213101.37' IN
+    'azure-blob://acme-co-backup?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+    WITH into_db = 'newdb';
+```
+
+After it's restored into a new database, you can write the restored `zones` table data to the cluster's existing `system.zones` table:
+
+```sql
+INSERT INTO system.zones SELECT * FROM newdb.zones;
+```
+
+Then drop the temporary table you created:
+
+```sql
+DROP TABLE newdb.zones;
+```
+
+Then, [resume the restore](/docs/v23.2/resume-job):
+
+```sql
+RESUME JOB 27536791415282;
+```
+
+## See also
+
+- [`BACKUP`](/docs/v23.2/backup)
+- [`RESTORE`](/docs/v23.2/restore)
+- [Take Full and Incremental Backups](/docs/v23.2/take-full-and-incremental-backups)
+- [Take and Restore Encrypted Backups](/docs/v23.2/take-and-restore-encrypted-backups)
+- [Take Backups with Revision History and Restore from a Point-in-time](/docs/v23.2/take-backups-with-revision-history-and-restore-from-a-point-in-time)
+- [Migration Overview](/docs/molt/migration-overview)
+- [Use the Built-in SQL Client](/docs/v23.2/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v23.2/cockroach-commands)

@@ -1,0 +1,130 @@
+---
+title: "SET TRANSACTION"
+old_description: "The SET TRANSACTION statement sets the transaction priority for the current session or an individual transaction."
+---
+
+import { SetTransaction3 } from "/snippets/syntax-diagrams/SetTransaction3.jsx";
+
+The `SET TRANSACTION` [statement](/docs/v24.1/sql-statements) sets the transaction priority, access mode, "as of" timestamp, and isolation level. These are applied after you [`BEGIN`](/docs/v24.1/begin-transaction) the transaction and before executing the first statement that manipulates a database.
+
+<Note>
+Cockroach Labs recommends leaving the transaction priority at the default setting in almost all cases. Changing the transaction priority to `HIGH` in particular can lead to difficult-to-debug interactions with other transactions executing on the system.
+
+If you are setting a transaction priority to avoid [contention](/docs/v24.1/performance-best-practices-overview#transaction-contention) or [hot spots](/docs/v24.1/performance-best-practices-overview#hot-spots), or to [get better query performance](/docs/v24.1/make-queries-fast), it is usually a sign that you need to update your [schema design](/docs/v24.1/schema-design-database) and/or review the data access patterns of your workload.
+</Note>
+
+## Synopsis
+
+<SetTransaction3 />
+
+## Required privileges
+
+No [privileges](/docs/v24.1/security-reference/authorization#managing-privileges) are required to set the transaction priority. However, privileges are required for each statement within a transaction.
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>PRIORITY</code></td><td>If you do not want the transaction to run with <code>NORMAL</code> priority, you can set it to <code>LOW</code> or <code>HIGH</code>. Transactions with higher priority are less likely to need to be retried. For more information, see <a href="/docs/v24.1/transactions#transaction-priorities">Transactions: Priorities</a>.<br/><br/>The current priority is also exposed as the read-only <a href="/docs/v24.1/show-vars">session variable</a><code>transaction&#95;priority</code>.<br/><br/><strong>Default</strong>: <code>NORMAL</code></td></tr><tr><td><code>READ</code></td><td>Set the transaction access mode to <code>READ ONLY</code> or <code>READ WRITE</code>. The current transaction access mode is also exposed as the <a href="/docs/v24.1/show-vars">session variable</a><code>transaction&#95;read&#95;only</code>.<br/><br/><strong>Default</strong>: <code>READ WRITE</code></td></tr><tr><td><code>AS OF SYSTEM TIME</code></td><td>Execute the transaction using the database contents "as of" a specified time in the past.<br/><br/>The <code>AS OF SYSTEM TIME</code> clause can be used only when the transaction is read-only. If the transaction contains any writes, or if the <code>READ WRITE</code> mode is specified, an error will be returned.<br/><br/>For more information, see <a href="/docs/v24.1/as-of-system-time"><code>AS OF SYSTEM TIME</code></a>.</td></tr><tr><td><code>NOT DEFERRABLE</code><br/><code>DEFERRABLE</code></td><td>This clause is supported for compatibility with PostgreSQL. <code>NOT DEFERRABLE</code> is a no-op and the default behavior for CockroachDB. <code>DEFERRABLE</code> returns an <code>unimplemented</code> error.</td></tr><tr><td><code>ISOLATION LEVEL</code></td><td>Set the transaction isolation level. Transactions use <code>SERIALIZABLE</code> isolation by default. They can be configured to run at <a href="/docs/v24.1/read-committed"><code>READ COMMITTED</code></a> isolation.<br/><br/>This clause only takes effect if specified at the beginning of the transaction.</td></tr></tbody></table>
+
+## Examples
+
+### Set isolation level
+
+You can set the transaction isolation level to [`SERIALIZABLE`](/docs/v24.1/demo-serializable) or [`READ COMMITTED`](/docs/v24.1/read-committed#enable-read-committed-isolation).
+
+If not specified, transactions use the value of the current session's [`default_transaction_isolation`](/docs/v24.1/session-variables#default-transaction-isolation) variable.
+
+```sql
+BEGIN;
+```
+
+```sql
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+```
+
+### Set priority
+
+<Warning>
+This example assumes you're using [client-side retry handling](/docs/v24.1/transaction-retry-error-reference#client-side-retry-handling).
+</Warning>
+
+```sql
+> BEGIN;
+```
+
+```sql
+> SET TRANSACTION PRIORITY HIGH;
+```
+
+```sql
+> SAVEPOINT cockroach_restart;
+```
+
+```sql
+> UPDATE products SET inventory = 0 WHERE sku = '8675309';
+```
+
+```sql
+> INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
+```
+
+```sql
+> RELEASE SAVEPOINT cockroach_restart;
+```
+
+```sql
+> COMMIT;
+```
+
+### Use the `AS OF SYSTEM TIME` option
+
+You can execute the transaction using the database contents "as of" a specified time in the past.
+
+```sql
+> BEGIN;
+```
+
+```sql
+> SET TRANSACTION AS OF SYSTEM TIME '2019-04-09 18:02:52.0+00:00';
+```
+
+```sql
+> SELECT * FROM orders;
+```
+
+```sql
+> SELECT * FROM products;
+```
+
+```sql
+> COMMIT;
+```
+
+### Set the default transaction priority for a session
+
+To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable](/docs/v24.1/set-vars). For example:
+
+```sql
+> SET default_transaction_priority 'high';
+```
+
+```sql
+> SHOW transaction_priority;
+```
+
+```text
+  transaction_priority
+------------------------
+  high
+```
+
+Note that `transaction_priority` is a read-only [session variable](/docs/v24.1/show-vars) that cannot be set directly.
+
+## See also
+
+- [`SET`](/docs/v24.1/set-vars)
+- [Transactions: Priority levels](/docs/v24.1/transactions#transaction-priorities)
+- [`BEGIN`](/docs/v24.1/begin-transaction)
+- [`COMMIT`](/docs/v24.1/commit-transaction)
+- [`SAVEPOINT`](/docs/v24.1/savepoint)
+- [`RELEASE SAVEPOINT`](/docs/v24.1/release-savepoint)
+- [`ROLLBACK`](/docs/v24.1/rollback-transaction)

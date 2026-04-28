@@ -1,0 +1,1250 @@
+---
+title: "Replication Controls"
+old_description: "In CockroachDB, you use replication zones to control the number and location of replicas for specific sets of data."
+---
+
+Replication zones give you the power to control what data goes where in your CockroachDB cluster. Specifically, they are used to control the number and location of replicas for data belonging to the following objects:
+
+- Databases
+- Tables
+- Rows
+- Indexes
+- All data in the cluster, including internal system data ( [via the default replication zone](#view-the-default-replication-zone) )
+
+For each of these objects you can control:
+
+- How many copies of each range to spread through the cluster.
+- Which constraints are applied to which data, e.g., "table X's data can only be stored in the German availability zones".
+- The maximum size of ranges (how big ranges get before they are split).
+- How long old data is kept before being garbage collected.
+- Where you would like the leaseholders for certain ranges to be located, e.g., "for ranges that are already constrained to have at least one replica in `region=us-west`, also try to put their leaseholders in `region=us-west` ".
+
+This page explains how replication zones work and how to use the `ALTER... CONFIGURE ZONE` statement to manage them. `CONFIGURE ZONE` is a subcommand of the [`ALTER DATABASE`](/docs/v25.4/alter-database#configure-zone), [`ALTER TABLE`](/docs/v25.4/alter-table#configure-zone), [`ALTER INDEX`](/docs/v25.4/alter-index#configure-zone), [`ALTER PARTITION`](/docs/v25.4/alter-partition#create-a-replication-zone-for-a-partition), and [`ALTER RANGE`](/docs/v25.4/alter-range#configure-zone) statements.
+
+For instructions showing how to troubleshoot replication zones that may be misconfigured, see [Troubleshoot Replication Zone Configurations](/docs/v25.4/troubleshoot-replication-zones).
+
+<Note>
+To configure replication zones, a user must be a member of the [`admin` role](/docs/v25.4/security-reference/authorization#admin-role) or have been granted [`CREATE`](/docs/v25.4/security-reference/authorization#supported-privileges) or [`ZONECONFIG`](/docs/v25.4/security-reference/authorization#supported-privileges) privileges. To configure [`system` objects](#for-system-data), the user must be a member of the `admin` role.
+</Note>
+
+<Warning>
+Cockroach Labs [does not recommend modifying zone configurations manually](#why-manual-zone-config-management-is-not-recommended).
+
+Most users should use [multi-region SQL statements](/docs/v25.4/multiregion-overview) instead. If additional control is needed, use [Zone Config Extensions](/docs/v25.4/zone-config-extensions) to augment the multi-region SQL statements.
+</Warning>
+
+## Overview
+
+Every [range](/docs/v25.4/architecture/overview#architecture-range) in the cluster is part of a replication zone. Each range's zone configuration is taken into account as ranges are rebalanced across the cluster to ensure that any constraints are honored.
+
+When a cluster starts, there are two categories of replication zone:
+
+1. Pre-configured replication zones that apply to internal system data.
+2. A single default replication zone that applies to the rest of the cluster.
+
+You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and indexes as needed.
+
+For example, you might rely on the [default zone](#view-the-default-replication-zone) to spread most of a cluster's data across all of your availability zones, but [create a custom replication zone for a specific database](#create-a-replication-zone-for-a-database) to make sure its data is only stored in certain availability zones and/or geographies.
+
+## Replication zone levels
+
+There are five replication zone levels for [**table data**](/docs/v25.4/architecture/distribution-layer#table-data) in a cluster, listed from least to most granular:
+
+<table><thead><tr><th>Level</th><th>Description</th></tr></thead><tbody><tr><td>Cluster</td><td>CockroachDB comes with a pre-configured <code>default</code> replication zone that applies to all table data in the cluster not constrained by a database, table, or row-specific replication zone. This zone can be adjusted but not removed. See <a href="#view-the-default-replication-zone">View the Default Replication Zone</a> and <a href="#edit-the-default-replication-zone">Edit the Default Replication Zone</a> for more details.</td></tr><tr><td>Database</td><td>You can add replication zones for specific databases. See <a href="#create-a-replication-zone-for-a-database">Create a Replication Zone for a Database</a> for more details.</td></tr><tr><td>Table</td><td>You can add replication zones for specific tables. See <a href="#create-a-replication-zone-for-a-table">Create a Replication Zone for a Table</a>.</td></tr><tr><td>Index</td><td>The <a href="/docs/v25.4/indexes">indexes</a> on a table will automatically use the replication zone for the table. However, with an Enterprise license, you can add distinct replication zones for indexes. See <a href="#create-a-replication-zone-for-a-secondary-index">Create a Replication Zone for a Secondary Index</a> for more details.</td></tr><tr><td>Row</td><td>You can add replication zones for specific rows in a table or index by <a href="/docs/v25.4/partitioning">defining table partitions</a>. See <a href="#create-a-replication-zone-for-a-partition">Create a Replication Zone for a Table Partition</a> for more details.</td></tr></tbody></table>
+
+### For system data
+
+In addition, CockroachDB stores internal [**system data**](/docs/v25.4/architecture/distribution-layer#monolithic-sorted-map-structure) in what are called system ranges. There are two replication zone levels for this internal system data, listed from least to most granular:
+
+<table><thead><tr><th>Level</th><th>Description</th></tr></thead><tbody><tr><td>Cluster</td><td>The <code>default</code> replication zone mentioned above also applies to all system ranges not constrained by a more specific replication zone.</td></tr><tr><td>System Range</td><td>CockroachDB comes with pre-configured replication zones for important system ranges, such as the "meta" and "liveness" ranges. If necessary, you can add replication zones for the "timeseries" range and other system ranges as well. Editing replication zones for system ranges may override settings from <code>default</code>. See <a href="#create-a-replication-zone-for-a-system-range">Create a Replication Zone for a System Range</a> for more details.<br/><br/>CockroachDB also comes with pre-configured replication zones for the internal <code>system</code> database and the <code>system.jobs</code> table, which stores metadata about long-running jobs such as schema changes and backups.</td></tr></tbody></table>
+
+### Level priorities
+
+When replicating data, whether table or system, CockroachDB always uses the most granular replication zone available. For example, for a piece of user data:
+
+1. If there's a replication zone [for the row](#create-a-replication-zone-for-a-partition) (a.k.a. [partition](/docs/v25.4/partitioning) ), CockroachDB uses it.
+2. If there's no applicable row replication zone and the row is from an index, CockroachDB uses the [index replication zone](#create-a-replication-zone-for-a-secondary-index).
+3. If the row isn't from a index or there is no applicable index replication zone, CockroachDB uses the [table replication zone](#create-a-replication-zone-for-a-table).
+4. If there's no applicable table replication zone, CockroachDB uses the [database replication zone](#create-a-replication-zone-for-a-database).
+5. If there's no applicable database replication zone, CockroachDB uses [the `default` cluster-wide replication zone](#view-the-default-replication-zone).
+
+As this example shows, CockroachDB chooses which replication zone applies to a specific schema object using a hierarchy of inheritance. For most users [who never modify their zone configurations](#why-manual-zone-config-management-is-not-recommended), this level of understanding is sufficient.
+
+However, there are nuances in how inheritance works that are not explained by this example. For more details about how zone config inheritance works, see the section [How zone config inheritance works](#how-zone-config-inheritance-works).
+
+### How zone config inheritance works
+
+As [discussed previously](#level-priorities), CockroachDB always uses the most granular replication zone available for each schema object (database, table, etc.). More-specific settings applied to schema objects at lower levels of the inheritance tree will always override the settings of objects above them in the tree. All configurations will therefore be modified versions of the [`default` range](/docs/v25.4/configure-replication-zones#view-the-default-replication-zone), which acts as the root of the tree. This means that in practice, **any changes to a specific schema object's zone configurations are by definition user-initiated**, either via [Multi-region SQL abstractions](/docs/v25.4/multiregion-overview) or [manual changes](#why-manual-zone-config-management-is-not-recommended).
+
+Because each zone config inherits all of its initial values from its parent object, **it only stores the values that differ from its parent**. Any fields that are unset will be looked up in the parent object’s zone configuration. This continues recursively up the inheritance hierarchy all the way to the `default` zone config. In practice, most values are cached for performance.
+
+For more information, see the following subsections:
+
+- [The zone config inheritance hierarchy](#the-zone-config-inheritance-hierarchy)
+- [Zone config inheritance - example SQL session](#zone-config-inheritance-example-sql-session)
+- [Why manual zone config management is not recommended](#why-manual-zone-config-management-is-not-recommended)
+
+#### The zone config inheritance hierarchy
+
+The hierarchy of inheritance for zone configs can be visualized using the following outline-style diagram, in which each level of indentation denotes an inheritance relationship.
+
+The only exception to this simple inheritance relationship is that due to a known limitation, sub-partitions do not inherit their values from their parent partitions. Instead, sub-partitions inherit their values from the parent table. For more information, see [cockroachdb/cockroach#75862](https://github.com/cockroachdb/cockroach/issues/75862).
+
+```text
+- default
+  - database A
+    - table A.B
+      - index A.B.1
+        - partition (row) 1
+          - sub-partition 1.1 (NB. Sub-partitions inherit from tables, *not* partitions - see cockroachdb/cockroach#75862)
+            - sub-partition 1.1.1
+          - sub-partition 1.2
+    - table A.C
+      - index A.C.1
+      - index A.C.2
+  - ...
+```
+
+The way the zone config inheritance hierarchy works can be thought of from a "bottom-up" or "top-down" perspective; both are useful, but which one is easier to understand may depend on what you are trying to do.
+
+The "bottom-up" view of how zone config inheritance works is useful when you [are troubleshooting unexpected replication behavior](/docs/v25.4/troubleshoot-replication-zones).
+
+In this view, you start with the most granular schema object whose replication behavior currently interests you. In a troubleshooting session, this is the one you think is the source of the unexpected behavior. You start at the target schema object, looking at the specific state of its configuration to see what is different about it from its parent object (if anything), and work upwards from there.
+
+The "top-down" perspective of how zone config inheritance works can be useful when thinking about how the system works as a whole.
+
+From the whole-system perspective, the hierarchy of schema object zone configs can be thought of as a tree. From this point of view, the system does a depth-first traversal down the tree of schema objects. For each object, **it uses the value of the most specific modified field from the current object's zone config, unless or until it finds a modified value of that field on an object deeper in the tree**. For each field on the current schema object's zone config where it doesn't find any modified value, it uses the inherited value from the node's parent, which inherits from its parent, and so on all the way back up to the root of the tree ([the `default` range](#view-the-default-replication-zone)).
+
+The following diagram presents the same set of schema objects as the previous outline-style diagram, but using boxes and lines joined with arrows that represent the "top-down" view.
+
+Each box represents a schema object in the zone configuration inheritance hierarchy. Each solid line ends in an arrow that points from a parent object to its child object, which will inherit the parent's values unless those values are changed at the child level. The dotted lines between partitions and sub-partitions represent the known limitation mentioned previously that sub-partitions do not inherit their values from their parent partitions. Instead, sub-partitions inherit their values from the parent table. For more information about this limitation, see [cockroachdb/cockroach#75862](https://github.com/cockroachdb/cockroach/issues/75862).
+
+<Frame>
+  ![zone config inheritance diagram](/images/v25.4/zone-config-inheritance-diagram.png)
+</Frame>
+
+#### Zone config inheritance - example SQL session
+
+You can verify [the inheritance behavior described previously](#how-zone-config-inheritance-works) in a SQL session.
+
+Start a [demo cluster](/docs/v25.4/cockroach-demo). Create a sample database and table:
+
+```sql
+CREATE DATABASE IF NOT EXISTS test;
+USE test;
+CREATE TABLE IF NOT EXISTS kv (k INT, v INT);
+```
+
+Next, manually set a zone configuration field at the database level. In this example, use `num_replicas`:
+
+```sql
+ALTER DATABASE test CONFIGURE ZONE USING num_replicas = 1;
+```
+
+Check that the child table `test.kv` inherits the value of `num_replicas` from its parent database. You should see output like the following:
+
+```sql
+SHOW ZONE CONFIGURATION FROM TABLE test.kv;
+```
+
+```text
+     target     |              raw_config_sql
+----------------+-------------------------------------------
+  DATABASE test | ALTER DATABASE test CONFIGURE ZONE USING
+                |     range_min_bytes = 134217728,
+                |     range_max_bytes = 536870912,
+                |     gc.ttlseconds = 14400,
+                |     num_replicas = 1,
+                |     constraints = '[]',
+                |     lease_preferences = '[]'
+(1 row)
+```
+
+Then, set the `num_replicas` field on the table to a different value than its parent database:
+
+```sql
+ALTER TABLE kv CONFIGURE ZONE USING num_replicas = 5;
+```
+
+This overrides the value of `num_replicas` set by the parent `test` database. From this point forward, until you discard the changed settings at the table level, the table will no longer inherit those changed values from its parent database.
+
+In other words, **the value of this field on the table's zone config has diverged from its parent database, and all state on this field must be managed manually going forward**. This divergence in state between parent and child objects, and the necessity to manage it manually once it diverges, is the reason [why manual zone config management is not recommended](#why-manual-zone-config-management-is-not-recommended).
+
+Next, check the zone config for the table `test.kv`, and verify that its value of `num_replicas` has diverged:
+
+```sql
+SHOW ZONE CONFIGURATION FROM TABLE kv;
+```
+
+```text
+   target  |           raw_config_sql
+-----------+--------------------------------------
+  TABLE kv | ALTER TABLE kv CONFIGURE ZONE USING
+           |     range_min_bytes = 134217728,
+           |     range_max_bytes = 536870912,
+           |     gc.ttlseconds = 14400,
+           |     num_replicas = 5,
+           |     constraints = '[]',
+           |     lease_preferences = '[]'
+(1 row)
+```
+
+Next, change the value of `num_replicas` for the `test` database again. Once again, choose a different value than its child table `test.kv` (which has `num_replicas = 5`).
+
+```sql
+ALTER DATABASE test CONFIGURE ZONE USING num_replicas = 7;
+```
+
+The reason for doing this is to confirm the previous claim that "the value of this field on the table's zone config has diverged from its parent database, and all state on this field must be managed manually going forward".
+
+The following [`SHOW ZONE CONFIGURATION`](/docs/v25.4/show-zone-configurations) statement confirms that the value of the `num_replicas` field on the `kv` table is no longer inherited from its parent database `test`.
+
+```sql
+SHOW ZONE CONFIGURATION FROM TABLE kv;
+```
+
+```text
+   target  |           raw_config_sql
+-----------+--------------------------------------
+  TABLE kv | ALTER TABLE kv CONFIGURE ZONE USING
+           |     range_min_bytes = 134217728,
+           |     range_max_bytes = 536870912,
+           |     gc.ttlseconds = 14400,
+           |     num_replicas = 5,
+           |     constraints = '[]',
+           |     lease_preferences = '[]'
+(1 row)
+```
+
+Note that even if you manually change the value of `num_replicas` in `kv` to match the value of its parent `test`, further changes to `test` **will still not be propagated downward to `test.kv`**. Confirm this by running the following statements:
+
+```sql
+ALTER TABLE test.kv CONFIGURE ZONE USING num_replicas = 7;
+```
+
+```sql
+ALTER DATABASE test CONFIGURE ZONE USING num_replicas = 9;
+```
+
+```sql
+SHOW ZONE CONFIGURATION FROM TABLE kv;
+```
+
+```text
+   target  |           raw_config_sql
+-----------+--------------------------------------
+  TABLE kv | ALTER TABLE kv CONFIGURE ZONE USING
+           |     range_min_bytes = 134217728,
+           |     range_max_bytes = 536870912,
+           |     gc.ttlseconds = 14400,
+           |     num_replicas = 7,
+           |     constraints = '[]',
+           |     lease_preferences = '[]'
+(1 row)
+```
+
+One way to think about this from a programming perspective is that a ["dirty bit"](https://en.wikipedia.org/wiki/Dirty_bit) has been set on the `num_replicas` field in the `kv` table's zone config.
+
+However, you can confirm that other fields on `test.kv` which have not been modified from their default values still inherit from the parent database `test` as expected by changing the value of `gc.ttlseconds` on the `test` database.
+
+Change the value of `gc.ttlseconds` on the `test` database:
+
+```sql
+ALTER DATABASE test CONFIGURE ZONE USING gc.ttlseconds = 600;
+```
+
+Next, confirm that the value of `gc.ttlseconds` from the `test` database is inherited by the `test.kv` table as expected:
+
+```sql
+SHOW ZONE CONFIGURATION FROM TABLE test.kv;
+```
+
+```text
+         target        |                 raw_config_sql
+-----------------------+--------------------------------------------------
+  TABLE test.public.kv | ALTER TABLE test.public.kv CONFIGURE ZONE USING
+                       |     range_min_bytes = 134217728,
+                       |     range_max_bytes = 536870912,
+                       |     gc.ttlseconds = 600,
+                       |     num_replicas = 7,
+                       |     constraints = '[]',
+                       |     lease_preferences = '[]'
+(1 row)
+```
+
+To return the `test.kv` table to a state where it goes back to inheriting all of its values from its parent database `test`, use the [`ALTER TABLE... CONFIGURE ZONE DISCARD`](/docs/v25.4/alter-table#remove-a-replication-zone) statement:
+
+```sql
+ALTER TABLE test.kv CONFIGURE ZONE DISCARD;
+```
+
+As you can see from this example, these kinds of manual "tweaks" to zone configurations can leave the cluster in a state where its operators are managing its replication in a very manual and error-prone fashion. This example shows why, for most users, [manual zone config management is not recommended](#why-manual-zone-config-management-is-not-recommended). Instead, most users should use [Multi-region SQL](/docs/v25.4/multiregion-overview).
+
+#### Why manual zone config management is not recommended
+
+Reasons to avoid modifying zone configurations manually using [`CONFIGURE ZONE`](/docs/v25.4/alter-database#configure-zone) include:
+
+- It is difficult to do proper auditing and change management of manually altered zone configurations.
+- It is easy to introduce logic errors (a.k.a., bugs) and end up in a state where your replication is not behaving as it is "supposed to".
+- Manual zone config modifications must be entirely maintained by the user with no help from the system. Such manual changes must be fully overwritten on each configuration change in order to take effect; this introduces another avenue for error.
+
+Given the [previous description of how zone config inheritance works](#how-zone-config-inheritance-works), if you [manually modify zone configs using `CONFIGURE ZONE`](/docs/v25.4/alter-database#configure-zone), you will see the following behavior:
+
+- If you set some field *F* at the database level, the updated value of that field will propagate down the inheritance tree to all of the database's child tables.
+- However, if you then edit that same field *F* on a child table, the table will no longer inherit its value of *F* from its parent database. Instead, **the field *F* across these two schema objects is now in a diverged state**. This means that any changes to the value of *F* at the database level **no longer propagate downward to the child table**, which has its own value of *F*.
+- In other words, once you touch any schema object *O* to manually edit some field *F*, a "dirty bit" is set on *O.F*, and CockroachDB will no longer modify *O.F* without user intervention. **Instead, you are now responsible for managing the state of *O.F* via direct calls to [`ALTER DATABASE... CONFIGURE ZONE`](/docs/v25.4/alter-database#configure-zone) anytime something needs to change in your configuration**.
+
+Avoiding this error-prone manual state management was the motivation behind the development of the abstractions provided by [Multi-region SQL statements](/docs/v25.4/multiregion-overview) and [Multi-region Zone Config Extensions](/docs/v25.4/zone-config-extensions).
+
+## Manage replication zones
+
+Use the `ALTER... CONFIGURE ZONE` statement to [add](#create-a-replication-zone-for-a-system-range), [modify](#edit-the-default-replication-zone), [reset](#reset-a-replication-zone), and [remove](#remove-a-replication-zone) replication zones.
+
+### Replication zone variables
+
+Use the `ALTER... CONFIGURE ZONE` [statement](/docs/v25.4/sql-statements) to set a replication zone:
+
+```sql
+> ALTER TABLE t CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 5, constraints = '[-region=west]';
+```
+
+<table><thead><tr><th>Variable</th><th>Description</th></tr></thead><tbody><tr><td><code>range&#95;min&#95;bytes</code></td><td><a></a> The minimum size, in bytes, for a range of data in the zone. When a range is less than this size, CockroachDB will merge it with an adjacent range.<br/><br/><strong>Default:</strong><code>134217728</code> (128 MiB)</td></tr><tr><td><code>range&#95;max&#95;bytes</code></td><td><a></a> The maximum size, in bytes, for a <a href="/docs/v25.4/architecture/glossary#architecture-range">range</a> of data in the zone. When a range reaches this size, CockroachDB will <a href="/docs/v25.4/architecture/distribution-layer#range-splits">split it</a> into two ranges.<br/><br/><strong>Default:</strong><code>536870912</code> (512 MiB)</td></tr><tr><td><code>gc.ttlseconds</code></td><td><a></a> The number of seconds overwritten <a href="/docs/v25.4/architecture/storage-layer#mvcc">MVCC values</a> will be retained before <a href="/docs/v25.4/architecture/storage-layer#garbage-collection">garbage collection</a>.<br/><br/><strong>Default:</strong><code>14400</code> (4 hours)<br/><br/>Smaller values can save disk space and improve performance if values are frequently overwritten or for <a href="/docs/v25.4/understand-hotspots#queueing-hotspot">queue-like workloads</a>. The smallest value we regularly test is <code>600</code> (10 minutes); smaller values are unlikely to be beneficial because of the frequency with which GC runs. If you use <a href="/docs/v25.4/take-full-and-incremental-backups#garbage-collection-and-backups">non-scheduled incremental backups</a>, the GC TTL must be greater than the interval between incremental backups. Otherwise, your incremental backups will fail with <a href="/docs/v25.4/common-errors#protected-ts-verification-error">the error message <code>protected ts verification error</code></a>. To avoid this problem, we recommend using <a href="/docs/v25.4/create-schedule-for-backup">scheduled backups</a> instead, which automatically <a href="/docs/v25.4/create-schedule-for-backup#protected-timestamps-and-scheduled-backups">use protected timestamps</a> to ensure they succeed.<br/><br/>Larger values increase the interval allowed for <a href="/docs/v25.4/as-of-system-time"><code>AS OF SYSTEM TIME</code></a> queries and allow for less frequent incremental backups. The largest value we regularly test is <code>90000</code> (25 hours). Increasing the GC TTL is not meant to be a solution for long-term retention of history; for that you should handle versioning in the <a href="/docs/v25.4/schema-design-overview">schema design at the application layer</a>. Setting the GC TTL too high can cause problems if the retained versions of a single row approach the <a href="#range-max-bytes">maximum range size</a>. This is important because all versions of a row are stored in a single range that never <a href="/docs/v25.4/architecture/distribution-layer#range-splits">splits</a>.</td></tr><tr><td><code>num&#95;replicas</code></td><td><a></a> The number of replicas in the zone, also called the "replication factor".<br/><br/><strong>Default:</strong><code>3</code><br/><br/>For the <code>system</code> database and <code>.meta</code>, <code>.liveness</code>, and <code>.system</code> ranges, the default value is <code>5</code>.<br/><br/>For <a href="/docs/v25.4/multiregion-survival-goals#survive-region-failures">multi-region databases configured to survive region failures</a>, the default value is <code>5</code>; this will include both <a href="#num_voters">voting</a> and <a href="/docs/v25.4/architecture/replication-layer#non-voting-replicas">non-voting replicas</a>.</td></tr><tr><td><code>constraints</code></td><td><a></a> An array of required (<code>+</code>) and/or prohibited (<code>-</code>) constraints influencing the location of replicas. See <a href="/docs/v25.4/configure-replication-zones#types-of-constraints">Types of Constraints</a> and <a href="/docs/v25.4/configure-replication-zones#scope-of-constraints">Scope of Constraints</a> for more details.<br/><br/>To prevent hard-to-detect typos, constraints placed on <a href="/docs/v25.4/configure-replication-zones#descriptive-attributes-assigned-to-nodes">store attributes and node localities</a> must match the values passed to at least one node in the cluster. If not, an error is signalled. To prevent this error, make sure at least one active node is configured to match the constraint. For example, apply <code>constraints = '&#91;+region=west&#93;'</code> only if you had set <code>--locality=region=west</code> for at least one node while starting the cluster.<br/><br/><strong>Default:</strong> No constraints, with CockroachDB locating each replica on a unique node and attempting to spread replicas evenly across localities.</td></tr><tr><td><code>lease&#95;preferences</code><a></a></td><td>An ordered list of required and/or prohibited constraints influencing the location of <a href="/docs/v25.4/architecture/glossary#architecture-leaseholder">leaseholders</a>. Whether each constraint is required or prohibited is expressed with a leading <code>+</code> or <code>-</code>, respectively. Note that lease preference constraints do not have to be shared with the <code>constraints</code> field. For example, it's valid for your configuration to define a <code>lease&#95;preferences</code> field that does not reference any values from the <code>constraints</code> field. It's also valid to define a <code>lease&#95;preferences</code> field with no <code>constraints</code> field at all.<br/><br/>If the first preference cannot be satisfied, CockroachDB will attempt to satisfy the second preference, and so on. If none of the preferences can be met, the lease will be placed using the default lease placement algorithm, which is to base lease placement decisions on how many leases each node already has, trying to make all the nodes have around the same amount.<br/><br/>Each value in the list can include multiple constraints. For example, the list <code>&#91;&#91;+zone=us-east-1b, +ssd&#93;, &#91;+zone=us-east-1a&#93;, &#91;+zone=us-east-1c, +ssd&#93;&#93;</code> means "prefer nodes with an SSD in <code>us-east-1b</code>, then any nodes in <code>us-east-1a</code>, then nodes in <code>us-east-1c</code> with an SSD."<br/><br/>For a usage example, see <a href="/docs/v25.4/configure-replication-zones#constrain-leaseholders-to-specific-availability-zones">Constrain leaseholders to specific availability zones</a>.<br/><br/><strong>Default</strong>: No lease location preferences are applied if this field is not specified.</td></tr><tr><td><code>global&#95;reads</code></td><td><a></a> If <code>true</code>, transactions operating on the range(s) affected by this zone config should be <a href="/docs/v25.4/architecture/transaction-layer#non-blocking-transactions">non-blocking</a>, which slows down writes but allows reads from any replica in the range. Most users will not need to modify this setting; it is applied automatically when you <a href="/docs/v25.4/global-tables">use the <code>GLOBAL</code> table locality in a multi-region cluster</a>.</td></tr><tr><td><code>num&#95;voters</code></td><td><a></a> Specifies the number of <a href="/docs/v25.4/architecture/life-of-a-distributed-transaction#consensus">voting replicas</a>. When set, <code>num&#95;replicas</code> will be the sum of voting and <a href="/docs/v25.4/architecture/replication-layer#non-voting-replicas">non-voting replicas</a>. Most users will not need to modify this setting; it is part of the underlying machinery that enables <a href="/docs/v25.4/multiregion-overview">improved multi-region capabilities in v21.1 and above</a>.</td></tr><tr><td><code>voter&#95;constraints</code></td><td><a></a> Specifies the constraints that govern the placement of voting replicas. This differs from the <code>constraints</code> field, which will govern the placement of all voting and non-voting replicas. Most users will not need to modify this setting; it is part of the underlying machinery that enables <a href="/docs/v25.4/multiregion-overview">improved multi-region capabilities in v21.1 and above</a>.</td></tr></tbody></table>
+
+<Note>
+If a value is not set, new zone configurations will inherit their values from their parent zone (e.g., a partition zone inherits from the table zone), which is not necessarily `default`.
+
+If a variable is set to `COPY FROM PARENT` (e.g., `range_max_bytes = COPY FROM PARENT`), the variable will copy its value from its parent [replication zone](/docs/v25.4/configure-replication-zones). The `COPY FROM PARENT` value is a convenient shortcut to use so you do not have to look up the parent's current value. For example, the `range_max_bytes` and `range_min_bytes` variables must be set together, so when editing one value, you can use `COPY FROM PARENT` for the other. Note that if the variable in the parent replication zone is changed after the child replication zone is copied, the change will not be reflected in the child zone.
+</Note>
+
+### Replication constraints
+
+The location of replicas, both when they are first added and when they are rebalanced to maintain cluster equilibrium, is based on the interplay between descriptive attributes assigned to nodes and constraints set in zone configurations.
+
+<Tip>
+For demonstrations of how to set node attributes and replication constraints in different scenarios, see [Scenario-based Examples](#scenario-based-examples) below.
+</Tip>
+
+#### Descriptive attributes assigned to nodes
+
+When starting a node with the [`cockroach start`](/docs/v25.4/cockroach-start) command, you can assign the following types of descriptive attributes:
+
+<table><thead><tr><th>Attribute Type</th><th>Description</th></tr></thead><tbody><tr><td><strong>Node Locality</strong></td><td><a></a> Using the <a href="/docs/v25.4/cockroach-start#locality"><code>--locality</code></a> flag, you can assign arbitrary key-value pairs that describe the location of the node. Locality might include region, country, availability zone, etc. The key-value pairs should be ordered into <em>locality tiers</em> that range from most inclusive to least inclusive (e.g., region before availability zone as in <code>region=eu,az=paris</code>), and the keys and the order of key-value pairs must be the same on all nodes. It is typically better to include more pairs than fewer. For example:<br/><br/><code>--locality=region=east,az=us-east-1</code><br/><code>--locality=region=east,az=us-east-2</code><br/><code>--locality=region=west,az=us-west-1</code><br/><br/>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order of locality tiers determining the priority. Locality can also be used to influence the location of data replicas in various ways using replication zones.<br/><br/>When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See <a href="/docs/v25.4/topology-follow-the-workload">Follow-the-workload</a> for more details.<br/><br/><strong>Note</strong>: Repeating an exact locality value has no effect, but locality values are case-sensitive. For example, from the point of view of CockroachDB, the following values result in two separate localities:<br/><br/><code>--locality datacenter=us-east-1 --locality datacenter=datacenter=US-EAST-1</code><br/><br/>This type of configuration error can lead to issues that are difficult to diagnose.</td></tr><tr><td><strong>Node Capability</strong></td><td>Using the <code>--attrs</code> flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br/><br/><code>--attrs=ram:64gb</code></td></tr><tr><td><strong>Store Type/Capability</strong></td><td>Using the <code>attrs</code> field of the <code>--store</code> flag, you can specify disk type or capability, for example:<br/><br/><code>--store=path=/mnt/ssd01,attrs=ssd</code><br/><code>--store=path=/mnt/hda1,attrs=hdd:7200rpm</code></td></tr></tbody></table>
+
+#### Types of constraints
+
+The node-level and store-level descriptive attributes mentioned above can be used as the following types of constraints in replication zones to influence the location of replicas. However, note the following general guidance:
+
+- When locality is the only consideration for replication, it's recommended to set locality on nodes without specifying any constraints in zone configurations. In the absence of constraints, CockroachDB attempts to spread replicas evenly across the cluster based on locality.
+- Required and prohibited constraints are useful in special situations where, for example, data must or must not be stored in a specific country or on a specific type of machine.
+- Avoid conflicting constraints. CockroachDB returns an error if you:
+    - Redefine a required constraint key within the same `constraints` definition on all replicas. For example, `constraints = '[+region=west, +region=east]'` will result in an error.
+    - Define a required and prohibited definition for the same key-value pair. For example, `constraints = '[-region=west, +region=west]'` will result in an error.
+
+<table><thead><tr><th>Constraint Type</th><th>Description</th><th>Syntax</th></tr></thead><tbody><tr><td><strong>Required</strong></td><td>When placing replicas, the cluster will consider only nodes/stores with matching attributes or localities. When there are no matching nodes/stores, new replicas will not be added.</td><td><code>+ssd</code></td></tr><tr><td><strong>Prohibited</strong></td><td>When placing replicas, the cluster will ignore nodes/stores with matching attributes or localities. When there are no alternate nodes/stores, new replicas will not be added.</td><td><code>-ssd</code></td></tr></tbody></table>
+
+#### Scope of constraints
+
+Constraints can be specified such that they apply to all replicas in a zone or such that different constraints apply to different replicas, meaning you can effectively pick the exact location of each replica.
+
+<table><thead><tr><th>Constraint Scope</th><th>Description</th><th>Syntax</th></tr></thead><tbody><tr><td><strong>All Replicas</strong></td><td>Constraints specified using JSON array syntax apply to all replicas in every range that's part of the replication zone.</td><td><code>constraints = '&#91;+ssd, -region=west&#93;'</code></td></tr><tr><td><strong>Per-Replica</strong></td><td>Multiple lists of constraints can be provided in a JSON object, mapping each list of constraints to an integer number of replicas in each range that the constraints should apply to.<br/><br/>The total number of replicas constrained cannot be greater than the total number of replicas for the zone (<code>num&#95;replicas</code>). However, if the total number of replicas constrained is less than the total number of replicas for the zone, the non-constrained replicas will be allowed on any nodes/stores.<br/><br/>Note that per-replica constraints must be "required" (e.g., <code>'&#123;"+region=west": 1&#125;'</code>); they cannot be "prohibited" (e.g., <code>'&#123;"-region=west": 1&#125;'</code>). Also, when defining per-replica constraints on a database or table, <code>num&#95;replicas</code> must be specified as well, but not when defining per-replica constraints on an index or partition.<br/><br/>See the <a href="#per-replica-constraints-to-specific-availability-zones">Per-replica constraints</a> example for more details.</td><td><code>constraints = '&#123;"+ssd,+region=west": 2, "+region=east": 1&#125;', num&#95;replicas = 3</code></td></tr></tbody></table>
+
+### Node/replica recommendations
+
+See [Cluster Topology](/docs/v25.4/recommended-production-settings#topology) recommendations for production deployments.
+
+### Troubleshooting zone constraint violations
+
+For instructions showing how to troubleshoot replication zones that may be misconfigured, see [Troubleshoot Replication Zone Configurations](/docs/v25.4/troubleshoot-replication-zones).
+
+## View replication zones
+
+Use the [`SHOW ZONE CONFIGURATIONS`](#view-all-replication-zones) statement to view details about existing replication zones.
+
+You can also use the [`SHOW PARTITIONS`](/docs/v25.4/show-partitions) statement to view the zone constraints on existing table partitions, or [`SHOW CREATE TABLE`](/docs/v25.4/show-create) to view zone configurations for a table.
+
+<Tip>
+In testing, scripting, and other programmatic environments, we recommend querying the `crdb_internal.partitions` internal table for partition information instead of using the `SHOW PARTITIONS` statement. For more information, see [Querying partitions programmatically](/docs/v25.4/show-partitions#querying-partitions-programmatically).
+</Tip>
+
+## Basic examples
+
+#### Setup
+
+The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](/docs/v25.4/movr).
+
+To follow along, run [`cockroach demo`](/docs/v25.4/cockroach-demo) with the `--geo-partitioned-replicas` flag. This command opens an interactive SQL shell to a temporary, 9-node in-memory cluster with the `movr` database.
+
+```shell
+$ cockroach demo --geo-partitioned-replicas
+```
+
+These examples focus on the basic approach and syntax for working with zone configuration. For examples demonstrating how to use constraints, see [Scenario-based examples](#scenario-based-examples).
+
+For more examples, see [`SHOW ZONE CONFIGURATIONS`](/docs/v25.4/show-zone-configurations).
+
+### View all replication zones
+
+```sql
+> SHOW ALL ZONE CONFIGURATIONS;
+```
+
+```text
+                                              target                                             |                                                      raw_config_sql
+-------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------
+  RANGE default                                                                                  | ALTER RANGE default CONFIGURE ZONE USING
+                                                                                                 |     range_min_bytes = 134217728,
+                                                                                                 |     range_max_bytes = 536870912,
+                                                                                                 |     gc.ttlseconds = 90000,
+                                                                                                 |     num_replicas = 3,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  DATABASE system                                                                                | ALTER DATABASE system CONFIGURE ZONE USING
+                                                                                                 |     range_min_bytes = 134217728,
+                                                                                                 |     range_max_bytes = 536870912,
+                                                                                                 |     gc.ttlseconds = 90000,
+                                                                                                 |     num_replicas = 5,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  RANGE meta                                                                                     | ALTER RANGE meta CONFIGURE ZONE USING
+                                                                                                 |     range_min_bytes = 134217728,
+                                                                                                 |     range_max_bytes = 536870912,
+                                                                                                 |     gc.ttlseconds = 3600,
+                                                                                                 |     num_replicas = 5,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  RANGE system                                                                                   | ALTER RANGE system CONFIGURE ZONE USING
+                                                                                                 |     range_min_bytes = 134217728,
+                                                                                                 |     range_max_bytes = 536870912,
+                                                                                                 |     gc.ttlseconds = 90000,
+                                                                                                 |     num_replicas = 5,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  RANGE liveness                                                                                 | ALTER RANGE liveness CONFIGURE ZONE USING
+                                                                                                 |     range_min_bytes = 134217728,
+                                                                                                 |     range_max_bytes = 536870912,
+                                                                                                 |     gc.ttlseconds = 600,
+                                                                                                 |     num_replicas = 5,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  TABLE system.public.replication_constraint_stats                                               | ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING
+                                                                                                 |     gc.ttlseconds = 600,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  TABLE system.public.replication_stats                                                          | ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING
+                                                                                                 |     gc.ttlseconds = 600,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  PARTITION us_west OF INDEX movr.public.users@primary                                           | ALTER PARTITION us_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_east OF INDEX movr.public.users@primary                                           | ALTER PARTITION us_east OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION europe_west OF INDEX movr.public.users@primary                                       | ALTER PARTITION europe_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION us_west OF INDEX movr.public.vehicles@primary                                        | ALTER PARTITION us_west OF INDEX movr.public.vehicles@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users          | ALTER PARTITION us_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_east OF INDEX movr.public.vehicles@primary                                        | ALTER PARTITION us_east OF INDEX movr.public.vehicles@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION us_east OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users          | ALTER PARTITION us_east OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION europe_west OF INDEX movr.public.vehicles@primary                                    | ALTER PARTITION europe_west OF INDEX movr.public.vehicles@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION europe_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users      | ALTER PARTITION europe_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION us_west OF INDEX movr.public.rides@primary                                           | ALTER PARTITION us_west OF INDEX movr.public.rides@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | ALTER PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | ALTER PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_east OF INDEX movr.public.rides@primary                                           | ALTER PARTITION us_east OF INDEX movr.public.rides@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | ALTER PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | ALTER PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION europe_west OF INDEX movr.public.rides@primary                                       | ALTER PARTITION europe_west OF INDEX movr.public.rides@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users            | ALTER PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ALTER PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION us_west OF INDEX movr.public.vehicle_location_histories@primary                      | ALTER PARTITION us_west OF INDEX movr.public.vehicle_location_histories@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_east OF INDEX movr.public.vehicle_location_histories@primary                      | ALTER PARTITION us_east OF INDEX movr.public.vehicle_location_histories@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION europe_west OF INDEX movr.public.vehicle_location_histories@primary                  | ALTER PARTITION europe_west OF INDEX movr.public.vehicle_location_histories@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  TABLE movr.public.promo_codes                                                                  | ALTER TABLE movr.public.promo_codes CONFIGURE ZONE USING
+                                                                                                 |     num_replicas = 3,
+                                                                                                 |     constraints = '{+region=us-east1: 1}',
+                                                                                                 |     lease_preferences = '[[+region=us-east1]]'
+  INDEX movr.public.promo_codes@promo_codes_idx_us_west                                          | ALTER INDEX movr.public.promo_codes@promo_codes_idx_us_west CONFIGURE ZONE USING
+                                                                                                 |     num_replicas = 3,
+                                                                                                 |     constraints = '{+region=us-west1: 1}',
+                                                                                                 |     lease_preferences = '[[+region=us-west1]]'
+  INDEX movr.public.promo_codes@promo_codes_idx_europe_west                                      | ALTER INDEX movr.public.promo_codes@promo_codes_idx_europe_west CONFIGURE ZONE USING
+                                                                                                 |     num_replicas = 3,
+                                                                                                 |     constraints = '{+region=europe-west1: 1}',
+                                                                                                 |     lease_preferences = '[[+region=europe-west1]]'
+  PARTITION us_west OF INDEX movr.public.user_promo_codes@primary                                | ALTER PARTITION us_west OF INDEX movr.public.user_promo_codes@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_east OF INDEX movr.public.user_promo_codes@primary                                | ALTER PARTITION us_east OF INDEX movr.public.user_promo_codes@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION europe_west OF INDEX movr.public.user_promo_codes@primary                            | ALTER PARTITION europe_west OF INDEX movr.public.user_promo_codes@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+(34 rows)
+```
+
+For more information, see [`SHOW ZONE CONFIGURATIONS`](/docs/v25.4/show-zone-configurations).
+
+### View the default replication zone
+
+```sql
+> SHOW ZONE CONFIGURATION FROM RANGE default;
+```
+
+```text
+     target     |              raw_config_sql
+----------------+-------------------------------------------
+  RANGE default | ALTER RANGE default CONFIGURE ZONE USING
+                |     range_min_bytes = 134217728,
+                |     range_max_bytes = 536870912,
+                |     gc.ttlseconds = 90000,
+                |     num_replicas = 3,
+                |     constraints = '[]',
+                |     lease_preferences = '[]'
+(1 row)
+```
+
+For more information, see [`SHOW ZONE CONFIGURATIONS`](/docs/v25.4/show-zone-configurations).
+
+### Edit the default replication zone
+
+To edit the default replication zone, use the `ALTER RANGE... CONFIGURE ZONE` statement to define the values you want to change (other values will remain the same):
+
+```sql
+> ALTER RANGE default CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> SHOW ZONE CONFIGURATION FROM RANGE default;
+```
+
+```text
+     target     |              raw_config_sql
++---------------+------------------------------------------+
+  RANGE default | ALTER RANGE default CONFIGURE ZONE USING
+                |     range_min_bytes = 134217728,
+                |     range_max_bytes = 536870912,
+                |     gc.ttlseconds = 100000,
+                |     num_replicas = 5,
+                |     constraints = '[]',
+                |     lease_preferences = '[]'
+(1 row)
+```
+
+### Create a replication zone for a system range
+
+In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores internal data in what are called system ranges. CockroachDB comes with pre-configured replication zones for some of these ranges:
+
+<table><thead><tr><th>Target Name</th><th>Description</th></tr></thead><tbody><tr><td><code>meta</code></td><td>The "meta" ranges contain the authoritative information about the location of all data in the cluster.<br/><br/>These ranges must retain a majority of replicas for the cluster as a whole to remain available and historical queries are never run on them, so CockroachDB comes with a <strong>pre-configured</strong><code>meta</code> replication zone with <code>num&#95;replicas</code> set to 5 to make these ranges more resilient to node failure and a lower-than-default <code>gc.ttlseconds</code> to keep these ranges smaller for reliable performance.<br/><br/>If your cluster is running in multiple datacenters, it's a best practice to configure the meta ranges to have a copy in each datacenter.</td></tr><tr><td><code>liveness</code></td><td>The "liveness" range contains the authoritative information about which nodes are live at any given time.<br/><br/>These ranges must retain a majority of replicas for the cluster as a whole to remain available and historical queries are never run on them, so CockroachDB comes with a <strong>pre-configured</strong><code>liveness</code> replication zone with <code>num&#95;replicas</code> set to 5 to make these ranges more resilient to node failure and a lower-than-default <code>gc.ttlseconds</code> to keep these ranges smaller for reliable performance.</td></tr><tr><td><code>system</code></td><td>There are system ranges for a variety of other important internal data, including information needed to allocate new table IDs and track the status of a cluster's nodes.<br/><br/>These ranges must retain a majority of replicas for the cluster as a whole to remain available, so CockroachDB comes with a <strong>pre-configured</strong><code>system</code> replication zone with <code>num&#95;replicas</code> set to 5 to make these ranges more resilient to node failure.</td></tr><tr><td><code>timeseries</code></td><td>The "timeseries" ranges contain monitoring data about the cluster that powers the graphs in CockroachDB's DB Console. If necessary, you can add a <code>timeseries</code> replication zone to control the replication of this data.</td></tr></tbody></table>
+
+<Warning>
+Use caution when editing replication zones for system ranges, as they could cause some (or all) parts of your cluster to stop working.
+</Warning>
+
+To control replication for one of the above sets of system ranges, use the [`ALTER RANGE... CONFIGURE ZONE`](/docs/v25.4/alter-range#configure-zone) statement to define the relevant values (other values will be inherited from the parent zone):
+
+```sql
+> ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 7;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> SHOW ZONE CONFIGURATION FROM RANGE meta;
+```
+
+```text
+    target   |            raw_config_sql
++------------+---------------------------------------+
+  RANGE meta | ALTER RANGE meta CONFIGURE ZONE USING
+             |     range_min_bytes = 134217728,
+             |     range_max_bytes = 536870912,
+             |     gc.ttlseconds = 3600,
+             |     num_replicas = 7,
+             |     constraints = '[]',
+             |     lease_preferences = '[]'
+(1 row)
+```
+
+For more information, see [`ALTER RANGE... CONFIGURE ZONE`](/docs/v25.4/alter-range#configure-zone).
+
+### Create a replication zone for a database
+
+To control replication for a specific database, use the `ALTER DATABASE... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
+
+```sql
+> ALTER DATABASE movr CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> SHOW ZONE CONFIGURATION FROM DATABASE movr;
+```
+
+```text
+     target     |              raw_config_sql
+----------------+-------------------------------------------
+  DATABASE movr | ALTER DATABASE movr CONFIGURE ZONE USING
+                |     range_min_bytes = 134217728,
+                |     range_max_bytes = 536870912,
+                |     gc.ttlseconds = 100000,
+                |     num_replicas = 5,
+                |     constraints = '[]',
+                |     lease_preferences = '[]'
+(1 row)
+```
+
+For more information, see [`ALTER DATABASE... CONFIGURE ZONE`](/docs/v25.4/alter-database#configure-zone).
+
+### Create a replication zone for a table
+
+To control replication for a specific table, use the `ALTER TABLE... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
+
+```sql
+> ALTER TABLE users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> SHOW ZONE CONFIGURATION FROM TABLE users;
+```
+
+```text
+    target    |             raw_config_sql
+--------------+-----------------------------------------
+  TABLE users | ALTER TABLE users CONFIGURE ZONE USING
+              |     range_min_bytes = 134217728,
+              |     range_max_bytes = 536870912,
+              |     gc.ttlseconds = 100000,
+              |     num_replicas = 5,
+              |     constraints = '[]',
+              |     lease_preferences = '[]'
+(1 row)
+```
+
+For more information, see [`ALTER TABLE... CONFIGURE ZONE`](/docs/v25.4/alter-table#configure-zone).
+
+### Create a replication zone for a secondary index
+
+<Tip>
+The [Cost-based Optimizer](/docs/v25.4/cost-based-optimizer) can take advantage of replication zones for secondary indexes when optimizing queries.
+</Tip>
+
+The [secondary indexes](/docs/v25.4/indexes) on a table will automatically use the replication zone for the table. You can also add distinct replication zones for secondary indexes.
+
+To control replication for a specific secondary index, use the `ALTER INDEX... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone).
+
+<Tip>
+To get the name of a secondary index, which you need for the `CONFIGURE ZONE` statement, use the [`SHOW INDEX`](/docs/v25.4/show-index) or [`SHOW CREATE TABLE`](/docs/v25.4/show-create) statements.
+</Tip>
+
+```sql
+> ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> SHOW ZONE CONFIGURATION FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
+```
+
+```text
+                         target                        |                                 raw_config_sql
++------------------------------------------------------+---------------------------------------------------------------------------------+
+  INDEX vehicles@vehicles_auto_index_fk_city_ref_users | ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                       |     range_min_bytes = 134217728,
+                                                       |     range_max_bytes = 536870912,
+                                                       |     gc.ttlseconds = 100000,
+                                                       |     num_replicas = 5,
+                                                       |     constraints = '[]',
+                                                       |     lease_preferences = '[]'
+(1 row)
+```
+
+For more information, see [`ALTER INDEX... CONFIGURE ZONE`](/docs/v25.4/alter-index#configure-zone).
+
+### Create a replication zone for a partition
+
+Once [partitions have been defined for a table or a secondary index](/docs/v25.4/partitioning), to control replication for a partition, use `ALTER PARTITION <partition> OF INDEX <table@index> CONFIGURE ZONE`:
+
+```sql
+> ALTER PARTITION us_west OF INDEX vehicles@primary
+    CONFIGURE ZONE USING
+      num_replicas = 5,
+      constraints = '[+region=us-west1]';
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> ALTER PARTITION us_west OF INDEX vehicles@vehicles_auto_index_fk_city_ref_users
+    CONFIGURE ZONE USING
+      num_replicas = 5,
+      constraints = '[+region=us-west1]';
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+To define replication zones for identically named partitions of a table and its secondary indexes, you can use the `<table>@*` syntax to save several steps:
+
+```sql
+> ALTER PARTITION us_west OF INDEX vehicles@*
+    CONFIGURE ZONE USING
+      num_replicas = 5,
+      constraints = '[+region=us-west1]';
+```
+
+To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FROM PARTITION <partition> OF INDEX <table@index>`:
+
+```sql
+> SHOW ZONE CONFIGURATION FROM PARTITION us_west OF INDEX vehicles@primary;
+```
+
+```text
+                    target                    |                             raw_config_sql
+----------------------------------------------+-------------------------------------------------------------------------
+  PARTITION us_west OF INDEX vehicles@primary | ALTER PARTITION us_west OF INDEX vehicles@primary CONFIGURE ZONE USING
+                                              |     range_min_bytes = 134217728,
+                                              |     range_max_bytes = 536870912,
+                                              |     gc.ttlseconds = 90000,
+                                              |     num_replicas = 5,
+                                              |     constraints = '[+region=us-west1]',
+                                              |     lease_preferences = '[]'
+(1 row)
+```
+
+<Tip>
+You can also use the [`SHOW CREATE TABLE`](/docs/v25.4/show-create) statement or [`SHOW PARTITIONS`](/docs/v25.4/show-partitions) statements to view details about all of the replication zones defined for the partitions of a table and its secondary indexes.
+</Tip>
+
+For more information, see [`ALTER PARTITION... CONFIGURE ZONE`](/docs/v25.4/alter-partition#create-a-replication-zone-for-a-partition).
+
+### Reset a replication zone
+
+```sql
+> ALTER TABLE t CONFIGURE ZONE USING DEFAULT;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+### Remove a replication zone
+
+<Note>
+When you discard a zone configuration, the objects it was applied to will then inherit a configuration from an object "the next level up"; e.g., if the object whose configuration is being discarded is a table, it will use its parent database's configuration.
+
+You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or partitions if the [multi-region abstractions](/docs/v25.4/migrate-to-multiregion-sql#replication-zone-patterns-and-multi-region-sql-abstractions) created the zone configuration.
+</Note>
+
+```sql
+> ALTER TABLE t CONFIGURE ZONE DISCARD;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+### Constrain leaseholders to specific availability zones
+
+In addition to [constraining replicas to specific availability zones](/docs/v25.4/configure-replication-zones#per-replica-constraints-to-specific-availability-zones), you may also specify preferences for where the range's leaseholders should be placed. This can result in increased performance in some scenarios.
+
+The [`ALTER TABLE... CONFIGURE ZONE`](/docs/v25.4/alter-table#configure-zone) statement below requires that the cluster try to place the ranges' leaseholders in zone `us-east1`; if that is not possible, it will try to place them in zone `us-west1`.
+
+For more information about how the `lease_preferences` field works, see its description in the [Replication zone variables](/docs/v25.4/configure-replication-zones#replication-zone-variables) section.
+
+```sql
+> ALTER TABLE users CONFIGURE ZONE USING num_replicas = 3, constraints = '{"+region=us-east1": 1, "+region=us-west1": 1}', lease_preferences = '[[+region=us-east1], [+region=us-west1]]';
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> SHOW ZONE CONFIGURATION FROM TABLE users;
+```
+
+```text
+    target    |                           raw_config_sql
++-------------+--------------------------------------------------------------------+
+  TABLE users | ALTER TABLE users CONFIGURE ZONE USING
+              |     range_min_bytes = 134217728,
+              |     range_max_bytes = 536870912,
+              |     gc.ttlseconds = 100000,
+              |     num_replicas = 3,
+              |     constraints = '{+region=us-east1: 1, +region=us-west1: 1}',
+              |     lease_preferences = '[[+region=us-east1], [+region=us-west1]]'
+(1 row)
+```
+
+## Scenario-based examples
+
+### Even replication across availability zones
+
+**Scenario:**
+
+- You have 6 nodes across 3 availability zones, 2 nodes in each availability zone.
+- You want data replicated 3 times, with replicas balanced evenly across all three availability zones.
+
+**Approach:**
+
+1. Start each node with its availability zone location specified in the [`--locality`](/docs/v25.4/cockroach-start#locality) flag:
+
+    Availability zone 1:
+
+    ```shell
+    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=az=us-1 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=az=us-1 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    ```
+
+    Availability zone 2:
+
+    ```shell
+    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=az=us-2 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=az=us-2 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    ```
+
+    Availability zone 3:
+
+    ```shell
+    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=az=us-3 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=az=us-3 \
+    --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
+    ```
+2. Initialize the cluster:
+
+    ```shell
+    $ cockroach init --insecure --host=<any node hostname>
+    ```
+
+There's no need to make zone configuration changes; by default, the cluster is configured to replicate data three times, and even without explicit constraints, the cluster will aim to diversify replicas across node localities.
+
+### Per-replica constraints to specific availability zones
+
+**Scenario:**
+
+- You have 5 nodes across 5 availability zones in 3 regions, 1 node in each availability zone.
+- You want data replicated 3 times, with a quorum of replicas for a database holding West Coast data centered on the West Coast and a database for nation-wide data replicated across the entire country.
+
+**Approach:**
+
+1. Start each node with its region and availability zone location specified in the [`--locality`](/docs/v25.4/cockroach-start#locality) flag:
+
+    Start the five nodes:
+
+    ```shell
+    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=region=us-west1,az=us-west1-a \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
+    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=region=us-west1,az=us-west1-b \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
+    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=region=us-central1,az=us-central1-a \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
+    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=region=us-east1,az=us-east1-a \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
+    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=region=us-east1,az=us-east1-b \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
+    ```
+
+    Initialize the cluster:
+
+    ```shell
+    $ cockroach init --insecure --host=<any node hostname>
+    ```
+2. On any node, open the [built-in SQL client](/docs/v25.4/cockroach-sql):
+
+    ```shell
+    $ cockroach sql --insecure
+    ```
+3. Create the database for the West Coast application:
+
+    ```sql
+    > CREATE DATABASE west_app_db;
+    ```
+4. Configure a replication zone for the database:
+
+    ```sql
+    > ALTER DATABASE west_app_db
+    CONFIGURE ZONE USING constraints = '{"+region=us-west1": 2, "+region=us-central1": 1}', num_replicas = 3;
+    ```
+
+    ```text
+    CONFIGURE ZONE 1
+    ```
+5. View the replication zone:
+
+    ```sql
+    > SHOW ZONE CONFIGURATION FOR DATABASE west_app_db;
+    ```
+
+    ```text
+             target        |                           raw_config_sql
+    +----------------------+--------------------------------------------------------------------+
+      DATABASE west_app_db | ALTER DATABASE west_app_db CONFIGURE ZONE USING
+                           |     range_min_bytes = 134217728,
+                           |     range_max_bytes = 536870912,
+                           |     gc.ttlseconds = 90000,
+                           |     num_replicas = 3,
+                           |     constraints = '{+region=us-central1: 1, +region=us-west1: 2}',
+                           |     lease_preferences = '[]'
+    (1 row)
+    ```
+
+    Two of the database's three replicas will be put in `region=us-west1` and its remaining replica will be put in `region=us-central1`. This gives the application the resilience to survive the total failure of any one availability zone while providing low-latency reads and writes on the West Coast because a quorum of replicas are located there.
+6. No configuration is needed for the nation-wide database. The cluster is configured to replicate data 3 times and spread them as widely as possible by default. Because the first key-value pair specified in each node's locality is considered the most significant part of each node's locality, spreading data as widely as possible means putting one replica in each of the three different regions.
+
+### Multiple applications writing to different databases
+
+**Scenario:**
+
+- You have 2 independent applications connected to the same CockroachDB cluster, each application using a distinct database.
+- You have 6 nodes across 2 availability zones, 3 nodes in each availability zone.
+- You want the data for application 1 to be replicated 5 times, with replicas evenly balanced across both availability zones.
+- You want the data for application 2 to be replicated 3 times, with all replicas in a single availability zone.
+
+**Approach:**
+
+1. Start each node with its availability zone location specified in the [`--locality`](/docs/v25.4/cockroach-start#locality) flag:
+
+    Availability zone 1:
+
+    ```shell
+    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=az=us-1 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
+    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=az=us-1 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
+    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=az=us-1 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
+    ```
+
+    Availability zone 2:
+
+    ```shell
+    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=az=us-2 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
+    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=az=us-2 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
+    $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=az=us-2 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
+    ```
+
+    Initialize the cluster:
+
+    ```shell
+    $ cockroach init --insecure --host=<any node hostname>
+    ```
+2. On any node, open the [built-in SQL client](/docs/v25.4/cockroach-sql):
+
+    ```shell
+    $ cockroach sql --insecure
+    ```
+3. Create the database for application 1:
+
+    ```sql
+    > CREATE DATABASE app1_db;
+    ```
+4. Configure a replication zone for the database used by application 1:
+
+    ```sql
+    > ALTER DATABASE app1_db CONFIGURE ZONE USING num_replicas = 5;
+    ```
+
+    ```text
+    CONFIGURE ZONE 1
+    ```
+5. View the replication zone:
+
+    ```sql
+    > SHOW ZONE CONFIGURATION FOR DATABASE app1_db;
+    ```
+
+    ```text
+           target      |               raw_config_sql
+    +------------------+---------------------------------------------+
+      DATABASE app1_db | ALTER DATABASE app1_db CONFIGURE ZONE USING
+                       |     range_min_bytes = 134217728,
+                       |     range_max_bytes = 536870912,
+                       |     gc.ttlseconds = 90000,
+                       |     num_replicas = 5,
+                       |     constraints = '[]',
+                       |     lease_preferences = '[]'
+    (1 row)
+    ```
+
+    Nothing else is necessary for application 1's data. Since all nodes specify their availability zone locality, the cluster will aim to balance the data in the database used by application 1 between availability zones 1 and 2.
+6. Still in the SQL client, create a database for application 2:
+
+    ```sql
+    > CREATE DATABASE app2_db;
+    ```
+7. Configure a replication zone for the database used by application 2:
+
+    ```sql
+    > ALTER DATABASE app2_db CONFIGURE ZONE USING constraints = '[+az=us-2]';
+    ```
+8. View the replication zone:
+
+    ```sql
+    > SHOW ZONE CONFIGURATION FOR DATABASE app2_db;
+    ```
+
+    ```text
+           target      |               raw_config_sql
+    +------------------+---------------------------------------------+
+      DATABASE app2_db | ALTER DATABASE app2_db CONFIGURE ZONE USING
+                       |     range_min_bytes = 134217728,
+                       |     range_max_bytes = 536870912,
+                       |     gc.ttlseconds = 90000,
+                       |     num_replicas = 3,
+                       |     constraints = '[+az=us-2]',
+                       |     lease_preferences = '[]'
+    (1 row)
+    ```
+
+    The required constraint will force application 2's data to be replicated only within the `us-2` availability zone.
+
+### Stricter replication for a table and its secondary indexes
+
+**Scenario:**
+
+- You have 7 nodes, 5 with SSD drives and 2 with HDD drives.
+- You want data replicated 3 times by default.
+- Speed and availability are important for a specific table and its indexes, which are queried very frequently, however, so you want the data in the table and secondary indexes to be replicated 5 times, preferably on nodes with SSD drives.
+
+**Approach:**
+
+1. Start each node with `ssd` or `hdd` specified as store attributes:
+
+    5 nodes with SSD storage:
+
+    ```shell
+    $ cockroach start --insecure --advertise-addr=<node1 hostname> --store=path=node1,attrs=ssd \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node2 hostname> --store=path=node2,attrs=ssd \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node3 hostname> --store=path=node3,attrs=ssd \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node4 hostname> --store=path=node4,attrs=ssd \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node5 hostname> --store=path=node5,attrs=ssd \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    ```
+
+    2 nodes with HDD storage:
+
+    ```shell
+    $ cockroach start --insecure --advertise-addr=<node6 hostname> --store=path=node6,attrs=hdd \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node7 hostname> --store=path=node7,attrs=hdd \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    ```
+
+    Initialize the cluster:
+
+    ```shell
+    $ cockroach init --insecure --host=<any node hostname>
+    ```
+2. On any node, open the [built-in SQL client](/docs/v25.4/cockroach-sql):
+
+    ```shell
+    $ cockroach sql --insecure
+    ```
+3. Create a database and table:
+
+    ```sql
+    > CREATE DATABASE db;
+    ```
+
+    ```sql
+    > CREATE TABLE db.important_table;
+    ```
+4. Configure a replication zone for the table that must be replicated more strictly:
+
+    ```sql
+    > ALTER TABLE db.important_table CONFIGURE ZONE USING num_replicas = 5, constraints = '[+ssd]'
+    ```
+5. View the replication zone:
+
+    ```sql
+    > SHOW ZONE CONFIGURATION FOR TABLE db.important_table;
+    ```
+
+    ```text
+                 target             |                config_sql
+    +-------------------------------+---------------------------------------------+
+         TABLE db.important_table   | ALTER DATABASE app2_db CONFIGURE ZONE USING
+                                    |     range_min_bytes = 1048576,
+                                    |     range_max_bytes = 536870912,
+                                    |     gc.ttlseconds = 90000,
+                                    |     num_replicas = 5,
+                                    |     constraints = '[+ssd]',
+                                    |     lease_preferences = '[]'
+    (1 row)
+    ```
+
+    The secondary indexes on the table will use the table's replication zone, so all data for the table will be replicated 5 times, and the required constraint will place the data on nodes with `ssd` drives.
+
+### Tweaking the replication of system ranges
+
+**Scenario:**
+
+- You have nodes spread across 7 availability zones.
+- You want data replicated 5 times by default.
+- For better performance, you want a copy of the meta ranges in all of the availability zones.
+- To save disk space, you only want the internal timeseries data replicated 3 times by default.
+
+**Approach:**
+
+1. Start each node with a different [locality](/docs/v25.4/cockroach-start#locality) attribute:
+
+    ```shell
+    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=az=us-1 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=az=us-2 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=az=us-3 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=az=us-4 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=az=us-5 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=az=us-6 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    $ cockroach start --insecure --advertise-addr=<node7 hostname> --locality=az=us-7 \
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
+    ```
+
+    Initialize the cluster:
+
+    ```shell
+    $ cockroach init --insecure --host=<any node hostname>
+    ```
+2. On any node, open the [built-in SQL client](/docs/v25.4/cockroach-sql):
+
+    ```shell
+    $ cockroach sql --insecure
+    ```
+3. Configure the default replication zone:
+
+    ```sql
+    > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 5;
+    ```
+4. View the replication zone:
+
+    ```sql
+    > SHOW ZONE CONFIGURATION FOR RANGE default;
+    ```
+
+    ```text
+         target     |              raw_config_sql
+    +---------------+------------------------------------------+
+      RANGE default | ALTER RANGE default CONFIGURE ZONE USING
+                    |     range_min_bytes = 134217728,
+                    |     range_max_bytes = 536870912,
+                    |     gc.ttlseconds = 90000,
+                    |     num_replicas = 5,
+                    |     constraints = '[]',
+                    |     lease_preferences = '[]'
+    (1 row)
+    ```
+
+    All data in the cluster will be replicated 5 times, including both SQL data and the internal system data.
+5. Configure the `meta` replication zone:
+
+    ```sql
+    > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 7;
+    ```
+
+    ```sql
+    > SHOW ZONE CONFIGURATION FOR RANGE meta;
+    ```
+
+    ```text
+        target   |            raw_config_sql
+    +------------+---------------------------------------+
+      RANGE meta | ALTER RANGE meta CONFIGURE ZONE USING
+                 |     range_min_bytes = 134217728,
+                 |     range_max_bytes = 536870912,
+                 |     gc.ttlseconds = 3600,
+                 |     num_replicas = 7,
+                 |     constraints = '[]',
+                 |     lease_preferences = '[]'
+    (1 row)
+    ```
+
+    The `meta` addressing ranges will be replicated such that one copy is in all 7 availability zones, while all other data will be replicated 5 times.
+6. Configure the `timeseries` replication zone:
+
+    ```sql
+    > ALTER RANGE timeseries CONFIGURE ZONE USING num_replicas = 3;
+    ```
+
+    ```sql
+    > SHOW ZONE CONFIGURATION FOR RANGE timeseries;
+    ```
+
+    ```text
+           target      |               raw_config_sql
+    +------------------+---------------------------------------------+
+      RANGE timeseries | ALTER RANGE timeseries CONFIGURE ZONE USING
+                       |     range_min_bytes = 134217728,
+                       |     range_max_bytes = 536870912,
+                       |     gc.ttlseconds = 90000,
+                       |     num_replicas = 3,
+                       |     constraints = '[]',
+                       |     lease_preferences = '[]'
+    (1 row)
+    ```
+
+    The timeseries data will only be replicated 3 times without affecting the configuration of all other data.
+
+## See also
+
+- [`SHOW ZONE CONFIGURATIONS`](/docs/v25.4/show-zone-configurations)
+- [`ALTER DATABASE... CONFIGURE ZONE`](/docs/v25.4/alter-database#configure-zone)
+- [`ALTER INDEX... CONFIGURE ZONE`](/docs/v25.4/alter-index#configure-zone)
+- [`ALTER RANGE... CONFIGURE ZONE`](/docs/v25.4/alter-range#configure-zone)
+- [`ALTER TABLE... CONFIGURE ZONE`](/docs/v25.4/alter-table#configure-zone)
+- [`ALTER PARTITION... CONFIGURE ZONE`](/docs/v25.4/alter-partition#create-a-replication-zone-for-a-partition)
+- [`SHOW PARTITIONS`](/docs/v25.4/show-partitions)
+- [SQL Statements](/docs/v25.4/sql-statements)
+- [Table Partitioning](/docs/v25.4/partitioning)
+- [Critical nodes endpoint](/docs/v25.4/monitoring-and-alerting#critical-nodes-endpoint)
+- [Troubleshoot Replication Zones](/docs/v25.4/troubleshoot-replication-zones)

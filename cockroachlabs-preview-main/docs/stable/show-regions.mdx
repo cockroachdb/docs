@@ -1,0 +1,177 @@
+---
+title: "SHOW REGIONS"
+old_description: "The SHOW REGIONS statement shows the cluster regions or database regions in a multi-region cluster."
+---
+
+import { ShowRegions } from "/snippets/syntax-diagrams/ShowRegions.jsx";
+
+The `SHOW REGIONS` [statement](/docs/v26.1/sql-statements) lists the [cluster regions](/docs/v26.1/multiregion-overview#cluster-regions) for a multi-region cluster, or the [database regions](/docs/v26.1/multiregion-overview#database-regions) for the databases in a multi-region cluster.
+
+## Synopsis
+
+<ShowRegions />
+
+## Required privileges
+
+Only members of the [`admin` role](/docs/v26.1/security-reference/authorization#admin-role) can run `SHOW REGIONS`. By default, the `root` user belongs to the `admin` role.
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>FROM CLUSTER</code></td><td>Show the <a href="/docs/v26.1/multiregion-overview#cluster-regions">cluster regions</a> for a cluster.<br/>Cluster regions are specified <a href="/docs/v26.1/cockroach-start#locality">at cluster startup</a>.</td></tr><tr><td><code>FROM DATABASE</code></td><td>Show all <a href="/docs/v26.1/multiregion-overview#database-regions">database regions</a> for the current database.<br/>Database regions can be added <a href="/docs/v26.1/create-database">at database creation</a>, or <a href="/docs/v26.1/alter-database">after a database has been created</a>.</td></tr><tr><td><code>FROM DATABASE database&#95;name</code></td><td>Show all database regions from the database named <code>database&#95;name</code>.</td></tr><tr><td><code>FROM ALL DATABASES</code></td><td>Show the database regions for all databases in the cluster.</td></tr></tbody></table>
+
+## Response
+
+`SHOW REGIONS`, `SHOW REGIONS FROM CLUSTER`, and `SHOW REGIONS FROM DATABASE` return the following fields for each region:
+
+<table><thead><tr><th>Field</th><th>Description</th><th><code>SHOW REGIONS</code></th><th><code>SHOW REGIONS FROM CLUSTER</code></th><th><code>SHOW REGIONS FROM DATABASE</code></th></tr></thead><tbody><tr><td><code>region</code></td><td>The name of the region.</td><td>✓</td><td>✓</td><td>✓</td></tr><tr><td><code>zones</code></td><td>The availability zones for the region.</td><td>✓</td><td>✓</td><td>✓</td></tr><tr><td><code>database&#95;names</code></td><td>A set of database names that use the region.</td><td>✓</td><td></td><td></td></tr><tr><td><code>primary&#95;region&#95;of</code></td><td>A set of database names for which the region is the <a href="/docs/v26.1/alter-database#set-primary-region">primary region</a>.</td><td>✓</td><td></td><td></td></tr><tr><td><code>secondary&#95;region&#95;of</code></td><td>A set of database names for which the region is the <a href="/docs/v26.1/multiregion-overview#secondary-regions">secondary region</a>.</td><td>✓</td><td></td><td></td></tr><tr><td><code>database</code></td><td>The name of the database that uses the region.</td><td></td><td></td><td>✓</td></tr><tr><td><code>primary</code></td><td>If <code>true</code>, indicates that the region is the primary region.</td><td></td><td></td><td>✓</td></tr></tbody></table>
+
+`SHOW REGIONS FROM ALL DATABASES` returns the following fields for each database:
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>database&#95;name</code></td><td>The name of the database.</td></tr><tr><td><code>regions</code></td><td>A set of region names in use by the database.</td></tr><tr><td><code>primary&#95;region</code></td><td>The primary region of the database.</td></tr><tr><td><code>secondary&#95;region</code></td><td>The <a href="/docs/v26.1/multiregion-overview#secondary-regions">secondary region</a> of the database.</td></tr></tbody></table>
+
+## Examples
+
+### Setup
+
+The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](/docs/v26.1/movr).
+
+To follow along, run [`cockroach demo`](/docs/v26.1/cockroach-demo) with the [`--nodes`](/docs/v26.1/cockroach-demo#flags) and [`--demo-locality`](/docs/v26.1/cockroach-demo#flags) flags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database](/docs/v26.1/sql-name-resolution#current-database).
+
+```shell
+$ cockroach demo --nodes=6 --demo-locality=region=us-east,zone=us-east-a:region=us-east,zone=us-east-b:region=us-central,zone=us-central-a:region=us-central,zone=us-central-b:region=us-west,zone=us-west-a:region=us-west,zone=us-west-b
+```
+
+### View the regions in a cluster
+
+After cluster startup, you can view all of the cluster regions available in the cluster with `SHOW REGIONS FROM CLUSTER`:
+
+```sql
+SHOW REGIONS FROM CLUSTER;
+```
+
+```text
+    region   |            zones
+-------------+------------------------------
+  us-central | {us-central-a,us-central-b}
+  us-east    | {us-east-a,us-east-b}
+  us-west    | {us-west-a,us-west-b}
+(3 rows)
+```
+
+### View the regions in a single database
+
+`SHOW REGIONS FROM DATABASE` returns the database regions for a specific database.
+
+[Add an available region](/docs/v26.1/alter-database#add-region) as the primary region for the `movr` database:
+
+```sql
+ALTER DATABASE movr PRIMARY REGION "us-east";
+```
+
+```text
+ALTER DATABASE PRIMARY REGION
+```
+
+<Note>
+Only [cluster regions](/docs/v26.1/multiregion-overview#cluster-regions) (i.e., regions that are defined at [node startup time](/docs/v26.1/cockroach-start#locality)) can be added to a multi-region database.
+</Note>
+
+Then, add more regions to the database:
+
+```sql
+ALTER DATABASE movr ADD REGION "us-west";
+```
+
+```text
+ALTER DATABASE ADD REGION
+```
+
+```sql
+ALTER DATABASE movr ADD REGION "us-central";
+```
+
+```text
+ALTER DATABASE ADD REGION
+```
+
+To view the regions associated with the database:
+
+```sql
+SHOW REGIONS FROM DATABASE movr;
+```
+
+```text
+  database |   region   | primary | secondary |            zones
+-----------+------------+---------+-----------+------------------------------
+  movr     | us-east    |    t    |     f     | {us-east-a,us-east-b}
+  movr     | us-central |    f    |     f     | {us-central-a,us-central-b}
+  movr     | us-west    |    f    |     f     | {us-west-a,us-west-b}
+(3 rows)
+```
+
+The `secondary` column in each row says whether that region has been made a *secondary region* for failover purposes. For more information, see [Secondary regions](/docs/v26.1/multiregion-overview#secondary-regions).
+
+With `movr` set as the current database, the following statement returns the same results:
+
+```sql
+SHOW REGIONS FROM DATABASE;
+```
+
+### View the regions for all databases in a cluster
+
+Create another database in the cluster with a primary region:
+
+```sql
+CREATE DATABASE cockroachlabs PRIMARY REGION "us-east";
+```
+
+Then, add another region to the database:
+
+```sql
+ALTER DATABASE cockroachlabs ADD REGION "us-west";
+```
+
+To show the regions in use by all the databases in a cluster, use `SHOW REGIONS`:
+
+```sql
+SHOW REGIONS;
+```
+
+```text
+    region   |            zones            |    database_names    |  primary_region_of
+-------------+-----------------------------+----------------------+-----------------------
+  us-central | {us-central-a,us-central-b} | {movr}               | {}
+  us-east    | {us-east-a,us-east-b}       | {cockroachlabs,movr} | {cockroachlabs,movr}
+  us-west    | {us-west-a,us-west-b}       | {cockroachlabs,movr} | {}
+(3 rows)
+```
+
+To show the region information for each database in the cluster, use `SHOW REGIONS FROM ALL DATABASES`:
+
+```sql
+SHOW REGIONS FROM ALL DATABASES;
+```
+
+```text
+  database_name |           regions            | primary_region
+----------------+------------------------------+-----------------
+  cockroachlabs | {us-east,us-west}            | us-east
+  defaultdb     | {}                           | NULL
+  movr          | {us-central,us-east,us-west} | us-east
+  postgres      | {}                           | NULL
+  system        | {}                           | NULL
+(5 rows)
+```
+
+## See also
+
+- [Multi-Region Capabilities Overview](/docs/v26.1/multiregion-overview)
+- [`ADD REGION`](/docs/v26.1/alter-database#add-region)
+- [`DROP REGION`](/docs/v26.1/alter-database#drop-region)
+- [`ADD SUPER REGION`](/docs/v26.1/alter-database#add-super-region)
+- [`DROP SUPER REGION`](/docs/v26.1/alter-database#drop-super-region)
+- [`SHOW SUPER REGIONS`](/docs/v26.1/show-super-regions)
+- [Secondary regions](/docs/v26.1/multiregion-overview#secondary-regions)
+- [`SET SECONDARY REGION`](/docs/v26.1/alter-database#set-secondary-region)
+- [`DROP SECONDARY REGION`](/docs/v26.1/alter-database#drop-secondary-region)
+- [SQL Statements](/docs/v26.1/sql-statements)

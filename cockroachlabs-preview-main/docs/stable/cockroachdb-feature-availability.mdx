@@ -1,0 +1,287 @@
+---
+title: "CockroachDB Feature Availability"
+old_description: "Learn about the features available in preview and limited access in CockroachDB"
+---
+
+Some CockroachDB features are made available in phases prior to being launched in general availability (GA). This page defines the different levels of CockroachDB v26.1 feature availability and lists the features in each phase.
+
+<Note>
+This page outlines *feature availability*, which is separate from Cockroach Labs' [Release Support Policy](/docs/releases/release-support-policy) or [API Support Policy](/docs/v26.1/api-support-policy).
+</Note>
+
+## Feature availability phases
+
+<table><thead><tr><th>Phase</th><th>Definition</th><th>Accessibility</th></tr></thead><tbody><tr><td>Private preview</td><td>Feature is available to select customers and not publicly documented.</td><td>Invite-only</td></tr><tr><td>Limited access</td><td>Feature is publicly documented but not yet available widely. This feature may have limitations and/or capabilities that may change or be added based on feedback, before being promoted to GA.</td><td>Opt-in<br/>Contact your Cockroach Labs account team.</td></tr><tr><td><a href="#features-in-preview">Preview</a></td><td>Feature is publicly available and documented. This feature may have limitations and/or capabilities that may change or be added based on feedback, before being promoted to GA.</td><td>Public</td></tr><tr><td>General availability (GA)</td><td>Feature is publicly available and documented.</td><td>Public</td></tr></tbody></table>
+
+<Note>
+Any feature made available in a phase prior to GA is provided without any warranties of any kind. Such features are not subject to any technical support or uptime availability commitments unless Cockroach Labs explicitly states otherwise in writing.
+</Note>
+
+## Features in limited access
+
+<Note>
+**The following features are in limited access** and are subject to change. To begin validating a limited access feature and share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
+</Note>
+
+### Export logs to Azure Monitor
+
+[Exporting logs to Azure Monitor](/docs/stable/cockroachcloud/export-logs-advanced?filters=azure-monitor-log-export) from your CockroachDB Advanced cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB Advanced cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+
+### Export metrics to Azure Monitor
+
+[Exporting Metrics to Azure Monitor](/docs/stable/cockroachcloud/export-metrics-advanced?filters=azure-monitor-metrics-export) from a CockroachDB Advanced cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB Advanced cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+
+### Egress private endpoints
+
+[Egress private endpoints](/docs/stable/cockroachcloud/egress-private-endpoints) are secure network connections between a CockroachDB Advanced cluster and the rest of your private cloud infrastructure. Egress endpoints let CockroachDB send outbound information, such as [changefeed targets](/docs/v26.1/change-data-capture-overview), to other cloud services over a private network link. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+
+### Cluster SSO backed by LDAP
+
+[Cluster SSO](/docs/v26.1/sso-sql) using an identity stored in LDAP is in Limited Access. The [cluster setting](/docs/v26.1/cluster-settings) `server.auth_log.sql_sessions.enabled`, which logs more details about cluster authentication failures, is also in Limited Access.
+
+## Features in preview
+
+<Note>
+**The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
+</Note>
+
+### `LTREE` data type
+
+The [`LTREE` data type](/docs/v26.1/ltree) stores hierarchical tree-like structures. `LTREE` is useful for efficiently querying and managing hierarchical data without using recursive joins.
+
+### Prometheus-compatible `metrics` endpoint
+
+[`http://<host>:<http-port>/metrics` Prometheus-compatible endpoint](/docs/v26.1/prometheus-endpoint#metrics) is enhanced with additional static labels.
+
+The `metrics` Prometheus endpoint is commonly used and is the default in Prometheus configurations.
+
+### `database` and `application_name` labels for certain metrics
+
+The following cluster settings enable the [`database` and `application_name` labels for certain metrics](/docs/v26.1/multi-dimensional-metrics#enable-database-and-application_name-labels), along with their internal counterparts if they exist:
+
+- `sql.metrics.database_name.enabled`
+- `sql.metrics.application_name.enabled`
+
+By default, these cluster settings are disabled.
+
+### JSONPath queries
+
+[JSONPath](/docs/v26.1/jsonpath) expressions and functions can be used to query and filter [`JSONB`](/docs/v26.1/jsonb) data, using [JSONPath expressions](/docs/v26.1/jsonpath#jsonpath-expression) as arguments in [JSONPath functions](/docs/v26.1/jsonpath#jsonpath-functions).
+
+### Workload-level index recommendations
+
+The SQL built-in function [workload_index_recs](/docs/v26.1/ui-insights-page#workload_index_recs-function) returns index recommendations and the fingerprint IDs of the statements they impact.
+
+### Triggers
+
+[Triggers](/docs/v26.1/triggers) are in preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
+
+### JWT authorization
+
+[JWT authorization](/docs/v26.1/jwt-authorization) allows CockroachDB to automatically assign roles to users based on group claims in their JWT tokens. When a client connects using a JWT token, the cluster extracts group information and maps each group to a corresponding cluster role, simplifying access control for organizations using identity providers.
+
+### OIDC authorization for DB Console
+
+[OIDC authorization for DB Console](/docs/v26.1/oidc-authorization) allows CockroachDB to automatically assign roles to users based on group claims when they log into the DB Console via OIDC. The cluster extracts group information from ID tokens or access tokens and maps each group to a corresponding cluster role, streamlining access management for DB Console users.
+
+### Admission control for ingesting snapshots
+
+The [cluster setting](/docs/v26.1/cluster-settings) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` is in preview. When configured, it limits the disk impact of ingesting snapshots on a node.
+
+### Admission control to limit the bandwidth for a store
+
+The [cluster setting](/docs/v26.1/cluster-settings) `kvadmission.store.provisioned_bandwidth` is in preview. When configured, the store's bandwidth is limited to the configured bandwidth, expressed in bytes per second,
+
+### CockroachDB Standard
+
+CockroachDB Standard is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand](/docs/stable/cockroachcloud/plan-your-cluster), along with enterprise-level security and availability. Compute for CockroachDB Standard is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB Basic cluster to CockroachDB Standard in place.
+
+### Fault tolerance demo
+
+CockroachDB Advanced includes a [built-in fault tolerance demo](/docs/v26.1/demo-cockroachdb-resilience#run-a-guided-demo-in-cockroachdb-cloud) that allows you to monitor query execution during a simulated failure and recovery. The fault tolerance demo is in preview.
+
+### Read from standby in physical cluster replication (PCR) for CockroachDB self-hosted
+
+The [`READ VIRTUAL CLUSTER`](/docs/v26.1/create-virtual-cluster#options) option allows you to set up a PCR stream that also creates a [read-only virtual cluster](/docs/v26.1/read-from-standby) on the standby cluster. You can create a PCR job as per the [Set Up Physical Cluster Replication](/docs/v26.1/set-up-physical-cluster-replication) guide and then add the option to the [`CREATE VIRTUAL CLUSTER`](/docs/v26.1/create-virtual-cluster) statement.
+
+### Custom Metrics Chart page for CockroachDB Cloud clusters
+
+The [**Custom Metrics Chart** page](/docs/stable/cockroachcloud/custom-metrics-chart-page) for CockroachDB Cloud clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
+
+### Export metrics from CockroachDB Advanced clusters
+
+[Exporting metrics from CockroachDB Advanced](/docs/stable/cockroachcloud/export-metrics-advanced) to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch) or [Datadog](https://www.datadoghq.com/) using the [Cloud API](/docs/stable/cockroachcloud/cloud-api) is in preview. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB Advanced cluster to your chosen cloud metrics sink.
+
+[Exporting metrics from CockroachDB Advanced to Prometheus](/docs/stable/cockroachcloud/export-metrics-advanced?filters=prometheus-metrics-export) using the [Cloud API](/docs/stable/cockroachcloud/cloud-api) is in preview for clusters hosted on Azure. It is in general availability for clusters hosted on AWS and GCP.
+
+<Note>
+Exporting metrics to Azure Monitor is in limited access. Refer to [Export metrics to Azure Monitor](#export-metrics-to-azure-monitor).
+</Note>
+
+### CMEK management UI for the Cloud Console
+
+Enabling and managing [Customer-Managed Encryption Keys (CMEK)](/docs/stable/cockroachcloud/cmek) for CockroachDB Advanced in the Cloud Console is in preview. CMEK management with the [Cloud API](/docs/stable/cockroachcloud/cloud-api) is in general availability.
+
+### Bring your own cloud (BYOC) deployments of CockroachDB Cloud
+
+Deploying CockroachDB Cloud with a [BYOC deployment model](/docs/stable/cockroachcloud/byoc-deployment) is in preview for Microsoft Azure.
+
+### Convert a schema from Oracle or Microsoft SQL Server
+
+Using the [Migrations page](/docs/stable/cockroachcloud/migrations-page) to convert a schema from Oracle or Microsoft SQL Server is in preview.
+
+### Schema conversion summary report
+
+The [schema-conversion summary report](/docs/stable/cockroachcloud/migrations-page#summary-report) in the Migrations page is in preview. This report displays the results of the schema analysis and provides bulk actions you can apply to update the schema, is in preview.
+
+### Cloud SQL Shell
+
+The [SQL Shell](/docs/stable/cockroachcloud/sql-shell) in the CockroachDB Cloud Console is in preview. The SQL Shell enables you to run [queries](/docs/v26.1/selection-queries) on your CockroachDB Cloud cluster directly from your browser.
+
+### Log SQL Activity to Datadog
+
+You can [log `sampled_query` and `sampled_transaction` events to Datadog](/docs/v26.1/log-sql-activity-to-datadog) for finer granularity and long-term retention of SQL activity, and to reduce the performance impacts of logging these events locally. The [`sampled_query` events](/docs/v26.1/eventlog#sampled_query) and the [`sampled_transaction` events](/docs/v26.1/eventlog#sampled_transaction) contain common SQL event and execution details for transactions, and statements.
+
+CockroachDB supports a built-in integration with [Datadog](https://www.datadoghq.com/) which sends these events as logs via the [Datadog HTTP API](https://docs.datadoghq.com/api/latest/logs). This integration is the recommended path to achieve high throughput data ingestion, which will in turn provide more query and transaction events for greater workload observability.
+
+### Role-based SQL audit logging
+
+[Role-based SQL audit logging](/docs/v26.1/role-based-audit-logging) gives you detailed information about queries being executed against your system by specific users or roles. An event of type [`role_based_audit_event`](/docs/v26.1/eventlog#role_based_audit_event) is recorded when an executed query belongs to a user whose role membership corresponds to a role that is enabled to emit an audit log via the [`sql.log.user_audit` cluster setting](/docs/v26.1/cluster-settings#setting-sql-log-user-audit). The event is logged in the [`SENSITIVE_ACCESS`](/docs/v26.1/logging#sensitive_access) logging channel.
+
+### Table-based SQL audit logging
+
+With [table-based SQL audit logging](/docs/v26.1/sql-audit-logging) you can log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE... EXPERIMENTAL_AUDIT`](/docs/v26.1/alter-table#experimental_audit).
+
+```sql
+> ALTER TABLE t EXPERIMENTAL_AUDIT SET READ WRITE;
+```
+
+### Show table fingerprints
+
+Table fingerprints are used to compute an identification string of an entire table, for the purpose of gauging whether two tables have the same data. This is useful, for example, when restoring a table from backup.
+
+Example:
+
+```sql
+> SHOW EXPERIMENTAL_FINGERPRINTS FROM TABLE t;
+```
+
+```text
+ index_name |     fingerprint
+------------+---------------------
+ primary    | 1999042440040364641
+(1 row)
+```
+
+### KV event tracing
+
+Use session tracing (via [`SHOW TRACE FOR SESSION`](/docs/v26.1/show-trace)) to report the replicas of all KV events that occur during its execution.
+
+Example:
+
+```sql
+> SET tracing = on;
+> SELECT * from t;
+> SET tracing = off;
+> SHOW EXPERIMENTAL_REPLICA TRACE FOR SESSION;
+```
+
+```text
+            timestamp             | node_id | store_id | replica_id
+----------------------------------+---------+----------+------------
+ 2018-10-18 15:50:13.345879+00:00 |       3 |        3 |          7
+ 2018-10-18 15:50:20.628383+00:00 |       2 |        2 |         26
+```
+
+### Show range information for a specific row
+
+The [`SHOW RANGE... FOR ROW`](/docs/v26.1/show-range-for-row) statement shows information about a [range](/docs/v26.1/architecture/overview#architecture-range) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
+
+### Temporary objects
+
+[Temporary tables](/docs/v26.1/temporary-tables), [temporary views](/docs/v26.1/views#temporary-views), and [temporary sequences](/docs/v26.1/create-sequence#temporary-sequences) are in preview in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Dropping large numbers of temporary objects in rapid succession can also enqueue many [schema change GC jobs](/docs/v26.1/show-jobs), which may further degrade cluster performance. This performance degradation could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+
+To enable temporary objects, set the `experimental_enable_temp_tables` [session variable](/docs/v26.1/show-vars) to `on`.
+
+### Password authentication without TLS
+
+For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` for [`cockroach start`](/docs/v26.1/cockroach-start#security).
+
+With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
+
+Example:
+
+```shell
+$ cockroach sql --user=jpointsman --insecure
+```
+
+```text
+  # Welcome to the CockroachDB SQL shell.
+  # All statements must be terminated by a semicolon.
+  # To exit, type: \q.
+  #
+  Enter password:
+```
+
+### Apache Pulsar changefeed sink
+
+Changefeeds can deliver messages to [Apache Pulsar](https://pulsar.apache.org/docs).
+
+A Pulsar sink URI:
+
+```text
+pulsar://localhost:6650
+```
+
+Changefeeds emitting to an Apache Pulsar sink do **not** support:
+
+- [`format=avro`](/docs/v26.1/create-changefeed#format)
+- [`confluent_schema_registry`](/docs/v26.1/create-changefeed#confluent-schema-registry)
+- [`topic_prefix`](/docs/v26.1/create-changefeed#topic-prefix)
+- Any batching configuration
+- [Authentication query parameters](/docs/v26.1/create-changefeed#query-parameters)
+- [External connections](/docs/v26.1/create-external-connection)
+
+For an Apache Pulsar setup example, refer to the [Changefeed Examples](/docs/v26.1/changefeed-examples#create-a-changefeed-connected-to-an-apache-pulsar-sink) page.
+
+### Core implementation of changefeeds
+
+The [`EXPERIMENTAL CHANGEFEED FOR`](/docs/v26.1/changefeed-for) statement creates a new basic changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A basic changefeed can watch one table or multiple tables in a comma-separated list.
+
+### Multiple active portals
+
+The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations. For more information, see [Multiple active portals](/docs/v26.1/postgresql-compatibility#multiple-active-portals).
+
+### Super regions
+
+[Super regions](/docs/v26.1/multiregion-overview#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored *only* in regions that are members of the super region. The primary use case for super regions is data domiciling.
+
+### Physical cluster replication data verification
+
+You can verify data between a primary and standby cluster with the `SHOW EXPERIMENTAL FINGERPRINTS` statement, which uses the current replicated time in a [physical cluster replication](/docs/v26.1/physical-cluster-replication-overview) job to run a point-in-time fingerprint. The `SHOW EXPERIMENTAL_FINGERPRINTS` statement verifies that data transmission and ingestion is working as expected while the replication stream is running. This tool is for data verification only; if you encounter a fingerprint mismatch, contact [Support](https://support.cockroachlabs.com/hc/en-us). For more information, refer to the [Physical Cluster Replication Monitoring](/docs/v26.1/physical-cluster-replication-monitoring#data-verification) page.
+
+### `cockroach` commands
+
+The table below lists the [`cockroach` commands](/docs/v26.1/cockroach-commands) available in preview in CockroachDB.
+
+<table><thead><tr><th>Command</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/v26.1/cockroach-demo"><code>cockroach demo</code></a></td><td>Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.</td></tr><tr><td><a href="/docs/v26.1/cockroach-sqlfmt"><code>cockroach sqlfmt</code></a></td><td>Reformat SQL queries for enhanced clarity.</td></tr></tbody></table>
+
+### Leader leases
+
+CockroachDB offers an improved leasing system rebuilt atop a stronger form of [Raft](/docs/v26.1/architecture/replication-layer#raft) leadership that ensures that the Raft leader is always the range's leaseholder, except briefly during [lease transfers](/docs/v26.1/architecture/replication-layer#how-leases-are-transferred-from-a-dead-node). This type of lease is called a *Leader lease*, and supersedes the former system of having different epoch-based and expiration-based lease types, while combining the performance of the former with the resilience of the latter.
+
+For more information, see [Architecture &gt; Replication Layer &gt; Leader leases](/docs/v26.1/architecture/replication-layer#leader-leases).
+
+### Buffered Writes
+
+Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the [gateway node](/docs/v26.1/architecture/sql-layer#gateway-node) and the other nodes during write operations.
+
+For more information, refer to [Buffered writes](/docs/v26.1/architecture/transaction-layer#buffered-writes).
+
+## See Also
+
+- [`SHOW {session variable}`](/docs/v26.1/show-vars)
+- [Functions and Operators](/docs/v26.1/functions-and-operators)
+- [`ALTER TABLE... EXPERIMENTAL_AUDIT`](/docs/v26.1/alter-table#experimental_audit)
+- [`SHOW TRACE FOR SESSION`](/docs/v26.1/show-trace)
+- [`SHOW RANGE... FOR ROW`](/docs/v26.1/show-range-for-row)

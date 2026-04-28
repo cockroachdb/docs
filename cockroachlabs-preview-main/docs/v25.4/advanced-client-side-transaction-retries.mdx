@@ -1,0 +1,75 @@
+---
+title: "Advanced Client-side Transaction Retries"
+old_description: "Advanced client-side transaction retry features for library authors"
+---
+
+This page has instructions for authors of [database drivers and ORMs](/docs/v25.4/install-client-drivers) who would like to implement client-side retries in their database driver or ORM for maximum efficiency and ease of use by application developers.
+
+<Note>
+If you are an application developer who needs to implement an application-level retry loop, see the [client-side retry handling example](/docs/v25.4/transaction-retry-error-example).
+</Note>
+
+## Overview
+
+To improve the performance of transactions that fail due to [contention](/docs/v25.4/performance-best-practices-overview#transaction-contention), CockroachDB includes a set of statements (listed below) that let you retry those transactions. Retrying transactions using these statements has the benefit that when you use savepoints, you "hold your place in line" between attempts. Without savepoints, you're starting from scratch every time.
+
+## How transaction retries work
+
+A retryable transaction goes through the process described below, which maps to the following SQL statements:
+
+```sql
+> BEGIN;                                  -- #1
+> SAVEPOINT cockroach_restart;            -- #2
+-- ... various transaction statements ... -- #3
+> RELEASE SAVEPOINT cockroach_restart;    -- #5 (Or #4, ROLLBACK, in case of retry error)
+> COMMIT;
+```
+
+1. The transaction starts with the [`BEGIN`](/docs/v25.4/begin-transaction) statement.
+2. The [`SAVEPOINT`](/docs/v25.4/savepoint) statement shown here is a [retry savepoint](#retry-savepoints); that is, it declares the intention to retry the transaction in the case of contention errors. It must be executed after [`BEGIN`](/docs/v25.4/begin-transaction), but before the first statement that manipulates a database. Although [nested transactions](/docs/v25.4/savepoint#savepoints-for-nested-transactions) are supported in versions of CockroachDB 20.1 and later, a retry savepoint must be the outermost savepoint in a transaction.
+3. The statements in the transaction are executed.
+4. If a statement returns a retry error (identified via the `40001` error code or `"restart transaction"` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT`](/docs/v25.4/rollback-transaction) statement to restart the transaction. Alternately, the original [`SAVEPOINT`](/docs/v25.4/savepoint) statement can be reissued to restart the transaction.
+
+    You must now issue the statements in the transaction again.
+
+    In cases where you do not want the application to retry the transaction, you can issue [`ROLLBACK`](/docs/v25.4/rollback-transaction) at this point. Any other statements will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
+5. Once the transaction executes all statements without encountering contention errors, execute [`RELEASE SAVEPOINT`](/docs/v25.4/release-savepoint) to commit the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
+
+    In some cases, the [`RELEASE SAVEPOINT`](/docs/v25.4/release-savepoint) statement itself can fail with a retry error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retry error is handled as described in step 4.
+
+## Retry savepoints
+
+A savepoint defined with the name `cockroach_restart` is a "retry savepoint" and is used to implement advanced client-side transaction retries. A retry savepoint differs from a [savepoint for nested transactions](/docs/v25.4/savepoint#savepoints-for-nested-transactions) as follows:
+
+- It must be the outermost savepoint in the transaction.
+- After a successful [`RELEASE`](/docs/v25.4/release-savepoint), a retry savepoint does not allow further use of the transaction. The next statement must be a [`COMMIT`](/docs/v25.4/commit-transaction).
+- It cannot be nested. Issuing `SAVEPOINT cockroach_restart` two times in a row only creates a single savepoint marker (this can be verified with [`SHOW SAVEPOINT STATUS`](/docs/v25.4/show-savepoint-status) ). Issuing `SAVEPOINT cockroach_restart` after `ROLLBACK TO SAVEPOINT cockroach_restart` reuses the marker instead of creating a new one.
+
+Note that you can [customize the retry savepoint name](#customizing-the-retry-savepoint-name) to something other than `cockroach_restart` with a session variable if you need to.
+
+## Customizing the retry savepoint name
+
+Set the `force_savepoint_restart` [session variable](/docs/v25.4/set-vars#supported-variables) to `true` to enable using a custom name for the [retry savepoint](/docs/v25.4/advanced-client-side-transaction-retries#retry-savepoints).
+
+Once this variable is set, the [`SAVEPOINT`](/docs/v25.4/savepoint) statement will accept any name for the retry savepoint, not just `cockroach_restart`. In addition, it causes every savepoint name to be equivalent to `cockroach_restart`, therefore disallowing the use of [nested transactions](/docs/v25.4/transactions#nested-transactions).
+
+This feature exists to support applications that want to use the [advanced client-side transaction retry protocol](/docs/v25.4/advanced-client-side-transaction-retries), but cannot customize the name of savepoints to be `cockroach_restart`. For example, this may be necessary because you are using an ORM that requires its own names for savepoints.
+
+## Examples
+
+For examples showing how to use [`SAVEPOINT`](/docs/v25.4/savepoint) and the other statements described on this page to implement library support for a programming language, see the following:
+
+- [Build a Java app with CockroachDB](/docs/v25.4/build-a-java-app-with-cockroachdb), in particular the logic in the `runSQL` method.
+- The source code of the [sqlalchemy-cockroachdb](https://github.com/cockroachdb/sqlalchemy-cockroachdb) adapter for SQLAlchemy.
+
+## See also
+
+- [Transactions](/docs/v25.4/transactions)
+- [`BEGIN`](/docs/v25.4/begin-transaction)
+- [`COMMIT`](/docs/v25.4/commit-transaction)
+- [`ROLLBACK`](/docs/v25.4/rollback-transaction)
+- [`SAVEPOINT`](/docs/v25.4/savepoint)
+- [`RELEASE SAVEPOINT`](/docs/v25.4/release-savepoint)
+- [`SHOW`](/docs/v25.4/show-vars)
+- [DB Console Transactions Page](/docs/v25.4/ui-transactions-page)
+- [CockroachDB Architecture: Transaction Layer](/docs/v25.4/architecture/transaction-layer)

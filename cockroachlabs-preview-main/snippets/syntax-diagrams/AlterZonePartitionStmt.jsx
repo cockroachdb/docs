@@ -1,0 +1,86 @@
+export const AlterZonePartitionStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="191" width="557" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="62" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">ALTER</text>
+<rect height="32" rx="10" width="98" x="115" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="98" x="113" y="1"></rect>
+<text class="terminal" x="123" y="21">PARTITION</text><a xlink:href="#partition_name" xlink:title="partition_name">
+<rect height="32" width="116" x="233" y="3"></rect>
+<rect class="nonterminal" height="32" width="116" x="231" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="92" font-size="10" class="nonterminal" x="243" y="21">partition_name</text></a><rect height="32" rx="10" width="38" x="369" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="367" y="1"></rect>
+<text class="terminal" x="377" y="21">OF</text>
+<rect height="32" rx="10" width="62" x="45" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="43" y="67"></rect>
+<text class="terminal" x="53" y="87">TABLE</text><a xlink:href="#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="127" y="69"></rect>
+<rect class="nonterminal" height="32" width="96" x="125" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="137" y="87">table_name</text></a><rect height="32" rx="10" width="64" x="45" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="43" y="111"></rect>
+<text class="terminal" x="53" y="131">INDEX</text><a xlink:href="#table_index_name" xlink:title="table_index_name">
+<rect height="32" width="138" x="149" y="113"></rect>
+<rect class="nonterminal" height="32" width="138" x="147" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="114" font-size="11" class="nonterminal" x="159" y="131">table_index_name</text></a><a xlink:href="#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="149" y="157"></rect>
+<rect class="nonterminal" height="32" width="96" x="147" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="159" y="175">table_name</text></a><rect height="32" rx="10" width="32" x="265" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="32" x="263" y="155"></rect>
+<text class="terminal" x="273" y="175">@</text>
+<rect height="32" rx="10" width="28" x="317" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="28" x="315" y="155"></rect>
+<text class="terminal" x="325" y="175">*</text><a xlink:href="#set_zone_config" xlink:title="set_zone_config">
+<rect height="32" width="124" x="405" y="69"></rect>
+<rect class="nonterminal" height="32" width="124" x="403" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="100" font-size="10" class="nonterminal" x="415" y="87">set_zone_config</text></a><path class="line" d="m19 17 h2 m0 0 h10 m62 0 h10 m0 0 h10 m98 0 h10 m0 0 h10 m116 0 h10 m0 0 h10 m38 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-426 66 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m62 0 h10 m0 0 h10 m96 0 h10 m0 0 h142 m-360 0 h20 m340 0 h20 m-380 0 q10 0 10 10 m360 0 q0 -10 10 -10 m-370 10 v24 m360 0 v-24 m-360 24 q0 10 10 10 m340 0 q10 0 10 -10 m-350 10 h10 m64 0 h10 m20 0 h10 m138 0 h10 m0 0 h58 m-236 0 h20 m216 0 h20 m-256 0 q10 0 10 10 m236 0 q0 -10 10 -10 m-246 10 v24 m236 0 v-24 m-236 24 q0 10 10 10 m216 0 q10 0 10 -10 m-226 10 h10 m96 0 h10 m0 0 h10 m32 0 h10 m0 0 h10 m28 0 h10 m40 -88 h10 m124 0 h10 m3 0 h-3"></path>
+<polygon points="547 83 555 79 555 87"></polygon>
+<polygon points="547 83 539 79 539 87"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

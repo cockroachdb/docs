@@ -1,0 +1,10 @@
+*py
+.venv
+_migration
+scripts/
+
+config.json
+urls.json
+url_list_part3_online.md
+url_list_tabs.md
+versioned_pages_to_review.md

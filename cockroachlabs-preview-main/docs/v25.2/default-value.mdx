@@ -1,0 +1,70 @@
+---
+title: "Default Value Constraint"
+old_description: "The DEFAULT constraint specifies a value to populate a column with if none is provided."
+---
+
+import { DefaultValue5 } from "/snippets/syntax-diagrams/DefaultValue5.jsx";
+
+The `DEFAULT` value [constraint](/docs/v25.2/constraints) specifies a value to write into the constrained column if one is not defined in an `INSERT` statement. The value may be either a hard-coded literal or an expression that is evaluated at the time the row is created.
+
+## Details
+
+- The [data type](/docs/v25.2/data-types) of the `DEFAULT` value must be the same as the data type of the column.
+- The `DEFAULT` value constraint only applies if the column does not have a value specified in the [`INSERT`](/docs/v25.2/insert) statement. You can still insert a `NULL` into an optional (nullable) column by explicitly inserting `NULL`. For example, `INSERT INTO foo VALUES (1, NULL);`.
+
+## Syntax
+
+You can only apply the `DEFAULT` value constraint to individual columns.
+
+<Note>
+You can also add the `DEFAULT` value constraint to an existing table through [`ALTER COLUMN`](/docs/v25.2/alter-table#set-or-change-a-default-value).
+</Note>
+
+<DefaultValue5 />
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table you're creating.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the constrained column.</td></tr><tr><td><code>column&#95;type</code></td><td>The constrained column's <a href="/docs/v25.2/data-types">data type</a>.</td></tr><tr><td><code>default&#95;value</code></td><td>The value you want to insert by default, which must evaluate to the same <a href="/docs/v25.2/data-types">data type</a> as the <code>column&#95;type</code>.</td></tr><tr><td><code>column&#95;constraints</code></td><td>Any other column-level <a href="/docs/v25.2/constraints">constraints</a> you want to apply to this column.</td></tr><tr><td><code>column&#95;def</code></td><td>Definitions for any other columns in the table.</td></tr><tr><td><code>table&#95;constraints</code></td><td>Any table-level <a href="/docs/v25.2/constraints">constraints</a> you want to apply.</td></tr></tbody></table>
+
+## Example
+
+```sql
+> CREATE TABLE inventories (
+    product_id        INT,
+    warehouse_id      INT,
+    quantity_on_hand  INT DEFAULT 100,
+    PRIMARY KEY (product_id, warehouse_id)
+  );
+```
+
+```sql
+> INSERT INTO inventories (product_id, warehouse_id) VALUES (1,20);
+```
+
+```sql
+> INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (2,30, NULL);
+```
+
+```sql
+> SELECT * FROM inventories;
+```
+
+```text
++------------+--------------+------------------+
+| product_id | warehouse_id | quantity_on_hand |
++------------+--------------+------------------+
+|          1 |           20 |              100 |
+|          2 |           30 | NULL             |
++------------+--------------+------------------+
+```
+
+If the `DEFAULT` value constraint is not specified and an explicit value is not given, a value of `NULL` is assigned to the column.
+
+## See also
+
+- [Constraints](/docs/v25.2/constraints)
+- [`ALTER COLUMN`](/docs/v25.2/alter-table#alter-column)
+- [`CHECK` constraint](/docs/v25.2/check)
+- [`REFERENCES` constraint (Foreign Key)](/docs/v25.2/foreign-key)
+- [`NOT NULL` constraint](/docs/v25.2/not-null)
+- [`PRIMARY KEY` constraint](/docs/v25.2/primary-key)
+- [`UNIQUE` constraint](/docs/v25.2/unique)
+- [`SHOW CONSTRAINTS`](/docs/v25.2/show-constraints)

@@ -1,0 +1,20 @@
+---
+title: "SQL Audit Logging"
+old_description: "Learn about the SQL Audit Logging feature for CockroachDB Cloud clusters."
+---
+
+import SqlAuditLogging from "/snippets/cockroachcloud/sql-audit-logging.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<SqlAuditLogging />

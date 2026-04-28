@@ -1,0 +1,20 @@
+---
+title: "Metrics Overview"
+old_description: "This page gives an overview of the ways you can monitor the performance of your Cloud cluster's SQL queries."
+---
+
+import Metrics from "/snippets/cockroachcloud/metrics.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<Metrics />

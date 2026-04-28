@@ -1,0 +1,20 @@
+---
+title: "SQL Client Certificate Authentication for CockroachDB Advanced"
+old_description: "Learn how to manage client certificates for CockroachDB Advanced clusters."
+---
+
+import ClientCertsAdvanced from "/snippets/cockroachcloud/client-certs-advanced.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ClientCertsAdvanced />

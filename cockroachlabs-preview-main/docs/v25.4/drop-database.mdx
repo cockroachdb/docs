@@ -1,0 +1,138 @@
+---
+title: "DROP DATABASE"
+old_description: "The DROP DATABASE statement removes a database and all its objects from a CockroachDB cluster."
+---
+
+import { DropDatabase6 } from "/snippets/syntax-diagrams/DropDatabase6.jsx";
+
+The `DROP DATABASE` [statement](/docs/v25.4/sql-statements) removes a database and all its objects from a CockroachDB cluster.
+
+<Note>
+The `DROP DATABASE` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.4/online-schema-changes).
+</Note>
+
+## Required privileges
+
+The user must have the `DROP` [privilege](/docs/v25.4/security-reference/authorization#managing-privileges) on the database and on all tables in the database.
+
+## Synopsis
+
+<DropDatabase6 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF EXISTS</code></td><td>Drop the database if it exists; if it does not exist, do not return an error.</td></tr><tr><td><code>name</code></td><td>The name of the database you want to drop. You cannot drop a database if it is set as the <a href="/docs/v25.4/sql-name-resolution#current-database">current database</a> or if <a href="/docs/v25.4/set-vars"><code>sql&#95;safe&#95;updates = true</code></a>.</td></tr><tr><td><code>CASCADE</code></td><td><em>(Default)</em> Drop all tables and views in the database as well as all objects (such as <a href="/docs/v25.4/constraints">constraints</a> and <a href="/docs/v25.4/views">views</a>) that depend on those tables.<br/><br/><code>CASCADE</code> does not list objects it drops, so should be used cautiously.</td></tr><tr><td><code>RESTRICT</code></td><td>Do not drop the database if it contains any <a href="/docs/v25.4/create-table">tables</a> or <a href="/docs/v25.4/create-view">views</a>.</td></tr></tbody></table>
+
+## Viewing schema changes
+
+This schema change statement is registered as a job. You can view long-running jobs with [`SHOW JOBS`](/docs/v25.4/show-jobs).
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v25.4/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v25.4/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Drop a database and its objects (`CASCADE`)
+
+For non-interactive sessions (e.g., client applications), `DROP DATABASE` applies the `CASCADE` option by default, which drops all tables and views in the database as well as all objects (such as [constraints](/docs/v25.4/constraints) and [views](/docs/v25.4/views)) that depend on those tables.
+
+For interactive sessions from the [built-in SQL client](/docs/v25.4/cockroach-sql), either the `CASCADE` option must be set explicitly or the `--unsafe-updates` flag must be set when starting the shell.
+
+```sql
+> SHOW TABLES FROM movr;
+```
+
+```text
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
+(6 rows)
+```
+
+```sql
+> DROP DATABASE movr;
+```
+
+```text
+ERROR: rejected (sql_safe_updates = true): DROP DATABASE on current database
+SQLSTATE: 01000
+```
+
+```sql
+> USE defaultdb;
+```
+
+```sql
+> DROP DATABASE movr;
+```
+
+```text
+ERROR: rejected (sql_safe_updates = true): DROP DATABASE on non-empty database without explicit CASCADE
+SQLSTATE: 01000
+```
+
+```sql
+> DROP DATABASE movr CASCADE;
+```
+
+```sql
+> SHOW TABLES FROM movr;
+```
+
+```text
+ERROR: target database or schema does not exist
+SQLSTATE: 3F000
+```
+
+### Prevent dropping a non-empty database (`RESTRICT`)
+
+When a database is not empty, the `RESTRICT` option prevents the database from being dropped:
+
+```sql
+> SHOW TABLES FROM movr;
+```
+
+```text
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
+(6 rows)
+```
+
+```sql
+> USE defaultdb;
+```
+
+```sql
+> DROP DATABASE movr RESTRICT;
+```
+
+```text
+ERROR: database "movr" is not empty and RESTRICT was specified
+SQLSTATE: 2BP01
+```
+
+## See also
+
+- [`CREATE DATABASE`](/docs/v25.4/create-database)
+- [`SHOW DATABASES`](/docs/v25.4/show-databases)
+- [`ALTER DATABASE... RENAME TO`](/docs/v25.4/alter-database#rename-to)
+- [`SET DATABASE`](/docs/v25.4/set-vars)
+- [`SHOW JOBS`](/docs/v25.4/show-jobs)
+- [SQL Statements](/docs/v25.4/sql-statements)
+- [Online Schema Changes](/docs/v25.4/online-schema-changes)

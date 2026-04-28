@@ -1,0 +1,131 @@
+---
+title: "Advanced Public Key Infrastructure (PKI) Certificate Scenarios"
+old_description: "A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication."
+---
+
+This document discusses the use of advanced [Public Key Infrastructure (PKI)](/docs/v25.2/security-reference/transport-layer-security) systems and certificates issued by them with CockroachDB. security certificates with CockroachDB. PKI certificates are used in CockroachDB for TLS encryption and for node and client authentication.
+
+<table><thead><tr><th>Approach</th><th>Use case description</th></tr></thead><tbody><tr><td><a href="#accessing-the-db-console-for-a-secure-cluster">UI certificate and key</a></td><td>When you want to access the DB Console for a secure cluster and avoid clicking through a warning message to get to the UI.</td></tr><tr><td><a href="#split-node-certificates">Split-node certificate</a></td><td>When your organizational CA requires you to have separate certificates for the node's incoming connections (from SQL and DB Console clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes.</td></tr><tr><td><a href="#split-ca-certificates">Split-CA certificates</a></td><td>When you have multiple CockroachDB clusters and need to restrict access to clients from accessing the other cluster.</td></tr></tbody></table>
+
+## Accessing the DB Console for a secure cluster
+
+On [accessing the DB Console](/docs/v25.2/ui-overview#db-console-access) for a secure cluster, your web browser will consider the CockroachDB-issued certificate invalid, because the browser hasn't been configured to trust the CA that issued the certificate.
+
+For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA whose certificates are trusted by browsers, in addition to the CockroachDB-created certificates.
+
+1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/) ). The certificate must have the IP addresses and DNS names used to reach the DB Console listed in the `Subject Alternative Name` field.
+2. Rename the certificate and key files to `ui.crt` and `ui.key`.
+3. Add the `ui.crt` and `ui.key` files to the [trust store](/docs/v25.2/security-reference/transport-layer-security#trust-store). `ui.key` must meet the [permission requirements check](/docs/v25.2/cockroach-cert#key-file-permissions) on macOS, Linux, and other UNIX-like systems. If your cluster is deployed using containers, update the containers to include the new certificate and key.
+4. The cockroach process reads certificates only when the process starts.
+
+- In a manually-deployed cluster, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
+
+    ```shell
+      pkill -SIGHUP -x cockroach
+    ```
+
+    The `SIGHUP` signal must be sent by the same user running the process or by a user with adequate privileges to send signals to processes owned by another user, such as a user with `sudo` access.
+- In a cluster deployed using the [Public operator](/docs/v25.2/deploy-cockroachdb-with-kubernetes), there is no way to send a `SIGHUP` signal to the individual `cockroach` process on each cluster node. Instead, perform a rolling restart of the cluster's pods.
+
+### Node key and certificates
+
+A node must have the following files with file names as specified in the table:
+
+<table><thead><tr><th>File name</th><th>File usage</th></tr></thead><tbody><tr><td><code>ca.crt</code></td><td>CA certificate issued by the public CA or your organizational CA.</td></tr><tr><td><code>node.crt</code></td><td>Server certificate created using the <code>cockroach cert</code> command.<br/><br/><code>node.crt</code> must have <code>CN=node</code> and the list of IP addresses and DNS names listed in <code>Subject Alternative Name</code> field.<br/><br/>Must be signed by <code>ca.crt</code>.</td></tr><tr><td><code>node.key</code></td><td>Server key created using the <code>cockroach cert</code> command.</td></tr><tr><td><code>ui.crt</code></td><td>UI certificate signed by the public CA. <code>ui.crt</code> must have the IP addresses and DNS names used to reach the DB Console listed in <code>Subject Alternative Name</code>.</td></tr><tr><td><code>ui.key</code></td><td>UI key corresponding to <code>ui.crt</code>.</td></tr></tbody></table>
+
+### Client key and certificates
+
+A client must have the following files with file names as specified in the table:
+
+<table><thead><tr><th>File name</th><th>File usage</th></tr></thead><tbody><tr><td><code>ca.crt</code></td><td>CA certificate issued by the public CA or your organizational CA.</td></tr><tr><td><code>client.&lt;user&gt;.crt</code></td><td>Client certificate for <code>&lt;user&gt;</code> (e.g., <code>client.root.crt</code> for user <code>root</code>).<br/><br/>Each <code>client.&lt;user&gt;.crt</code> must have <code>CN=&lt;user&gt;</code> (for example, <code>CN=marc</code> for <code>client.marc.crt</code>)<br/><br/>Must be signed by <code>ca.crt</code>.</td></tr><tr><td><code>client.&lt;user&gt;.key</code></td><td>Client key created using the <code>cockroach cert</code> command.</td></tr></tbody></table>
+
+<Note>
+If you manage your own Certificate Authority (CA) infrastructure, CockroachDB supports mapping between the Subject field of your [X.509 certificates](https://en.wikipedia.org/wiki/X.509) and SQL [roles](/docs/v25.2/security-reference/authorization#roles). For more information, see [Certificate-based authentication using multiple values from the X.509 Subject field](/docs/v25.2/certificate-based-authentication-using-the-x509-subject-field).
+</Note>
+
+## Split node certificates
+
+The node certificate discussed in the `cockroach cert` command [documentation](/docs/v25.2/cockroach-cert) is multifunctional, which means the same certificate is presented for the node's incoming connections (from SQL and DB Console clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This works if you are also using the CockroachDB CA created using the `cockroach cert` command. However, if you need to use an external public CA or your own organizational CA, the CA policy might not allow it to sign a server certificate containing a CN that is not an IP address or domain name.
+
+To get around this issue, you can split the node key and certificate into two:
+
+- `node.crt` and `node.key`: `node.crt` is used as the server certificate when a node receives incoming connections from clients and other nodes. All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name` field.
+- `client.node.crt` and `client.node.key`: `client.node.crt` is used as the client certificate when making connections to other nodes. `client.node.crt` must have `CN=node`.
+
+### Node key and certificates
+
+A node must have the following files with file names as specified in the table:
+
+<table><thead><tr><th>File name</th><th>File usage</th></tr></thead><tbody><tr><td><code>ca.crt</code></td><td>CA certificate issued by the public CA or your organizational CA.</td></tr><tr><td><code>node.crt</code></td><td>Server certificate used when a node receives incoming connections from clients and other nodes.<br/><br/>All IP addresses and DNS names for the node must be listed in <code>Subject Alternative Name</code>.<br/><br/>Must be signed by <code>ca.crt</code>.</td></tr><tr><td><code>node.key</code></td><td>Server key corresponding to <code>node.crt</code>.</td></tr><tr><td><code>client.node.crt</code></td><td>Client certificate when making connections to other nodes.<br/><br/>Must have <code>CN=node</code>.<br/><br/>Must be signed by <code>ca.crt</code>.</td></tr><tr><td><code>client.node.key</code></td><td>Client key corresponding to <code>client.node.crt</code>.</td></tr></tbody></table>
+
+Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
+
+### Client key and certificates
+
+A client must have the following files with file names as specified in the table:
+
+<table><thead><tr><th>File name</th><th>File usage</th></tr></thead><tbody><tr><td><code>ca.crt</code></td><td>CA certificate issued by the public CA or your organizational CA.</td></tr><tr><td><code>client.&lt;user&gt;.crt</code></td><td>Client certificate for <code>&lt;user&gt;</code> (e.g., <code>client.root.crt</code> for user <code>root</code>).<br/><br/>Each <code>client.&lt;user&gt;.crt</code> must have <code>CN=&lt;user&gt;</code> (for example, <code>CN=marc</code> for <code>client.marc.crt</code>)<br/><br/>Must be signed by <code>ca.crt</code>.</td></tr><tr><td><code>client.&lt;user&gt;.key</code></td><td>Client key corresponding to <code>client.&lt;user&gt;.crt</code>.</td></tr></tbody></table>
+
+## Split CA certificates
+
+<Warning>
+We do not recommend you use split CA certificates unless your organizational security practices mandate you to do so.
+</Warning>
+
+If you need to use separate CAs to sign node certificates and client certificates, then you need two CAs and their respective certificates and keys: `ca.crt` and `ca-client.crt`.
+
+### Node key and certificates
+
+A node must have the following files with file names as specified in the table:
+
+<table><thead><tr><th>File name</th><th>File usage</th></tr></thead><tbody><tr><td><code>ca.crt</code></td><td>CA certificate to verify node certificates.</td></tr><tr><td><code>ca-client.crt</code></td><td>CA certificate to verify client certificates.</td></tr><tr><td><code>node.crt</code></td><td>Server certificate used when a node receives incoming connections from clients and other nodes.<br/><br/>All IP addresses and DNS names for the node must be listed in <code>Subject Alternative Name</code>.<br/><br/>Must be signed by <code>ca.crt</code>.</td></tr><tr><td><code>node.key</code></td><td>Server key corresponding to <code>node.crt</code>.</td></tr><tr><td><code>client.node.crt</code></td><td>Client certificate when making connections to other nodes. This certificate must be signed using <code>ca-client.crt</code><br/><br/>Must have <code>CN=node</code>.</td></tr><tr><td><code>client.node.key</code></td><td>Client key corresponding to <code>client.node.crt</code>.</td></tr></tbody></table>
+
+Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
+
+### Client key and certificates
+
+A client must have the following files with file names as specified in the table:
+
+<table><thead><tr><th>File name</th><th>File usage</th></tr></thead><tbody><tr><td><code>ca.crt</code></td><td>CA certificate.</td></tr><tr><td><code>client.&lt;user&gt;.crt</code></td><td>Client certificate for <code>&lt;user&gt;</code> (e.g., <code>client.root.crt</code> for user <code>root</code>).<br/><br/>Each <code>client.&lt;user&gt;.crt</code> must have <code>CN=&lt;user&gt;</code> (for example, <code>CN=marc</code> for <code>client.marc.crt</code>).<br/><br/>Must be signed by <code>ca-client.crt</code>.</td></tr><tr><td><code>client.&lt;user&gt;.key</code></td><td>Client key corresponding to <code>client.&lt;user&gt;.crt</code>.</td></tr></tbody></table>
+
+## Certificate revocation with OCSP
+
+CockroachDB now supports certificate revocation for custom CA certificate setups running an [OCSP](https://wikipedia.org/wiki/Online_Certificate_Status_Protocol) server.
+
+To enable certificate revocation:
+
+1. Ensure that your Certificate Authority sets the OCSP server address in the `authorityInfoAccess` field in the certificate.
+2. [Set the cluster setting](/docs/v25.2/set-cluster-setting) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
+
+    ```sql
+      > SHOW CLUSTER SETTING security.ocsp.mode;
+    ```
+
+    ```text
+      security.ocsp.mode
+      ----------------------
+      off
+      (1 row)
+
+      Server Execution Time: 56µs
+      Network Latency: 181µs
+    ```
+
+    ```sql
+      > SET CLUSTER SETTING security.ocsp.mode = lax;
+    ```
+
+    For production clusters, you might want to set the setting to `strict`.
+
+    <Note>
+    In the `strict` mode, all certificates are presumed to be invalid if the OCSP server is not reachable. Setting the cluster setting `security.ocsp.mode` to `strict` will lock you out of your CockroachDB database if your OCSP server goes down.
+    </Note>
+
+## See also
+
+- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](/docs/v25.2/security-reference/transport-layer-security)
+- [Use the CockroachDB CLI to provision a development cluster](/docs/v25.2/manage-certs-cli).
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](/docs/v25.2/manage-certs-vault).
+- [Manual Deployment](/docs/v25.2/manual-deployment): Learn about starting a multi-node secure cluster and accessing it from a client.
+- [Start a Node](/docs/v25.2/cockroach-start): Learn more about the flags you pass when adding a node to a secure cluster
+- [Client Connection Parameters](/docs/v25.2/connection-parameters)

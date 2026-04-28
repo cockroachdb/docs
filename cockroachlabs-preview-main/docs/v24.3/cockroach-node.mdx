@@ -1,0 +1,259 @@
+---
+title: "cockroach node"
+old_description: "To view details for each node in the cluster, use the cockroach node command with the appropriate subcommands and flags."
+---
+
+To view details for each node in the cluster, use the `cockroach node` [command](/docs/v24.3/cockroach-commands) with the appropriate subcommands and flags.
+
+The `cockroach node` command is also used to stop or remove nodes from the cluster. For details, see [Node Shutdown](/docs/v24.3/node-shutdown).
+
+## Subcommands
+
+<table><thead><tr><th>Subcommand</th><th>Usage</th></tr></thead><tbody><tr><td><code>ls</code></td><td>List the ID of each node in the cluster, excluding those that have been decommissioned and are offline.</td></tr><tr><td><code>status</code></td><td>View the status of one or all nodes, excluding nodes that have been decommissioned and taken offline. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.</td></tr><tr><td><code>decommission</code></td><td>Decommission nodes for removal from the cluster. For more information, see <a href="#decommission-nodes">Decommission nodes</a>.</td></tr><tr><td><code>recommission</code></td><td>Recommission nodes that are decommissioning. If the decommissioning node has already reached the <a href="/docs/v24.3/node-shutdown?filters=decommission#draining">draining stage</a>, you may need to restart the node after it is recommissioned. For details, see <a href="/docs/v24.3/node-shutdown#recommission-nodes">Node Shutdown</a>.</td></tr><tr><td><code>drain</code></td><td>Drain nodes in preparation for process termination. Draining always occurs when sending a termination signal or decommissioning a node. The <code>drain</code> subcommand is used to drain nodes without also decommissioning or shutting them down. For details, see <a href="/docs/v24.3/node-shutdown">Node Shutdown</a>.</td></tr></tbody></table>
+
+## Synopsis
+
+List the IDs of active and inactive nodes:
+
+```shell
+$ cockroach node ls <flags>
+```
+
+Show status details for active and inactive nodes:
+
+```shell
+$ cockroach node status <flags>
+```
+
+Show status and range/replica details for active and inactive nodes:
+
+```shell
+$ cockroach node status --ranges <flags>
+```
+
+Show status and disk usage details for active and inactive nodes:
+
+```shell
+$ cockroach node status --stats <flags>
+```
+
+Show status and decommissioning details for active and inactive nodes:
+
+```shell
+$ cockroach node status --decommission <flags>
+```
+
+Show complete status details for active and inactive nodes:
+
+```shell
+$ cockroach node status --all <flags>
+```
+
+Show status details for a specific node:
+
+```shell
+$ cockroach node status <node ID> <flags>
+```
+
+Decommission nodes:
+
+```shell
+$ cockroach node decommission <node IDs> <flags>
+```
+
+Recommission nodes:
+
+```shell
+$ cockroach node recommission <node IDs> <flags>
+```
+
+Drain nodes:
+
+```shell
+$ cockroach node drain <node ID> <flags>
+```
+
+View help:
+
+```shell
+$ cockroach node --help
+```
+
+```shell
+$ cockroach node <subcommand> --help
+```
+
+## Flags
+
+All `node` subcommands support the following [general-use](#general) and [logging](#logging) flags.
+
+### General
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--format</code></td><td>How to display table rows printed to the standard output. Possible values: <code>tsv</code>, <code>csv</code>, <code>table</code>, <code>records</code>, <code>sql</code>, <code>html</code>.<br/><br/><strong>Default:</strong><code>tsv</code></td></tr></tbody></table>
+
+The `node ls` subcommand also supports the following general flags:
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--timeout</code></td><td>Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of <code>s</code> for seconds, <code>m</code> for minutes, and <code>h</code> for hours. If this flag is not set, the subcommand may hang.</td></tr></tbody></table>
+
+The `node status` subcommand also supports the following general flags:
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--all</code></td><td>Show all node details.</td></tr><tr><td><code>--decommission</code></td><td>Show node decommissioning details.</td></tr><tr><td><code>--ranges</code></td><td>Show node details for ranges and replicas.</td></tr><tr><td><code>--stats</code></td><td>Show node disk usage details.</td></tr><tr><td><code>--timeout</code></td><td>Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of <code>s</code> for seconds, <code>m</code> for minutes, and <code>h</code> for hours. If this flag is not set, the subcommand may hang.</td></tr></tbody></table>
+
+The `node decommission` subcommand also supports the following general flags. For more information, see `cockroach node decommission --help`.
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--checks</code></td><td><a></a> Whether to perform a set of "decommissioning pre-flight checks". Possible values: <code>enabled</code>, <code>strict</code>, or <code>skip</code>. If <code>enabled</code>, CockroachDB will check if a node can successfully complete decommissioning given the current state of the cluster. If errors are detected that would result in the inability to complete node decommissioning, they will be printed to <code>STDERR</code> and the command will exit <em>without attempting to perform node decommissioning</em>. For more information, see <a href="/docs/v24.3/node-shutdown?filters=decommission#remove-nodes">Remove nodes</a>.<br/><br/><strong>Default:</strong><code>enabled</code></td></tr><tr><td><code>--dry-run</code></td><td>Performs the same decommissioning checks as the <code>--checks</code> flag, but without attempting to decommission the node. When <code>cockroach node decommission &#123;nodeID&#125; --dry-run</code> is executed, it runs the checks, prints the status of those checks, and exits.</td></tr><tr><td><code>--wait</code></td><td>When to return to the client. Possible values: <code>all</code>, <code>none</code>.<br/><br/>If <code>all</code>, the command returns to the client only after all replicas on all specified nodes have been transferred to other nodes. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br/><br/>If <code>none</code>, the command does not wait for the decommissioning process to complete; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioning; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br/><br/><strong>Default:</strong><code>all</code></td></tr><tr><td><code>--self</code></td><td><strong>Deprecated.</strong> Instead, specify a node ID explicitly in addition to the <code>--host</code> flag.</td></tr></tbody></table>
+
+The `node drain` subcommand also supports the following general flags:
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--drain-wait</code></td><td>Amount of time to wait for the node to drain before returning to the client. If draining fails to complete within this duration, you must re-initiate the command to continue the drain. A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.<br/><br/>CockroachDB automatically increases the verbosity of logging when it detects a stall in the range lease transfer stage of <code>node drain</code>. Messages logged during such a stall include the time an attempt occurred, the total duration stalled waiting for the transfer attempt to complete, and the lease that is being transferred.<br/><br/><strong>Default:</strong><code>10m</code></td></tr><tr><td><code>--self</code></td><td>Applies the operation to the node against which the command was run (e.g., via <code>--host</code>).</td></tr><tr><td><code>--shutdown</code></td><td>After draining completes, the <code>cockroach</code> process shuts down automatically on the node.</td></tr></tbody></table>
+
+The `node recommission` subcommand also supports the following general flag:
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--self</code></td><td>Applies the operation to the node against which the command was run (e.g., via <code>--host</code>).</td></tr></tbody></table>
+
+### Client connection
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a></a><code>--url</code></td><td>A <a href="/docs/v24.3/connection-parameters#connect-using-a-url">connection URL</a> to use instead of the other arguments. To convert a connection URL to the syntax that works with your client driver, run <a href="/docs/v24.3/connection-parameters#convert-a-url-for-different-drivers"><code>cockroach convert-url</code></a>.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;URL</code><br/><strong>Default:</strong> no URL</td></tr><tr><td><code>--host</code></td><td>The server host and port number to connect to. This can be the address of any node in the cluster.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;HOST</code><br/><strong>Default:</strong><code>localhost:26257</code></td></tr><tr><td><code>--port</code><br/><br/><code>-p</code></td><td>The server port to connect to. Note: The port number can also be specified via <code>--host</code>.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;PORT</code><br/><strong>Default:</strong><code>26257</code></td></tr><tr><td><code>--user</code><br/><br/><code>-u</code></td><td>The <a href="/docs/v24.3/create-user">SQL user</a> that will own the client session.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;USER</code><br/><strong>Default:</strong><code>root</code></td></tr><tr><td><code>--insecure</code></td><td>Use an insecure connection.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;INSECURE</code><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--cert-principal-map</code></td><td>A comma-separated list of <code>&lt;cert-principal&gt;:&lt;db-principal&gt;</code> mappings. This allows mapping the principal in a cert to a DB principal such as <code>node</code> or <code>root</code> or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the <code>Subject.CommonName</code> or <code>SubjectAlternateName</code> fields in the certificate (e.g., disallowing a <code>CommonName</code> like <code>node</code> or <code>root</code>). If multiple mappings are provided for the same <code>&lt;cert-principal&gt;</code>, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A cert is allowed to authenticate a DB principal if the DB principal name is contained in the mapped <code>CommonName</code> or DNS-type <code>SubjectAlternateName</code> fields.</td></tr><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v24.3/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr></tbody></table>
+
+The `node decommission`, `node recommission`, and `node drain` subcommands also support the following client connection flags:
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--cluster-name</code></td><td>The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, you must include this flag. For more information, see <a href="/docs/v24.3/cockroach-start#general"><code>cockroach start</code></a>.</td></tr><tr><td><code>--disable-cluster-name-verification</code></td><td>Disables the cluster name check for this command. This flag must be paired with <code>--cluster-name</code>. For more information, see <a href="/docs/v24.3/cockroach-start#general"><code>cockroach start</code></a>.</td></tr></tbody></table>
+
+See [Client Connection Parameters](/docs/v24.3/connection-parameters) for more details.
+
+### Logging
+
+By default, this command logs messages to `stderr`. This includes events with `WARNING` [severity](/docs/v24.3/logging#logging-levels-severities) and higher.
+
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior](/docs/v24.3/configure-logs).
+
+## Response
+
+The `cockroach node` subcommands return the following fields for each node.
+
+### `node ls`
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td>The ID of the node.</td></tr></tbody></table>
+
+### `node status`
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td>The ID of the node.<br/><br/><strong>Required flag:</strong> None</td></tr><tr><td><code>address</code></td><td>The address of the node.<br/><br/><strong>Required flag:</strong> None</td></tr><tr><td><code>build</code></td><td>The version of CockroachDB running on the node. If the binary was built from source, this will be the SHA hash of the commit used.<br/><br/><strong>Required flag:</strong> None</td></tr><tr><td><code>locality</code></td><td>The <a href="/docs/v24.3/cockroach-start#locality">locality</a> information specified for the node.<br/><br/><strong>Required flag:</strong> None</td></tr><tr><td><code>updated&#95;at</code></td><td>The date and time when the node last recorded the information displayed in this command's output. When healthy, a new status should be recorded every 10 seconds or so, but when unhealthy this command's stats may be much older.<br/><br/><strong>Required flag:</strong> None</td></tr><tr><td><code>started&#95;at</code></td><td>The date and time when the node was started.<br/><br/><strong>Required flag:</strong> None</td></tr><tr><td><code>replicas&#95;leaders</code></td><td>The number of range replicas on the node that are the Raft leader for their range. See <code>replicas&#95;leaseholders</code> below for more details.<br/><br/><strong>Required flag:</strong><code>--ranges</code> or <code>--all</code></td></tr><tr><td><code>replicas&#95;leaseholders</code></td><td>The number of range replicas on the node that are the leaseholder for their range. A "leaseholder" replica handles all read requests for a range and directs write requests to the range's Raft leader (usually the same replica as the leaseholder).<br/><br/><strong>Required flag:</strong><code>--ranges</code> or <code>--all</code></td></tr><tr><td><code>ranges</code></td><td>The number of ranges that have replicas on the node.<br/><br/><strong>Required flag:</strong><code>--ranges</code> or <code>--all</code></td></tr><tr><td><code>ranges&#95;unavailable</code></td><td>The number of unavailable ranges that have replicas on the node.<br/><br/><strong>Required flag:</strong><code>--ranges</code> or <code>--all</code></td></tr><tr><td><code>ranges&#95;underreplicated</code></td><td>The number of underreplicated ranges that have replicas on the node.<br/><br/><strong>Required flag:</strong><code>--ranges</code> or <code>--all</code></td></tr><tr><td><code>live&#95;bytes</code></td><td>The amount of live data used by both applications and the CockroachDB system. This excludes historical and deleted data.<br/><br/><strong>Required flag:</strong><code>--stats</code> or <code>--all</code></td></tr><tr><td><code>key&#95;bytes</code></td><td>The amount of live and non-live data from keys in the key-value storage layer. This does not include data used by the CockroachDB system.<br/><br/><strong>Required flag:</strong><code>--stats</code> or <code>--all</code></td></tr><tr><td><code>value&#95;bytes</code></td><td>The amount of live and non-live data from values in the key-value storage layer. This does not include data used by the CockroachDB system.<br/><br/><strong>Required flag:</strong><code>--stats</code> or <code>--all</code></td></tr><tr><td><code>intent&#95;bytes</code></td><td>The amount of non-live data associated with uncommitted (or recently-committed) transactions.<br/><br/><strong>Required flag:</strong><code>--stats</code> or <code>--all</code></td></tr><tr><td><code>system&#95;bytes</code></td><td>The amount of data used just by the CockroachDB system.<br/><br/><strong>Required flag:</strong><code>--stats</code> or <code>--all</code></td></tr><tr><td><code>is&#95;available</code></td><td>If <code>true</code>, the node is currently available.<br/><br/><strong>Required flag:</strong> None</td></tr><tr><td><code>is&#95;live</code></td><td>If <code>true</code>, the node is currently live.<br/><br/>For unavailable clusters (with an unresponsive DB Console), running the <code>node status</code> command and monitoring the <code>is&#95;live</code> field is the only way to identify the live nodes in the cluster. However, you need to run the <code>node status</code> command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds.<br/><br/>See <a href="#identify-live-nodes-in-an-unavailable-cluster">Identify live nodes in an unavailable cluster</a> for more details.<br/><br/><strong>Required flag:</strong> None</td></tr><tr><td><code>gossiped&#95;replicas</code></td><td>The number of replicas on the node that are active members of a range. After the decommissioning process completes, this should be 0.<br/><br/><strong>Required flag:</strong><code>--decommission</code> or <code>--all</code></td></tr><tr><td><code>is&#95;decommissioning</code></td><td>If <code>true</code>, the node is either undergoing or has completed the <a href="/docs/v24.3/node-shutdown?filters=decommission#node-shutdown-sequence">decommissioning process</a>.<br/><br/><strong>Required flag:</strong><code>--decommission</code> or <code>--all</code></td></tr><tr><td><code>is&#95;draining</code></td><td>If <code>true</code>, the node is either undergoing or has completed the <a href="/docs/v24.3/node-shutdown#node-shutdown-sequence">draining process</a>.<br/><br/><strong>Required flag:</strong><code>--decommission</code> or <code>--all</code></td></tr></tbody></table>
+
+### `node decommission`
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td>The ID of the node.</td></tr><tr><td><code>is&#95;live</code></td><td>If <code>true</code>, the node is live.</td></tr><tr><td><code>replicas</code></td><td>The number of replicas on the node that are active members of a range. After the decommissioning process completes, this should be 0.</td></tr><tr><td><code>is&#95;decommissioning</code></td><td>If <code>true</code>, the node is either undergoing or has completed the <a href="/docs/v24.3/node-shutdown?filters=decommission#node-shutdown-sequence">decommissioning process</a>.</td></tr><tr><td><code>is&#95;draining</code></td><td>If <code>true</code>, the node is either undergoing or has completed the <a href="/docs/v24.3/node-shutdown#node-shutdown-sequence">draining process</a>.</td></tr></tbody></table>
+
+If the rebalancing stalls during decommissioning, replicas that have yet to move are printed to the [SQL shell](/docs/v24.3/cockroach-sql) and written to the [`OPS` logging channel](/docs/v24.3/logging-overview#logging-channels) with the message `possible decommission stall detected`. [By default](/docs/v24.3/configure-logs#default-logging-configuration), the `OPS` channel logs output to a `cockroach.log` file.
+
+### `node recommission`
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td>The ID of the node.</td></tr><tr><td><code>is&#95;live</code></td><td>If <code>true</code>, the node is live.</td></tr><tr><td><code>replicas</code></td><td>The number of replicas on the node that are active members of a range. After the decommissioning process completes, this should be 0.</td></tr><tr><td><code>is&#95;decommissioning</code></td><td>If <code>true</code>, the node is either undergoing or has completed the <a href="/docs/v24.3/node-shutdown?filters=decommission#node-shutdown-sequence">decommissioning process</a>.</td></tr><tr><td><code>is&#95;draining</code></td><td>If <code>true</code>, the node is either undergoing or has completed the <a href="/docs/v24.3/node-shutdown#node-shutdown-sequence">draining process</a>.</td></tr></tbody></table>
+
+## Examples
+
+### Setup
+
+To follow along with the examples, start [an insecure cluster](/docs/v24.3/start-a-local-cluster), with [localities](/docs/v24.3/cockroach-start#locality) defined.
+
+### List node IDs
+
+```shell
+$ cockroach node ls --insecure
+```
+
+```text
+  id
++----+
+   1
+   2
+   3
+(3 rows)
+```
+
+### Show the status of a single node
+
+```shell
+$ cockroach node status 1 --host=localhost:26257 --insecure
+```
+
+```text
+  id |     address     |   sql_address   |                  build                  |            started_at            |           updated_at            |      locality       | is_available | is_live
++----+-----------------+-----------------+-----------------------------------------+----------------------------------+---------------------------------+---------------------+--------------+---------+
+   1 | localhost:26257 | localhost:26257 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.308502+00:00 | 2019-10-01 20:05:43.85563+00:00 | region=us-east,az=1 | true         | true
+(1 row)
+```
+
+### Show the status of all nodes
+
+```shell
+$ cockroach node status --host=localhost:26257 --insecure
+```
+
+```text
+  id |     address     |   sql_address   |                  build                  |            started_at            |            updated_at            |        locality        | is_available | is_live
++----+-----------------+-----------------+-----------------------------------------+----------------------------------+----------------------------------+------------------------+--------------+---------+
+   1 | localhost:26257 | localhost:26257 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.308502+00:00 | 2019-10-01 20:06:15.356886+00:00 | region=us-east,az=1    | true         | true
+   2 | localhost:26258 | localhost:26258 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.551761+00:00 | 2019-10-01 20:06:15.583967+00:00 | region=us-central,az=2 | true         | true
+   3 | localhost:26259 | localhost:26259 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:55.178577+00:00 | 2019-10-01 20:06:16.204549+00:00 | region=us-west,az=3    | true         | true
+(3 rows)
+```
+
+### Identify live nodes in an unavailable cluster
+
+The `is_live` and `is_available` columns give you information about a node's current status:
+
+- `is_live`: The node is up and running
+- `is_available`: The node is part of the [quorum](/docs/v24.3/architecture/replication-layer#overview).
+
+Only nodes that are both `is_live: true` and `is_available: true` can participate in the cluster. If either are `false`, check the logs so you can troubleshoot the node(s) in question.
+
+For example, the following indicates a healthy cluster, where a majority of the nodes are up (`is_live: true`) and a quorum can be reached (`is_available: true` for live nodes):
+
+```shell
+$ cockroach node status --host=localhost:26257 --insecure
+```
+
+```text
+  id |     address     |   sql_address   |                  build                  |            started_at            |            updated_at            |        locality        | is_available | is_live
++----+-----------------+-----------------+-----------------------------------------+----------------------------------+----------------------------------+------------------------+--------------+---------+
+   1 | localhost:26257 | localhost:26257 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.308502+00:00 | 2019-10-01 20:07:04.857339+00:00 | region=us-east,az=1    | true         | true
+   2 | localhost:26258 | localhost:26258 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.551761+00:00 | 2019-10-01 20:06:48.555863+00:00 | region=us-central,az=2 | false        | false
+   3 | localhost:26259 | localhost:26259 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:55.178577+00:00 | 2019-10-01 20:07:01.207697+00:00 | region=us-west,az=3    | true         | true
+(3 rows)
+```
+
+The following indicates an unhealthy cluster, where a majority of nodes are down (`is_live: false`), and thereby quorum cannot be reached (`is_available: false` for all nodes):
+
+```shell
+$ cockroach node status --host=localhost:26257 --insecure
+```
+
+```text
+  id |     address     |   sql_address   |                  build                  |            started_at            |            updated_at            |        locality        | is_available | is_live
++----+-----------------+-----------------+-----------------------------------------+----------------------------------+----------------------------------+------------------------+--------------+---------+
+   1 | localhost:26257 | localhost:26257 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.308502+00:00 | 2019-10-01 20:07:37.464249+00:00 | region=us-east,az=1    | false        | true
+   2 | localhost:26258 | localhost:26258 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:54.551761+00:00 | 2019-10-01 20:07:37.464259+00:00 | region=us-central,az=2 | false        | false
+   3 | localhost:26259 | localhost:26259 | v19.2.0-alpha.20190606-2479-gd98e0839dc | 2019-10-01 20:04:55.178577+00:00 | 2019-10-01 20:07:37.464265+00:00 | region=us-west,az=3    | false        | false
+(3 rows)
+```
+
+<Note>
+You need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds.
+</Note>
+
+### Drain nodes
+
+See [Drain a node manually](/docs/v24.3/node-shutdown#drain-a-node-manually).
+
+### Decommission nodes
+
+See [Remove nodes](/docs/v24.3/node-shutdown?filters=decommission#remove-nodes).
+
+### Recommission nodes
+
+See [Recommission Nodes](/docs/v24.3/node-shutdown?filters=decommission#recommission-nodes).
+
+## See also
+
+- [`cockroach` Commands Overview](/docs/v24.3/cockroach-commands)
+- [Node Shutdown](/docs/v24.3/node-shutdown)

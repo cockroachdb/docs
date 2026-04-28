@@ -1,0 +1,92 @@
+export const ShowStatementHints = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="251" width="567" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="64" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">SHOW</text>
+<rect height="32" rx="10" width="100" x="115" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="100" x="113" y="1"></rect>
+<text class="terminal" x="123" y="21">STATEMENT</text>
+<rect height="32" rx="10" width="64" x="235" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="233" y="1"></rect>
+<text class="terminal" x="243" y="21">HINTS</text>
+<rect height="32" rx="10" width="48" x="319" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="317" y="1"></rect>
+<text class="terminal" x="327" y="21">FOR</text><a xlink:href="/docs/stable/sql-grammar#string_or_placeholder" xlink:title="string_or_placeholder">
+<rect height="32" width="158" x="387" y="3"></rect>
+<rect class="nonterminal" height="32" width="158" x="385" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="134" font-size="10" class="nonterminal" x="397" y="21">string_or_placeholder</text></a><rect height="32" rx="10" width="58" x="87" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="85" y="111"></rect>
+<text class="terminal" x="95" y="131">WITH</text>
+<rect height="32" rx="10" width="78" x="205" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="203" y="111"></rect>
+<text class="terminal" x="213" y="131">DETAILS</text>
+<rect height="32" rx="10" width="24" x="205" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="203" y="67"></rect>
+<text class="terminal" x="213" y="87">,</text>
+<rect height="32" rx="10" width="84" x="185" y="201"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="183" y="199"></rect>
+<text class="terminal" x="193" y="219">OPTIONS</text>
+<rect height="32" rx="10" width="26" x="289" y="201"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="287" y="199"></rect>
+<text class="terminal" x="297" y="219">(</text>
+<rect height="32" rx="10" width="78" x="355" y="201"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="353" y="199"></rect>
+<text class="terminal" x="363" y="219">DETAILS</text>
+<rect height="32" rx="10" width="24" x="355" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="353" y="155"></rect>
+<text class="terminal" x="363" y="175">,</text>
+<rect height="32" rx="10" width="26" x="473" y="201"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="471" y="199"></rect>
+<text class="terminal" x="481" y="219">)</text>
+<path class="line" d="m17 17 h2 m0 0 h10 m64 0 h10 m0 0 h10 m100 0 h10 m0 0 h10 m64 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m158 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-522 110 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m58 0 h10 m40 0 h10 m78 0 h10 m-118 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m98 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-98 0 h10 m24 0 h10 m0 0 h54 m20 44 h196 m-354 0 h20 m334 0 h20 m-374 0 q10 0 10 10 m354 0 q0 -10 10 -10 m-364 10 v68 m354 0 v-68 m-354 68 q0 10 10 10 m334 0 q10 0 10 -10 m-344 10 h10 m84 0 h10 m0 0 h10 m26 0 h10 m20 0 h10 m78 0 h10 m-118 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m98 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-98 0 h10 m24 0 h10 m0 0 h54 m20 44 h10 m26 0 h10 m-452 -88 h20 m452 0 h20 m-492 0 q10 0 10 10 m472 0 q0 -10 10 -10 m-482 10 v102 m472 0 v-102 m-472 102 q0 10 10 10 m452 0 q10 0 10 -10 m-462 10 h10 m0 0 h442 m23 -122 h-3"></path>
+<polygon points="557 127 565 123 565 131"></polygon>
+<polygon points="557 127 549 123 549 131"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,101 @@
+---
+title: "SHOW COLUMNS"
+old_description: "The SHOW COLUMNS statement shows details about columns in a table, including each column's name, type, default value, and whether or not it's nullable."
+---
+
+import { ShowColumns6 } from "/snippets/syntax-diagrams/ShowColumns6.jsx";
+
+The `SHOW COLUMNS` [statement](/docs/v25.4/sql-statements) shows details about columns in a table, including each column's name, type, default value, and whether or not it's nullable.
+
+## Required privileges
+
+The user must have any [privilege](/docs/v25.4/security-reference/authorization#managing-privileges) on the target table.
+
+## Synopsis
+
+<ShowColumns6 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table for which to show columns.</td></tr></tbody></table>
+
+## Response
+
+The following fields are returned for each column.
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>column&#95;name</code></td><td>The name of the column.</td></tr><tr><td><code>data&#95;type</code></td><td>The <a href="/docs/v25.4/data-types">data type</a> of the column.</td></tr><tr><td><code>is&#95;nullable</code></td><td>Whether or not the column accepts <code>NULL</code>. Possible values: <code>true</code> or <code>false</code>.</td></tr><tr><td><code>column&#95;default</code></td><td>The default value for the column, or an expression that evaluates to a default value.</td></tr><tr><td><code>generation&#95;expression</code></td><td>The expression used for a <a href="/docs/v25.4/computed-columns">computed column</a>.</td></tr><tr><td><code>indices</code></td><td>The list of <a href="/docs/v25.4/indexes">indexes</a> that the column is involved in, as an array.</td></tr><tr><td><code>is&#95;hidden</code></td><td>Whether or not the column is hidden. Possible values: <code>true</code> or <code>false</code>.</td></tr></tbody></table>
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v25.4/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v25.4/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Show columns in a table
+
+```sql
+> SHOW COLUMNS FROM users;
+```
+
+```text
+  column_name | data_type | is_nullable | column_default | generation_expression |         indices          | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+--------------------------+------------
+  id          | UUID      |    false    | NULL           |                       | {primary,users_name_idx} |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary,users_name_idx} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary,users_name_idx} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary}                |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary}                |   false
+(5 rows)
+```
+
+Alternatively, within the built-in SQL shell, you can use the `\d <table>` [shell command](/docs/v25.4/cockroach-sql#commands):
+
+```sql
+> \d users
+```
+
+```text
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
++-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
+  id          | UUID      |    false    | NULL           |                       | {primary,users_name_idx} |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary,users_name_idx} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary,users_name_idx} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary}                |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary}                |   false
+(5 rows)
+```
+
+### Show columns with comments
+
+You can use [`COMMENT ON`](/docs/v25.4/comment-on) to add comments on a column.
+
+```sql
+> COMMENT ON COLUMN users.credit_card IS 'This column contains user payment information.';
+```
+
+```sql
+> SHOW COLUMNS FROM users WITH COMMENT;
+```
+
+```text
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden |                    comment
++-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+------------------------------------------------+
+  id          | UUID      |    false    | NULL           |                       | {primary} |   false   | NULL
+  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false   | NULL
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | NULL
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | NULL
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | This column contains user payment information.
+
+(5 rows)
+```
+
+## See also
+
+- [`CREATE TABLE`](/docs/v25.4/create-table)
+- [Information Schema](/docs/v25.4/information-schema)
+- [SQL Statements](/docs/v25.4/sql-statements)
+- [`COMMENT ON`](/docs/v25.4/comment-on)

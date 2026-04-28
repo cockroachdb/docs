@@ -1,0 +1,81 @@
+---
+title: "SHOW LOGICAL REPLICATION JOBS"
+old_description: "The SHOW LOGICAL REPLICATION JOBS statement provides details on LDR jobs on the cluster."
+---
+
+<Note>
+**This feature is in [preview](/docs/v26.1/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+
+Logical data replication is only supported in CockroachDB self-hosted clusters.
+</Note>
+
+The `SHOW LOGICAL REPLICATION JOBS` statement shows details of [**logical data replication (LDR)**](/docs/v26.1/logical-data-replication-overview) jobs on a cluster.
+
+This page is a reference for the `SHOW LOGICAL REPLICATION JOBS` SQL statement, which includes information on its parameters and possible options. For more details on monitoring LDR, refer to the [Monitor Logical Data Replication](/docs/v26.1/logical-data-replication-monitoring) page.
+
+## Required privileges
+
+You must have one of the following to run `SHOW LOGICAL REPLICATION JOBS`:
+
+- The [`admin` role](/docs/v26.1/security-reference/authorization#admin-role).
+- The [`VIEWJOB` system privilege](/docs/v26.1/security-reference/authorization), which can view all jobs (including `admin` -owned jobs).
+
+Use the [`GRANT SYSTEM`](/docs/v26.1/grant) statement:
+
+```sql
+GRANT SYSTEM VIEWJOB TO user;
+```
+
+## Synopsis
+
+xml version="1.0" encoding="UTF-8"?
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/stable/show-logical-replication-jobs/syntax-diagram-6193a815c782.svg)
+</Frame>
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>show&#95;logical&#95;replication&#95;jobs&#95;options</code></td><td><a href="#options">Option</a> to modify the output.</td></tr></tbody></table>
+
+## Options
+
+<table><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td><code>details</code></td><td>Includes the additional columns: <code>replication&#95;start&#95;time</code>, <code>conflict&#95;resolution&#95;type</code>, <code>description</code>.</td></tr></tbody></table>
+
+## Responses
+
+<table><thead><tr><th>Field</th><th>Response</th></tr></thead><tbody><tr><td><code>job&#95;id</code></td><td>The job's ID. Use with <a href="/docs/v26.1/cancel-job"><code>CANCEL JOB</code></a>, <a href="/docs/v26.1/pause-job"><code>PAUSE JOB</code></a>, <a href="/docs/v26.1/resume-job"><code>RESUME JOB</code></a>, <a href="/docs/v26.1/show-jobs"><code>SHOW JOB</code></a>.</td></tr><tr><td><code>status</code></td><td>The job's current state. Possible values: <code>pending</code>, <code>paused</code>, <code>pause-requested</code>, <code>failed</code>, <code>succeeded</code>, <code>canceled</code>, <code>cancel-requested</code>, <code>running</code>, <code>retry-running</code>, <code>retry-reverting</code>, <code>reverting</code>, <code>revert-failed</code>.<br/><br/>Refer to <a href="/docs/v26.1/show-jobs#job-status">Jobs status</a> for a description of each status.</td></tr><tr><td><code>tables</code></td><td>The fully qualified name of the table(s) that are part of the LDR job.</td></tr><tr><td><code>replicated&#95;time</code></td><td>The latest <a href="/docs/v26.1/timestamp">timestamp</a> at which the destination cluster has consistent data. This time advances automatically as long as the LDR job proceeds without error. <code>replicated&#95;time</code> is updated periodically (every 30s).</td></tr><tr><td><code>replication&#95;start&#95;time</code></td><td>The start time of the LDR job.</td></tr><tr><td><code>conflict&#95;resolution&#95;type</code></td><td>The type of <a href="/docs/v26.1/manage-logical-data-replication#conflict-resolution">conflict resolution</a>: <code>LWW</code> last write wins.</td></tr><tr><td><code>command</code></td><td>Description of the job including the replicating table(s) and the cluster connections.</td></tr></tbody></table>
+
+## Example
+
+In the destination cluster's SQL shell, you can query `SHOW LOGICAL REPLICATION JOBS` to view the LDR jobs running on the cluster:
+
+```sql
+SHOW LOGICAL REPLICATION JOBS;
+```
+
+```text
+        job_id        | status  |          tables          |    replicated_time
+----------------------+---------+--------------------------+-------------------------
+  1131000153784844289 | running | {db_b.public.test_table} | 2025-12-09 19:33:20+00
+  1131000167682211841 | running | {db_a.public.test_table} | 2025-12-09 19:33:20+00
+(2 rows)
+```
+
+For additional detail on each LDR job, use the `WITH details` option:
+
+```sql
+SHOW LOGICAL REPLICATION JOBS WITH details;
+```
+
+```text
+        job_id        | status  |          tables          |    replicated_time     |    replication_start_time     | conflict_resolution_type |                                                                             command
+----------------------+---------+--------------------------+------------------------+-------------------------------+--------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  1131000153784844289 | running | {db_b.public.test_table} | 2025-12-09 19:35:50+00 | 2025-12-08 20:04:15.512126+00 | LWW                      | CREATE LOGICALLY REPLICATED TABLE test_table FROM TABLE test_table ON 'external://conn_a' WITH OPTIONS (BIDIRECTIONAL ON 'external://conn_b')
+  1131000167682211841 | running | {db_a.public.test_table} | 2025-12-09 19:35:50+00 | 2025-12-08 20:04:19.758587+00 | LWW                      | CREATE LOGICAL REPLICATION STREAM FROM TABLE test_table ON 'external://conn_b' INTO TABLE test_table WITH OPTIONS (CURSOR = $1, PARENT = '1131000153784844289')
+```
+
+## See also
+
+- [`CREATE LOGICAL REPLICATION STREAM`](/docs/v26.1/create-logical-replication-stream)
+- [Set Up Logical Data Replication](/docs/v26.1/set-up-logical-data-replication)

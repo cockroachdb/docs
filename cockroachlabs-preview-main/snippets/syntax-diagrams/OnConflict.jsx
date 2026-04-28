@@ -1,0 +1,101 @@
+export const OnConflict = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="191" width="1011" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="40" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">ON</text>
+<rect height="32" rx="10" width="90" x="93" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="90" x="91" y="1"></rect>
+<text class="terminal" x="101" y="21">CONFLICT</text>
+<rect height="32" rx="10" width="40" x="45" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="43" y="67"></rect>
+<text class="terminal" x="53" y="87">DO</text>
+<rect height="32" rx="10" width="86" x="105" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="86" x="103" y="67"></rect>
+<text class="terminal" x="113" y="87">NOTHING</text>
+<rect height="32" rx="10" width="26" x="65" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="63" y="111"></rect>
+<text class="terminal" x="73" y="131">(</text><a xlink:href="#name_list" xlink:title="name_list">
+<rect height="32" width="82" x="111" y="113"></rect>
+<rect class="nonterminal" height="32" width="82" x="109" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="121" y="131">name_list</text></a><rect height="32" rx="10" width="26" x="213" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="211" y="111"></rect>
+<text class="terminal" x="221" y="131">)</text><a xlink:href="#opt_where_clause" xlink:title="opt_where_clause">
+<rect height="32" width="136" x="259" y="113"></rect>
+<rect class="nonterminal" height="32" width="136" x="257" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="112" font-size="11" class="nonterminal" x="269" y="131">opt_where_clause</text></a><rect height="32" rx="10" width="40" x="65" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="63" y="155"></rect>
+<text class="terminal" x="73" y="175">ON</text>
+<rect height="32" rx="10" width="110" x="125" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="110" x="123" y="155"></rect>
+<text class="terminal" x="133" y="175">CONSTRAINT</text><a xlink:href="#constraint_name" xlink:title="constraint_name">
+<rect height="32" width="126" x="255" y="157"></rect>
+<rect class="nonterminal" height="32" width="126" x="253" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="102" font-size="10" class="nonterminal" x="265" y="175">constraint_name</text></a><rect height="32" rx="10" width="40" x="435" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="433" y="111"></rect>
+<text class="terminal" x="443" y="131">DO</text>
+<rect height="32" rx="10" width="86" x="515" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="86" x="513" y="111"></rect>
+<text class="terminal" x="523" y="131">NOTHING</text>
+<rect height="32" rx="10" width="74" x="515" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="513" y="155"></rect>
+<text class="terminal" x="523" y="175">UPDATE</text>
+<rect height="32" rx="10" width="44" x="609" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="607" y="155"></rect>
+<text class="terminal" x="617" y="175">SET</text><a xlink:href="#set_clause_list" xlink:title="set_clause_list">
+<rect height="32" width="114" x="673" y="157"></rect>
+<rect class="nonterminal" height="32" width="114" x="671" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="90" font-size="10" class="nonterminal" x="683" y="175">set_clause_list</text></a><a xlink:href="#opt_where_clause" xlink:title="opt_where_clause">
+<rect height="32" width="136" x="807" y="157"></rect>
+<rect class="nonterminal" height="32" width="136" x="805" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="112" font-size="11" class="nonterminal" x="817" y="175">opt_where_clause</text></a><path class="line" d="m19 17 h2 m0 0 h10 m40 0 h10 m0 0 h10 m90 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-202 66 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m40 0 h10 m0 0 h10 m86 0 h10 m0 0 h772 m-958 0 h20 m938 0 h20 m-978 0 q10 0 10 10 m958 0 q0 -10 10 -10 m-968 10 v24 m958 0 v-24 m-958 24 q0 10 10 10 m938 0 q10 0 10 -10 m-928 10 h10 m26 0 h10 m0 0 h10 m82 0 h10 m0 0 h10 m26 0 h10 m0 0 h10 m136 0 h10 m-370 0 h20 m350 0 h20 m-390 0 q10 0 10 10 m370 0 q0 -10 10 -10 m-380 10 v24 m370 0 v-24 m-370 24 q0 10 10 10 m350 0 q10 0 10 -10 m-360 10 h10 m40 0 h10 m0 0 h10 m110 0 h10 m0 0 h10 m126 0 h10 m0 0 h14 m20 -44 h10 m40 0 h10 m20 0 h10 m86 0 h10 m0 0 h342 m-468 0 h20 m448 0 h20 m-488 0 q10 0 10 10 m468 0 q0 -10 10 -10 m-478 10 v24 m468 0 v-24 m-468 24 q0 10 10 10 m448 0 q10 0 10 -10 m-458 10 h10 m74 0 h10 m0 0 h10 m44 0 h10 m0 0 h10 m114 0 h10 m0 0 h10 m136 0 h10 m43 -88 h-3"></path>
+<polygon points="1001 83 1009 79 1009 87"></polygon>
+<polygon points="1001 83 993 79 993 87"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

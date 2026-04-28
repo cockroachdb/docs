@@ -1,0 +1,281 @@
+---
+title: "CREATE SCHEMA"
+old_description: "The CREATE SCHEMA statement creates a new user-defined schema."
+---
+
+import { CreateSchema5 } from "/snippets/syntax-diagrams/CreateSchema5.jsx";
+
+The `CREATE SCHEMA` [statement](/docs/v25.2/sql-statements) creates a user-defined [schema](/docs/v25.2/sql-name-resolution#naming-hierarchy).
+
+<Note>
+The `CREATE SCHEMA` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.2/online-schema-changes).
+</Note>
+
+## Required privileges
+
+- Only members of the `admin` role can create new schemas. By default, the `root` user belongs to the `admin` role.
+- To [grant privileges](/docs/v25.2/grant) on a user-defined schema, a user must have the `GRANT` privilege on the schema and the privilege that they want to grant.
+- To create or interact with objects that depend on a user-defined schema, a user must have the `USAGE` privilege on the schema.
+
+## Syntax
+
+<CreateSchema5 />
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF NOT EXISTS</code></td><td>Create a new schema only if a schema of the same name does not already exist within the database. If one does exist, do not return an error.</td></tr><tr><td><code>name</code><br/><code>name.name</code></td><td>The name of the schema to create, or the name of the database in which to create the schema and the schema name, separated by a "<code>.</code>". The schema name must be unique within its database and follow these <a href="/docs/v25.2/keywords-and-identifiers#identifiers">identifier rules</a>.</td></tr><tr><td><code>AUTHORIZATION role&#95;spec</code></td><td>Optionally identify a user (<code>role&#95;spec</code>) to be the owner of the schema.<br/><br/>If a <code>CREATE SCHEMA</code> statement has an <code>AUTHORIZATION</code> clause, but no schema name is specified, the schema will be named after the specified owner of the schema. If a <code>CREATE SCHEMA</code> statement does not have an <code>AUTHORIZATION</code> clause, the user executing the statement will be named the owner.</td></tr></tbody></table>
+
+## Example
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v25.2/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v25.2/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Create a schema
+
+```sql
+> CREATE SCHEMA org_one;
+```
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
+```
+
+By default, the user executing the `CREATE SCHEMA` statement is the owner of the schema. For example, suppose you created the schema as user `root`. `root` would be the owner of the schema.
+
+### Create a schema if one does not exist
+
+```sql
+> CREATE SCHEMA org_one;
+```
+
+```text
+ERROR: schema "org_one" already exists
+```
+
+```sql
+> CREATE SCHEMA IF NOT EXISTS org_one;
+```
+
+SQL does not generate an error, even though a new schema wasn't created.
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
+```
+
+### Create two tables of the same name in different schemas
+
+You can create tables of the same name in the same database if they are in separate schemas.
+
+```sql
+> CREATE SCHEMA IF NOT EXISTS org_one;
+```
+
+```sql
+> CREATE SCHEMA IF NOT EXISTS org_two;
+```
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  org_two
+  pg_catalog
+  pg_extension
+  public
+(7 rows)
+```
+
+```sql
+> CREATE TABLE org_one.employees (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name STRING,
+        desk_no INT UNIQUE
+);
+```
+
+```sql
+> CREATE TABLE org_two.employees (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name STRING,
+        desk_no INT UNIQUE
+);
+```
+
+```sql
+> WITH x as (SHOW TABLES) SELECT * x WHERE table_name='employees';
+```
+
+```text
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  org_one     | employees  | table |                   0
+  org_two     | employees  | table |                   0
+(2 rows)
+```
+
+### Create a schema with authorization
+
+To specify the owner of a schema, add an `AUTHORIZATION` clause to the `CREATE SCHEMA` statement:
+
+```sql
+> CREATE USER max WITH PASSWORD 'roach';
+```
+
+```sql
+> CREATE SCHEMA org_two AUTHORIZATION max;
+```
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_two
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
+```
+
+If no schema name is specified in a `CREATE SCHEMA` statement with an `AUTHORIZATION` clause, the schema will be named after the user specified:
+
+```sql
+> CREATE SCHEMA AUTHORIZATION max;
+```
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  max
+  org_two
+  pg_catalog
+  pg_extension
+  public
+(7 rows)
+```
+
+When you [use a table without specifying a schema](/docs/v25.2/sql-name-resolution#search-path), CockroachDB looks for the table in the `$user` schema (i.e., a schema named after the current user). If no schema exists with the name of the current user, the `public` schema is used.
+
+For example, suppose that you [grant the `root` role](/docs/v25.2/grant) (i.e., the role of the current user `root`) to the `max` user:
+
+```sql
+> GRANT root TO max;
+```
+
+Then, `max` [accesses the cluster](/docs/v25.2/cockroach-sql) and creates two tables of the same name, in the same database, one in the `max` schema, and one in the `public` schema:
+
+```shell
+$ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
+```
+
+```sql
+> CREATE TABLE max.accounts (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name STRING,
+        balance DECIMAL
+);
+```
+
+```sql
+> CREATE TABLE public.accounts (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name STRING,
+        balance DECIMAL
+);
+```
+
+```sql
+> SHOW TABLES;
+```
+
+```text
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  max         | accounts   | table |                   0
+  public      | accounts   | table |                   0
+(2 rows)
+```
+
+`max` then inserts some values into the `accounts` table, without specifying a schema:
+
+```sql
+> INSERT INTO accounts (name, balance) VALUES ('checking', 1000), ('savings', 15000);
+```
+
+```sql
+> SELECT * FROM accounts;
+```
+
+```text
+                   id                  |   name   | balance
+---------------------------------------+----------+----------
+  7610607e-4928-44fb-9f4e-7ae6d6520666 | savings  |   15000
+  860b7891-cde4-4aff-a318-f928d47374bc | checking |    1000
+(2 rows)
+```
+
+Because `max` is the current user, all unqualified `accounts` table names resolve as `max.accounts`, and not `public.accounts`.
+
+```sql
+> SELECT * FROM public.accounts;
+```
+
+```text
+  id | name | balance
+-----+------+----------
+(0 rows)
+```
+
+## See also
+
+- [`SHOW SCHEMAS`](/docs/v25.2/show-schemas)
+- [`SET SCHEMA`](/docs/v25.2/alter-table#set-schema)
+- [`DROP SCHEMA`](/docs/v25.2/drop-schema)
+- [`ALTER SCHEMA`](/docs/v25.2/alter-schema)
+- [SQL Statements](/docs/v25.2/sql-statements)
+- [Online Schema Changes](/docs/v25.2/online-schema-changes)

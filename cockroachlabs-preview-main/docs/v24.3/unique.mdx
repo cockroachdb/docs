@@ -1,0 +1,121 @@
+---
+title: "Unique Constraint"
+old_description: "The UNIQUE constraint specifies that each non-NULL value in the constrained column must be unique."
+---
+
+import { Unique7 } from "/snippets/syntax-diagrams/Unique7.jsx";
+import { Unique8 } from "/snippets/syntax-diagrams/Unique8.jsx";
+
+The `UNIQUE` [constraint](/docs/v24.3/constraints) specifies that each non-`NULL` value in the constrained column must be unique.
+
+## Details
+
+- You can insert `NULL` values into columns with the `UNIQUE` constraint because `NULL` is the absence of a value, so it is never equal to other `NULL` values and not considered a duplicate value. This means that it's possible to insert rows that appear to be duplicates if one of the values is `NULL`.
+
+    If you need to strictly enforce uniqueness, use the [`NOT NULL` constraint](/docs/v24.3/not-null) in addition to the `UNIQUE` constraint. You can also achieve the same behavior through the table's [Primary Key](/docs/v24.3/primary-key).
+- Columns with the `UNIQUE` constraint automatically have an [index](/docs/v24.3/indexes) created with the name `<table name>_<columns>_key`. To avoid having two identical indexes, you should not create indexes that exactly match the `UNIQUE` constraint's columns and order.
+
+    The `UNIQUE` constraint depends on the automatically created index, so dropping the index also drops the `UNIQUE` constraint. Conversely, [dropping the `UNIQUE` constraint](/docs/v24.3/alter-table#drop-constraint) also drops the automatically created index.
+- When using the `UNIQUE` constraint on multiple columns, the collective values of the columns must be unique. This *does not* mean that each value in each column must be unique, as if you had applied the `UNIQUE` constraint to each column individually.
+- You can define the `UNIQUE` constraint when you [create a table](#syntax), or you can add it to an existing table through [`ADD CONSTRAINT`](/docs/v24.3/alter-table#add-the-unique-constraint).
+
+In [multi-region deployments](/docs/v24.3/multiregion-overview), most users should use [`REGIONAL BY ROW` tables](/docs/v24.3/table-localities#regional-by-row-tables) instead of explicit index [partitioning](/docs/v24.3/partitioning). When you add an index to a `REGIONAL BY ROW` table, it is automatically partitioned on the [`crdb_region` column](/docs/v24.3/alter-table#crdb_region). Explicit index partitioning is not required.
+
+While CockroachDB process an [`ADD REGION`](/docs/v24.3/alter-database#add-region) or [`DROP REGION`](/docs/v24.3/alter-database#drop-region) statement on a particular database, creating or modifying an index will throw an error. Similarly, all [`ADD REGION`](/docs/v24.3/alter-database#add-region) and [`DROP REGION`](/docs/v24.3/alter-database#drop-region) statements will be blocked while an index is being modified on a `REGIONAL BY ROW` table within the same database.
+
+For an example that uses unique indexes, see [Add a unique index to a `REGIONAL BY ROW` table](/docs/v24.3/alter-table#add-a-unique-index-to-a-regional-by-row-table).
+
+## Syntax
+
+You can define `UNIQUE` constraints at the [table level](#table-level) and at the [column level](#column-level).
+
+### Table level
+
+<Unique7 />
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table you are creating.</td></tr><tr><td><code>column&#95;def</code></td><td>Definitions for any other columns in the table.</td></tr><tr><td><code>name</code></td><td>The name you want to use for the constraint, which must be unique to its table and follow these <a href="/docs/v24.3/keywords-and-identifiers#identifiers">identifier rules</a>.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the column you want to constrain.</td></tr><tr><td><code>table&#95;constraints</code></td><td>Any other table-level <a href="/docs/v24.3/constraints">constraints</a> you want to apply.</td></tr></tbody></table>
+
+**Example**
+
+```sql
+> CREATE TABLE logon (
+    login_id  INT PRIMARY KEY,
+    customer_id   INT,
+    logon_date    TIMESTAMP,
+    UNIQUE (customer_id, logon_date)
+  );
+```
+
+### Column level
+
+<Unique8 />
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table you are creating.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the constrained column.</td></tr><tr><td><code>column&#95;type</code></td><td>The constrained column's <a href="/docs/v24.3/data-types">data type</a>.</td></tr><tr><td><code>column&#95;constraints</code></td><td>Any other column-level <a href="/docs/v24.3/constraints">constraints</a> you want to apply to this column.</td></tr><tr><td><code>column&#95;def</code></td><td>Definitions for any other columns in the table.</td></tr><tr><td><code>table&#95;constraints</code></td><td>Any table-level <a href="/docs/v24.3/constraints">constraints</a> you want to apply.</td></tr></tbody></table>
+
+**Example**
+
+```sql
+> CREATE TABLE warehouses (
+    warehouse_id    INT        PRIMARY KEY NOT NULL,
+    warehouse_name  STRING(35) UNIQUE,
+    location_id     INT
+  );
+```
+
+## Usage example
+
+```sql
+> CREATE TABLE IF NOT EXISTS logon (
+    login_id INT PRIMARY KEY,
+    customer_id   INT NOT NULL,
+    sales_id INT,
+    UNIQUE (customer_id, sales_id)
+  );
+```
+
+```sql
+> INSERT INTO logon (login_id, customer_id, sales_id) VALUES (1, 2, 1);
+```
+
+```sql
+> INSERT INTO logon (login_id, customer_id, sales_id) VALUES (2, 2, 1);
+```
+
+```text
+duplicate key value (customer_id,sales_id)=(2,1) violates unique constraint "logon_customer_id_sales_id_key"
+```
+
+As mentioned in the [details](#details) above, it is possible when using the `UNIQUE` constraint alone to insert `NULL` values in a way that causes rows to appear to have rows with duplicate values.
+
+```sql
+> INSERT INTO logon (login_id, customer_id, sales_id) VALUES (3, 2, NULL);
+```
+
+```sql
+> INSERT INTO logon (login_id, customer_id, sales_id) VALUES (4, 2, NULL);
+```
+
+```sql
+> SELECT customer_id, sales_id FROM logon;
+```
+
+```text
++-------------+----------+
+| customer_id | sales_id |
++-------------+----------+
+|           2 |        1 |
+|           2 | NULL     |
+|           2 | NULL     |
++-------------+----------+
+```
+
+## See also
+
+- [Constraints](/docs/v24.3/constraints)
+- [`DROP CONSTRAINT`](/docs/v24.3/alter-table#drop-constraint)
+- [`CHECK` constraint](/docs/v24.3/check)
+- [`DEFAULT` value constraint](/docs/v24.3/default-value)
+- [Foreign key constraint](/docs/v24.3/foreign-key)
+- [`NOT NULL` constraint](/docs/v24.3/not-null)
+- [`PRIMARY` key constraint](/docs/v24.3/primary-key)
+- [`SHOW CONSTRAINTS`](/docs/v24.3/show-constraints)

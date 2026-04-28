@@ -1,0 +1,56 @@
+export const WhenClauseList = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="53" width="201" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 33 1 29 1 37"></polygon>
+<polygon points="17 33 9 29 9 37"></polygon><a xlink:href="#when_clause" xlink:title="when_clause">
+<rect height="32" width="102" x="51" y="19"></rect>
+<rect class="nonterminal" height="32" width="102" x="49" y="17"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="78" font-size="11" class="nonterminal" x="61" y="37">when_clause</text></a><path class="line" d="m17 33 h2 m20 0 h10 m102 0 h10 m-142 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -12 q0 -10 10 -10 m122 32 l20 0 m-20 0 q10 0 10 -10 l0 -12 q0 -10 -10 -10 m-122 0 h10 m0 0 h112 m23 32 h-3"></path>
+<polygon points="191 33 199 29 199 37"></polygon>
+<polygon points="191 33 183 29 183 37"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

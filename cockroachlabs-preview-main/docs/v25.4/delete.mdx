@@ -1,0 +1,469 @@
+---
+title: "DELETE"
+old_description: "The DELETE statement deletes one or more rows from a table."
+---
+
+import { Delete6 } from "/snippets/syntax-diagrams/Delete6.jsx";
+
+The `DELETE` [statement](/docs/v25.4/sql-statements) deletes rows from a table.
+
+<Warning>
+  If you delete a row that is referenced by a [foreign key constraint](/docs/v25.4/foreign-key) and has an [`ON DELETE`
+  action](/docs/v25.4/foreign-key#foreign-key-actions), all of the dependent rows will also be deleted or updated.
+</Warning>
+
+<Note>To delete columns, see [`ALTER TABLE... DROP COLUMN`](/docs/v25.4/alter-table#drop-column).</Note>
+
+## Required privileges
+
+The user must have the `DELETE` and `SELECT` [privileges](/docs/v25.4/security-reference/authorization#managing-privileges) on the table.
+
+## Synopsis
+
+<Delete6 />
+
+## Parameters
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>common&#95;table&#95;expr</code>
+      </td>
+      <td>
+        See <a href="/docs/v25.4/common-table-expressions">Common Table Expressions</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>table&#95;name</code>
+      </td>
+      <td>The name of the table that contains the rows you want to update.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>AS table&#95;alias&#95;name</code>
+      </td>
+      <td>An alias for the table name. When an alias is provided, it completely hides the actual table name.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>USING table&#95;ref</code>
+      </td>
+      <td>
+        Delete rows based on a table <a href="/docs/v25.4/joins">join</a>, where <code>table&#95;ref</code> specifies
+        another table or tables to reference.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>WHERE a&#95;expr</code>
+      </td>
+      <td>
+        <code>a&#95;expr</code> must be an expression that returns Boolean values using columns (e.g.,{" "}
+        <code>&lt;column&gt; = &lt;value&gt;</code>). Delete rows that return <code>TRUE</code>.<br />
+        <br />
+        &#95;&#95;Without a <code>WHERE</code> clause in your statement, <code>DELETE</code> removes all rows from the
+        table. To delete all rows in a table, we recommend using{" "}
+        <a href="/docs/v25.4/truncate">
+          <code>TRUNCATE</code>
+        </a>{" "}
+        instead of <code>DELETE</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>sort&#95;clause</code>
+      </td>
+      <td>
+        An <code>ORDER BY</code> clause.
+        <br />
+        <br />
+        See <a href="/docs/v25.4/order-by#ordering-rows-in-dml-statements">Ordering of rows in DML statements</a> for
+        more details.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>limit&#95;clause</code>
+      </td>
+      <td>
+        A <code>LIMIT</code> clause. See <a href="/docs/v25.4/limit-offset">Limit Query Results</a> for more details.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>RETURNING target&#95;list</code>
+      </td>
+      <td>
+        Return values based on rows deleted, where <code>target&#95;list</code> can be specific column names from the
+        table, <code>&#42;</code> for all columns, or computations using{" "}
+        <a href="/docs/v25.4/scalar-expressions">scalar expressions</a>.<br />
+        <br />
+        To return nothing in the response, not even the number of rows updated, use <code>RETURNING NOTHING</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>ONLY ... &#42;</code>
+      </td>
+      <td>
+        Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB
+        does not currently support table inheritance.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Success responses
+
+Successful `DELETE` statements return one of the following:
+
+<table>
+  <thead>
+    <tr>
+      <th>Response</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>DELETE</code>
+        <em>
+          <code>int</code>
+        </em>
+      </td>
+      <td>
+        <em>int</em> rows were deleted.
+        <br />
+        <br />
+        <code>DELETE</code> statements that do not delete any rows respond with <code>DELETE 0</code>. When{" "}
+        <code>RETURNING NOTHING</code> is used, this information is not included in the response.
+      </td>
+    </tr>
+    <tr>
+      <td>Retrieved table</td>
+      <td>
+        Including the <code>RETURNING</code> clause retrieves the deleted rows, using the columns identified by the
+        clause's parameters.
+        <br />
+        <br />
+        <a href="#return-deleted-rows">See an example.</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Disk space usage after deletes
+
+Deleting a row does not immediately free up the disk space. This is due to the fact that CockroachDB retains [the ability to query tables historically](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future).
+
+If disk usage is a concern, the solution is to [reduce the time-to-live](/docs/v25.4/configure-replication-zones) (TTL) for the zone by setting `gc.ttlseconds` to a lower value, which will cause garbage collection to clean up deleted objects (rows, tables) more frequently.
+
+For instructions on how to free up disk space as quickly as possible after dropping a table, see [How can I free up disk space that was used by a dropped table?](/docs/v25.4/operational-faqs#how-can-i-free-up-disk-space-when-dropping-a-table)
+
+## Select performance on deleted rows
+
+Queries that scan across tables that have lots of deleted rows will have to scan over deletions that have not yet been garbage collected. Certain database usage patterns that frequently scan over and delete lots of rows will want to reduce the [time-to-live](/docs/v25.4/configure-replication-zones) values to clean up deleted rows more frequently.
+
+## Sorting the output of deletes
+
+To sort the output of a `DELETE` statement, use:
+
+```sql
+> WITH a AS (DELETE ... RETURNING ...)
+  SELECT ... FROM a ORDER BY ...
+```
+
+For an example, see [Sort and return deleted rows](/docs/v25.4/delete#sort-and-return-deleted-rows).
+
+For more information about ordering query results in general, see [Ordering Query Results](/docs/v25.4/order-by) and [Ordering of rows in DML statements](/docs/v25.4/order-by#ordering-rows-in-dml-statements).
+
+## Force index selection for deletes
+
+By using the explicit index annotation (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2) and use a specific [index](/docs/v25.4/indexes) for deleting rows of a named table.
+
+<Note>
+  Index selection can impact [performance](/docs/v25.4/performance-best-practices-overview), but does not change the
+  result of a query.
+</Note>
+
+The syntax to force a specific index for a delete is:
+
+```sql
+DELETE FROM table@my_idx;
+```
+
+This is equivalent to the longer expression:
+
+```sql
+DELETE FROM table@{FORCE_INDEX=my_idx};
+```
+
+To view how the index hint modifies the query plan that CockroachDB follows for deleting rows, use an [`EXPLAIN`](/docs/v25.4/explain#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](/docs/v25.4/show-index).
+
+For examples, see [Delete with index hints](#delete-with-index-hints).
+
+You can use the `@primary` alias to use the table's primary key in your query if no secondary index explicitly named `primary` exists on that table.
+
+### Preserving `DELETE` performance over time
+
+CockroachDB relies on [multi-version concurrency control (MVCC)](/docs/v25.4/architecture/storage-layer#mvcc) to process concurrent requests while guaranteeing [strong consistency](/docs/v25.4/frequently-asked-questions#how-is-cockroachdb-strongly-consistent). As such, when you delete a row, it is not immediately removed from disk. The MVCC values for the row will remain until the garbage collection period defined by the [`gc.ttlseconds`](/docs/v25.4/configure-replication-zones#gc-ttlseconds) variable in the applicable [zone configuration](/docs/v25.4/show-zone-configurations) has passed.
+
+This means that with the default settings, each iteration of your `DELETE` statement must scan over all of the rows previously marked for deletion within [the defined GC TTL window](/docs/v25.4/configure-replication-zones#gc-ttlseconds). If you try to delete 10,000 rows 10 times within the GC TTL window, the 10th command will have to scan over the 90,000 rows previously marked for deletion.
+
+To preserve performance over iterative `DELETE` queries, we recommend taking one of the following approaches:
+
+- At each iteration, update the `WHERE` clause to filter only the rows that have not yet been marked for deletion. For an example, see [Batch-delete on an indexed filter](/docs/v25.4/bulk-delete-data).
+- At each iteration, first use a `SELECT` statement to return primary key values on rows that are not yet deleted. Rows marked for deletion will not be returned. Then, use a nested `DELETE` loop over a smaller batch size, filtering on the primary key values. For an example, see [Batch delete on a non-indexed column](/docs/v25.4/bulk-delete-data).
+- To iteratively delete rows in constant time, using a simple `DELETE` loop, you can [alter your zone configuration](/docs/v25.4/configure-replication-zones#overview) and change `gc.ttlseconds` to a low value like 5 minutes (i.e., `300` ), and then run your `DELETE` statement once per GC interval.
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v25.4/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v25.4/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Delete rows using Primary Key/unique columns
+
+Using columns with the [Primary Key](/docs/v25.4/primary-key) or [Unique](/docs/v25.4/unique) constraints to delete rows ensures your statement is unambiguous—no two rows contain the same column value, so it's less likely to delete data unintentionally.
+
+In this example, `code` is our primary key and we want to delete the row where the code equals "about_stuff_city". Because we're positive no other rows have that value in the `code` column, there's no risk of accidentally removing another row.
+
+```sql
+DELETE FROM promo_codes WHERE code = 'about_stuff_city';
+```
+
+```text
+DELETE 1
+```
+
+### Delete rows using non-unique columns
+
+Deleting rows using non-unique columns removes _every_ row that returns `TRUE` for the `WHERE` clause's `a_expr`. This can easily result in deleting data you didn't intend to.
+
+```sql
+DELETE FROM promo_codes WHERE creation_time > '2019-01-30 00:00:00+00:00';
+```
+
+```text
+DELETE 4
+```
+
+The example statement deleted four rows, which might be unexpected.
+
+### Delete rows using a table join
+
+You can delete rows based on a table [join](/docs/v25.4/joins). Use the `USING` clause to specify another table.
+
+The following example deletes all codes from `promo_codes` that are present in `user_promo_codes`:
+
+```sql
+DELETE FROM promo_codes USING user_promo_codes WHERE user_promo_codes.code = promo_codes.code;
+```
+
+```text
+DELETE 5
+```
+
+### Return deleted rows
+
+To see which rows your statement deleted, include the `RETURNING` clause to retrieve them using the columns you specify.
+
+#### Use all columns
+
+By specifying `*`, you retrieve all columns of the delete rows.
+
+#### Use specific columns
+
+To retrieve specific columns, name them in the `RETURNING` clause.
+
+```sql
+DELETE FROM promo_codes WHERE creation_time > '2019-01-29 00:00:00+00:00' RETURNING code, rules;
+```
+
+```text
+           code          |                    rules
++------------------------+----------------------------------------------+
+  box_investment_stuff   | {"type": "percent_discount", "value": "10%"}
+  energy_newspaper_field | {"type": "percent_discount", "value": "10%"}
+  simple_guy_theory      | {"type": "percent_discount", "value": "10%"}
+  study_piece_war        | {"type": "percent_discount", "value": "10%"}
+  tv_this_list           | {"type": "percent_discount", "value": "10%"}
+(5 rows)
+```
+
+#### Change column labels
+
+When `RETURNING` specific columns, you can change their labels using `AS`.
+
+```sql
+DELETE FROM promo_codes WHERE creation_time > '2019-01-28 00:00:00+00:00' RETURNING code, rules AS discount;
+```
+
+```text
+         code         |                   discount
++---------------------+----------------------------------------------+
+  chair_company_state | {"type": "percent_discount", "value": "10%"}
+  view_reveal_radio   | {"type": "percent_discount", "value": "10%"}
+(2 rows)
+```
+
+#### Sort and return deleted rows
+
+To sort and return deleted rows, use a statement like the following:
+
+```sql
+WITH a AS (DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *)
+  SELECT * FROM a ORDER BY expiration_time;
+```
+
+```text
+             code            |                                                                                                  description                                                                                                   |       creation_time       |      expiration_time      |                    rules
++----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------+---------------------------+----------------------------------------------+
+  often_thing_hair           | Society right wish face see if pull. Great generation social bar read budget wonder natural. Somebody dark field economic material. Nature nature paper law worry common. Serious activity hospital wide none. | 2019-01-27 03:04:05+00:00 | 2019-01-29 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  step_though_military       | Director middle summer most create any.                                                                                                                                                                        | 2019-01-27 03:04:05+00:00 | 2019-01-29 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  own_whose_economy          | Social participant order this. Guy toward nor indeed police player inside nor. Model education voice several college art on. Start listen their maybe.                                                         | 2019-01-27 03:04:05+00:00 | 2019-01-30 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  crime_experience_certainly | Prepare right teacher mouth student. Trouble condition weight during scene something stand.                                                                                                                    | 2019-01-27 03:04:05+00:00 | 2019-01-31 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+  policy_its_wife            | Player either she something good minute or. Nearly policy player receive. Somebody mean book store fire realize.                                                                                               | 2019-01-27 03:04:05+00:00 | 2019-01-31 03:04:05+00:00 | {"type": "percent_discount", "value": "10%"}
+(5 rows)
+```
+
+### Delete with index hints
+
+Suppose you create a multi-column index on the `users` table with the `name` and `city` columns.
+
+```sql
+CREATE INDEX ON users (name, city);
+```
+
+Now suppose you want to delete the two users named "Jon Snow". You can use the [`EXPLAIN (OPT)`](/docs/v25.4/explain#opt-option) command to see how the [cost-based optimizer](/docs/v25.4/cost-based-optimizer) decides to perform the delete:
+
+```sql
+EXPLAIN (OPT) DELETE FROM users WHERE name='Jon Snow';
+```
+
+```text
+                                        text
+------------------------------------------------------------------------------------
+  delete users
+   ├── scan users@users_name_city_idx
+   │    └── constraint: /10/9/8: [/'Jon Snow' - /'Jon Snow']
+   └── f-k-checks
+        ├── f-k-checks-item: vehicles(city,owner_id) -> users(city,id)
+        │    └── semi-join (lookup vehicles@vehicles_auto_index_fk_city_ref_users)
+        │         ├── with-scan &1
+        │         └── filters (true)
+        ├── f-k-checks-item: rides(city,rider_id) -> users(city,id)
+        │    └── semi-join (lookup rides@rides_auto_index_fk_city_ref_users)
+        │         ├── with-scan &1
+        │         └── filters (true)
+        └── f-k-checks-item: user_promo_codes(city,user_id) -> users(city,id)
+             └── semi-join (lookup user_promo_codes)
+                  ├── with-scan &1
+                  └── filters (true)
+(16 rows)
+```
+
+The output of the `EXPLAIN` statement shows that the optimizer scans the newly-created `users_name_city_idx` index when performing the delete. This makes sense, as you are performing a delete based on the `name` column.
+
+Now suppose that instead you want to perform a delete, but using the `id` column instead.
+
+```sql
+EXPLAIN (OPT) DELETE FROM users WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
+```
+
+```text
+                                                     text
+---------------------------------------------------------------------------------------------------------------
+  delete users
+   ├── select
+   │    ├── scan users@users_name_city_idx
+   │    └── filters
+   │         └── users.id IN ('3d70a3d7-0a3d-4000-8000-00000000000c', '70a3d70a-3d70-4400-8000-000000000016')
+   └── f-k-checks
+        ├── f-k-checks-item: vehicles(city,owner_id) -> users(city,id)
+        │    └── semi-join (hash)
+        │         ├── with-scan &1
+        │         ├── scan vehicles@vehicles_auto_index_fk_city_ref_users
+        │         └── filters
+        │              ├── city = vehicles.city
+        │              └── id = owner_id
+        ├── f-k-checks-item: rides(city,rider_id) -> users(city,id)
+        │    └── semi-join (lookup rides@rides_auto_index_fk_city_ref_users)
+        │         ├── with-scan &1
+        │         └── filters (true)
+        └── f-k-checks-item: user_promo_codes(city,user_id) -> users(city,id)
+             └── semi-join (hash)
+                  ├── with-scan &1
+                  ├── scan user_promo_codes
+                  └── filters
+                       ├── city = user_promo_codes.city
+                       └── id = user_id
+(24 rows)
+```
+
+The optimizer still scans the newly-created `users_name_city_idx` index when performing the delete. Although scanning the table on this index could still be the most efficient, you may want to assess the performance difference between using `users_name_city_idx` and an index on the `id` column, as you are performing a delete with a filter on the `id` column.
+
+If you provide an index hint (i.e., force the index selection) to use the primary index on the column instead, the CockroachDB will scan the users table using the primary index, on `city`, and `id`.
+
+```sql
+EXPLAIN (OPT) DELETE FROM users@users_pkey WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
+```
+
+```text
+                                                     text
+---------------------------------------------------------------------------------------------------------------
+  delete users
+   ├── select
+   │    ├── scan users
+   │    │    └── flags: force-index=primary
+   │    └── filters
+   │         └── users.id IN ('3d70a3d7-0a3d-4000-8000-00000000000c', '70a3d70a-3d70-4400-8000-000000000016')
+   └── f-k-checks
+        ├── f-k-checks-item: vehicles(city,owner_id) -> users(city,id)
+        │    └── semi-join (hash)
+        │         ├── with-scan &1
+        │         ├── scan vehicles@vehicles_auto_index_fk_city_ref_users
+        │         └── filters
+        │              ├── city = vehicles.city
+        │              └── id = owner_id
+        ├── f-k-checks-item: rides(city,rider_id) -> users(city,id)
+        │    └── semi-join (lookup rides@rides_auto_index_fk_city_ref_users)
+        │         ├── with-scan &1
+        │         └── filters (true)
+        └── f-k-checks-item: user_promo_codes(city,user_id) -> users(city,id)
+             └── semi-join (hash)
+                  ├── with-scan &1
+                  ├── scan user_promo_codes
+                  └── filters
+                       ├── city = user_promo_codes.city
+                       └── id = user_id
+(25 rows)
+```
+
+## See also
+
+- [`INSERT`](/docs/v25.4/insert)
+- [`UPDATE`](/docs/v25.4/update)
+- [`UPSERT`](/docs/v25.4/upsert)
+- [`TRUNCATE`](/docs/v25.4/truncate)
+- [`ALTER TABLE`](/docs/v25.4/alter-table)
+- [`DROP TABLE`](/docs/v25.4/drop-table)
+- [`DROP DATABASE`](/docs/v25.4/drop-database)
+- [SQL Statements](/docs/v25.4/sql-statements)
+- [Limit Query Results](/docs/v25.4/limit-offset)
+- [Delete Data](/docs/v25.4/delete-data)
+- [Bulk-delete data](/docs/v25.4/bulk-delete-data)
+- [Batch Delete Expired Data with Row-Level TTL](/docs/v25.4/row-level-ttl)

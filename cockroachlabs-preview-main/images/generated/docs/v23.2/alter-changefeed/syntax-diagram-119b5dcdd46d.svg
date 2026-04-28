@@ -1,0 +1,85 @@
+<svg height="459" width="591" xmlns="http://www.w3.org/2000/svg"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="62" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">ALTER</text>
+<rect height="32" rx="10" width="110" x="115" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="110" x="113" y="1"></rect>
+<text class="terminal" x="123" y="21">CHANGEFEED</text>
+<rect height="32" width="58" x="245" y="3"></rect>
+<rect class="nonterminal" height="32" width="58" x="243" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="34" font-size="10" class="nonterminal" x="255" y="21">job_id</text><rect height="32" rx="10" width="48" x="65" y="129"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="63" y="127"></rect>
+<text class="terminal" x="73" y="147">ADD</text>
+<rect height="32" width="58" x="153" y="129"></rect>
+<rect class="nonterminal" height="32" width="58" x="151" y="127"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="34" font-size="10" class="nonterminal" x="163" y="147">target</text><rect height="32" rx="10" width="24" x="153" y="85"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="151" y="83"></rect>
+<text class="terminal" x="161" y="103">,</text>
+<rect height="32" rx="10" width="58" x="271" y="161"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="269" y="159"></rect>
+<text class="terminal" x="279" y="179">WITH</text>
+<rect height="32" width="90" x="369" y="161"></rect>
+<rect class="nonterminal" height="32" width="90" x="367" y="159"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="66" font-size="10" class="nonterminal" x="379" y="179">initial_scan</text>
+<rect height="32" width="114" x="369" y="205"></rect>
+<rect class="nonterminal" height="32" width="114" x="367" y="203"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="90" font-size="10" class="nonterminal" x="379" y="223">no_initial_scan</text><rect height="32" rx="10" width="58" x="65" y="293"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="63" y="291"></rect>
+<text class="terminal" x="73" y="311">DROP</text>
+<rect height="32" width="58" x="163" y="293"></rect>
+<rect class="nonterminal" height="32" width="58" x="161" y="291"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="34" font-size="10" class="nonterminal" x="173" y="311">target</text><rect height="32" rx="10" width="24" x="163" y="249"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="161" y="247"></rect>
+<text class="terminal" x="171" y="267">,</text>
+<rect height="32" rx="10" width="44" x="85" y="381"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="83" y="379"></rect>
+<text class="terminal" x="93" y="399">SET</text>
+<rect height="32" rx="10" width="64" x="85" y="425"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="83" y="423"></rect>
+<text class="terminal" x="93" y="443">UNSET</text>
+<rect height="32" width="60" x="209" y="381"></rect>
+<rect class="nonterminal" height="32" width="60" x="207" y="379"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="36" font-size="10" class="nonterminal" x="219" y="399">option</text><rect height="32" rx="10" width="24" x="209" y="337"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="207" y="335"></rect>
+<text class="terminal" x="217" y="355">,</text>
+<path class="line" d="m19 17 h2 m0 0 h10 m62 0 h10 m0 0 h10 m110 0 h10 m0 0 h10 m58 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-322 126 l2 0 m2 0 l2 0 m2 0 l2 0 m42 0 h10 m48 0 h10 m20 0 h10 m58 0 h10 m-98 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m78 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-78 0 h10 m24 0 h10 m0 0 h34 m40 44 h10 m0 0 h242 m-272 0 h20 m252 0 h20 m-292 0 q10 0 10 10 m272 0 q0 -10 10 -10 m-282 10 v12 m272 0 v-12 m-272 12 q0 10 10 10 m252 0 q10 0 10 -10 m-262 10 h10 m58 0 h10 m20 0 h10 m90 0 h10 m0 0 h24 m-154 0 h20 m134 0 h20 m-174 0 q10 0 10 10 m154 0 q0 -10 10 -10 m-164 10 v24 m154 0 v-24 m-154 24 q0 10 10 10 m134 0 q10 0 10 -10 m-144 10 h10 m114 0 h10 m-458 -76 h20 m478 0 h20 m-518 0 q10 0 10 10 m498 0 q0 -10 10 -10 m-508 10 v144 m498 0 v-144 m-498 144 q0 10 10 10 m478 0 q10 0 10 -10 m-488 10 h10 m58 0 h10 m20 0 h10 m58 0 h10 m-98 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m78 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-78 0 h10 m24 0 h10 m0 0 h34 m20 44 h282 m-488 -10 v20 m498 0 v-20 m-498 20 v68 m498 0 v-68 m-498 68 q0 10 10 10 m478 0 q10 0 10 -10 m-468 10 h10 m44 0 h10 m0 0 h20 m-104 0 h20 m84 0 h20 m-124 0 q10 0 10 10 m104 0 q0 -10 10 -10 m-114 10 v24 m104 0 v-24 m-104 24 q0 10 10 10 m84 0 q10 0 10 -10 m-94 10 h10 m64 0 h10 m40 -44 h10 m60 0 h10 m-100 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m80 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-80 0 h10 m24 0 h10 m0 0 h36 m20 44 h234 m-518 -252 l20 0 m-1 0 q-9 0 -9 -10 l0 -56 q0 -10 10 -10 m518 76 l20 0 m-20 0 q10 0 10 -10 l0 -56 q0 -10 -10 -10 m-518 0 h10 m0 0 h508 m23 76 h-3"></path>
+<polygon points="581 143 589 139 589 147"></polygon>
+<polygon points="581 143 573 139 573 147"></polygon></svg>

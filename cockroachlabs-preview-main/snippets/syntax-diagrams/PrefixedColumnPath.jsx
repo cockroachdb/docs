@@ -1,0 +1,71 @@
+export const PrefixedColumnPath = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="155" width="521" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon><a xlink:href="#db_object_name_component" xlink:title="db_object_name_component">
+<rect height="32" width="206" x="33" y="3"></rect>
+<rect class="nonterminal" height="32" width="206" x="31" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="182" font-size="12" class="nonterminal" x="43" y="21">db_object_name_component</text></a><rect height="32" rx="10" width="24" x="259" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="257" y="1"></rect>
+<text class="terminal" x="267" y="21">.</text><a xlink:href="#unrestricted_name" xlink:title="unrestricted_name">
+<rect height="32" width="140" x="303" y="3"></rect>
+<rect class="nonterminal" height="32" width="140" x="301" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="116" font-size="11" class="nonterminal" x="313" y="21">unrestricted_name</text></a><rect height="32" rx="10" width="24" x="45" y="89"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="43" y="87"></rect>
+<text class="terminal" x="53" y="107">.</text><a xlink:href="#unrestricted_name" xlink:title="unrestricted_name">
+<rect height="32" width="140" x="89" y="89"></rect>
+<rect class="nonterminal" height="32" width="140" x="87" y="87"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="116" font-size="11" class="nonterminal" x="99" y="107">unrestricted_name</text></a><rect height="32" rx="10" width="24" x="269" y="121"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="267" y="119"></rect>
+<text class="terminal" x="277" y="139">.</text><a xlink:href="#unrestricted_name" xlink:title="unrestricted_name">
+<rect height="32" width="140" x="313" y="121"></rect>
+<rect class="nonterminal" height="32" width="140" x="311" y="119"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="116" font-size="11" class="nonterminal" x="323" y="139">unrestricted_name</text></a><path class="line" d="m19 17 h2 m0 0 h10 m206 0 h10 m0 0 h10 m24 0 h10 m0 0 h10 m140 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-462 54 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h438 m-468 0 h20 m448 0 h20 m-488 0 q10 0 10 10 m468 0 q0 -10 10 -10 m-478 10 v12 m468 0 v-12 m-468 12 q0 10 10 10 m448 0 q10 0 10 -10 m-458 10 h10 m24 0 h10 m0 0 h10 m140 0 h10 m20 0 h10 m0 0 h194 m-224 0 h20 m204 0 h20 m-244 0 q10 0 10 10 m224 0 q0 -10 10 -10 m-234 10 v12 m224 0 v-12 m-224 12 q0 10 10 10 m204 0 q10 0 10 -10 m-214 10 h10 m24 0 h10 m0 0 h10 m140 0 h10 m43 -64 h-3"></path>
+<polygon points="511 71 519 67 519 75"></polygon>
+<polygon points="511 71 503 67 503 75"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,164 @@
+---
+title: "DB Console Overview"
+old_description: "Use the DB Console to monitor and optimize cluster performance."
+---
+
+The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
+
+<Note>
+Authorized CockroachDB Advanced cluster users can visit the DB Console at a URL provisioned for the cluster.
+
+Refer to: [Network Authorization for CockroachDB Cloud Clusters—DB Console](/docs/stable/cockroachcloud/network-authorization#db-console)
+</Note>
+
+## Authentication
+
+The DB Console supports username/password login and single sign-on (SSO) for Advanced and Enterprise clusters.
+
+The DB Console sign-on page can also be used to provision authentication tokens for SQL client access.
+
+Refer to:
+
+- [Single Sign-on (SSO) for DB Console](/docs/v26.1/sso-db-console)
+- [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)](/docs/v26.1/sso-sql)
+
+## DB Console areas
+
+### Overview
+
+The Overview page provides a cluster overview and node list and map.
+
+- [Cluster Overview](/docs/v26.1/ui-cluster-overview-page) has essential metrics about the cluster and nodes, including liveness status, replication status, uptime, and hardware usage.
+- [Node List](/docs/v26.1/ui-cluster-overview-page#node-map) has a list of cluster metrics at the locality and node levels.
+- [Node Map](/docs/v26.1/ui-cluster-overview-page#node-map) displays a geographical configuration of your cluster and metrics at the locality and node levels, visualized on a map.
+
+### Metrics
+
+The Metrics page provides dashboards for all types of CockroachDB metrics.
+
+- [Overview dashboard](/docs/v26.1/ui-overview-dashboard) has metrics about SQL performance, replication, and storage.
+- [Hardware dashboard](/docs/v26.1/ui-hardware-dashboard) has metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+- [Runtime dashboard](/docs/v26.1/ui-runtime-dashboard) has metrics about node count, CPU time, and memory usage.
+- [SQL dashboard](/docs/v26.1/ui-sql-dashboard) has metrics about SQL connections, byte traffic, queries, transactions, and service latency.
+- [Storage dashboard](/docs/v26.1/ui-storage-dashboard) has metrics about storage capacity and file descriptors.
+- [Replication dashboard](/docs/v26.1/ui-replication-dashboard) has metrics about how data is replicated across the cluster, e.g., range status, replicas per store, etc.
+- [Distributed dashboard](/docs/v26.1/ui-distributed-dashboard) has metrics about distribution tasks across the cluster, including RPCs and transactions.
+- [Queues dashboard](/docs/v26.1/ui-queues-dashboard) has metrics about the health and performance of various queueing systems in CockroachDB, including the garbage collection and Raft log queues.
+- [Slow requests dashboard](/docs/v26.1/ui-slow-requests-dashboard) has metrics about important cluster tasks that take longer than expected to complete, including Raft proposals and lease acquisitions.
+- [Changefeeds dashboard](/docs/v26.1/ui-cdc-dashboard) has metrics about the [changefeeds](/docs/v26.1/change-data-capture-overview) created across your cluster.
+- [Overload dashboard](/docs/v26.1/ui-overload-dashboard) has metrics about the performance of the parts of your cluster relevant to the cluster's [admission control system](/docs/v26.1/admission-control).
+- [TTL dashboard](/docs/v26.1/ui-ttl-dashboard) has metrics about the progress and performance of [batch deleting expired data using Row-Level TTL](/docs/v26.1/row-level-ttl) from your cluster.
+- [Physical Cluster Replication dashboard](/docs/v26.1/ui-physical-cluster-replication-dashboard) has metrics about the [physical cluster replication](/docs/v26.1/physical-cluster-replication-overview) streams between a primary and standby cluster.
+
+### Databases
+
+The [Databases](/docs/v26.1/ui-databases-page) page shows details about the system and user databases in the cluster.
+
+### SQL Activity
+
+The **SQL Activity** page summarizes SQL activity in your cluster.
+
+- [**Statements**](/docs/v26.1/ui-statements-page) shows frequently executed and high-latency [SQL statements](/docs/v26.1/sql-statements) with the option to collect statement [diagnostics](/docs/v26.1/ui-statements-page#diagnostics).
+- [**Transactions**](/docs/v26.1/ui-transactions-page) shows details about transactions running on the cluster.
+- [**Sessions**](/docs/v26.1/ui-sessions-page) shows details about open sessions in the cluster.
+
+### Insights
+
+The [**Insights**](/docs/v26.1/ui-insights-page) page exposes problematic health signals and enables you to quickly find optimization opportunities to maximize database efficiency. The **Insights** page contains workload-level and schema-level insights.
+
+### Network Latency
+
+The [Network Latency](/docs/v26.1/ui-network-latency-page) page shows latencies and lost connections between all nodes in your cluster.
+
+### Jobs
+
+The [Jobs](/docs/v26.1/ui-jobs-page) page shows details of jobs running in the cluster.
+
+### Advanced Debug
+
+The [Advanced Debug](/docs/v26.1/ui-debug-pages) page provides advanced monitoring and troubleshooting reports. These include details about data distribution, the state of specific queues, and slow query metrics. These details are largely intended for use by CockroachDB developers. To access the **Advanced Debug** page, the user must be a member of the `admin` role or must have the `VIEWDEBUG` [system privilege](/docs/v26.1/security-reference/authorization#supported-privileges) defined.
+
+## DB Console access
+
+You can access the DB Console from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
+
+- If you included the [`--http-addr`](/docs/v26.1/cockroach-start#networking) flag when starting nodes, use the IP address or hostname and port specified by that flag.
+- If you didn't include the [`--http-addr`](/docs/v26.1/cockroach-start#networking) flag when starting nodes, use the IP address or hostname specified by the [`--listen-addr`](/docs/v26.1/cockroach-start#networking) flag and port `8080`.
+- If you are running a [secure cluster](#cluster-security), use `https` instead of `http`.
+
+For guidance on accessing the DB Console in the context of cluster deployment, see [Start a Local Cluster](/docs/v26.1/start-a-local-cluster) and [Manual Deployment](/docs/v26.1/manual-deployment).
+
+<Warning>
+Accessing the DB Console for a secure cluster requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
+</Warning>
+
+### Proxy DB Console
+
+If your CockroachDB cluster is behind a load balancer, you may wish to proxy your DB Console connection to a different node in the cluster from the node you first connect to. This is useful in deployments where a third-party load balancer otherwise determines which CockroachDB node you connect to in DB Console, or where web management access is limited to a subset of CockroachDB instances in a cluster.
+
+You can accomplish this using one of these methods:
+
+- Once connected to DB Console, use the **Web server** dropdown menu from the [**Advanced Debug**](/docs/v26.1/ui-debug-pages#license-and-node-information) page to select a different node to proxy to.
+- Use the `remote_node_id` parameter in your DB Console URL to proxy directly to a specific node. For example, use `http://<host>:<http-port>/?remote_node_id=2` to proxy directly to node `2`.
+
+## DB Console security considerations
+
+Access to DB Console is a function of cluster security and the privileges of the accessing user.
+
+### Cluster security
+
+On insecure clusters, all areas of the DB Console are accessible to all users.
+
+On secure clusters, for each user who should have access to the DB Console, you must [create a user with a password](/docs/v26.1/create-user#create-a-user-with-a-password) and optionally [`GRANT`](/docs/v26.1/grant#grant-system-level-privileges-on-the-entire-cluster) the user [system-level privileges](/docs/v26.1/security-reference/authorization#supported-privileges) or membership to the [`admin` role](/docs/v26.1/security-reference/authorization#admin-role).
+
+### Role-based security
+
+All users have access to data over which they have privileges (e.g., [jobs](/docs/v26.1/ui-jobs-page) and [list of sessions](/docs/v26.1/ui-sessions-page)), and data that does not require privileges (e.g., [cluster health, node status](/docs/v26.1/ui-cluster-overview-page), [metrics](/docs/v26.1/ui-overview-dashboard)).
+
+The following areas display information from privileged HTTP endpoints that require the user to have the [`admin` role](/docs/v26.1/security-reference/authorization#admin-role) or the specified [system-level privileges](/docs/v26.1/security-reference/authorization#supported-privileges).
+
+<table><thead><tr><th>DB Console area</th><th>System-level privilege</th><th>Privileged information</th></tr></thead><tbody><tr><td><a href="/docs/v26.1/ui-statements-page">Statements</a></td><td><a href="/docs/v26.1/security-reference/authorization#viewactivity"><code>VIEWACTIVITY</code></a> or <a href="/docs/v26.1/security-reference/authorization#viewactivityredacted"><code>VIEWACTIVITYREDACTED</code></a></td><td>SQL statements</td></tr><tr><td><a href="/docs/v26.1/ui-transactions-page">Transactions</a></td><td><a href="/docs/v26.1/security-reference/authorization#viewactivity"><code>VIEWACTIVITY</code></a> or <a href="/docs/v26.1/security-reference/authorization#viewactivityredacted"><code>VIEWACTIVITYREDACTED</code></a></td><td>Transactions</td></tr><tr><td><a href="/docs/v26.1/ui-sessions-page">Sessions</a></td><td><a href="/docs/v26.1/security-reference/authorization#viewactivity"><code>VIEWACTIVITY</code></a> or <a href="/docs/v26.1/security-reference/authorization#viewactivityredacted"><code>VIEWACTIVITYREDACTED</code></a></td><td>Sessions</td></tr><tr><td><a href="/docs/v26.1/ui-insights-page">Insights</a></td><td><a href="/docs/v26.1/security-reference/authorization#viewactivity"><code>VIEWACTIVITY</code></a> or <a href="/docs/v26.1/security-reference/authorization#viewactivityredacted"><code>VIEWACTIVITYREDACTED</code></a></td><td>Insights</td></tr><tr><td><a href="/docs/v26.1/ui-top-ranges-page">Top Ranges</a></td><td><a href="/docs/v26.1/security-reference/authorization#viewclustermetadata"><code>VIEWCLUSTERMETADATA</code></a></td><td>Ranges</td></tr><tr><td><a href="/docs/v26.1/ui-jobs-page">Jobs</a></td><td><a href="/docs/v26.1/security-reference/authorization#viewjob"><code>VIEWJOB</code></a></td><td>Jobs</td></tr><tr><td><a href="/docs/v26.1/ui-debug-pages">Advanced Debug</a></td><td><a href="/docs/v26.1/security-reference/authorization#viewdebug"><code>VIEWDEBUG</code></a></td><td>Debugging and profiling endpoints</td></tr><tr><td><a href="/docs/v26.1/ui-debug-pages#reports">Advanced Debug &gt; Problem Ranges</a></td><td><a href="/docs/v26.1/security-reference/authorization#viewclustermetadata"><code>VIEWCLUSTERMETADATA</code></a></td><td>Ranges</td></tr><tr><td><a href="/docs/v26.1/ui-debug-pages#reports">Advanced Debug &gt; Data Distribution and Zone Configs</a></td><td><a href="/docs/v26.1/security-reference/authorization#viewclustermetadata"><code>VIEWCLUSTERMETADATA</code></a></td><td>Ranges</td></tr><tr><td><a href="/docs/v26.1/ui-debug-pages#configuration">Advanced Debug &gt; Cluster Settings</a></td><td><a href="/docs/v26.1/security-reference/authorization#viewclustersetting"><code>VIEWCLUSTERSETTING</code></a> or <a href="/docs/v26.1/security-reference/authorization#modifyclustersetting"><code>MODIFYCLUSTERSETTING</code></a></td><td>Cluster Settings</td></tr></tbody></table>
+
+## DB Console timezone configuration
+
+To view timestamps in your preferred timezone in the DB Console, use the [`ui.default_timezone` cluster setting](/docs/v26.1/cluster-settings#setting-ui-default-timezone). This setting supports all valid timezone identifiers, such as `America/New_York` and `Asia/Tokyo`.
+
+```sql
+SET CLUSTER SETTING ui.default_timezone = 'America/New_York';
+```
+
+If no value is set, the DB Console displays timestamps in UTC.
+
+<Note>
+The [`ui.display_timezone` cluster setting](/docs/v26.1/cluster-settings#setting-ui-display-timezone) is now deprecated and will be removed in a future release. Avoid using `ui.display_timezone`. Use `ui.default_timezone` instead for full support and forward compatibility.
+</Note>
+
+## DB Console troubleshooting
+
+The DB Console stores temporary data in a time-series database in order to generate the various [metrics](#metrics) graphs. If your cluster is comprised of a large number of nodes where individual nodes have very limited memory available (e.g., under `8 GiB`), this underlying time-series database may not have enough memory available per-node to serve these requests quickly. If the DB Console experiences issues rendering these metrics graphs, consider increasing the value of the [`--max-tsdb-memory`](/docs/v26.1/cockroach-start#flags-max-tsdb-memory) flag.
+
+## Diagnostics reporting
+
+By default, the DB Console shares anonymous usage details with Cockroach Labs. For information about the details shared and how to opt-out of reporting, see [Diagnostics Reporting](/docs/v26.1/diagnostics-reporting).
+
+## License expiration message
+
+If you have [set a license](/docs/v26.1/licensing-faqs#set-a-license), a license expiration message is displayed at the top-right of the DB Console. While the license is valid, the message will read `License expires in X days`, where `X` is the number of days. If the license is no longer valid, the message will read `License expired X days ago`. Hovering over either message displays a tooltip with the expiration date of the license.
+
+Depending on the status of your cluster's [license](/docs/v26.1/licensing-faqs), the following messages may be displayed in the DB Console:
+
+- If your cluster was throttled because a valid license key was never added, the message is: *This cluster was throttled because it requires a license key. Please add a license key to continue using this cluster.*
+- If your cluster has an invalid license key and the cluster is still in the grace period, the message is: *Your license key expired on &#36;&#123;DATE1&#125;. The cluster will be throttled on &#36;&#123;DATE2&#125; unless a new license key is added.*
+- If your cluster was throttled due to an invalid license, the message is: *Your license key expired on &#36;&#123;DATE&#125; and the cluster was throttled. Please add a license key to continue using this cluster.*
+- If the cluster is required to send telemetry but has not been sending it, and is not yet being throttled, the message is: *Telemetry has not been received from some nodes in this cluster since &#36;&#123;DATE&#125;. These nodes will be throttled on &#36;&#123;DATE&#125; unless telemetry is received.*
+- If the cluster is required to send telemetry but has not been sending it, and is currently being throttled, the message is: *Telemetry has not been received from some nodes in this cluster since &#36;&#123;DATE1&#125;. These nodes were throttled on &#36;&#123;DATE2&#125;.*
+
+For instructions on how to obtain and set a license, refer to [Obtain a license](/docs/v26.1/licensing-faqs#obtain-a-license).
+
+For more information about throttling and telemetry, refer to [What is throttling and how does it work?](/docs/v26.1/licensing-faqs#throttling)
+
+## See also
+
+- [Troubleshooting Overview](/docs/v26.1/troubleshooting-overview)
+- [Support Resources](/docs/v26.1/support-resources)
+- [Raw Status Endpoints](/docs/v26.1/monitoring-and-alerting#raw-status-endpoints)

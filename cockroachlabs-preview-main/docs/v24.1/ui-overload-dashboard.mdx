@@ -1,0 +1,191 @@
+---
+title: "Overload Dashboard"
+old_description: "The Overload dashboard lets you monitor the performance of the admission control system."
+---
+
+The **Overload dashboard** lets you monitor the performance of the parts of your cluster relevant to the cluster's [admission control system](/docs/v24.1/admission-control). This includes CPU usage, the runnable goroutines waiting per CPU, the health of the persistent stores, and the performance of the admission control system when it is enabled.
+
+The charts allow you to monitor:
+
+- Metrics that help determine which resource is constrained, such as IO and CPU,
+- Metrics that narrow down which admission control queues have requests waiting, and
+- More advanced metrics about the system health, such as the goroutine scheduler and L0 sublevels.
+
+To view this dashboard, [access the DB Console](/docs/v24.1/ui-overview#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** &gt; **Overload**.
+
+## Dashboard navigation
+
+Use the **Graph** menu to display metrics for your entire cluster or for a specific node.
+
+To the right of the Graph and Dashboard menus, a time interval selector allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected in the [SQL Activity](/docs/v24.1/ui-overview#sql-activity) pages. However, if you select 10 or 30 minutes, the interval defaults to 1 hour in SQL Activity pages.
+
+Hovering your mouse pointer over the graph title will display a tooltip with a description and the [metrics](/docs/v24.1/essential-metrics-self-hosted) used to create the graph.
+
+When hovering on graphs, crosshair lines will appear at your mouse pointer. The series' values corresponding to the given time in the cross hairs are displayed in the legend under the graph. Hovering the mouse pointer on a given series displays the corresponding value near the mouse pointer and highlights the series line (graying out other series lines). Click anywhere within the graph to freeze the values in place. Click anywhere within the graph again to cause the values to change with your mouse movements once more.
+
+In the legend, click on an individual series to isolate it on the graph. The other series will be hidden, while the hover will still work. Click the individual series again to make the other series visible. If there are many series, a scrollbar may appear on the right of the legend. This is to limit the size of the legend so that it does not get endlessly large, particularly on clusters with many nodes.
+
+The **Overload** dashboard displays the following time series graphs:
+
+## CPU Utilization
+
+This graph displays the current user and system CPU percentage consumed by the CockroachDB process, normalized by number of cores, as tracked by the `sys.cpu.combined.percent-normalized` metric.
+
+<Note>
+This graph shows the CPU consumption by the CockroachDB process, and excludes other processes on the node. Use the [Host CPU Percent graph](/docs/v24.1/ui-hardware-dashboard#host-cpu-percent) to measure the total CPU consumption across all processes.
+</Note>
+
+- In the node view, the graph shows the percentage of CPU utilization of the CockroachDB process as measured by the host for the selected node.
+- In the cluster view, the graph shows the percentage of CPU utilization of the CockroachDB process as measured by the host across all nodes.
+
+**Expected values for a healthy cluster**: CPU utilized by CockroachDB should not persistently exceed 80%. Because this metric does not reflect system CPU usage, values above 80% suggest that actual CPU utilization is nearing 100%.
+
+<Note>
+For multi-core systems, the percentage of CPU usage is calculated by normalizing the CPU usage across all cores, whereby 100% utilization indicates that all cores are fully utilized.
+</Note>
+
+## KV Admission CPU Slots Exhausted Duration Per Second
+
+This graph shows the relative time the node had exhausted slots for foreground (regular) CPU work per second of wall time, measured in microseconds/second, as tracked by the `admission.granter.slots_exhausted_duration.kv` metric. Increased slot exhausted duration indicates CPU resource exhaustion.
+
+KV admission slots are an internal aspect of the [admission control system](/docs/v24.1/admission-control), and are dynamically adjusted to allow for high CPU utilization, but without causing CPU overload. If the used slots are often equal to the available slots, then the admission control system is queueing work in order to prevent overload. A shortage of KV slots will cause queuing not only at the [KV layer](/docs/v24.1/architecture/transaction-layer), but also at the [SQL layer](/docs/v24.1/architecture/sql-layer), since both layers can be significant consumers of CPU.
+
+- In the node view, the graph shows the admission slots exhausted duration in microseconds/second on the selected node.
+- In the cluster view, the graph shows the admission slots exhausted duration in microseconds/second across all nodes in the cluster.
+
+## Admission IO Tokens Exhausted Duration Per Second
+
+This graph shows the relative time the node had exhausted IO tokens for all IO-bound work per second of wall time, measured in microseconds/second, as tracked by the `admission.granter.io_tokens_exhausted_duration.kv` and `admission.granter.elastic_io_tokens_exhausted_duration.kv` metrics. There are separate lines for regular IO exhausted duration and elastic IO exhausted duration. Increased IO token exhausted duration indicates IO resource exhaustion.
+
+This graph indicates write IO overload, which affects KV write operations to [storage](/docs/v24.1/architecture/storage-layer). The [admission control system](/docs/v24.1/admission-control) dynamically calculates write tokens (similar to a [token bucket](https://wikipedia.org/wiki/Token_bucket)) to allow for high write throughput without severely overloading each store. This graph displays the microseconds per second that there were no write tokens left for arriving write requests. When there are no write tokens, these write requests are queued.
+
+- In the node view, the graph shows the regular (foreground) IO exhausted duration and the elastic (background) IO exhausted duration in microseconds per second on the selected node.
+- In the cluster view, the graph shows the regular (foreground) IO exhausted duration and the elastic (background) IO exhausted duration in microseconds per second across all nodes in the cluster.
+
+## IO Overload
+
+This graph shows a derived score based on [admission control's](/docs/v24.1/admission-control) view of the store, as tracked by the `admission.io.overload` metric. Admission control attempts to maintain a score of 0.5.
+
+This graph indicates the health of the [persistent stores](/docs/v24.1/architecture/storage-layer), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](/docs/v24.1/cockroach-start#storage-engine). For more information about LSM levels and how LSMs work, see [Log-structured Merge-trees](/docs/v24.1/architecture/storage-layer#log-structured-merge-trees).
+
+This graph specifically shows the number of sublevels and files in Level 0 normalized by admission thresholds. The 1-normalized float indicates whether IO admission control considers the store as overloaded with respect to compaction out of Level 0 (considers sublevel and file counts).
+
+- In the node view, the graph shows the IO overload score on the selected node.
+- In the cluster view, the graph shows the IO overload score across all nodes in the cluster.
+
+**Expected values for a healthy cluster**: An IO Overload value greater than 1.0 generally indicates an overload in the Pebble LSM tree. High values indicate heavy write load that is causing accumulation of files in level 0. These files are not being compacted quickly enough to lower levels, resulting in a [misshapen LSM](/docs/v24.1/architecture/storage-layer#inverted-lsms).
+
+## Elastic CPU Tokens Exhausted Duration Per Second
+
+This graph shows the relative time the node had exhausted tokens for background (elastic) CPU work per second of wall time, measured in microseconds/second, as tracked by the `admission.elastic_cpu.nanos_exhausted_duration` metric. Increased token exhausted duration indicates CPU resource exhaustion, specifically for background (elastic) work.
+
+- In the node view, the graph shows the elastic CPU exhausted duration in microseconds per second on the selected node.
+- In the cluster view, the graph shows the elastic CPU exhausted duration in microseconds per second across all nodes in the cluster.
+
+## Admission Queueing Delay p99 – Foreground (Regular) CPU
+
+This graph shows the 99th percentile latency of requests waiting in the various [admission control](/docs/v24.1/admission-control) CPU queues, as tracked by the `admission.wait_durations.kv-p99`, `admission.wait_durations.sql-kv-response-p99`, and `admission.wait_durations.sql-sql-response-p99` metrics. There are separate lines for KV, SQL-KV response, and SQL-SQL response.
+
+- In the node view, the graph shows the delay duration for KV, SQL-KV response, and SQL-SQL response on the selected node.
+- In the cluster view, the graph shows the delay duration for KV, SQL-KV response, and SQL-SQL response across all nodes in the cluster.
+
+## Admission Queueing Delay p99 – Store
+
+This graph shows the 99th percentile latency of requests waiting in the admission control store queue, as tracked by the `admission.wait_durations.kv-stores-p99` and the `admission.wait_durations.elastic-stores-p99` metrics. There are separate lines for KV write and elastic (background) write.
+
+- In the node view, the graph shows the delay duration of KV write and elastic (background) write on the selected node.
+- In the cluster view, the graph shows the delay duration of KV write and elastic (background) write across all nodes in the cluster.
+
+## Admission Queueing Delay p99 – Background (Elastic) CPU
+
+This graph shows the 99th percentile latency of requests waiting in the [admission control](/docs/v24.1/admission-control) elastic CPU queue, as tracked by the `admission.wait_durations.elastic-cpu-p99` metric.
+
+- In the node view, the graph shows the delay duration of KV write on the selected node.
+- In the cluster view, the graph shows the delay duration of KV write across all nodes in the cluster.
+
+## Admission Queueing Delay p99 – Replication Admission Control
+
+This graph shows the 99th percentile latency of requests waiting in the replication [admission control](/docs/v24.1/admission-control) queue, as tracked by the `kvadmission.flow_controller.regular_wait_duration-p99` and the `kvadmission.flow_controller.elastic_wait_duration-p99` metrics. There are separate lines for regular flow token wait time and elastic (background) flow token wait time. These metrics are indicative of store overload on replicas.
+
+- In the node view, the graph shows the wait duration of regular flow token wait time and elastic flow token wait time on the selected node.
+- In the cluster view, the graph shows the wait duration of regular flow token wait time and elastic flow token wait time across all nodes in the cluster.
+
+## Blocked Replication Streams
+
+This graph shows the blocked replication streams per node in replication [admission control](/docs/v24.1/admission-control), separated by admission priority &#123;regular, elastic&#125;, as tracked by the `kvadmission.flow_controller.regular_blocked_stream_count` and the `kvadmission.flow_controller.elastic_blocked_stream_count` metrics. There are separate lines for blocked regular streams and blocked elastic (background) streams.
+
+- In the node view, the graph shows the number of blocked regular streams and blocked elastic streams on the selected node.
+- In the cluster view, the graph shows the number of blocked regular streams and blocked elastic streams across all nodes in the cluster.
+
+## Elastic CPU Utilization
+
+This graph shows the CPU utilization by elastic (background) work, compared to the limit set for elastic work, as tracked by the `admission.elastic_cpu.utilization` and the `admission.elastic_cpu.utilization_limit` metrics.
+
+- In the node view, the graph shows elastic CPU utilization and elastic CPU utilization limit as percentages on the selected node.
+- In the cluster view, the graph shows elastic CPU utilization and elastic CPU utilization limit as percentages across all nodes in the cluster.
+
+## Goroutine Scheduling Latency: 99th percentile
+
+This graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of scheduling latency for [Goroutines](https://golangbot.com/goroutines), as tracked by the `go.scheduler_latency-p99` metric. A value above `1ms` here indicates high load that causes background (elastic) CPU work to be throttled.
+
+- In the node view, the graph shows the 99th percentile of scheduling latency for Goroutines on the selected node.
+- In the cluster view, the graph shows the 99th percentile of scheduling latency for Goroutines across all nodes in the cluster.
+
+## Goroutine Scheduling Latency: 99.9th percentile
+
+This graph shows the 99.9th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of scheduling latency for [Goroutines](https://golangbot.com/goroutines), as tracked by the `go.scheduler_latency-p99.9` metric. A high value here can be indicative of high tail latency in various queries.
+
+- In the node view, the graph shows the 99.9th percentile of scheduling latency for Goroutines on the selected node.
+- In the cluster view, the graph shows the 99.9th percentile of scheduling latency for Goroutines across all nodes in the cluster.
+
+## Runnable Goroutines per CPU
+
+This graph shows the number of [Goroutines](https://golangbot.com/goroutines) waiting to run per CPU, as tracked by the `sys.runnable.goroutines.per.cpu` metric. This graph should rise and fall based on CPU load. Values greater than `50` are considered high. A value greater than the value set in `admission.kv_slot_adjuster.overload_threshold` (default = `32`), sampled at `1ms`, is used by [admission control](/docs/v24.1/admission-control) to throttle regular CPU work.
+
+- In the node view, the graph shows the number of Goroutines waiting per CPU on the selected node.
+- In the cluster view, the graph shows the number of Goroutines waiting per CPU across all nodes in the cluster.
+
+## LSM L0 Sublevels
+
+This graph shows the number of sublevels in L0 of the LSM, as tracked by the `storage.l0-sublevels` metric. A sustained value above `10` typically indicates that the store is overloaded. For more information about LSM levels and how LSMs work, see [Log-structured Merge-trees](/docs/v24.1/architecture/storage-layer#log-structured-merge-trees).
+
+- In the node view, the graph shows the number of L0 sublevels on the selected node.
+- In the cluster view, the graph shows the number of L0 sublevels across all nodes in the cluster.
+
+## Summary and events
+
+### Summary panel
+
+A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Total Nodes</td><td>The total number of nodes in the cluster. <a href="/docs/v24.1/node-shutdown?filters=decommission">Decommissioned nodes</a> are not included in this count.</td></tr><tr><td>Capacity Used</td><td>The storage capacity used as a percentage of <a href="/docs/v24.1/ui-cluster-overview-page#capacity-metrics">usable capacity</a> allocated across all nodes.</td></tr><tr><td>Unavailable Ranges</td><td>The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.</td></tr><tr><td>Queries per second</td><td>The total number of <code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, and <code>DELETE</code> queries executed per second across the cluster.</td></tr><tr><td>P99 Latency</td><td>The 99th percentile of service latency.</td></tr></tbody></table>
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v24.1/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v24.1/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+### Events panel
+
+Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
+
+<Frame>
+  ![DB Console Events](/images/v24.1/ui_events.png)
+</Frame>
+
+The following types of events are listed:
+
+- Database created
+- Database dropped
+- Table created
+- Table dropped
+- Table altered
+- Index created
+- Index dropped
+- View created
+- View dropped
+- Schema change reversed
+- Schema change finished
+- Node joined
+- Node decommissioned
+- Node restarted
+- Cluster setting changed

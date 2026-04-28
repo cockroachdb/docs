@@ -1,0 +1,93 @@
+## Step 4. Select your driver or ORM
+
+<Tabs>
+    <Tab title="JDBC">
+    ## Step 5. Connect to the cluster
+    
+    Copy the JDBC connection string from the `sql (JDBC)` field in the output from when you started the cluster.
+
+    Set a `JDBC_DATABASE_URL` environment variable to your JDBC connection string.
+
+    ```shell
+    export JDBC_DATABASE_URL="{connection string}"
+    ```
+
+    To connect to CockroachDB with the [JDBC](https://jdbc.postgresql.org/) driver, create a `DataSource` object ([`PGSimpleDataSource` or `PGPoolingDataSource`](https://jdbc.postgresql.org/documentation/datasource#applications-datasource)), and set the connection string with the `setUrl` class method.
+
+    For example:
+
+    ```java
+    PGSimpleDataSource ds = new PGSimpleDataSource();
+    ds.setUrl(System.getenv("JDBC_DATABASE_URL"));
+    ```
+
+    Where `JDBC_DATABASE_URL` is an environment variable set to a valid JDBC-compatible CockroachDB connection string.
+
+    JDBC accepts the following format for CockroachDB connection strings:
+
+    ```text
+    jdbc:postgresql://{host}:{port}/{database}?user={username}&sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+    ```
+
+    <Note>
+    The connection information shown on this page uses [client certificate and key authentication](/docs/v25.4/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+    To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v25.4/authentication#using-digital-certificates-with-cockroachdb).
+
+    For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v25.4/secure-a-cluster).
+    </Note>
+
+    For more information about connecting with JDBC, see the [official JDBC documentation](https://jdbc.postgresql.org/documentation).
+    </Tab>
+    <Tab title="Hibernate">
+    ## Step 5. Connect to the cluster
+    
+    Copy the JDBC connection string from the `sql (JDBC)` field in the output from when you started the cluster.
+
+    Set a `JDBC_DATABASE_URL` environment variable to your JDBC connection string.
+
+    ```shell
+    export JDBC_DATABASE_URL="{connection string}"
+    ```
+
+    To connect to CockroachDB with [Hibernate](https://hibernate.org/orm) ORM, set the object's `hibernate.connection.url` property to a valid CockroachDB connection string.
+
+    For example, if you are bootstrapping your application with a [`ServiceRegistry`](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide#bootstrap-native-registry) object, first read from the Hibernate configuration file, and then set the `hibernate.connection.url` with the `applySetting` class method:
+
+    ```java
+    StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
+        .configure( "hibernate.cfg.xml" ).applySetting("hibernate.connection.url", System.getenv("DATABASE_URL"))
+        .build();
+
+    Metadata metadata = new MetadataSources( standardRegistry )
+        .getMetadataBuilder()
+        .build();
+
+    SessionFactory sessionFactory = metadata.getSessionFactoryBuilder()
+        .build();
+    ```
+
+    Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+    Hibernate accepts the following format for CockroachDB connection strings:
+
+    ```text
+    jdbc:postgresql://{host}:{port}/{database}?user={username}&sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+    ```
+
+    <Note>
+    The connection information shown on this page uses [client certificate and key authentication](/docs/v25.4/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+    To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v25.4/authentication#using-digital-certificates-with-cockroachdb).
+
+    For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v25.4/secure-a-cluster).
+    </Note>
+
+    <Note>
+    To connect to CockroachDB with Hibernate, you must specify the [CockroachDB Hibernate dialect](/docs/v25.4/install-client-drivers?filters=java#hibernate) in your `hibernate.cfg.xml` configuration file.
+    </Note>
+
+    For more information about connecting with Hibernate, see the [official Hibernate documentation](https://hibernate.org/orm/documentation).
+    
+    </Tab>
+</Tabs>

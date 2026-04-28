@@ -1,0 +1,20 @@
+---
+title: "Backup and Restore in CockroachDB Cloud Overview"
+old_description: "An overview of backup and restore for CockroachDB Cloud."
+---
+
+import BackupAndRestoreOverview from "/snippets/cockroachcloud/backup-and-restore-overview.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<BackupAndRestoreOverview />

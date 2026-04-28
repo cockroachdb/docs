@@ -1,0 +1,155 @@
+export const ColQualificationElem = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="597" width="959" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="48" x="51" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="49" y="1"></rect>
+<text class="terminal" x="59" y="21">NOT</text>
+<rect height="32" rx="10" width="56" x="139" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="137" y="1"></rect>
+<text class="terminal" x="147" y="21">NULL</text>
+<rect height="32" rx="10" width="76" x="139" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="137" y="45"></rect>
+<text class="terminal" x="147" y="65">VISIBLE</text>
+<rect height="32" rx="10" width="56" x="51" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="49" y="89"></rect>
+<text class="terminal" x="59" y="109">NULL</text>
+<rect height="32" rx="10" width="74" x="51" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="49" y="133"></rect>
+<text class="terminal" x="59" y="153">UNIQUE</text>
+<rect height="32" rx="10" width="84" x="51" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="49" y="177"></rect>
+<text class="terminal" x="59" y="197">PRIMARY</text>
+<rect height="32" rx="10" width="46" x="155" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="46" x="153" y="177"></rect>
+<text class="terminal" x="163" y="197">KEY</text>
+<rect height="32" rx="10" width="64" x="241" y="211"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="239" y="209"></rect>
+<text class="terminal" x="249" y="229">USING</text>
+<rect height="32" rx="10" width="58" x="325" y="211"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="323" y="209"></rect>
+<text class="terminal" x="333" y="229">HASH</text><a xlink:href="#opt_hash_sharded_bucket_count" xlink:title="opt_hash_sharded_bucket_count">
+<rect height="32" width="234" x="403" y="211"></rect>
+<rect class="nonterminal" height="32" width="234" x="401" y="209"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="210" font-size="11" class="nonterminal" x="413" y="229">opt_hash_sharded_bucket_count</text></a><a xlink:href="#opt_with_storage_parameter_list" xlink:title="opt_with_storage_parameter_list">
+<rect height="32" width="234" x="677" y="179"></rect>
+<rect class="nonterminal" height="32" width="234" x="675" y="177"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="210" font-size="10" class="nonterminal" x="687" y="197">opt_with_storage_parameter_list</text></a><rect height="32" rx="10" width="64" x="51" y="255"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="49" y="253"></rect>
+<text class="terminal" x="59" y="273">CHECK</text>
+<rect height="32" rx="10" width="26" x="135" y="255"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="133" y="253"></rect>
+<text class="terminal" x="143" y="273">(</text><a xlink:href="#a_expr" xlink:title="a_expr">
+<rect height="32" width="64" x="181" y="255"></rect>
+<rect class="nonterminal" height="32" width="64" x="179" y="253"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="40" font-size="10" class="nonterminal" x="191" y="273">a_expr</text></a><rect height="32" rx="10" width="26" x="265" y="255"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="263" y="253"></rect>
+<text class="terminal" x="273" y="273">)</text>
+<rect height="32" rx="10" width="80" x="71" y="299"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="69" y="297"></rect>
+<text class="terminal" x="79" y="317">DEFAULT</text>
+<rect height="32" rx="10" width="40" x="71" y="343"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="69" y="341"></rect>
+<text class="terminal" x="79" y="361">ON</text>
+<rect height="32" rx="10" width="74" x="131" y="343"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="129" y="341"></rect>
+<text class="terminal" x="139" y="361">UPDATE</text><a xlink:href="#b_expr" xlink:title="b_expr">
+<rect height="32" width="64" x="245" y="299"></rect>
+<rect class="nonterminal" height="32" width="64" x="243" y="297"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="40" font-size="10" class="nonterminal" x="255" y="317">b_expr</text></a><rect height="32" rx="10" width="108" x="51" y="387"></rect>
+<rect class="terminal" height="32" rx="10" width="108" x="49" y="385"></rect>
+<text class="terminal" x="59" y="405">REFERENCES</text><a xlink:href="#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="179" y="387"></rect>
+<rect class="nonterminal" height="32" width="96" x="177" y="385"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="189" y="405">table_name</text></a><a xlink:href="#opt_name_parens" xlink:title="opt_name_parens">
+<rect height="32" width="136" x="295" y="387"></rect>
+<rect class="nonterminal" height="32" width="136" x="293" y="385"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="112" font-size="12" class="nonterminal" x="305" y="405">opt_name_parens</text></a><a xlink:href="#key_match" xlink:title="key_match">
+<rect height="32" width="88" x="451" y="387"></rect>
+<rect class="nonterminal" height="32" width="88" x="449" y="385"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="64" font-size="11" class="nonterminal" x="461" y="405">key_match</text></a><a xlink:href="#reference_actions" xlink:title="reference_actions">
+<rect height="32" width="134" x="559" y="387"></rect>
+<rect class="nonterminal" height="32" width="134" x="557" y="385"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="110" font-size="10" class="nonterminal" x="569" y="405">reference_actions</text></a><a xlink:href="#generated_as" xlink:title="generated_as">
+<rect height="32" width="108" x="51" y="431"></rect>
+<rect class="nonterminal" height="32" width="108" x="49" y="429"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="11" class="nonterminal" x="61" y="449">generated_as</text></a><rect height="32" rx="10" width="26" x="179" y="431"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="177" y="429"></rect>
+<text class="terminal" x="187" y="449">(</text><a xlink:href="#a_expr" xlink:title="a_expr">
+<rect height="32" width="64" x="225" y="431"></rect>
+<rect class="nonterminal" height="32" width="64" x="223" y="429"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="40" font-size="10" class="nonterminal" x="235" y="449">a_expr</text></a><rect height="32" rx="10" width="26" x="309" y="431"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="307" y="429"></rect>
+<text class="terminal" x="317" y="449">)</text>
+<rect height="32" rx="10" width="76" x="375" y="431"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="373" y="429"></rect>
+<text class="terminal" x="383" y="449">STORED</text>
+<rect height="32" rx="10" width="80" x="375" y="475"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="373" y="473"></rect>
+<text class="terminal" x="383" y="493">VIRTUAL</text><a xlink:href="#generated_always_as" xlink:title="generated_always_as">
+<rect height="32" width="160" x="71" y="519"></rect>
+<rect class="nonterminal" height="32" width="160" x="69" y="517"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="136" font-size="11" class="nonterminal" x="81" y="537">generated_always_as</text></a><a xlink:href="#generated_by_default_as" xlink:title="generated_by_default_as">
+<rect height="32" width="184" x="71" y="563"></rect>
+<rect class="nonterminal" height="32" width="184" x="69" y="561"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="160" font-size="11" class="nonterminal" x="81" y="581">generated_by_default_as</text></a><rect height="32" rx="10" width="86" x="295" y="519"></rect>
+<rect class="terminal" height="32" rx="10" width="86" x="293" y="517"></rect>
+<text class="terminal" x="303" y="537">IDENTITY</text>
+<rect height="32" rx="10" width="26" x="421" y="551"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="419" y="549"></rect>
+<text class="terminal" x="429" y="569">(</text><a xlink:href="#opt_sequence_option_list" xlink:title="opt_sequence_option_list">
+<rect height="32" width="184" x="467" y="551"></rect>
+<rect class="nonterminal" height="32" width="184" x="465" y="549"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="160" font-size="10" class="nonterminal" x="477" y="569">opt_sequence_option_list</text></a><rect height="32" rx="10" width="26" x="671" y="551"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="669" y="549"></rect>
+<text class="terminal" x="679" y="569">)</text>
+<path class="line" d="m17 17 h2 m20 0 h10 m48 0 h10 m20 0 h10 m56 0 h10 m0 0 h20 m-116 0 h20 m96 0 h20 m-136 0 q10 0 10 10 m116 0 q0 -10 10 -10 m-126 10 v24 m116 0 v-24 m-116 24 q0 10 10 10 m96 0 q10 0 10 -10 m-106 10 h10 m76 0 h10 m20 -44 h676 m-900 0 h20 m880 0 h20 m-920 0 q10 0 10 10 m900 0 q0 -10 10 -10 m-910 10 v68 m900 0 v-68 m-900 68 q0 10 10 10 m880 0 q10 0 10 -10 m-890 10 h10 m56 0 h10 m0 0 h804 m-890 -10 v20 m900 0 v-20 m-900 20 v24 m900 0 v-24 m-900 24 q0 10 10 10 m880 0 q10 0 10 -10 m-890 10 h10 m74 0 h10 m0 0 h786 m-890 -10 v20 m900 0 v-20 m-900 20 v24 m900 0 v-24 m-900 24 q0 10 10 10 m880 0 q10 0 10 -10 m-890 10 h10 m84 0 h10 m0 0 h10 m46 0 h10 m20 0 h10 m0 0 h406 m-436 0 h20 m416 0 h20 m-456 0 q10 0 10 10 m436 0 q0 -10 10 -10 m-446 10 v12 m436 0 v-12 m-436 12 q0 10 10 10 m416 0 q10 0 10 -10 m-426 10 h10 m64 0 h10 m0 0 h10 m58 0 h10 m0 0 h10 m234 0 h10 m20 -32 h10 m234 0 h10 m-890 -10 v20 m900 0 v-20 m-900 20 v56 m900 0 v-56 m-900 56 q0 10 10 10 m880 0 q10 0 10 -10 m-890 10 h10 m64 0 h10 m0 0 h10 m26 0 h10 m0 0 h10 m64 0 h10 m0 0 h10 m26 0 h10 m0 0 h620 m-890 -10 v20 m900 0 v-20 m-900 20 v24 m900 0 v-24 m-900 24 q0 10 10 10 m880 0 q10 0 10 -10 m-870 10 h10 m80 0 h10 m0 0 h54 m-174 0 h20 m154 0 h20 m-194 0 q10 0 10 10 m174 0 q0 -10 10 -10 m-184 10 v24 m174 0 v-24 m-174 24 q0 10 10 10 m154 0 q10 0 10 -10 m-164 10 h10 m40 0 h10 m0 0 h10 m74 0 h10 m20 -44 h10 m64 0 h10 m0 0 h602 m-890 -10 v20 m900 0 v-20 m-900 20 v68 m900 0 v-68 m-900 68 q0 10 10 10 m880 0 q10 0 10 -10 m-890 10 h10 m108 0 h10 m0 0 h10 m96 0 h10 m0 0 h10 m136 0 h10 m0 0 h10 m88 0 h10 m0 0 h10 m134 0 h10 m0 0 h218 m-890 -10 v20 m900 0 v-20 m-900 20 v24 m900 0 v-24 m-900 24 q0 10 10 10 m880 0 q10 0 10 -10 m-890 10 h10 m108 0 h10 m0 0 h10 m26 0 h10 m0 0 h10 m64 0 h10 m0 0 h10 m26 0 h10 m20 0 h10 m76 0 h10 m0 0 h4 m-120 0 h20 m100 0 h20 m-140 0 q10 0 10 10 m120 0 q0 -10 10 -10 m-130 10 v24 m120 0 v-24 m-120 24 q0 10 10 10 m100 0 q10 0 10 -10 m-110 10 h10 m80 0 h10 m20 -44 h436 m-890 -10 v20 m900 0 v-20 m-900 20 v68 m900 0 v-68 m-900 68 q0 10 10 10 m880 0 q10 0 10 -10 m-870 10 h10 m160 0 h10 m0 0 h24 m-224 0 h20 m204 0 h20 m-244 0 q10 0 10 10 m224 0 q0 -10 10 -10 m-234 10 v24 m224 0 v-24 m-224 24 q0 10 10 10 m204 0 q10 0 10 -10 m-214 10 h10 m184 0 h10 m20 -44 h10 m86 0 h10 m20 0 h10 m0 0 h286 m-316 0 h20 m296 0 h20 m-336 0 q10 0 10 10 m316 0 q0 -10 10 -10 m-326 10 v12 m316 0 v-12 m-316 12 q0 10 10 10 m296 0 q10 0 10 -10 m-306 10 h10 m26 0 h10 m0 0 h10 m184 0 h10 m0 0 h10 m26 0 h10 m20 -32 h194 m23 -516 h-3"></path>
+<polygon points="949 17 957 13 957 21"></polygon>
+<polygon points="949 17 941 13 941 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,23 @@
+---
+title: "Migrate to CockroachDB"
+permalink: "https://www.cockroachlabs.com/docs/molt/migrate-to-cockroachdb"
+og:title: "Migrate to CockroachDB"
+og:description: "Learn how to migrate data from a PostgreSQL or MySQL database into a CockroachDB cluster."
+og:image: "https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress"
+---
+
+import MigrateToCockroachdb from "/snippets/molt/migrate-to-cockroachdb.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MigrateToCockroachdb />

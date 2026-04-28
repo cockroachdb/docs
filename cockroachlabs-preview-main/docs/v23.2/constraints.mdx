@@ -1,0 +1,92 @@
+---
+title: "Constraints"
+old_description: "Constraints offer additional data integrity by enforcing conditions on the data within a column."
+---
+
+Constraints offer additional data integrity by enforcing conditions on the data within a column. Whenever values are manipulated (inserted, deleted, or updated), constraints are checked and modifications that violate constraints are rejected.
+
+For example, the `UNIQUE` constraint requires that all values in a column be unique from one another (except `NULL` values). If you attempt to write a duplicate value, the constraint rejects the entire statement.
+
+## Supported constraints
+
+<table><thead><tr><th>Constraint</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/v23.2/check"><code>CHECK</code></a></td><td>Values must return <code>TRUE</code> or <code>NULL</code> for a Boolean expression.</td></tr><tr><td><a href="/docs/v23.2/default-value"><code>DEFAULT</code> value</a></td><td>If a value is not defined for the constrained column in an <code>INSERT</code> statement, the <code>DEFAULT</code> value is written to the column.</td></tr><tr><td><a href="/docs/v23.2/foreign-key"><code>FOREIGN KEY</code></a></td><td>Values must exactly match existing values from the column it references.</td></tr><tr><td><a href="/docs/v23.2/not-null"><code>NOT NULL</code></a></td><td>Values may not be <code>NULL</code>.</td></tr><tr><td><a href="/docs/v23.2/primary-key"><code>PRIMARY KEY</code></a></td><td>Values must uniquely identify each row <em>(one per table)</em>. This behaves as if the <code>NOT NULL</code> and <code>UNIQUE</code> constraints are applied, as well as automatically creates an <a href="/docs/v23.2/indexes">index</a> for the table using the constrained columns.</td></tr><tr><td><a href="/docs/v23.2/unique"><code>UNIQUE</code></a></td><td>Each non-<code>NULL</code> value must be unique. This also automatically creates an <a href="/docs/v23.2/indexes">index</a> for the table using the constrained columns.</td></tr></tbody></table>
+
+## Using constraints
+
+### Add constraints
+
+How you add constraints depends on the number of columns you want to constrain, as well as whether or not the table is new.
+
+- **One column of a new table** has its constraints defined after the column's data type. For example, this statement applies the `PRIMARY KEY` constraint to `foo.a`:
+
+    ```sql
+    > CREATE TABLE foo (a INT PRIMARY KEY);
+    ```
+- **Multiple columns of a new table** have their constraints defined after the table's columns. For example, this statement applies the `PRIMARY KEY` constraint to `foo`'s columns `a` and `b`:
+
+    ```sql
+    > CREATE TABLE bar (a INT, b INT, PRIMARY KEY (a,b));
+    ```
+
+<Note>
+The `DEFAULT` and `NOT NULL` constraints cannot be applied to multiple columns.
+</Note>
+
+- **Existing tables** can have the following constraints added:
+    - `CHECK`, `FOREIGN KEY`, and `UNIQUE` constraints can be added through [`ALTER TABLE...ADD CONSTRAINT`](/docs/v23.2/alter-table#add-constraint). For example, this statement adds the `UNIQUE` constraint to `baz.id`:
+
+        ```sql
+        > ALTER TABLE baz ADD CONSTRAINT id_unique UNIQUE (id);
+        ```
+    - `DEFAULT` values and `NOT NULL` constraints can be added through [`ALTER TABLE...ALTER COLUMN`](/docs/v23.2/alter-table#set-or-change-a-default-value). For example, this statement adds the [`DEFAULT` value constraint](/docs/v23.2/default-value) to `baz.bool`:
+
+        ```sql
+        > ALTER TABLE baz ALTER COLUMN bool SET DEFAULT true;
+        ```
+    - [`PRIMARY KEY`](/docs/v23.2/primary-key) constraints can be added with [`ADD CONSTRAINT`](/docs/v23.2/alter-table#add-constraint) / [`ADD PRIMARY KEY`](/docs/v23.2/alter-table) in the following circumstances:
+        - A [`DROP CONSTRAINT`](/docs/v23.2/alter-table#drop-constraint) statement precedes the `ADD CONSTRAINT` / `ADD PRIMARY KEY` statement in the same transaction. For examples, see [Add constraints](/docs/v23.2/alter-table#add-constraints) and [Drop constraints](/docs/v23.2/alter-table#drop-constraints).
+        - The current [primary key is on `rowid`](/docs/v23.2/indexes#creation), the default primary key created if none is explicitly defined at table creation.
+        - The `ADD CONSTRAINT` / `ADD PRIMARY KEY` is in the same transaction as a `CREATE TABLE` statement with no primary key defined.
+
+#### Order of constraints
+
+The order in which you list constraints is not important because constraints are applied to every modification of their respective tables or columns.
+
+#### Name constraints on new tables
+
+You can name constraints applied to new tables using the `CONSTRAINT` clause before defining the constraint:
+
+```sql
+> CREATE TABLE foo (a INT CONSTRAINT another_name PRIMARY KEY);
+```
+
+```sql
+> CREATE TABLE bar (a INT, b INT, CONSTRAINT yet_another_name PRIMARY KEY (a,b));
+```
+
+### View constraints
+
+To view a table's constraints, use [`SHOW CONSTRAINTS`](/docs/v23.2/show-constraints) or [`SHOW CREATE`](/docs/v23.2/show-create).
+
+### Remove constraints
+
+The procedure for removing a constraint depends on its type:
+
+<table><thead><tr><th>Constraint Type</th><th>Procedure</th></tr></thead><tbody><tr><td><a href="/docs/v23.2/check"><code>CHECK</code></a></td><td>Use <a href="/docs/v23.2/alter-table#drop-constraint"><code>DROP CONSTRAINT</code></a>.</td></tr><tr><td><a href="/docs/v23.2/default-value"><code>DEFAULT</code> value</a></td><td>Use <a href="/docs/v23.2/alter-table#remove-default-constraint"><code>ALTER COLUMN</code></a>.</td></tr><tr><td><a href="/docs/v23.2/foreign-key"><code>FOREIGN KEY</code></a></td><td>Use <a href="/docs/v23.2/alter-table#drop-constraint"><code>DROP CONSTRAINT</code></a>.</td></tr><tr><td><a href="/docs/v23.2/not-null"><code>NOT NULL</code></a></td><td>Use <a href="/docs/v23.2/alter-table#remove-not-null-constraint"><code>ALTER COLUMN</code></a>.</td></tr><tr><td><a href="/docs/v23.2/primary-key"><code>PRIMARY KEY</code></a></td><td>Primary key constraints can be dropped with <a href="/docs/v23.2/alter-table#drop-constraint"><code>DROP CONSTRAINT</code></a> if an <a href="/docs/v23.2/alter-table#add-constraint"><code>ADD CONSTRAINT</code></a> statement follows the <code>DROP CONSTRAINT</code> statement in the same transaction.</td></tr><tr><td><a href="/docs/v23.2/unique"><code>UNIQUE</code></a></td><td>The <code>UNIQUE</code> constraint cannot be dropped directly. To remove the constraint, <a href="/docs/v23.2/drop-index">drop the index</a> that was created by the constraint, e.g., <code>DROP INDEX my&#95;unique&#95;constraint</code>.</td></tr></tbody></table>
+
+### Change constraints
+
+The procedure for changing a constraint depends on its type:
+
+<table><thead><tr><th>Constraint Type</th><th>Procedure</th></tr></thead><tbody><tr><td><a href="/docs/v23.2/check"><code>CHECK</code></a></td><td><a href="/docs/v23.2/transactions#syntax">Issue a transaction</a> that adds a new <code>CHECK</code> constraint (<a href="/docs/v23.2/alter-table#add-constraint"><code>ADD CONSTRAINT</code></a>), and then remove the existing one (<a href="/docs/v23.2/alter-table#drop-constraint"><code>DROP CONSTRAINT</code></a>).</td></tr><tr><td><a href="/docs/v23.2/default-value"><code>DEFAULT</code> value</a></td><td>The <code>DEFAULT</code> value can be changed through <a href="/docs/v23.2/alter-table#alter-column"><code>ALTER COLUMN</code></a>.</td></tr><tr><td><a href="/docs/v23.2/foreign-key"><code>FOREIGN KEY</code></a></td><td><a href="/docs/v23.2/transactions#syntax">Issue a transaction</a> that adds a new <code>FOREIGN KEY</code> constraint (<a href="/docs/v23.2/alter-table#add-constraint"><code>ADD CONSTRAINT</code></a>), and then remove the existing one (<a href="/docs/v23.2/alter-table#drop-constraint"><code>DROP CONSTRAINT</code></a>).</td></tr><tr><td><a href="/docs/v23.2/not-null"><code>NOT NULL</code></a></td><td>The <code>NOT NULL</code> constraint cannot be changed, only added and removed with <a href="/docs/v23.2/alter-table#alter-column"><code>ALTER COLUMN</code></a>.</td></tr><tr><td><a href="/docs/v23.2/primary-key"><code>PRIMARY KEY</code></a></td><td>To change a primary key, use an <a href="/docs/v23.2/alter-table#alter-primary-key"><code>ALTER TABLE ... ALTER PRIMARY KEY</code></a> statement.<br/><br/>When you change a primary key with <a href="/docs/v23.2/alter-table#alter-primary-key"><code>ALTER PRIMARY KEY</code></a>, the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use <a href="/docs/v23.2/alter-table#drop-constraint"><code>DROP CONSTRAINT</code></a>/<a href="/docs/v23.2/alter-table#add-constraint"><code>ADD CONSTRAINT</code></a> to change the primary key.</td></tr><tr><td><a href="/docs/v23.2/unique"><code>UNIQUE</code></a></td><td><a href="/docs/v23.2/transactions#syntax">Issue a transaction</a> that adds a new <code>UNIQUE</code> constraint (<a href="/docs/v23.2/alter-table#add-constraint"><code>ADD CONSTRAINT</code></a>), and then remove the existing one (<a href="/docs/v23.2/alter-table#drop-constraint"><code>DROP CONSTRAINT</code></a>).</td></tr></tbody></table>
+
+## See also
+
+- [`CREATE TABLE`](/docs/v23.2/create-table)
+- [`ADD CONSTRAINT`](/docs/v23.2/alter-table#add-constraint)
+- [`DROP CONSTRAINT`](/docs/v23.2/alter-table#drop-constraint)
+- [`SHOW CONSTRAINTS`](/docs/v23.2/show-constraints)
+- [`SHOW CREATE`](/docs/v23.2/show-create)
+- [`ALTER PRIMARY KEY`](/docs/v23.2/alter-table#alter-primary-key)
+- [`ALTER TABLE`](/docs/v23.2/alter-table)
+- [`ALTER COLUMN`](/docs/v23.2/alter-table#alter-column)

@@ -1,0 +1,155 @@
+---
+title: "DROP SCHEMA"
+old_description: "The DROP SCHEMA statement removes a schema and all its objects from a CockroachDB cluster."
+---
+
+import { DropSchema4 } from "/snippets/syntax-diagrams/DropSchema4.jsx";
+
+The `DROP SCHEMA` [statement](/docs/v24.3/sql-statements) removes a user-defined [schema](/docs/v24.3/sql-name-resolution#naming-hierarchy).
+
+<Note>
+The `DROP SCHEMA` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v24.3/online-schema-changes).
+</Note>
+
+## Required privileges
+
+The user must have the `DROP` [privilege](/docs/v24.3/security-reference/authorization#managing-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.
+
+## Syntax
+
+<DropSchema4 />
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF EXISTS</code></td><td>Drop the schema if it exists. If it does not exist, do not return an error.</td></tr><tr><td><code>schema&#95;name&#95;list</code></td><td>The schema, or a list of schemas, that you want to drop.<br/>To drop a schema in a database other than the current database, specify the name of the database and the name of the schema, separated by a "<code>.</code>" (e.g., <code>DROP SCHEMA IF EXISTS database.schema;</code>).</td></tr><tr><td><code>CASCADE</code></td><td>Drop all tables and views in the schema as well as all objects (such as <a href="/docs/v24.3/constraints">constraints</a> and <a href="/docs/v24.3/views">views</a>) that depend on those tables.<br/><br/><code>CASCADE</code> does not list objects it drops, so should be used cautiously.</td></tr><tr><td><code>RESTRICT</code></td><td><em>(Default)</em> Do not drop the schema if it contains any <a href="/docs/v24.3/create-table">tables</a> or <a href="/docs/v24.3/create-view">views</a>.</td></tr></tbody></table>
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v24.3/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v24.3/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Drop a schema
+
+```sql
+> CREATE SCHEMA org_one;
+```
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
+```
+
+```sql
+> DROP SCHEMA org_one;
+```
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  pg_catalog
+  pg_extension
+  public
+(5 rows)
+```
+
+### Drop a schema with tables
+
+To drop a schema that contains tables, you need to use the `CASCADE` keyword.
+
+```sql
+> CREATE SCHEMA org_two;
+```
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_two
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
+```
+
+```sql
+> CREATE TABLE org_two.users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        city STRING,
+        name STRING,
+        address STRING
+);
+```
+
+```sql
+> SHOW TABLES FROM org_two;
+```
+
+```text
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  org_two     | users      | table |                   0
+(1 row)
+```
+
+```sql
+> DROP SCHEMA org_two;
+```
+
+```text
+ERROR: schema "org_two" is not empty and CASCADE was not specified
+SQLSTATE: 2BP01
+```
+
+```sql
+> DROP SCHEMA org_two CASCADE;
+```
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  pg_catalog
+  pg_extension
+  public
+(5 rows)
+```
+
+## See also
+
+- [`CREATE SCHEMA`](/docs/v24.3/create-schema)
+- [`SHOW SCHEMAS`](/docs/v24.3/show-schemas)
+- [`SHOW JOBS`](/docs/v24.3/show-jobs)
+- [SQL Statements](/docs/v24.3/sql-statements)
+- [Online Schema Changes](/docs/v24.3/online-schema-changes)

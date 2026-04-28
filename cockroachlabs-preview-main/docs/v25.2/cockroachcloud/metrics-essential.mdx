@@ -1,0 +1,20 @@
+---
+title: "Essential Metrics for CockroachDB Standard Deployments"
+old_description: "Learn about the recommended essential metrics for monitoring your CockroachDB Standard cluster."
+---
+
+import MetricsEssential from "/snippets/cockroachcloud/metrics-essential.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MetricsEssential />

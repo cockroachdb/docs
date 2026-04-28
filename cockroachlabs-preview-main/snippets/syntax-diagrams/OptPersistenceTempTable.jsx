@@ -1,0 +1,71 @@
+export const OptPersistenceTempTable = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="169" width="377" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="#opt_temp" xlink:title="opt_temp">
+<rect height="32" width="82" x="51" y="3"></rect>
+<rect class="nonterminal" height="32" width="82" x="49" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="11" class="nonterminal" x="61" y="21">opt_temp</text></a><rect height="32" rx="10" width="64" x="71" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="69" y="45"></rect>
+<text class="terminal" x="79" y="65">LOCAL</text>
+<rect height="32" rx="10" width="74" x="71" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="69" y="89"></rect>
+<text class="terminal" x="79" y="109">GLOBAL</text>
+<rect height="32" rx="10" width="104" x="205" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="104" x="203" y="45"></rect>
+<text class="terminal" x="213" y="65">TEMPORARY</text>
+<rect height="32" rx="10" width="56" x="205" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="203" y="89"></rect>
+<text class="terminal" x="213" y="109">TEMP</text>
+<rect height="32" rx="10" width="96" x="51" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="96" x="49" y="133"></rect>
+<text class="terminal" x="59" y="153">UNLOGGED</text>
+<path class="line" d="m17 17 h2 m20 0 h10 m82 0 h10 m0 0 h196 m-318 0 h20 m298 0 h20 m-338 0 q10 0 10 10 m318 0 q0 -10 10 -10 m-328 10 v24 m318 0 v-24 m-318 24 q0 10 10 10 m298 0 q10 0 10 -10 m-288 10 h10 m64 0 h10 m0 0 h10 m-114 0 h20 m94 0 h20 m-134 0 q10 0 10 10 m114 0 q0 -10 10 -10 m-124 10 v24 m114 0 v-24 m-114 24 q0 10 10 10 m94 0 q10 0 10 -10 m-104 10 h10 m74 0 h10 m40 -44 h10 m104 0 h10 m-144 0 h20 m124 0 h20 m-164 0 q10 0 10 10 m144 0 q0 -10 10 -10 m-154 10 v24 m144 0 v-24 m-144 24 q0 10 10 10 m124 0 q10 0 10 -10 m-134 10 h10 m56 0 h10 m0 0 h48 m-288 -54 v20 m318 0 v-20 m-318 20 v68 m318 0 v-68 m-318 68 q0 10 10 10 m298 0 q10 0 10 -10 m-308 10 h10 m96 0 h10 m0 0 h182 m23 -132 h-3"></path>
+<polygon points="367 17 375 13 375 21"></polygon>
+<polygon points="367 17 359 13 359 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

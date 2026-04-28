@@ -1,0 +1,20 @@
+---
+title: "CockroachDB Advanced on Azure"
+old_description: "Learn about limitations and FAQs about CockroachDB Advanced on Microsoft Azure."
+---
+
+import CockroachdbAdvancedOnAzure from "/snippets/cockroachcloud/cockroachdb-advanced-on-azure.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CockroachdbAdvancedOnAzure />

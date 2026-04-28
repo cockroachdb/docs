@@ -1,0 +1,182 @@
+---
+title: "Indexes"
+old_description: "Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table."
+---
+
+Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
+
+## How do indexes work?
+
+When you create an index, CockroachDB "indexes" the columns you specify, which creates a copy of the columns and then sorts their values (without sorting the values in the table itself).
+
+After a column is indexed, SQL can easily filter its values using the index instead of scanning each row one-by-one. On large tables, this greatly reduces the number of rows SQL has to use, executing queries exponentially faster.
+
+For example, if you index an `INT` column and then filter it `WHERE <indexed column> = 10`, SQL can use the index to find values starting at 10 but less than 11. In contrast, without an index, SQL would have to evaluate **every** row in the table for values equaling 10. This is also known as a "full table scan", and it can be very bad for query performance.
+
+You can also create an index on a subset of rows. This type of index is called a *partial index*. For more information, see [Partial Indexes](/docs/v24.1/partial-indexes).
+
+To index [spatial data](/docs/v24.1/export-spatial-data), CockroachDB uses *spatial indexes*. For more information, see [Spatial Indexes](/docs/v24.1/spatial-indexes).
+
+In [multi-region deployments](/docs/v24.1/multiregion-overview), most users should use [`REGIONAL BY ROW` tables](/docs/v24.1/table-localities#regional-by-row-tables) instead of explicit index [partitioning](/docs/v24.1/partitioning). When you add an index to a `REGIONAL BY ROW` table, it is automatically partitioned on the [`crdb_region` column](/docs/v24.1/alter-table#crdb_region). Explicit index partitioning is not required.
+
+While CockroachDB process an [`ADD REGION`](/docs/v24.1/alter-database#add-region) or [`DROP REGION`](/docs/v24.1/alter-database#drop-region) statement on a particular database, creating or modifying an index will throw an error. Similarly, all [`ADD REGION`](/docs/v24.1/alter-database#add-region) and [`DROP REGION`](/docs/v24.1/alter-database#drop-region) statements will be blocked while an index is being modified on a `REGIONAL BY ROW` table within the same database.
+
+### Creation
+
+Each table automatically has a *primary index* called `{tbl}_pkey`, which indexes either its [primary key](/docs/v24.1/primary-key) or—if there is no primary key—a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
+
+To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](/docs/v24.1/cluster-settings) to `true`.
+
+<Note>
+Use [`ALTER ROLE ALL SET {sessionvar} = {val}`](/docs/v24.1/alter-role#set-default-session-variable-values-for-all-users) instead of the `sql.defaults.*` [cluster settings](/docs/v24.1/cluster-settings). This allows you to set a default value for all users for any [session variable](/docs/v24.1/set-vars) that applies during login, making the `sql.defaults.*` cluster settings redundant.
+</Note>
+
+The primary index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use [secondary indexes](/docs/v24.1/schema-design-indexes) to improve the performance of queries using columns not in a table's primary key. You can create them:
+
+- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](/docs/v24.1/create-table#create-a-table-with-secondary-and-gin-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](/docs/v24.1/unique).
+- For existing tables with [`CREATE INDEX`](/docs/v24.1/create-index).
+- By applying the `UNIQUE` constraint to columns with [`ALTER TABLE`](/docs/v24.1/alter-table), which automatically creates an index of the constrained columns.
+
+To review guidelines for creating the most useful secondary indexes, see [Secondary Indexes: Best practices](/docs/v24.1/schema-design-indexes#best-practices).
+
+### Selection
+
+In most cases CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). Cases where CockroachDB will use multiple indexes include certain queries that use disjunctions (i.e., predicates with `OR`), as well as [zigzag joins](/docs/v24.1/cost-based-optimizer#zigzag-joins) for some other queries. To learn how to use the [`EXPLAIN`](/docs/v24.1/explain) statement for your query to see which index is being used, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2).
+
+To override CockroachDB index selection, you can also force queries [to use a specific index](/docs/v24.1/table-expressions#force-index-selection) (also known as "index hinting"). Index hinting is supported for [`SELECT`](/docs/v24.1/select-clause#select-from-a-specific-index), [`DELETE`](/docs/v24.1/delete#force-index-selection-for-deletes), and [`UPDATE`](/docs/v24.1/update#force-index-selection-for-updates) statements.
+
+### Storage
+
+CockroachDB stores indexes directly in its key-value store. You can find more information in our blog post [Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage).
+
+### Locking
+
+Tables are not locked during index creation due to CockroachDB support for [online schema changes](/docs/v24.1/online-schema-changes).
+
+### Performance
+
+Indexes create a trade-off: they greatly improve the speed of queries, but may slightly slow down writes to an affected column (because new values have to be written for both the table *and* the index).
+
+To maximize your indexes' performance, Cockroach Labs recommends following the [secondary index best practices](/docs/v24.1/schema-design-indexes#best-practices).
+
+To observe the impact of an index without affecting a production workload, you can [create an index](/docs/v24.1/create-index) using the `NOT VISIBLE` clause. If an index is `NOT VISIBLE`, queries will not read from the index unless it is specifically selected with an [index hint](/docs/v24.1/indexes#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](/docs/v24.1/set-vars#optimizer-use-not-visible-indexes). For an example, refer to [Set an index to be not visible](/docs/v24.1/alter-index#set-an-index-to-be-not-visible).
+
+For more index visibility considerations, refer to [`[NOT] VISIBLE`](/docs/v24.1/alter-index#not-visible).
+
+<Warning>
+We **strongly recommend** adding size limits to all [indexed columns](/docs/v24.1/indexes), which includes columns in [primary keys](/docs/v24.1/primary-key).
+
+Values exceeding 1 MiB can lead to [storage layer write amplification](/docs/v24.1/architecture/storage-layer#write-amplification) and cause significant performance degradation or even [crashes due to OOMs (out of memory errors)](/docs/v24.1/cluster-setup-troubleshooting#out-of-memory-oom-crash).
+
+To add a size limit using [`CREATE TABLE`](/docs/v24.1/create-table):
+
+```sql
+CREATE TABLE name (first STRING(100), last STRING(100));
+```
+
+To add a size limit using [`ALTER TABLE... ALTER COLUMN`](/docs/v24.1/alter-table#alter-column):
+
+```sql
+SET enable_experimental_alter_column_type_general = true;
+```
+
+```sql
+ALTER TABLE name ALTER first TYPE STRING(99);
+```
+</Warning>
+
+<Tip>
+For more information about how to tune CockroachDB performance, see [SQL Performance Best Practices](/docs/v24.1/performance-best-practices-overview).
+</Tip>
+
+### Storing columns
+
+The `STORING` clause specifies columns which are not part of the index key but should be stored in the index. This optimizes queries that retrieve those columns without filtering on them, because it prevents the need to read the [primary index](/docs/v24.1/primary-key).
+
+An index that stores all the columns needed by a query is also known as a *covering index* for that query. When a query has a covering index, CockroachDB can use that index directly instead of doing an "index join" with the primary index, which is likely to be slower.
+
+The synonym `COVERING` is also supported.
+
+#### Example
+
+Suppose you have a table with three columns, two of which are indexed:
+
+```sql
+> CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2));
+```
+
+If you filter on the indexed columns but retrieve the unindexed column, this requires reading `col3` from the primary index via an "index join."
+
+```sql
+> EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
+```
+
+```text
+  distribution: local
+  vectorized: true
+
+  • index join
+  │ table: tbl@tbl_pkey
+  │
+  └── • scan
+        missing stats
+        table: tbl@tbl_col1_col2_idx
+        spans: [/10/2 - /10]
+
+  index recommendations: 1
+  1. type: index replacement
+     SQL commands: CREATE INDEX ON tbl (col1, col2) STORING (col3); DROP INDEX tbl@tbl_col1_col2_idx;
+(14 rows)
+```
+
+However, if you store `col3` in the index as shown in the [index recommendation](/docs/v24.1/explain#default-statement-plans), the index join is no longer necessary. This means your query only needs to read from the secondary index, so it will be more efficient.
+
+```sql
+> CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2) STORING (col3));
+```
+
+```sql
+> EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
+```
+
+```text
+               info
+----------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    missing stats
+    table: tbl@tbl_col1_col2_idx
+    spans: [/10/2 - /10]
+(7 rows)
+```
+
+## Best practices
+
+For best practices, see [Secondary Indexes: Best practices](/docs/v24.1/schema-design-indexes#best-practices).
+
+## Indexes on `REGIONAL BY ROW` tables in multi-region databases
+
+In [multi-region deployments](/docs/v24.1/multiregion-overview), most users should use [`REGIONAL BY ROW` tables](/docs/v24.1/table-localities#regional-by-row-tables) instead of explicit index [partitioning](/docs/v24.1/partitioning). When you add an index to a `REGIONAL BY ROW` table, it is automatically partitioned on the [`crdb_region` column](/docs/v24.1/alter-table#crdb_region). Explicit index partitioning is not required.
+
+While CockroachDB process an [`ADD REGION`](/docs/v24.1/alter-database#add-region) or [`DROP REGION`](/docs/v24.1/alter-database#drop-region) statement on a particular database, creating or modifying an index will throw an error. Similarly, all [`ADD REGION`](/docs/v24.1/alter-database#add-region) and [`DROP REGION`](/docs/v24.1/alter-database#drop-region) statements will be blocked while an index is being modified on a `REGIONAL BY ROW` table within the same database.
+
+This behavior also applies to [GIN indexes](/docs/v24.1/inverted-indexes).
+
+For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](/docs/v24.1/alter-table#add-a-unique-index-to-a-regional-by-row-table).
+
+## See also
+
+- [`CREATE INDEX`](/docs/v24.1/create-index)
+- [Secondary Indexes](/docs/v24.1/schema-design-indexes)
+- [GIN Indexes](/docs/v24.1/inverted-indexes)
+- [Partial Indexes](/docs/v24.1/partial-indexes)
+- [Spatial Indexes](/docs/v24.1/spatial-indexes)
+- [Hash-sharded Indexes](/docs/v24.1/hash-sharded-indexes)
+- [Expression Indexes](/docs/v24.1/expression-indexes)
+- [Select from a specific index](/docs/v24.1/select-clause#select-from-a-specific-index)
+- [`DROP INDEX`](/docs/v24.1/drop-index)
+- [`ALTER INDEX... RENAME TO`](/docs/v24.1/alter-index#rename-to)
+- [`SHOW INDEX`](/docs/v24.1/show-index)
+- [SQL Statements](/docs/v24.1/sql-statements)

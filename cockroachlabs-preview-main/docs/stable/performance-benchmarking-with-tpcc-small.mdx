@@ -1,0 +1,154 @@
+---
+title: "Performance Benchmarking with TPC-C"
+old_description: "Learn how to benchmark CockroachDB against TPC-C with 3 nodes on `c5d.4xlarge` machines"
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](/docs/v26.1/performance#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+
+<LinkedPageTabs
+  currentPath="/docs/v26.1/performance-benchmarking-with-tpcc-small"
+  items={[
+    {
+      title: "Local",
+      href: "/docs/v26.1/performance-benchmarking-with-tpcc-local",
+    },
+    {
+      title: "Local (Multi-Region)",
+      href: "/docs/v26.1/performance-benchmarking-with-tpcc-local-multiregion",
+    },
+    {
+      title: "Small",
+      href: "/docs/v26.1/performance-benchmarking-with-tpcc-small",
+    },
+    {
+      title: "Medium",
+      href: "/docs/v26.1/performance-benchmarking-with-tpcc-medium",
+    },
+    {
+      title: "Large",
+      href: "/docs/v26.1/performance-benchmarking-with-tpcc-large",
+    },
+  ]}
+/>
+
+<table><thead><tr><th>Workload</th><th>Cluster size</th><th>Warehouses</th><th>Data size</th></tr></thead><tbody><tr><td>Local</td><td>3 nodes on your laptop</td><td>10</td><td>2 GB</td></tr><tr><td>Local (multi-region)</td><td>9 in-memory nodes on your laptop using <code>cockroach demo</code></td><td>10</td><td>2 GB</td></tr><tr><td>Small</td><td>3 nodes on <code>c5d.4xlarge</code> machines</td><td>2500</td><td>200 GB</td></tr><tr><td>Medium</td><td>15 nodes on <code>c5d.4xlarge</code> machines</td><td>13,000</td><td>1.04 TB</td></tr><tr><td>Large</td><td>81 nodes on <code>c5d.9xlarge</code> machines</td><td>140,000</td><td>11.2 TB</td></tr></tbody></table>
+
+## Before you begin
+
+### Review TPC-C concepts
+
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured](/docs/v26.1/performance#tpc-c).
+
+## Step 1. Set up the environment
+
+- [Provision VMs](#provision-vms)
+- [Configure your network](#configure-your-network)
+
+### Provision VMs
+
+1. [Create 4 VM instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/LaunchingAndUsingInstances), 3 for CockroachDB nodes and 1 for the TPC-C workload.
+    - Create all instances in the same region and the same security group.
+    - Use the `c5d.4xlarge` machine type.
+    - Use [local SSD instance store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage#instance-store-volumes). Local SSDs are low latency disks attached to each VM, which maximizes performance. This configuration best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
+2. Note the internal IP address of each instance. You'll need these addresses when starting the CockroachDB nodes.
+
+<Warning>
+This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as security, load balancing, and data location techniques to minimize network latency. For more details, see the [Production Checklist](/docs/v26.1/recommended-production-settings).
+</Warning>
+
+### Configure your network
+
+CockroachDB requires TCP communication on two ports:
+
+- `26257` for inter-node communication (i.e., working as a cluster) and for the TPC-C workload to connect to nodes
+- `8080` for exposing your DB Console
+
+[Create inbound rules](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security#adding-security-group-rule) for your security group:
+
+#### Inter-node and TPCC-to-node communication
+
+<table><thead><tr><th>Field</th><th>Recommended Value</th></tr></thead><tbody><tr><td>Type</td><td>Custom TCP Rule</td></tr><tr><td>Protocol</td><td>TCP</td></tr><tr><td>Port Range</td><td><strong>26257</strong></td></tr><tr><td>Source</td><td>The name of your security group (e.g., <em>sg-07ab277a</em>)</td></tr></tbody></table>
+
+#### DB Console
+
+<table><thead><tr><th>Field</th><th>Recommended Value</th></tr></thead><tbody><tr><td>Type</td><td>Custom TCP Rule</td></tr><tr><td>Protocol</td><td>TCP</td></tr><tr><td>Port Range</td><td><strong>8080</strong></td></tr><tr><td>Source</td><td>Your network's IP ranges</td></tr></tbody></table>
+
+## Step 2. Start CockroachDB
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+1. SSH to the first VM where you want to run a CockroachDB node.
+2. [Install CockroachDB for Linux](/docs/v26.1/install-cockroachdb).
+3. Run the [`cockroach start`](/docs/v26.1/cockroach-start) command:
+
+    ```shell
+    cockroach start \
+    --insecure \
+    --advertise-addr=<node1 internal address> \
+    --join=<node1 internal address>,<node2 internal address>,<node3 internal address> \
+    --cache=.25
+    ```
+4. Repeat steps 1 - 3 for the other 2 VMs for CockroachDB nodes. Each time, be sure to adjust the `--advertise-addr` flag.
+5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](/docs/v26.1/cockroach-init) command to join the first nodes into a cluster:
+
+    ```shell
+    cockroach init --insecure --host=<address of any node on --join list>
+    ```
+
+## Step 3. Import the TPC-C dataset
+
+CockroachDB comes with a number of [built-in workloads](/docs/v26.1/cockroach-workload) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc) workload.
+
+1. SSH to the VM where you want to run TPC-C.
+2. [Install CockroachDB for Linux](/docs/v26.1/install-cockroachdb).
+3. Import the TPC-C dataset:
+
+    ```shell
+    $ cockroach workload fixtures import tpcc \
+    --warehouses=2500 \
+    'postgres://root@<address of any CockroachDB node>:26257?sslmode=disable'
+    ```
+
+    This will load 200 GB of data for 2500 "warehouses". This can take a while to complete.
+
+    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console](/docs/v26.1/ui-overview) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+
+## Step 4. Run the benchmark
+
+1. Still on the same VM, create an `addrs` file containing connection strings to the 3 CockroachDB nodes:
+
+    ```text
+    postgres://root@<node 1 internal address>:26257?sslmode=disable postgres://root@<node 2 internal address>:26257?sslmode=disable postgres://root@<node 3 internal address>:26257?sslmode=disable
+    ```
+2. Run TPC-C for 30 minutes:
+
+    ```shell
+    $ cockroach workload run tpcc \
+    --warehouses=2500 \
+    --ramp=1m \
+    --duration=30m \
+    $(cat addrs)
+    ```
+
+## Step 5. Interpret the results
+
+Once the workload has finished running, you will see a result similar to the following. The efficiency and latency can be combined to determine whether this was a passing run. You should expect to see an efficiency number above 95%, well above the required minimum of 85%, and p95 latencies well below the required maximum of 10 seconds.
+
+```text
+_elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
+ 1800.0s    31064.6  96.6%    107.4     88.1    243.3    302.0    402.7    973.1
+```
+
+## See also
+
+- [Performance Overview](/docs/v26.1/performance)
+- Hardware
+
+    CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist](/docs/v26.1/recommended-production-settings#hardware).
+- Performance tuning
+
+    For guidance on tuning a real workload's performance, see [SQL Best Practices](/docs/v26.1/performance-best-practices-overview), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview](/docs/v26.1/multiregion-overview).

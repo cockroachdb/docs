@@ -1,0 +1,20 @@
+---
+title: "Create a CockroachDB Cloud account"
+old_description: "Learn how to create and delete a CockroachDB Cloud account"
+---
+
+import CreateAnAccount from "/snippets/cockroachcloud/create-an-account.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CreateAnAccount />
