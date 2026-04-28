@@ -156,7 +156,7 @@ You can export invoice data in CSV or PDF format. From the **Invoices** tab, on 
 - **Export Daily CSV**: Contains the same columns and structure as the Monthly CSV, but usage rows are broken down by individual day rather than aggregated across the full billing period. Two additional columns are included: **Usage date** (the date each usage row covers) and **Locality** (for multi-region charge breakdowns). Adjustments are appended in the same way as in the Monthly CSV.
 
     {{site.data.alerts.callout_info}}
-    **Export Daily CSV** is not available for invoices posted in 2025 or earlier.
+    **Export Daily CSV** is only available for invoices posted in 2026 or later.
     {{site.data.alerts.end}}
 
 - **Export Invoice PDF**: Renders invoice information from the Console into a traditional invoice format. This format includes the high level information from the Console, a summary of total usage, the organization's billing address, and a CockroachDB letterhead.
