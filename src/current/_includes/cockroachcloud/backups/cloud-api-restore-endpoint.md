@@ -5,7 +5,7 @@ You can use the `/v1/clusters/{destination_cluster_id}/restores` endpoint to res
 {% if page.name == "managed-backups-advanced.md" %}
 On Advanced clusters, restore operations can be performed at the cluster, database, or table level into the same cluster or a different Advanced cluster in the same organization.
 {% else %}
-On Standard and Basic clusters, restore operations can only be performed into the same cluster where the managed backup is stored. Managed backups can only be restored at the cluster level.
+On Standard and Basic clusters, managed backups can only be restored at the cluster level into the same cluster or a different cluster of the same plan type in the same organization.
 {% endif %}
 
 #### Restore a cluster
@@ -40,8 +40,7 @@ curl --request POST \
 }'
 ~~~
 
-{% if page.name == "managed-backups-advanced.md" %}
-To restore a cluster backup into a different cluster, ensure that the destination cluster is created and contains no databases/schemas/tables. Send the restore request to the destination cluster ID, specifying the ID of the source cluster as `source_cluster_id`. Both the source cluster and the destination cluster must use the Advanced plan.
+To restore a cluster backup into a different cluster, ensure that the destination cluster is created with the same plan type ({{ site.data.products.basic }}, {{ site.data.products.standard }}, or {{ site.data.products.advanced }}) and contains no databases/schemas/tables. Send the restore request to the destination cluster ID, specifying the ID of the source cluster as `source_cluster_id`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -55,8 +54,6 @@ curl --request POST \
 ~~~
 
 You can specify additional options for the restore job in the `restore_opts` object. For more information, see the [API endpoint documentation](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/restores-config).
-
-{% endif %}
 
 If the request is successful, the client recieves a JSON response that describes the request operation:
 
