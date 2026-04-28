@@ -1700,7 +1700,7 @@ If the column has the [`NOT NULL` constraint]({% link {{ page.version.version }}
 
 #### Convert to a different data type
 
-The [TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %}) database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
+The TPC-C database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1740,7 +1740,7 @@ To change the data type from `DECIMAL` to `STRING`:
 
 #### Change a column type's precision
 
-The [TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %}) `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
+The TPC-C `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
