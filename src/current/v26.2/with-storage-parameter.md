@@ -83,6 +83,6 @@ In this case, CockroachDB implicitly added the `ttl` and `ttl_job_cron` [TTL sto
 - [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
 - [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
-- [`SET` (storage parameter)]({% link {{ page.version.version }}/alter-table.md %}#set-storage-parameter)
-- [`RESET` (storage parameter)]({% link {{ page.version.version }}/alter-table.md %}#reset-storage-parameter)
+- [`ALTER TABLE ... SET`]({% link {{ page.version.version }}/alter-table.md %}#set-storage-parameter)
+- [`ALTER INDEX ... SET`]({% link {{ page.version.version }}/alter-index.md %}#set)
 - [Batch Delete Expired Data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %})

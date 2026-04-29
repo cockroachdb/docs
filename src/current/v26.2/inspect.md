@@ -36,14 +36,14 @@ Parameter | Description
 `table_name` | The [table]({% link {{ page.version.version }}/create-table.md %}) to inspect.
 `db_name` | The [database]({% link {{ page.version.version }}/create-database.md %}) to inspect.
 `opt_as_of_clause` | Optional. Run the inspection against a historical read timestamp using `INSPECT ... AS OF SYSTEM TIME {expr}`. For an example, see [`INSPECT` at a specific timestamp](#inspect-at-a-specific-timestamp). For more information about historical reads, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
-`opt_inspect_options_clause` | Optional. Control which [indexes]({% link {{ page.version.version }}/indexes.md %}) are inspected using `INSPECT ... WITH OPTIONS (...)`. For an example, see [`INSPECT` a table for specific indexes](#inspect-a-table-for-specific-indexes). See [Options](#options).
+`opt_inspect_options_clause` | Optional. Control which [indexes]({% link {{ page.version.version }}/indexes.md %}) are used to plan `INSPECT` checks with `INSPECT ... WITH OPTIONS (...)`. For an example, see [`INSPECT` a table for specific indexes](#inspect-a-table-for-specific-indexes). See [Options](#options).
 
 ### Options
 
 Option | Description
 -------|------------
-`INDEX ALL` | Inspect all supported index types in the target table or database. This is the default.
-`INDEX ({index_name} [, ...])` | Inspect only the specified indexes. Note that `INDEX ALL` and this option are mutually exclusive.
+`INDEX ALL` | Run all supported `INSPECT` checks for the target table or database. This is the default.
+`INDEX ({index_name} [, ...])` | Run checks only for the specified indexes. {% include_cached new-in.html version="v26.2" %} On supported [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row) tables, naming the primary index can also trigger a uniqueness check. Note that `INDEX ALL` and this option are mutually exclusive.
 `DETACHED` | Run `INSPECT` in detached mode so the statement returns to the SQL client after the job is created (instead of waiting for the job to complete). For an example, see [`INSPECT` a table without waiting for completion](#inspect-a-table-without-waiting-for-completion). This option allows `INSPECT` to run inside a [multi-statement transaction]({% link {{ page.version.version }}/run-multi-statement-transactions.md %}).
 
 ## Considerations
@@ -52,6 +52,7 @@ Option | Description
 - By default, `INSPECT` causes the SQL client to wait for the background job to complete and returns a `NOTICE` with the job ID. To return to the client as soon as the job is created (without waiting for it to finish), use the [`DETACHED` option](#options).
 - `INSPECT` can be run inside a [multi-statement transaction]({% link {{ page.version.version }}/run-multi-statement-transactions.md %}) if the `DETACHED` option is used. Otherwise, it needs to be run in an [implicit transaction]({% link {{ page.version.version }}/transactions.md %}#individual-statements).
 - `INSPECT` runs with low priority under the [admission control]({% link {{ page.version.version }}/admission-control.md %}) subsystem and may take time on large datasets. Plan to run it during periods of lower system load.
+- {% include_cached new-in.html version="v26.2" %} `INSPECT` runs secondary-index consistency checks on supported secondary indexes. On supported [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row) tables, it can also run uniqueness checks on the primary index to detect duplicate unique values across regions.
 - The following index types are unsupported:
   - [Vector indexes]({% link {{ page.version.version }}/vector-indexes.md %})
   - [Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %})
@@ -62,7 +63,7 @@ Option | Description
 
 ## Examples
 
-### `INSPECT` a table (all supported indexes)
+### `INSPECT` a table (all supported checks)
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -84,6 +85,15 @@ INSPECT TABLE movr.public.vehicles WITH OPTIONS INDEX (vehicles_auto_index_fk_ci
 ~~~
 NOTICE: waiting for INSPECT job to complete: 1141477560713150465
 If the statement is canceled, the job will continue in the background.
+~~~
+
+### Run a uniqueness check on a `REGIONAL BY ROW` primary index
+
+{% include_cached new-in.html version="v26.2" %} On supported [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row) tables, `INSPECT` will run uniqueness checks on the primary index to detect duplicate unique values across regions. This will also run any other checks supported by `INSPECT`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSPECT TABLE movr.public.users;
 ~~~
 
 ### `INSPECT` a table without waiting for completion
