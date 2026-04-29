@@ -23,6 +23,21 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
     <button class="filter-button" data-scope="replicator"><code>replicator</code></button>
 </div>
 
+### April 30, 2026
+
+<section class="filter-content" markdown="1" data-scope="molt">
+`molt` 1.4.0 is [available](#installation):
+
+- MOLT Verify now supports PostgreSQL declarative partitioned tables.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="replicator">
+`replicator` 1.3.3 is [available](#installation):
+
+- Fixed a bug where MySQL `BLOB`, `BINARY`, `VARBINARY`, and `MEDIUMBLOB` columns containing non-UTF-8 binary data were silently corrupted during replication to CockroachDB. Binary values are now correctly hex-encoded before transmission, preserving data integrity.
+- Replication from MySQL sources now correctly replicates `NULL` values in `ENUM` columns.
+</section>
+
 ### March 26, 2026
 <section class="filter-content" markdown="1" data-scope="molt">
 `molt` 1.3.7 is [available](#installation):
