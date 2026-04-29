@@ -304,7 +304,7 @@ layers:
       unit: COUNT
       aggregation: AVG
       derivative: NON_NEGATIVE_DERIVATIVE
-      how_to_use: This metric tracks transient changefeed errors. Alert on "too many" errors, such as 50 retries in 15 minutes. For example, during a rolling upgrade this counter will increase because the changefeed jobs will restart following node restarts. There is an exponential backoff, up to 10 minutes. But if there is no rolling upgrade in process or other cluster maintenance, and the error rate is high, investigate the changefeed job.
+      how_to_use: This metric tracks transient changefeed errors. Alert on "too many" errors, such as 50 retries in 15 minutes. For example, during a rolling upgrade this counter will increase because the changefeed jobs will restart following node restarts. There is an exponential backoff, up to 30 seconds, that resets if the changefeed's resolved timestamp advances between retries. But if there is no rolling upgrade in process or other cluster maintenance, and the error rate is high, investigate the changefeed job.
       visibility: ESSENTIAL
     - name: changefeed.failures
       exported_name: changefeed_failures

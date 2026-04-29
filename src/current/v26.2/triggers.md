@@ -4,10 +4,6 @@ summary: A trigger executes a function when one or more specified SQL operations
 toc: true
 ---
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 A *trigger* executes a function when one or more specified SQL operations is performed on a table. The executed function is called a [*trigger function*](#trigger-function) and is written in [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}).
 
 Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
