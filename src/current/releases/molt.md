@@ -34,7 +34,7 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
 <section class="filter-content" markdown="1" data-scope="replicator">
 `replicator` 1.3.3 is [available](#installation):
 
-- Fixed a bug where MySQL `BLOB`, `BINARY`, `VARBINARY`, and `MEDIUMBLOB` columns containing non-UTF-8 binary data were silently corrupted during replication to CockroachDB. Binary values are now correctly hex-encoded before transmission, preserving data integrity.
+- Fixed a bug where MySQL `BLOB`, `BINARY`, `VARBINARY`, and `MEDIUMBLOB` columns containing non-UTF-8 binary data were corrupted during replication to CockroachDB. Binary values are now correctly hex-encoded before transmission, preserving data integrity.
 - Replication from MySQL sources now correctly replicates `NULL` values in `ENUM` columns.
 </section>
 
