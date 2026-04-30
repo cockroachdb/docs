@@ -89,6 +89,7 @@ Property        | Description
 `priority` | The [transaction priority level]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities) at which this statement executed.
 `quality of service` | The session's [quality of service]({% link {{ page.version.version }}/admission-control.md %}#set-quality-of-service-level-for-a-session) level at which the statement executed.
 `historical` | The timestamp and [follower read type]({% link {{ page.version.version }}/follower-reads.md %}#follower-read-types), if applicable, for [historical reads]({% link {{ page.version.version }}/as-of-system-time.md %}).
+`table stats mode` | <span class="version-tag">New in v26.2:</span> Whether the execution plan for the statement was determined using [canary or stable statistics]({% link {{ page.version.version }}/canary-statistics.md %}). This field is only displayed when canary statistics are enabled.
 
 ### Statement plan tree properties
 
@@ -114,6 +115,7 @@ Statement plan tree properties | Description
 `estimated row count` | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
 `table` | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
 `spans` | The interval of the key space read by the processor. `FULL SCAN` indicates that the table is scanned on all key ranges of the index (also known as a "full table scan" or "unlimited full scan"). `FULL SCAN (SOFT LIMIT)` indicates that a full table scan can be performed, but will halt early once enough rows have been scanned. `LIMITED SCAN` indicates that the table will be scanned on a subset of key ranges of the index. `[/1 - /1]` indicates that only the key with value `1` is read by the processor.
+`canary window` | <span class="version-tag">New in v26.2:</span> The amount of time new statistics for the table remain in [canary status]({% link {{ page.version.version }}/canary-statistics.md %}#the-canary-window) before being promoted to stable status. This field is only displayed when canary statistics are enabled.                             
 
 ## `PLAN` option
 
