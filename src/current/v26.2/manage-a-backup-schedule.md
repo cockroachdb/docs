@@ -27,6 +27,16 @@ docs_area: manage
 
 {% include {{ page.version.version }}/backups/storage-collision-examples.md %}
 
+### Backup compactions for scheduled backups
+
+When [backup compactions]({% link {{ page.version.version }}/backup.md %}#backup-compactions) are enabled, scheduled backups automatically merge incremental backups, allowing you to reduce the frequency of full backups without reducing the frequency of incremental backups. You can maintain the same RPO while limiting storage costs.
+
+Enabling backup compactions also improves restore performance and is required for [faster restores]({% link {{ page.version.version }}/restore.md %}#run-faster-restores) using `WITH EXPERIMENTAL COPY`.
+
+Compactions run automatically on scheduled backups when the [`backup.compaction.threshold`]({% link {{ page.version.version }}/cluster-settings.md %}) cluster setting is set to `4`.
+
+For more information, refer to [Backup compactions]({% link {{ page.version.version }}/backup.md %}#backup-compactions).
+
 ## Create a new backup schedule
 
 To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) statement. For example:

@@ -13,7 +13,7 @@ CockroachDB does not support materialized views that are refreshed on [transacti
 
 ## Required privileges
 
-The user must be the [owner]({% link {{ page.version.version }}/alter-view.md %}) of the materialized view or have [admin]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) privileges.
+The user must have the [`MAINTAIN` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#maintain) on the materialized view. The [owner]({% link {{ page.version.version }}/alter-view.md %}) of the materialized view and users with [admin]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) privileges implicitly have this privilege. To allow a non-owner to refresh a materialized view, run `GRANT MAINTAIN ON <materialized-view> TO <role_or_user>;`.
 
 ## Synopsis
 

@@ -1158,3 +1158,6 @@
 - destination: update.md
   sources: ['update-data.md']
   versions: ['v26.1', 'v26.2']
+
+- destination: cockroachcloud/byoc-azure-deployment.md
+  sources: ['cockroachcloud/byoc-deployment.md']
