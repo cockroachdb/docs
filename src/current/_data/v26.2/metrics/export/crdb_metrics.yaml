@@ -7,9 +7,17 @@ metrics:
   addsstable_applications: sum
   addsstable_copies: sum
   addsstable_proposals: sum
+  admission_elastic_cpu_nanos_exhausted_duration: sum
+  admission_granter_elastic_io_tokens_exhausted_duration_kv: sum
+  admission_granter_io_tokens_exhausted_duration_kv: sum
+  admission_granter_slots_exhausted_duration_kv: sum
   admission_io_overload: mean
+  admission_wait_durations_elastic_cpu: sum
+  admission_wait_durations_elastic_stores: sum
   admission_wait_durations_kv: sum
   admission_wait_durations_kv_stores: sum
+  admission_wait_durations_sql_kv_response: sum
+  admission_wait_durations_sql_sql_response: sum
   admission_wait_sum_kv: sum
   admission_wait_sum_kv_stores: sum
   admission_wait_sum_sql_kv_response: sum
@@ -46,6 +54,9 @@ metrics:
   jobs_row_level_ttl_total_rows: sum
   keybytes: sum
   keycount: sum
+  kvflowcontrol_eval_wait_elastic_duration: sum
+  kvflowcontrol_eval_wait_regular_duration: sum
+  kvflowcontrol_send_queue_bytes: sum
   leases_epoch: sum
   leases_error: sum
   leases_expiration: sum
