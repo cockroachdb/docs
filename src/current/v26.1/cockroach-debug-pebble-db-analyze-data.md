@@ -55,16 +55,16 @@ This data can help Cockroach Labs evaluate compression defaults and can help you
 
 The output CSV file is periodically rewritten while the command is running. Even if the command is interrupted, you can still use the most recently written output.
 
-### Interpret results
+### Review results with Cockroach Labs
 
-The command groups sampled blocks into buckets and reports compression results for each bucket. Use the results to compare algorithms for the data that is actually stored in the analyzed store or backup.
+The command groups sampled blocks into buckets and reports compression results for each bucket.
 
 - `CR` is the compression ratio. Higher values mean that compressed data uses less storage.
 - `Comp` is compression throughput. Lower throughput means higher CPU cost when Pebble writes or rewrites SSTs.
 - `Decomp` is decompression throughput. Lower throughput means higher CPU cost when CockroachDB reads compressed data.
 - `Snappy`, `MinLZ1`, `Zstd1`, `Auto1/30`, `Auto1/15`, and `Zstd3` are compression experiments. These names are not a one-to-one list of valid values for [`storage.sstable.compression_algorithm`]({% link {{ page.version.version }}/cluster-settings.md %}); use them to compare the general speed and space tradeoffs of lower-effort, adaptive, and higher-effort compression.
 
-Most users do not need to tune SSTable compression settings. Use these results to understand whether compression tradeoffs are relevant for a representative store, and consult [Cockroach Labs Support](https://support.cockroachlabs.com/) before changing SSTable compression settings in production. For more information about Pebble SSTable compression, see [SST compression]({% link {{ page.version.version }}/architecture/storage-layer.md %}#sst-compression).
+Most users do not need to tune SSTable compression settings. These results are intended to support review with Cockroach Labs rather than direct tuning decisions by end users. To understand whether compression tradeoffs are relevant for a representative store, consult [Cockroach Labs Support](https://support.cockroachlabs.com/) before changing SSTable compression settings in production. For more information about Pebble SSTable compression, see [SST compression]({% link {{ page.version.version }}/architecture/storage-layer.md %}#sst-compression).
 
 ## Examples
 

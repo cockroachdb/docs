@@ -69,13 +69,13 @@ SST files are immutable; they are never modified, even during the [compaction pr
 
 ##### SST compression
 
-Pebble compresses SSTable and blob value data to reduce physical storage use. The default profile, `fastest`, is optimized for low CPU overhead and is appropriate for most workloads.
+Pebble compresses SSTable and blob value data to reduce physical storage use. The default profile, `fastest`, uses MinLZ1 on `amd64` and `arm64` platforms, is optimized for low CPU overhead, and is appropriate for most workloads.
 
-For advanced storage tuning, CockroachDB exposes the `storage.sstable.compression_algorithm` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). The profile values are ordered by increasing compression effort: `fastest`, `fast`, `balanced`, and `good`. Higher-effort profiles can improve compression for some workloads, but can also increase CPU usage for writes, compactions, and reads that decompress data. Most users do not need to tune this setting. Work with [Cockroach Labs Support](https://support.cockroachlabs.com/) before changing this setting in production.
+For advanced storage tuning, CockroachDB exposes the `storage.sstable.compression_algorithm` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). The profile values are ordered by increasing compression effort: `fastest`, `fast`, `balanced`, and `good`. These profiles enable selective use of Zstd1 depending on the block type, LSM level, and compression benefit. Higher-effort profiles use Zstd1 more frequently and can improve compression for some workloads, but can also increase CPU usage for writes, compactions, and reads that decompress data. Most users do not need to tune this setting. Work with [Cockroach Labs Support](https://support.cockroachlabs.com/) before changing this setting in production.
 
 Changing `storage.sstable.compression_algorithm` does not immediately recompress existing SST files. SSTs are immutable, so a new setting applies as Pebble writes new SSTs or rewrites existing SSTs during compaction, ingestion, restore, or other SST-writing work. During a transition, a store can contain SSTs compressed with multiple algorithms.
 
-To evaluate the compression behavior of an existing store or backup, use [`cockroach debug pebble db analyze-data`]({% link {{ page.version.version }}/cockroach-debug-pebble-db-analyze-data.md %}). Compare the compression ratio with the compression and decompression throughput for representative data before changing the cluster setting.
+To evaluate the CPU usage vs. size tradeoff for your particular data, use [`cockroach debug pebble db analyze-data`]({% link {{ page.version.version }}/cockroach-debug-pebble-db-analyze-data.md %}). Review the results with [Cockroach Labs Support](https://support.cockroachlabs.com/) before changing the cluster setting.
 
 You can monitor overall storage compression with the `storage.compression.cr` metric.
 
