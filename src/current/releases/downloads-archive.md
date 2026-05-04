@@ -4,12 +4,6 @@ summary: Archive of downloads for versions of CockroachDB that are no longer sup
 toc: true
 docs_area: releases
 ---
-{{site.data.alerts.callout_danger}}
-This page hosts download links to CockroachDB versions that are no longer supported. For more information about CockroachDB version support, refer to [Release Support Policy]({% link releases/release-support-policy.md %}#unsupported-versions). To download and learn about currently supported CockroachDB versions, refer to [CockroachDB Releases]({% link releases/index.md %}).
-{{site.data.alerts.end}}
-## Downloads
-
-{{ experimental_js_warning }}
 
 {% assign sections = site.data.releases | map: "release_type" | uniq | reverse %}
 {% comment %} Fetch the list of all release types (currently Testing, Production) {% endcomment %}
@@ -20,6 +14,23 @@ This page hosts download links to CockroachDB versions that are no longer suppor
 {% assign versions = site.data.versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
 {% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
+{% comment %} Check if any version has cloud_only: true to determine if we should mention testing releases in the page description {% endcomment %}
+{% assign has_cloud_only_version = false %}
+{% for v in versions %}
+    {% capture ga_release_name %}{{ v.major_version }}.0{% endcapture %}
+    {% assign ga_release = site.data.releases | where: "major_version", v.major_version | where: "release_name", ga_release_name | first %}
+    {% if ga_release and ga_release.cloud_only == true %}
+        {% assign has_cloud_only_version = true %}
+        {% break %}
+    {% endif %}
+{% endfor %}
+
+This page hosts download links to {% if has_cloud_only_version %}the latest CockroachDB testing releases and to {% endif %}CockroachDB production releases that are no longer supported. For more information about CockroachDB version support, refer to [Release Support Policy]({% link releases/release-support-policy.md %}#unsupported-versions).
+
+## Downloads
+
+{{ experimental_js_warning }}
+
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where_exp: "latest_hotfix", "latest_hotfix.withdrawn != true"  | sort: "release_date" | reverse | first %}
 {% comment %} For the latest GA version, find the latest hotfix that is not withdrawn. {% endcomment %}
 
@@ -29,6 +40,27 @@ This page hosts download links to CockroachDB versions that are no longer suppor
 
 {% assign is_not_downloadable_message = "No longer available for download." %}
 {% assign current_date = 'now' | date: '%Y-%m-%d' %}
+
+{% comment %}
+  Check for major versions with cloud_only GA releases.
+  These versions are between Cloud GA and binary GA, and should display testing releases.
+{% endcomment %}
+{% for v in versions %}
+    {% comment %} Find the GA release (X.Y.0) for this major version {% endcomment %}
+    {% capture ga_release_name %}{{ v.major_version }}.0{% endcapture %}
+    {% assign ga_release = site.data.releases | where: "major_version", v.major_version | where: "release_name", ga_release_name | first %}
+    
+    {% comment %} If the GA release exists and has cloud_only: true, show testing releases {% endcomment %}
+    {% if ga_release and ga_release.cloud_only == true %}
+
+### {{ v.major_version }}
+
+[CockroachDB {{ v.major_version }}]({% link releases/{{ v.major_version }}.md %}) is generally available on CockroachDB Cloud.
+
+{% include releases/downloads-archive-testing-releases.md major_version=v.major_version %}
+
+    {% endif %}
+{% endfor %}
 
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
 
@@ -116,6 +148,11 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
 </div>
 
             {% for s in sections %} {% comment %} For each major version, iterate through the sections. {% endcomment %}
+        
+                {% comment %} Skip Testing releases for unsupported versions - they're only relevant during cloud_only period {% endcomment %}
+                {% if s == "Testing" %}
+                    {% continue %}
+                {% endif %}
         
                 {% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %} {% comment %} Fetch all releases for that major version based on release type (Production/Testing). {% endcomment %}
         
@@ -321,7 +358,8 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
         </section>
         
         <section class="filter-content" markdown="1" data-scope="windows">
-            Windows 8 or higher is required. Windows downloads are **experimental**. Experimental downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
+        
+        Windows 8 or higher is required. Windows downloads are **experimental**. Experimental downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
         
             <table class="release-table">
             <thead>
