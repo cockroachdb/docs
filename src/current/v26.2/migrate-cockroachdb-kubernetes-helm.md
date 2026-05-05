@@ -7,14 +7,15 @@ secure: true
 docs_area: deploy
 ---
 
-# Automatic Migration from Helm StatefulSet to CockroachDB Operator
+This guide describes how to automatically migrate an existing CockroachDB cluster from a Helm StatefulSet deployment to the {{ site.data.products.cockroachdb-operator }}.
 
-This guide covers the automatic migration of a CockroachDB cluster managed via a Helm
-StatefulSet to the CockroachDB Operator.
+{{site.data.alerts.callout_info}}
+The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
 
-The CockroachDB Operator's migration controller handles the complex logic of migrating nodes,
-certificates, and resources automatically, ensuring a seamless transition with minimal
-manual intervention.
+The {{ site.data.products.cockroachdb-operator }}'s migration controller automatically handles node migration, certificate regeneration, and resource management, ensuring a seamless transition with minimal manual intervention.
+
+This migration can be completed without affecting cluster availability. The process preserves existing disks so that data does not need to be replicated into empty volumes. The controller migrates nodes one at a time (highest index first), so the maximum cluster capacity will be reduced by one node periodically throughout the migration.
 
 ## Compatibility
 
@@ -37,24 +38,22 @@ Before starting migration, verify your cluster configuration is supported.
 | NetworkPolicy | No | Must be recreated manually if present |
 | Log-config Secret | Yes | Automatically converted to ConfigMap (operator uses ConfigMaps, Helm uses Secrets) |
 
-## Before You Begin
+## Before you begin
 
-Verify the following before starting migration:
+Before starting the migration process, verify the following:
 
-- [ ] CockroachDB cluster is managed by a Helm StatefulSet (not the public operator).
-- [ ] All StatefulSet pods are Running and Ready with no pending rolling updates, scale operations, or evictions.
-- [ ] `kubectl` and `helm` are installed and configured with access to the target cluster.
-- [ ] For multi-region clusters: cloud region and provider labels are applied to K8s nodes (see Step 2).
-- [ ] For multi-region clusters: `migration-regions` annotation is prepared with the full topology.
-- [ ] You have reviewed the Compatibility table above and confirmed your configuration is supported.
-- [ ] **If using `tls.certs.provided` (user-provided certs)**: Your certificates include join
-  service DNS SANs (`{cluster-name}-join`, `{cluster-name}-join.{namespace}`,
-  `{cluster-name}-join.{namespace}.svc.cluster.local`). The controller cannot regenerate
-  certificates when the CA private key is not available.
-- [ ] **If using `tls.certs.provided` with `tls.certs.tlsSecret: false`**: Secrets are re-keyed
-  to use Kubernetes TLS convention (`tls.crt`, `tls.key`, `ca.crt`) instead of cockroach-native
-  key names (`node.crt`, `node.key`). The operator expects TLS secrets in the
-  standard Kubernetes format. This is not needed for self-signer or cert-manager modes.
+- Your CockroachDB cluster is managed by a Helm StatefulSet, not the {{ site.data.products.public-operator }}.
+- All StatefulSet pods are Running and Ready with no pending rolling updates, scale operations, or evictions.
+- `kubectl` and `helm` are installed and configured with access to the target cluster.
+- For multi-region clusters, cloud region and provider labels are applied to Kubernetes nodes.
+- For multi-region clusters, the `migration-regions` annotation is prepared with the full topology.
+- You have reviewed the Compatibility table above and confirmed your configuration is supported.
+
+{{site.data.alerts.callout_danger}}
+If you use user-provided certificates (`tls.certs.provided`), your certificates must include join service DNS SANs (`{cluster-name}-join`, `{cluster-name}-join.{namespace}`, `{cluster-name}-join.{namespace}.svc.cluster.local`). The controller cannot regenerate certificates when the CA private key is not available.
+
+If you use `tls.certs.provided` with `tls.certs.tlsSecret: false`, secrets must be re-keyed to use Kubernetes TLS convention (`tls.crt`, `tls.key`, `ca.crt`) instead of CockroachDB-native key names (`node.crt`, `node.key`). The operator expects TLS secrets in the standard Kubernetes format. This is not needed for self-signer or cert-manager modes.
+{{site.data.alerts.end}}
 
 ## Overview
 
@@ -100,23 +99,33 @@ Init -> CertMigration -> PodMigration -> Finalization -> (user deletes STS) -> C
 
 ---
 
-## Step 1: Export Environment Variables
+## Step 1. Export environment variables
 
 Export the necessary environment variables to identify your existing deployment.
 
-```bash
-# STS_NAME is the CockroachDB StatefulSet deployed via Helm chart.
+Set `STS_NAME` to the CockroachDB StatefulSet deployed via Helm chart:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
 export STS_NAME="crdb-test-cockroachdb"
+~~~
 
-# NAMESPACE is the namespace where the StatefulSet is installed.
+Set `NAMESPACE` to the namespace where the StatefulSet is installed:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
 export NAMESPACE="default"
+~~~
 
-# RELEASE_NAME is the Helm release name.
+Set `RELEASE_NAME` to the Helm release name:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
 export RELEASE_NAME=$(kubectl get sts $STS_NAME -n $NAMESPACE \
   -o jsonpath='{.metadata.annotations.meta\.helm\.sh/release-name}')
-```
+~~~
 
-## Step 2: Apply Cloud Region and Provider Labels (Multi-Region Only)
+## Step 2. Apply cloud region and provider labels (multi-region only)
 
 CockroachDB uses K8s node labels for locality-based pod placement. These labels must exist
 on the nodes before the operator starts scheduling pods.
@@ -160,7 +169,7 @@ The fallback order is: (1) `migration-regions` annotation, (2) `regionCode` and
 `cloudProvider` annotations, (3) operator environment configuration, (4) default
 `us-east1`. For single-region clusters, the default is usually acceptable.
 
-## Step 3: Verify StatefulSet Is Stable
+## Step 3. Verify the StatefulSet is stable
 
 All replicas must be ready before migration begins.
 
@@ -174,7 +183,7 @@ kubectl get pods -l app.kubernetes.io/name=cockroachdb -n $NAMESPACE
 
 No ongoing rolling updates, scale operations, or pending evictions.
 
-## Step 4: Install CockroachDB Operator with Migration Enabled
+## Step 4. Install the {{ site.data.products.cockroachdb-operator }} with migration enabled
 
 Install the operator with migration enabled. This registers the migration controller
 which watches for the `crdb.io/migrate` label.
@@ -214,7 +223,7 @@ When migrating clusters across multiple namespaces, migrate one namespace at a t
 `watchNamespaces` (or use a comma-separated list) to include additional namespaces only after
 the previous migration is complete.
 
-## Step 5: Start Migration
+## Step 5. Start the migration
 
 Initiate the migration by labeling the StatefulSet.
 
@@ -224,7 +233,7 @@ kubectl label sts $STS_NAME crdb.io/migrate=start -n $NAMESPACE
 
 The operator detects this label and begins the migration automatically.
 
-## Step 6: Monitor Migration
+## Step 6. Monitor the migration
 
 ### DB Console
 
@@ -331,7 +340,7 @@ crdb_operator_migration_rollbacks_total{cluster, namespace, reason}
   The original PDB is not recreated by the migration controller. It is recreated by the
   Helm chart on the next `helm upgrade` or by the Helm release's existing resources.
 
-## Step 7: Delete StatefulSet to Complete Migration
+## Step 7. Delete the StatefulSet to complete migration
 
 After Finalization completes, the controller stops processing and waits for the user to
 delete the StatefulSet. The StatefulSet is intentionally left intact. Once deleted, the
@@ -356,7 +365,7 @@ kubectl get crdbcluster $STS_NAME -n $NAMESPACE \
 All STS pods are already at replicas=0 by the time Finalization runs (scaled down one by one
 during PodMigration). Deleting the StatefulSet object does not evict any running pods.
 
-## Step 8: Verify Cluster Health Post-Migration
+## Step 8. Verify cluster health post-migration
 
 ```bash
 # All CrdbNodes should be healthy
@@ -406,7 +415,7 @@ kubectl get crdbcluster $STS_NAME -n $NAMESPACE \
   -o jsonpath='{.spec.template.spec.virtualCluster}'
 ```
 
-## Step 9: Prepare values.yaml for CockroachDB Helm Chart
+## Step 9. Prepare values.yaml for the CockroachDB Helm chart
 
 Before running `helm upgrade`, create a `values.yaml` that matches the migrated CrdbCluster
 spec. The CockroachDB Helm chart generates a CrdbCluster from these values, so they must align
@@ -467,7 +476,7 @@ carry those forward into the new values.yaml as well.
 | Ingress intent | Preserved as annotation on CrdbCluster | `cockroachdb.crdbCluster.service.ingress` |
 | PCR config | `spec.template.spec.virtualCluster` | `cockroachdb.crdbCluster.virtualCluster` |
 
-## Step 10: Annotate Resources for Helm Adoption
+## Step 10. Annotate resources for Helm adoption
 
 The migration controller creates resources but does not annotate them for Helm ownership.
 For `helm upgrade` to manage these resources, they must carry Helm ownership annotations.
@@ -511,7 +520,7 @@ The CockroachDB Helm chart creates its own cluster-scoped RBAC with different na
 (`{fullname}-{namespace}-node-reader`). The migration-created ones are stale and should
 be deleted (see next step).
 
-## Step 11: Delete Stale Resources
+## Step 11. Delete stale resources
 
 The migration controller creates some resources that do not match what the CockroachDB Helm
 chart produces. These must be deleted before or after `helm upgrade`.
@@ -532,7 +541,7 @@ kubectl delete pdb ${STS_NAME} -n ${NAMESPACE} --ignore-not-found
 kubectl delete pdb ${STS_NAME}-budget -n ${NAMESPACE} --ignore-not-found
 ```
 
-## Step 12: Configure LocalityMappings
+## Step 12. Configure LocalityMappings
 
 The migration controller preserves the `--locality` flag tier keys (e.g. `region`, `zone`)
 as `localityLabels` on the CrdbNodeSpec. `localityLabels` is deprecated in favor of
@@ -559,7 +568,7 @@ spec:
 If you are using the standard `topology.kubernetes.io/*` labels, the kubebuilder defaults
 are correct and no action is needed.
 
-## Step 13: Run Helm Upgrade with CockroachDB Chart
+## Step 13. Run Helm upgrade with the CockroachDB chart
 
 Before upgrading, verify the operator has fully reconciled the migrated cluster. Do not
 proceed until `generation` and `observedGeneration` match and all pods are running.

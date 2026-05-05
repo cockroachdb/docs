@@ -7,14 +7,15 @@ secure: true
 docs_area: deploy
 ---
 
-# Automatic Migration from Public Operator to CockroachDB Operator
+This guide describes how to automatically migrate an existing CockroachDB cluster from the {{ site.data.products.public-operator }} (v1alpha1 CrdbCluster) to the {{ site.data.products.cockroachdb-operator }} (v1beta1 CrdbCluster with CrdbNodes).
 
-This guide covers the automatic migration of a CockroachDB cluster managed by the Public
-Operator (v1alpha1 CrdbCluster) to the CockroachDB Operator (v1beta1 CrdbCluster
-with CrdbNodes).
+{{site.data.alerts.callout_info}}
+The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
 
-The CockroachDB Operator's migration controller handles the transition automatically, including
-certificate migration, node-by-node replacement, and RBAC setup.
+The {{ site.data.products.cockroachdb-operator }}'s migration controller automatically handles the transition, including certificate migration, node-by-node replacement, and RBAC setup.
+
+This migration can be completed without affecting cluster availability. The process preserves existing disks so that data does not need to be replicated into empty volumes. The controller migrates nodes one at a time, so the maximum cluster capacity will be reduced by one node periodically throughout the migration.
 
 ## Compatibility
 
@@ -39,22 +40,25 @@ Before starting migration, verify your cluster configuration is supported.
 | NetworkPolicy | No | Must be recreated manually if present |
 | Log ConfigMap key format | Yes | `logging.yaml` key automatically renamed to `logs.yaml` (reversed on rollback) |
 
-## Before You Begin
+## Before you begin
 
-Verify the following before starting migration:
+Before starting the migration process, verify the following:
 
-- [ ] CockroachDB cluster is managed by the Public Operator (v1alpha1 CrdbCluster).
-- [ ] All StatefulSet pods are Running and Ready with no pending rolling updates or scale operations.
-- [ ] `kubectl` and `helm` are installed and configured with access to the target cluster.
-- [ ] For multi-region clusters: cloud region and provider labels are applied to K8s nodes (see Step 2).
-- [ ] You have the `regionCode` and `cloudProvider` values for your cluster (see Step 4).
-- [ ] You have reviewed the Compatibility table above and confirmed your configuration is supported.
-- [ ] The public operator is accessible and running (required for rollback capability).
-- [ ] **If you plan to create new v1beta1 clusters while the public operator is running**: Patch the public operator's webhooks to use `matchPolicy: Exact` (see Coexistence section in Step 5).
-- [ ] **If using custom `NodeTLSSecret` / `ClientTLSSecret`**: Your certificates include join
-  service DNS SANs (`{cluster-name}-join`, `{cluster-name}-join.{namespace}`,
-  `{cluster-name}-join.{namespace}.svc.cluster.local`). The migration controller cannot
-  regenerate certificates when custom secrets are provided (the CA private key is not available).
+- Your CockroachDB cluster is managed by the {{ site.data.products.public-operator }} (v1alpha1 CrdbCluster).
+- All StatefulSet pods are Running and Ready with no pending rolling updates or scale operations.
+- `kubectl` and `helm` are installed and configured with access to the target cluster.
+- For multi-region clusters, cloud region and provider labels are applied to Kubernetes nodes.
+- You have the `regionCode` and `cloudProvider` values for your cluster.
+- You have reviewed the Compatibility table above and confirmed your configuration is supported.
+- The {{ site.data.products.public-operator }} is accessible and running (required for rollback capability).
+
+{{site.data.alerts.callout_info}}
+If you plan to create new v1beta1 clusters while the {{ site.data.products.public-operator }} is running, you must patch the {{ site.data.products.public-operator }}'s webhooks to use `matchPolicy: Exact`. Refer to the Coexistence section in Step 5.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}
+If you use custom `NodeTLSSecret` or `ClientTLSSecret`, your certificates must include join service DNS SANs (`{cluster-name}-join`, `{cluster-name}-join.{namespace}`, `{cluster-name}-join.{namespace}.svc.cluster.local`). The migration controller cannot regenerate certificates when custom secrets are provided because the CA private key is not available.
+{{site.data.alerts.end}}
 
 ## Overview
 
@@ -99,7 +103,7 @@ Init -> CertMigration -> PodMigration -> Finalization -> (user deletes STS) -> C
 
 ---
 
-## Step 1: Export Environment Variables
+## Step 1. Export environment variables
 
 ```bash
 # CRDBCLUSTER is the name of your v1alpha1 CrdbCluster CR.
@@ -117,7 +121,7 @@ export CLOUD_PROVIDER=gcp
 export REGION=us-central1
 ```
 
-## Step 2: Apply Cloud Region and Provider Labels (Multi-Region Only)
+## Step 2. Apply cloud region and provider labels (multi-region only)
 
 CockroachDB uses K8s node labels for locality-based pod placement. These labels must exist
 before the operator starts scheduling pods.
@@ -142,7 +146,7 @@ kubectl label node <node-name> \
   cockroach.io/cloud=azure
 ```
 
-## Step 3: Pause the Public Operator
+## Step 3. Pause the {{ site.data.products.public-operator }}
 
 The public operator must stop reconciling the cluster before installing the CockroachDB Operator.
 Without this, both controllers will fight over RBAC, PDB, and service selectors.
@@ -172,7 +176,7 @@ If the `skip-reconcile` label is not applied, migration will fail with:
 > (Step 12). Removing it while the public operator is still running will cause it to recreate
 > the StatefulSet, potentially conflicting with the migrated CrdbNodes.
 
-## Step 4: Annotate CrdbCluster with Region and Cloud Provider
+## Step 4. Annotate the CrdbCluster with region and cloud provider
 
 Annotate the CR with region and cloud provider so they are preserved during the v1alpha1 to
 v1beta1 conversion:
@@ -188,7 +192,7 @@ The fallback order for region resolution is: (1) `regions` annotation (for multi
 (2) `regionCode` and `cloudProvider` annotations, (3) operator environment configuration,
 (4) default `us-east1`. For single-region clusters, the default may be acceptable.
 
-## Step 5: Install CockroachDB Operator with Migration Enabled
+## Step 5. Install the {{ site.data.products.cockroachdb-operator }} with migration enabled
 
 Install the operator with migration enabled. The migration controller only acts on
 resources that have the `crdb.io/migrate` label, and the cluster controller skips clusters
@@ -318,7 +322,7 @@ In summary, you can:
 - Create new v1beta1 clusters while the public operator is still running
 - Migrate clusters one by one at your own pace
 
-## Step 6: Start Migration
+## Step 6. Start the migration
 
 Initiate the migration by labeling the v1alpha1 CrdbCluster.
 
@@ -326,7 +330,7 @@ Initiate the migration by labeling the v1alpha1 CrdbCluster.
 kubectl label crdbcluster $CRDBCLUSTER crdb.io/migrate=start -n $NAMESPACE
 ```
 
-## Step 7: Monitor Migration
+## Step 7. Monitor the migration
 
 ### DB Console
 
@@ -434,7 +438,7 @@ crdb_operator_migration_rollbacks_total{cluster, namespace, reason}
 - **Rollback**: All PDB variants are deleted (`{name}`, `{name}-budget`, `{name}-pdb`).
   The original PDB is recreated by the public operator once `skip-reconcile` is removed.
 
-## Step 8: Delete StatefulSet to Complete Migration
+## Step 8. Delete the StatefulSet to complete migration
 
 After Finalization completes, the controller stops processing and waits for the user to
 delete the StatefulSet. The StatefulSet is intentionally left intact. Once deleted, the
@@ -459,7 +463,7 @@ kubectl get crdbcluster $CRDBCLUSTER -n $NAMESPACE \
 All STS pods are already at replicas=0 by the time Finalization runs. Deleting the StatefulSet
 object does not evict any running pods.
 
-## Step 9: Verify Cluster Health Post-Migration
+## Step 9. Verify cluster health post-migration
 
 ```bash
 # All CrdbNodes should be healthy
@@ -522,7 +526,7 @@ Key fields converted during migration:
 | `spec.terminationGracePeriodSecs` | Used directly in pod spec |
 | `spec.resources` | `spec.template.spec.podTemplate.spec.containers[0].resources` |
 
-## Step 10: Configure LocalityMappings
+## Step 10. Configure LocalityMappings
 
 The migration controller preserves the `--locality` flag tier keys (e.g. `region`, `zone`)
 as `localityLabels` on the CrdbNodeSpec. `localityLabels` is deprecated in favor of
@@ -549,7 +553,7 @@ spec:
 If you are using the standard `topology.kubernetes.io/*` labels, the kubebuilder defaults
 are correct and no action is needed.
 
-## Step 11: Cleanup Public Operator Resources
+## Step 11. Clean up {{ site.data.products.public-operator }} resources
 
 After verifying the migrated cluster is healthy, clean up old public operator resources.
 
@@ -597,7 +601,7 @@ kubectl delete role cockroach-operator-role -n cockroach-operator-system --ignor
 kubectl delete rolebinding cockroach-operator-rolebinding -n cockroach-operator-system --ignore-not-found
 ```
 
-## Step 12: Adopt into CockroachDB Helm Chart (Optional)
+## Step 12. Adopt into the CockroachDB Helm chart (optional)
 
 Before adopting, verify the operator has fully reconciled the migrated cluster. Do not
 proceed until `generation` and `observedGeneration` match and all pods are running.
@@ -882,7 +886,7 @@ has it enabled.
 | Public operator removed while v1alpha1 clusters remain | Those clusters become unmanaged. | Reinstall the public operator or migrate them first. |
 | `skip-reconcile` removed on a migrated cluster while public operator runs | Public operator recreates StatefulSet, conflicting with CrdbNodes. | Re-apply `skip-reconcile` immediately. Delete the recreated StatefulSet. |
 
-## Step 13: Patch storedVersions
+## Step 13. Patch storedVersions
 
 After all v1alpha1 clusters across the entire Kubernetes cluster have been migrated and the
 public operator has been removed, patch the CRD's `storedVersions` to remove v1alpha1.
@@ -907,7 +911,7 @@ kubectl get crd crdbclusters.crdb.cockroachlabs.com \
 # Expected: ["v1beta1"]
 ```
 
-## Step 14: Disable Migration Mode (Optional)
+## Step 14. Disable migration mode (optional)
 
 After `storedVersions` is patched, disabling migration mode is optional. When the operator
 restarts without the flag, it sees that `storedVersions` no longer contains v1alpha1 and
