@@ -1,5 +1,6 @@
 {% comment %}
-The empty anchors below preserve existing links until the generated table emits per-variable anchors.
+The empty anchors below preserve existing links until DOC-16985 updates the
+CockroachDB docgen session variables table to emit per-variable anchors.
 {% endcomment %}
 <div aria-hidden="true">
 <a id="always-distribute-full-scans"></a>
@@ -126,7 +127,7 @@ The empty anchors below preserve existing links until the generated table emits 
 <a id="synchronous-commit"></a>
 </div>
 
-The following table is generated from the CockroachDB source. `Read-only` indicates whether the variable can be changed in a session. `Cluster Setting` identifies the cluster setting that supplies the default value, when applicable.
+`Read-only` indicates whether the variable can be changed in a session with [`SET`]({% link {{ page.version.version }}/set-vars.md %}). `Cluster Setting` identifies the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) that supplies the default value, when applicable.
 
 <table>
 {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/session_vars.md ||<table>||</table> %}
