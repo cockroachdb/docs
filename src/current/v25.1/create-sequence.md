@@ -58,7 +58,7 @@ CockroachDB supports the following [SQL sequence functions]({% link {{ page.vers
 CockroachDB supports session-scoped temporary sequences. Unlike persistent sequences, temporary sequences can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary sequences on both persistent tables and [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}).
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %} For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+{% include feature-phases/preview.md %} For details, see the tracking issue cockroachdb/cockroach#46260.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

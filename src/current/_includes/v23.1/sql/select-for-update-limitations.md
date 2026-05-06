@@ -5,6 +5,6 @@ If a lease transfer or range split/merge occurs on a range held by an unreplicat
 - The desired ordering of concurrent accesses to one or more rows of a table expressed by your use of `SELECT ... FOR UPDATE` may not be preserved (that is, a transaction _B_ against some table _T_ that was supposed to wait behind another transaction _A_ operating on _T_ may not wait for transaction _A_).
 - The transaction that acquired the (now dropped) unreplicated lock may fail to commit, leading to [transaction retry errors with code `40001` and the `restart transaction` error message]({% link {{ page.version.version }}/common-errors.md %}#restart-transaction).
 
-We intend to improve the reliability of these locks. For details, see [cockroachdb/cockroach#75456](https://github.com/cockroachdb/cockroach/issues/75456).
+We intend to improve the reliability of these locks. For details, see cockroachdb/cockroach#75456.
 
 Note that [serializable isolation]({% link {{ page.version.version }}/transactions.md %}#serializable-isolation) is preserved despite this limitation.

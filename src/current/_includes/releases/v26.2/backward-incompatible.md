@@ -1,10 +1,8 @@
 - Bullet
 
-  - `information_schema.crdb_datums_to_bytes` - previously only available as `crdb_internal.datums_to_bytes` [#](https://github.com/cockroachdb/cockroach/pull/)
-  - `information_schema.crdb_index_usage_stats` - previously only available as `crdb_internal.index_usage_stats` [#](https://github.com/cockroachdb/cockroach/pull/)
-  - `information_schema.crdb_rewrite_inline_hints` - replaces the function previously introduced as `crdb_internal.inject_hint` [#](https://github.com/cockroachdb/cockroach/pull/)
-
-  [#](https://github.com/cockroachdb/cockroach/pull/)
+  - `information_schema.crdb_datums_to_bytes` - previously only available as `crdb_internal.datums_to_bytes`
+  - `information_schema.crdb_index_usage_stats` - previously only available as `crdb_internal.index_usage_stats`
+  - `information_schema.crdb_rewrite_inline_hints` - replaces the function previously introduced as `crdb_internal.inject_hint`
 
 - Bullet
 

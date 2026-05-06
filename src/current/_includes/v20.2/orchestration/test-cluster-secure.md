@@ -30,7 +30,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create \
-    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
+    -f https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/files/cockroach/cloud/kubernetes/bring-your-own-certs/client.yaml
     ~~~
     
     ~~~
@@ -72,14 +72,14 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 <section class="filter-content" markdown="1" data-scope="helm">
 To use the built-in SQL client, you need to launch a pod that runs indefinitely with the `cockroach` binary inside it, get a shell into the pod, and then start the built-in SQL client.
 
-1. From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/client-secure.yaml) file to launch a pod and keep it running indefinitely.
+1. From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/client-secure.yaml) file to launch a pod and keep it running indefinitely.
 
     1. Download the file:
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ curl -OOOOOOOOO \
-        https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
+        https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/files/cockroach/cloud/kubernetes/client-secure.yaml
         ~~~
 
     1. In the file, change `serviceAccountName: cockroachdb` to `serviceAccountName: my-release-cockroachdb`.

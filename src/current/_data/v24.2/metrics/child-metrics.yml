@@ -1,6 +1,6 @@
 # child-metrics.yml is a manually curated file of metrics that are included in the Child Metrics.
 # The metrics are in the order of appearance in the comment:
-# https://github.com/cockroachdb/cockroach/issues/124343#issuecomment-2117886012
+# cockroach#124343
 # The tenant.consumption.* metrics are not included because they only apply to serverless.
 # 
 # The corresponding metrics-list.csv file was generated using the v24.1.0 binary with the following command:

@@ -10,4 +10,4 @@ You cannot use comparison operators (such as `<` or `>`) on [`JSONB`]({% link {{
   SQLSTATE: 22023
   ~~~
 
-  [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/49144)
+  Tracking GitHub issue

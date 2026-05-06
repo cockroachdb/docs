@@ -460,7 +460,7 @@ Some PostgreSQL syntax and features are unsupported. These include, but are not 
 - `!! tsquery` comparisons.
 - `tsquery @> tsquery` and `tsquery <@ tsquery` comparisons.
 
-For full details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/41288).
+For full details, see the tracking issue.
 
 ## See also
 

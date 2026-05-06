@@ -191,9 +191,9 @@ XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XM
  Materialized views | ✓ | Common Extension |  [Materialized views documentation]({% link {{ page.version.version }}/views.md %}#materialized-views)
  Window functions | ✓ | Standard | [Window Functions documentation]({% link {{ page.version.version }}/window-functions.md %})
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation]({% link {{ page.version.version }}/common-table-expressions.md %})
- Stored procedures | ✗ | Common Extension | Execute a procedure explicitly. [GitHub issue tracking stored procedures support](https://github.com/cockroachdb/cockroach/issues/17511).
+ Stored procedures | ✗ | Common Extension | Execute a procedure explicitly. GitHub issue tracking stored procedures support.
  Cursors | Partial | Standard | [Cursors documentation]({% link {{ page.version.version }}/cursors.md %})
- Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).
+ Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. GitHub issue tracking trigger support.
  Row-level TTL | ✓ | Common Extension | Automatically delete expired rows.  For more information, see [Batch-delete expired data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}).
  User-defined functions | Partial | Standard | [User-Defined Functions documentation]({% link {{ page.version.version }}/user-defined-functions.md %})
- `CREATE EXTENSION "uuid-ossp"` | ✓ | Common Extension | Provides access to several additional [UUID generation functions]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions). Note that these UUID functions are available without typing `CREATE EXTENSION "uuid-ossp"`. CockroachDB does not have full support for `CREATE EXTENSION`. [GitHub issue tracking `CREATE EXTENSION` support](https://github.com/cockroachdb/cockroach/issues/74777).
+ `CREATE EXTENSION "uuid-ossp"` | ✓ | Common Extension | Provides access to several additional [UUID generation functions]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions). Note that these UUID functions are available without typing `CREATE EXTENSION "uuid-ossp"`. CockroachDB does not have full support for `CREATE EXTENSION`. GitHub issue tracking `CREATE EXTENSION` support.

@@ -117,7 +117,7 @@ It's also important––for indexed columns––that this byte encoding preser
 
 However, for non-indexed columns (e.g., non-`PRIMARY KEY` columns), CockroachDB instead uses an encoding (known as "value encoding") which consumes less space but does not preserve ordering.
 
-You can find more exhaustive detail in the [Encoding Tech Note](https://github.com/cockroachdb/cockroach/blob/master/docs/tech-notes/encoding.md).
+You can find more exhaustive detail in [the Encoding Tech Note](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/docs/tech-notes/encoding.md).
 
 ### DistSQL
 
@@ -134,7 +134,7 @@ To run SQL statements in a distributed fashion, we introduce a couple of concept
 - **Logical plan**: Similar to the AST/`planNode` tree described above, it represents the abstract (non-distributed) data flow through computation stages.
 - **Physical plan**: A physical plan is conceptually a mapping of the logical plan nodes to physical machines running `cockroach`. Logical plan nodes are replicated and specialized depending on the cluster topology. Like `planNodes` above, these components of the physical plan are scheduled and run on the cluster.
 
-You can find much greater detail in the [DistSQL RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20160421_distributed_sql.md).
+You can find much greater detail in [the DistSQL RFC](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/docs/RFCS/20160421_distributed_sql.md).
 
 ## Schema changes
 

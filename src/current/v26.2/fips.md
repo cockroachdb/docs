@@ -84,7 +84,7 @@ The FIPS-ready CockroachDB Docker images are based on [Red Hat's Universal Base 
 
 If you do not want to use the FIPS-ready CockroachDB Docker image directly, you can create a custom Docker image based on [Red Hat's Universal Base Image 10](https://catalog.redhat.com/software/containers/ubi10/ubi-minimal/):
 
-- You can model your Dockerfile on the one that Cockroach Labs uses to produce the [FIPS-ready Docker image](https://github.com/cockroachdb/cockroach/blob/master/build/deploy/Dockerfile) for CockroachDB.
+- You can model your Dockerfile on the one that Cockroach Labs uses to produce the FIPS-ready Docker image for CockroachDB.
 - The FIPS-ready binary includes the FIPS 140-3 Go Cryptographic Module and does not require additional system libraries to be installed.
 
 <a id="downloads"></a>
