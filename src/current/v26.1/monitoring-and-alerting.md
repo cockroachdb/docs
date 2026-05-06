@@ -61,7 +61,7 @@ For more information, see the Cluster API [overview]({% link {{ page.version.ver
 
 ### `crdb_internal` system catalog
 
-The `crdb_internal` system catalog is a schema in each database that contains information about internal objects, processes, and metrics about that database. [DBMarlin](https://docs.dbmarlin.com/docs/Monitored-Technologies/Databases/cockroachdb) provides a third-party tool that collects metrics from a cluster's `crdb_internal` system catalogs rather than the cluster's Prometheus endpoint. Refer to [Monitor CockroachDB with DBmarlin]({% link {{ page.version.version }}/dbmarlin.md %}).
+The `crdb_internal` system catalog is a schema in each database that contains information about internal objects, processes, and metrics about that database. [DBMarlin](https://docs.dbmarlin.com/docs/Monitored-Technologies/Databases/cockroachdb) provides a third-party tool that collects metrics from a cluster's `crdb_internal` system catalogs rather than the cluster's Prometheus endpoint.
 
 If the cluster is unavailable, a database's `crdb_internal` system catalog cannot be queried.
 
@@ -1008,7 +1008,7 @@ curl http://localhost:8080/_status/stores/1
 
 In addition to actively monitoring the overall health and performance of a cluster, it is also essential to configure alerting rules that promptly send notifications when CockroachDB experiences events that require investigation or intervention.
 
-Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), also support event-based alerting using metrics collected from a cluster's [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}). Refer to the documentation for an integration for more details. This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) service.
+Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as Datadog and Kibana, also support event-based alerting using metrics collected from a cluster's [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}). Refer to the documentation for an integration for more details. This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) service.
 
 ### Alertmanager
 

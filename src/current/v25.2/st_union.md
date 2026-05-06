@@ -236,7 +236,7 @@ In this example, we will generate a single geometry from many individual points 
 
 1. Paste the JSON emitted in the previous step into [geojson.io](http://geojson.io) and you should see an image like the following, which shows the location of [most of the independent bookstores in New York State](https://www.bookweb.org/member_directory/search/ABAmember/results/0/0/ny/0):
 
-    <img src="{{ 'images/v24.2/geospatial/st_union.png' | relative_url }}" alt="ST_Union example" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v25.2/geospatial/st_union.png' | relative_url }}" alt="ST_Union example" style="border:1px solid #eee;max-width:100%" />
 
 1. Finally, drop the temporary table if you no longer need it:
 
@@ -268,5 +268,5 @@ In this example, we will generate a single geometry from many individual points 
 - [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
 - [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
-- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

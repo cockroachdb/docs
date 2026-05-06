@@ -32,10 +32,11 @@ The `debug tsdump` subcommand supports the following [general-use](#general), [c
 
 Flag | Description
 -----|-----------
-`--format` | The output format to write the collected diagnostic data. Valid options are `text`, `csv`, `tsv`, `raw`.<br><br>**Default:** `text`
+`--format` | The output format to write the collected diagnostic data. Valid options are `text`, `csv`, `tsv`, `raw`.<br><br>**Default:** `raw`
 `--from` | The oldest timestamp to include (inclusive), in the format `YYYY-MM-DD [HH:MM[:SS]]`.<br><br>**Default:** `0001-01-01 00:00:00`
 `--metrics-list-file` | Path to a text file containing metric names or regex patterns to include in the dump (one per line). The prefixes `cr.node.`, `cr.store.`, and `cockroachdb.` are automatically stripped if present. When specified, only matching metrics are included. Blank lines and comment lines (starting with `#`) are ignored.<br><br>Useful for scenario-specific investigations (for example, contention, latency, or replication) or when you need a targeted subset of metrics. Refer to example [Generate a tsdump with specific metrics](#generate-a-tsdump-with-specific-metrics).<br><br>**Note:** Cannot be used with `--non-verbose`.
 `--non-verbose` | Dump only metrics tagged as `ESSENTIAL` or `SUPPORT`.<br><br>This provides a curated set of metrics needed for most escalations while significantly reducing file size and noise. Ideal for standard support escalations, routine health checks, and cases where you want to minimize output size. When this flag is not specified, all metrics are dumped (default behavior). Refer to example [Generate a tsdump with only essential and support metrics](#generate-a-tsdump-with-only-essential-and-support-metrics).<br><br>**Note:** Cannot be used with `--metrics-list-file`.
+`--output` | Path to a file for the command to write its output to. When this flag is not specified, the command writes to `stdout`.
 `--to` | The newest timestamp to include (inclusive), in the format `YYYY-MM-DD [HH:MM[:SS]]`.<br><br>**Default:** Current timestamp plus 29 hours
 
 #### Available resolutions

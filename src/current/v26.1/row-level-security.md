@@ -37,7 +37,7 @@ For an example, refer to [RLS for Multi-Tenant Isolation](#rls-for-multi-tenant-
 
 At a high level, the steps for using row-level security (RLS) are as follows:
 
-1. Choose which [schema objects]({% link {{ page.version.version }}/schema-design-overview.md %}) need row-level security. You can re-use existing schemas, or create new ones and [insert data]({% link {{ page.version.version }}/insert-data.md %}). ([`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}))
+1. Choose which [schema objects]({% link {{ page.version.version }}/schema-design-overview.md %}) need row-level security. You can re-use existing schemas, or create new ones and [insert data]({% link {{ page.version.version }}/insert.md %}). ([`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}))
 2. [Create roles]({% link {{ page.version.version }}/create-role.md %}) & [grant access]({% link {{ page.version.version }}/grant.md %}) to schema objects by those roles. ([`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`GRANT`]({% link {{ page.version.version }}/grant.md %}))
 3. Enable row-level security on the schema objects. ([`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-row-level-security))
 4. Define row-level security policies on the schema objects which are assigned to specific roles. ([`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}))
@@ -103,7 +103,7 @@ If you use PCR, the target cluster will have all RLS policies applied to the dat
 
 ### Views
 
-When [views]({% link {{ page.version.version }}/views.md %}) are accessed, RLS policies on any underlying [tables]({% link {{ page.version.version }}/schema-design-table.md %}) are applied. [Policies]({% link {{ page.version.version }}/create-policy.md %}) can only be defined directly on tables, not views.
+When [views]({% link {{ page.version.version }}/views.md %}) are accessed, RLS policies on any underlying tables are applied. [Policies]({% link {{ page.version.version }}/create-policy.md %}) can only be defined directly on tables, not views.
 
 Views will only show rows that the current [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) has access to on the table that the view is referencing.
 

@@ -86,6 +86,8 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
 
 CockroachDB {{ site.data.products.advanced }} is certified by a PCI QSA to be compliant with [PCI DSS 4.0](https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Reporting%20Template%20or%20Form/PCI-DSS-v4-0-1-ROC-AOC-Merchants.pdf) within the DBaaS platform. Customers are still responsible to ensure that their applications are PCI DSS compliant. Customers may need to take the additional actions outlined in [Responsibilities of the customer](#responsibilities-of-the-customer) to maintain their own PCI compliance when using CockroachDB {{ site.data.products.advanced }} clusters for cardholder data or other sensitive data.
 
+The **PCI DSS Ready** page in the CockroachDB {{ site.data.products.cloud }} console allows you to track your cluster's utilization of advanced security features that enable the cluster's PCI DSS readiness.
+
 ## Responsibilities of Cockroach Labs
 
 Cockroach Labs takes actions to ensure that the operating procedures and the deployment environment for CockroachDB {{ site.data.products.advanced }} clusters meet or exceed the requirements of PCI DSS 4.0. Some of these actions include:
@@ -123,7 +125,7 @@ A CockroachDB {{ site.data.products.advanced }} cluster must have the following 
 
 Cockroach Labs cannot provide specific advice about ensuring end-to-end compliance of your overall system with PCI DSS or how to implement a specific requirement across all operating environments. The following are additional guidelines for a cluster to be used in a PCI DSS compliant manner:
 
-- Before you insert cardholder data into the cluster, protect it by a combination of encryption, hashing, masking, and truncation. For an example implementation, refer to [Integrate CockroachDB {{ site.data.products.advanced }} with Satori]({% link {{ site.current_cloud_version }}/satori-integration.md %}).
+- Before you insert cardholder data into the cluster, protect it by a combination of encryption, hashing, masking, and truncation.
 - The cryptographic materials used to protect cardholder data must themselves be protected at rest and in transit, and access to the unencrypted key materials must be strictly limited only to approved individuals.
 - Within the cluster, restrict access to cardholder data in a manner consistent with the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege). Access to tables and views in the cluster that contain cardholder data must be restricted, and you are responsible to regularly test for compliance. Refer to [Authorization]({% link {{ site.current_cloud_version }}/authorization.md %}).
 - Protect networks that transmit cardholder data from malicious access over the public internet, and regularly test for compliance. For more information about protecting the cluster’s networks, refer to [Network Authorization]({% link cockroachcloud/network-authorization.md %}).
@@ -133,7 +135,6 @@ Cockroach Labs cannot provide specific advice about ensuring end-to-end complian
 ## See also
 
 - [Authorization]({% link {{ site.current_cloud_version }}/authorization.md %})
-- [Integrate CockroachDB {{ site.data.products.advanced }} with Satori]({% link {{ site.current_cloud_version }}/satori-integration.md %})
 - [CockroachDB Releases]({% link releases/index.md %})
 - [CockroachDB {{ site.data.products.cloud }} Releases]({% link releases/cloud.md %})
 - [Security and Audit Monitoring]({% link {{ site.current_cloud_version }}/logging-use-cases.md %}#security-and-audit-monitoring)

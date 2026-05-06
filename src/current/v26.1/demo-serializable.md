@@ -460,7 +460,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For this kind of error, CockroachDB recommends a [client-side transaction retry loop]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App]({% link {{ page.version.version }}/example-apps.md %}) tutorials.
+    For this kind of error, CockroachDB recommends a [client-side transaction retry loop]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in the [Develop with CockroachDB]({% link {{ page.version.version }}/developer-guide-overview.md %}) section.
 
     For more information about the error message for the `RETRY_SERIALIZABLE` error type, see the [Transaction Retry Error Reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_serializable).
     {{site.data.alerts.end}}

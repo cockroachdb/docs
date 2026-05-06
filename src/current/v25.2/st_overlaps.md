@@ -47,7 +47,7 @@ SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 (1 row)
 ~~~
 
-<img src="{{ 'images/v24.2/geospatial/st_overlaps_true.png' | relative_url }}" alt="ST_Overlaps - true" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/geospatial/st_overlaps_true.png' | relative_url }}" alt="ST_Overlaps - true" style="border:1px solid #eee;max-width:100%" />
 
 ### False
 
@@ -67,7 +67,7 @@ SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-79.995888 40.440624,-74.
 (1 row)
 ~~~
 
-<img src="{{ 'images/v24.2/geospatial/st_overlaps_false.png' | relative_url }}" alt="ST_Overlaps - false" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/geospatial/st_overlaps_false.png' | relative_url }}" alt="ST_Overlaps - false" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
@@ -92,5 +92,5 @@ SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-79.995888 40.440624,-74.
 - [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
 - [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
-- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

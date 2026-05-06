@@ -105,7 +105,7 @@ When using [advanced client-side transaction retries]({% link {{ page.version.ve
 > ROLLBACK TO SAVEPOINT cockroach_restart;
 ~~~
 
-For examples of retrying transactions in an application, check out the transaction code samples in our [Build an App with CockroachDB]({% link {{ page.version.version }}/example-apps.md %}) tutorials.
+For examples of retrying transactions in an application, check out the tutorials in the [Develop with CockroachDB]({% link {{ page.version.version }}/developer-guide-overview.md %}) section.
 
 ## See also
 

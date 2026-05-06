@@ -47,6 +47,8 @@ It's important to fully [prepare the migration](#prepare-for-migration) in order
 
 ## Capacity planning
 
+### Cluster sizing
+
 To size the target CockroachDB cluster, consider your data volume and workload characteristics:
 
 - What is the total size of the data you will migrate?
@@ -63,6 +65,10 @@ If you are migrating to a CockroachDB {{ site.data.products.core }} cluster:
 - Refer to our [sizing methodology]({% link {{ site.current_cloud_version }}/recommended-production-settings.md %}#sizing) to determine the total number of vCPUs on the cluster and the number of vCPUs per node (which determines the number of nodes on the cluster).
 - Refer to our [storage recommendations]({% link {{ site.current_cloud_version }}/recommended-production-settings.md %}#storage) to determine the amount of storage to provision on each node.
 - For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.core }} [Production Checklist]({% link {{ site.current_cloud_version }}/recommended-production-settings.md %}#connection-pooling).
+
+### Memory allocation
+
+MOLT Fetch buffers data in memory regardless of the [data path]({% link molt/molt-fetch.md %}#data-path) used. For memory sizing requirements, refer to [Memory requirements]({% link molt/molt-fetch.md %}#memory-requirements).
 
 ## Application changes
 
@@ -167,6 +173,5 @@ When you are ready to migrate, refer to [Migration flows]({% link molt/migration
 - [Migration Overview]({% link molt/migration-overview.md %})
 - [Migration Failback]({% link molt/migrate-failback.md %})
 - [Schema Design Overview]({% link {{ site.current_cloud_version }}/schema-design-overview.md %})
-- [Primary key best practices]({% link {{ site.current_cloud_version }}/schema-design-table.md %}#primary-key-best-practices)
 - [Secondary index best practices]({% link {{ site.current_cloud_version }}/schema-design-indexes.md %}#best-practices)
 - [Transaction contention best practices]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention)

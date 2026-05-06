@@ -478,7 +478,7 @@ For usage, see [Synopsis](#synopsis).
 
 ### `ENABLE ROW LEVEL SECURITY`
 
-[Row-level security]({% link {{ page.version.version }}/row-level-security.md %}) must be explicitly enabled per [table]({% link {{ page.version.version }}/schema-design-table.md %}). Typically, this is controlled by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) that owns the table.
+[Row-level security]({% link {{ page.version.version }}/row-level-security.md %}) must be explicitly enabled per table. Typically, this is controlled by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) that owns the table.
 
 For examples, see [Enable row-level security](#enable-row-level-security).
 
@@ -497,7 +497,7 @@ The user must be a member of the [`admin`]({% link {{ page.version.version }}/se
 
 ### `DISABLE ROW LEVEL SECURITY`
 
-This statement disables [Row-level security]({% link {{ page.version.version }}/row-level-security.md %}) per [table]({% link {{ page.version.version }}/schema-design-table.md %}). Typically, this is controlled by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) that owns the table.
+This statement disables [Row-level security]({% link {{ page.version.version }}/row-level-security.md %}) per table. Typically, this is controlled by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) that owns the table.
 
 For examples, refer to [Disable row-level security](#disable-row-level-security).
 

@@ -23,6 +23,54 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
     <button class="filter-button" data-scope="replicator"><code>replicator</code></button>
 </div>
 
+### April 30, 2026
+
+<section class="filter-content" markdown="1" data-scope="molt">
+`molt` 1.4.0 is [available](#installation):
+
+- MOLT Verify now supports PostgreSQL declarative partitioned tables.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="replicator">
+`replicator` 1.3.3 is [available](#installation):
+
+- Fixed a bug where MySQL `BLOB`, `BINARY`, `VARBINARY`, and `MEDIUMBLOB` columns containing non-UTF-8 binary data were corrupted during replication to CockroachDB. Binary values are now correctly hex-encoded before transmission, preserving data integrity.
+- Replication from MySQL sources now correctly replicates `NULL` values in `ENUM` columns.
+</section>
+
+### March 26, 2026
+<section class="filter-content" markdown="1" data-scope="molt">
+`molt` 1.3.7 is [available](#installation):
+
+- Fixed a bug in MOLT Fetch v1.3.3-v1.3.6 where a transient error when scanning rows from the source database could cause retried queries to resume from an incorrect position, resulting in rows missing from the target database. Migrations from PostgreSQL and CockroachDB databases may have been exposed to this issue. Fetch retry attempts are recorded in the MOLT Fetch logs, and MOLT Verify will have detected any data discrepancies introduced by this bug.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="replicator">
+`replicator` 1.3.2 is [available](#installation):
+
+- Oracle source and target lag values now use the LogMiner redo log generation timestamp for better accuracy. Note that clock skew may still affect these values.
+- `replicator pglogical` and `replicator mylogical` now respect the `--flushSize` and `--flushPeriod` flags passed in.
+</section>
+
+### February 26, 2026
+
+<section class="filter-content" markdown="1" data-scope="molt">
+`molt` 1.3.6 is [available](#installation):
+
+- Added support for selective data verification on PostgreSQL and MySQL sources, allowing users to compare a subset of data from both source and target databases based on filter predicates.
+- Fixed an issue where MOLT Fetch failed to copy data from PostgreSQL when numeric arrays contained negative values.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="replicator">
+`replicator` 1.3.1 is [available](#installation):
+
+- Added support for Oracle's Large Object (`CLOB`, `NCLOB`, `BLOB`, `LONG`) and binary (`RAW`, `LONG RAW`) datatypes when failing back from CockroachDB to Oracle, within currently supported size limits.
+- Added support for failback replication with mismatched time types between CockroachDB and Oracle (for example, `TIMESTAMPTZ` to `TIMESTAMP`/`DATE`), and support for Oracle timestamp replication regardless of NLS format settings.
+- Replication from MySQL sources now supports core sequencer and the `--target-apply-queue-size` flag with core sequencer metrics, leading to improved throughput for migrations from MySQL.
+- Added support for metrics snapshotting to aid in support investigations. This feature is off by default but can be configured to capture metrics dumps. Included `export-metrics-snapshots.sh` and `import-metrics-snapshots.sh` helper scripts to package metrics snapshots.
+- Added the `--dataDir` flag to configure the base data directory for metrics snapshotting.
+</section>
+
 ### January 22, 2026
 
 <section class="filter-content" markdown="1" data-scope="molt">

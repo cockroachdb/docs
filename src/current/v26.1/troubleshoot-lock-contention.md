@@ -271,6 +271,26 @@ Consider the following when using [historical queries]({% link {{ page.version.v
 - Historical queries operate below [closed timestamps]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) and therefore have perfect concurrency characteristics - they never wait on anything and never block anything.
 - Historical queries have the best possible performance, since they are served by the nearest [replica]({% link {{ page.version.version }}/architecture/glossary.md %}#replica).
 
+### Randomize transaction anchor keys for large batched updates or inserts
+
+In some workloads with large batched [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`INSERT`]({% link {{ page.version.version }}/insert.md %}) transactions, many concurrent transactions can end up with their [transaction records]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-records) colocated on the same [range]({% link {{ page.version.version }}/architecture/glossary.md %}#range). The [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder) for that range must coordinate [intent resolution]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) for all of those transactions, and can become a [hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}) even if the actual user data being modified is well-distributed.
+
+When troubleshooting contention or hotspots that you have confirmed are due to transaction record placement (for example, using the guidance in [Monitor and analyze transaction contention]({% link {{ page.version.version }}/monitor-and-analyze-transaction-contention.md %})), you can experiment with enabling the cluster setting [`kv.transaction.randomized_anchor_key.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-transaction-randomized-anchor-key-enabled).
+
+When set to `true`, this setting randomizes a transaction's *anchor key* (the key where its transaction record is stored). This can spread transaction records across ranges and reduce hotspots for large batched update or insert workloads.
+
+Consider the following when using this setting:
+
+- It is primarily useful for workloads that issue large batched updates or inserts and show clear evidence of transaction-record hotspotting.
+- It does **not** change which user data rows are read or written; it only affects where the transaction record (metadata) is stored.
+- Treat this as a tuning and troubleshooting knob: enable it only after identifying transaction-record hotspots, and compare contention and latency metrics before and after the change.
+- If enabling the setting does not improve the hotspot symptoms, or if it has unintended side effects, you can disable it again with:
+
+  {% include_cached copy-clipboard.html %}
+  ~~~ sql
+  SET CLUSTER SETTING kv.transaction.randomized_anchor_key.enabled = false;
+  ~~~
+
 ### &quot;Fail fast&quot; method
 
 One way to reduce lock contention with writes is to use a "fail fast" method by using [SELECT FOR UPDATE ... NOWAIT]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) before the write. It can reduce or prevent failures late in a transaction's life (e.g. at the `COMMIT` time), by returning an error early in a contention situation if a row cannot be locked immediately. An example of this method is *Transaction 6* in [Example 2](#example-2):

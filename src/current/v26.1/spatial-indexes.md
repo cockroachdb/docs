@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-This page describes CockroachDB's support for indexing [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}), including:
+This page describes CockroachDB's support for indexing [spatial data]({% link {{ page.version.version }}/query-spatial-data.md %}), including:
 
 - What spatial indexes are
 - How they work
@@ -227,8 +227,6 @@ CREATE INDEX geog_idx_3 ON geo_table USING GIST(geog);
 - [S2 Geometry Library](https://s2geometry.io/)
 - [Indexes]({% link {{ page.version.version }}/indexes.md %})
 - [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
-- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
 - [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
 - [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
 - [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
@@ -236,4 +234,3 @@ CREATE INDEX geog_idx_3 ON geo_table USING GIST(geog);
 - [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
 - [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

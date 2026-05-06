@@ -12,7 +12,7 @@ CockroachDB v26.1 has been upgraded to use [Go's native FIPS 140-3 support](http
 
 FIPS support is therefore marked as **Preview** in CockroachDB v26.1 and will return to **General Availability** (GA) status in v26.2.
 
-As an [Innovation release]({% link releases/index.md %}#major-releases), CockroachDB v26.1 can be skipped. Production clusters running a v25.4 FIPS binary should be upgraded directly to a v26.2 FIPS binary (available May 2026) for continuous GA support of FIPS.
+As an [Innovation release]({% link releases/index.md %}#major-versions), CockroachDB v26.1 can be skipped. Production clusters running a v25.4 FIPS binary should be upgraded directly to a v26.2 FIPS binary (available May 2026) for continuous GA support of FIPS.
 
 **Recommendation for Production Deployments:**
 

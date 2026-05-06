@@ -31,7 +31,7 @@ Removing or adding an authorized network on your CockroachDB {{ site.data.produc
 
 ## Connect to your cluster
 
-1. Select your cluster to navigate to the cluster [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
+1. Select your cluster to navigate to the cluster [**Overview** page]({% link cockroachcloud/overview-page.md %}).
 
 1. In the top right corner of the CockroachDB {{ site.data.products.cloud }} Console, click the **Connect** button.
 
@@ -109,11 +109,10 @@ You can connect to your cluster with any [supported version]({% link releases/re
     #
     ~~~
 
-    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link {{site.current_cloud_version}}/sql-statements.md %}).
 
   </section>
 
 ## What's next
 
 - [Build a "Hello, World" app]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md %})
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})

@@ -147,4 +147,4 @@ CockroachDB {{ site.data.products.advanced }} has access to all features require
 - Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
 - [Network security]({% link cockroachcloud/network-authorization.md %})
 
-You can check the status of these features on the [**PCI ready**]({% link cockroachcloud/cluster-overview-page.md %}?filters=advanced#pci-ready) page of the CockroachDB {{ site.data.products.cloud }} Console.
+The **PCI DSS Ready** page in the CockroachDB {{ site.data.products.cloud }} console allows you to track your cluster's utilization of advanced security features that enable the cluster's PCI DSS readiness.

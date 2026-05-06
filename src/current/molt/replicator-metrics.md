@@ -35,12 +35,8 @@ This page describes and provides usage guidelines for Replicator metrics, accord
 - [**Staging**](#staging): Buffers mutations for ordered processing and crash recovery.
 </section>
 
-<section class="filter-content" markdown="1" data-scope="postgres oracle cockroachdb">
+<section class="filter-content" markdown="1" data-scope="postgres mysql oracle cockroachdb">
 - [**Core sequencer**](#core-sequencer): Processes staged mutations, maintains ordering guarantees, and coordinates transaction application.
-</section>
-
-<section class="filter-content" markdown="1" data-scope="mysql">
-- **Core sequencer**: Processes staged mutations, maintains ordering guarantees, and coordinates transaction application.
 </section>
 
 - [**Target apply**](#target-apply): Applies mutations to the target database.
@@ -91,7 +87,7 @@ Use the Replicator Grafana dashboard [bundled with your binary]({% link molt/mol
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-Use the Replicator Grafana dashboards [bundled with your binary]({% link molt/molt-replicator.md %}#installation) to visualize metrics. The general Replicator dashboard (`replicator_grafana_dashboard.json`) displays overall replication metrics, and the Oracle-specific dashboard (`replicator_oracle_grafana_dashboard.json`) displays [Oracle source metrics](#oracle-source). The bundled dashboards match your binary version. Alternatively, you can download the latest dashboards for [Replicator](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) and [Oracle source metrics](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
+Use the Replicator Grafana dashboards [bundled with your binary]({% link molt/molt-replicator.md %}#installation) to visualize metrics. The general Replicator dashboard (`replicator_grafana_dashboard.json`) displays overall replication metrics, and the Oracle-specific dashboard (`replicator_oracle_grafana_dashboard.json`) displays [Oracle source metrics](#source-read). The bundled dashboards match your binary version. Alternatively, you can download the latest dashboards for [Replicator](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) and [Oracle source metrics](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
 </section>
 
 ## Overall replication metrics
@@ -152,12 +148,28 @@ Monitor the following metrics to track checkpoint progress:
 
 ## Replication pipeline metrics
 
+<section class="filter-content" markdown="1" data-scope="postgres">
+<img src="{{ 'images/molt/replicator-metrics-pg.png' | relative_url }}" alt="Single Region MAZ"  style="border:0px solid #eee;max-width:80%;margin:auto;display:block" />
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+<img src="{{ 'images/molt/replicator-metrics-mysql.png' | relative_url }}" alt="Single Region MAZ"  style="border:0px solid #eee;max-width:80%;margin:auto;display:block" />
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+<img src="{{ 'images/molt/replicator-metrics-oracle.png' | relative_url }}" alt="Single Region MAZ"  style="border:0px solid #eee;max-width:80%;margin:auto;display:block" />
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachdb">
+<img src="{{ 'images/molt/replicator-metrics-crdb.png' | relative_url }}" alt="Single Region MAZ"  style="border:0px solid #eee;max-width:80%;margin:auto;display:block" />
+</section>
+
+
 ### Source read
 
 [Source read](#replication-pipeline) metrics track the health of connections to source databases and the volume of incoming changes.
 
 <section class="filter-content" markdown="1" data-scope="cockroachdb">
-#### CockroachDB source
 
 - `checkpoint_committed_age_seconds`
 	- Description: Age of the committed checkpoint.
@@ -174,7 +186,6 @@ Monitor the following metrics to track checkpoint progress:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-#### Oracle source
 
 {{site.data.alerts.callout_success}}
 To visualize the following metrics, import the Oracle Grafana dashboard [bundled with your binary]({% link molt/molt-replicator.md %}#installation) (`replicator_oracle_grafana_dashboard.json`). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
@@ -207,7 +218,6 @@ To visualize the following metrics, import the Oracle Grafana dashboard [bundled
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-#### MySQL source
 
 - `mylogical_dial_success_total`
 	- Description: Number of times Replicator successfully started logical replication.
@@ -221,7 +231,6 @@ To visualize the following metrics, import the Oracle Grafana dashboard [bundled
 </section>
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-#### PostgreSQL source
 
 - `pglogical_dial_success_total`
 	- Description: Number of times Replicator successfully started logical replication (executed `START_REPLICATION` command).
@@ -254,7 +263,7 @@ For checkpoint terminology, refer to the [MOLT Replicator documentation]({% link
 	- Interpretation: High values indicate write performance issues on the staging database.
 </section>
 
-<section class="filter-content" markdown="1" data-scope="postgres oracle cockroachdb">
+<section class="filter-content" markdown="1" data-scope="postgres mysql oracle cockroachdb">
 ### Core sequencer
 
 [Core sequencer](#replication-pipeline) metrics track mutation processing, ordering, and transaction coordination.

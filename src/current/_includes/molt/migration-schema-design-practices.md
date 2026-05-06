@@ -51,7 +51,7 @@ Convert the source table definitions into CockroachDB-compatible equivalents. Co
 		When using `--case-sensitive`, quote all identifiers and match the case exactly (for example, use `"CO"."STORES"` and `"STORE_ID"`).
 	</section>
 
-- Every table **must** have an explicit primary key. For more information, refer to [Primary key best practices]({% link {{ site.current_cloud_version }}/schema-design-table.md %}#primary-key-best-practices).
+- Every table **must** have an explicit primary key.
 
 	{{site.data.alerts.callout_danger}}
 	Avoid using sequential keys. To learn more about the performance issues that can result from their use, refer to the [guidance on indexing with sequential keys]({% link {{site.current_cloud_version}}/sql-faqs.md %}#how-do-i-generate-unique-slowly-increasing-sequential-numbers-in-cockroachdb). If a sequential key is necessary in your CockroachDB table, you must create it manually, after using [MOLT Fetch]({% link molt/molt-fetch.md %}) to load and replicate the data.
