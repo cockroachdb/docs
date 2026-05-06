@@ -326,7 +326,7 @@ cockroach start \
 
 **Error: "failed to perform RPC, as root login has been disallowed"**
 
-- Root login is disabled. Use `debug_user` or another administrative user.
+- Root login is disabled. Use `debug_user` instead.
 
 **Error: "failed to perform RPC, as debug_user login is not allowed"**
 
