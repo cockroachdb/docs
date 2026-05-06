@@ -1,4 +1,3 @@
 During a major-version upgrade, certain features and performance improvements are not available until the upgrade is finalized. In v25.4, these are:
 
-- **Partial statistics with constraining predicates**: The ability to manually create single-column partial statistics on boolean predicate expressions using a constraining `WHERE` clause in `CREATE STATISTICS` statements. For details, refer to the [release note](#v25-4-0-alpha-2-partial-statistics).
 - **Changefeed span frontier persistence**: Changefeeds now periodically persist their entire span frontiers so that fewer duplicates need to be emitted during restarts. The default persistence interval is 30 seconds, configurable with the `changefeed.progress.frontier_persistence.interval` cluster setting. For details, refer to the [release note](#v25-4-0-alpha-2-changefeed-frontier-persistence).
