@@ -1146,7 +1146,7 @@ APPLICATION,changefeed.frontier_updates,Number of change frontier updates across
 APPLICATION,changefeed.internal_retry_message_count,Number of messages for which an attempt to retry them within an aggregator node was made,Messages,GAUGE,COUNT,AVG,NONE
 APPLICATION,changefeed.kafka_throttling_hist_nanos,Time spent in throttling due to exceeding kafka quota,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.lagging_ranges,The number of ranges considered to be lagging behind,Ranges,GAUGE,COUNT,AVG,NONE
-APPLICATION,changefeed.max_behind_nanos,(Deprecated in favor of checkpoint_progress) The most any changefeed's persisted checkpoint is behind the present,Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.max_behind_nanos,The most any changefeed's persisted checkpoint is behind the present,Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.message_size_hist,Message size histogram,Bytes,HISTOGRAM,BYTES,AVG,NONE
 APPLICATION,changefeed.messages.messages_pushback_nanos,Total time spent throttled for messages quota,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.network.bytes_in,The number of bytes received from the network by changefeeds,Bytes,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2423,6 +2423,7 @@ APPLICATION,sql.savepoint.rollback.started.count.internal,Number of `ROLLBACK TO
 APPLICATION,sql.savepoint.started.count,Number of SQL SAVEPOINT statements started,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.savepoint.started.count.internal,Number of SQL SAVEPOINT statements started (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.schema.invalid_objects,Gauge of detected invalid objects within the system.descriptor table (measured by querying crdb_internal.invalid_objects),Objects,GAUGE,COUNT,AVG,NONE
+APPLICATION,sql.schema_changer.object_count,Counter of the number of objects in the cluster,Objects,GAUGE,COUNT,AVG,NONE
 APPLICATION,sql.schema_changer.permanent_errors,Counter of the number of permanent errors experienced by the schema changer,Errors,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.schema_changer.retry_errors,Counter of the number of retriable errors experienced by the schema changer,Errors,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.schema_changer.running,Gauge of currently running schema changes,Schema changes,GAUGE,COUNT,AVG,NONE
