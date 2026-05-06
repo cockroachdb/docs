@@ -27,7 +27,7 @@ The stream initialization proceeds as follows:
 1. The initial scan runs on the primary and backfills all data from the primary virtual cluster as of the starting timestamp of the replication stream.
 1. Once the initial scan is complete, the primary then begins streaming all changes from the point of the starting timestamp.
 
-<img src="{{ 'images/v24.2/physical-rep-to.png' | relative_url }}" alt="Two virtualized clusters with system virtual cluster and application virtual cluster showing the directional stream." style="border:0px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/physical-rep-to.png" alt="Two virtualized clusters with system virtual cluster and application virtual cluster showing the directional stream." style="border:0px solid #eee;max-width:100%" />
 
 #### Start-up sequence with read on standby
 
@@ -55,7 +55,7 @@ If the primary cluster does not receive replicated time information from the sta
 
 The tracked replicated time and the advancing protected timestamp allow the replication stream to also track _retained time_, which is a timestamp in the past indicating the lower bound that the replication stream could fail over to. The retained time can be up to 4 hours in the past, due to the protected timestamp. Therefore, the _failover window_ for a replication job falls between the retained time and the replicated time.
 
-<img src="{{ 'images/v25.3/failover.svg' | relative_url }}" alt="Timeline showing how the failover window is between the retained time and replicated time." style="border:0px solid #eee;width:100%" />
+<img src="/docs/images/{{ page.version.version }}/failover.svg" alt="Timeline showing how the failover window is between the retained time and replicated time." style="border:0px solid #eee;width:100%" />
 
 _Replication lag_ is the time between the most up-to-date replicated time and the actual time. While the replication keeps as current as possible to the actual time, this replication lag window is where there is potential for data loss.
 
