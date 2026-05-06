@@ -586,7 +586,7 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 
 ## Known limitations
 
-- To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
+- To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. 
 - {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 - {% include {{ page.version.version }}/known-limitations/restore-udf.md %}
 

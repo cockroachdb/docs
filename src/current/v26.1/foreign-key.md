@@ -92,7 +92,7 @@ For matching purposes, composite foreign keys can be in one of three states:
 For examples showing how these key matching algorithms work, see [Match composite foreign keys with `MATCH SIMPLE` and `MATCH FULL`](#match-composite-foreign-keys-with-match-simple-and-match-full).
 
 {{site.data.alerts.callout_info}}
-CockroachDB does not support `MATCH PARTIAL`. For more information, see issue [#20305](https://github.com/cockroachdb/cockroach/issues/20305).
+CockroachDB does not support `MATCH PARTIAL`. For more information, see issue.
 {{site.data.alerts.end}}
 
 ### Foreign key actions

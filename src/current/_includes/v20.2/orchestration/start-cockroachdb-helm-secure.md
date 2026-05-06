@@ -3,7 +3,7 @@ The CockroachDB Helm chart is undergoing maintenance for compatibility with Kube
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](https://github.com/cockroachdb/cockroach/issues/38847).
+Secure CockroachDB deployments on Amazon EKS via Helm are .
 {{site.data.alerts.end}}
 
 1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:

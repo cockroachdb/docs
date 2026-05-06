@@ -516,7 +516,6 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
         </section>
         
         <section class="filter-content" markdown="1" data-scope="source">
-            <p>The source code for CockroachDB is hosted in the <a href="https://github.com/cockroachdb/cockroach/releases/" class="binary-link">cockroachdb/cockroach</a> repository on Github.</p>
             <table class="release-table">
             <thead>
                 <tr>

@@ -444,7 +444,7 @@ SELECT COUNT(*) FROM temp;
 Because this pattern incurs the overhead of a new scan for each iteration, it is slower per row than a full scan. It is therefore faster than a full scan in cases (such as this one) where many rows are skipped, but is slower if they are not.
 
 {{site.data.alerts.callout_info}}
-Some recursive CTEs are not not yet optimized. For details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/89954).
+Some recursive CTEs are not not yet optimized. For details, see the .
 {{site.data.alerts.end}}
 
 ## Correlated common table expressions

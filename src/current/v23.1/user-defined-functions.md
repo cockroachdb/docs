@@ -285,15 +285,15 @@ User-defined functions are not currently supported in:
 
 - Expressions (column, index, constraint) in tables.
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
+    
 
 - Views.
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
+    
 
 - Other user-defined functions.
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+    
 
 ### Limitations on expressions allowed within UDFs
 
@@ -301,15 +301,15 @@ The following are not currently allowed within the body of a UDF:
 
 - Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`.
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87289)
+    
 
 - CTEs (common table expressions).
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
+    
 
 - References to other user-defined functions.
 
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+    
 
 ## See also
 

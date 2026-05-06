@@ -33,4 +33,4 @@ SHOW TIME ZONE;
 ~~~
 
 
-[#69396](https://github.com/cockroachdb/cockroach/issues/69396), [#148766](https://github.com/cockroachdb/cockroach/issues/148766)
+,

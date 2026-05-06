@@ -96,8 +96,5 @@ To download the Docker image (Intel-only):
 docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 ~~~
 
-<h3>Source tag</h3>
-
-To view or download the source code for CockroachDB {{ release.release_name }} on Github, visit <a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.release_name }}">{{ release.release_name }} source tag</a>.
 
 {% endif %}

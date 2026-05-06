@@ -9,7 +9,7 @@ Cockroach Labs has partnered with open-source projects, vendors, and individuals
 Unless explicitly stated, support for a [driver](#drivers) or [data access framework](#data-access-frameworks-e-g-orms) does not include [automatic, client-side transaction retry handling](transactions.html#client-side-intervention). For client-side transaction retry handling samples, see [Example Apps](example-apps.html).
 {{site.data.alerts.end}}
 
-If you encounter problems using CockroachDB with any of the tools listed on this page, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward better support.
+If you encounter problems using CockroachDB with any of the tools listed on this page, please  with details to help us make progress toward better support.
 
 For a list of tools supported by the CockroachDB community, see [Third-Party Tools Supported by the Community](community-tooling.html).
 

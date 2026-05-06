@@ -23,7 +23,6 @@
 #   - name: Global Data
 #     url: https://www.cockroachlabs.com/product/geo-partitioning/
 
-
 # solutions:
 #   - identifier: solutions
 #     name: Solutions
@@ -98,11 +97,7 @@
 #     url: https://www.cockroachlabs.com/big-ideas-podcast/
 #     weight: 200
 
-
-
 # resources_support:
-#   - name: GitHub
-#     url: https://github.com/cockroachdb/cockroach
 #   - name: Slack
 #     url: https://www.cockroachlabs.com/join-community/
 #   - name: Support Portal
@@ -130,7 +125,6 @@
 #   - name: Architecture Overview
 #     url: https://www.cockroachlabs.com/docs/stable/architecture/overview.html
 #     weight: 400
-
 
 # company:
 #   - identifier: company
