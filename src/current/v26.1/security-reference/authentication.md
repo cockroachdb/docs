@@ -102,17 +102,18 @@ This ensures that access to the cluster can always be recovered, but it also mea
 
 <span class="version-tag">New in v26.1:</span> For compliance requirements, you can disable root user login using the `--disallow-root-login` flag when starting nodes. When this flag is set:
 
-- Root user cannot authenticate via SQL or RPC connections
-- Any certificate with "root" in the CommonName or SubjectAlternativeName is rejected
+- The `root` user cannot authenticate via SQL or RPC connections
+- Any certificate with "`root`" in the CommonName or SubjectAlternativeName is rejected
 - Error messages indicate root login has been disallowed
 
 {{site.data.alerts.callout_danger}}
 **Important Prerequisites**:
 
+- Before disabling root, ensure you have at least one other user with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) configured. Once root is disabled, you will need another admin user to perform administrative tasks.
 - Before disabling root, it is highly recommended to set up the `debug_user` for troubleshooting operations. See [Using debug_user for diagnostics](#using-debug_user-for-diagnostics).
-- Ensure no cluster or client certificates contain "root" in their SAN (Subject Alternative Name) fields, as these will be blocked.
-- The cluster does not validate that `debug_user` is configured before allowing root to be disabled.
+- Ensure no cluster or client certificates contain "`root`" in their SAN (Subject Alternative Name) fields, as these will be blocked.
 
+The cluster does not validate that other users are members of the `admin` role or that `debug_user` is configured before allowing root to be disabled.
 {{site.data.alerts.end}}
 
 For setup instructions, see [Disable root login and use debug_user](#disable-root-login-and-use-debug_user).
@@ -180,16 +181,24 @@ CockroachDB {{ site.data.products.cloud }} uses a service user named `managed-sq
 This procedure shows how to configure a cluster to disable root login for compliance requirements while maintaining the ability to collect debug zip and tsdump data.
 
 {{site.data.alerts.callout_info}}
-While it is possible to disable root login without first setting up `debug_user`, enabling `debug_user` later when diagnostic data is needed requires a rolling restart of all cluster nodes and at least one other admin user to create it. This can add significant delay during troubleshooting incidents. We recommend setting up `debug_user` before disabling root login to ensure diagnostic capabilities are immediately available when needed.
+While it is possible to disable root login without first setting up `debug_user`, enabling `debug_user` later when diagnostic data is needed requires a rolling restart of all cluster nodes. This can add a significant delay during troubleshooting incidents.
+
+Cockroach Labs recommends setting up `debug_user` before disabling root login to ensure diagnostic capabilities are immediately available when needed.
 {{site.data.alerts.end}}
 
 ### Before you begin
 
-- You must have an existing CockroachDB cluster
-- You must have root access to create the `debug_user`
-- You must have access to the CA key to generate certificates
+To complete this process, you will need:
 
-### Step 1: Create debug_user
+- An existing CockroachDB cluster.
+- Admin privileges to create users and grant roles.
+- Access to the CA key to generate certificates.
+
+{{site.data.alerts.callout_danger}}
+**Important**: Ensure you have at least one other user with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) besides `root` before proceeding. Once root is disabled, you will need another admin user to perform administrative tasks. Without this, you risk losing administrative access to your cluster.
+{{site.data.alerts.end}}
+
+### Step 1: Create `debug_user`
 
 1. Connect to the cluster as a user with admin privileges (such as `root`):
 
@@ -198,7 +207,7 @@ While it is possible to disable root login without first setting up `debug_user`
    cockroach sql --certs-dir=certs
    ~~~
 
-1. Create the debug_user:
+1. Create user `debug_user`:
 
    {% include_cached copy-clipboard.html %}
    ~~~ sql
@@ -207,16 +216,18 @@ While it is possible to disable root login without first setting up `debug_user`
 
 1. Grant the `admin` role for debug zip collection.
 
-   While `cockroach debug tsdump` does not require any SQL privileges, the `admin` role is required for `cockroach debug zip`. Cockroach Labs recommends granting it during initial setup to ensure debug zip capability is immediately available when needed. Another admin user can grant this role later if needed, but pre-configuring it avoids delays during troubleshooting.
+   {{site.data.alerts.callout_info}}
+   While `cockroach debug tsdump` does not require any SQL privileges, the `admin` role is required for `cockroach debug zip`. Cockroach Labs recommends granting it to `debug_user` when the user is created to ensure that the debug zip capability is immediately available when needed. Alternatively, another admin user can grant this role when needed.
+   {{site.data.alerts.end}}
 
    {% include_cached copy-clipboard.html %}
    ~~~ sql
    GRANT admin TO debug_user;
    ~~~
 
-### Step 2: Generate debug_user certificate
+### Step 2: Generate `debug_user` certificate
 
-Generate a client certificate for debug_user. See [Create a debug_user client certificate]({% link {{ page.version.version }}/cockroach-cert.md %}#create-a-debug_user-client-certificate-preview) for detailed instructions.
+Generate a client certificate for `debug_user`. Refer to [Create a `debug_user` client certificate]({% link {{ page.version.version }}/cockroach-cert.md %}#create-a-debug_user-client-certificate-preview) for detailed instructions.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -227,9 +238,9 @@ cockroach cert create-client debug_user \
 
 This creates `client.debug_user.crt` and `client.debug_user.key` in the `certs` directory.
 
-### Step 3: Test debug_user access
+### Step 3: Test `debug_user` access
 
-Before disabling root, verify that debug_user can collect debug information:
+Before disabling root, verify that `debug_user` can collect debug information:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -240,7 +251,7 @@ cockroach debug zip test-debug.zip \
 
 If successful, you should see debug information being collected.
 
-### Step 4: Enable debug_user on all nodes
+### Step 4: Enable `debug_user` on all nodes
 
 Perform a rolling restart of all nodes with the `--allow-debug-user` flag:
 
