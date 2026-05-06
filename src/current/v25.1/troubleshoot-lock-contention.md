@@ -207,18 +207,18 @@ This step assumes you have already run the SQL statements from [Example 1](#exam
 
 After executing the transactions in the [previous section](#step-1-understand-lock-contention), open the [DB Console](#db-console) for the demo cluster. Navigate to the **Insights** page and select **Workload Insights** > **Transactions Executions**.
 
-<img src="{{ 'images/v25.1/troubleshoot-lock-contention-transaction-executions-view.png' | relative_url }}" alt="Transaction Executions view" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/troubleshoot-lock-contention-transaction-executions-view.png" alt="Transaction Executions view" style="border:1px solid #eee;max-width:100%" />
 
 Depending on when you [executed the transactions](#example-1), to display the transactions flagged with insights, you may have to select a longer time interval, such as **Past 6 Hours**.
 
-<img src="{{ 'images/v25.1/troubleshoot-lock-contention-time-interval.png' | relative_url }}" alt="Time interval" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/troubleshoot-lock-contention-time-interval.png" alt="Time interval" style="border:1px solid #eee;max-width:100%" />
 
 With an adequate time interval, two [**High Contention**]({% link {{ page.version.version }}/ui-insights-page.md %}#high-contention) insights will be listed for [Example 1](#example-1):
 
 - **Transaction 2**
 - **Transaction 3**
 
-<img src="{{ 'images/v25.1/troubleshoot-lock-contention-high-contention.png' | relative_url }}" alt="High Contention" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/troubleshoot-lock-contention-high-contention.png" alt="High Contention" style="border:1px solid #eee;max-width:100%" />
 
 ### Waiting statement
 
@@ -226,21 +226,21 @@ To identify the exact statement in the transaction that experienced high content
 
 On the **Transaction Execution** page, navigate to the **Statement Executions** tab. In the list of statement executions, in the **Insights** column for `SELECT * FROM t where k = _`, there should be the **High Contention** insight. In [Example 1](#example-1), *Transaction 2* had one statement (other than `SHOW database`). In a transaction with multiple statements, use this page to pinpoint the exact statement that experienced high contention.
 
-<img src="{{ 'images/v25.1/troubleshoot-lock-contention-waiting-statement.png' | relative_url }}" alt="Waiting statement" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/troubleshoot-lock-contention-waiting-statement.png" alt="Waiting statement" style="border:1px solid #eee;max-width:100%" />
 
 ### Blocking transaction
 
 To identify the transaction that blocked **Transaction 2** and caused it to experience high contention, navigate back to the **Overview** tab.
 
-<img src="{{ 'images/v25.1/troubleshoot-lock-contention-overview-tab.png' | relative_url }}" alt="Overview tab" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/troubleshoot-lock-contention-overview-tab.png" alt="Overview tab" style="border:1px solid #eee;max-width:100%" />
 
 Scroll to the bottom of the Overview tab to the **Transaction with ID ... waited on** section that gives information about the blocking transaction.
 
-<img src="{{ 'images/v25.1/troubleshoot-lock-contention-blocking-transaction.png' | relative_url }}" alt="Blocking transaction" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/troubleshoot-lock-contention-blocking-transaction.png" alt="Blocking transaction" style="border:1px solid #eee;max-width:100%" />
 
 For more information about the blocking transaction, click the **Transaction Fingerprint ID** to open the [**Transaction Details** page]({% link {{ page.version.version }}/ui-transactions-page.md %}#transaction-details-page).
 
-<img src="{{ 'images/v25.1/troubleshoot-lock-contention-blocking-transaction-details.png' | relative_url }}" alt="Blocking transaction details" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/troubleshoot-lock-contention-blocking-transaction-details.png" alt="Blocking transaction details" style="border:1px solid #eee;max-width:100%" />
 
 ### Additional practice
 

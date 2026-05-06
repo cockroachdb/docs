@@ -886,7 +886,7 @@ The output of `EXPLAIN (DISTSQL)` is a URL for a graphical diagram that displays
 
 To view the [DistSQL plan diagram]({% link {{ page.version.version }}/explain-analyze.md %}#distsql-plan-diagram), open the URL. You should see the following:
 
-<img src="{{ 'images/v24.2/explain-distsql-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/explain-distsql-plan.png" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
 To include the data types of the input columns in the physical plan, use `EXPLAIN(DISTSQL, TYPES)`:
 
@@ -903,7 +903,7 @@ EXPLAIN (DISTSQL, TYPES) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem G
 
 Open the URL. You should see the following:
 
-<img src="{{ 'images/v24.2/explain-distsql-types-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/explain-distsql-types-plan.png" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
 ### Find the indexes and key ranges a query uses
 
