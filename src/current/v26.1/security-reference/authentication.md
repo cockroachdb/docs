@@ -316,11 +316,10 @@ cockroach start \
 
 ### Security best practices
 
-- Only enable `--allow-debug-user` when debugging is actively needed
 - Monitor `debug_user` activity through audit logs
-- Consider disabling `debug_user` (removing `--allow-debug-user` flag) when not in use
 - Rotate `debug_user` certificates regularly
 - Ensure `debug_user` certificate files have appropriate permissions (mode 0700)
+- Store `debug_user` certificates securely and limit access to authorized personnel
 
 ### Troubleshooting
 
