@@ -70,6 +70,8 @@ In general, distribute your total vCPUs into the **largest possible nodes and sm
 
 - Cockroach Labs does not extensively test clusters with more than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='maximum' %} per node. This is the recommended _maximum_ threshold.
 
+- CockroachDB should only run on single-NUMA instances. Running a CockroachDB process across NUMA nodes is not recommended and can heavily impact performance.
+
 ### Basic hardware recommendations
 
 After you [size your cluster](#sizing), you can determine the amount of RAM, storage capacity, and disk I/O from the number of vCPUs.
