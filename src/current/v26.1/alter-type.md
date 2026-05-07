@@ -153,3 +153,116 @@ To drop a value from the `account_status` type, use a `DROP VALUE` clause:
 - [`SHOW TYPES`]({% link {{ page.version.version }}/show-types.md %})
 - [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## ALTER TYPE ... RENAME TO
+
+The `ALTER TYPE ... RENAME TO` clause renames an existing enum type and its associated implicit array type.
+
+### Synopsis
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TYPE type_name RENAME TO new_type_name
+~~~
+
+### Parameters
+
+| Parameter | Description | Required |
+| --- | --- | --- |
+| `type_name` | The name of the existing enum type to rename | Yes |
+| `new_type_name` | The new name for the enum type | Yes |
+
+### Required privileges
+
+The user must have the `CREATE` privilege on the schema containing the type.
+
+### Details
+
+- Only enum types can be renamed using this syntax. Attempting to rename composite types or domain types will result in an error stating that `ALTER TYPE` on non-enum user-defined types is not supported.
+- The statement automatically renames both the enum type and its associated implicit array type.
+- Renaming a type to its current name results in an error, unlike table renames which are treated as no-ops.
+- The new name must not conflict with any existing objects (tables, types, domains) in the same schema.
+- Multiple rename operations can be performed within a single transaction.
+- The implicit array type is automatically renamed by prepending underscores to find a non-conflicting name.
+
+### Examples
+
+#### Basic enum type rename
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Create an enum type
+CREATE TYPE status AS ENUM ('pending', 'approved', 'rejected');
+
+-- Rename the enum type
+ALTER TYPE status RENAME TO order_status;
+
+-- Use the renamed type
+SELECT 'approved'::order_status;
+~~~
+
+#### Multiple renames in a transaction
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+ALTER TYPE order_status RENAME TO temp_status;
+ALTER TYPE temp_status RENAME TO final_status;
+SELECT 'pending'::final_status;
+COMMIT;
+~~~
+
+### Error conditions
+
+The statement will fail if:
+
+- The target type is not an enum type
+- The new name already exists as a table, type, or domain in the same schema
+- You attempt to rename a type to its current name
+- An object with the target name is currently being dropped
+- You lack the required privileges
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- This will fail - renaming to the same name
+ALTER TYPE order_status RENAME TO order_status;
+~~~
+~~~
+ERROR: type "defaultdb.public.order_status" already exists
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- This will fail if a table named 'users' exists
+ALTER TYPE order_status RENAME TO users;
+~~~
+~~~
+ERROR: relation "defaultdb.public.users" already exists
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- This will fail if a domain named 'user_id' exists
+ALTER TYPE order_status RENAME TO user_id;
+~~~
+~~~
+ERROR: type "defaultdb.public.user_id" already exists
+~~~
+
+### See also
+
+- [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %})
+- [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %})
+- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})
+- [Enum data types]({% link {{ page.version.version }}/enum.md %})
+
+---
+
+**Integration notes:**
+- This content should be added to the existing `ALTER TYPE` reference page as a new section
+- The main `ALTER TYPE` synopsis should be updated to include the `RENAME TO` clause
+- This functionality requires cluster version 26.3 or later (gated by `isV263Active`)
+
+<!-- END REF DOC DRAFT -->
