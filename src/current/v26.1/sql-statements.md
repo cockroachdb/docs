@@ -220,3 +220,9 @@ Statement | Usage
 [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %}) | Create an external connection, which represents a provider-specific URI, to interact with resources that are external from CockroachDB.
 [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %}) | Display the connection name and the creation statements for active external connections.
 [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %}) | Drop an external connection.
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+Prompt 'sql_statements_draft' could not be found or contains no messages
+
+<!-- END REF DOC DRAFT -->
