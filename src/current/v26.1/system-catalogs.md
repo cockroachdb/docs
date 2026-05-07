@@ -43,3 +43,9 @@ To see all of the system catalogs for the [current database]({% link {{ page.ver
 - [`SHOW`]({% link {{ page.version.version }}/show-vars.md %})
 - [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
 - [SQL Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %})
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+Prompt 'system_tables_draft' could not be found or contains no messages
+
+<!-- END REF DOC DRAFT -->
