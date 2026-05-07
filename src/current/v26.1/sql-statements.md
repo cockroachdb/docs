@@ -220,3 +220,81 @@ Statement | Usage
 [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %}) | Create an external connection, which represents a provider-specific URI, to interact with resources that are external from CockroachDB.
 [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %}) | Display the connection name and the creation statements for active external connections.
 [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %}) | Drop an external connection.
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## Enhanced ALTER TYPE Statement
+
+This PR adds support for renaming enum types using the existing `ALTER TYPE` statement with the `RENAME TO` clause.
+
+### `ALTER TYPE ... RENAME TO`
+
+**Synopsis**:
+```sql
+ALTER TYPE type_name RENAME TO new_name
+```
+
+**Description**: Renames an existing enum type to a new name. The statement also automatically renames the associated array type by prepending underscores to find a non-conflicting name. This functionality is only supported for enum user-defined types, not composite types or domains.
+
+**Parameters**:
+
+| Parameter | Description | Required |
+| --- | --- | --- |
+| `type_name` | The current name of the enum type to rename | Yes |
+| `new_name` | The new name for the enum type | Yes |
+
+**Required privileges**: [NEEDS REVIEW: Privilege requirements not specified in the diff]
+
+**Examples**:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Rename a simple enum type
+ALTER TYPE status RENAME TO order_status;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Multiple renames within a transaction
+BEGIN;
+ALTER TYPE color RENAME TO paint_color;
+ALTER TYPE paint_color RENAME TO final_color;
+COMMIT;
+~~~
+
+**Behavior notes**:
+
+- Unlike table renames, renaming a type to its current name results in an error rather than a no-op
+- The associated array type is automatically renamed with a generated name (typically prefixed with underscores)
+- Name conflicts with existing relations, types, or domains are detected and prevent the rename operation
+- This functionality requires the declarative schema changer and is available in CockroachDB v26.3 and later
+
+**Error conditions**:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Error: renaming to the same name
+ALTER TYPE status RENAME TO status;
+-- pq: type "database.schema.status" already exists
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Error: conflict with existing relation
+ALTER TYPE status RENAME TO existing_table;
+-- pq: relation "database.schema.existing_table" already exists
+~~~
+
+**Limitations**:
+
+- Only supported for enum types, not composite types or domains
+- Requires CockroachDB v26.3 or later
+- Must be enabled with the declarative schema changer
+
+**See also**:
+
+- [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %}) — Complete ALTER TYPE reference
+- [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %}) — Create user-defined types
+- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %}) — Remove user-defined types
+
+<!-- END REF DOC DRAFT -->
