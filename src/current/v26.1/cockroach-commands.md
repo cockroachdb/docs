@@ -57,3 +57,9 @@ CockroachDB prioritizes command flags, environment variables, and defaults as fo
 1. If there's no flag default, CockroachDB gives an error.
 
 For more details, see [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %}).
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+Prompt 'cli_commands_draft' could not be found or contains no messages
+
+<!-- END REF DOC DRAFT -->
