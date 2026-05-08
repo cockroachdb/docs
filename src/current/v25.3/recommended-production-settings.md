@@ -64,7 +64,7 @@ In general, distribute your total vCPUs into the **largest possible nodes and sm
 
 - Cockroach Labs does not extensively test clusters with more than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='maximum' %} per node. This is the recommended _maximum_ threshold.
 
-- CockroachDB should only run on single-NUMA instances. Running a CockroachDB process across NUMA nodes is not recommended and can heavily impact performance.
+- CockroachDB should only run on single-NUMA instances. Running a CockroachDB process across NUMA nodes is not recommended and can heavily impact performance. For more information on how CockroachDB interfaces with NUMA, read the [Linux deployment limitations]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}#numa).
 
 ### Basic hardware recommendations
 
