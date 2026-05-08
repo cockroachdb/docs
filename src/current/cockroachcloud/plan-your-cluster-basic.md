@@ -14,6 +14,10 @@ This page describes how resource usage, pricing, and cluster configurations work
 
 {% include cockroachcloud/request-units.md %}
 
+{{site.data.alerts.callout_info}}
+Basic Tier is ideal for smaller, bursty applications which require up to 30K RU/second, or approximately 60 vCPUs.
+{{site.data.alerts.end}}
+
 ## Pricing
 
 With CockroachDB {{ site.data.products.basic }}, you are charged only for the storage and activity of your cluster. Cluster activity is measured in [Request Units](#request-units); cluster storage is measured in GiB and is based on the total amount of storage your cluster used over a billing period. Request Unit consumption scales to zero when your cluster has no activity.
@@ -25,11 +29,15 @@ RU and storage consumption is prorated at the following prices:
   1M Request Units        | $0.20
   1 GiB storage           | $0.50
 
-Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of common queries and how they increase with the size and complexity of the query. You can view your cluster's RU and storage usage on the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
+Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of common queries and how they increase with the size and complexity of the query. You can view your cluster's RU and storage usage on the [**Overview** page]({% link cockroachcloud/overview-page.md %}).
 
 ## Free vs. paid usage
 
-CockroachDB {{ site.data.products.basic }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract CockroachDB {{ site.data.products.cloud }} organization is given 50 million [Request Units](#request-units) and 10 GiB of storage for free each month. Free resources do not apply to contract customers. Free resources can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization and will appear as a deduction on your monthly invoice.
+CockroachDB {{ site.data.products.basic }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each pay-as-you-go CockroachDB {{ site.data.products.cloud }} organization - those paying monthly by credit card or marketplace - is given $15 of resource consumption (equivalent to 50 million [Request Units](#request-units) and 10 GiB of storage) for free each month. Every monthly billing cycle, this free monthly resource benefit can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization. The free usage appears as a $15 deduction on your monthly invoice.
+
+{{site.data.alerts.callout_info}}
+Customers with annual or multi-year contracts are not eligible for the free monthly resource benefit.
+{{site.data.alerts.end}}
 
 Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must [set resource limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
 
@@ -44,7 +52,7 @@ Your cluster's [configured capacity]({% link cockroachcloud/create-a-basic-clust
 
 Cockroach Labs recommends setting your resource limits to about 30% higher than your expected usage to prevent cluster disruption. To learn about tuning your workload to reduce costs, refer to [Understand your Resource Usage]({% link cockroachcloud/resource-usage.md %}).
 
-Each [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
+Each [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
 
 ## Multi-region clusters
 

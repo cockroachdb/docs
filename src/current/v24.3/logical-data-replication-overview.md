@@ -31,20 +31,19 @@ For a comparison of CockroachDB high availability and resilience features and to
 
 Maintain [high availability]({% link {{ page.version.version }}/data-resilience.md %}#high-availability) and resilience to region failures with a two-datacenter topology. You can run bidirectional LDR to ensure [data resilience]({% link {{ page.version.version }}/data-resilience.md %}) in your deployment, particularly in datacenter or region failures. If you set up two single-region clusters, in LDR, both clusters can receive application reads and writes with low, single-region write latency. Then, in a datacenter, region, or cluster outage, you can redirect application traffic to the surviving cluster with [low downtime]({% link {{ page.version.version }}/data-resilience.md %}#high-availability). In the following diagram, the two single-region clusters are deployed in US East and West to provide low latency for that region. The two LDR jobs ensure that the tables on both clusters will reach eventual consistency.
 
-<image src="{{ 'images/v24.3/east-west-region.svg' | relative_url }}" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:60%" />
+<image src="/docs/images/{{ page.version.version }}/east-west-region.svg" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:60%" />
 
 ### Achieve workload isolation between clusters
 
 Isolate critical application workloads from non-critical application workloads. For example, you may want to run jobs like [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) or [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) from one cluster to isolate these jobs from the cluster receiving the principal application traffic.
 
-<image src="{{ 'images/v24.3/unidirectional.svg' | relative_url }}" alt="Diagram showing unidirectional LDR from a source cluster to a destination cluster with the destination cluster supporting secondary workloads plus jobs and the source cluster accepting the main application traffic." style="width:80%" />
+<image src="/docs/images/{{ page.version.version }}/unidirectional.svg" alt="Diagram showing unidirectional LDR from a source cluster to a destination cluster with the destination cluster supporting secondary workloads plus jobs and the source cluster accepting the main application traffic." style="width:80%" />
 
 ## Features
 
 - **Table-level replication**: When you initiate LDR, it will replicate all of the source table's existing data to the destination table. From then on, LDR will replicate the source table's data to the destination table to achieve eventual consistency.
 - **Last write wins conflict resolution**: LDR uses [_last write wins (LWW)_ conflict resolution]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#conflict-resolution), which will use the latest [MVCC]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) timestamp to resolve a conflict in row insertion.
 - **Dead letter queue (DLQ)**: When LDR starts, the job will create a [DLQ table]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) with each replicating table in order to track unresolved conflicts. You can interact and manage this table like any other SQL table.
-- **Replication modes**: LDR offers different _modes_ that apply data differently during replication, which allows you to consider optimizing for throughput or constraints during replication.
 - **Monitoring**: To [monitor]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}) LDR's initial progress, current status, and performance, you can view metrics available in the DB Console, Prometheus, and Metrics Export.
 
 ## Get started

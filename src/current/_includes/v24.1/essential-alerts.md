@@ -318,9 +318,9 @@ Send an alert when the number of ranges with replication below the replication f
 
 - Refer to [Replication issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#replication-issues).
 
-### Requests stuck in raft
+### Requests stuck in Raft
 
-Send an alert when requests are taking a very long time in replication. An (evaluated) request has to pass through the replication layer, notably the quota pool and raft. If it fails to do so within a highly permissive duration, the gauge is incremented (and decremented again once the request is either applied or returns an error). A nonzero value indicates range or replica unavailability, and should be investigated.
+Send an alert when requests are taking a very long time in replication. An (evaluated) request has to pass through the replication layer, notably the quota pool and raft. If it fails to do so within a highly permissive duration, the gauge is incremented (and decremented again once the request is either applied or returns an error). A nonzero value indicates range or replica unavailability, and should be investigated. This can also be a symptom of a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
 
 **Metric**
 <br>`requests.slow.raft`

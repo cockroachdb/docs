@@ -229,7 +229,7 @@ The cluster will underperform if storage is not provisioned or configured correc
 
 Provision enough storage capacity for CockroachDB data, and configure your volumes to maximize disk I/O:
 
-<table>
+<table markdown="1">
 <thead>
 <tr>
   <th>Category</th>
@@ -296,10 +296,6 @@ Insufficient disk I/O can cause [poor SQL performance](#service-latency) and pot
     {% include {{ page.version.version }}/prod-deployment/healthy-disk-ops-in-progress.md %}
 
 - The Linux tool `iostat` (part of `sysstat`) can be used to monitor IOPS. In the device status output, `avgqu-sz` corresponds to the **Disk Ops In Progress** metric. If service times persist in double digits on any node, this means that your storage device is saturated and is likely under-provisioned or misconfigured.
-
-{{site.data.alerts.callout_success}}
-Ensure that you [properly configure storage](#storage-and-disk-monitoring) to prevent I/O bottlenecks. Afterward, if service times consistently exceed 1-5 ms, you can add more devices or expand the cluster to reduce the disk latency.
-{{site.data.alerts.end}}
 
 With insufficient disk I/O, you may also see:
 

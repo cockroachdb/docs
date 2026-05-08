@@ -83,9 +83,7 @@
  </tr>
  <tr>
   <td>Altered cluster settings</td>
-  <td>
-      Cluster settings that have been altered from their default values.
-      Note that any values of type 'string' are redacted, such as the cluster organization.
+  <td>Cluster settings that have been altered from their default values. Note that every value of type 'string' is redacted, such as the cluster organization, as well as sensitive settings, such as OIDC authentication.
   </td>
   <td>
    <ul>
@@ -96,8 +94,11 @@
   <td>
    <code>
 "alteredSettings": {
-    "cluster.organization": "\u003credacted\u003e", "kv.lease.expiration_leases_only.enabled": "false",
-    "kv.rangefeed.enabled": "true"
+    "cluster.organization": "\u003credacted\u003e",
+    "cluster.secret": "\u003credacted\u003e",
+    "kv.rangefeed.enabled": "true",
+    "server.oidc_authentication.client_id": "\u003credacted\u003e",
+    "server.oidc_authentication.client_secret": "\u003credacted\u003e",
   }
 </code>
   </td>

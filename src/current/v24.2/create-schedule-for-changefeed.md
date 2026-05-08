@@ -13,10 +13,6 @@ For more detail on using changefeeds to create an export of your table data, see
 
 {% include {{ page.version.version }}/cdc/privilege-model.md %}
 
-### Legacy privilege model
-
-To create a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-control-changefeeds) parameter set.
-
 ## Synopsis
 
 <div>
@@ -57,6 +53,10 @@ Option | Value | Description
 `first_run` | [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) / `now` | Execute the first run of the schedule at this time. If you do not specify `first_run`, the schedule will execute based on the next `RECURRING` time set by the crontab.
 `on_execution_failure` | `retry` / `reschedule` / `pause` | Determine how the schedule handles an error. <br><br>`retry`: Retry the changefeed immediately.<br><br>`reschedule`: Reschedule the changefeed based on the `RECURRING` expression.<br><br>`pause`: Pause the schedule. This requires that you [resume the schedule]({% link {{ page.version.version }}/resume-schedules.md %}) manually.<br><br>**Default:** `reschedule`
 `on_previous_running` | `start` / `skip` / `wait` | Control whether the changefeed schedule should start a changefeed if the previous scheduled changefeed is still running.<br><br>`start`: Start the new changefeed anyway, even if the previous one is running.<br><br>`skip`: Skip the new changefeed and run the next changefeed based on the `RECURRING` expression.<br><br>`wait`: Wait for the previous changefeed to complete.<br><br>**Default:** `wait`
+
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="v24.2" %} To avoid multiple clusters running the same schedule concurrently, changefeed schedules will [pause]({% link {{ page.version.version }}/pause-schedules.md %}) when [restored]({% link {{ page.version.version }}/restore.md %}) onto a different cluster or after [physical cluster replication]({% link {{ page.version.version }}/cutover-replication.md %}) has completed.
+{{site.data.alerts.end}}
 
 ## Examples
 

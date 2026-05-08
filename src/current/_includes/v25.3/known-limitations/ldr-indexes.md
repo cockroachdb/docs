@@ -1,0 +1,1 @@
+Replicating tables cannot contain an [index]({% link {{ page.version.version }}/indexes.md %}) that requires expression evaluation before insertion. [#133560](https://github.com/cockroachdb/cockroach/issues/133560)

@@ -1,1 +1,0 @@
-This metric tracks the number of active [create statistics]({% link {{ site.current_cloud_version }}/create-statistics.md %}) jobs that may be consuming resources. Ensure that foreground SQL traffic is not impacted by correlating this metric with [SQL latency](#sql.service.latency) and [query volume](#sql.select.count) metrics.

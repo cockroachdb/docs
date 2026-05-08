@@ -1,0 +1,3 @@
+If you have upgraded from a {{ site.data.products.basic }} cluster to a {{ site.data.products.standard }} cluster, the existing backup schedules will still apply, but you can then configure the frequency and retention of future managed backups in the {{ site.data.products.standard }} cluster.
+
+If you have downgraded from a {{ site.data.products.standard }} cluster to a {{ site.data.products.basic }} cluster, existing managed backups will be retained for the configured retention duration. The default managed backups in {{ site.data.products.basic }} clusters will be taken every 24 hours and have a 30-day retention.

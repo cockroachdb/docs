@@ -1,0 +1,1 @@
+CockroachDB does not currently support dropping a single partition from a table. In order to remove partitions, you can [repartition]({% unless page.name == "partitioning.md" %}{% link {{ page.version.version }}/partitioning.md %}{% endunless %}#repartition-a-table) the table.

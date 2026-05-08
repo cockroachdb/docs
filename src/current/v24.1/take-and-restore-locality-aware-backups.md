@@ -92,7 +92,7 @@ Specifying both locality tier pairs (e.g., `region=us-east,az=az1`) from the out
 
 Given a list of URIs that together contain the locations of all of the files for a single [locality-aware backup](#create-a-locality-aware-backup), [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) can read in that backup. Note that the list of URIs passed to [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) may be different from the URIs originally passed to [`BACKUP`]({% link {{ page.version.version }}/backup.md %}). This is because it's possible to move the contents of one of the parts of a locality-aware backup (i.e., the files written to that destination) to a different location, or even to consolidate all the files for a locality-aware backup into a single location.
 
-When restoring a [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups), the cluster data is restored first, then the system table data "as is." This means that the restored zone configurations can point to regions that do not have active nodes in the new cluster. For example, if your full backup has the following [zone configurations]({% link {{ page.version.version }}/alter-partition.md %}#create-a-replication-zone-for-a-partition):
+When restoring a [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups), the cluster data is restored first, then the system table data "as is." This means that the restored  [zone configurations]({% link {{ page.version.version }}/alter-partition.md %}#create-a-replication-zone-for-a-partition) can point to regions that do not have active nodes in the new cluster. For example, if your full backup has the following zone configurations:
 
 ~~~ sql
 ALTER PARTITION europe_west OF INDEX movr.public.rides@rides_pkey \
@@ -125,7 +125,7 @@ RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
 To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-full-or-incremental-backup).
 
 {{site.data.alerts.callout_info}}
-[`RESTORE`]({% link {{ page.version.version }}/restore.md %}) is not truly locality-aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen in the cases that either the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) or [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) was not of a [full cluster]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups). Note that during a locality-aware restore, some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you can [manually restore zone configurations from a locality-aware backup](#manually-restore-zone-configurations-from-a-locality-aware-backup).
+[`RESTORE`]({% link {{ page.version.version }}/restore.md %}) is not truly locality-aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen in the cases that either the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) or [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) was not of a [full cluster]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups). Note that during a locality-aware restore, some data may be temporarily located on another node before it is eventually relocated to the appropriate node.
 {{site.data.alerts.end}}
 
 ## Create an incremental locality-aware backup
@@ -166,6 +166,8 @@ There is different syntax for taking an incremental backup depending on where yo
 
 	For more detail on using the `incremental_location` option, see [Incremental backups with explicitly specified destinations]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations).
 
+	{% include common/sql/incremental-location-warning.md %}
+
 ## Restore from an incremental locality-aware backup
 
 A locality-aware backup URI can also be used in place of any incremental backup URI in [`RESTORE`]({% link {{ page.version.version }}/restore.md %}).
@@ -190,47 +192,6 @@ To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({%
 {{site.data.alerts.callout_info}}
 When [restoring from an incremental locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}#restore-from-an-incremental-locality-aware-backup), you need to include **every** locality ever used, even if it was only used once.
 {{site.data.alerts.end}}
-
-## Manually restore zone configurations from a locality-aware backup
-
-During a [locality-aware restore](#restore-from-a-locality-aware-backup), some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you need to manually restore [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) first:
-
-Once the locality-aware restore has started, [pause the restore]({% link {{ page.version.version }}/pause-job.md %}):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-PAUSE JOB 27536791415282;
-~~~
-
-The `system.zones` table stores your cluster's [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}), which will prevent the data from rebalancing. To restore them, you must restore the `system.zones` table into a new database because you cannot drop the existing `system.zones` table:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE TABLE system.zones FROM '2021/03/23-213101.37' IN
-	'azure-blob://acme-co-backup?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-	WITH into_db = 'newdb';
-~~~
-
-After it's restored into a new database, you can write the restored `zones` table data to the cluster's existing `system.zones` table:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-INSERT INTO system.zones SELECT * FROM newdb.zones;
-~~~
-
-Then drop the temporary table you created:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-DROP TABLE newdb.zones;
-~~~
-
-Then, [resume the restore]({% link {{ page.version.version }}/resume-job.md %}):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESUME JOB 27536791415282;
-~~~
 
 ## See also
 

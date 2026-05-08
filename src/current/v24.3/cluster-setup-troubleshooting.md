@@ -385,7 +385,9 @@ Like any database system, if you run out of disk space the system will no longer
 - [What happens when a node runs out of disk space?]({% link {{ page.version.version }}/operational-faqs.md %}#what-happens-when-a-node-runs-out-of-disk-space)
 - [Why is memory usage increasing despite lack of traffic?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-memory-usage-increasing-despite-lack-of-traffic)
 - [Why is disk usage increasing despite lack of writes?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-disk-usage-increasing-despite-lack-of-writes)
-- [Can I reduce or disable the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data)
+- [Can I reduce the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-the-storage-of-time-series-data)
+
+In rare cases, disk usage can increase on nodes with [Raft followers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) due to a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
 
 ###### Automatic ballast files
 
@@ -429,6 +431,7 @@ Symptoms of disk stalls include:
 - Bad cluster write performance, usually in the form of a substantial drop in QPS for a given workload.
 - [Node liveness issues](#node-liveness-issues).
 - Writes on one node come to a halt. This can happen because in rare cases, a node may be able to perform liveness checks (which involve writing to disk) even though it cannot write other data to disk due to one or more slow/stalled calls to `fsync`. Because the node is passing its liveness checks, it is able to hang onto its leases even though it cannot make progress on the ranges for which it is the leaseholder. This wedged node has a ripple effect on the rest of the cluster such that all processing of the ranges whose leaseholders are on that node basically grinds to a halt. As mentioned above, CockroachDB's disk stall detection will attempt to shut down the node when it detects this state.
+- Messages like the following start appearing in the [`STORAGE` logging channel]({% link {{ page.version.version }}/logging.md %}#storage): `disk slowness detected: write to file {path/to/store/*.sst} has been ongoing for {duration}s`
 
 Causes of disk stalls include:
 
@@ -446,6 +449,12 @@ CockroachDB's built-in disk stall detection works as follows:
 
 - During [node liveness heartbeats](#node-liveness-issues), the [storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}) writes to disk as part of the node liveness heartbeat process.
 
+If you see messages like the following in the [`STORAGE` logging channel]({% link {{ page.version.version }}/logging.md %}#storage), it is an early sign of severe I/O slowness, and usually means a fatal stall is imminent:
+
+    - `disk slowness detected: write to file {path/to/store/*.sst} has been ongoing for {duration}s`
+
+Repeated occurrences of this message usually mean the node is effectively degraded: it will struggle to hold [range leases]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder) and serve requests, and will degrade the entire cluster generally. Do not raise the stall thresholds to mask hardware issues. Instead, [drain and decommission the node]({% link {{ page.version.version }}/node-shutdown.md %}) and replace the [underlying storage]({% link {{ page.version.version }}/cockroach-start.md %}#storage). If you are considering tuning, refer to [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) (or the corresponding environment variable `COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`), but note that increasing these values generally prolongs unavailability rather than fixing the underlying problem.
+
 #### Disk utilization is different across nodes in the cluster
 
 This is expected behavior.
@@ -455,6 +464,8 @@ CockroachDB uses [load-based replica rebalancing]({% link {{ page.version.versio
 The rebalancing criteria for load-based replica rebalancing do not include the percentage of disk utilized per node. Not all [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) are the same size. The proportions of larger and smaller ranges on each node balance each other out on average, so disk utilization differences across nodes should be relatively small.
 
 However, in some cases a majority of the largest (or smallest) ranges are on one node, which will result in imbalanced utilization. Normally that shouldn't be a problem with [sufficiently provisioned storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage). If this imbalance is causing issues, please [contact Support]({% link {{ page.version.version }}/support-resources.md %}) for guidance you on how to manually rebalance your cluster's disk usage.
+
+Replica counts can also remain uneven when CockroachDB keeps replicas on a node to preserve survivability through locality diversity, or to satisfy [replica placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints). For more information, refer to the [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#membership-changes-rebalance-repair) documentation.
 
 Finally, note that although the replica allocator does not rebalance based on disk utilization during normal operation, it does have the following mechanisms to help protect against [full disks](#disks-filling-up):
 
@@ -587,6 +598,18 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 1.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
 1. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}). Please be sure to include the full Range Report and error message when you submit the issue.
 
+#### Check for under-replicated or unavailable data
+
+To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Critical nodes endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint).
+
+#### Check for replication zone constraint violations
+
+To see if any of your cluster's [data placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) are being violated, follow the steps described in [Check for critical localities](#check-for-critical-localities).
+
+#### Check for critical localities
+
+To see which of your [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (if any) are critical, follow the steps described in the [Critical nodes endpoint documentation]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
+
 ## Node liveness issues
 
 "Node liveness" refers to whether a node in your cluster has been determined to be "dead" or "alive" by the rest of the cluster. This is achieved using checks that ensure that each node connected to the cluster is updating its liveness record. This information is shared with the rest of the cluster using an internal gossip protocol.
@@ -632,18 +655,6 @@ If you are running a version of CockroachDB that is affected by an issue describ
 If your cluster is in a partially-available state due to a recent node or network failure, the internal logging table `system.eventlog` might be unavailable. This can cause the logging of [notable events]({% link {{ page.version.version }}/eventlog.md %}) (e.g., the execution of SQL statements) to the `system.eventlog` table to fail to complete, contributing to cluster unavailability. If this occurs, you can set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `server.eventlog.enabled` to `false` to disable writing notable log events to this table, which may help to recover your cluster.
 
 Even with `server.eventlog.enabled` set to `false`, notable log events are still sent to configured [log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) as usual.
-
-## Check for under-replicated or unavailable data
-
-To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
-
-## Check for replication zone constraint violations
-
-To see if any of your cluster's [data placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) are being violated, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
-
-## Check for critical localities
-
-To see which of your [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (if any) are critical, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 
 ## Something else?
 

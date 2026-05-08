@@ -19,7 +19,7 @@ Ensuring consistency with nodes offline, though, is a challenge many databases f
 
 The number of failures that can be tolerated is equal to *(Replication factor - 1)/2*. For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on. You can control the replication factor at the cluster, database, and table level using [replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
-When failures happen, though, CockroachDB automatically realizes nodes have stopped responding and works to redistribute your data to continue maximizing survivability. This process also works the other way around: when new nodes join your cluster, data automatically rebalances onto it, ensuring your load is evenly distributed.
+When failures happen, though, CockroachDB automatically realizes nodes have stopped responding and works to redistribute your data to continue maximizing survivability. This process also works the other way around: when new nodes join your cluster, data automatically rebalances onto them, ensuring your load is evenly distributed.
 
 ### Interactions with other layers
 
@@ -148,32 +148,14 @@ A table's meta and system ranges (detailed in the [distribution layer]({% link {
 
 However, unlike table data, system ranges cannot use epoch-based leases because that would create a circular dependency: system ranges are already being used to implement epoch-based leases for table data. Therefore, system ranges use expiration-based leases instead. Expiration-based leases expire at a particular timestamp (typically after a few seconds). However, as long as a node continues proposing Raft commands, it continues to extend the expiration of its leases. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
 
-#### Leader leases
+#### Leader‑leaseholder splits
 
-{% include_cached new-in.html version="v24.3" %}
+[Epoch-based leases](#epoch-based-leases-table-data) are vulnerable to _leader-leaseholder splits_. These can occur when a leaseholder's Raft log has fallen behind other replicas in its group and it cannot acquire Raft leadership. Coupled with a [network partition]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition), this split can cause permanent unavailability of the range if (1) the stale leaseholder continues heartbeating the [liveness range](#epoch-based-leases-table-data) to hold its lease but (2) cannot reach the leader to propose writes.
 
-{% include feature-phases/preview.md %}
+Symptoms of leader-leaseholder splits include a [stalled Raft log]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#requests-stuck-in-raft) on the leaseholder and [increased disk usage]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disks-filling-up) on follower replicas buffering pending Raft entries. Remediations include:
 
-{% include {{ page.version.version }}/leader-leases-intro.md %}
-
-Leader leases rely on a shared, store-wide failure detection mechanism for triggering new Raft elections. [Stores]({% link {{ page.version.version }}/cockroach-start.md %}#store) participate in Raft leader elections by "fortifying" a candidate replica based on that replica's _store liveness_, as determined among a quorum of all the node's stores. A replica can **only** become the Raft leader if it is so fortified.
-
-After the fortified Raft leader is chosen, it is then also established as the leaseholder. Support for the lease is provided as long as the Raft leader's store liveness remains supported by a quorum of stores in the Raft group. This provides the fortified Raft leader with a guarantee that it will not lose leadership until **after** it has lost store liveness support. This guarantee enables a number of improvements to the performance and resiliency of CockroachDB's Raft implementation that were prevented by the need to handle cases where Raft leadership and range leases were not colocated.
-
-Importantly, since Leader leases rely on a quorum of stores in the Raft group, they remove the need for the single point of failure (SPOF) that was the [node liveness range]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues), As a result, Leader leases are not vulnerable to the scenario possible under the previous leasing regime where a leaseholder was [partitioned]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition) from its followers (including a follower that was the Raft leader) but still heartbeating the node liveness range. Before Leader leases, this scenario would result in an indefinite outage that lasted as long as the lease was held by the partitioned node.
-
-Based on Cockroach Labs' internal testing, leader leases provide the following user-facing benefits:
-
-- [Network partitions]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition) between a leaseholder and its followers heal in less than 20 seconds, since the leaseholder no longer needs to heartbeat a single node liveness range.
-- Outages caused by liveness failures last less than 1 second, since liveness is now determined by a store-level detection mechanism, not a single node liveness range.
-- Performance is equivalent (within less than 1%) to epoch-based leases on a 100 node cluster of 32 vCPU machines with 8 stores each.
-
-To enable Leader leases for testing with your workload, use the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kv.raft.leader_fortification.fraction_enabled`, which controls the fraction of ranges for which the Raft leader fortification protocol is enabled. Leader fortification is needed for a range to use a Leader lease. It can be set to `0.0` to disable leader fortification and, by extension, Leader leases. It can be set to `1.0` to enable leader fortification for all ranges and, by extension, use Leader leases for all ranges that do not require expiration-based leases. It can be set to a value between `0.0` and `1.0` to gradually roll out Leader leases across the ranges in a cluster.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING kv.raft.leader_fortification.fraction_enabled = 1.0
-~~~
+- Restarting the affected nodes.
+- Fixing the network partition (or slow networking) between nodes.
 
 #### How leases are transferred from a dead node
 
@@ -238,6 +220,8 @@ You can control leaseholder rebalancing through the `kv.allocator.load_based_lea
 
 Whenever there are changes to a cluster's number of nodes, the members of Raft groups change and, to ensure optimal survivability and performance, replicas need to be rebalanced. What that looks like varies depending on whether the membership change is nodes being added or going offline.
 
+CockroachDB does not always try to match the replica counts across nodes after [adding nodes]({% link {{ page.version.version }}/cockroach-start.md %}#add-a-node-to-a-cluster), [decommissioning and removing nodes]({% link {{ page.version.version}}/node-shutdown.md %}?filters=decommission#remove-nodes), or when there is a node outage. The replica allocator can keep replica counts uneven when that placement is needed to preserve survivability across [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) or to satisfy [replica placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints). For example, if a node is the only one in its availability zone in a 2-2-1 deployment across 3 AZs, that node may need to hold a replica for every range to preserve locality diversity, thus holding more replicas than its peers.
+
 - **Nodes added**: The new node communicates information about itself to other nodes, indicating that it has space available. The cluster then rebalances some replicas onto the new node.
 
 - **Nodes going offline**: If a member of a Raft group ceases to respond, after 5 minutes, the cluster begins to rebalance by replicating the data the downed node held onto other nodes.
@@ -250,6 +234,8 @@ In addition to the rebalancing that occurs when nodes join or leave a cluster, r
 
 1. Replica count.
 1. CPU usage (if [`kv.allocator.load_based_rebalancing.objective`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-kv-allocator-load-based-rebalancing-objective) is set to `cpu`, which is the default in CockroachDB v23.1 and later)
+
+The preceding load-based goals do not override [replica placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) or survivability requirements, so replica counts can remain uneven when CockroachDB needs a specific placement to respect placement constraints or preserve locality diversity.
 
 Note that disk utilization per node is not one of the rebalancing criteria. For more information, see [Disk utilization is different across nodes in the cluster]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-utilization-is-different-across-nodes-in-the-cluster).
 

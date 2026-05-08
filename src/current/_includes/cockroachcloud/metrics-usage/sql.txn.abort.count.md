@@ -1,1 +1,0 @@
-This high-level metric reflects workload performance. A persistently high number of SQL [transaction abort errors]({% link {{ site.current_cloud_version }}/transaction-retry-error-reference.md %}#transaction-retry-error-reference) may negatively impact the workload performance and needs to be investigated.

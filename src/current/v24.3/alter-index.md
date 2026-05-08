@@ -25,9 +25,8 @@ Refer to the respective [subcommands](#subcommands).
 
  Parameter | Description
 -----------|-------------
-`table_name` | The name of the table with the index you want to change.
-`index_name` | The current name of the index you want to change.
-`IF EXISTS` | Alter the index only if an index `index_name` exists; if one does not exist, do not return an error.
+`index_name` | The name of the [index]({% link {{ page.version.version }}/indexes.md %}) you want to change.
+`IF EXISTS` | Alter the index only if an index `table_index_name` exists; if one does not exist, do not return an error.
 
 Additional parameters are documented for the respective [subcommands](#subcommands).
 
@@ -38,6 +37,7 @@ Subcommand | Description |
 [`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for an index. | 
 [`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index.
 [`RENAME TO`](#rename-to) | Change the name of an index.
+[`SCATTER`](#scatter) | Make a best-effort attempt to redistribute replicas and leaseholders for the ranges of a table or index. Note that this statement does not return an error even if replicas are not moved. |
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the index.
 [`VISIBILITY`](#visibility) | Set the visibility of an index between a range of `0.0` and `1.0`.
@@ -47,11 +47,11 @@ Subcommand | Description |
 
 `ALTER INDEX ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for an index. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}). For more information about replication zones, see [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
-
-
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
 For examples, see [Replication Controls](#configure-replication-zones).
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
 #### Required privileges
 
@@ -119,6 +119,32 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
 
 For usage, see [Synopsis](#synopsis).
 
+### `SCATTER`
+
+`ALTER INDEX ... SCATTER` runs a specified set of ranges for a table or index through the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}) queue. If many ranges have been created recently, the replication queue may transfer some leases to other replicas to balance load across the cluster.
+
+Note that this statement makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of an index. It does not return an error even if replicas are not moved.
+
+{{site.data.alerts.callout_info}}
+`SCATTER` has the potential to result in data movement proportional to the size of the table or index being scattered, thus taking additional time and resources to complete.
+{{site.data.alerts.end}}
+
+For examples, refer to [Scatter indexes](#scatter-indexes).
+
+#### Required privileges
+
+The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table or index.
+
+#### Parameters
+
+Parameter | Description
+----------|-------------
+`table_name` | The name of the table that you want to scatter.
+`table_index_name` | The name of the index that you want to scatter.
+`expr_list` | A list of [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}) in the form of the primary key of the table or the specified index.
+
+For usage, see [Synopsis](#synopsis).
+
 ### `SPLIT AT`
 
 `ALTER INDEX ... SPLIT AT` forces a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at a specified row in the index.
@@ -176,18 +202,18 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER INDEX ... VISIBLE` and `ALTER INDEX ... NOT VISIBLE` determines whether the index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). 
 
-By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes).
+By default, indexes are visible. If an index is `NOT VISIBLE`, queries will not read from the index unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). In order to keep `NOT VISIBLE` indexes up to date, queries will still write to the index as they insert and update data in the table.
 
-This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
+This allows you to create an index and check for query plan changes without affecting production queries. For an example, refer to [Set an index to be not visible](#set-an-index-to-be-not-visible).
 
-Note the following considerations:
+Note the following considerations for index visibility:
 
 - Primary indexes must be visible.
-- Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}).
-- Indexes that are not visible are still used for foreign key cascades.
-- When defining a [unique constraint]({% link {{ page.version.version }}/unique.md %}), the `NOT VISIBLE` syntax cannot be used to make the corresponding index not visible. Instead, use `ALTER INDEX ... NOT VISIBLE` after creating the unique constraint.
+- Queries may still read from `NOT VISIBLE`, [`UNIQUE`]({% link {{ page.version.version }}/create-index.md %}#unique-indexes) indexes to enforce [`UNIQUE` constraints]({% link {{ page.version.version }}/unique.md %}).
+- Queries may still read from `NOT VISIBLE` indexes to perform foreign key cascades and enforce [`FOREIGN KEY` constraints]({% link {{ page.version.version }}/foreign-key.md %}).
+- When defining a [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}), you cannot use the `NOT VISIBLE` syntax to make the corresponding index not visible. Instead, use `ALTER INDEX ... NOT VISIBLE` after creating the `UNIQUE` constraint.
 
-For examples, see [Set index visibility](#set-index-visibility).
+For examples, refer to [Set index visibility](#set-index-visibility).
 
 #### Aliases
 
@@ -224,6 +250,10 @@ You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or
 ~~~ sql
 ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE DISCARD;
 ~~~
+
+#### Troubleshoot replication zones
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
 ### Define partitions
 
@@ -337,6 +367,57 @@ SHOW INDEXES FROM users;
   users      | users_pkey     |     f      |            4 | address     | N/A       |    t    |    f     |    t
   users      | users_pkey     |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
 (8 rows)
+~~~
+
+### Scatter indexes
+
+Before scattering, you can view the current replica and leaseholder distribution for an index:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH range_details AS (SHOW RANGES FROM index rides@rides_pkey WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+~~~
+
+~~~
+  range_id | lease_holder | replicas
+-----------+--------------+-----------
+       135 |            9 | {2,6,9}
+       123 |            6 | {2,6,9}
+       122 |            9 | {2,6,9}
+       120 |            9 | {3,6,9}
+       121 |            9 | {3,6,9}
+       119 |            6 | {2,6,9}
+        93 |            6 | {1,6,9}
+        91 |            2 | {2,6,9}
+        92 |            6 | {2,6,8}
+(9 rows)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER INDEX rides@rides_pkey SCATTER;
+~~~
+
+After scattering, recheck the leaseholder distribution:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH range_details AS (SHOW RANGES FROM index rides@rides_pkey WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+~~~
+
+~~~
+  range_id | lease_holder | replicas
+-----------+--------------+-----------
+       135 |            9 | {1,6,9}
+       123 |            5 | {2,5,9}
+       122 |            5 | {2,5,9}
+       120 |            6 | {3,6,9}
+       121 |            3 | {3,6,9}
+       119 |            5 | {3,5,9}
+        93 |            5 | {1,5,9}
+        91 |            1 | {1,5,9}
+        92 |            5 | {2,5,8}
+(9 rows)
 ~~~
 
 ### Split and unsplit indexes

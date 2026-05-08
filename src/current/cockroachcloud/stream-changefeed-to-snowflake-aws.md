@@ -7,7 +7,7 @@ docs_area: stream_data
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-This page demonstrates how to use an [{{ site.data.products.enterprise }} changefeed](../{{site.current_cloud_version}}/create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
+This page demonstrates how to use a [changefeed](../{{site.current_cloud_version}}/create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
 
 {{site.data.alerts.callout_info}}
 Snowflake is optimized for inserts and batch rewrites over streaming updates. This tutorial sets up a changefeed to stream data to S3 with Snowpipe sending changes to Snowflake. Snowpipe imports previously unseen files and does not address uniqueness for primary keys, which means that target tables in Snowflake can contain multiple records per primary key.
@@ -91,11 +91,11 @@ Every change to a watched row is emitted as a record in a configurable format (i
 
 1. Create an S3 bucket where streaming updates from the watched tables will be collected.
 
-    You will need the name of the S3 bucket when you [create your changefeed](#step-7-create-an-enterprise-changefeed). Ensure you have a set of IAM credentials with write access on the S3 bucket that you will use during [changefeed setup](#step-7-create-an-enterprise-changefeed).
+    You will need the name of the S3 bucket when you [create your changefeed](#step-7-create-a-changefeed). Ensure you have a set of IAM credentials with write access on the S3 bucket that you will use during [changefeed setup](#step-7-create-a-changefeed).
 
-## Step 7. Create an enterprise changefeed
+## Step 7. Create a changefeed
 
-Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.current_cloud_version}}/create-changefeed.html). Replace the placeholders with your AWS access key ID and AWS secret access key:
+Back in the built-in SQL shell, [create a changefeed](../{{site.current_cloud_version}}/create-changefeed.html). Replace the placeholders with your AWS access key ID and AWS secret access key:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -106,7 +106,7 @@ When running a single-node CockroachDB cluster, an error about replicas failing 
 E160407 09:53:50.337328 storage/queue.go:511  [replicate] 7 replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"
 ~~~
 
-This happens because CockroachDB expects three nodes by default. If you do not intend to add additional nodes, you can stop this error by using [`ALTER RANGE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone) to update your default zone configuration to expect only one node:
+This happens because CockroachDB expects three nodes by default. If you do not intend to add additional nodes, you can stop this error by using [`ALTER RANGE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone) to update your default [zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}) to expect only one node:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -222,3 +222,4 @@ Try searching the rest of our docs for answers or using our other [support resou
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Support Portal](https://support.cockroachlabs.com)
 - [Transaction retry error reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

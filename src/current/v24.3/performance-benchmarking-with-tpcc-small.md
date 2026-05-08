@@ -76,9 +76,7 @@ CockroachDB requires TCP communication on two ports:
 
 1. SSH to the first VM where you want to run a CockroachDB node.
 
-1. Visit [Releases]({% link releases/index.md %}?filters=windows) to download and CockroachDB for Linux. Select the architecture of the VM, either Intel or ARM. Releases are rolled out gradually, so the latest version may not yet be available.
-
-1. Extract the binary you downloaded, then optionally copy it into a location in your `PATH`. If you choose to copy it into a system directory, you may need to use `sudo`.
+1. [Install CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
 
 1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
@@ -106,20 +104,7 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
 1. SSH to the VM where you want to run TPC-C.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-
-    If you get a permissions error, prefix the command with `sudo`.
+1. [Install CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
 
 1. Import the TPC-C dataset:
 
@@ -170,8 +155,6 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
 
     CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
 
-    {% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
-
-- Performance Tuning
+- Performance tuning
 
     For guidance on tuning a real workload's performance, see [SQL Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).

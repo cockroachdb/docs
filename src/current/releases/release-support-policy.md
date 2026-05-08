@@ -13,9 +13,9 @@ docs_area: releases
 
 This page explains Cockroach Labs' policy for supporting [production releases]({% link releases/index.md %}) of CockroachDB {{ site.data.products.core }}. For clusters deployed in {{ site.data.products.cloud }}, refer to the [CockroachDB {{ site.data.products.cloud }} Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
-There are two major release types: [Regular and Innovation releases]({% link releases/index.md %}#release-types). Each offers a unique set of Support Types, which define the durations for each [support phase](#support-phases).
+There are two major release types: [Regular and Innovation releases]({% link releases/index.md %}#release-schedule). Each offers a unique set of Support Types, which define the durations for each [support phase](#support-phases).
 
-## Support Phases
+## Support phases
 
 - **Maintenance Support**: Begins for a CockroachDB major version upon its [GA release]({% link releases/index.md %}#patch-releases). During this phase:
   - Cockroach Labs will produce regular patch releases that include critical security fixes and resolutions to problems identified by users.
@@ -28,15 +28,15 @@ There are two major release types: [Regular and Innovation releases]({% link rel
   - Patch releases for the purpose of resolving bugs or other errors may no longer be made to the major release.
   - Cockroach Labs may direct customers to workarounds or other fixes applicable to the reported case.
   - Cockroach Labs may direct customers to [upgrade](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version) to a later version of CockroachDB to resolve or further troubleshoot an issue.
-- **End of Life (EOL)**: The day that a major version’s final support period ends is its EOL date. After a version reaches EOL, Cockroach Labs provides no further support for the release.
-  - A Regular release reaches EOL at the Assistance Support phase's end date.
-  - An Innovation releases reaches EOL at the Maintenance Support phase's end date.
+- **Unsupported**: The day that a major version’s final support period ends is its unsupported date. After a version reaches end of life, Cockroach Labs provides no further support for the release.
+  - A Regular release reaches unsupported at the Assistance Support phase's end date.
+  - An Innovation release reaches unsupported at the Maintenance Support phase's end date.
 
-## Support Types
+## Support types
 
 ### Regular releases
 
-Initially, a Regular release series has GA Support. After the series demonstrates a continuously high level of stability and performance, new patch releases are designated as LTS releases, which have an extended support window for each [support phase](#support-phases): Maintenance Support, Assistance Support, and EOL (End of Life).
+Initially, a Regular release series has GA Support. After the series demonstrates a continuously high level of stability and performance, new patch releases are designated as LTS releases, which have an extended support window for each [support phase](#support-phases): Maintenance Support, Assistance Support, and Unsupported versions.
 
 - **GA Support**: The default support type for production releases, starting with the initial production release of a major version, followed by each subsequent patch release before LTS releases begin for that major version.
     - **Maintenance support ends**:
@@ -130,7 +130,8 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
     <br />
     {% endif %}
 
-    {% if r_eol != true and r_lts_eol != true %}{% comment %}Only show non-EOL releases {% endcomment %}
+  {% if r_lts_eol != true %}
+    {% comment %}Only show non-EOL releases {% endcomment %}
 
       {% if v.initial_lts_patch != "N/A" %}{% comment %} For LTS releases print an LTS row first{% endcomment %}
   <tr>
@@ -143,10 +144,12 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
   </tr>
       {% endif %}
 
-  {% comment %} Always print a GA row.
+  {% comment %} 
     For regular releases not yet in LTS, add a link to the first footnote
     For currently supported skippable releases, add a link to the second footnote
   {% endcomment %}
+
+      {% if r_eol != true %}
   <tr>
     <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}{% if will_never_have_lts == false and v.initial_lts_patch == "N/A" %}&nbsp;<a href="#lts-tbd"><sup>*</sup></a>{% elsif skippable == true %}&nbsp;<a href="#skippable"><sup>**</sup></a>{% endif %}</td>
     <td>{% if v.last_ga_patch != "N/A" %}{{ v.major_version }}.0 - {{ v.last_ga_patch }}{% else %}{{ v.major_version }}.0+{% endif %}</td>
@@ -155,7 +158,9 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
     <td>{% if v.maint_supp_exp_date != "N/A" %}{{ v.maint_supp_exp_date }}{% endif %}</td>
     <td>{{ v.asst_supp_exp_date }}</td>
   </tr>
-    {% endif %}
+      {% endif %}
+
+  {% endif %}
 
   {% endfor %} {% comment %} Display each non-EOL version, its release date, its maintenance support expiration date, and its assistance support expiration date, and its LTS maintenance and assistance support dates. Also include links to the latest hotfix version. {% endcomment %}
   </tbody>
@@ -164,7 +169,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
 <sup id="lts-tbd">&#42;&nbsp;&nbsp;: This major version will receive LTS patch releases, which will be listed on an additional row, upon their availability.</sup><br />
 <sup id="skippable">&#42;&#42;&nbsp;&nbsp;: This major version is an optional innovation release and will not receive receive LTS patch releases. Innovation releases are EOL when Maintenance Support ends.</sup><br />
 
-## End-of-life (EOL) versions
+## Unsupported versions
 
 The following versions of CockroachDB are no longer supported.
 

@@ -8,9 +8,10 @@ The table of licenses below refers to options for {{ site.data.products.core }} 
 
 Type | Description
 -------------|------------
-**Enterprise** <a name="enterprise"></a> | This paid license allows usage of all CockroachDB features in accordance with the terms specified in the [CockroachDB Software License][csl]. License must be renewed annually or as negotiated. Support levels available include [Enterprise][support] or [Essential][support].
-**Enterprise Free** <a name="enterprise-free"></a> | Same functionality as **Enterprise**, but free of charge for businesses with less than $10M in annual revenue. Clusters will be [throttled](#throttling) after 7 days without sending [telemetry]({% link {{ page.version.version }}/telemetry.md %}). License must be renewed annually. Support level available is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
-**Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. [Telemetry]({% link {{ page.version.version }}/telemetry.md %}) is required during the trial. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trial is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
+**Enterprise** <a name="enterprise"></a> | This paid license allows usage of all CockroachDB features in accordance with the terms specified in the [CockroachDB Software License][csl]. License must be renewed annually or as negotiated. Support levels available include [Enterprise][support] or [Essential][support]. The type of enterprise license may be set to **Production**, **Pre-production**, or **Development** depending on the environment in which CockroachDB is deployed.
+**Free** <a name="enterprise-free"></a> | Same functionality as **Enterprise**, but free of charge for businesses with less than $10M in annual revenue. Clusters will be [throttled](#throttling) after 7 days without sending [telemetry]({% link {{ page.version.version }}/telemetry.md %}). License must be renewed annually. Support level available is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
+**Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. [Telemetry]({% link {{ page.version.version }}/telemetry.md %}) is required during the trial. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trial is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
+**Evaluation** <a name="enterprise-evaluation"></a> | Same functionality as **Enterprise**, but may be provided by your sales team if needed for an extended evaluation period. Support level is equivalent to a enterprise license.
 
 <a href="mailto:sales@cockroachlabs.com">Contact Sales</a> if you want to try CockroachDB without telemetry requirements or if you require an extended trial period.
 
@@ -23,7 +24,13 @@ Note that:
 
 ## Obtain a license
 
-To obtain a paid **Enterprise** license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
+To obtain a paid **Enterprise** license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>. Once a license is added to your account, it appears in the [CockroachDB {{ site.data.products.cloud }} Console][cloud-console] on the **Organization &raquo; Enterprise Licenses** page. This page is only accessible by users with **Organization Admin** permissions.
+
+[Sign up for a CockroachDB {{ site.data.products.cloud }} Console account](https://cockroachlabs.cloud/signup?experience=enterprise) if you do not already have one.
+
+{{site.data.alerts.callout_info}}
+Enterprise licenses generated prior to May 31st 2025 are not visible in the **Enterprise Licenses** page.
+{{site.data.alerts.end}}
 
 To obtain an **Enterprise Free** or **Enterprise Trial** license, take the following steps:
 
@@ -144,7 +151,15 @@ Single-node clusters for development use are [not throttled](#single-node-cluste
 
 Cockroach Labs encourages non-commercial academic research involving CockroachDB. For such projects, [obtain an **Enterprise Free** license](#obtain-a-license).
 
+### Do government entities qualify for a CockroachDB Enterprise Free license?
+
+No, government entities do not qualify for an **Enterprise Free** license. To obtain an **Enterprise Trial** license or paid **Enterprise** license, see [Obtain a license](#obtain-a-license).
+
 <a name="single-node-clusters"></a>
+
+### Where can I deploy CockroachDB Enterprise Free licenses?  Does it have to be on my own hardware or cloud instance?
+
+When using an **Enterprise Free** license, an **Enterprise Free** license can only be used to run CockroachDB on your own on premises hardware or in your own account in the public clouds. If you plan to run CockroachDB in your customer's environment or public cloud instance, you will need an **Enterprise** License.
 
 ### Do I need a license key for running a single node cluster?
 
@@ -156,6 +171,10 @@ No license key is required for developers running [single-node clusters]({% link
 Single-node clusters are not [throttled](#throttling).
 
 Generally, single-node clusters used for design, prototyping, testing, or development purposes in non-production, internal development environments do not require a license key.
+
+### Can a company with less than $10 million in annual revenue use the Enterprise Free license if the aggregate revenue of its parent company and affiliates exceeds this threshold?
+
+No, the **Enterprise Free** license is intended solely for organizations whose combined annual revenue, including the parent company and all affiliates, is under $10 million. If total annual revenues exceed this limit, the affiliate does not qualify for the **Enterprise Free** license.
 
 ## See also
 

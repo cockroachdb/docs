@@ -15,8 +15,8 @@ CockroachDB allows you to define table partitions, giving you row-level control 
 
 Table partitioning helps you reduce latency and cost:
 
-- **Geo-partitioning** allows you to keep user data close to the user, which reduces the distance that the data needs to travel, thereby **reducing latency**. To geo-partition a table, define location-based partitions while creating a table, create location-specific zone configurations, and apply the zone configurations to the corresponding partitions.
-- **Archival-partitioning** allows you to store infrequently-accessed data on slower and cheaper storage, thereby **reducing costs**. To archival-partition a table, define frequency-based partitions while creating a table, create frequency-specific zone configurations with appropriate storage devices constraints, and apply the zone configurations to the corresponding partitions.
+- **Geo-partitioning** allows you to keep user data close to the user, which reduces the distance that the data needs to travel, thereby **reducing latency**. To geo-partition a table, define location-based partitions while creating a table, create location-specific [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}), and apply the zone configurations to the corresponding partitions.
+- **Archival-partitioning** allows you to store infrequently-accessed data on slower and cheaper storage, thereby **reducing costs**. To archival-partition a table, define frequency-based partitions while creating a table, create frequency-specific [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) with appropriate storage devices constraints, and apply the zone configurations to the corresponding partitions.
 
 ## How it works
 
@@ -109,6 +109,7 @@ On their own, partitions are inert and simply apply a label to the rows of the t
 
 CockroachDB uses the most granular zone config available. Zone configs that target a partition are considered more granular than those that target a table or index, which in turn are considered more granular than those that target a database.
 
+For more information about how zone config inheritance works, see [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}#level-priorities).
 
 {% include {{page.version.version}}/sql/querying-partitions.md %}
 
@@ -688,7 +689,7 @@ Other databases use partitioning for three additional use cases: secondary index
 - **Changes to secondary indexes:** CockroachDB solves these changes through online schema changes. Online schema changes are a superior feature to partitioning because they require zero-downtime and eliminate the potential for consistency problems.
 - **Sharding:** CockroachDB automatically shards data as a part of its distributed database architecture.
 - **Bulk Loading & Deleting:** CockroachDB does not have a feature that supports this use case as of now.
-- **Logical structure of partitions:** CockroachDB uses the partitioning concept to allow users to logically subdivide a single physical table to enable independent configuration of those partitions using zone configurations. Other databases sometimes implement partitioning as the logical union of physically separate tables. This difference means that CockroachDB is able to permit inexpensive repartitioning in contrast to other databases. Consequently, CockroachDB is unable to provide the same bulk data deletion operations over table partitions that other databases achieve by physically dropping the underlying table represented by the partition.
+- **Logical structure of partitions:** CockroachDB uses the partitioning concept to allow users to logically subdivide a single physical table to enable independent configuration of those partitions using [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}). Other databases sometimes implement partitioning as the logical union of physically separate tables. This difference means that CockroachDB is able to permit inexpensive repartitioning in contrast to other databases. Consequently, CockroachDB is unable to provide the same bulk data deletion operations over table partitions that other databases achieve by physically dropping the underlying table represented by the partition.
 
 ## Known limitations
 
@@ -701,3 +702,4 @@ Other databases use partitioning for three additional use cases: secondary index
 - [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
 - [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
 - [Computed Columns]({% link {{ page.version.version }}/computed-columns.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

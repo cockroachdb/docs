@@ -466,8 +466,6 @@ $(cat addrs)
 
     CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
 
-    {% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
-
-- Performance Tuning
+- Performance tuning
 
     For guidance on tuning a real workload's performance, see [SQL Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).

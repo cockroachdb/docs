@@ -89,9 +89,9 @@ Average Rows Read | The average number of rows read when the plan was executed.
 Full Scan | Whether the execution performed a full scan of the table.
 Min Latency | The lowest latency value for all statement executions with this Explain Plan.
 Max Latency | The highest latency value for all statement executions with this Explain Plan.
-P50 Latency | The 50th latency percentile for sampled statement executions with this Explain Plan.
-P90 Latency | The 90th latency percentile for sampled statement executions with this Explain Plan.
-P99 Latency | The 99th latency percentile for sampled statement executions with this Explain Plan.
+P50 Latency | The 50th latency percentile for sampled statement executions with this Explain Plan.<br><br><strong>Note:</strong> Latency percentiles are calculated from a different set of executions than other statistics, so they may be inconsistent with the minimum, maximum, and average values. This data is provided for reference only.
+P90 Latency | The 90th latency percentile for sampled statement executions with this Explain Plan.<br><br><strong>Note:</strong> Latency percentiles are calculated from a different set of executions than other statistics, so they may be inconsistent with the minimum, maximum, and average values. This data is provided for reference only.
+P99 Latency | The 99th latency percentile for sampled statement executions with this Explain Plan.<br><br><strong>Note:</strong> Latency percentiles are calculated from a different set of executions than other statistics, so they may be inconsistent with the minimum, maximum, and average values. This data is provided for reference only.
 Distributed | Whether the execution was distributed.
 Vectorized | Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
 
@@ -150,6 +150,9 @@ To activate diagnostics collection:
 1. Choose whether to:
    1. trace and collect diagnostics at the default sampled rate of 1% (or specify a different rate) when the statement execution latency exceeds the default time of 100 milliseconds (or specify a different time), or
    1. trace and collect diagnostics on the next statement execution.
+1. Choose whether to collect diagnostics:
+   1. For all plan gists, or
+   1. For a particular plan gist (select one from the dropdown list).
 1. Choose whether the request should expire after 15 minutes, or after a different time, or disable automatic expiration by deselecting the checkbox. Executions of the same statement fingerprint will run slower while diagnostics are activated, so it is recommended to set an expiration time if collecting according to a latency threshold.
 1. Click **Activate**.
 

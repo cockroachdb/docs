@@ -9,8 +9,6 @@ The `DROP TABLE` [statement]({% link {{ page.version.version }}/sql-statements.m
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-{% include {{ page.version.version }}/misc/declarative-schema-changer-note.md %}
-
 ## Required privileges
 
 The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well.

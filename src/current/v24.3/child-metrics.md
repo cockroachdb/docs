@@ -18,6 +18,8 @@ The metrics and their potential child metrics are determined by the specific fea
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 ~~~
 
+{% include_cached new-in.html version="v24.3.10" %} The [cluster setting `server.child_metrics.include_aggregate.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-include-aggregate-enabled) (default: `true`) reports an aggregate time series for applicable child metrics. When set to `false`, it stops reporting the aggregate time series, preventing double counting when querying those metrics.
+
 ## All clusters
 
 An RPC (Remote Procedure Call) connection is a communication method used in distributed systems, like CockroachDB, to allow one program to request a service from a program located in another computer on a network without having to understand the network's details. In the context of CockroachDB, RPC connections are used for inter-node communication. For instance, if Node 1 sends a request to Node 2, and Node 2 dials back (sends request back to Node 1), it ensures that communication is healthy in both directions. This is referred to as a "bidirectionally connected" and "heartbeating" RPC connection.
@@ -108,6 +110,41 @@ changefeed_error_retries{node_id="1",scope="office_dogs"} 0
 ~~~
 
 {% assign feature = "changefeed" %}
+{% include {{ page.version.version }}/child-metrics-table.md %}
+
+## Clusters with logical data replication jobs
+
+When child metrics is enabled and [logical data replication (LDR) jobs with metrics labels]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}#metrics-labels) are created on the cluster, the `logical_replication_*_by_label` metrics are exported per LDR metric label. The `label` may have the values set using the `label` option. The cardinality increases with the number of LDR metric labels.
+
+For example, when you create two LDR jobs with the metrics labels `ldr_job1` and `ldr_job2`, the metrics `logical_replication_*_by_label` export child metrics with a `label` for `ldr_job1` and `ldr_job2`.
+
+~~~
+# HELP logical_replication_replicated_time_by_label Replicated time of the logical replication stream by label
+# TYPE logical_replication_replicated_time_by_label gauge
+logical_replication_replicated_time_by_label{label="ldr_job2",node_id="2"} 1.73411035e+09
+logical_replication_replicated_time_by_label{label="ldr_job1",node_id="2"} 1.73411035e+09
+# HELP logical_replication_catchup_ranges_by_label Source side ranges undergoing catch up scans
+# TYPE logical_replication_catchup_ranges_by_label gauge
+logical_replication_catchup_ranges_by_label{label="ldr_job1",node_id="2"} 0
+logical_replication_catchup_ranges_by_label{label="ldr_job2",node_id="2"} 0
+# HELP logical_replication_scanning_ranges_by_label Source side ranges undergoing an initial scan
+# TYPE logical_replication_scanning_ranges_by_label gauge
+logical_replication_scanning_ranges_by_label{label="ldr_job1",node_id="2"} 0
+logical_replication_scanning_ranges_by_label{label="ldr_job2",node_id="2"} 0
+~~~
+
+Note that the `logical_replication_*` metrics without the `_by_label` suffix may be `inaccurate with multiple LDR jobs`.
+
+~~~
+# HELP logical_replication_catchup_ranges Source side ranges undergoing catch up scans (inaccurate with multiple LDR jobs)
+# TYPE logical_replication_catchup_ranges gauge
+logical_replication_catchup_ranges{node_id="2"} 0
+# HELP logical_replication_scanning_ranges Source side ranges undergoing an initial scan (inaccurate with multiple LDR jobs)
+# TYPE logical_replication_scanning_ranges gauge
+logical_replication_scanning_ranges{node_id="2"} 0
+~~~
+
+{% assign feature = "ldr" %}
 {% include {{ page.version.version }}/child-metrics-table.md %}
 
 ## Clusters with row-level TTL jobs

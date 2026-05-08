@@ -76,18 +76,13 @@ Parameter      | Description
 
 ### Display forecasted statistics
 
-The `WITH FORECAST` option calculates and displays forecasted statistics along with the existing table statistics. The forecast is a simple regression model that predicts how the statistics have changed since they were last collected. Forecasts that closely match the historical statistics are used by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
-
-CockroachDB generates forecasted statistics when the following conditions are met:
-
-- There have been at least 3 historical statistics collections.
-- The historical statistics closely fit a linear pattern.
+The `WITH FORECAST` option calculates and displays [forecasted statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#forecasted-statistics) along with the existing table statistics.
 
 The following example shows 3 historical statistics collections and the subsequent forecast:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW STATISTICS FOR TABLE rides WITH FORECAST;
+SHOW STATISTICS FOR TABLE rides WITH FORECAST;
 ~~~
 
 ~~~

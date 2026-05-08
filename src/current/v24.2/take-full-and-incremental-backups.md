@@ -153,15 +153,7 @@ If you are taking backups on a regular cadence, we recommend [creating a schedul
 
 ### Recommendations for incremental backup frequency
 
-Incremental backups form chains between full backups. Each incremental backup contains only the data that has changed since a base set of backups. This base set of backups must include one full backup and can include many incremental backups, which are smaller and faster to produce than full backups. You can take incremental backups either as of a given timestamp or with full [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}).
-
-Cockroach Labs recommends taking incremental backups every 10 minutes. CockroachDB supports up to 400 incremental backups between full backups. This may vary based on your specific use-case, so we recommend testing within your own environment and workloads. This can look like:
-
-- A full backup taken daily with incrementals taken every hour for a total of 24 incremental backups.
-- A full backup taken daily with incrementals taken every 10 minutes for a total of 144 incremental backups.
-- A full backup taken daily with incrementals taken every 5 minutes for a total of 288 incremental backups.
-- A full backup taken weekly with incrementals taken every hour for a total of 168 incremental backups.
-- A full backup taken weekly with incrementals taken every 30 minutes for a total of 336 incremental backups.
+Incremental backups form chains between full backups. Each incremental backup contains only the data that has changed since a base set of backups. This base set of backups must include one full backup and can include multiple incremental backups, which are typically smaller and faster to run than full backups. You can take incremental backups either as of a given timestamp or with full [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}). Cockroach Labs supports up to 48 incremental backups between full backups.
 
 ### Garbage collection and backups
 
@@ -243,7 +235,7 @@ A full backup must be present in the `{collectionURI}` in order to take an incre
 
 For details on the backup directory structure when taking incremental backups with `incremental_location`, see this [incremental location directory structure](#incremental-location-structure) example.
 
-<a name="backup-earlier-behavior"></a>To take incremental backups that are [stored in the same way as v21.2]({% link v21.2/take-full-and-incremental-backups.md %}#backup-collections) and earlier, you can use the `incremental_location` option. You can specify the same `collectionURI` with `incremental_location` and the backup will place the incremental backups in a date-based path under the full backup, rather than in the default `/incrementals` directory:
+<a name="backup-earlier-behavior"></a>To take incremental backups that are stored in the same way as v21.2 and earlier, you can use the `incremental_location` option. You can specify the same `collectionURI` with `incremental_location` and the backup will place the incremental backups in a date-based path under the full backup, rather than in the default `/incrementals` directory:
 
 ~~~ sql
 BACKUP INTO LATEST IN '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH incremental_location = '{collectionURI}';

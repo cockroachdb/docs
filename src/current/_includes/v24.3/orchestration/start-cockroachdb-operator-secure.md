@@ -1,7 +1,9 @@
 ### Install the Operator
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
-{% capture apply_default_operator_manifest_command %}{% include_cached copy-clipboard.html %}
+{% capture apply_default_operator_manifest_command %}
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
@@ -17,12 +19,16 @@
     deployment.apps/cockroach-operator created
     ~~~
 {% endcapture %}
-{% capture download_operator_manifest_command %}{% include_cached copy-clipboard.html %}
+{% capture download_operator_manifest_command %}
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
 {% endcapture %}
-{% capture apply_local_operator_manifest_command %}{% include_cached copy-clipboard.html %}
+{% capture apply_local_operator_manifest_command %}
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl apply -f operator.yaml
     ~~~

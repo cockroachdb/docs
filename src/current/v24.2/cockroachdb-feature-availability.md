@@ -47,14 +47,6 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
-### Usage-based billing metrics
-
-Metering for [usage-based billing](https://www.cockroachlabs.com/docs/cockroachcloud/costs) of data transfer, managed backup storage, and changefeeds is in Preview for all CockroachDB Standard and Advanced clusters through November 2024\. You can view your usage in the CockroachDB Cloud Console, where line items with a charge of $0 are shown for each metric. There will be no usage-based charges associated with these metrics during the Preview period.
-
-On December 1, 2024, once the Preview has ended, pricing for these metrics goes into effect immediately for new customers and for existing pay-as-you-go customers (e.g. paying monthly by credit card). Customers with annual or multi-year contracts will continue to preview these line items without incurring charges for them (i.e. expending credits) through the end of their current contract term.
-
-For more information, refer to [CockroachDB Cloud Costs: Usage-based billing metrics in Preview](https://www.cockroachlabs.com/docs/cockroachcloud/costs#usage-based-billing-metrics-in-preview) and the announcements in the release notes published [October 1](https://www.cockroachlabs.com/docs/releases/cloud#october-1-2024) and [November 1](https://www.cockroachlabs.com/docs/releases/cloud#november-1-2024).
-
 ### CockroachDB Standard
 
 CockroachDB Standard is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability.
@@ -74,14 +66,6 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 ### CockroachDB Standard
 
 CockroachDB Standard is a new plan for CockroachDB {{ site.data.products.cloud }} clusters and is in [Preview]({% link {{ site.current_cloud_version}}/cockroachdb-feature-availability.md %}#features-in-preview). Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
-
-### GCP Private Service Connect for CockroachDB Advanced
-
-[Connecting privately to a CockroachDB {{ site.data.products.advanced }} cluster using GCP Private Service Connect]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect) is in preview. Private Service Connect allows you to selectively connect your cluster deployed on GCP to a VPC within your Google Cloud project.
-
-### Azure Private Link for CockroachDB Advanced
-
-[Connecting privately to a CockroachDB {{ site.data.products.advanced }} cluster using Azure Private Link]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
 
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
@@ -108,9 +92,9 @@ The [schema-conversion summary report]({% link cockroachcloud/migrations-page.md
 
 The [SQL Shell]({% link cockroachcloud/sql-shell.md %}) in the CockroachDB {{ site.data.products.cloud }} Console is in preview. The SQL Shell enables you to run [queries]({% link {{ page.version.version }}/selection-queries.md %}) on your CockroachDB {{ site.data.products.cloud }} cluster directly from your browser.
 
-### Log SQL Statistics to Datadog
+### Log SQL Activity to Datadog
 
-You can [log `sampled_query` and `sampled_transaction` events to Datadog]({% link {{ page.version.version }}/log-sql-statistics-to-datadog.md %}) for finer granularity and long-term retention of SQL statistics, and to reduce the performance impacts of logging these events locally. The [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) and the [`sampled_transaction` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_transaction) contain common SQL event and execution details for transactions, and statements.
+You can [log `sampled_query` and `sampled_transaction` events to Datadog]({% link {{ page.version.version }}/log-sql-activity-to-datadog.md %}) for finer granularity and long-term retention of SQL activity, and to reduce the performance impacts of logging these events locally. The [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) and the [`sampled_transaction` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_transaction) contain common SQL event and execution details for transactions, and statements.
 
 CockroachDB supports a built-in integration with [Datadog](https://www.datadoghq.com/) which sends these events as logs via the [Datadog HTTP API](https://docs.datadoghq.com/api/latest/logs/). This integration is the recommended path to achieve high throughput data ingestion, which will in turn provide more query and transaction events for greater workload observability.
 

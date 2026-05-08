@@ -22,6 +22,12 @@ For optimal cluster performance, Cockroach Labs recommends that all nodes use th
 
 We recommend running a [glibc](https://www.gnu.org/software/libc/)-based Linux distribution and Linux kernel version from the last 5 years, such as [Ubuntu](https://ubuntu.com/), [Red Hat Enterprise Linux (RHEL)](https://www.redhat.com/technologies/linux-platforms/enterprise-linux), [CentOS](https://www.centos.org/), or [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs).
 
+We have observed increased memory usage in rare cases due to [transparent huge pages (THP)](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html) being enabled (i.e., set to `always`). New deployments should configure THP with the `madvise` option.
+
+Existing deployments that have THP enabled using the `always` option should change it to `madvise` unless they are currently running with a comfortable memory usage margin.
+
+The method for permanently changing the THP setting across reboots depends on the operating system. For Red Hat Enterprise Linux, refer to the [Red Hat documentation](https://access.redhat.com/solutions/46111).
+
 ## Hardware
 
 {% include {{ page.version.version }}/prod-deployment/terminology-vcpu.md %}
@@ -64,7 +70,7 @@ After you [size your cluster](#sizing), you can determine the amount of RAM, sto
 
 This hardware guidance is meant to be platform agnostic and can apply to bare-metal, containerized, and orchestrated deployments. Also see our [cloud-specific](#cloud-specific-recommendations) recommendations.
 
-{% capture cap_per_vcpu %}{% include_cached v22.1/prod-deployment/provision-storage.md %}{% endcapture %}
+{% capture cap_per_vcpu %}{% include_cached {{ page.version.version }}/prod-deployment/provision-storage.md %}{% endcapture %}
 
 <table>
 <thead>
@@ -187,9 +193,6 @@ Results:
 | Data per RAM          | ~135 GiB / GiB  |
 
 ### Cloud-specific recommendations
-
-{% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
-
 Based on our internal testing, we recommend the following cloud-specific configurations. Before using configurations not recommended here, be sure to test them exhaustively. Also consider the following workload-specific observations:
 
 - For OLTP applications, small instance types may outperform larger instance types.

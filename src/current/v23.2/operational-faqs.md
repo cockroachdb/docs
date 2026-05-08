@@ -45,7 +45,7 @@ For the first 10 days of your cluster's life, you can expect storage per node to
 
 or about 6 GiB. With on-disk compression, the actual disk usage is likely to be about 4 GiB.
 
-However, depending on your usage of time-series charts in the [DB Console]({% link {{ page.version.version }}/ui-overview-dashboard.md %}), you may prefer to reduce the amount of disk used by time-series data. To reduce the amount of time-series data stored, or to disable it altogether, refer to [Can I reduce or disable the storage of time-series data?](#can-i-reduce-or-disable-the-storage-of-time-series-data)
+However, depending on your usage of time-series charts in the [DB Console]({% link {{ page.version.version }}/ui-overview-dashboard.md %}), you may prefer to reduce the amount of disk used by time-series data. To reduce the amount of time-series data stored, refer to [Can I reduce the storage of time-series data?](#can-i-reduce-the-storage-of-time-series-data)
 
 ## Why is my disk usage not decreasing after deleting data?
 
@@ -81,9 +81,13 @@ When MVCC garbage is deleted by garbage collection, the data is still not yet ph
 
 {% include {{page.version.version}}/storage/free-up-disk-space.md %}
 
-## How can I free up disk space quickly?
+## How can I free up disk space when dropping a table?
 
-If you've noticed that [your disk space is not freeing up quickly enough after deleting data](#why-is-my-disk-usage-not-decreasing-after-deleting-data), you can take the following steps to free up disk space more quickly. This example assumes a table `t`.
+If you've noticed that [your disk space is not freeing up quickly enough after dropping a table](#why-is-my-disk-usage-not-decreasing-after-deleting-data), you can take the following steps to free up disk space more quickly the next time you drop a table. This example assumes a table `t` exists. 
+
+{{site.data.alerts.callout_info}}
+The procedure shown here only works if you get the range IDs from the table **before** running [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}). If you are in an emergency situation due to running out of disk, see [What happens when a node runs out of disk space?](#what-happens-when-a-node-runs-out-of-disk-space)
+{{site.data.alerts.end}}
 
 1. Lower the [`gc.ttlseconds` parameter]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) to 10 minutes.
 
@@ -132,11 +136,11 @@ The CockroachDB `internal-delete-old-sql-stats` process cleans up query executio
 
 In general, the `internal-delete-old-sql-stats` process is not expected to impact cluster performance. There are a few cases where there has been a spike in CPU due to an incredibly large amount of data being processed; however, those cases were resolved through [workload optimizations]({% link {{ page.version.version }}/make-queries-fast.md %}) and general improvements over time.
 
-## Can I reduce or disable the storage of time-series data?
+## Can I reduce the storage of time-series data?
 
-Yes, you can either [reduce the interval for time-series storage](#reduce-the-interval-for-time-series-storage) or [disable time-series storage entirely](#disable-time-series-storage).
+Yes, you can [reduce the interval for time-series storage](#reduce-the-interval-for-time-series-storage).
 
-After reducing or disabling time-series storage, it can take up to 24 hours for time-series data to be deleted and for the change to be reflected in DB Console metrics.
+After reducing time-series storage, it can take up to 24 hours for time-series data to be deleted and for the change to be reflected in DB Console metrics.
 
 ### Reduce the interval for time-series storage
 
@@ -167,7 +171,7 @@ To reduce the interval for storage of time-series data:
 
 - For data stored at 30-minute resolution, reduce the `timeseries.storage.resolution_30m.ttl` cluster setting to an [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) value less than `2160h0m0s` (90 days).
 
-Cockroach Labs recommends that you avoid _increasing_ the period of time that DB Console retains time-series metrics. If you need to retain this data for a longer period, consider using a third-party tool such as Prometheus to collect the cluster's metrics and disabling the DB Console's collection of time-series metrics. Refer to [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %}).
+Cockroach Labs recommends that you avoid _increasing_ the period of time that DB Console retains time-series metrics. If you need to retain this data for a longer period, consider using a third-party tool such as Prometheus to collect and store metrics. Refer to [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %}).
 
 ### Disable time-series storage
 

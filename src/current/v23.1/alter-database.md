@@ -44,8 +44,8 @@ Subcommand | Description
 [`OWNER TO`](#owner-to) |  Change the owner of a database.
 [`PLACEMENT`](#placement) | Configure the replica placement policy for a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
 [`RENAME TO`](#rename-to) | Change the name of a database.
-[`RESET {session variable}`](#reset-session-variable) |  Reset the session variable values for the database to the system defaults. This syntax is identical to [`ALTER ROLE ALL IN DATABASE ... RESET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}).
-[`SET {session variable}`](#set-session-variable) |  Set the default session variable values for the database. This syntax is identical to [`ALTER ROLE ALL IN DATABASE ... SET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}).
+[`RESET {session variable}`](#reset-session-variable) |  Reset the session variable values for the database to the system defaults. This syntax is identical to [`ALTER ROLE ALL IN DATABASE ... RESET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users).
+[`SET {session variable}`](#set-session-variable) |  Set the default session variable values for the database. This syntax is identical to [`ALTER ROLE ALL IN DATABASE ... SET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users).
 [`SET PRIMARY REGION`](#set-primary-region) |  Set the primary region of a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
 [`SET SECONDARY REGION`](#set-secondary-region) |  Set the [secondary region of a multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions) for failover purposes.
 [`SURVIVE {ZONE,REGION} FAILURE`](#survive-zone-region-failure) |  Add a survival goal to a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
@@ -167,6 +167,10 @@ For usage, see [Synopsis](#synopsis).
 
 {{site.data.alerts.callout_danger}}
 If you directly change a database's zone configuration with `ALTER DATABASE ... CONFIGURE ZONE`, CockroachDB will block all [`ALTER DATABASE ... SET PRIMARY REGION`](#set-primary-region) statements on the database.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/zone-configs/avoid-manual-zone-configs.md %}
 {{site.data.alerts.end}}
 
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
@@ -363,7 +367,7 @@ For usage, see [Synopsis](#synopsis).
 
 In CockroachDB, the following are aliases for `ALTER DATABASE ... RESET {session variable}`:
 
-- [`ALTER ROLE ALL IN DATABASE ... RESET {session variable}`]({% link {{ page.version.version }}/alter-role.md %})
+- [`ALTER ROLE ALL IN DATABASE ... RESET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users)
 
 ### `SET {session variable}`
 
@@ -389,6 +393,8 @@ For usage, see [Synopsis](#synopsis).
 In CockroachDB, the following are aliases for `ALTER DATABASE ... SET {session variable}`:
 
 - `ALTER ROLE ALL IN DATABASE ... SET {session variable}`
+
+For more information, refer to [`ALTER ROLE ALL ...`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users).
 
 ### `SET PRIMARY REGION`
 
@@ -433,6 +439,8 @@ If the [primary region](#set-primary-region) fails, the secondary region becomes
 
 {{site.data.alerts.callout_danger}}
 In order to add a secondary region with `ALTER DATABASE ... SET SECONDARY REGION`, you must first set a primary database region with [`SET PRIMARY REGION`](#set-primary-region), or when [creating the database]({% link {{ page.version.version }}/create-database.md %}). For an example showing how to add a secondary region with `ALTER DATABASE`, see [Set the secondary region](#set-the-secondary-region).
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
 {{site.data.alerts.end}}
 
 For examples, see [Manage regions](#manage-regions).
@@ -549,6 +557,10 @@ ALTER DATABASE SET SECONDARY REGION
 ~~~
 
 Now, the `"us-west1"` region will act as the primary region if the original primary region fails.
+
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+{{site.data.alerts.end}}
 
 #### Unset the secondary region
 
@@ -685,6 +697,10 @@ HINT: you must first drop super region usa before you can drop the region us-wes
 
 ### Configure replication zones
 
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/zone-configs/avoid-manual-zone-configs.md %}
+{{site.data.alerts.end}}
+
 {% include {{ page.version.version }}/sql/movr-statements-geo-partitioned-replicas.md %}
 
 #### Create a replication zone for a database
@@ -710,6 +726,10 @@ You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or
 ~~~ sql
 ALTER DATABASE movr CONFIGURE ZONE DISCARD;
 ~~~
+
+### Troubleshoot replication zones
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
 ### Use Zone Config Extensions
 
@@ -1074,6 +1094,12 @@ When you discard a zone configuration, the objects it was applied to will then i
 However, this statement will not remove any configuration created by the [multi-region abstractions]({% link {{ page.version.version }}/multiregion-overview.md %}).
 {{site.data.alerts.end}}
 
+#### Troubleshoot Zone Config Extensions
+
+The process for troubleshooting Zone Config Extensions is the same as troubleshooting any other changes to zone configs.
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
+
 ### Change database owner
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
@@ -1279,3 +1305,4 @@ For more information about the region survival goal, see [Surviving region failu
 - [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

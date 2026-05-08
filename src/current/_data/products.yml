@@ -15,3 +15,7 @@ basic: Basic
 standard: Standard
 
 advanced: Advanced
+
+public-operator: Public operator
+
+cockroachdb-operator: CockroachDB operator

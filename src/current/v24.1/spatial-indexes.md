@@ -235,5 +235,5 @@ CREATE INDEX geog_idx_3 ON geo_table USING GIST(geog);
 - [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
 - [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
-- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

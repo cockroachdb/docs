@@ -1,0 +1,344 @@
+# multi-dimensional-metrics.yml is a manually curated file of metrics that are included in the Multi-Dimensional Metrics page.
+# The metrics are in the order of appearance in the comment:
+# https://github.com/cockroachdb/cockroach/issues/124343#issuecomment-2117886012
+# The tenant.consumption.* metrics are not included because they only apply to serverless.
+# 
+# The corresponding metrics-list.csv file was generated using the cockroach binary with the following command:
+# cockroach gen metric-list --format=csv > metrics-list.csv
+# Once generated, the metrics-list.csv was manually modified to change the case of the headers to lowercase to work with liquid comparison code.
+
+- multi_dimensional_metric_id: changefeed.error_retries
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.emitted_messages
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.emitted_batch_sizes
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.filtered_messages
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.message_size_hist
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.emitted_bytes
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.flushed_bytes
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.flushes
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.size_based_flushes
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.parallel_io_queue_nanos
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.parallel_io_pending_rows
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.parallel_io_result_queue_nanos
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.parallel_io_in_flight_keys
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.sink_io_inflight
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.sink_batch_hist_nanos
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.flush_hist_nanos
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.commit_latency
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.admit_latency
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.backfill_count
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.backfill_pending_ranges
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.running
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.batch_reduction_count
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.internal_retry_message_count
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.schema_registry.retry_count
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.schema_registry.registrations
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.aggregator_progress
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.checkpoint_progress
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.lagging_ranges
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.cloudstorage_buffered_bytes
+  feature: changefeed
+
+- multi_dimensional_metric_id: changefeed.kafka_throttling_hist_nanos
+  feature: changefeed
+
+- multi_dimensional_metric_id: livebytes
+  feature: virtual
+
+- multi_dimensional_metric_id: keybytes
+  feature: virtual
+
+- multi_dimensional_metric_id: valbytes
+  feature: virtual
+
+- multi_dimensional_metric_id: rangekeybytes
+  feature: virtual
+
+- multi_dimensional_metric_id: rangevalbytes
+  feature: virtual
+
+- multi_dimensional_metric_id: totalbytes
+  feature: virtual
+
+- multi_dimensional_metric_id: intentbytes
+  feature: virtual
+
+- multi_dimensional_metric_id: lockbytes
+  feature: virtual
+
+- multi_dimensional_metric_id: livecount
+  feature: virtual
+
+- multi_dimensional_metric_id: keycount
+  feature: virtual
+
+- multi_dimensional_metric_id: valcount
+  feature: virtual
+
+- multi_dimensional_metric_id: rangekeycount
+  feature: virtual
+
+- multi_dimensional_metric_id: rangevalcount
+  feature: virtual
+
+- multi_dimensional_metric_id: intentcount
+  feature: virtual
+
+- multi_dimensional_metric_id: lockcount
+  feature: virtual
+
+- multi_dimensional_metric_id: intentage
+  feature: virtual
+
+- multi_dimensional_metric_id: gcbytesage
+  feature: virtual
+
+- multi_dimensional_metric_id: sysbytes
+  feature: virtual
+
+- multi_dimensional_metric_id: syscount
+  feature: virtual
+
+- multi_dimensional_metric_id: abortspanbytes
+  feature: virtual
+
+- multi_dimensional_metric_id: kv.tenant_rate_limit.num_tenants
+  feature: virtual
+
+- multi_dimensional_metric_id: kv.tenant_rate_limit.current_blocked
+  feature: virtual
+
+- multi_dimensional_metric_id: kv.tenant_rate_limit.read_batches_admitted
+  feature: virtual
+
+- multi_dimensional_metric_id: kv.tenant_rate_limit.write_batches_admitted
+  feature: virtual
+
+- multi_dimensional_metric_id: kv.tenant_rate_limit.read_requests_admitted
+  feature: virtual
+
+- multi_dimensional_metric_id: kv.tenant_rate_limit.write_requests_admitted
+  feature: virtual
+
+- multi_dimensional_metric_id: kv.tenant_rate_limit.read_bytes_admitted
+  feature: virtual
+
+- multi_dimensional_metric_id: kv.tenant_rate_limit.write_bytes_admitted
+  feature: virtual
+
+- multi_dimensional_metric_id: security.certificate.expiration.client
+  feature: secure
+  description: "Minimum expiration for client certificates, labeled by SQL user. 0 means no certificate or error."
+  type: GAUGE
+  unit: SECONDS
+
+- multi_dimensional_metric_id: jobs.row_level_ttl.span_total_duration
+  feature: row-level-ttl
+
+- multi_dimensional_metric_id: jobs.row_level_ttl.select_duration
+  feature: row-level-ttl
+
+- multi_dimensional_metric_id: jobs.row_level_ttl.delete_duration
+  feature: row-level-ttl
+
+- multi_dimensional_metric_id: jobs.row_level_ttl.rows_selected
+  feature: row-level-ttl
+
+- multi_dimensional_metric_id: jobs.row_level_ttl.rows_deleted
+  feature: row-level-ttl
+
+- multi_dimensional_metric_id: jobs.row_level_ttl.num_active_spans
+  feature: row-level-ttl
+
+- multi_dimensional_metric_id: jobs.row_level_ttl.total_rows
+  feature: row-level-ttl
+
+- multi_dimensional_metric_id: jobs.row_level_ttl.total_expired_rows
+  feature: row-level-ttl
+
+- multi_dimensional_metric_id: rpc.connection.healthy
+  feature: all
+
+- multi_dimensional_metric_id: rpc.connection.unhealthy
+  feature: all
+
+- multi_dimensional_metric_id: rpc.connection.inactive
+  feature: all
+
+- multi_dimensional_metric_id: rpc.connection.healthy_nanos
+  feature: all
+
+- multi_dimensional_metric_id: rpc.connection.unhealthy_nanos
+  feature: all
+
+- multi_dimensional_metric_id: rpc.connection.heartbeats
+  feature: all
+
+- multi_dimensional_metric_id: rpc.connection.failures
+  feature: all
+
+- multi_dimensional_metric_id: rpc.connection.avg_round_trip_latency
+  feature: all
+
+- multi_dimensional_metric_id: logical_replication.catchup_ranges_by_label
+  feature: ldr
+
+- multi_dimensional_metric_id: logical_replication.events_dlqed_by_label
+  feature: ldr
+
+- multi_dimensional_metric_id: logical_replication.events_ingested_by_label
+  feature: ldr
+
+- multi_dimensional_metric_id: logical_replication.replicated_time_by_label
+  feature: ldr
+
+- multi_dimensional_metric_id: logical_replication.scanning_ranges_by_label
+  feature: ldr
+
+- multi_dimensional_metric_id: sql.exec.latency.detail
+  feature: detailed-latency
+
+- multi_dimensional_metric_id: sql.crud_query.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.crud_query.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.delete.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.delete.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.distsql.contended_queries.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.distsql.cumulative_contention_nanos
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.failure.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.failure.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.full.scan.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.full.scan.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.insert.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.insert.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.select.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.select.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.service.latency
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.service.latency.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.statements.active
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.statements.active.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.begin.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.begin.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.commit.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.commit.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.latency
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.latency.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.rollback.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.rollback.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txns.open
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txns.open.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.update.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.update.count.internal
+  feature: database-and-application_name-labels

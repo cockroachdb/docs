@@ -59,10 +59,6 @@ The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %})
 
 The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.provisioned_bandwidth` is in Preview. When configured, the store's bandwidth is limited to the configured bandwidth, expressed in bytes per second,
 
-### Usage-based billing metrics
-
-Metering for [usage-based billing]({% link cockroachcloud/costs.md %}) of data transfer, managed backup storage, and changefeeds is now in Preview for all CockroachDB Standard and Advanced clusters through November 2024. You can view your usage in the CockroachDB Cloud Console, where line items with a charge of $0 will be shown for each metric. There will be no usage-based charges associated with these metrics during the preview period. For more information, refer to [CockroachDB Cloud Costs: Usage-based billing metrics in Preview]({% link cockroachcloud/costs.md %}#usage-based-billing-metrics-in-preview) or the [announcement]({% link releases/cloud.md %}#october-1-2024) in the release notes.
-
 ### CockroachDB Standard
 
 CockroachDB {{ site.data.products.standard }} is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability. Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
@@ -79,21 +75,13 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 
 [Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
 
-### GCP Private Service Connect for CockroachDB Advanced
-
-[Connecting privately to a CockroachDB {{ site.data.products.advanced }} cluster using GCP Private Service Connect]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect) is in preview. Private Service Connect allows you to selectively connect your cluster deployed on GCP to a VPC within your Google Cloud project.
-
-### Azure Private Link for CockroachDB Advanced
-
-[Connecting privately to a CockroachDB {{ site.data.products.advanced }} cluster using Azure Private Link]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
-
 ### Logical data replication (LDR) for CockroachDB {{ site.data.products.core }}
 
 **Logical data replication (LDR)** continuously replicates tables between active CockroachDB clusters. Both source and destination cluster can receive application reads and writes, with LDR enabling bidirectional replication for eventual consistency in the replicating tables. The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Setting up LDR between a source and destination CockroachDB {{ site.data.products.core }} cluster is in preview.
 
-### Read on standby cluster in physical cluster replication (PCR) for CockroachDB {{ site.data.products.core }}
+### Read from standby in physical cluster replication (PCR) for CockroachDB {{ site.data.products.core }}
  
-The [`READ VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}#options) option allows you to set up a PCR stream that also creates a read-only virtual cluster on the standby cluster. You can create a PCR job as per the [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) guide and then add the option to the [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) statement.
+The [`READ VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}#options) option allows you to set up a PCR stream that also creates a [read-only virtual cluster]({% link {{ page.version.version }}/read-from-standby.md %}) on the standby cluster. You can create a PCR job as per the [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) guide and then add the option to the [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) statement.
 
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
@@ -121,9 +109,9 @@ The [schema-conversion summary report]({% link cockroachcloud/migrations-page.md
 
 The [SQL Shell]({% link cockroachcloud/sql-shell.md %}) in the CockroachDB {{ site.data.products.cloud }} Console is in preview. The SQL Shell enables you to run [queries]({% link {{ page.version.version }}/selection-queries.md %}) on your CockroachDB {{ site.data.products.cloud }} cluster directly from your browser.
 
-### Log SQL Statistics to Datadog
+### Log SQL Activity to Datadog
 
-You can [log `sampled_query` and `sampled_transaction` events to Datadog]({% link {{ page.version.version }}/log-sql-statistics-to-datadog.md %}) for finer granularity and long-term retention of SQL statistics, and to reduce the performance impacts of logging these events locally. The [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) and the [`sampled_transaction` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_transaction) contain common SQL event and execution details for transactions, and statements.
+You can [log `sampled_query` and `sampled_transaction` events to Datadog]({% link {{ page.version.version }}/log-sql-activity-to-datadog.md %}) for finer granularity and long-term retention of SQL activity, and to reduce the performance impacts of logging these events locally. The [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) and the [`sampled_transaction` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_transaction) contain common SQL event and execution details for transactions, and statements.
 
 CockroachDB supports a built-in integration with [Datadog](https://www.datadoghq.com/) which sends these events as logs via the [Datadog HTTP API](https://docs.datadoghq.com/api/latest/logs/). This integration is the recommended path to achieve high throughput data ingestion, which will in turn provide more query and transaction events for greater workload observability.
 
@@ -216,7 +204,7 @@ CockroachDB supports [altering the column types]({% link {{ page.version.version
 
 ### Temporary objects
 
-[Temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), [temporary views]({% link {{ page.version.version }}/views.md %}#temporary-views), and [temporary sequences]({% link {{ page.version.version }}/create-sequence.md %}#temporary-sequences) are in preview in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+[Temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), [temporary views]({% link {{ page.version.version }}/views.md %}#temporary-views), and [temporary sequences]({% link {{ page.version.version }}/create-sequence.md %}#temporary-sequences) are in preview in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Dropping large numbers of temporary objects in rapid succession can also enqueue many [schema change GC jobs]({% link {{ page.version.version }}/show-jobs.md %}), which may further degrade cluster performance. This performance degradation could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 
 To enable temporary objects, set the `experimental_enable_temp_tables` [session variable]({% link {{ page.version.version }}/show-vars.md %}) to `on`.
 
@@ -280,12 +268,6 @@ Command                                     | Description
 --------------------------------------------+-------------
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
-
-### Leader leases
-
-{% include {{ page.version.version }}/leader-leases-intro.md %}
-
-For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
 ## See Also
 

@@ -20,14 +20,10 @@ function renderTOC() {
   });
 
   // Set class on top level elements
-  if(document.getElementById('toc-right') && (document.getElementById('toc-right').children.length > 0)){
-    var list = document.getElementById('toc-right').children[0].childNodes;
-    for (let li of list) {
-      li.classList.add('toc-li-top');
-    }
-  }
+  var list = document.querySelectorAll('#toc-right > ul > li');
+list.forEach(li => li.classList.add('toc-li-top'));
 }
-
+document.addEventListener('DOMContentLoaded', renderTOC);
 var $versionSwitcher, versionSwitcherBottom = Infinity;
 
 const cockroachDomains = [

@@ -1,0 +1,1 @@
+- {% if page.name == "cost-based-optimizer.md" %} Locality optimized search {% else %} [Locality optimized search]({% link {{ page.version.version }}/cost-based-optimizer.md %}#locality-optimized-search-in-multi-region-clusters) {% endif %} works only for queries selecting a limited number of records (up to 100,000 unique keys).

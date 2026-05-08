@@ -1,1 +1,0 @@
-If [Row-Level TTL]({% link {{ site.current_cloud_version }}/row-level-ttl.md %}) is enabled, this metric should be nonzero and correspond to the `ttl_cron` setting that was chosen. If this metric is zero, it means the job is not running.

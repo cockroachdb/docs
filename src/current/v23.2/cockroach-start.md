@@ -70,7 +70,7 @@ Flag | Description
 <a name="flags-max-tsdb-memory"></a>`--max-tsdb-memory` | Maximum memory capacity available to store temporary data for use by the time-series database to display metrics in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}). Consider raising this value if your cluster is comprised of a large number of nodes where individual nodes have very limited memory available (e.g., under `8 GiB`). Insufficient memory capacity for the time-series database can constrain the ability of the DB Console to process the time-series queries used to render metrics for the entire cluster. This capacity constraint does not affect SQL query execution. This flag accepts numbers interpreted as bytes, size suffixes (e.g., `1GB` and `1GiB`) or a percentage of physical memory (e.g., `0.01`).<br><br>**Note:** The sum of `--cache`, `--max-sql-memory`, and `--max-tsdb-memory` should not exceed 75% of the memory available to the `cockroach` process.<br><br>**Default:** `0.01` (i.e., 1%) of physical memory or `64 MiB`, whichever is greater.
 `--pid-file` | The file to which the node's process ID will be written as soon as the node is ready to accept connections. When `--background` is used, this happens before the process detaches from the terminal. When this flag is not set, the process ID is not written to file.
 <a name="flags-store"></a> `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [Store](#store) below.
-<a name="flags-spatial-libs"></a>`--spatial-libs` |  The location on disk where CockroachDB looks for [spatial]({% link {{ page.version.version }}/spatial-data-overview.md %}) libraries.<br/><br/>**Defaults:** <br/><ul><li>`/usr/local/lib/cockroach`</li><li>A `lib` subdirectory of the CockroachDB binary's current directory.</li></ul><br/>
+<a name="flags-spatial-libs"></a>`--spatial-libs` |  The location on disk where CockroachDB looks for [spatial]({% link {{ page.version.version }}/spatial-data-overview.md %}) libraries.<br/><br/>**Defaults:** <br/><ul><li>`/usr/local/lib/cockroach`</li><li>A `lib` subdirectory of the CockroachDB binary's current directory.</li></ul>
 `--temp-dir` <a name="temp-dir"></a> | The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
 
 ### Networking
@@ -196,10 +196,7 @@ The `--storage-engine` flag is used to choose the storage engine used by the nod
 
 The `--store` flag allows you to specify details about a node's storage.
 
-To start a node with multiple disks or SSDs, you can use either of these approaches:
-
-- Configure the disks or SSDs as a single RAID volume, then pass the RAID volume to the `--store` flag when starting the `cockroach` process on the node.
-- Provide a separate `--store` flag for each disk when starting the `cockroach` process on the node. For more details about stores, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+To start a node with multiple disks or SSDs, provide a separate `--store` flag for each disk when starting the `cockroach` process on the node. For more details about stores, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}#store).
 
   {{site.data.alerts.callout_danger}}
   If you start a node with multiple `--store` flags, it is not possible to scale back down to only using a single store on the node. Instead, you must decommission the node and start a new node with the updated `--store`.

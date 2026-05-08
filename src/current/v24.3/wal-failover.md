@@ -27,6 +27,10 @@ When a disk stalls on a node, it could be due to complete hardware failure or it
 
 WAL failover uses a secondary disk to fail over WAL writes to when transient disk stalls occur. This limits the write impact to a few hundreds of milliseconds (the [failover threshold, which is configurable](#unhealthy-op-threshold)). Note that WAL failover **only preserves availability of writes**. If reads to the underlying storage are also stalled, operations that read and do not find data in the block cache or page cache will stall.
 
+The following diagram shows how WAL failover works at a high level. For more information about the WAL, memtables, and SSTables, refer to the [Architecture &raquo; Storage Layer documentation]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
+
+<img src="/docs/images/{{ page.version.version }}/wal-failover-overview.png" alt="WAL failover overview diagram"  style="border:1px solid #eee;max-width:100%" />
+
 ## Create and configure a cluster to be ready for WAL failover
 
 The steps to provision a cluster that has a single data store versus a multi-store cluster are slightly different. In this section, we will provide high-level instructions for setting up each of these configurations. We will use [GCE](https://cloud.google.com/compute/docs) as the environment. You will need to translate these instructions into the steps used by the deployment tools in your environment.
@@ -276,7 +280,7 @@ In [DB Console's **Advanced Debug** page]({% link {{ page.version.version }}/ui-
 
 Set the source of these metrics to be the node where you are running the disk stall/unstall script.
 
-<img src="{{ 'images/v24.3/wal-failover-metrics-chart.jpg' | relative_url }}" alt="WAL Failover Metrics Chart" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/wal-failover-metrics-chart.jpg" alt="WAL Failover Metrics Chart" style="border:1px solid #eee;max-width:100%" />
 
 Notice there is a switchover followed by each stall. The node with the stalled disk continues to perform normal operations during and after WAL failover, as the stalls are transient and shorter than the current value of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables).
 
@@ -348,7 +352,7 @@ Set up your cluster for WAL failover with either [multiple stores](#multi-store-
 
 For [multiple stores](#multi-store-config), pass `--wal-failover=among-stores` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
 
-For a [side disk on a single-store config](#single-store-config), pass `--wal-failover={ path-to-side-drive-directory }` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
+For a [side disk on a single-store config](#single-store-config), pass `--wal-failover={ path-to-my-side-disk-for-wal-failover }` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
 
 Use remote log sinks, or if you use file-based logging, enable asynchronous buffering of `file-groups` log sinks:
 
@@ -370,6 +374,10 @@ If a disk stalls for less than the duration of [`COCKROACH_ENGINE_MAX_SYNC_DURAT
 If a disk stalls for longer than the duration of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables), a WAL failover will trigger. Following that, since the duration of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables) has been exceeded, the node will go down.
 
 In a [multi-store](#multi-store-config) cluster, if a disk for a store has a transient stall, WAL will failover to the second store's disk. When the stall on the first disk clears, the WAL will failback to the first disk. WAL failover will daisy-chain from store _A_ to store _B_ to store _C_.
+
+The following diagram shows the behavior of WAL writes during a disk stall with and without WAL failover enabled.
+
+<img src="/docs/images/{{ page.version.version }}/wal-failover-behavior.png" alt="how long WAL writes take during a disk stall with and without WAL failover enabled"  style="border:1px solid #eee;max-width:100%" />
 
 ## FAQs
 
@@ -461,6 +469,26 @@ CockroachDB will monitor the latencies of the primary storage device in the back
 Store _A_ will failover to store _B_, store _B_ will failover to store _C_, and store _C_ will failover to store _A_, but store A will never failover to store C.
 
 However, the WAL failback operation will not cascade back until **all drives are available** - that is, if store _A_'s disk unstalls while store _B_ is still stalled, store _C_ will not failback to store _A_ until _B_ also becomes available again. In other words, _C_ must failback to _B_, which must then failback to _A_.
+
+### 13. Can I use an ephemeral disk for the secondary storage device?
+
+No, the secondary (failover) disk **must be durable and retain its data across VM or instance restarts**. Using an ephemeral volume (for example, the root volume of a cloud VM that is recreated on reboot) risks permanent data loss: if CockroachDB has failed over recent WAL entries to that disk and the disk is subsequently wiped, the node will start up with an incomplete [Raft log]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) and will refuse to join the cluster. In this scenario the node must be treated as lost and replaced.
+
+Always provision the failover disk with the same persistence guarantees as the primary store.
+
+### 14. Can I relocate or rename the WAL directory?
+
+No. When WAL failover is enabled, the WAL directory path is stored as an absolute path in the [store]({% link {{ page.version.version}}/cockroach-start.md %}#store)'s data. It is not treated as a relative path. As a result, it is not sufficient to stop CockroachDB, move or rename that directory, and restart with a different `--wal-failover` path.
+
+Instead, to change the WAL directory path, you must first [disable WAL failover]({% link {{ page.version.version }}/cockroach-start.md %}#disable-wal-failover), [restart the node(s)]({% link {{ page.version.version }}/node-shutdown.md %}#stop-and-restart-a-node), and then [re-enable WAL failover with the new path]({% link {{ page.version.version }}/cockroach-start.md %}#enable-wal-failover). 
+
+Using filesystem indirection such as symlinks or mount-point changes is not supported or tested by Cockroach Labs.
+
+## Video demo: WAL failover
+
+For a demo of WAL Failover in CockroachDB and what happens when you enable or disable it, play the following video:
+
+{% include_cached youtube.html video_id="R-BuPePPU-k" %}
 
 ## See also
 

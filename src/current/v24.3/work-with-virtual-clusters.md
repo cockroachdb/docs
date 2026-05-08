@@ -114,46 +114,6 @@ sql_txn_commit_count{tenant="demo"} 0
 
 When connected to a virtual cluster from the DB Console, metrics which measure SQL and related activity show data scoped to the virtual cluster. All other metrics are collected system-wide and display the same data on all virtual clusters including the system virtual cluster.
 
-## Disaster recovery
-
-When cluster virtualization is enabled, [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}) commands are scoped to the virtual cluster by default.
-
-### Back up a virtual cluster
-
-To back up a virtual cluster:
-
-1. [Connect to the virtual cluster](#connect-to-a-virtual-cluster) you want to back up as a user with the `admin` role on the virtual cluster.
-1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}). Only the virtual cluster's data and settings are included in the backup, and data and settings for other virtual clusters or for the system virtual cluster is omitted.
-
-For details about restoring a backup of a virtual cluster, refer to [Restore a virtual cluster](#restore-a-virtual-cluster).
-
-### Back up the entire cluster
-
-To back up the entire CockroachDB cluster, including all virtual clusters and the system virtual cluster:
-
-1. [Connect to the system virtual cluster](#connect-to-the-system-virtual-cluster) as a user with the `admin` role on the system virtual cluster.
-1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}), and include the `INCLUDE_ALL_SECONDARY_TENANTS` flag in the `BACKUP` command. All virtual clusters and the system virtual cluster are included in the backup.
-
-### Restore a virtual cluster
-
-You can restore a backup of a virtual cluster to:
-
-- The original virtual cluster on the original CockroachDB cluster.
-- A different virtual cluster on the original CockroachDB cluster.
-- A different virtual cluster on a different CockroachDB cluster with cluster virtualization enabled.
-
-To restore only a virtual cluster:
-
-1. [Connect to the destination virtual cluster](#connect-to-a-virtual-cluster) as a user with the `admin` role on the virtual cluster.
-1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}). Only the virtual cluster's data and settings are restored.
-
-### Restore the entire cluster
-
-To restore the entire CockroachDB cluster, including all virtual clusters and the system virtual cluster:
-
-1. [Connect to the destination system virtual cluster](#connect-to-the-system-virtual-cluster) as a user with the `admin` role on the system virtual cluster.
-1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}) from a backup that included the the `INCLUDE_ALL_SECONDARY_VIRTUAL_CLUSTERS` flag. All virtual clusters and the system virtual cluster are restored.
-
 ## Configure cluster settings
 
 When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is scoped to either a virtual cluster or the system virtual cluster.
@@ -172,7 +132,7 @@ To upgrade to a new major version when cluster virtualization is enabled, you mu
 1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the system virtual cluster to upgrade it (if auto-finalization is disabled) or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
 1. Finalize the upgrade on a virtual cluster to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, a virtual cluster still operates in compatibility with the previous major version, and some features may not be available on the virtual cluster.
 
-This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one [Regular release]({% link releases/index.md %}#release-types) ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.3 can have virtual clusters on CockroachDB v24.1 (a Regular release) or v24.2 (an Innovation release).
+This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one [Regular release]({% link releases/index.md %}#release-schedule) ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.3 can have virtual clusters on CockroachDB v24.1 (a Regular release) or v24.2 (an Innovation release).
 
 {{site.data.alerts.callout_info}}
 Both the `auto_upgrade.enabled` and `preserve_downgrade_option` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) are scoped to a virtual cluster. To prevent automatic finalization of an upgrade, you must do one of the following:

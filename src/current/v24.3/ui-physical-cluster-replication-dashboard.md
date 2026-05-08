@@ -21,7 +21,7 @@ The **Physical Cluster Replication** dashboard displays the following time-serie
 
 ## Logical bytes
 
-<img src="{{ 'images/v24.2/ui-logical-bytes.png' | relative_url }}" alt="DB Console Logical Bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-logical-bytes.png" alt="DB Console Logical Bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
 
 The **Logical Bytes** graph displays the throughput of the replicated bytes. The graph displays the rate at which the logical bytes (sum of keys + values) are ingested by all replication jobs.
 
@@ -34,20 +34,9 @@ Hovering over the graph displays:
 When you [start a replication stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication), the **Logical Bytes** graph will record a spike of throughput as the initial scan completes. {% comment %}link to technical details here{% endcomment %}
 {{site.data.alerts.end}}
 
-## SST bytes
-
-<img src="{{ 'images/v24.2/ui-sst-bytes.png' | relative_url }}" alt="DB Console SST bytes graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
-
-The **SST Bytes** graph displays the rate at which all [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes are sent to the [KV layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) by physical cluster replication jobs.
-
-Hovering over the graph displays:
-
-- The date and time.
-- The number of SST bytes replicated.
-
 ## Replication lag
 
-<img src="{{ 'images/v24.2/ui-replication-lag.png' | relative_url }}" alt="DB Console Replication Lag graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-replication-lag.png" alt="DB Console Replication Lag graph showing results over the past hour" style="border:1px solid #eee;max-width:100%" />
 
 The **Replication Lag** graph displays the [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby cluster. This is the time between the most up-to-date replicated time and the actual time.
 

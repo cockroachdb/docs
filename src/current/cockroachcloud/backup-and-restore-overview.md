@@ -81,6 +81,8 @@ We recommend taking backups to [cloud storage]({% link {{site.current_cloud_vers
 - [Example file URLs]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}#example-file-urls) to form the URL that you pass to `BACKUP` and `RESTORE` statements.
 - [Authentication]({% link {{site.current_cloud_version}}/cloud-storage-authentication.md %}) to set up authentication to a cloud storage bucket and include those credentials in the URL.
 
+{% include common/s3-support-notice.md %}
+
 For detail on additional cloud storage features CockroachDB supports:
 
 - Prevent backups from being overwritten or deleted with [immutable storage buckets]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}#immutable-storage).

@@ -7,8 +7,12 @@ docs_area: reference.sql
 
 The `EXPLAIN ANALYZE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) **executes a SQL query** and generates a statement plan with execution statistics. Statement plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. The `(DISTSQL)` option returns the statement plan and performance statistics as well as a generated link to a graphical distributed SQL physical statement plan tree. For more information about distributed SQL queries, see the [DistSQL section of our SQL layer architecture docs]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql). The `(DEBUG)` option generates a URL to download a bundle with more details about the statement plan for advanced debugging.
 
-{{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/sql/physical-plan-url.md %}
+{{site.data.alerts.callout_danger}}
+`EXPLAIN ANALYZE` executes the target statement and may modify or delete data. It is not a dry run.
+
+If you use `EXPLAIN ANALYZE` with a statement that changes data or acquires locks, those effects occur when the statement runs. For example, `EXPLAIN ANALYZE DELETE FROM t WHERE id = 1;` **deletes matching rows** and then reports execution statistics.
+
+To inspect a statement plan without executing the statement, use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) instead. For example, `EXPLAIN DELETE FROM t WHERE id = 1;` shows the plan without deleting data.
 {{site.data.alerts.end}}
 
 ## Aliases
@@ -155,6 +159,10 @@ unordered / ordered | _(Blue box)_ A synchronizer that takes one or more output 
 &lt;data type&gt; |  If you specify [`EXPLAIN (DISTSQL, TYPES)`]({% link {{ page.version.version }}/explain.md %}#distsql-option), lists the data types of the input columns. | Both
 Response | The response back to the client. | Both
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/sql/physical-plan-url.md %}
+{{site.data.alerts.end}}
+
 ## `DEBUG` option
 
 `EXPLAIN ANALYZE (DEBUG)` executes a query and generates a link to a ZIP file that contains the [physical statement plan](#distsql-plan-diagram), execution statistics, statement tracing, and other information about the query.
@@ -212,6 +220,7 @@ EXPLAIN ANALYZE SELECT city, AVG(revenue) FROM rides GROUP BY city;
   execution time: 8ms
   distribution: full
   vectorized: true
+  plan type: custom
   rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
   cumulative time spent in KV: 6ms
   maximum memory usage: 240 KiB
@@ -262,6 +271,7 @@ EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles
   execution time: 5ms
   distribution: local
   vectorized: true
+  plan type: custom
   rows decoded from KV: 515 (90 KiB, 2 gRPC calls)
   cumulative time spent in KV: 4ms
   maximum memory usage: 580 KiB
@@ -335,6 +345,7 @@ EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
   execution time: 5ms
   distribution: full
   vectorized: true
+  plan type: custom
   rows decoded from KV: 500 (88 KiB, 500 KVs, 1 gRPC calls)
   cumulative time spent in KV: 4ms
   maximum memory usage: 240 KiB
@@ -397,6 +408,7 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
   execution time: 4ms
   distribution: full
   vectorized: true
+  plan type: custom
   rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
   cumulative time spent in KV: 3ms
   maximum memory usage: 240 KiB
@@ -475,6 +487,7 @@ EXPLAIN ANALYZE (REDACT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue
   execution time: 6ms
   distribution: full
   vectorized: true
+  plan type: custom
   rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
   cumulative time spent in KV: 4ms
   maximum memory usage: 280 KiB

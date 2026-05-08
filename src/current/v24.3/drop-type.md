@@ -9,8 +9,6 @@ The `DROP TYPE` [statement]({% link {{ page.version.version }}/sql-statements.md
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-{% include {{ page.version.version }}/misc/declarative-schema-changer-note.md %}
-
 ## Synopsis
 
 <div>

@@ -39,7 +39,7 @@ The **SQL Connection Rate** is an average of the number of connection attempts p
 
 - In the cluster view, the graph shows the total number of times a SQL transaction was upgraded to a stronger isolation level across all nodes.
 
-If this metric is non-zero, then transactions at weaker isolation levels (such as [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %})) are being upgraded to [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) instead. To ensure that `READ COMMITTED` transactions run as `READ COMMITTED`, see [Enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation).
+If this metric is non-zero, then transactions are being [upgraded to stronger isolation levels]({% link {{ page.version.version }}/transactions.md %}#isolation-level-upgrades).
 
 ## Open SQL Transactions
 

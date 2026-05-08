@@ -21,7 +21,7 @@ Users may connect with CockroachDB {{ site.data.products.core }} clusters in 2 m
 
 ## Using digital certificates with CockroachDB
 
-Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.3 certificate. This certificate is multi-functional: the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes. Node certificates have the following requirements:
+Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.3 certificate. This certificate is multi-functional; the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes. Node certificates have the following requirements:
 
 - The hostname or address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in the **Common Name** or **Subject Alternative Names** fields of the certificate:
 
@@ -32,7 +32,7 @@ Each CockroachDB node in a secure cluster must have a **node certificate**, whic
 
 - CockroachDB must be configured to trust the certificate authority that signed the certificate.
 
-Based on your security setup, you can use the [`cockroach cert` commands]({% link {{ page.version.version }}/cockroach-cert.md %}), [Auto TLS]({% link {{ page.version.version }}/auto-tls.md %}), [`openssl` commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}), or a [custom CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}) to generate all the keys and certificates.
+Based on your security setup, you can use the [`cockroach cert` commands]({% link {{ page.version.version }}/cockroach-cert.md %}), [`openssl` commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}), or a [custom CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}) to generate all the keys and certificates.
 
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the DB Console. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 

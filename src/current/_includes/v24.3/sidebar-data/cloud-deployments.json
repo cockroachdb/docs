@@ -58,6 +58,12 @@
                 "urls": [
                     "/cockroachcloud/provision-a-cluster-with-terraform.html"
                 ]
+            },
+            {
+                "title": "Change a Cluster's Plan Between Basic and Standard",
+                "urls": [
+                    "/cockroachcloud/change-plan-between-basic-and-standard.html"
+            ]
             }
         ]
     },
@@ -107,9 +113,15 @@
             ]
             },
             {
-            "title": "Migrate from Standard or Basic to Advanced",
-            "urls": [
-                "/cockroachcloud/migrate-from-standard-to-advanced.html"
+                "title": "Migrate from Standard to Advanced",
+                "urls": [
+                    "/cockroachcloud/migrate-from-standard-to-advanced.html"
+            ]
+            },
+            {
+                "title": "Change a Cluster's Plan Between Basic and Standard",
+                "urls": [
+                    "/cockroachcloud/change-plan-between-basic-and-standard.html"
             ]
             }
         ]
@@ -160,9 +172,9 @@
             ]
             },
             {
-            "title": "Migrate from Standard or Basic to Advanced",
-            "urls": [
-                "/cockroachcloud/migrate-from-standard-to-advanced.html"
+                "title": "Migrate from Standard to Advanced",
+                "urls": [
+                    "/cockroachcloud/migrate-from-standard-to-advanced.html"
             ]
             }
         ]
@@ -368,9 +380,9 @@
             "title": "Monitoring and Alerting",
                 "items": [
                   {
-                    "title": "Cluster Overview Page",
+                    "title": "Overview Page",
                     "urls": [
-                      "/cockroachcloud/cluster-overview-page.html"
+                      "/cockroachcloud/overview-page.html"
                     ]
                   },
                   {
@@ -516,8 +528,25 @@
                     },
                     {
                         "title": "Managed Backups",
-                        "urls": [
-                          "/cockroachcloud/managed-backups.html"
+                        "items": [
+                            {
+                                "title": "Managed Backups for Basic Clusters",
+                                "urls": [
+                                  "/cockroachcloud/managed-backups-basic.html"
+                                ]
+                            },
+                            {
+                                "title": "Managed Backups for Standard Clusters",
+                                "urls": [
+                                  "/cockroachcloud/managed-backups.html"
+                                ]
+                            },
+                            {
+                                "title": "Managed Backups for Advanced Clusters",
+                                "urls": [
+                                  "/cockroachcloud/managed-backups-advanced.html"
+                                ]
+                            }
                         ]
                     },
                     {

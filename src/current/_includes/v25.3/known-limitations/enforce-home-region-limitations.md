@@ -1,0 +1,1 @@
+With `enforce_home_region` enabled, CockroachDB currently validates home-region access during plan build. This can falsely reject queries (e.g., lookup joins) that would only read local data at execution time, returning a `Query has no home region` error. [#148375](https://github.com/cockroachdb/cockroach/issues/148375)

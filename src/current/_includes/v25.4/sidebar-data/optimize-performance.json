@@ -1,0 +1,96 @@
+{
+    "title": "Optimize Performance",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Overview",
+        "urls": [
+          "/${VERSION}/make-queries-fast.html"
+        ]
+      },
+      {
+        "title": "SQL Performance Best Practices",
+        "urls": [
+          "/${VERSION}/performance-best-practices-overview.html"
+        ]
+      },
+
+      {
+        "title": "Indexes",
+        "urls": [
+          "/${VERSION}/indexes.html"
+        ]
+      },
+      {
+        "title": "Map SQL Activity using an Application Name",
+        "urls": [
+          "/${VERSION}/map-sql-activity-to-app.html"
+        ]
+      },
+      {
+        "title": "Cost-Based Optimizer",
+        "urls": [
+          "/${VERSION}/cost-based-optimizer.html"
+        ]
+      },
+      {
+        "title": "Vectorized Execution Engine",
+        "urls": [
+          "/${VERSION}/vectorized-execution.html"
+        ]
+      },
+      {
+        "title": "Load-Based Splitting",
+        "urls": [
+          "/${VERSION}/load-based-splitting.html"
+        ]
+      },
+      {
+        "title": "Replication Controls",
+        "urls": [
+          "/${VERSION}/configure-replication-zones.html"
+        ]
+      },
+      {
+        "title": "Admission Control",
+        "urls": [
+          "/${VERSION}/admission-control.html"
+        ]
+      },
+      {
+        "title": "Monitor and Analyze Transaction Contention",
+        "urls": [
+          "/${VERSION}/monitor-and-analyze-transaction-contention.html"
+        ]
+      },
+      {
+        "title": "Performance Tuning Recipes",
+        "urls": [
+          "/${VERSION}/performance-recipes.html"
+        ]
+      },
+      {
+        "title": "Performance Tuning Tutorials",
+        "items": [
+        {
+          "title": "Statement Tuning with <code>EXPLAIN</code>",
+          "urls": [
+            "/${VERSION}/sql-tuning-with-explain.html"
+          ]
+        },
+        {
+          "title": "Apply SQL Statement Performance Rules",
+          "urls": [
+            "/${VERSION}/apply-statement-performance-rules.html"
+          ]
+        },
+        {
+          "title": "Troubleshoot Lock Contention",
+          "urls": [
+            "/${VERSION}/troubleshoot-lock-contention.html"
+          ]
+        }
+      ]
+    }
+  ]
+}

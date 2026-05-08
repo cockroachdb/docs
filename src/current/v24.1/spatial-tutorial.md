@@ -15,10 +15,6 @@ In this tutorial, you will plan a vacation from New York City to the [Adirondack
 + Performing [joins]({% link {{ page.version.version }}/joins.md %}) on spatial data, and using [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) to make sure indexes are effective.
 + Visualizing the output of your queries using free tools like <https://geojson.io>
 
-<div class="clearfix">
-  <a class="btn btn-outline-primary" href="https://www.cockroachlabs.com/docs/tutorials/demo-spatial-tutorial-interactive" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
-</div>
-
 ## Step 1. Review the scenario
 
 You live in New York City and are an avid birdwatcher and reader of books. You are going on a vacation up to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State. Although you are interested in many bird species, you are most interested in seeing (and [hearing](https://macaulaylibrary.org/asset/107964)) the <a href="https://ebird.org/species/comloo" data-proofer-ignore>Common Loon</a>, a bird that can be found near the lakes and ponds of the north woods.
@@ -1748,7 +1744,7 @@ For more information about production quality map routing software that uses Ope
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-There are multiple ways to do geocoding. You can use REST API-based services or do the geocoding yourself by processing [TIGER/LINE address data](https://www2.census.gov/geo/tiger/tigerua/) using a library for that purpose. For more information about some of the options available to you, see [this OpenStreetMap wiki page on geocoders](https://wiki.openstreetmap.org/wiki/Search_engines) or [this list of open source geocoding software](http://www.tsusiatsoftware.net/geocode.html).
+There are multiple ways to do geocoding. You can use REST API-based services or do the geocoding yourself by processing [TIGER/LINE address data](https://www2.census.gov/geo/tiger/tigerua/) using a library for that purpose. For more information about some of the options available to you, see [this OpenStreetMap wiki page on geocoders](https://wiki.openstreetmap.org/wiki/Search_engines) or [this list of geocoding software](http://www.tsusiatsoftware.net/geocode.html).
 {{site.data.alerts.end}}
 
 ##### The `roads` table

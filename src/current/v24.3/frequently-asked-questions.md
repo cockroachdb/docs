@@ -141,13 +141,13 @@ See [Install Client Drivers]({% link {{ page.version.version }}/install-client-d
 
 ### Why does CockroachDB use the PostgreSQL wire protocol instead of the MySQL protocol?
 
-CockroachDB uses the PostgreSQL wire protocol because it is better documented than the MySQL protocol, and because PostgreSQL has a liberal Open Source license, similar to BSD or MIT licenses, whereas MySQL has the more restrictive GNU General Public License.
+CockroachDB uses the PostgreSQL wire protocol because it is better documented than the MySQL protocol, and because PostgreSQL has a liberal license, similar to BSD or MIT licenses, whereas MySQL has the more restrictive GNU General Public License.
 
 Note, however, that the protocol used doesn't significantly impact how easy it is to port applications. Swapping out SQL network drivers is rather straightforward in nearly every language. What makes it hard to move from one database to another is the dialect of SQL in use. CockroachDB's dialect is based on PostgreSQL as well.
 
 ### Can a PostgreSQL or MySQL application be migrated to CockroachDB?
 
-Yes. Most users should be able to follow the instructions in [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}) or [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}). Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB. Check those pages for details.
+Yes. Most users should be able to follow the instructions in [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %}) or [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql). Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB. Check those pages for details.
 
 We also fully support [importing your data via CSV]({% link {{ page.version.version }}/migrate-from-csv.md %}).
 
@@ -165,13 +165,11 @@ For more details, see our [Security Overview]({% link {{ page.version.version }}
 
 While all of these databases support SQL syntax, CockroachDB is the only one that scales easily (without the manual complexity of sharding), rebalances and repairs itself automatically, and distributes transactions seamlessly across your cluster.
 
-For more insight, see [CockroachDB in Comparison]({% link {{ page.version.version }}/cockroachdb-in-comparison.md %}).
 
 ### How does CockroachDB compare to Cassandra, HBase, MongoDB, or Riak?
 
 While all of these are distributed databases, only CockroachDB supports distributed transactions and provides strong consistency. Also, these other databases provide custom APIs, whereas CockroachDB offers standard SQL with extensions.
 
-For more insight, see [CockroachDB in Comparison]({% link {{ page.version.version }}/cockroachdb-in-comparison.md %}).
 
 ## Have questions that weren’t answered?
 

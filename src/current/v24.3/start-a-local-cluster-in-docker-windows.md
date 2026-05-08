@@ -300,7 +300,7 @@ The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) gives you
 
 1. On the [**Cluster Overview**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), notice that three nodes are live, with an identical replica count on each node:
 
-    <img src="{{ 'images/v24.2/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/ui_cluster_overview_3_nodes.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
     This demonstrates CockroachDB's [automated replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) of data via the Raft consensus protocol.
 
@@ -310,7 +310,7 @@ The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) gives you
 
 1. Click [**Metrics**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
-    <img src="{{ 'images/v24.2/ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/ui_overview_dashboard_3_nodes.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 1. Use the [**Databases**]({% link {{ page.version.version }}/ui-databases-page.md %}), [**Statements**]({% link {{ page.version.version }}/ui-statements-page.md %}), and [**Jobs**]({% link {{ page.version.version }}/ui-jobs-page.md %}) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 1. Optionally verify that DB Console instances for `roach2` and `roach3` are reachable on ports 8081 and 8082 and show the same information as port 8080.
@@ -321,7 +321,7 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
 1. On the [**Cluster Overview**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), notice that three nodes are live, with an identical replica count on each node:
 
-    <img src="{{ 'images/v24.2/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/ui_cluster_overview_3_nodes.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
     This demonstrates CockroachDB's [automated replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) of data via the Raft consensus protocol.
 
@@ -331,7 +331,7 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
 1. Click [**Metrics**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
-    <img src="{{ 'images/v24.2/ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/ui_overview_dashboard_3_nodes.png" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 1. Use the [**Databases**]({% link {{ page.version.version }}/ui-databases-page.md %}), [**Statements**]({% link {{ page.version.version }}/ui-statements-page.md %}), and [**Jobs**]({% link {{ page.version.version }}/ui-jobs-page.md %}) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
@@ -363,6 +363,7 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
 ## What's next?
 
+- [Create a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?experience=enterprise) where you can [generate and manage licenses]({% link {{ page.version.version }}/licensing-faqs.md %}) for CockroachDB installations
 - Learn more about [CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}) and the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [Install the client driver]({% link {{ page.version.version }}/install-client-drivers.md %}) for your preferred language
 - [Build an app with CockroachDB]({% link {{ page.version.version }}/example-apps.md %})

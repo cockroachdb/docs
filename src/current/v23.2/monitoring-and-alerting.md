@@ -45,9 +45,7 @@ Each cluster automatically exposes its metrics at an [endpoint in Prometheus for
 - Allow you to create and share dashboards, reports, and alerts based on metrics.
 - Do not run within the cluster, and can help you to investigate a situation that led up to cluster outage even if the cluster is unavailable.
 
-Metrics collected by the DB Console are stored within the cluster, and the SQL queries that create the reports on the Metrics dashboards also impose load on the cluster. To avoid this additional load, or if you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
-
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint](#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
+Metrics collected by the DB Console are stored within the cluster, and the SQL queries that create the reports on the Metrics dashboards also impose load on the cluster.
 
 #### SQL Activity pages
 
@@ -140,10 +138,12 @@ Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
 ### Raw status endpoints
 
 {{site.data.alerts.callout_info}}
-These endpoints are deprecated in favor of the [Cluster API](#cluster-api).
+The JSON endpoints are deprecated in favor of the [Cluster API](#cluster-api).
+
+The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecated. For more information, refer to [Prometheus endpoint](#prometheus-endpoint).
 {{site.data.alerts.end}}
 
-Several endpoints return raw status metrics in JSON at `http://<host>:<http-port>/#/debug`. Feel free to investigate and use these endpoints, but note that they are subject to change.
+Several endpoints return raw status meta information in JSON at `http://<host>:<http-port>/#/debug`. You can investigate and use these endpoints, but note that they are subject to change.
 
 <img src="{{ 'images/v23.2/raw-status-endpoints.png' | relative_url }}" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
 
@@ -160,7 +160,7 @@ The [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.
 
 Every node of a CockroachDB cluster exports granular time-series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}), an open source tool for storing, aggregating, and querying time-series data. The Prometheus format is human-readable and can be processed to work with other third-party monitoring systems such as [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd). Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), collect metrics from a cluster's Prometheus endpoint.
 
-To access the Prometheus of a cluster running on `localhost:8080`:
+To access the Prometheus endpoint of a cluster running on `localhost:8080`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -197,11 +197,9 @@ The critical nodes status endpoint is used to:
 
 - Check if any of your nodes are in a critical state.  A node is _critical_ if that node becoming unreachable would cause [replicas to become unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status).
 - Check if any ranges are [under-replicated or unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status). This is useful when determining whether a node is ready for [decommissioning]({% link {{ page.version.version }}/node-shutdown.md %}#decommissioning).
-- Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}).
+- Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) or [troubleshooting zone configurations]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}) generally.
 
-{{site.data.alerts.callout_info}}
-This HTTP status endpoint supersedes the deprecated [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}) SQL API. Due to architectural changes in CockroachDB, the SQL queries described on that page will not result in correct output.
-{{site.data.alerts.end}}
+If you find under-replicated ranges or constraint violations, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 
 #### Fields
 
@@ -360,7 +358,9 @@ In other words, this tells the ranges that "where you are now is *not* where you
 The critical nodes endpoint should now report a constraint violation in the `violatingConstraints` field of the response, similar to the one shown below.
 
 {{site.data.alerts.callout_success}}
-You can also use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the ranges that are in violation of constraints.
+Use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the ranges that are in violation of constraints.
+
+In a real life constraint violation scenario, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -536,7 +536,9 @@ Once the statement above executes, the cluster will rebalance so that it's stori
 The critical nodes endpoint should now report ranges in the `underReplicated` field of the response, similar to the one shown below.
 
 {{site.data.alerts.callout_success}}
-You can also use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the under-replicated ranges.
+Use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the under-replicated ranges.
+
+In a real life under-replication scenario, you may need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -772,6 +774,13 @@ ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING n
 
 The critical nodes endpoint should now report that all of the cluster's nodes are critical by listing them in the `criticalNodes` field of the response.
 
+{{site.data.alerts.callout_success}}
+Use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the ranges in critical localities.
+
+In a real life critical localities scenario, you may need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
+{{site.data.alerts.end}}
+
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl -X POST http://localhost:8080/_status/critical_nodes
@@ -990,10 +999,6 @@ Many of the [third-party monitoring integrations]({% link {{ page.version.versio
 
 If you have configured [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) to monitor your CockroachDB instance, you can also configure alerting rule definitions to have Alertmanager detect [important events](#events-to-alert-on) and alert you when they occur.
 
-If you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
-
-When storage of time-series metrics is disabled, the DB Console Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
-
 #### Prometheus alerting rules endpoint
 
 Every CockroachDB node exports an alerting rules template at `http://<host>:<http-port>/api/v2/rules/`. These rule definitions are formatted for easy integration with Alertmanager.
@@ -1175,3 +1180,4 @@ Currently, not all events listed have corresponding alert rule definitions avail
 - [Local Deployment]({% link {{ page.version.version }}/start-a-local-cluster.md %})
 - [Third-Party Monitoring Integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %})

@@ -5,18 +5,47 @@
     {
       "title": "Overview",
       "urls": [
-        "/${VERSION}/migration-overview.html"
+        "/molt/migration-overview.html"
+      ]
+    },
+    {
+      "title": "Migration Strategy",
+      "urls": [
+        "/molt/migration-strategy.html"
+      ]
+    },
+    {
+      "title": "Migration Flows",
+      "items": [
+        {
+          "title": "Bulk Load",
+          "urls": [
+            "/molt/migrate-bulk-load.html"
+          ]
+        },
+        {
+          "title": "Load and Replicate Separately",
+          "urls": [
+            "/molt/migrate-load-replicate.html"
+          ]
+        },
+        {
+          "title": "Resume Replication",
+          "urls": [
+            "/molt/migrate-resume-replication.html"
+          ]
+        },
+        {
+          "title": "Failback",
+          "urls": [
+            "/molt/migrate-failback.html"
+          ]
+        }
       ]
     },
     {
       "title": "MOLT Tools",
       "items": [
-        {
-          "title": "Overview",
-          "urls": [
-            "/molt/molt-overview.html"
-          ]
-        },
         {
           "title": "Schema Conversion Tool",
           "urls": [
@@ -27,6 +56,64 @@
           "title": "Fetch",
           "urls": [
             "/molt/molt-fetch.html"
+          ]
+        },
+        {
+          "title": "Replicator",
+          "items": [
+            {
+              "title": "Guide",
+              "urls": [
+                "/molt/molt-replicator.html"
+              ]
+            },
+            {
+              "title": "Flags",
+              "urls": [
+                "/molt/replicator-flags.html"
+              ]
+            },
+            {
+              "title": "Metrics",
+              "urls": [
+                "/molt/replicator-metrics.html"
+              ]
+            },
+            {
+              "title": "Userscripts",
+              "items": [
+                {
+                  "title": "Overview",
+                  "urls": [
+                    "/molt/userscript-overview.html"
+                  ]
+                },
+                {
+                  "title": "Quickstart",
+                  "urls": [
+                    "/molt/userscript-quickstart.html"
+                  ]
+                },
+                {
+                  "title": "API",
+                  "urls": [
+                    "/molt/userscript-api.html"
+                  ]
+                },
+                {
+                  "title": "Cookbook",
+                  "urls": [
+                    "/molt/userscript-cookbook.html"
+                  ]
+                },
+                {
+                  "title": "Metrics",
+                  "urls": [
+                    "/molt/userscript-metrics.html"
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
@@ -117,30 +204,6 @@
             "/${VERSION}/import-performance-best-practices.html"
           ]
         }
-      ]
-    },
-    {
-      "title": "Migrate from PostgreSQL",
-      "urls": [
-        "/${VERSION}/migrate-from-postgres.html"
-      ]
-    },
-    {
-      "title": "Migrate from MySQL",
-      "urls": [
-        "/${VERSION}/migrate-from-mysql.html"
-      ]
-    },
-    {
-      "title": "Migrate from Oracle",
-      "urls": [
-        "/${VERSION}/migrate-from-oracle.html"
-      ]
-    },
-    {
-      "title": "Migration Strategy: Lift and Shift",
-      "urls": [
-        "/${VERSION}/migration-strategy-lift-and-shift.html"
       ]
     }
   ]

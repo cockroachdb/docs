@@ -9,7 +9,7 @@ docs_area:
 
 {% include {{ page.version.version }}/filter-tabs/deploy-crdb-aws.md %}
 
-This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load balancing service to distribute client traffic.
+This page shows you how to manually deploy a multi-node, self-hosted CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load-balancing service to distribute client traffic.
 
 After setting up the AWS network, clock synchronization, and load balancing, it should take approximately 20 minutes to complete the deployment. This is based on initializing a three-node CockroachDB cluster in a single AWS region and running our sample workload.
 
@@ -18,7 +18,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 {{site.data.alerts.callout_info}}
-You need a license to use CockroachDB; obtain a private offer link on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ph5bx6fhm4nlq) or see [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) to learn about custom pricing.
+You need a license to use CockroachDB. Refer to the [Licensing FAQ]({% link {{ page.version.version }}/licensing-faqs.md %}) and [CockroachDB Pricing](https://www.cockroachlabs.com/pricing). [Contact us](https://cockroachlabs.com/contact-sales) about custom pricing through AWS Marketplace.
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -56,7 +56,7 @@ CockroachDB is supported in all [AWS regions](https://docs.aws.amazon.com/AWSEC2
 
 In this basic deployment, 3 CockroachDB nodes are each deployed on an Amazon EC2 instance across 3 availability zones. These are grouped within a single VPC and security group. Users are routed to the cluster via [Amazon Route 53](https://aws.amazon.com/route53/) (which is not used in this tutorial) and a load balancer.
 
-<img src="{{ 'images/v24.2/aws-architecture.png' | relative_url }}" alt="Architecture diagram for a three-node CockroachDB cluster deployed on AWS" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/aws-architecture.png" alt="Architecture diagram for a three-node CockroachDB cluster deployed on AWS" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 1. Create instances
 

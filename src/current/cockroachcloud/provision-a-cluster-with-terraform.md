@@ -81,6 +81,14 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.basic }} c
 
     {% include_cached copy-clipboard.html %}
     ~~~ hcl
+    terraform {
+      required_providers {
+        cockroach = {
+          source = "cockroachdb/cockroach"
+        }
+      }
+    }
+
     resource "cockroach_cluster" "basic" {
       name           = "cockroach-basic"
       cloud_provider = "GCP"
@@ -94,6 +102,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.basic }} c
       delete_protection = false
     }
     ~~~
+      - Optionally, include the `version` attribute in the `cockroach` nested block to specify a version of the provider. If you do not include the `version` attribute, Terraform will use the latest provider version.
       - Replace `cockroach-basic` with a name for the cluster.
       - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
       - Under `serverless {}`, optionally set values for `resource_unit_limit` and `storage_mib_limits`.
@@ -110,7 +119,7 @@ To change a cluster's plan in place between CockroachDB {{ site.data.products.ba
 <section class="filter-content" markdown="1" data-scope="standard">
 
 {{site.data.alerts.callout_info}}
-CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+CockroachDB Standard is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 In this tutorial, you will create a CockroachDB {{ site.data.products.standard }} cluster.
@@ -119,6 +128,14 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.standard }
 
     {% include_cached copy-clipboard.html %}
     ~~~ hcl
+    terraform {
+      required_providers {
+        cockroach = {
+          source = "cockroachdb/cockroach"
+        }
+      }
+    }
+
     resource "cockroach_cluster" "standard" {
       name           = "cockroach-standard"
       cloud_provider = "GCP"
@@ -136,11 +153,14 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.standard }
       delete_protection = false
     }
     ~~~
+      - Optionally, include the `version` attribute in the `cockroach` nested block to specify a version of the provider. If you do not include the `version` attribute, Terraform will use the latest provider version.
       - Replace `cockroach-standard` with a name for the cluster.
       - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
       - Under `usage_limits`, set `provisioned_virtual_cpus` to the required maximum vCPUs for the cluster.
       - Under `regions`, add the names of one or more regions for the cluster.
       - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
+
+    {% include cockroachcloud/backups/provision-cluster-tf-managed-backups.md %}
 {{ remaining_steps }}
 
 {{site.data.alerts.callout_success}}
@@ -157,6 +177,14 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.advanced }
 
     {% include_cached copy-clipboard.html %}
     ~~~ hcl
+    terraform {
+      required_providers {
+        cockroach = {
+          source = "cockroachdb/cockroach"
+        }
+      }
+    }
+
     resource "cockroach_cluster" "advanced" {
       name           = "cockroach-advanced"
       cloud_provider = "GCP"
@@ -174,11 +202,14 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.advanced }
       delete_protection = true
     }
     ~~~
+      - Optionally, include the `version` attribute in the `cockroach` nested block to specify a version of the provider. If you do not include the `version` attribute, Terraform will use the latest provider version.
       - Replace `cockroach-advanced` with a name for the cluster.
       - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
       - Under `dedicated`, set `storage_gib` to a value large enough to contain the cluster's expected data. Set `num_virtual_cpus` to the number of vCPUs per node.
       - Under `regions`, add the names of one or more regions for the cluster and specify the `node_count`, or the number of nodes, per region.
       - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
+    
+    {% include cockroachcloud/backups/provision-cluster-tf-managed-backups.md %}
 {{ remaining_steps }}
 
 </section>
@@ -194,10 +225,10 @@ terraform show
 
 ## Change a cluster's plan
 
-To change a CockroachDB {{ site.data.products.basic }} cluster's plan to CockroachDB {{ site.data.products.standard }} in place, or to change a CockroachDB {{ site.data.products.standard }} cluster to CockroachDB {{ site.data.products.basic }} using Terraform..or the [CockroachDB {{ site.data.products.cloud }} API](https://cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-).
+To change a CockroachDB {{ site.data.products.basic }} cluster's plan to CockroachDB {{ site.data.products.standard }} in place, or to change a CockroachDB {{ site.data.products.standard }} cluster to CockroachDB {{ site.data.products.basic }} using Terraform or the [CockroachDB {{ site.data.products.cloud }} API](https://cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-).
 
 {{site.data.alerts.callout_info}}
-To migrate between CockroachDB {{ site.data.products.advanced }} and either CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Migration in place is not supported. Refer to [Self-managed backups]({% link cockroachcloud/backup-and-restore-overview.md %}#self-managed-backups).
+To migrate between CockroachDB {{ site.data.products.advanced }} and either CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }}, you must create and configure a new cluster, create a self-managed backup of the existing cluster's data, and restore the backup to the new cluster. Refer to [Back up a CockroachDB {{ site.data.products.cloud }} cluster and restore into a new cluster]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}#back-up-a-cockroachdb-cloud-cluster-and-restore-into-a-new-cluster). Migration in place is not supported.
 {{site.data.alerts.end}}
 
 To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ site.data.products.standard }} in place:
@@ -240,7 +271,20 @@ To change a cluster's plan from CockroachDB {{ site.data.products.standard }} to
     terraform apply
     ~~~
 
+To use the CockroachDB {{ site.data.products.cloud }} API to switch a cluster's plan in place between {{ site.data.products.basic }} and {{ site.data.products.standard }}, send a `PATCH` request to the [`clusters/{cluster_id}` endpoint](https://cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-) updating the `plan` and `serverless.usage_limits` as needed. The following example sets the `plan` to `STANDARD` and updates the `usage_limits` to provision VCPUs as required for a {{ site.data.products.standard }} plan:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request PATCH \ --url  https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+--header "Authorization: Bearer <your_api_key>" \
+--json '{"plan":"STANDARD","serverless":{"usage_limits":{"provisioned_virtual_cpus": 2}}}'
+~~~
+
 ## Delete a cluster
+
+{{site.data.alerts.callout_danger}}
+Sending a `destory` command permanently deletes the cluster and all the data within the cluster. Deleted clusters can not be restored.
+{{site.data.alerts.end}}
 
 If you want to delete a cluster managed by Terraform, run the following command:
 
@@ -255,3 +299,4 @@ Enter `yes` when prompted to delete the cluster.
 
 - Read the [CockroachDB Cloud Terraform provider reference docs](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs) in the Terraform registry, which provide detailed information on the resources you can manage using Terraform.
 - Browse the [example recipes](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples) in the Terraform Provider's GitHub repository.
+- Refer to the [Managed Backups]({% link cockroachcloud/managed-backups.md %}#cockroachdb-cloud-terraform-provider) page to configure the managed backups for your CockroachDB {{ site.data.products.cloud }} cluster.

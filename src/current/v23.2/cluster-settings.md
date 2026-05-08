@@ -7,11 +7,16 @@ docs_area: reference.cluster_settings
 
 Cluster settings apply to all nodes of a CockroachDB cluster and control, for example, whether or not to share diagnostic details with Cockroach Labs as well as advanced options for debugging and cluster tuning.
 
-They can be updated anytime after a cluster has been started, but only by a member of the `admin` role, to which the `root` user belongs by default.
-
 {{site.data.alerts.callout_info}}
 In contrast to cluster-wide settings, node-level settings apply to a single node. They are defined by flags passed to the `cockroach start` command when starting a node and cannot be changed without stopping and restarting the node. For more details, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}).
 {{site.data.alerts.end}}
+
+This page provides information on:
+
+- [Available settings](#settings)
+- How to [view current cluster settings](#view-current-cluster-settings)
+- How to [change a cluster setting](#change-a-cluster-setting)
+- [Sensitive settings](#sensitive-settings)
 
 ## Settings
 
@@ -23,19 +28,60 @@ These cluster settings have a broad impact on CockroachDB internals and affect a
 
 {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/settings/settings.html %}
 
+<a name="setting-goschedstats-always-use-short-sample-period-enabled"></a>
+
+<table>
+  <tr>
+    <td><code>goschedstats.always_use_short_sample_period.enabled</code></td>
+    <td>boolean</td>
+	<td>false</td>
+	<td>When set to true, the system uses a shorter sampling period of runnable queue lengths. This setting should always be enabled for <a href="recommended-production-settings.html">production clusters</a> to help prevent unnecessary queuing in the <a href="admission-control.html">admission control</a> subsystem.</td>
+    <td>Advanced/Self-Hosted</td>
+  </tr>
+</table>
+
 ## View current cluster settings
 
 Use the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) statement.
 
 ## Change a cluster setting
 
-Use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement.
+Cluster settings can be updated via SQL command while the cluster is running. Use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement.
 
 Before changing a cluster setting, note the following:
 
 - 	Changing a cluster setting is not instantaneous, as the change must be propagated to other nodes in the cluster.
 
 - 	Do not change cluster settings while [upgrading to a new version of CockroachDB]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}). Wait until all nodes have been upgraded before you make the change.
+
+## Sensitive settings
+
+{% include_cached new-in.html version="v23.2.1" %} You can prevent users without sufficient permissions from viewing the values of cluster settings that CockroachDB classifies as sensitive.
+
+By default, users with the `VIEWCLUSTERSETTING` privilege can view the values of all settings displayed when using the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) statement.
+
+If you enable the option to redact sensitive settings, the sensitive setting values are hidden from those users, and visible only to users with the `admin` role or the `MODIFYCLUSTERSETTING` privilege.
+
+To enable this redaction of sensitive setting values, set the cluster setting [`server.redact_sensitive_settings.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-redact-sensitive-settings-enabled) to `true`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.redact_sensitive_settings.enabled = 'true';
+~~~
+
+The table summarizes when sensitive setting values are visible or redacted:
+
+| User attribute | Redaction disabled | Redaction enabled |
+|----------------|:------------------:|:-----------------:|
+|`admin` role | visible | visible
+|`MODIFYCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) | visible | visible
+|`VIEWCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) | visible | **redacted**
+| None of the above attributes | not visible | not visible |
+
+The following are sensitive settings whose values are redacted:
+
+- [`server.oidc_authentication.client_id`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-oidc-authentication-client-id)
+- [`server.oidc_authentication.client_secret`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-oidc-authentication-client-secret)
 
 ## See also
 

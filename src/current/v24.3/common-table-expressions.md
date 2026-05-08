@@ -9,6 +9,8 @@ A _common table expression_ (CTE), also called a `WITH` query, provides a shorth
 
 You can use CTEs in combination with [`SELECT` clauses]({% link {{ page.version.version }}/select-clause.md %}) and [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), and [`UPSERT`](upsert.html) data-modifying statements.
 
+For many workloads, CTEs are an effective alternative to [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}) for intermediate results within a single statement. CTEs avoid the [performance overhead of temp tables]({% link {{ page.version.version }}/temporary-tables.md %}#performance-considerations), and the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) can choose whether to materialize them.
+
 ## Synopsis
 
 <div>
@@ -474,3 +476,4 @@ CTEs containing statements (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) that modify 
 - [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
 - [Table Expressions]({% link {{ page.version.version }}/table-expressions.md %})
 - [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %})
+- [Temporary tables]({% link {{ page.version.version }}/temporary-tables.md %})

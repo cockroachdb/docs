@@ -64,12 +64,6 @@ CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ pa
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
 
-### Declarative schema changer does not track rows in `system.privileges`
-
-The [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) does not track rows in the `system.privileges` table, which prevents the declarative schema changer from successfully running the [`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) statement.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88149)
-
 ### `null_ordered_last` does not produce correct results with tuples
 
 By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.
@@ -454,7 +448,7 @@ CockroachDB supports efficiently storing and querying [spatial data]({% link {{ 
 
 - CockroachDB does not support using [schema name prefixes]({% link {{ page.version.version }}/sql-name-resolution.md %}#how-name-resolution-works) to refer to [data types]({% link {{ page.version.version }}/data-types.md %}) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`).
 
-    Note that, in [`IMPORT PGDUMP`]({% link {{ page.version.version }}/migrate-from-postgres.md %}) output, [`GEOMETRY` and `GEOGRAPHY`]({% link {{ page.version.version }}/export-spatial-data.md %}) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
+    Note that, in [`IMPORT PGDUMP`]({% link molt/migrate-to-cockroachdb.md %}) output, [`GEOMETRY` and `GEOGRAPHY`]({% link {{ page.version.version }}/export-spatial-data.md %}) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56492)
 
@@ -701,6 +695,10 @@ If you think a rollback of a column-dropping schema change has occurred, check t
 ### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
+
+### Secondary regions and regional by row tables
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
 
 ### Row-Level TTL limitations
 
