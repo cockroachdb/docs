@@ -6,29 +6,31 @@ docs_area: stream_data
 key: stream-data-out-of-cockroachdb-using-changefeeds.html
 ---
 
-Change data capture (CDC) detects row-level data changes in CockroachDB and sends the change as a message to a configurable sink for downstream processing purposes. While CockroachDB is an excellent system of record, it also needs to coexist with other systems.
+**Change data capture (CDC)** detects row-level data changes in CockroachDB and emits those changes as messages for downstream processing. While CockroachDB is an excellent system of record, CDC allows it to integrate with other systems in your data ecosystem.
 
 For example, you might want to:
 
 - Stream messages to Kafka to trigger notifications in an application.
-- Keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
-- Export a snaphot of tables to backfill new applications.
-- Send updates to data stores for machine learning models.
+- Mirror your data in full-text indexes, analytics engines, or big data pipelines.
+- Export a snapshot of tables to backfill new applications.
+- Feed updates to data stores powering machine learning models.
 
 <a id="watched-table"></a>
 {% include common/define-watched-cdc.md %}
 
 ## Stream row-level changes with changefeeds
 
-Changefeeds are customizable _jobs_ that track row-level changes and send data in realtime in a preferred format to your specified destination, known as a _sink_. Every row change will be emitted at least once and the first emit of every event for the same key will be ordered by timestamp.
+Changefeeds are customizable _jobs_ that monitor row-level changes in a table and emit updates in real time. These updates are delivered in your preferred format to a specified destination, known as a _sink_.
 
-CockroachDB has two implementations of changefeeds:
+In production, changefeeds are typically configured with an external sink such as Kafka or cloud storage. However, for development and testing purposes, _sinkless changefeeds_ allow you to stream change data directly to your SQL client.
+
+Each emitted row change is delivered at least once, and the first emit of every event for the same key is ordered by timestamp.
 
 <table class="comparison-chart">
   <tr>
     <th></th>
-    <th>Basic changefeeds</th>
-    <th>Enterprise changefeeds</th>
+    <th>Sinkless changefeeds</th>
+    <th>Changefeeds</th>
   </tr>
 
   <tr>
@@ -44,7 +46,7 @@ CockroachDB has two implementations of changefeeds:
       <b>Product availability</b>
     </td>
     <td>All products</td>
-    <td>CockroachDB {{ site.data.products.basic }}, {{ site.data.products.standard }}, {{ site.data.products.advanced }}, or with an <a href="licensing-faqs.html#types-of-licenses">{{ site.data.products.enterprise }} license</a> in CockroachDB {{ site.data.products.core }}.</td>
+    <td>All products</td>
   </tr>
 
   <tr>
@@ -52,15 +54,15 @@ CockroachDB has two implementations of changefeeds:
       <b>Message delivery</b>
     </td>
     <td>Streams indefinitely until underlying SQL connection is closed.</td>
-    <td>Maintains connection to configured <a href="{% link {{ page.version.version }}/changefeed-sinks.md %}">sink</a>: <br>Amazon S3, Azure Event Hubs, Azure Storage, Confluent Cloud, Google Cloud Pub/Sub, Google Cloud Storage, HTTP, Kafka, Webhook.</td>
+    <td>Maintains connection to configured <a href="{% link {{ page.version.version }}/changefeed-sinks.md %}">sink</a>.</td>
   </tr>
 
   <tr>
     <td class="comparison-chart__feature">
       <b>SQL statement</b>
     </td>
-    <td>Create with <a href="changefeed-for.html"><code>EXPERIMENTAL CHANGEFEED FOR</code></a></td>
-    <td>Create with <a href="create-changefeed.html"><code>CREATE CHANGEFEED</code></a></td>
+    <td>Create with <a href="create-changefeed.html"><code>CREATE CHANGEFEED FOR TABLE table_name;</code></a></td>
+    <td>Create with <a href="create-changefeed.html"><code>CREATE CHANGEFEED FOR TABLE table_name INTO 'sink';</code></a></td>
   </tr>
 
   <tr>
@@ -75,7 +77,7 @@ CockroachDB has two implementations of changefeeds:
     <td class="comparison-chart__feature">
       <b>Filter change data</b>
     </td>
-    <td>Not supported</td>
+    <td>Use <a href="{% link {{ page.version.version }}/cdc-queries.md %}">CDC queries</a> to define the emitted change data.</td>
     <td>Use <a href="{% link {{ page.version.version }}/cdc-queries.md %}">CDC queries</a> to define the emitted change data.</td>
   </tr>
 
@@ -100,14 +102,14 @@ CockroachDB has two implementations of changefeeds:
       <b>Message format</b>
     </td>
     <td>Emits every change to a "watched" row as a record to the current SQL session.</td>
-    <td>Emits every change to a "watched" row as a record in a <a href="{% link {{ page.version.version }}/changefeed-messages.md %}#message-formats">configurable format</a>: JSON, CSV, Avro, Parquet.</td>
+    <td>Emits every change to a "watched" row as a record in a <a href="{% link {{ page.version.version }}/changefeed-messages.md %}#message-formats">configurable format</a>.</td>
   </tr>
 
   <tr>
     <td class="comparison-chart__feature">
       <b>Management</b>
     </td>
-    <td>Create the changefeed and cancel by closing the connection.</td>
+    <td>Create the changefeed and cancel by closing the SQL connection.</td>
     <td><a href="{% link {{ page.version.version }}/create-and-configure-changefeeds.md %}">Manage changefeed</a> with <code>CREATE</code>, <code>PAUSE</code>, <code>RESUME</code>, <code>ALTER</code>, and <code>CANCEL</code>.</td>
   </tr>
 
@@ -125,10 +127,10 @@ CockroachDB has two implementations of changefeeds:
 
 To get started with changefeeds in CockroachDB, refer to:
 
-- [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}): Learn about the fundamentals of using SQL statements to create and manage Enterprise and basic changefeeds.
+- [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}): Learn about the fundamentals of using SQL statements to create and manage changefeeds.
 - [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}): The downstream system to which the changefeed emits changes. Learn about the supported sinks and configuration capabilities.
-- [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}): The change events that emit from the changefeed to your sink. Learn about how messages are ordered at your sink and the options to configure and format messages.
-- [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}): Step-by-step examples for connecting to each changefeed sink.
+- [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}): The change events that emit from the changefeed. Learn about how messages are ordered and the options to configure and format messages.
+- [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}): Step-by-step examples for connecting to changefeed sinks or running sinkless changefeeds.
 
 ### Authenticate to your changefeed sink
 
@@ -161,7 +163,7 @@ For detail on how protected timestamps and garbage collection interact with chan
 
 ### Filter your change data with CDC queries
 
-_Change data capture queries_ allow you to define and filter the change data emitted to your sink when you create an Enterprise changefeed.
+_Change data capture queries_ allow you to define and filter the change data emitted to your sink when you create an changefeed.
 
 For example, you can use CDC queries to:
 

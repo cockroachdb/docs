@@ -5,10 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
-{{site.data.alerts.end}}
-
 [**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) during the PCR stream:
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
@@ -52,7 +48,7 @@ The replication happens at the byte level, which means that the job is unaware o
 During the job, [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) are periodically emitting resolved timestamps, which is the time where the ingested data is known to be consistent. Resolved timestamps provide a guarantee that there are no new writes from before that timestamp. This allows the standby cluster to move the [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) forward as the replicated timestamp advances. This information is sent to the primary cluster, which allows for [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) to continue as the replication stream on the standby cluster advances.
 
 {{site.data.alerts.callout_info}}
-If the primary cluster does not receive replicated time information from the standby after 24 hours, it cancels the replication job. This ensures that an inactive replication job will not prevent garbage collection. The time at which the job is removed is configurable with [`ALTER VIRTUAL CLUSTER virtual_cluster EXPIRATION WINDOW = duration`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) syntax.
+If the primary cluster does not receive replicated time information from the standby after 24 hours, it cancels the replication job. This ensures that an inactive replication job will not prevent garbage collection.
 {{site.data.alerts.end}}
 
 ### Failover and promotion process

@@ -6,16 +6,27 @@
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
+    JEKYLL_REMOTE_INCLUDE_CACHE = "true"
+    JEKYLL_REMOTE_INCLUDE_CACHE_TTL = "3600"
+    # Enable retry logic for production builds
+    MAX_RETRIES = "3"
+    BASE_RETRY_DELAY = "30"
   [build.processing.html]
     pretty_urls = true
+
+# Cache Plugin (keep caching for performance)
+[[plugins]]
+  package = "netlify-plugin-cache"
+  [plugins.inputs]
+    paths = [
+      ".jekyll-cache",
+      ".remote-includes-cache", 
+      "node_modules/.cache",
+      "_data/cached"
+    ]
+
+# Retry functionality implemented in build script for robust production builds
 
 [[edge_functions]]
   path = "/*"
   function = "blockBytedance"
-   
-#[[plugins]]
-#  package = "@netlify/plugin-lighthouse"
-#  [plugins.inputs]
-#    output_path = "./reports/lighthouse.html"
-#    [[plugins.inputs.audits]]
-#      path = "./docs/index.html"

@@ -44,6 +44,10 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 - Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking]({% link {{ page.version.version }}/use-cloud-storage.md %}#immutable-storage) in your cloud storage bucket.**
 - While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services]({% link {{ page.version.version }}/use-cloud-storage.md %}) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/backups/external-storage-check-tip.md %}
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 {% include {{ page.version.version }}/backups/updated-backup-privileges.md %}

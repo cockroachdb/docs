@@ -176,7 +176,7 @@ An extension to the [PostgreSQL](https://postgresql.org/) database that adds sup
 
 #### GEOS
 
-An open source geometry library used by CockroachDB, [PostGIS](#postgis), and other projects to provide the calculations underlying various spatial predicate functions and operators. For more information, see <http://trac.osgeo.org/geos/>.
+A geometry library used by CockroachDB, [PostGIS](#postgis), and other projects to provide the calculations underlying various spatial predicate functions and operators. For more information, see <http://trac.osgeo.org/geos/>.
 
 #### GeographicLib
 

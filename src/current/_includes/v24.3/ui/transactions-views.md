@@ -41,11 +41,11 @@ Click the **Transactions** tab. The **Transaction Fingerprints** radio button is
 
 The following screenshot shows the transaction fingerprint for `SELECT city, id FROM vehicles WHERE city = $1` while running the [`movr` workload]({{ link_prefix }}cockroach-workload.html#run-the-movr-workload):
 
-<img src="{{ 'images/v24.2/transaction-fingerprint.png' | relative_url }}" alt="Transaction fingerprint" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction-fingerprint.png" alt="Transaction fingerprint" style="border:1px solid #eee;max-width:100%" />
 
 If you click the transaction fingerprint in the **Transactions** column, the [**Transaction Details** page](#transaction-details-page) displays.
 
-<img src="{{ 'images/v24.2/transaction-details.png' | relative_url }}" alt="Transaction details" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction-details.png" alt="Transaction details" style="border:1px solid #eee;max-width:100%" />
 
 ## Active Executions view
 
@@ -66,11 +66,11 @@ When Auto [Refresh](#refresh) is On, active executions are polled every 10 secon
 
 The following screenshot shows the active statement execution for `UPSERT INTO vehicle_location_histories VALUES ($1, $2, now(), $4, $5)` while running the [`movr` workload]({{ link_prefix }}cockroach-workload.html#run-the-movr-workload):
 
-<img src="{{ 'images/v24.2/transaction-execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction-execution.png" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
 
 If you click the execution ID in the **Transaction Execution ID** column, the [**Transaction Execution** details page](#transaction-execution-details-page) displays.
 
-<img src="{{ 'images/v24.2/transaction-execution-details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/transaction-execution-details.png" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
 
 {% if page.cloud != true %}
 {% include {{ page.version.version }}/ui/refresh.md %}

@@ -5,10 +5,17 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `UUID` (Universally Unique Identifier) [data type]({% link {{ page.version.version }}/data-types.md %}) stores a 128-bit value that is [unique across both space and time](https://www.ietf.org/rfc/rfc4122.txt).
+The `UUID` (Universally Unique Identifier) [data type]({% link {{ page.version.version }}/data-types.md %}) implements the UUIDv4 format from [RFC 4122](https://www.ietf.org/rfc/rfc4122.txt). It stores a 128-bit value that is "unique across both space and time, with respect to the space of all UUIDs" as specified by the RFC.
+
+To auto-generate UUIDs:
+
+- Use the `gen_random_uuid()` function as the default value of the `UUID` data type.
+- Use the `uuid_v4()` function as the default value of the [`BYTES`]({% link {{ page.version.version }}/bytes.md %}) data type.
+
+For examples, refer to [Create a table with auto-generated unique row IDs](#create-a-table-with-auto-generated-unique-row-ids).
 
 {{site.data.alerts.callout_success}}
-To auto-generate unique row identifiers, use [`UUID`]({% link {{ page.version.version }}/uuid.md %}) with the `gen_random_uuid()` function as the default value. See the [example](#create-a-table-with-auto-generated-unique-row-ids) below for more details.
+{% include {{ page.version.version }}/sql/use-uuidv4.md %}
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -17,12 +24,12 @@ You can express `UUID` values using the following formats:
 
 Format | Description
 -------|-------------
-Standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format | Hyphen-separated groups of 8, 4, 4, 4, and 12 hexadecimal digits.<br><br>Example: `acde070d-8c4c-4f0d-9d8a-162843c10333`
+Standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) (UUIDv4) format | Hyphen-separated groups of 8, 4, 4, 4, and 12 hexadecimal digits.<br><br>Example: `acde070d-8c4c-4f0d-9d8a-162843c10333`
 `BYTES` | `UUID` value specified as a [`BYTES`]({% link {{ page.version.version }}/bytes.md %}) value.<br><br>Example: `b'kafef00ddeadbeed'`
 Uniform Resource Name | A [Uniform Resource Name (URN)](https://www.ietf.org/rfc/rfc2141.txt) specified as "urn:uuid:" followed by the [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format.<br><br>Example: `urn:uuid:63616665-6630-3064-6465-616462656564`
 Alternate PostgreSQL-supported formats | All [alternate `UUID` formats supported by PostgreSQL](https://www.postgresql.org/docs/current/datatype-uuid.html), including the [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format surrounded by braces, any supported format with upper-case digits, any supported format with some or all hyphens omitted, and any supported format with hyphens after any group of four digits.<br><br>Examples: `{acde070d-8c4c-4f0d-9d8a-162843c10333}`, `ACDE070D-8C4C-4f0D-9d8A-162843c10333`, `acde070d8c4c4f0d9d8a162843c10333`, `acde-070d-8c4c-4f0d-9d8a-1628-43c1-0333`
 
-CockroachDB displays all `UUID` values in the standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format.
+CockroachDB displays all `UUID` values in the standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format, and implements the UUIDv4 (random) version from the RFC.
 
 ## Size
 
@@ -31,6 +38,10 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 ## Examples
 
 ### Create a table with manually-entered `UUID` values
+
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/sql/use-uuidv4.md %}
+{{site.data.alerts.end}}
 
 #### Create a table with `UUID` in standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format
 

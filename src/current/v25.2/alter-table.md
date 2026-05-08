@@ -50,9 +50,12 @@ Subcommand | Description | Can combine with other subcommands?
 [`ALTER COLUMN`](#alter-column) | Change an existing column. | Yes
 [`ALTER PRIMARY KEY`](#alter-primary-key) | Change the [primary key]({% link {{ page.version.version }}/primary-key.md %}) of a table. | Yes
 [`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for a table. | No
+[`DISABLE ROW LEVEL SECURITY`](#disable-row-level-security) |  Disable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) for a table. | Yes
 [`DROP COLUMN`](#drop-column) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](#drop-constraint) | Remove constraints from columns. | Yes
+[`ENABLE ROW LEVEL SECURITY`](#enable-row-level-security) |  Enable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) for a table. | Yes
 [`EXPERIMENTAL_AUDIT`](#experimental_audit) | Enable per-table audit logs, for security purposes. | Yes
+[`FORCE / NO FORCE ROW LEVEL SECURITY`](#force-row-level-security) | Force the table owner to be subject to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies defined on a table. | Yes
 [`OWNER TO`](#owner-to) |  Change the owner of the table. | No
 [`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition a table. | Yes
 [`RENAME COLUMN`](#rename-column) | Change the names of columns. | Yes
@@ -62,6 +65,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`SET {storage parameter}`](#set-storage-parameter) | Set a storage parameter on a table. | Yes
 [`SET LOCALITY`](#set-locality) |  Set the table locality for a table in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). | No
 [`SET SCHEMA`](#set-schema) |  Change the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a table. | No
+[`SCATTER`](#scatter) | Makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of a table or index. Note that it does not return an error even if replicas are not moved. | No
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the table. | No
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the table. | No
 [`VALIDATE CONSTRAINT`](#validate-constraint) | Check whether values in a column match a [constraint]({% link {{ page.version.version }}/constraints.md %}) on the column. | Yes
@@ -468,6 +472,66 @@ Parameter | Description |
 
 For usage, see [Synopsis](#synopsis).
 
+### `ENABLE ROW LEVEL SECURITY`
+
+[Row-level security]({% link {{ page.version.version }}/row-level-security.md %}) must be explicitly enabled per [table]({% link {{ page.version.version }}/schema-design-table.md %}). Typically, this is controlled by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) that owns the table.
+
+For examples, see [Enable row-level security](#enable-row-level-security).
+
+{% include {{ page.version.version }}/sql/row-level-security-enabled.md %}
+
+#### Required privileges
+
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles.
+
+#### Parameters
+
+| Parameter    | Description                                                                                                                                        |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `table_name` | The name of the table which is having [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) enabled or disabled. |
+| `ENABLE`     | Whether to enable RLS.                                                                                                                             |
+
+### `DISABLE ROW LEVEL SECURITY`
+
+This statement disables [Row-level security]({% link {{ page.version.version }}/row-level-security.md %}) per [table]({% link {{ page.version.version }}/schema-design-table.md %}). Typically, this is controlled by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) that owns the table.
+
+For examples, refer to [Disable row-level security](#disable-row-level-security).
+
+#### Required privileges
+
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles.
+
+#### Parameters
+
+| Parameter    | Description                                                                                                                                        |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `table_name` | The name of the table which is having [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) enabled or disabled. |
+| `DISABLE`    | Whether to disable RLS.                                                                                                                            |
+
+### `FORCE / NO FORCE ROW LEVEL SECURITY`
+
+`ALTER TABLE ... FORCE ROW LEVEL SECURITY` prevents table [owners]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) from bypassing [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) policies.
+
+Use this statement when you need to ensure that all access, including by the table owner, adheres to the defined RLS policies. Note that this statement only has an affect if [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`](#enable-row-level-security) is also set.
+
+For examples, refer to [Force row-level security](#force-row-level-security).
+
+{{site.data.alerts.callout_danger}}
+Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled.
+{{site.data.alerts.end}}
+
+#### Required privileges
+
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles.
+
+#### Parameters
+
+| Parameter    | Description                                                                                                                                                                         |
+|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `table_name` | The name of the table on which [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) is enabled or disabled.                                      |
+| `FORCE`      | `FORCE` ensures that all access (even by the table owner) adheres to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies.                    |
+| `NO FORCE`   | `NO FORCE` removes the restriction that all access (even by the table owner) adheres to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies. |
+
 ### `SET {storage parameter}`
 
 `ALTER TABLE ... SET {storage parameter}` sets a storage parameter on an existing table.
@@ -536,6 +600,32 @@ The user must have the `DROP` [privilege]({% link {{ page.version.version }}/sec
 Parameter | Description |
 ----------|-------------|
 `schema_name` | The name of the new schema for the table.
+
+For usage, see [Synopsis](#synopsis).
+
+### `SCATTER`
+
+`ALTER TABLE ... SCATTER` runs a specified set of ranges for a table or index through the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}) queue. If many ranges have been created recently, the replication queue may transfer some leases to other replicas to balance load across the cluster.
+
+Note that this statement makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of an index. It does not return an error even if replicas are not moved.
+
+{{site.data.alerts.callout_info}}
+`SCATTER` has the potential to result in data movement proportional to the size of the table or index being scattered, thus taking additional time and resources to complete.
+{{site.data.alerts.end}}
+
+For examples, see [Scatter tables](#scatter-tables).
+
+#### Required privileges
+
+The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table or index.
+
+#### Parameters
+
+Parameter | Description
+----------|-------------
+`table_name` | The name of the table that you want to scatter.
+`table_index_name` | The name of the index that you want to scatter.
+`expr_list` | A list of [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}) in the form of the primary key of the table or the specified index.
 
 For usage, see [Synopsis](#synopsis).
 
@@ -1113,71 +1203,71 @@ By default, referenced columns must be in the same database as the referencing f
 
 #### Drop and add a primary key constraint
 
-Suppose that you want to add `name` to the composite primary key of the `users` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key).
+Suppose that you want to add `creation_time` to the composite primary key of the `promo_codes` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key). To do so, use [`DROP CONSTRAINT`](#drop-constraint) and [`ADD CONSTRAINT`](#add-constraint) in a single `ALTER TABLE` statement.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE TABLE users;
-~~~
+1. View the details of the `promo_codes` table:
 
-~~~
-  table_name |                      create_statement
--------------+--------------------------------------------------------------
-  users      | CREATE TABLE users (
-             |     id UUID NOT NULL,
-             |     city VARCHAR NOT NULL,
-             |     name VARCHAR NULL,
-             |     address VARCHAR NULL,
-             |     credit_card VARCHAR NULL,
-             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
-             | )
-(1 row)
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SHOW CREATE TABLE promo_codes;
+	~~~
 
-1. Add a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint to the `name` column with [`ALTER COLUMN`](#alter-column).
+	~~~
+	  table_name  |                      create_statement
+	--------------+------------------------------------------------------------
+	  promo_codes | CREATE TABLE public.promo_codes (
+	              |     code VARCHAR NOT NULL,
+	              |     description VARCHAR NULL,
+	              |     creation_time TIMESTAMP NULL,
+	              |     expiration_time TIMESTAMP NULL,
+	              |     rules JSONB NULL,
+	              |     CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC)
+	              | )
+	(1 row)
+	~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > ALTER TABLE users ALTER COLUMN name SET NOT NULL;
-    ~~~
-
-1. In the same transaction, `DROP` the old `"primary"` constraint and [`ADD`](#add-constraint) the new one:
+1. Add a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint to the `creation_time` column with [`ALTER COLUMN`](#alter-column):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > BEGIN;
-    > ALTER TABLE users DROP CONSTRAINT "primary";
-    > ALTER TABLE users ADD CONSTRAINT "primary" PRIMARY KEY (city, name, id);
-    > COMMIT;
+    ALTER TABLE promo_codes ALTER COLUMN creation_time SET NOT NULL;
     ~~~
 
-    ~~~
-    NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
-    ~~~
+1. To issue the schema change atomically, use single statements as an implicit transaction. `DROP CONSTRAINT` and `ADD CONSTRAINT` can be combined in a single `ALTER TABLE` statement:
 
-1. View the table structure: 
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	ALTER TABLE promo_codes
+	  DROP CONSTRAINT promo_codes_pkey,
+	  ADD CONSTRAINT promo_codes_pkey PRIMARY KEY (code, creation_time);
+	~~~
+
+	{{site.data.alerts.callout_info}}
+	You should **not** execute the schema change with multiple statements within an explicit transaction. Refer to [Schema changes within transactions]({% link {{ page.version.version }}/online-schema-changes.md %}#schema-changes-within-transactions).
+	{{site.data.alerts.end}}
+
+1. View the updated table structure:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > SHOW CREATE TABLE users;
+    SHOW CREATE TABLE promo_codes;
     ~~~
 
     ~~~
-      table_name |                          create_statement
-    -------------+---------------------------------------------------------------------
-      users      | CREATE TABLE users (
-                |     id UUID NOT NULL,
-                |     city VARCHAR NOT NULL,
-                |     name VARCHAR NOT NULL,
-                |     address VARCHAR NULL,
-                |     credit_card VARCHAR NULL,
-                |     CONSTRAINT "primary" PRIMARY KEY (city ASC, name ASC, id ASC),
-                |     FAMILY "primary" (id, city, name, address, credit_card)
-                | )
-    (1 row)
+	  table_name  |                             create_statement
+	--------------+----------------------------------------------------------------------------
+	  promo_codes | CREATE TABLE public.promo_codes (
+	              |     code VARCHAR NOT NULL,
+	              |     description VARCHAR NULL,
+	              |     creation_time TIMESTAMP NOT NULL,
+	              |     expiration_time TIMESTAMP NULL,
+	              |     rules JSONB NULL,
+	              |     CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC, creation_time ASC)
+	              | )
+	(1 row)
     ~~~
 
-Using [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
+Using [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) would have created a `UNIQUE` secondary index called `promo_codes_code_key`. Instead, there is just one index for the primary key constraint.
 
 #### Add a unique index to a `REGIONAL BY ROW` table
 
@@ -1250,6 +1340,12 @@ To ensure that the uniqueness constraint is enforced properly across regions whe
 1. Thereafter, the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) will automatically add a "uniqueness check" when necessary to any [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement affecting the columns in the unique constraint.
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
+
+<a name="modify-rbr-region-column"></a>
+
+#### Modify the region column or its expression
+
+{% include {{ page.version.version }}/sql/modify-region-column-or-its-expression.md %}
 
 #### Using `DEFAULT gen_random_uuid()` in `REGIONAL BY ROW` tables
 
@@ -1773,10 +1869,6 @@ To unhide the column, run:
 
 ### Alter a primary key
 
-#### Demo
-
-{% include_cached youtube.html video_id="MPx-LXY2D-c" %}
-
 #### Alter a single-column primary key
 
 Suppose that you are storing the data for users of your application in a table called `users`, defined by the following `CREATE TABLE` statement:
@@ -1789,7 +1881,7 @@ Suppose that you are storing the data for users of your application in a table c
 );
 ~~~
 
-The primary key of this table is on the `name` column. This is a poor choice, as some users likely have the same name, and all primary keys enforce a `UNIQUE` constraint on row values of the primary key column. Per our [best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-functions-to-generate-unique-ids), you should instead use a `UUID` for single-column primary keys, and populate the rows of the table with generated, unique values.
+The primary key of this table is on the `name` column. This is a poor choice, as some users likely have the same name, and all primary keys enforce a `UNIQUE` constraint on row values of the primary key column. Per our [best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-functions-to-generate-unique-ids), you should instead use a [`UUID`]({% link {{ page.version.version }}/uuid.md %}) for single-column primary keys, and populate the rows of the table with generated, unique values.
 
 You can add a column and change the primary key with a couple of `ALTER TABLE` statements:
 
@@ -2764,6 +2856,57 @@ Then, change the table's schema:
 (6 rows)
 ~~~
 
+### Scatter tables
+
+Before scattering, you can view the current replica and leaseholder distribution for a table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+~~~
+
+~~~
+  range_id | lease_holder | replicas
+-----------+--------------+-----------
+        94 |            2 | {2,5,9}
+        78 |            3 | {3,5,9}
+        77 |            2 | {2,4,9}
+        76 |            3 | {3,6,9}
+        95 |            3 | {3,5,9}
+        75 |            2 | {2,5,8}
+        87 |            4 | {2,4,7}
+        85 |            2 | {2,5,9}
+        86 |            7 | {3,4,7}
+(9 rows)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE movr.users SCATTER;
+~~~
+
+After scattering, recheck the leaseholder distribution:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+~~~
+
+~~~
+  range_id | lease_holder | replicas
+-----------+--------------+-----------
+        94 |            5 | {2,5,8}
+        78 |            1 | {1,5,9}
+        77 |            1 | {1,4,9}
+        76 |            1 | {1,6,9}
+        95 |            1 | {1,5,9}
+        75 |            1 | {1,5,8}
+        87 |            7 | {2,4,7}
+        85 |            1 | {1,5,9}
+        86 |            3 | {3,4,7}
+(9 rows)
+~~~
+
 ### Split and unsplit tables
 
 {% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
@@ -3030,6 +3173,46 @@ To ensure that the data added to the `vehicles` table prior to the creation of t
 
 {{site.data.alerts.callout_info}}
 If present in a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statement, the table is considered validated because an empty table trivially meets its constraints.
+{{site.data.alerts.end}}
+
+### Enable row-level security
+
+To enable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) on a table, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+~~~
+
+{% include {{ page.version.version }}/sql/row-level-security-enabled.md %}
+
+### Disable row-level security
+
+To disable row-level security, use the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders DISABLE ROW LEVEL SECURITY;
+~~~
+
+### Force row-level security
+
+To ensure that all access, including by the table [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership), adheres to the defined [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders FORCE ROW LEVEL SECURITY;
+~~~
+
+To remove this restriction, and allow the table owner to bypass RLS policies, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders NO FORCE ROW LEVEL SECURITY;
+~~~
+
+{{site.data.alerts.callout_danger}}
+Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled.
 {{site.data.alerts.end}}
 
 ## See also

@@ -5,10 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
-{{site.data.alerts.end}}
-
 CockroachDB **physical cluster replication (PCR)** continuously sends all data at the cluster level from a _primary_ cluster to an independent _standby_ cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. 
 
 You can [_fail over_]({% link {{ page.version.version }}/failover-replication.md %}) from the primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time (in the past or future) where all ingested data is consistent, and make the standby ready to accept application traffic.
@@ -34,8 +30,8 @@ You can use PCR to:
 - **Asynchronous cluster-level replication**: When you initiate a replication stream, it will replicate byte-for-byte all of the primary cluster's existing user data and associated metadata to the standby cluster asynchronously. From then on, it will continuously replicate the primary cluster's data and metadata to the standby cluster. PCR will automatically replicate changes related to operations such as [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), user and [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) modifications, and [zone configuration]({% link {{ page.version.version }}/show-zone-configurations.md %}) updates without any manual work.
 - **Transactional consistency**: Avoid conflicts in data after recovery; the replication completes to a transactionally consistent state.
 - **Improved RPO and RTO**: Depending on workload and deployment configuration, [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby is generally in the tens-of-seconds range. The failover process from the primary cluster to the standby should typically happen within five minutes when completing a failover to the latest replicated time using [`LATEST`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#synopsis).
-- **Failover to a timestamp in the past or the future**: In the case of logical disasters or mistakes, you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) from the primary to the standby cluster to a timestamp in the past. This means that you can return the standby to a timestamp before the mistake was replicated to the standby. You can also configure the [`WITH RETENTION`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#set-a-retention-window) option to control how far in the past you can fail over to. Furthermore, you can plan a failover by specifying a timestamp in the future.
-- **Fast failback**: Switch back from the promoted standby cluster to the original primary cluster after a failover event without an initial scan.
+- **Failover to a timestamp in the past or the future**: In the case of logical disasters or mistakes, you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) from the primary to the standby cluster to a timestamp in the past. This means that you can return the standby to a timestamp before the mistake was replicated to the standby. Furthermore, you can plan a failover by specifying a timestamp in the future.
+- **Fast failback**: Switch back from the promoted standby cluster to the original primary cluster after a failover event by replicating net-new changes rather than fully replacing existing data for an initial scan.
 - {% include_cached new-in.html version="v24.3" %} **Read from standby cluster**: You can configure PCR to allow `SELECT` queries on the standby cluster. For more details, refer to [Start a PCR stream with read from standby]({% link {{ page.version.version }}/create-virtual-cluster.md %}#start-a-pcr-stream-with-read-from-standby).
 - **Monitoring**: To monitor the replication's initial progress, current status, and performance, you can use metrics available in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). For more details, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
 
@@ -54,6 +50,7 @@ This section is a quick overview of the initial requirements to start a replicat
 
 For more comprehensive guides, refer to:
 
+- [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}): for information on enabling cluster virtualization, a requirement for setting up PCR.
 - [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}): for a tutorial on how to start a replication stream.
 - [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}): for detail on metrics and observability into a replication stream.
 - [Fail Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/failover-replication.md %}): for a guide on how to complete a replication stream and fail over to the standby cluster.
@@ -68,28 +65,18 @@ Statement | Action
 [`CREATE VIRTUAL CLUSTER ... FROM REPLICATION OF ...`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) | Start a replication stream.
 [`ALTER VIRTUAL CLUSTER ... PAUSE REPLICATION`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) | Pause a running replication stream.
 [`ALTER VIRTUAL CLUSTER ... RESUME REPLICATION`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) | Resume a paused replication stream.
-[`ALTER VIRTUAL CLUSTER ... START SERVICE SHARED`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#start-a-virtual-cluster) | Initiate a [failover]({% link {{ page.version.version }}/failover-replication.md %}).
+[`ALTER VIRTUAL CLUSTER ... START SERVICE SHARED`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) | Initiate a [failover]({% link {{ page.version.version }}/failover-replication.md %}).
 [`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) | Show all virtual clusters.
 [`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %}) | Remove a virtual cluster.
 
 ## Cluster versions and upgrades
 
-{{site.data.alerts.callout_danger}}
-The standby cluster must be at the same version as, or one version ahead of, the primary's virtual cluster.
-{{site.data.alerts.end}}
+To safely perform a major version upgrade on a cluster with PCR, you must upgrade the standby cluster before the primary cluster to avoid version incompatibility. If you are using a reader virtual cluster (reader VC), you must upgrade it separately from the primary and standby clusters. 
 
-When PCR is enabled, upgrade with the following procedure. This upgrades the standby cluster before the primary cluster. Within the primary and standby CockroachDB clusters, the system virtual cluster must be at a cluster version greater than or equal to the virtual cluster:
-
-1. [Upgrade the binaries]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#perform-a-major-version-upgrade) on the primary and standby clusters. Replace the binary on each node of the cluster and restart the node.
-1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the standby's system virtual cluster if auto-finalization is disabled.
-1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary's system virtual cluster if auto-finalization is disabled.
-1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the standby's virtual cluster.
-1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary's virtual cluster.
-
-The standby cluster must be at the same version as, or one version ahead of, the primary's virtual cluster at the time of [failover]({% link {{ page.version.version }}/failover-replication.md %}).
+Follow the process described in [Upgrade a Cluster Running PCR]({% link {{ page.version.version }}/upgrade-with-pcr.md %}).
 
 ## Demo video
 
 Learn how to use PCR to meet your RTO and RPO requirements with the following demo:
 
-{% include_cached youtube.html video_id="VDqw4XIpEAk" %}
+{% include_cached youtube.html video_id="5hpAqUErUic" %}

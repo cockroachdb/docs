@@ -9,4 +9,4 @@ Table   |         Description
 `user_promo_codes` | Promotional codes in use by users.      
 `vehicle_location_histories` | Vehicle location history.
 
-<img src="{{ 'images/v24.2/movr-schema.png' | relative_url }}" alt="Geo-partitioning schema" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/movr-schema.png" alt="Geo-partitioning schema" style="max-width:100%" />

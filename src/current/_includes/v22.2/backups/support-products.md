@@ -1,3 +1,0 @@
-## Supported products
-
-The feature described on this page is available in **CockroachDB {{ site.data.products.dedicated }}**, **CockroachDB {{ site.data.products.serverless }}**, and **CockroachDB {{ site.data.products.core }}** clusters when you are running [self-managed backups](backup-and-restore-overview.html#cockroachdb-backup-types). For a full list of features, see [Backup and restore product support](backup-and-restore-overview.html#backup-and-restore-product-support).

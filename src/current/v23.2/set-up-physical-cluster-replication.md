@@ -33,7 +33,7 @@ The high-level steps in this tutorial are:
 
 ## Before you begin
 
-- Two separate CockroachDB clusters (primary and standby) with a minimum of three nodes each, and each using the same CockroachDB {{page.version.version}} version. The standby cluster should be the same version or one version ahead of the primary cluster.
+- Two separate CockroachDB clusters (primary and standby) with a minimum of three nodes each, and each using the same CockroachDB {{page.version.version}} version. The standby cluster should be the same version or one version ahead of the primary cluster. The primary and standby clusters must be configured with similar hardware profiles, number of nodes, and overall size. Significant discrepancies in the cluster configurations may result in degraded performance.
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you start each node in your cluster with the `cockroach start` command, you **must** pass the `--config-profile` flag with a `replication` value. Refer to cluster creation steps for the [primary cluster](#start-the-primary-cluster) and for the [standby cluster](#start-the-standby-cluster) for details.
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
 - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Copy certificates](#step-3-copy-certificates).
@@ -351,6 +351,10 @@ The system virtual cluster in the standby cluster initiates and controls the rep
     ~~~
 
     With the replication stream running, you can monitor the job via the DB Console, SQL shell, or Prometheus. You can also verify data is correct on the standby cluster at a specific point in time. For more detail, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
+
+    {{site.data.alerts.callout_info}}
+    You cannot pause a PCR job for longer than 24 hours. PCR jobs paused for longer than 24 hours fail and cannot be recovered.
+    {{site.data.alerts.end}}
 
 ## Connection reference
 

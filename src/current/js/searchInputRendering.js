@@ -29,4 +29,39 @@ $(document).ready(function() {
       $('.clear-search').hide();
     }
   });
+
+  // Handle search input in topnav - redirect to Algolia search page
+  $('#search-input').on('keypress', function(e) {
+    if (e.which === 13) { // Enter key
+      e.preventDefault();
+      const query = $(this).val().trim();
+      if (query) {
+        // Redirect to Algolia search page
+        const searchPath = getSearchPath();
+        window.location.href = searchPath + '?query=' + encodeURIComponent(query);
+      }
+    }
+  });
+
+  // Disable old suggestions - now handled by kapaLiveSuggestions.js
+  // which provides real-time search results from Kapa API
+
+  // Old suggestions removed - now handled by kapaLiveSuggestions.js
+
+  function getSearchPath() {
+    // Based on your error URL pattern: http://127.0.0.1:3000/docs/search?query=db
+    // We need to return '/docs/search' for docs-based URLs
+    
+    const currentPath = window.location.pathname;
+    const currentOrigin = window.location.origin;
+    
+    // Check if we're in the docs section
+    if (currentPath.includes('/docs/') || currentPath === '/docs' || currentPath.startsWith('/docs/')) {
+      return '/docs/search';
+    }
+    // For non-docs URLs (like development/testing), default to /search
+    else {
+      return '/search';
+    }
+  }
 });

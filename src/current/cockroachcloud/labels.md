@@ -43,7 +43,7 @@ The labels applied to a resource must meet the following requirements:
 
 You can apply labels to your cluster or folder through the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) or using the CockroachDB Cloud API (refer to the schema for creating a [cluster](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters) or [folder](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/folders)) or [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs).
 
-Adding or deleting labels on a cluster requires the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role.
+Adding or deleting labels on a cluster requires the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role.
 
 1. Navigate to the cluster on the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page) and click the menu button in the **Action** column. Alternatively, navigate to the [**Overview** page]({% link cockroachcloud/cluster-management.md %}#view-cluster-overview) for the cluster and click **Actions** in the top right corner.
 1. In the dropdown menu, select **Edit cluster labels** to open the **Edit labels** window.

@@ -57,9 +57,9 @@
         ]
       },
       {
-        "title": "Replication Reports",
+        "title": "Detect Hotspots",
         "urls": [
-          "/${VERSION}/query-replication-reports.html"
+          "/${VERSION}/detect-hotspots.html"
         ]
       },
       {

@@ -1,0 +1,129 @@
+{
+    "title": "Troubleshooting",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Overview",
+        "urls": [
+          "/${VERSION}/troubleshooting-overview.html"
+        ]
+      },
+      {
+        "title": "Common Errors and Solutions",
+        "urls": [
+          "/${VERSION}/common-errors.html"
+        ]
+      },
+      {
+        "title": "Troubleshoot Cloud Setup",
+        "urls": [
+          "/cockroachcloud/troubleshooting-page.html"
+        ]
+      },
+      {
+        "title": "Troubleshoot Self-Hosted Setup",
+        "urls": [
+          "/${VERSION}/cluster-setup-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Troubleshoot SQL Statements",
+        "urls": [
+          "/${VERSION}/query-behavior-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Transaction Retry Error Reference",
+        "urls": [
+          "/${VERSION}/transaction-retry-error-reference.html"
+        ]
+      },
+      {
+        "title": "Transaction Retry Error Example",
+        "urls": [
+          "/${VERSION}/transaction-retry-error-example.html"
+        ]
+      },
+      {
+        "title": "Differences in Metrics between Third-Party Monitoring Integrations and DB Console",
+        "urls": [
+          "/${VERSION}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.html"
+        ]
+      },
+      {
+        "title": "Understand Hotspots",
+        "urls": [
+          "/${VERSION}/understand-hotspots.html"
+        ]
+      },
+      {
+        "title": "Detect Hotspots",
+        "urls": [
+          "/${VERSION}/detect-hotspots.html"
+        ]
+      },
+      {
+        "title": "Troubleshoot Query Plan Regressions",
+        "urls": [
+          "/${VERSION}/troubleshoot-query-plan-regressions.html"
+        ]
+      },
+      {
+        "title": "Troubleshoot Replication Zones",
+        "urls": [
+          "/${VERSION}/troubleshoot-replication-zones.html"
+        ]
+      },
+      {
+        "title": "Benchmarking",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/performance.html"
+            ]
+          },
+          {
+            "title": "Benchmarking with TPC-C",
+            "urls": [
+              "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Support Resources",
+        "urls": [
+          "/${VERSION}/support-resources.html"
+        ]
+      },
+      {
+        "title": "File an Issue",
+        "urls": [
+          "/${VERSION}/file-an-issue.html"
+        ]
+      },
+      {
+        "title": "Automatic CPU Profiler",
+        "urls": [
+          "/${VERSION}/automatic-cpu-profiler.html"
+        ]
+      },
+      {
+        "title": "Automatic Go Execution Tracer",
+        "urls": [
+          "/${VERSION}/automatic-go-execution-tracer.html"
+        ]
+      },
+      {
+        "title": "Transaction Diagnostics",
+        "urls": [
+          "/${VERSION}/transaction-diagnostics.html"
+        ]
+      }
+    ]
+  }

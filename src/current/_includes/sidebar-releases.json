@@ -49,12 +49,6 @@
       "urls": [
         "/releases/release-support-policy.html"
       ]
-    },
-    {
-      "title": "Known Limitations",
-      "urls": [
-        "/${VERSION}/known-limitations.html"
-      ]
     }
   ]
 },
@@ -65,25 +59,15 @@
   ]
 },
 {
-  "title": "CockroachDB Kubernetes Operator",
+  "title": "Public Kubernetes Operator",
   "urls": [
     "/releases/kubernetes-operator.html"
   ]
 },
-{% assign advisories = site.pages | where_exp: "advisories", "advisories.path contains 'advisories'" | where_exp: "advisories", "advisories.index != 'true'" %}
 {
- "title": "Technical Advisories",
- "urls": [
-    "/advisories/index.html"
-   {% for x in advisories %}
-    ,"{{ x.url }}"
-   {% endfor %}
- ]
-},
-{
-  "title": "Unsupported Versions",
+  "title": "CockroachDB Downloads Archive",
   "urls": [
-    "/releases/unsupported-versions.html"
+    "/releases/downloads-archive.html"
   ]
 }
 

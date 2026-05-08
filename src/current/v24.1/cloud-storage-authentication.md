@@ -94,6 +94,10 @@ To limit the control access to your Amazon S3 buckets, you can create IAM roles 
 
 You can use the `external_id` option with `ASSUME_ROLE` to specify an [external ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) for third-party access to your Amazon S3 bucket. The external ID is a unique ID that the third party provides you along with their ARN. For guidance on `external_id` usage in CockroachDB, refer to the [following example](#set-up-amazon-s3-assume-role).
 
+{{site.data.alerts.callout_info}}
+You must [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) the entire value passed to `ASSUME_ROLE`.
+{{site.data.alerts.end}} 
+
 {{site.data.alerts.callout_success}}
 Role assumption applies the principle of least privilege rather than directly providing privilege to a user. Creating IAM roles to manage access to AWS resources is Amazon's recommended approach compared to giving access directly to IAM users.
 {{site.data.alerts.end}}
@@ -160,14 +164,14 @@ For example, to configure a user to assume an IAM role that allows a bulk operat
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    BACKUP DATABASE movr INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{role name}' AS OF SYSTEM TIME '-10s';
+    BACKUP DATABASE movr INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE=arn%3Aaws%3Aiam%3A%3A{account ID}%3Arole%2F{role name}' AS OF SYSTEM TIME '-10s';
     ~~~
 
     If your user also has an external ID, you can pass that with `ASSUME_ROLE`:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    BACKUP DATABASE movr INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{role name};external_id={Unique ID}' AS OF SYSTEM TIME '-10s';
+    BACKUP DATABASE movr INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE=arn%3Aaws%3Aiam%3A%3A{account ID}%3Arole%2F{role name}%3Bexternal_id%3D{Unique ID}' AS OF SYSTEM TIME '-10s';
     ~~~
 
     CockroachDB also supports authentication for assuming roles when taking encrypted backups. To use with an encrypted backup, pass the `ASSUME_ROLE` parameter to the KMS URI as well as the bucket's:
@@ -213,14 +217,14 @@ When passing a chained role into `BACKUP`, it will follow this pattern:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-BACKUP DATABASE movr INTO "s3://{bucket name}?AWS_ACCESS_KEY_ID={user's key}&AWS_SECRET_ACCESS_KEY={user's secret key}&ASSUME_ROLE={role A ARN},{role B ARN},{role C ARN}" AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE movr INTO "s3://{bucket name}?AWS_ACCESS_KEY_ID={user's key}&AWS_SECRET_ACCESS_KEY={user's secret key}&ASSUME_ROLE={role A ARN}%2C{role B ARN}%2C{role C ARN}" AS OF SYSTEM TIME '-10s';
 ~~~
 
 You can also specify a different [external ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) for each chained role. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-BACKUP DATABASE movr INTO "s3://{bucket name}?AWS_ACCESS_KEY_ID={user's key}&AWS_SECRET_ACCESS_KEY={user's secret key}&ASSUME_ROLE={role A ARN};external_id={ID A},{role B ARN};external_id={ID B},{role C ARN};external_id={ID C}" AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE movr INTO "s3://{bucket name}?AWS_ACCESS_KEY_ID={user's key}&AWS_SECRET_ACCESS_KEY={user's secret key}&ASSUME_ROLE={role A ARN}%3Bexternal_id%3D{ID A}%2C{role B ARN}%3Bexternal_id%3D{ID B}%2C{role C ARN}%3Bexternal_id%3D{ID C}" AS OF SYSTEM TIME '-10s';
 ~~~
 
 Each chained role is listed separated by a `,` character. You can copy the ARN of the role from its summary page in the [AWS Management console](https://aws.amazon.com/console/).
@@ -276,7 +280,7 @@ You can find the AWS account ID and your cluster's ID using the [Cloud API]({% l
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-curl --request GET --url 'https://cockroachlabs.cloud/api/v1/clusters' --header 'Authorization: Bearer {secret key}'
+curl --request GET --url https://cockroachlabs.cloud/api/v1/clusters --header "Authorization: Bearer {secret key}"
 ~~~
 
 Combine the last 12 digits of your cluster's `id` and the full 12-digit `account_id` in the following fashion to form the ARN:
@@ -340,7 +344,7 @@ To run an operation, use [`implicit` authentication](#google-cloud-storage-impli
 For a backup to Amazon S3:
 
 ~~~sql
-BACKUP DATABASE {database} INTO 's3://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE=arn:aws:iam::{AWS account ID}:role/crl-dr-store-user-{cluster ID suffix},arn:aws:iam::{account ID}:role/{operation role name}' AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE {database} INTO 's3://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE=arn%3Aaws%3Aiam%3A%3A{AWS account ID}%3Arole%2Fcrl-dr-store-user-{cluster ID suffix}%2Carn%3Aaws%3Aiam%3A%3A{account ID}%3Arole%2F{operation role name}' AS OF SYSTEM TIME '-10s';
 ~~~
 
 In this SQL statement, the identity role assumes the operation role that has permission to write a backup to the S3 bucket.
@@ -352,7 +356,7 @@ To run an operation, you can use [`implicit` authentication](#google-cloud-stora
 For a backup to Amazon S3:
 
 ~~~sql
-BACKUP DATABASE {database} INTO 's3://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{operation role name}' AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE {database} INTO 's3://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE=arn%3Aaws%3Aiam%3A%3A{account ID}%3Arole%2F{operation role name}' AS OF SYSTEM TIME '-10s';
 ~~~
 
 In this SQL statement, `AUTH=implicit` uses the identity role to authenticate to the S3 bucket. The identity role then assumes the operation role that has permission to write a backup to the S3 bucket.
@@ -462,14 +466,14 @@ For this example, both service accounts have already been created. If you need t
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}@{project name}.iam.gserviceaccount.com';
+    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}%40{project name}.iam.gserviceaccount.com';
     ~~~
 
     CockroachDB also supports authentication for assuming roles when taking encrypted backups. To use with an encrypted backup, pass the `ASSUME_ROLE` parameter to the KMS URI as well as the bucket's:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}@{project name}.iam.gserviceaccount.com' WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=IMPLICIT&ASSUME_ROLE={service account name}@{project name}.iam.gserviceaccount.com';
+    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}%40{project name}.iam.gserviceaccount.com' WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=IMPLICIT&ASSUME_ROLE={service account name}%40{project name}.iam.gserviceaccount.com';
     ~~~
 
     For more information on Google Cloud Storage KMS URI formats, see [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
@@ -498,7 +502,7 @@ When passing a chained role into `BACKUP`, it will follow this pattern with each
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={intermediate service account name}@{project name}.iam.gserviceaccount.com,{final service account name}@{project name}.iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={intermediate service account name}%40{project name}.iam.gserviceaccount.com%2C{final service account name}%40{project name}.iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
 ~~~
 
 ## Google Cloud Storage workload identity
@@ -556,7 +560,7 @@ You can find the GCP project ID and your cluster's ID using the [Cloud API]({% l
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-curl --request GET --url 'https://cockroachlabs.cloud/api/v1/clusters' --header 'Authorization: Bearer {secret key}'
+curl --request GET --url https://cockroachlabs.cloud/api/v1/clusters --header "Authorization: Bearer {secret key}"
 ~~~
 
 Use the last 12 digits of your cluster's `id` and the `account_id` to form the service account. (Note that the `account_id` in your cluster's details becomes the GCP `{project id}`.)
@@ -625,7 +629,7 @@ For a backup to Google Cloud Storage:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-BACKUP DATABASE defaultdb INTO "gs://{bucket name}?AUTH=implicit&ASSUME_ROLE=crl-dr-store-user-{cluster ID suffix}@{project ID}.iam.gserviceaccount.com,{operation service account name}@{project name}.iam.gserviceaccount.com" AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE defaultdb INTO "gs://{bucket name}?AUTH=implicit&ASSUME_ROLE=crl-dr-store-user-{cluster ID suffix}%40{project ID}.iam.gserviceaccount.com%2C{operation service account name}%40{project name}.iam.gserviceaccount.com" AS OF SYSTEM TIME '-10s';
 ~~~
 
 In this SQL statement, the identity service account assumes the operation service account that has permission to write a backup to the GCS bucket.
@@ -638,7 +642,7 @@ For a backup to your Google Cloud Storage bucket:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-BACKUP DATABASE {database} INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={operation service account}@{project name}.iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE {database} INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={operation service account}%40{project name}.iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
 ~~~
 
 In this SQL statement, `AUTH=implicit` uses the workload identity service account to authenticate to the bucket. The workload identity role then assumes the operation service account that has permission to write a backup to the bucket.

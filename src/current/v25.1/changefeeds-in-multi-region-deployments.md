@@ -12,7 +12,7 @@ This page describes features that you can use for changefeeds running on multi-r
 
 ## Run a changefeed job by locality
 
-Use the `execution_locality` option to set locality filter requirements that a node must meet to take part in executing a [changefeed]({% link {{ page.version.version }}/create-changefeed.md %}) job. This will pin the [coordination of the changefeed job]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) and the nodes that process the [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}) to the defined locality.
+Use the `execution_locality` option to set locality filter requirements that a node must meet to take part in executing a [changefeed]({% link {{ page.version.version }}/create-changefeed.md %}) job. This will pin the [coordination of the changefeed job]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}) and the nodes that process the [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}) to the defined locality.
 
 Defining an execution locality for a changefeed job, could be useful in the following cases:
 
@@ -51,7 +51,7 @@ Once the coordinating node is determined, nodes that match the locality requirem
 
 When a node matching the locality filter takes part in the changefeed job, that node will read from the closest [replica]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#architecture-replica). If the node is a replica, it can read from itself. In the scenario where no replicas are available in the region of the assigned node, it may then read from a replica in a different region. As a result, you may want to consider [placing replicas]({% link {{ page.version.version }}/configure-replication-zones.md %}), including potentially [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas) that will have less impact on read latency, in the locality or region that you plan on pinning for changefeed job execution.
 
-For an overview of how a changefeed job works, refer to the [How does an Enterprise changefeed work?]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) page.
+For an overview of how a changefeed job works, refer to the [How does a changefeed work?]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}) page.
 
 ## Run changefeeds on regional by row tables
 

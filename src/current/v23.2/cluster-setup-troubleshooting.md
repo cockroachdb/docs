@@ -385,7 +385,7 @@ Like any database system, if you run out of disk space the system will no longer
 - [What happens when a node runs out of disk space?]({% link {{ page.version.version }}/operational-faqs.md %}#what-happens-when-a-node-runs-out-of-disk-space)
 - [Why is memory usage increasing despite lack of traffic?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-memory-usage-increasing-despite-lack-of-traffic)
 - [Why is disk usage increasing despite lack of writes?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-disk-usage-increasing-despite-lack-of-writes)
-- [Can I reduce or disable the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data)
+- [Can I reduce the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-the-storage-of-time-series-data)
 
 ###### Automatic ballast files
 
@@ -451,6 +451,8 @@ CockroachDB uses [load-based replica rebalancing]({% link {{ page.version.versio
 The rebalancing criteria for load-based replica rebalancing do not include the percentage of disk utilized per node. Not all [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) are the same size. The proportions of larger and smaller ranges on each node balance each other out on average, so disk utilization differences across nodes should be relatively small.
 
 However, in some cases a majority of the largest (or smallest) ranges are on one node, which will result in imbalanced utilization. Normally that shouldn't be a problem with [sufficiently provisioned storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage). If this imbalance is causing issues, please [contact Support]({% link {{ page.version.version }}/support-resources.md %}) for guidance you on how to manually rebalance your cluster's disk usage.
+
+Replica counts can also remain uneven when CockroachDB keeps replicas on a node to preserve survivability through locality diversity, or to satisfy [replica placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints). For more information, refer to the [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#membership-changes-rebalance-repair) documentation.
 
 Finally, note that although the replica allocator does not rebalance based on disk utilization during normal operation, it does have the following mechanisms to help protect against [full disks](#disks-filling-up):
 

@@ -135,7 +135,7 @@ To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink f
 1. Select the **SQL User**. If you have only one SQL user, it is automatically selected.
 
     {{site.data.alerts.callout_info}}
-    If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+    If you forget your SQL user's password, an [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
     {{site.data.alerts.end}}
 
 1. Select the **Database**. If you have only one database, it is automatically selected.
@@ -180,7 +180,7 @@ To download a supported version of the SQL shell instead of the full binary, vis
     #
     ~~~
 
-    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link {{site.current_cloud_version}}/sql-statements.md %}).
 
   </section>
 
@@ -225,4 +225,3 @@ To connect to your cluster with a [CockroachDB-compatible tool]({% link {{site.c
 ## What's next
 
 - [Build a "Hello, World" app]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md %})
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})

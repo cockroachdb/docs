@@ -344,9 +344,9 @@
             "title": "Monitoring and Alerting",
                 "items": [
                   {
-                    "title": "Cluster Overview Page",
+                    "title": "Overview Page",
                     "urls": [
-                      "/cockroachcloud/cluster-overview-page.html"
+                      "/cockroachcloud/overview-page.html"
                     ]
                   },
                   {

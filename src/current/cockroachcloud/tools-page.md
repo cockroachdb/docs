@@ -71,8 +71,8 @@ To monitor the health of metrics export, you can [create a custom Monitor](#moni
 
 Open your Datadog [Dashboard List](https://docs.datadoghq.com/dashboards/#dashboard-list). There are two sample dashboards that present CockroachDB metrics:
 
-- `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.standard }}` (formerly `{{ site.data.products.serverless }}`)
-- `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }}` (formerly `{{ site.data.products.dedicated }}`)
+- `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.standard }}`
+- `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }}`
 
 Both sample dashboards presents a high-level view of SQL performance and latency, and information about resource consumption to help aid in capacity planning. `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }}` provides the ability to drill down to specific nodes (identified by a `(node, region)` tag pair) within your cluster.
 
@@ -153,7 +153,7 @@ After deactivating an integration, the metrics data will remain in Datadog for a
 
 ## Monitor CockroachDB {{ site.data.products.cloud }} with Amazon CloudWatch integration
 
-The CockroachDB {{ site.data.products.cloud }} integration for [Amazon CloudWatch]((https://aws.amazon.com/cloudwatch/) enables data collection and alerting on CockroachDB metrics available at the [Prometheus endpoint]({% link {{site.current_cloud_version}}/monitoring-and-alerting.md %}#prometheus-endpoint). It is only available with CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters hosted on AWS.
+The CockroachDB {{ site.data.products.cloud }} integration for [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) enables data collection and alerting on CockroachDB metrics available at the [Prometheus endpoint]({% link {{site.current_cloud_version}}/monitoring-and-alerting.md %}#prometheus-endpoint). It is only available with CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters hosted on AWS.
 
 {{site.data.alerts.callout_success}}
 Enabling the Amazon CloudWatch integration on your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster will apply additional charges to your **Amazon CloudWatch** bill. Your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} bill is unchanged.

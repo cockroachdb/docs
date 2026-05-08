@@ -1,4 +1,14 @@
-To auto-generate unique row identifiers, you can use the `gen_random_uuid()`, `uuid_v4()`, or `unique_rowid()` [functions]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions).
+To auto-generate unique row identifiers, you can use the following [functions]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions):
+
+- [Use `gen_random_uuid()`](#use-gen_random_uuid): Generates a UUIDv4 with `UUID` data type.
+- [Use `uuid_v4()`](#use-uuid_v4): Generates a UUIDv4 with `BYTES` data type.
+- [Use `unique_rowid()`](#use-unique_rowid): Generates a globally unique `INT` data type
+
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/sql/use-uuidv4.md %}
+{{site.data.alerts.end}}
+
+#### Use `gen_random_uuid()`
 
 To use the [`UUID`]({% link {{ page.version.version }}/uuid.md %}) column with the `gen_random_uuid()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions) as the [default value]({% link {{ page.version.version }}/default-value.md %}):
 
@@ -33,6 +43,8 @@ SELECT * FROM users;
   7d27e40b-263a-4891-b29b-d59135e55650 | seattle  | Dan   | NULL    | NULL
 (3 rows)
 ~~~
+
+#### Use `uuid_v4()`
 
 Alternatively, you can use the [`BYTES`]({% link {{ page.version.version }}/bytes.md %}) column with the `uuid_v4()` function as the default value:
 
@@ -71,6 +83,8 @@ SELECT * FROM users;
 In either case, generated IDs will be 128-bit, sufficiently large to generate unique values. Once the table grows beyond a single key-value range's [default size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes), new IDs will be scattered across all of the table's ranges and, therefore, likely across different nodes. This means that multiple nodes will share in the load.
 
 This approach has the disadvantage of creating a primary key that may not be useful in a query directly, which can require a join with another table or a secondary index.
+
+#### Use `unique_rowid()`
 
 If it is important for generated IDs to be stored in the same key-value range, you can use an [integer type]({% link {{ page.version.version }}/int.md %}) with the `unique_rowid()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions) as the default value, either explicitly or via the [`SERIAL` pseudo-type]({% link {{ page.version.version }}/serial.md %}):
 

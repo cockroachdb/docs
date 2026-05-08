@@ -105,7 +105,7 @@ conn.commit()
 
 Reference information related to this task:
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [`INSERT`]({% link {{ page.version.version }}/insert.md %})
 - [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
 - [Transaction Contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)

@@ -8,6 +8,8 @@ docs_area: manage
 
 {% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
+Viewing the Transactions page requires the [Cluster Monitor]({% link cockroachcloud/authorization.md %}#cluster-monitor), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role.
+
 {% include {{version_prefix}}ui/transactions-views.md %}
 
 {% include {{version_prefix}}ui/transactions-filter.md %}

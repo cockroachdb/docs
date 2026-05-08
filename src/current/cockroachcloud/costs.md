@@ -92,7 +92,11 @@ This section supplements the details in [Costs across CockroachDB Cloud plans](#
 
 <section class="filter-content" markdown="1" data-scope="basic">
 
-For CockroachDB Basic, compute cost is usage-based through its consumption of [Request Units]({% link cockroachcloud/resource-usage-basic.md %}#understand-resource-consumption).
+For CockroachDB Basic, compute cost is usage-based through its consumption of [Request Units]({% link cockroachcloud/resource-usage-basic.md %}#understand-resource-consumption). For customers who pay monthly, the first [$15 of resource consumption]({% link cockroachcloud/plan-your-cluster-basic.md %}#free-vs-paid-usage) (equivalent to 50 million Request Units and 10 GiB of storage) spent each month is free and credited back on their monthly invoice.
+
+{{site.data.alerts.callout_info}}
+Customers with annual or multi-year contracts are not eligible for the free monthly resource benefit.
+{{site.data.alerts.end}}
 
 </section>
 
@@ -189,6 +193,8 @@ Backups on Basic clusters are included in the Request Unit costs. Managed backup
 
 [Managed backups]({% link cockroachcloud/managed-backups.md %}) are charged per-GiB storage rates that vary per cloud provider, region, and backup [frequency]({% link cockroachcloud/managed-backups.md %}#frequency) (daily vs. more than daily). The per-GiB unit prices are tiered, based on the amount of backup data stored: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 500 GiB-Month, 500 to 1000 GiB-Month, or 1000 GiB-Month and higher.
 
+When you delete a cluster, Cockroach Labs will retain the backups for the [configured retention time]({% link cockroachcloud/managed-backups.md %}#retention), during which backup storage costs will still apply. If you want to delete retained managed backups, contact the [Cockroach Labs Support team]({% link {{site.current_cloud_version}}/support-resources.md %}).
+
 [Self-managed backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to your own object storage are charged a per-GiB fee for the data transferred. This option provides an advanced backup scheduler and additional control over backup storage placement.
 
 For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachlabs.com/pricing/new/).
@@ -254,7 +260,7 @@ Cloud providers may vary in how they calculate each category and define each reg
 
 #### Same-region
 
-There are no charges for same-region data transfer between CockroachDB cluster nodes. Data egressing the cluster to endpoints in the same region for backups or changefeeds, or using private connectivity, is charged the cloud provider's list price for same-region data transfer.
+There are no charges for same-region data transfer between CockroachDB cluster nodes. Data egressing the cluster to endpoints in the same region for backups or changefeeds, or using private connectivity, is charged the cloud provider's list price for same-region data transfer. Egress private endpoint usage is posted in separate line items under the **Data transfer** section, as  **Private endpoint - bytes processed - Advanced plan**.
 
 #### Cross-region
 
@@ -264,7 +270,7 @@ Cross-region data transfer includes:
 
 - Data transfer required to support queries that involve lookups on nodes in another region.  
 - CockroachDB replication across nodes that are in different regions.  
-- Data egress from the CockroachDB Cloud cluster via supported [private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) services to a private endpoint in another region.  
+- Data egress, including [changefeed and backup traffic egress]({% link cockroachcloud/egress-private-endpoints.md %}), from the CockroachDB {{ site.data.products.cloud }} cluster via supported [private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) services to a private endpoint in another region.  
 - [Managed backup]({% link cockroachcloud/backup-and-restore-overview.md %}#managed-backups) and [Self-managed backup]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) data transfer to another region.  
 - Change data capture (changefeed) data transfer to another region.
 
@@ -280,7 +286,7 @@ This is the usage for any data leaving CockroachDB such as SQL data being sent t
 
 ### Change data capture (changefeeds)
 
-For change data capture (CDC), all CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise changefeeds]({% link {{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md %}).
+For change data capture (CDC), all CockroachDB {{ site.data.products.cloud }} clusters can use [changefeeds]({% link {{ site.current_cloud_version}}/how-does-a-changefeed-work.md %}).
 
 <section class="filter-content" markdown="1" data-scope="basic">
 
@@ -301,7 +307,13 @@ In CockroachDB {{ site.data.products.standard }}, CDC is billed monthly based on
 
 In CockroachDB {{ site.data.products.advanced }}, CDC is billed monthly based on the total size of a cluster's watched tables and whether the {{ site.data.products.advanced }} security add-on is enabled. The per-GiB unit price is tiered, based on the size of watched data: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
+Data sent from a CockroachDB {{ site.data.products.advanced }} cluster over an [egress connection to a private endpoint]({% link cockroachcloud/egress-private-endpoints.md %}), such as changefeeds and logs, are charged according to [data transfer costs](#data-transfer).
+
 </section>
+
+## Non-payment
+
+{% include cockroachcloud/non-payment.md %}
 
 ## Learn more
 

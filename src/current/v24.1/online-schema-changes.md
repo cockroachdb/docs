@@ -181,7 +181,7 @@ COMMIT
 
 ### Run multiple schema changes in a single `ALTER TABLE` statement
 
-Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}). For a demonstration, see [Add and rename columns atomically]({% link {{ page.version.version }}/alter-table.md %}#add-and-rename-columns-atomically).
+Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, refer to [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#subcommands). For examples, refer to [Add and rename columns atomically]({% link {{ page.version.version }}/alter-table.md %}#add-and-rename-columns-atomically) and [Drop and add a primary key constraint]({% link {{ page.version.version }}/alter-table.md %}#drop-and-add-a-primary-key-constraint).
 
 ### Show all schema change jobs
 
@@ -223,7 +223,7 @@ To enable this setting for the current [session]({% link {{ page.version.version
 SET autocommit_before_ddl = on;
 ~~~
 
-To enable it for all [users]({% link {{ page.version.version }}/alter-role.md %}):
+To enable it for [all users]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -99,11 +99,11 @@ docs_area:
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Migrate</p>
       <ul>
-        <li><a href="migration-overview.html">Migration Overview</a></li>
+        <li><a href="{% link molt/migration-overview.md %}">Migration Overview</a></li>
+        <li><a href="{% link molt/migrate-to-cockroachdb.md %}">Migrate from PostgreSQL</a></li>
+        <li><a href="{% link molt/migrate-to-cockroachdb.md %}?filters=mysql">Migrate from MySQL</a></li>
         <li><a href="migrate-from-oracle.html">Migrate from Oracle</a></li>
-        <li><a href="migrate-from-postgres.html">Migrate from PostgreSQL</a></li>
-        <li><a href="migrate-from-mysql.html">Migrate from MySQL</a></li>
-        <li><a href="migrate-from-csv.html">Migrate from CSV</a></li>
+        <li><a href="{% link molt/molt-fetch.md %}">MOLT Fetch</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">

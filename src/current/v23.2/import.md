@@ -30,7 +30,7 @@ To import data into a new table, use [`CREATE TABLE`]({% link {{ page.version.ve
 - `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT` cannot be used within a [rolling upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
 - Certain `IMPORT TABLE` statements that defined the table schema inline are **not** supported in v22.1 and later versions. These include running `IMPORT TABLE ... CREATE USING` and `IMPORT TABLE` with any non-bundle format (`CSV`, `DELIMITED`, `PGCOPY`, or `AVRO`) data types. Instead, use `CREATE TABLE` and `IMPORT INTO`; see this [example]({% link {{ page.version.version }}/import-into.md %}#import-into-a-new-table-from-a-csv-file) for more detail.
-- For instructions and working examples on how to migrate data from other databases, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
+- For instructions and working examples on how to migrate data from other databases, see the [Migration Overview]({% link molt/migration-overview.md %}).
 - `IMPORT` cannot directly import data to `REGIONAL BY ROW` tables that are part of [multi-region databases]({% link {{ page.version.version }}/multiregion-overview.md %}). Instead, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) which supports importing into `REGIONAL BY ROW` tables.
 
 {{site.data.alerts.callout_success}}
@@ -98,7 +98,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 
-For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
+For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview]({% link molt/migration-overview.md %}).
 
 ## Requirements
 
@@ -184,7 +184,7 @@ IMPORT PGDUMP 's3://{BUCKET NAME}/{customers.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}
     WITH ignore_unsupported_statements;
 ~~~
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %}).
 
 ### Import a table from a PostgreSQL database dump
 
@@ -197,7 +197,7 @@ IMPORT TABLE employees
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` option may be needed. For more information, see the list of [import options](#import-options).
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %}).
 
 ### Import a MySQL database dump
 
@@ -206,7 +206,7 @@ For this command to succeed, you need to have created the dump file with specifi
 IMPORT MYSQLDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}).
+For more detailed information about importing data from MySQL, see [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql).
 
 ### Import a table from a MySQL database dump
 
@@ -218,7 +218,7 @@ IMPORT TABLE employees
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` option may be needed. For more information, see the list of [import options](#import-options).
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}).
+For more detailed information about importing data from MySQL, see [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql).
 
 ### Import a limited number of rows
 
@@ -376,12 +376,12 @@ CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS
 ## See also
 
 - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Migrate from MySQL][mysql]
-- [Migrate from PostgreSQL][postgres]
+- [Migration Overview]({% link molt/migration-overview.md %})
+- [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)
+- [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %})
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 
 {% comment %} Reference Links {% endcomment %}
 
-[postgres]: {% link {{ page.version.version }}/migrate-from-postgres.md %}
-[mysql]: {% link {{ page.version.version }}/migrate-from-mysql.md %}
+[postgres]: {% link molt/migrate-to-cockroachdb.md %}
+[mysql]: {% link molt/migrate-to-cockroachdb.md %}?filters=mysql

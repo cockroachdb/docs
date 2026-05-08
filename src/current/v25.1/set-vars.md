@@ -5,9 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SET` [statement]({% link {{ page.version.version }}/sql-statements.md %}) can modify one of the session configuration variables. These can also be queried via [`SHOW`]({% link {{ page.version.version }}/show-vars.md %}). By default, session variable values are set for the duration of the current session.
-
-CockroachDB supports setting session variables for the duration of a single transaction, using [the `LOCAL` keyword](#set-local).
+The `SET` [statement]({% link {{ page.version.version }}/sql-statements.md %}) can modify one of the session configuration variables. These can also be queried via [`SHOW`]({% link {{ page.version.version }}/show-vars.md %}). By default, session variable values are set for all future sessions to the database; they do not affect the current session.
 
 {{site.data.alerts.callout_info}}
 The `SET` statement for session variables is unrelated to the other [`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %}) and [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/cluster-settings.md %}#change-a-cluster-setting) statements.
@@ -451,6 +449,12 @@ When setting a time zone, note the following:
 `on`  | Same as `cluster`.
 `kv`  | Same as `cluster` except that "kv messages" are collected instead of regular trace messages. See [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %}).
 `results` | Result rows and row counts are copied to the session trace. This must be specified in order for the output of a query to be printed in the session trace.<br><br>Example: `SET tracing = kv, results;`
+
+## Considerations
+
+### Session variable precedence
+
+{% include {{ page.version.version }}/sql/session-variable-precedence-order.md %}
 
 ## Known Limitations
 

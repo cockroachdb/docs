@@ -19,7 +19,9 @@ Schema changes consume additional resources, and if they are run when the cluste
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-CockroachDB [does not support schema changes within explicit transactions](#schema-changes-within-transactions) with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction. <br /><br /> Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
+CockroachDB [does not support schema changes within explicit transactions](#schema-changes-within-transactions) with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction.
+
+Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
 {{site.data.alerts.end}}
 
 ## How online schema changes work
@@ -181,7 +183,7 @@ COMMIT
 
 ### Run multiple schema changes in a single `ALTER TABLE` statement
 
-Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}). For a demonstration, see [Add and rename columns atomically]({% link {{ page.version.version }}/alter-table.md %}#add-and-rename-columns-atomically).
+Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, refer to [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#subcommands). For examples, refer to [Add and rename columns atomically]({% link {{ page.version.version }}/alter-table.md %}#add-and-rename-columns-atomically) and [Drop and add a primary key constraint]({% link {{ page.version.version }}/alter-table.md %}#drop-and-add-a-primary-key-constraint).
 
 ### Show all schema change jobs
 

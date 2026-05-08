@@ -30,6 +30,12 @@ CockroachDB also supports [temporary views]({% link {{ page.version.version }}/v
 
 By default, every 30 minutes CockroachDB cleans up all temporary objects that are not tied to an active session. You can change how often the cleanup job runs with the `sql.temp_object_cleaner.cleanup_interval` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
+## Performance considerations
+
+- Temporary tables are not optimized for performance. They use the same underlying mechanisms as "regular" tables, and may be slower than expected compared to alternatives such as [common table expressions (CTEs)]({% link {{ page.version.version }}/common-table-expressions.md %}).
+- Avoid patterns that create and drop very large numbers of temp tables in rapid succession. Creating and dropping large numbers of temp tables can enqueue many [schema change GC jobs]({% link {{ page.version.version }}/show-jobs.md %}) and degrade overall cluster performance.
+- Prefer [CTEs]({% link {{ page.version.version }}/common-table-expressions.md %}) for intermediate results where possible. If you do use temp tables instead of CTEs, consider reusing a small set of temp tables with [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %}) instead of repeatedly creating and dropping new ones. Always test both approaches for your workload.
+
 ## Temporary schemas
 
 Temp tables are not part of the `public` schema. Instead, when you create the first temp table for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temp tables, [temporary views]({% link {{ page.version.version }}/views.md %}#temporary-views), and [temporary sequences]({% link {{ page.version.version }}/create-sequence.md %}#temporary-sequences) in the current session for a database. In a session, you can reference the session's temporary schema as `pg_temp`.
@@ -39,6 +45,10 @@ Because the [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}
 {{site.data.alerts.end}}
 
 ## Examples
+
+{{site.data.alerts.callout_info}}
+For intermediate results, consider using [common table expressions (CTEs)]({% link {{ page.version.version }}/common-table-expressions.md %}#overview) instead of temp tables. For more information, see [Performance considerations](#performance-considerations).
+{{site.data.alerts.end}}
 
 To use temp tables, you need to set `experimental_enable_temp_tables` to `on`:
 
@@ -221,3 +231,4 @@ SQLSTATE: 42P01
 - [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %})
 - [Temporary views]({% link {{ page.version.version }}/views.md %}#temporary-views)
 - [Temporary sequences]({% link {{ page.version.version }}/create-sequence.md %}#temporary-sequences).
+- [Common table expressions (CTEs)]({% link {{ page.version.version }}/common-table-expressions.md %})

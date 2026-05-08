@@ -1,0 +1,9 @@
+Use the **Graph** menu to display metrics for your entire cluster or for a specific node.
+
+To the right of the Graph and Dashboard menus, a time interval selector allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected in the [SQL Activity]({% link {{ page.version.version }}/ui-overview.md %}#sql-activity) pages. However, if you select 10 or 30 minutes, the interval defaults to 1 hour in SQL Activity pages.
+
+Hovering your mouse pointer over the graph title will display a tooltip with a description and the [metrics]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %} ) used to create the graph.
+
+When hovering on graphs, crosshair lines will appear at your mouse pointer. The series' values corresponding to the given time in the cross hairs are displayed in the legend under the graph. Hovering the mouse pointer on a given series displays the corresponding value near the mouse pointer and highlights the series line (graying out other series lines). Click anywhere within the graph to freeze the values in place. Click anywhere within the graph again to cause the values to change with your mouse movements once more.
+
+In the legend, click on an individual series to isolate it on the graph. The other series will be hidden, while the hover will still work. Click the individual series again to make the other series visible. If there are many series, a scrollbar may appear on the right of the legend. This is to limit the size of the legend so that it does not get endlessly large, particularly on clusters with many nodes.

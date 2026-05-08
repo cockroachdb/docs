@@ -16,18 +16,22 @@ CockroachDB is officially integrated with the following third-party monitoring p
 
 | Platform | CockroachDB Standard | CockroachDB Advanced | CockroachDB {{ site.data.products.core }} |
 |----------|:--------------------:|:--------------------:|:-----------------------:|
-| [Amazon CloudWatch](#amazon-cloudwatch-metrics) | ✔ | ✔ |  |
+| [Amazon CloudWatch](#amazon-cloudwatch-metrics) | ✔ | ✔ | ✔ |
 | [DataDog](#datadog) | ✔ | ✔ | ✔ |
 | [DBmarlin](#dbmarlin) |  |  | ✔ |
 | [Kibana](#kibana) |  |  | ✔ |
 | [Prometheus](#prometheus) | ✔ | ✔ | ✔ |
 
+This list is not exhaustive. Any Prometheus-compatible third-party tool can consume metrics from a CockroachDB Advanced or {{ site.data.products.core }} cluster. For example, because [Amazon CloudWatch is Prometheus-compatible](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-Setup-configure-ECS.html), it can consume metrics from a CockroachDB {{ site.data.products.core }} cluster.
+
 ### Logs
 
 | Platform | CockroachDB Standard | CockroachDB Advanced | CockroachDB {{ site.data.products.core }} |
 |----------|:--------------------:|:--------------------:|:-----------------------:|
-| [Amazon CloudWatch](#amazon-cloudwatch-logs) | ✔ | ✔ |  |
-| [GCP Logging](#gcp-logging) | ✔ | ✔ |  |
+| [Amazon CloudWatch](#amazon-cloudwatch-logs) | ✔ | ✔ | ✔ |
+| [GCP Logging](#gcp-logging) | ✔ | ✔ | ✔ |
+
+This list is not exhaustive. Any third-party tool that can consume logs from [file-based or network sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) can also consume logs from a CockroachDB {{ site.data.products.core }} cluster.
 
 ## Monitoring integration resources
 

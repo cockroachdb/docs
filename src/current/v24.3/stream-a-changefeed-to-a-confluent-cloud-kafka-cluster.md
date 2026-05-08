@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-CockroachDB {{ site.data.products.enterprise }} changefeeds can stream change data out to [Apache Kafka](https://kafka.apache.org/) with different [configuration settings]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration) and [options]({% link {{ page.version.version }}/create-changefeed.md %}). [Confluent Cloud](https://www.confluent.io/confluent-cloud/) provides a fully managed service for running Apache Kafka as well as the [Confluent Cloud Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html).
+CockroachDB changefeeds can stream change data out to [Apache Kafka](https://kafka.apache.org/) with different [configuration settings]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka-sink-configuration) and [options]({% link {{ page.version.version }}/create-changefeed.md %}). [Confluent Cloud](https://www.confluent.io/confluent-cloud/) provides a fully managed service for running Apache Kafka as well as the [Confluent Cloud Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html).
 
 A schema registry is a repository for schemas, which allows you to share and manage schemas between different services. Confluent Cloud Schema Registries map to Kafka topics in your Confluent Cloud environment.
 
@@ -248,18 +248,6 @@ To create your changefeed, you'll prepare your CockroachDB cluster with the `mov
     cockroach sql --url {"CONNECTION STRING"}
     ~~~
 
-1. Set your organization name and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) key:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~sql
-    SET CLUSTER SETTING cluster.organization = '<organization name>';
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~sql
-    SET CLUSTER SETTING enterprise.license = '<secret>';
-    ~~~
-
 1. Before you can create an {{ site.data.products.enterprise }} changefeed, it is necessary to enable rangefeeds on your cluster:
 
     {% include_cached copy-clipboard.html %}
@@ -322,7 +310,7 @@ You can also [create external connections]({% link {{ page.version.version }}/cr
     CREATE CHANGEFEED FOR TABLE users INTO "external://kafka" WITH updated, format = avro, confluent_schema_registry = "external://confluent_registry";
     ~~~
 
-    See [Options]({% link {{ page.version.version }}/create-changefeed.md %}#options) for a list of all available Enterprise changefeed options.
+    See [Options]({% link {{ page.version.version }}/create-changefeed.md %}#options) for a list of all available changefeed options.
 
     {{site.data.alerts.callout_success}}
     {% include {{ page.version.version }}/cdc/schema-registry-metric.md %}
@@ -343,11 +331,11 @@ Move to the terminal window in which you started the Kafka consumer. As the chan
 
 You can also view the messages for your cluster in the Confluent Cloud console in the **Topics** sidebar under the **Messages** tab.
 
-<img src="{{ 'images/v24.2/confluent-messages-screenshot.png' | relative_url }}" alt="Users topic messages in the Confluent Cloud console." style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/confluent-messages-screenshot.png" alt="Users topic messages in the Confluent Cloud console." style="border:1px solid #eee;max-width:100%" />
 
 You can use the **Schema** tab to view the schema for a specific topic.
 
-<img src="{{ 'images/v24.2/confluent-schemas-screenshot.png' | relative_url }}" alt="Users vale schema in the Confluent Cloud console." style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/confluent-schemas-screenshot.png" alt="Users vale schema in the Confluent Cloud console." style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

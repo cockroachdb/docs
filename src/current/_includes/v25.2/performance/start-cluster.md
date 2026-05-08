@@ -2,18 +2,7 @@
 
 1. SSH to the first `n2-standard-4` instance.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
+1. [Install CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
 
 1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
@@ -35,20 +24,7 @@
 
 1. SSH to the fourth instance, the one not running a CockroachDB node.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
-    ~~~
-
-1. Copy the binary into the `PATH`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
+1. [Install CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
 
 1. Run the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command:
 

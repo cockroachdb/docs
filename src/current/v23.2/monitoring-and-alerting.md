@@ -45,9 +45,7 @@ Each cluster automatically exposes its metrics at an [endpoint in Prometheus for
 - Allow you to create and share dashboards, reports, and alerts based on metrics.
 - Do not run within the cluster, and can help you to investigate a situation that led up to cluster outage even if the cluster is unavailable.
 
-Metrics collected by the DB Console are stored within the cluster, and the SQL queries that create the reports on the Metrics dashboards also impose load on the cluster. To avoid this additional load, or if you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
-
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint](#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
+Metrics collected by the DB Console are stored within the cluster, and the SQL queries that create the reports on the Metrics dashboards also impose load on the cluster.
 
 #### SQL Activity pages
 
@@ -202,10 +200,6 @@ The critical nodes status endpoint is used to:
 - Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) or [troubleshooting zone configurations]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}) generally.
 
 If you find under-replicated ranges or constraint violations, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
-
-{{site.data.alerts.callout_info}}
-This HTTP status endpoint supersedes the deprecated [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}) SQL API. Due to architectural changes in CockroachDB, the SQL queries described on that page will not result in correct output.
-{{site.data.alerts.end}}
 
 #### Fields
 
@@ -1004,10 +998,6 @@ Many of the [third-party monitoring integrations]({% link {{ page.version.versio
 ### Alertmanager
 
 If you have configured [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) to monitor your CockroachDB instance, you can also configure alerting rule definitions to have Alertmanager detect [important events](#events-to-alert-on) and alert you when they occur.
-
-If you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
-
-When storage of time-series metrics is disabled, the DB Console Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
 
 #### Prometheus alerting rules endpoint
 

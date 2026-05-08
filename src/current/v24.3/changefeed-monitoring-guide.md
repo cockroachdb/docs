@@ -9,7 +9,7 @@ CockroachDB [changefeeds]({% link {{ page.version.version }}/change-data-capture
 This guide provides recommendations for monitoring and alerting on changefeeds throughout the pipeline to ensure reliable operation and quick problem detection.
 
 {{site.data.alerts.callout_success}}
-For details on how changefeeds work as jobs in CockroachDB, refer to the [technical overview]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}).
+For details on how changefeeds work as jobs in CockroachDB, refer to the [technical overview]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}).
 {{site.data.alerts.end}}
 
 ## Overview
@@ -22,7 +22,7 @@ The changefeed pipeline contains three main sections that start at the [storage 
 - [**Processing**](#processing-aggregation-and-encoding): Prepares the change events from the rangefeed into [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}) by encoding messages into the specified format. 
 - [**Sink**](#sink): Delivers changefeed messages to the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). 
 
-<img src="{{ 'images/v24.3/changefeed-pipeline.svg' | relative_url }}" alt="An overview of the changefeed pipeline and the metrics that are connected to each stage." style="width:100%" />
+<img src="/docs/images/{{ page.version.version }}/changefeed-pipeline.svg" alt="An overview of the changefeed pipeline and the metrics that are connected to each stage." style="width:100%" />
 
 Where noted in the following sections, you can use changefeed [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) to measure metrics per changefeed.
 
@@ -42,7 +42,7 @@ Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names 
         - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) (supported in v24.3.5+).
         - Investigation needed: If `changefeed.max_behind_nanos` is consistently increasing.
     - `(now() - changefeed.checkpoint_progress)`
-        - Description: The progress of changefeed [checkpointing]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). Indicates how recently the changefeed state was persisted durably. Critical for monitoring changefeed [recovery capability]({% link {{ page.version.version }}/changefeed-messages.md %}#duplicate-messages).
+        - Description: The progress of changefeed [checkpointing]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}). Indicates how recently the changefeed state was persisted durably. Critical for monitoring changefeed [recovery capability]({% link {{ page.version.version }}/changefeed-messages.md %}#duplicate-messages).
         - Investigation needed: If checkpointing falls too far behind the current time.
 - Impact:
     - Slow processing of changes and updates to downstream sinks.

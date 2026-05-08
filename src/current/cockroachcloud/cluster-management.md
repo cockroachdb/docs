@@ -6,7 +6,7 @@ docs_area: manage
 ---
 
 {{site.data.alerts.callout_info}}
-CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+CockroachDB Standard is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 {% include cockroachcloud/filter-tabs/cluster-management.md %}
@@ -25,9 +25,9 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 ## View cluster overview
 
-The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) displays details about the selected CockroachDB {{ site.data.products.cloud }} cluster.
+The [**Overview** page]({% link cockroachcloud/overview-page.md %}) displays details about the selected CockroachDB {{ site.data.products.cloud }} cluster.
 
-From the **Overview** page, you can connect to your cluster. For more information, refer to [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
+Click the **Connect** button to get client connection details for your cluster. For more information, refer to [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
 ## Edit labels
 
@@ -35,8 +35,7 @@ You can [organize CockroachDB {{ site.data.products.cloud }} clusters using labe
 
 ## Add a region to your cluster
 
-1. Navigate to the cluster's **Overview** page.
-1. In the **Cluster settings** section, click the pencil icon next to the cluster's **Regions**.
+1. Click on the three-dots menu and select **Edit cluster**.
 
     The **Edit Cluster** page displays.
 
@@ -50,9 +49,11 @@ The price-performance characteristics of CockroachDB {{ site.data.products.stand
 
 To edit your cluster's capacity:
 
-1. Navigate to the cluster's **Overview** page.
-1. In the **Capacity** section, click **Update capacity**.
-    The **Capacity** page displays.
+1. Click on the three-dots menu and select **Edit cluster**.
+
+    The **Edit cluster** page displays.
+
+1. Click on **Next: Capacity** to open the **Capacity** page.
 1. Enter the desired number of request units per second or use the slider to increase or decrease the request units per second.
 
     {{site.data.alerts.callout_success}}
@@ -72,7 +73,7 @@ By default, major-version upgrades are automatically applied to CockroachDB {{ s
 When automatic upgrades are enabled and a new major version is available for CockroachDB {{ site.data.products.standard }}:
 
 - The cluster is automatically upgraded by Cockroach Labs to an early production patch release of the new major version, for example `vXX.Y.1`.
-- Each major version, whether a Regular release or Innovation release, is included.
+- Standard clusters are upgraded only to [Regular releases]({% link releases/index.md %}).
 - Each upgrade is finalized immediately, so it is not possible to roll back to the previous major version.
 
 When manual upgrades are enabled and a new major version is available for CockroachDB {{ site.data.products.standard }}:
@@ -92,7 +93,7 @@ If you disable automatic major-version upgrades for a cluster, to maintain suppo
 
 To disable automatic major-version upgrades for a CockroachDB {{ site.data.products.standard }} cluster:
 
-1. On the [**Cluster Overview** page for the cluster](#view-cluster-overview), click **Actions**, then select **Manual upgrade settings**.
+1. On the [**Overview** page for the cluster](#view-cluster-overview), click **Settings** to open the **Cluster settings** panel. Click **Edit** next to **Manual upgrades**.
 1. Read the information provided, then set **Manual upgrades** to **on**.
 1. Click **Apply**.
 
@@ -127,12 +128,13 @@ You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-
 To help prevent a cluster from being deleted by mistake, you can enable _deletion protection_. Before you can delete a cluster with deletion protection enabled, you must disable deletion protection. A user with permission to delete a cluster can enable deletion protection on the same cluster.
 
 1. Navigate to the **Overview** page for the cluster you want to protect.
-1. If deletion protection is disabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
+1. Click on **Settings** to open the **Cluster settings** panel.
+1. If deletion protection is off, click **Edit**. Toggle the setting, then click **Save**.
 
 ## Delete cluster
 
 {{site.data.alerts.callout_danger}}
-Deleting a cluster will delete all cluster data.
+Deleting a cluster will delete all cluster data. Deleted clusters can not be restored.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -141,9 +143,8 @@ You will be billed only for a CockroachDB {{ site.data.products.standard }} clus
 
 Proceed with the following steps only if you are sure you want to delete a cluster:
 
-1. Navigate to the **Overview** page for the cluster you want to delete.
-1. If [deletion protection](#enable-deletion-protection) is enabled, click the pencil icon next to it. Toggle the setting, then click **Save**.
-1. Click the **Actions** button in the top right corner.
+1. Turn off [deletion protection](#enable-deletion-protection) if it is enabled.
+1. Click on the three-dots menu.
 1. Select **Delete cluster**.
 1. In the confirmation window, enter the name of the cluster.
 1. Click **Delete**.

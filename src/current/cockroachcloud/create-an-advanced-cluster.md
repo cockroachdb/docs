@@ -9,7 +9,7 @@ docs_area: deploy
 
 This page guides you through the process of creating a CockroachDB {{ site.data.products.advanced }} cluster using the [Cloud Console](https://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create an Advanced cluster]({% link cockroachcloud/cloud-api.md %}#create-an-advanced-cluster) in the API documentation.
 
-Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Org Administrator.
+Only [CockroachDB {{ site.data.products.cloud }} Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Organization Admin.
 
 ## Step 1. Start the cluster creation process
 
@@ -96,7 +96,7 @@ Click **Next: Security**.
 
 ## Step 6. Configure advanced security features
 
-You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. These features are not yet available for CockroachDB {{ site.data.products.advanced }} on Azure. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
+You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. These features are in Preview for CockroachDB {{ site.data.products.advanced }} on Azure. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
 {{site.data.alerts.callout_danger}}
 Advanced security features cannot be enabled or disabled after cluster creation.
@@ -114,32 +114,20 @@ Advanced security features cannot be enabled or disabled after cluster creation.
       Remember to [delete your trial cluster]({% link cockroachcloud/cluster-management.md %}#delete-cluster) before the trial expires. Otherwise, your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing]({% link cockroachcloud/billing-management.md %}) page.
       {{site.data.alerts.end}}
 
-<a id="step-7-name-the-cluster"></a>
-
 ## Step 8. Name the cluster
 
 The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after the cluster is created.
 
-<a id="step-8-select-the-cockroachdb-version"></a>
-
-## Step 8. Select the CockroachDB version
+## Step 9. Select the CockroachDB version
 
 When you create a new cluster, it uses the [latest CockroachDB {{ site.data.products.cloud }} production release](https://www.cockroachlabs.com/docs/releases/cloud) by default. All clusters are then upgraded automatically to each subsequent patch release of their major version as it becomes available. To learn more, refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
-
-Prior to the GA release of a new CockroachDB major version, a series of Beta and Release Candidate (RC) releases are made available for CockroachDB {{ site.data.products.advanced }} as [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. If available, the latest Pre-Production Preview release is listed as an option alongside the latest production release.
-
-{{site.data.alerts.callout_danger}}
-Testing releases, including Pre-Production Preview releases, are provided for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
-{{site.data.alerts.end}}
-
-If you install a Pre-Production Preview release, it will be upgraded to each subsequent beta or RC release automatically, before being upgraded to the GA and subsequent patch releases as they become available.
 
 To select the cluster version:
 
 1. Under **Cluster version**, click the version selector.
 1. Select a CockroachDB version.
 
-## Step 9. Finish creating the cluster
+## Step 10. Finish creating the cluster
 
 Click **Create cluster**. Your cluster will be created in approximately 20-30 minutes.
 
@@ -148,6 +136,6 @@ Click **Create cluster**. Your cluster will be created in approximately 20-30 mi
 To start using your CockroachDB {{ site.data.products.advanced }} cluster, refer to:
 
 - [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
+- Run the [fault tolerance demo]({% link {{ site.versions["stable"] }}/demo-cockroachdb-resilience.md %}#run-a-guided-demo-in-cockroachdb-cloud)
 - [Manage access]({% link cockroachcloud/managing-access.md %})
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})
 - For a multi-region cluster, it is important to choose the most appropriate [survival goal]({% link {{site.current_cloud_version}}/multiregion-survival-goals.md %}) for each database and the most appropriate [table locality]({% link {{site.current_cloud_version}}/table-localities.md %}) for each table. Otherwise, your cluster may experience unexpected latency and reduced resiliency. For more information, refer to [Multi-Region Capabilities Overview]({% link {{ site.current_cloud_version}}/multiregion-overview.md %}).

@@ -55,7 +55,6 @@
       // source for the underlying version, like v1.0 or v1.1.
       // Otherwise, the sidebar for a `stable` page would
       // inappropriately link to the underlying `v1.0` page instead
-      // of the `stable` alias.
       const pageVersion = (function () {
         const pathComponents = location.pathname
           .replace(sidebar.baseUrl, '')
@@ -89,7 +88,7 @@
       // entry, if any, into the `.collapsed-header` element above.
       function renderItems(items, paths) {
         if (!items || items.length == 0)
-            return $();
+          return $();
 
         const lis = items.map(function (item) {
           const urls = (item.urls || []).map(function (url) {
@@ -103,20 +102,13 @@
           });
 
           // this ensures page will be highlighted in sidebar if URL is accessed with or without `.html` appended
-          var activePathname
-          if (!/^https?:/.test(location.pathname)) {
-            activePathname = location.pathname
+          var activePathname = location.pathname;
+          if (activePathname.includes("/index.html")) {
+            activePathname = activePathname.replace("/index.html", "/");
           }
-          else {
-            activePathname = location.pathname
+          if (activePathname.includes(".html")) {
+            activePathname = activePathname.replace(".html", "");
           }
-          if (location.pathname.includes("/index.html")) {
-            activePathname = activePathname.replace("/index.html", "/")
-          }
-          if (location.pathname.includes(".html")) {
-            activePathname = activePathname.replace(".html", "")
-          }
-          // console.log(urls);
 
           const active = (urls.indexOf(activePathname) !== -1);
           if (active) {
@@ -136,8 +128,19 @@
             .attr("href", urls[0] || "#")
             .html(item.title);
 
+          // ── **INJECT TAG BADGE HERE** ─────────────────────────
+          if (item.tag) {
+            a.append(" ")
+             .append(
+               $("<span>")
+                 .addClass("sidebar__tag sidebar__tag--new")
+                 .text(item.tag)
+             );
+          }
+          // ──────────────────────────────────────────────────────
+
           if (subitems.length > 0 && !item.is_top_level) {
-              a.append(" ").append($("<div>").addClass("nav-expand"));
+            a.append(" ").append($("<div>").addClass("nav-expand"));
           }
 
           return $("<li>")
@@ -165,7 +168,7 @@
         // Version directories either are one of the named version
         // aliases specified in _config.yml or have the form "vX.X",
         // like "v1.0" or "v1.10".
-        return {{ site.versions | jsonify }}[d] || /^v\d+.\d+$/.test(d);
+        return {{ site.versions | jsonify }}[d] || /^v\d+\.\d+$/.test(d);
       },
       items: {%- include_cached {{ include.sidebar_data }} -%}
     };

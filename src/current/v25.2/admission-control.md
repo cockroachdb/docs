@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-CockroachDB supports an admission control system to maintain cluster performance and availability when some nodes experience high load. When admission control is enabled, CockroachDB sorts request and response operations into work queues by priority, giving preference to higher priority operations. Internal operations critical to node health, like [node liveness heartbeats]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues), are high priority. The admission control system also prioritizes transactions that hold [locks]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_locks), to reduce [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) and release locks earlier.
+CockroachDB supports an admission control system to maintain cluster performance and availability when some nodes experience high load. When admission control is enabled, CockroachDB sorts request and response operations into work queues by priority, giving preference to higher priority operations. Internal operations critical to node health are high priority. The admission control system also prioritizes transactions that hold [locks]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_locks), to reduce [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) and release locks earlier.
 
 ## How admission control works
 
@@ -47,6 +47,7 @@ Almost all database operations that use CPU or perform storage IO are controlled
 - [`COPY`]({% link {{ page.version.version }}/copy.md %}) statements.
 - [Deletes]({% link {{ page.version.version }}/delete-data.md %}) (including deletes initiated by [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}); the [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) performed by TTL jobs are also subject to CPU admission control).
 - [Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
+- [Restore]({% link {{ page.version.version }}/restore.md %}) operations, including [full cluster]({% link {{ page.version.version }}/restore.md %}#full-cluster), [database]({% link {{ page.version.version }}/restore.md %}#databases), and [table]({% link {{ page.version.version }}/restore.md %}#tables) restores.
 - [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), including index and column backfills (on both the [leaseholder replica]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
 - [Follower replication work](#replication-admission-control).
 - [Raft log entries being written to disk]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
@@ -95,7 +96,7 @@ When you enable or disable admission control settings for one layer, Cockroach L
 
 When admission control is enabled, request and response operations are sorted into work queues where the operations are organized by priority and transaction start time.
 
-Higher priority operations are processed first. The criteria for determining higher and lower priority operations is different at each processing layer, and is determined by the CPU and storage I/O of the operation. Write operations in the [KV storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) in particular are often the cause of performance bottlenecks, and admission control prevents [the Pebble storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble) from experiencing high [read amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#read-amplification). Critical cluster operations like node heartbeats are processed as high priority, as are transactions that hold [locks]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_locks) in order to avoid [contention]({% link {{ page.version.version }}/performance-recipes.md %}#transaction-contention) and release locks earlier.
+Higher priority operations are processed first. The criteria for determining higher and lower priority operations is different at each processing layer, and is determined by the CPU and storage I/O of the operation. Write operations in the [KV storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) in particular are often the cause of performance bottlenecks, and admission control prevents [the Pebble storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble) from experiencing high [read amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#read-amplification). Critical cluster operations are processed as high priority, as are transactions that hold [locks]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_locks) in order to avoid [contention]({% link {{ page.version.version }}/performance-recipes.md %}#transaction-contention) and release locks earlier.
 
 The transaction start time is used within the priority queue and gives preference to operations with earlier transaction start times. For example, within the high priority queue operations with an earlier transaction start time are processed first.
 
@@ -153,6 +154,8 @@ COMMIT;
 {% include {{ page.version.version }}/known-limitations/admission-control-limitations.md %}
 
 ## Considerations
+
+To prevent unnecessary queuing in admission control CPU queues, set the `goschedstats.always_use_short_sample_period.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-goschedstats-always-use-short-sample-period-enabled) to `true` for any [production cluster]({% link {{ page.version.version }}/recommended-production-settings.md %}).
 
 [Client connections]({% link {{ page.version.version }}/connection-parameters.md %}) are not managed by the admission control subsystem. Too many connections per [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) can also lead to cluster overload.
 

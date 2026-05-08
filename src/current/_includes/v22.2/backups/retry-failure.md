@@ -1,1 +1,0 @@
-If a backup job encounters too many retryable errors, it will enter a [`failed` state](show-jobs.html#job-status) with the most recent error, which allows subsequent backups the chance to succeed. Refer to the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for metrics to track backup failures.

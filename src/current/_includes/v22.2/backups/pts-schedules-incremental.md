@@ -1,3 +1,0 @@
-{{site.data.alerts.callout_info}}
-If you are creating incremental backups as part of a [backup schedule](create-schedule-for-backup.html), [protected timestamps](architecture/storage-layer.html#protected-timestamps) will ensure the backup revision data is not garbage collected, which allows you to lower the GC TTL. See [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups) for more detail. 
-{{site.data.alerts.end}}

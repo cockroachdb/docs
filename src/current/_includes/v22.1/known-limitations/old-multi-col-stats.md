@@ -1,3 +1,0 @@
-When a column is dropped from a multi-column index, the {% if page.name == "cost-based-optimizer.md" %} optimizer {% else %} [optimizer](cost-based-optimizer.html) {% endif %} will not collect new statistics for the deleted column. However, the optimizer never deletes the old [multi-column statistics](create-statistics.html#create-statistics-on-multiple-columns). This can cause a buildup of statistics in `system.table_statistics` leading the optimizer to use stale statistics, which could result in sub-optimal plans. To workaround this issue and avoid these scenarios, explicitly [delete those statistics](create-statistics.html#delete-statistics) from the `system.table_statistics` table.
-
-    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/67407)

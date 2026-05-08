@@ -40,9 +40,13 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 ### Storage considerations
 
+- Cockroach Labs tests functionality with AWS S3, Google Cloud Storage (GCS), and Azure Blob Storage. Other S3-compatible storage solutions are untested, but common compatibility issues in v24.3 and later may be fixed by adding the `AWS_SKIP_CHECKSUM` option to the S3 URLs.
 - [HTTP storage]({% link {{ page.version.version }}/use-a-local-file-server.md %}) is not supported for `BACKUP` and `RESTORE`.
 - Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking]({% link {{ page.version.version }}/use-cloud-storage.md %}#immutable-storage) in your cloud storage bucket.**
-- While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services]({% link {{ page.version.version }}/use-cloud-storage.md %}) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).
+
+{{site.data.alerts.callout_danger}}
+Cockroach Labs does not officially support untested storage systems. If you encounter issues when using unsupported S3-compatible storage, drivers, or frameworks, contact the maintainer.
+{{site.data.alerts.end}}
 
 ## Required privileges
 
@@ -302,6 +306,8 @@ If a database and schema have the same name, such as `bank.bank`, running `BACKU
 See [Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %}) for more details on how naming hierarchy and name resolution work in CockroachDB.
 
 ### Create incremental backups
+
+{% include common/sql/incremental-location-warning.md %}
 
 When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) storage location.
 

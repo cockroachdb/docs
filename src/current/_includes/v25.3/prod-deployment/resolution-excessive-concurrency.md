@@ -1,0 +1,1 @@
+To prevent issues with workload concurrency, [provision sufficient CPU]({% link {{ page.version.version }}/recommended-production-settings.md %}#sizing) and use [connection pooling]({% link {{ page.version.version }}/recommended-production-settings.md %}#connection-pooling) for the workload.

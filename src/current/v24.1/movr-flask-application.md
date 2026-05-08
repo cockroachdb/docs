@@ -113,7 +113,7 @@ The `User` class has the following attributes:
 
 - `__tablename__`, which holds the stored name of the table in the database. SQLAlchemy requires this attribute for all classes that map to tables.
 - All of the other attributes of the `User` class (`id`, `city`, `first_name`, etc.), stored as `Column` objects. These attributes represent columns of the `users` table. The constructor for each `Column` takes the column data type as its first argument, and then any additional arguments, such as `primary_key`.
-- To help define column objects, SQLAlchemy also includes classes for SQL data types and column constraints. For the columns in this table, we use `UUID` and `String` data types.
+- To help define column objects, SQLAlchemy also includes classes for SQL data types and column constraints. For the columns in this table, we use [`UUID`]({% link {{ page.version.version }}/uuid.md %}) and `String` data types.
 - The `__repr__` function, which defines the string representation of the object.
 
 #### The `Vehicle` class

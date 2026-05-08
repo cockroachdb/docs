@@ -56,7 +56,7 @@ Flag | Description
 -----|-----------
 `--attrs` | Arbitrary strings, separated by colons, specifying node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`<br><br>These can be used to influence the location of data replicas. See [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) for full details.
 `--background` | Runs the node in the background. Control is returned to the shell only once the node is ready to accept requests, so this is recommended over appending `&` to the command. This flag is **not** available in Windows environments.<br><br>**Note:** `--background` is suitable for writing automated test suites or maintenance procedures that need a temporary server process running in the background. It is not intended to be used to start a long-running server, because it does not fully detach from the controlling terminal. Consider using a service manager or a tool like [daemon(8)](https://www.freebsd.org/cgi/man.cgi?query=daemon&sektion=8) instead. If you use `--background`, using `--pid-file` is also recommended. To gracefully stop the `cockroach` process, send the `SIGTERM` signal to the process ID in the PID file. To gracefully restart the process, send the `SIGHUP` signal.
-`--cache` | The total size for caches, shared evenly if there are multiple storage devices. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit; for example: <br><br>`--cache=.25`<br>`--cache=25%`<br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br>**Note:** If you use the `%` notation, you might need to escape the `%` sign (for instance, while configuring CockroachDB through `systemd` service files). For this reason, it's recommended to use the decimal notation instead.<br><br>**Note:** The sum of `--cache`, `--max-sql-memory`, and `--max-tsdb-memory` should not exceed 75% of the memory available to the `cockroach` process.<br><br>**Default:** `128MiB`<br><br>The default cache size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. Increasing the cache size will generally improve the node's read performance. For more details, see [Recommended Production Settings]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size).
+`--cache` | The total size for the [Pebble storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble) block cache, shared evenly if there are multiple storage devices. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example: <br><br>`--cache=.25`<br>`--cache=25%`<br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign when configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.<br><br>**Note:** The sum of `--cache`, `--max-sql-memory`, and `--max-tsdb-memory` should not exceed 75% of the memory available to the `cockroach` process.<br><br>**Default:** `128 MiB`<br><br>The default cache size is reasonable for local development clusters. For production deployments, set this to 25% or higher. Increasing the cache size generally improves the node's read performance.<br><br>The block cache holds uncompressed blocks of persisted [key-value data]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#overview) in memory. If a read misses within the block cache, the storage engine reads the file via the operating system's page cache, which may hold the relevant block in-memory in its compressed form. Otherwise, the read is served from the storage device. The block cache fills to the configured size and is then recycled using a least-recently-used (LRU) policy.<br><br>Refer to [Recommended Production Settings]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size) for more details. Production systems should always configure this setting.
 `--clock-device` | Enable CockroachDB to use a [PTP hardware clock](https://www.kernel.org/doc/html/latest/driver-api/ptp.html) when querying the current time. The value is a string that specifies the clock device to use. For example: `--clock-device=/dev/ptp0`<br><br>**Note:** This is supported on Linux only and may be needed in cases where the host clock is unreliable or prone to large jumps (e.g., when using vMotion).
 `--cluster-name` | <a name="flags-cluster-name"></a> A string that specifies a cluster name. This is used together with `--join` to ensure that all newly created nodes join the intended cluster when you are running multiple clusters.<br><br>**Note:** If this is set, [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}), [`cockroach node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}), [`cockroach node recommission`]({% link {{ page.version.version }}/cockroach-node.md %}), and the `cockroach debug` commands must specify either `--cluster-name` or `--disable-cluster-name-verification` in order to work.
 `--disable-cluster-name-verification` | On clusters for which a cluster name has been set, this flag paired with `--cluster-name` disables the cluster name check for the command. This is necessary on existing clusters, when setting a cluster name or changing the cluster name: Perform a rolling restart of all nodes and include both the new `--cluster-name` value and `--disable-cluster-name-verification`, then a second rolling restart with `--cluster-name` and without `--disable-cluster-name-verification`.
@@ -203,10 +203,7 @@ The `--storage-engine` flag is used to choose the storage engine used by the nod
 
 The `--store` flag allows you to specify details about a node's storage.
 
-To start a node with multiple disks or SSDs, you can use either of these approaches:
-
-- Configure the disks or SSDs as a single RAID volume, then pass the RAID volume to the `--store` flag when starting the `cockroach` process on the node.
-- Provide a separate `--store` flag for each disk when starting the `cockroach` process on the node. For more details about stores, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}#store).
+To start a node with multiple disks or SSDs, provide a separate `--store` flag for each disk when starting the `cockroach` process on the node. For more details about stores, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}#store).
 
   {{site.data.alerts.callout_danger}}
   If you start a node with multiple `--store` flags, it is not possible to scale back down to only using a single store on the node. Instead, you must decommission the node and start a new node with the updated `--store`.
@@ -233,19 +230,15 @@ Field | Description
 
 #### Write Ahead Log (WAL) Failover
 
-{% include_cached new-in.html version="v24.1" %} On a CockroachDB [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) with [multiple stores](#store), you can mitigate some effects of [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) by configuring the node to failover each store's [write-ahead log (WAL)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) to another store's data directory using the `--wal-failover` flag.
-
-Failing over the WAL may allow some operations against a store to continue to complete despite temporary unavailability of the underlying storage. For example, if the node's primary store is stalled, and the node can't read from or write to it, the node can still write to the WAL on another store. This can give the node a chance to eventually catch up once the disk stall has been resolved.
-
-When WAL failover is enabled, CockroachDB will take the the following actions:
-
-- At node startup, each store is assigned another store to be its failover destination.
-- CockroachDB will begin monitoring the latency of all WAL writes. If latency to the WAL exceeds the value of the [cluster setting `storage.wal_failover.unhealthy_op_threshold`]({% link {{page.version.version}}/cluster-settings.md %}#setting-storage-wal-failover-unhealthy-op-threshold), the node will attempt to write WAL entries to a secondary store's volume.
-- CockroachDB will update the [store status endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#store-status-endpoint) at `/_status/stores` so you can monitor the store's status.
+{% include_cached new-in.html version="v24.1" %} {% include {{ page.version.version }}/wal-failover-intro.md %}
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
+
+This page has basic instructions on how to enable WAL failover, disable WAL failover, and monitor WAL failover.
+
+For more detailed instructions showing how to use, test, and monitor WAL failover, as well as descriptions of how WAL failover works in multi-store configurations, see [WAL Failover]({% link {{ page.version.version }}/wal-failover.md %}).
 
 ##### Enable WAL failover
 
@@ -264,14 +257,7 @@ Therefore, if you enable WAL failover and log to local disks, you must also upda
 1. When `buffering` is enabled, `buffered-writes` must be explicitly disabled as shown in the following example. This is necessary because `buffered-writes` does not provide true asynchronous disk access, but rather a small buffer. If the small buffer fills up, it can cause internal routines performing logging operations to hang. This will in turn cause internal routines doing other important work to hang, potentially affecting cluster stability.
 1. The recommended logging configuration for using file-based logging with WAL failover is as follows:
 
-      ~~~
-      file-defaults:
-        buffered-writes: false
-        buffering:
-          max-staleness: 1s
-          flush-trigger-size: 256KiB
-          max-buffer-size: 50MiB
-      ~~~
+    {% include {{ page.version.version }}/wal-failover-log-config.md %}
 
 As an alternative to logging to local disks, you can configure [remote log sinks]({% link {{page.version.version}}/logging-use-cases.md %}#network-logging) that are not correlated with the availability of your cluster's local disks. However, this will make troubleshooting using [`cockroach debug zip`]({% link {{ page.version.version}}/cockroach-debug-zip.md %}) more difficult, since the output of that command will not include the (remotely stored) log files.
 
@@ -284,18 +270,7 @@ To disable WAL failover, you must [restart the node]({% link {{ page.version.ver
 
 ##### Monitor WAL failover
 
-You can monitor if WAL failover occurs using the following metrics:
-
-- `storage.wal.failover.secondary.duration`: Cumulative time spent (in nanoseconds) writing to the secondary WAL directory. Only populated when WAL failover is configured.
-- `storage.wal.failover.primary.duration`: Cumulative time spent (in nanoseconds) writing to the primary WAL directory. Only populated when WAL failover is configured.
-- `storage.wal.failover.switch.count`: Count of the number of times WAL writing has switched from primary to secondary store, and vice versa.
-
-The `storage.wal.failover.secondary.duration` is the primary metric to monitor. You should expect this metric to be `0` unless a WAL failover occurs. If a WAL failover occurs, you probably care about how long it remains non-zero because it provides an indication of the health of the primary store.
-
-You can access these metrics via the following methods:
-
-- The [Custom Chart Debug Page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) in [DB Console]({% link v24.1/ui-custom-chart-debug-page.md %}).
-- By [monitoring CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
+{% include {{ page.version.version }}/wal-failover-metrics.md %}
 
 ### Logging
 

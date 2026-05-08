@@ -338,7 +338,7 @@ The check is done by keeping track of all the reads using a dedicated `RefreshRe
 
 ### Transaction pipelining
 
-Transactional writes are pipelined when being replicated and when being written to disk, dramatically reducing the latency of transactions that perform multiple writes. For example, consider the following transaction:
+Transactional writes are pipelined when being [replicated]({% link {{ page.version.version }}/architecture/replication-layer.md %}) and when being written to disk, dramatically reducing the latency of transactions that perform multiple writes. For example, consider the following transaction:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -350,19 +350,21 @@ INSERT into kv (key, value) VALUES ('orange', 'orange');
 COMMIT;
 ~~~
 
-With transaction pipelining, write intents are replicated from leaseholders in parallel, so the waiting all happens at the end, at transaction commit time.
+With transaction pipelining, [write intents](#write-intents) are replicated from [leaseholders]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder) in parallel, so most of the waiting happens at the end, at transaction commit time.
 
 At a high level, transaction pipelining works as follows:
 
-1. For each statement, the transaction gateway node communicates with the leaseholders (*L*<sub>1</sub>, *L*<sub>2</sub>, *L*<sub>3</sub>, ..., *L*<sub>i</sub>) for the ranges it wants to write to. Since the primary keys in the table above are UUIDs, the ranges are probably split across multiple leaseholders (this is a good thing, as it decreases [transaction conflicts](#transaction-conflicts)).
+1. For each statement, the transaction gateway node communicates with the leaseholders (*L*<sub>1</sub>, *L*<sub>2</sub>, *L*<sub>3</sub>, ..., *L*<sub>i</sub>) for the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) it wants to write to. Since the [primary keys]({% link {{ page.version.version }}/primary-key.md %}) in the table above are UUIDs, the ranges are probably split across multiple leaseholders (this is a good thing, as it decreases [transaction conflicts](#transaction-conflicts)).
 
-1. Each leaseholder *L*<sub>i</sub> receives the communication from the transaction gateway node and does the following in parallel:
+1. Each leaseholder *L*<sub>i</sub> receives the communication from the transaction [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) and does the following in parallel:
   - Creates write intents and sends them to its follower nodes.
   - Responds to the transaction gateway node that the write intents have been sent. Note that replication of the intents is still in-flight at this stage.
 
 1. When attempting to commit, the transaction gateway node then waits for the write intents to be replicated in parallel to all of the leaseholders' followers. When it receives responses from the leaseholders that the write intents have propagated, it commits the transaction.
 
-In terms of the SQL snippet shown above, all of the waiting for write intents to propagate and be committed happens once, at the very end of the transaction, rather than for each individual write. This means that the cost of multiple writes is not `O(n)` in the number of SQL DML statements; instead, it's `O(1)`.
+In terms of the SQL snippet shown above, all of the waiting for write intents to propagate and be committed happens once, at the very end of the transaction, rather than for each individual write. This means the consensus-related waiting is not `O(n)` in the number of SQL DML statements; instead, it approaches `O(1)`.
+
+However, client-observed latency still includes a certain amount of per-statement work that must be performed. For example, although transaction pipelining parallelizes the [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) consensus work for [write intents](#write-intents) across statements, each statement must be [planned and evaluated]({% link {{ page.version.version }}/architecture/sql-layer.md %}). This includes scanning [indexes]({% link {{ page.version.version }}/indexes.md %}), checking [constraints]({% link {{ page.version.version }}/constraints.md %}), detecting [conflicts](#transaction-conflicts), and waiting on [contending writes]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#understanding-and-avoiding-transaction-contention). The client still submits statements sequentially. Statements that touch the same rows can also create pipeline stalls to preserve [read-your-writes](https://jepsen.io/consistency/models/read-your-writes) ordering. As a result, while the consensus component of write latency can approach `O(1)` with respect to the number of statements, end-to-end transaction latency can still increase with the number of statements.
 
 ### Parallel Commits
 

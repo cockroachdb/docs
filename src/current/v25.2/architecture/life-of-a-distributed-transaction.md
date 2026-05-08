@@ -20,8 +20,8 @@ Here's a brief overview of the physical actors, in the sequence with which they'
 1. [**SQL Client**](#sql-client-postgresql-wire-protocol) sends a query to your cluster.
 1. [**Load Balancing**](#load-balancing-routing) routes the request to CockroachDB nodes in your cluster, which will act as a gateway.
 1. [**Gateway**](#gateway) is a CockroachDB node that processes the SQL request and responds to the client.
-1. [**Leaseholder**](#leaseholder-node) is a CockroachDB node responsible for serving reads and coordinating writes of a specific range of keys in your query.
-1. [**Raft leader**](#raft-leader) is a CockroachDB node responsible for maintaining consensus among your CockroachDB replicas.
+1. [**Leaseholder**](#leaseholder-node) is a CockroachDB [replica]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) responsible for serving reads and coordinating writes of a specific range of keys in your query.
+1. [**Raft leader**](#raft-leader) is a CockroachDB [replica]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) responsible for maintaining consensus among all of the replicas in a [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range). {% include_cached new-in.html version="v25.2" %} The [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases) system ensures that the Raft leader is always the range's leaseholder, except briefly during [lease transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
 
 Once the transaction completes, queries traverse these actors in approximately reverse order. We say "approximately" because there might be many leaseholders and Raft leaders involved in a single query, and there is little-to-no interaction with the load balancer during the response.
 
@@ -96,7 +96,7 @@ In this case, the `DistSender` must look up the current leaseholder using the [c
 
 ##### Success
 
-Once the node that contains the leaseholder of the range receives the `BatchRequest`, it begins processing it, and progresses onto checking the timestamp cache.
+Once the node that contains the leaseholder of the range receives the `BatchRequest`, it begins processing it, and progresses onto checking the [timestamp cache](#timestamp-cache).
 
 ### Timestamp cache
 
@@ -112,7 +112,7 @@ This works by giving each write operation a latch on a row. Any reads or writes 
 
 ### Batch Evaluation
 
-The batch evaluator ensures that write operations are valid. Our architecture makes this fairly trivial. First, the evaluator can simply check the leaseholder's data to ensure the write is valid; because it has coordinated all writes to the range, it must have the most up-to-date versions of the range's data. Secondly, because of the latch manager, each write operation is guaranteed to uncontested access to the range (i.e., there is no contention with other write operations).
+The batch evaluator ensures that write operations are valid. Our architecture makes this fairly trivial. First, the evaluator can simply check the leaseholder's data to ensure the write is valid; because it has coordinated all writes to the range, it must have the most up-to-date versions of the range's data. Secondly, because of the latch manager, each write operation is guaranteed uncontested access to the range (i.e., there is no contention with other write operations).
 
 If the write operation is valid according to the evaluator, the leaseholder sends a provisional acknowledgment to the gateway node's `DistSender`; this lets the `DistSender` begin to send its subsequent `BatchRequests` for this range.
 
@@ -134,7 +134,7 @@ If an operation encounters a write intent for a key, it attempts to "resolve" th
   	- If the push succeeds, the operation continues.
   	- If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
 - `MISSING`, the resolver consults the write intent's timestamp.
-	- If it was created within the transaction liveness threshold, it treats the transaction record as exhibiting the `PENDING` behavior, with the addition of tracking the push in the range's timestamp cache, which will inform the transaction that its timestamp was pushed once the transaction record gets created.
+    - If it was created within the transaction liveness threshold, it treats the transaction record as exhibiting the `PENDING` behavior, with the addition of tracking the push in the range's [timestamp cache](#timestamp-cache), which will inform the transaction that its timestamp was pushed once the transaction record gets created.
 	- If the write intent is older than the transaction liveness threshold, the resolution exhibits the `ABORTED` behavior.
 
     Note that transaction records might be missing because we've avoided writing the record until the transaction commits. For more information, see [Transaction Layer: Transaction records]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-records).
@@ -147,19 +147,17 @@ If the read doesn't encounter a write intent and the key-value operation is mean
 
 The leaseholder aggregates all read responses into a `BatchResponse` that will get returned to the gateway node's `DistSender`.
 
-As we mentioned before, each read operation also updates the timestamp cache.
+As we mentioned before, each read operation also updates the [timestamp cache](#timestamp-cache).
 
 ### Write Operations
 
 After guaranteeing that there are no existing write intents for the keys, `BatchRequest`'s key-value operations are converted to [Raft operations]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) and have their values converted into write intents.
 
-The leaseholder then proposes these Raft operations to the Raft group leader. The leaseholder and the Raft leader are almost always the same node, but there are situations where the roles might drift to different nodes. However, when the two roles are not collocated on the same physical machine, CockroachDB will attempt to relocate them on the same node at the next opportunity.
-
 ## Raft Leader
 
 CockroachDB leverages Raft as its consensus protocol. If you aren't familiar with it, we recommend checking out the details about [how CockroachDB leverages Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), as well as [learning more about how the protocol works at large](http://thesecretlivesofdata.com/raft/).
 
-In terms of executing transactions, the Raft leader receives proposed Raft commands from the leaseholder. Each Raft command is a write that is used to represent an atomic state change of the underlying key-value pairs stored in the storage engine.
+In terms of executing transactions, the Raft leader receives proposed Raft commands from the leaseholder. Each Raft command is a write that is used to represent an atomic state change of the underlying key-value pairs stored in the storage engine. {% include_cached new-in.html version="v25.2" %} The [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases) system ensures that the Raft leader is always the range's leaseholder.
 
 ### Consensus
 
@@ -179,7 +177,7 @@ Now that we have followed an operation all the way down from the SQL client to t
  it sends an commit acknowledgment to the gateway node's `DistSender`, which was waiting for this signal (having already received the provisional acknowledgment from the leaseholder's evaluator).
 1. The gateway node's `DistSender` aggregates commit acknowledgments from all of the write operations in the `BatchRequest`, as well as any values from read operations that should be returned to the client.
 1. Once all operations have successfully completed (i.e., reads have returned values and write intents have been committed), the `DistSender` tries to record the transaction's success in the transaction record (which provides a durable mechanism of tracking the transaction's state), which can cause a few situations to arise:
-    - It checks the timestamp cache of the range where the first write occurred to see if its timestamp got pushed forward. If it did, the transaction performs a [read refresh]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) to see if any values it needed have been changed. If the read refresh is successful, the transaction can commit at the pushed timestamp. If the read refresh fails, the transaction must be restarted.
+    - It checks the [timestamp cache](#timestamp-cache) of the range where the first write occurred to see if its timestamp got pushed forward. If it did, the transaction performs a [read refresh]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) to see if any values it needed have been changed. If the read refresh is successful, the transaction can commit at the pushed timestamp. If the read refresh fails, the transaction must be restarted.
 	- If the transaction is in an `ABORTED` state, the `DistSender` sends a response indicating as much, which ends up back at the SQL interface.
 
 	Upon passing these checks the transaction record is either written for the first time with the `COMMITTED` state, or if it was in a `PENDING` state, it is moved to `COMMITTED`. Only at this point is the transaction considered committed.

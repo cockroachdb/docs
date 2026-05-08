@@ -5,10 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
-{{site.data.alerts.end}}
-
 You can monitor a [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream using:
 
 - [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`](#sql-shell) in the SQL shell.
@@ -50,7 +46,6 @@ id | name | source_tenant_name |              source_cluster_uri                
 You can use the [**Physical Cluster Replication** dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}) of the standby cluster's [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to monitor:
 
 - [Logical bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#logical-bytes)
-- [SST bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#sst-bytes)
 - [Replication Lag]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#replication-lag)
 
 ## Prometheus

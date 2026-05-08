@@ -11,7 +11,7 @@ The **Databases** page of the CockroachDB {{ site.data.products.cloud }} Console
 
 - The databases configured.
 - The tables in each database and the indexes on each table.
-- The grants assigned to each role and user.
+- The grants assigned to each role and SQL user.
 - [Index recommendations](#index-recommendations).
 
 To view this information, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Databases** in the **Data** section of the left side navigation menu. This will give you access to the following:

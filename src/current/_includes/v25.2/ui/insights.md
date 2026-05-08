@@ -185,11 +185,11 @@ The Workload Insights tab surfaces the following type of insights:
 
 The transaction or statement execution failed. The following screenshot shows a failed transaction execution:
 
-<img src="{{ 'images/v24.2/transaction_executions_failed.png' | relative_url }}" alt="Failed transaction execution" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/transaction_executions_failed.png' | relative_url }}" alt="Failed transaction execution" style="border:1px solid #eee;max-width:100%" />
 
 The following screenshot shows the default details of the preceding failed transaction execution.
 
-<img src="{{ 'images/v24.2/transaction_execution_details_failed.png' | relative_url }}" alt="Failed transaction execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/transaction_execution_details_failed.png' | relative_url }}" alt="Failed transaction execution details" style="border:1px solid #eee;max-width:100%" />
 
 The **Insights** column shows the name of the insight, in this case **Failed Execution**. The **Details** column provides the **Error Code** and **Error Message**. CockroachDB uses [PostgreSQL Error Codes](https://www.postgresql.org/docs/current/errcodes-appendix.html). In this example, Error Code `40001` is a `serialization_failure`.
 
@@ -197,7 +197,7 @@ The **Insights** column shows the name of the insight, in this case **Failed Exe
 
 The following screenshot shows the conditional details of the preceding failed transaction execution. In this case, there was a *serialization conflict*, also known as an *isolation conflict*, due to [transaction contention]({{ link_prefix }}performance-recipes.html#transaction-contention). (For transaction contention that causes *lock contention*, see [High Contention](#high-contention)).
 
-<img src="{{ 'images/v24.2/transaction_execution_details_failed_conditional.png' | relative_url }}" alt="Failed transaction execution details conditional" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/transaction_execution_details_failed_conditional.png' | relative_url }}" alt="Failed transaction execution details conditional" style="border:1px solid #eee;max-width:100%" />
 
 To capture more information in the event of a failed transaction execution due to a serialization conflict, set the [`sql.contention.record_serialization_conflicts.enabled`]({{ link_prefix }}cluster-settings.html#setting-sql-contention-record-serialization-conflicts-enabled) cluster setting to `true` (default). With this setting enabled, when the **Error Code** is `40001` and the **Error Message** specifically has [`RETRY_SERIALIZABLE - failed preemptive refresh`]({{ link_prefix }}transaction-retry-error-reference.html#failed_preemptive_refresh)` due to conflicting locks`, a conditional **Failed Execution** section is displayed with **Conflicting Transaction** and **Conflicting Location** information.
 
@@ -211,11 +211,11 @@ To troubleshoot, refer to the performance tuning recipe for [identifying and unb
 
 The following screenshot shows the execution of a transaction flagged with **High Contention**:
 
-<img src="{{ 'images/v24.2/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eeqe;max-width:100%" />
+<img src="{{ 'images/v25.2/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eeqe;max-width:100%" />
 
 The following screenshot shows the execution details of the preceding transaction execution:
 
-<img src="{{ 'images/v24.2/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
 
 ### High Retry Count
 
@@ -236,11 +236,11 @@ The statement execution has resulted in one or more [index recommendations](#sch
 
 The following screenshot shows the statement execution of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
-<img src="{{ 'images/v24.2/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
 
 The following screenshot shows the execution details of the preceding statement execution:
 
-<img src="{{ 'images/v24.2/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
 
 The **Insights** column shows the name of the insight, in this case **Suboptimal Plan**. The **Details** column provides details on the insight, such as a **Description** with the cause of the suboptimal plan and a **Recommendation** with a `CREATE INDEX` statement. The final column contains a **Create Index** button. Click the **Create Index** button to execute the recommended statement to mitigate the cause of the insight.
 
@@ -258,11 +258,13 @@ This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been 
 - The drop recommendations are the same as those on the [**Databases**]({{ link_prefix }}ui-databases-page.html#index-recommendations) page.
 - The create, alter, and replace recommendations are the same as those on the [Explain Plans tab]({{ link_prefix }}ui-statements-page.html#insights) on the Statements page. Whereas the **Explain Plans** tab shows all recommendations, the **Schema Insights** view shows only the latest recommendations for that statement fingerprint. If you execute a statement again after creating or updating an index, the recommendation disappears.
 
-The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
+<a id="schema-insights-example"></a>
 
-<img src="{{ 'images/v24.2/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
+The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) six or more times:
 
-CockroachDB uses the threshold of 6 executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
+<img src="{{ 'images/v25.2/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
+
+CockroachDB uses the threshold of six executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
 
 - **Insights:** Contains one of the following insight types: **Create Index**, **Alter Index**, **Replace Index**, **Drop Unused Index**.
 - **Details:** Details for each insight. Different insight types display different details fields:
@@ -271,6 +273,78 @@ CockroachDB uses the threshold of 6 executions before offering an insight becaus
     - **Drop Unused Index**: An **Index** field displays the name of the index to drop; and a **Description** field displays the reason for dropping the index.
 
 [Admin users]({{ link_prefix }}security-reference/authorization.html#admin-role) will see an action button in the final column, which will execute the SQL statement suggested by the schema insight, for example "Create Index". Upon clicking the action button, a confirmation dialog displays a warning about the cost of [online schema changes]({{ link_prefix }}online-schema-changes.html) and the option to copy the SQL statement for later execution in a SQL client.
+
+### `workload_index_recs` function
+
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v25.2" %} The SQL built-in function [`workload_index_recs`]({{ link_prefix }}functions-and-operators.html#workload_index_recs) returns index recommendations and the fingerprint IDs of the statements they impact. The function returns two columns:
+
+- `index_rec` (`STRING`): Contains the index recommendation.
+- `fingerprint_ids` (`BYTES[]`): Contains the fingerprint IDs of the affected statements.
+
+You can use the `workload_index_recs` function to determine workload-level index recommendations.
+
+By default, the function returns index recommendations sourced from all statement fingerprints in the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#statement_statistics) table. When passed an optional [`TIMESTAMPTZ`]({{ link_prefix }}timestamp.html) parameter, the function will provide workload-level index recommendations only for statements executed after the timestamp. For example, `SELECT workload_index_recs('2025-05-08 16:00:00+00');` returns index recommendations for statements executed after `'2025-05-08 16:00:00+00'`.
+
+#### `workload_index_recs` example
+
+After running the [query]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) mentioned in the preceding [**Schema Insights** tab](#schema-insights-tab) section, run the following related query more than six times to generate another **Create Index** insight.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+  name, users.city, rides.city, count(rides.id) AS sum
+FROM
+  users JOIN rides ON users.id = rides.rider_id
+WHERE
+  rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
+GROUP BY
+  name, users.city, rides.city
+ORDER BY
+  sum DESC
+LIMIT
+  10;
+~~~
+
+Run the `workload_index_recs` function to return the `CREATE INDEX` recommendation associated with two fingerprint IDs:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT workload_index_recs();
+~~~
+
+~~~
+                                                       workload_index_recs
+----------------------------------------------------------------------------------------------------------------------------------
+  ("CREATE INDEX ON movr.public.rides (start_time) STORING (rider_id);","{""\\\\x95a325e25bdbdc06"",""\\\\x4784cb829aab2542""}")
+~~~
+
+To display the query strings corresponding to the fingerprint IDs, run a query that joins the `workload_index_recs` function with the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#statement_statistics) table.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT ss.index_recommendations,
+(ss.statistics->'statistics'->>'lastExecAt')::TIMESTAMPTZ AS lastExecAt, -- Time the statement was last execut
+ss.fingerprint_id,
+ss.app_name,
+ss.metadata->>'query' AS query
+FROM crdb_internal.statement_statistics AS ss -- Return data from the statement_statistics table
+JOIN (
+    SELECT unnest((rec).fingerprint_ids) AS fingerprint_id -- Return each fingerprint ID from the array as a row
+    FROM workload_index_recs() AS rec
+) AS fids ON ss.fingerprint_id = fids.fingerprint_id
+ORDER BY ss.index_recommendations, lastExecAt;
+~~~
+
+~~~
+                                index_recommendations                               |          lastexecat           |   fingerprint_id   |     app_name     |                                                                                                         query
+------------------------------------------------------------------------------------+-------------------------------+--------------------+------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  {"creation : CREATE INDEX ON movr.public.rides (start_time) STORING (rider_id);"} | 2025-05-08 15:59:21.969934+00 | \x4784cb829aab2542 | $ cockroach demo | SELECT name, count(rides.id) AS sum FROM users JOIN rides ON users.id = rides.rider_id WHERE rides.start_time BETWEEN _ AND _ GROUP BY name ORDER BY sum DESC LIMIT _
+  {"creation : CREATE INDEX ON movr.public.rides (start_time) STORING (rider_id);"} | 2025-05-08 16:10:59.479173+00 | \x95a325e25bdbdc06 | $ cockroach demo | SELECT name, users.city, rides.city, count(rides.id) AS sum FROM users JOIN rides ON users.id = rides.rider_id WHERE rides.start_time BETWEEN _ AND _ GROUP BY name, users.city, rides.city ORDER BY sum DESC LIMIT _
+~~~
 
 ## Search and filter
 

@@ -68,6 +68,12 @@
         ]
       },
       {
+        "title": "Docs MCP Server",
+        "urls": [
+          "/${VERSION}/docs-mcp-integration.html"
+        ]
+      },
+      {
         "title": "Cluster Settings",
         "urls": [
           "/${VERSION}/cluster-settings.html"
@@ -412,6 +418,23 @@
               "/${VERSION}/pg-extension.html"
             ]
           }
+        ]
+      },
+      {% assign advisories = site.pages | where_exp: "advisories", "advisories.path contains 'advisories'" | where_exp: "advisories", "advisories.index != 'true'" %}
+      {
+      "title": "Technical Advisories",
+      "urls": [
+          "/advisories/index.html"
+        {% for x in advisories %}
+          ,"{{ x.url }}"
+        {% endfor %}
+      ]
+      },
+      {
+        "title": "Archived Documentation",
+        "urls": [
+        
+        "/releases/archived-documentation.html"
         ]
       }
     ]

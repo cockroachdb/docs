@@ -7,10 +7,15 @@ docs_area: manage
 
 CockroachDB is built to be [fault-tolerant with automatic recovery]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %}), but sometimes disasters happen. Backup and restore is an important part of a robust disaster recovery plan. CockroachDB {{ site.data.products.core }} clusters provide a range of [backup and restore features](#backup-and-restore-support).
 
-- [Backup and restore product support](#backup-and-restore-support)
-- [Schedules](#scheduled-backups) for periodic backups
-- [SQL statements](#backup-and-restore-sql-statements) for working with backups and restores
-- [Storage](#backup-storage) for backups
+- [Backup and restore support](#backup-and-restore-support)
+  - [Additional backup and restore features](#additional-backup-and-restore-features)
+- [Scheduled backups](#scheduled-backups)
+- [Backup jobs with locality requirements](#backup-jobs-with-locality-requirements)
+- [Backup and restore SQL statements](#backup-and-restore-sql-statements)
+- [Backup storage](#backup-storage)
+- [Backup and restore observability](#backup-and-restore-observability)
+- [Video demo](#video-demo)
+- [See also](#see-also)
 
 You can create full or incremental backups of a [cluster]({% link {{ page.version.version }}/backup.md %}#back-up-a-cluster), [database]({% link {{ page.version.version }}/backup.md %}#back-up-a-database), or [table]({% link {{ page.version.version }}/backup.md %}#back-up-a-table-or-view). Taking regular backups of your data is an operational best practice.
 
@@ -129,6 +134,8 @@ We recommend taking backups to [cloud storage]({% link {{ page.version.version }
 
 - [Example file URLs]({% link {{ page.version.version }}/use-cloud-storage.md %}#example-file-urls) to form the URL that you pass to `BACKUP` and `RESTORE` statements.
 - [Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) to set up authentication to a cloud storage bucket and include those credentials in the URL.
+
+{% include common/s3-support-notice.md %}
 
 For detail on additional cloud storage features CockroachDB supports:
 

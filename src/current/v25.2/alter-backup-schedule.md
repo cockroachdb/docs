@@ -155,6 +155,8 @@ Full backups are implicitly of `backup_type` `0`, and so does not display in the
 
 ### Apply different options to scheduled backups
 
+{% include common/sql/incremental-location-warning.md %}
+
 You can modify the behavior of your backup schedule and the backup jobs with `SET SCHEDULE OPTION` and `SET WITH`. See the [Schedule options](#schedule-options) table and the [Backup options](#backup-options) table for a list of the available options.
 
 This statement changes the default `wait` value for the `on_previous_running` schedule option to `start`. If a previous backup started by the schedule is still running, the scheduled job will now start the new backup anyway, rather than waiting. The backup option [`incremental_location`]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations) modifies the storage location for incremental backups:

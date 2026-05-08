@@ -11,6 +11,10 @@ Cockroach Labs supports different levels of authentication to cloud storage. Whe
 We recommend using IAM roles for users to authenticate to cloud storage resources. For more detail, see the assume role and workload identity sections for [Amazon S3]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#set-up-amazon-s3-assume-role) and [Google Cloud Storage](cloud-storage-authentication.html?filters=gcs#set-up-google-cloud-storage-assume-role).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/backups/external-storage-check-tip.md %}
+{{site.data.alerts.end}}
+
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
   <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
@@ -276,7 +280,7 @@ You can find the AWS account ID and your cluster's ID using the [Cloud API]({% l
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-curl --request GET --url 'https://cockroachlabs.cloud/api/v1/clusters' --header 'Authorization: Bearer {secret key}'
+curl --request GET --url https://cockroachlabs.cloud/api/v1/clusters --header "Authorization: Bearer {secret key}"
 ~~~
 
 Combine the last 12 digits of your cluster's `id` and the full 12-digit `account_id` in the following fashion to form the ARN:
@@ -556,7 +560,7 @@ You can find the GCP project ID and your cluster's ID using the [Cloud API]({% l
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-curl --request GET --url 'https://cockroachlabs.cloud/api/v1/clusters' --header 'Authorization: Bearer {secret key}'
+curl --request GET --url https://cockroachlabs.cloud/api/v1/clusters --header "Authorization: Bearer {secret key}"
 ~~~
 
 Use the last 12 digits of your cluster's `id` and the `account_id` to form the service account. (Note that the `account_id` in your cluster's details becomes the GCP `{project id}`.)

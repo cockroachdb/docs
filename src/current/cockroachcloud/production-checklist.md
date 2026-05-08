@@ -132,7 +132,7 @@ Since upgrading a cluster can have a significant impact on your workload, make s
 
 ### Patch upgrades
 
-For CockroachDB {{ site.data.products.advanced }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#org-administrator) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.advanced }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
+For CockroachDB {{ site.data.products.advanced }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. Patch upgrades can also be [deferred for 30, 60, or 90 days]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.advanced }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
 
 For more information, refer to [Patch version upgrades]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades).
 
@@ -147,4 +147,4 @@ CockroachDB {{ site.data.products.advanced }} has access to all features require
 - Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
 - [Network security]({% link cockroachcloud/network-authorization.md %})
 
-You can check the status of these features on the [**PCI ready**]({% link cockroachcloud/cluster-overview-page.md %}?filters=advanced#pci-ready) page of the CockroachDB {{ site.data.products.cloud }} Console.
+The **PCI DSS Ready** page in the CockroachDB {{ site.data.products.cloud }} console allows you to track your cluster's utilization of advanced security features that enable the cluster's PCI DSS readiness.

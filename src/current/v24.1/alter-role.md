@@ -11,7 +11,13 @@ You can use the keywords `ROLE` and `USER` interchangeably. [`ALTER USER`]({% li
 
 ## Considerations
 
-- Password creation and alteration is supported only in secure clusters.
+### Password management
+
+Password creation and alteration is supported only in secure clusters.
+
+### Session variable precedence
+
+{% include {{ page.version.version }}/sql/session-variable-precedence-order.md %}
 
 ## Required privileges
 
@@ -33,7 +39,7 @@ Parameter | Description
 `SET {session variable}` | Set default [session variable]({% link {{ page.version.version }}/set-vars.md %}) values for a role.
 `RESET {session variable}`<br>`RESET ALL` <a name="parameters-reset"></a> |  Reset one session variable or all session variables to the default value.
 `IN DATABASE database_name` | Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.<br>In order for a session to initialize session variable values to database defaults, the database must be specified as a [connection parameter]({% link {{ page.version.version }}/connection-parameters.md %}). Database default values will not appear if the database is set after connection with `USE <dbname>`/`SET database=<dbname>`.
-`ROLE ALL ...`/`USER ALL ...` |  Apply session variable settings to all roles.<br>Exception: The `root` user is exempt from session variable settings.
+`ROLE ALL ...`/`USER ALL ...` |  Apply session variable settings to all roles.<br>Exception: The `root` user is exempt from session variable settings. This is a failsafe; if you make a mistake with a session variable setting, you can still log in as `root` and be unaffected.
 
 ### Role options
 
@@ -254,6 +260,8 @@ ALTER ROLE ALL SET sql.spatial.experimental_box2d_comparison_operators.enabled =
 ~~~
 ALTER ROLE
 ~~~
+
+The `root` user is exempt from session variable settings changes. This is a failsafe; if you make a mistake with a session variable setting, you can still log in as `root` and be unaffected.
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 

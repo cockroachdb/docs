@@ -84,11 +84,11 @@ The following statements are run by the `root` user that is a member of the `adm
 Role names are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE no_options;
+CREATE ROLE no_options;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> SHOW ROLES;
+SHOW ROLES;
 ~~~
 
 ~~~
@@ -105,11 +105,11 @@ After creating roles, you must [grant them privileges to databases]({% link {{ p
 ### Create a role that can log in to the database
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE can_login WITH LOGIN PASSWORD '$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
+CREATE ROLE can_login WITH LOGIN PASSWORD '$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> SHOW ROLES;
+SHOW ROLES;
 ~~~
 
 ~~~
@@ -128,11 +128,11 @@ The following statement prevents the role from using password authentication and
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE ROLE no_password WITH PASSWORD NULL;
+CREATE ROLE no_password WITH PASSWORD NULL;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> SHOW ROLES;
+SHOW ROLES;
 ~~~
 
 ~~~
@@ -151,11 +151,11 @@ root       |                                       | {admin}
 The following example allows the role to [create other users]({% link {{ page.version.version }}/create-role.md %}) and [manage authentication methods]({% link {{ page.version.version }}/authentication.md %}#client-authentication) for them:
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE can_create_role WITH CREATEROLE CREATELOGIN;
+CREATE ROLE can_create_role WITH CREATEROLE CREATELOGIN;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> SHOW ROLES;
+SHOW ROLES;
 ~~~
 
 ~~~
@@ -175,11 +175,11 @@ root            |                                       | {admin}
 The following example allows the role to [create]({% link {{ page.version.version }}/create-database.md %}) or [rename]({% link {{ page.version.version }}/alter-database.md %}#rename-to) databases:
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE can_create_db WITH CREATEDB;
+CREATE ROLE can_create_db WITH CREATEDB;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> SHOW ROLES;
+SHOW ROLES;
 ~~~
 
 ~~~
@@ -200,11 +200,11 @@ root                  |                                       | {admin}
 The following example allows the role to [pause]({% link {{ page.version.version }}/pause-job.md %}), [resume]({% link {{ page.version.version }}/resume-job.md %}), and [cancel]({% link {{ page.version.version }}/cancel-job.md %}) jobs:
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE can_control_job WITH CONTROLJOB;
+CREATE ROLE can_control_job WITH CONTROLJOB;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> SHOW ROLES;
+SHOW ROLES;
 ~~~
 
 ~~~
@@ -227,11 +227,11 @@ root                  |                                       | {admin}
 The following example allows the role to cancel [queries]({% link {{ page.version.version }}/cancel-query.md %}) and [sessions]({% link {{ page.version.version }}/cancel-session.md %}) for other non-`admin` roles:
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE can_manage_queries WITH CANCELQUERY VIEWACTIVITY;
+CREATE ROLE can_manage_queries WITH CANCELQUERY VIEWACTIVITY;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> SHOW ROLES;
+SHOW ROLES;
 ~~~
 
 ~~~
@@ -254,11 +254,11 @@ root                  |                                       | {admin}
 The following example allows the role to run [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}):
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE can_control_changefeed WITH CONTROLCHANGEFEED;
+CREATE ROLE can_control_changefeed WITH CONTROLCHANGEFEED;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> SHOW ROLES;
+SHOW ROLES;
 ~~~
 
 ~~~
@@ -282,11 +282,11 @@ root                   |                                       | {admin}
 The following example allows the role to modify [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE can_modify_cluster_setting WITH MODIFYCLUSTERSETTING;
+CREATE ROLE can_modify_cluster_setting WITH MODIFYCLUSTERSETTING;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> SHOW ROLES;
+SHOW ROLES;
 ~~~
 
 ~~~
@@ -305,6 +305,17 @@ no_password                | NOLOGIN                               | {}
 root                       |                                       | {admin}
 (11 rows)
 ~~~
+
+### Create a role that can bypass row-level security (RLS)
+
+To create a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles) that can bypass [row-level security]({% link {{ page.version.version }}/row-level-security.md %}), execute the following statement to grant the [`BYPASSRLS`]({% link {{ page.version.version }}/security-reference/authorization.md %}#bypassrls) privilege:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE ROLE can_bypassrls WITH BYPASSRLS;
+~~~
+
+For instructions showing how to alter a role to add or remove the `BYPASSRLS` privilege, refer to [`ALTER ROLE`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls).
 
 ### Set the `SUBJECT` role option for certificate based authentication
 
