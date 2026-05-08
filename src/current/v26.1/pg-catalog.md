@@ -204,3 +204,43 @@ For example, to return the `pg_catalog` table with additional information about 
 - [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
 - [SQL Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %})
 - [System Catalogs]({% link {{ page.version.version }}/system-catalogs.md %})
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## pg_dump compatibility mode
+
+CockroachDB supports a `pg_dump_compatibility` session variable that modifies how `pg_catalog` views present metadata. When enabled, this mode remaps object identifiers (OIDs) to match PostgreSQL's expected values, improving compatibility with PostgreSQL tools like `pg_dump`.
+
+### Affected views
+
+When `pg_dump_compatibility` is set to `postgres` or `cockroachdb`, the following views return PostgreSQL-compatible OIDs:
+
+- **`pg_cast`** — Cast function OIDs are remapped to sequential values below 16384
+- **`pg_am`** — Access method OIDs are remapped; CockroachDB-specific access methods like `prefix` and `inverted` are presented as `btree`
+- **`pg_class`** — The `tableoid` virtual column returns remapped table and view OIDs
+- **`pg_tablespace`** — Tablespace OIDs are remapped to PostgreSQL's default tablespace OIDs
+- **`pg_depend`** — Dependency relationships use remapped OIDs for proper resolution
+- **`pg_shdepend`** — Shared dependency relationships use remapped OIDs
+- **`pg_description`** — Object descriptions reference remapped OIDs
+- **`pg_shdescription`** — Shared object descriptions reference remapped OIDs
+
+### Usage
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Enable PostgreSQL compatibility mode
+SET pg_dump_compatibility = 'postgres';
+
+-- Query pg_catalog views with PostgreSQL-compatible OIDs
+SELECT oid, amname FROM pg_catalog.pg_am;
+~~~
+
+{{site.data.alerts.callout_info}}
+The `postgres` mode also hides CockroachDB-internal objects from `crdb_internal` and suppresses CockroachDB-specific storage parameters to improve compatibility with external tools.
+{{site.data.alerts.end}}
+
+**See also**:
+- [Session variables]({% link {{ page.version.version }}/session-variables.md %})
+- [PostgreSQL compatibility]({% link {{ page.version.version }}/postgresql-compatibility.md %})
+
+<!-- END REF DOC DRAFT -->
