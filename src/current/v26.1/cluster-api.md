@@ -80,3 +80,42 @@ The Cluster API version is defined in the request path. For example: `<cluster>/
 Future versions of CockroachDB may provide multiple API versions and will continue to provide access to this v2.0 API until it is deprecated.
 
 All endpoint paths and payloads will remain available within a major API version number (`v2.x`). Patch versions could add new endpoints but will not remove existing endpoints. For more information, see [API Support Policy]({% link {{ page.version.version }}/api-support-policy.md %}).
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## Analysis
+
+This PR backports changefeed retry improvements from #164933 and #165494 to the 26.1 release branch. The key changes include:
+
+1. **New cluster setting**: `changefeed.reset_backoff_on_highwater_advance.enabled`
+2. **Retry behavior enhancement**: Resets backoff when changefeed highwater mark advances
+3. **Testing infrastructure**: New test knobs and test cases
+
+However, **no new API endpoints** are introduced in this PR. The changes are entirely focused on:
+- Internal changefeed retry logic
+- Cluster configuration settings
+- Testing infrastructure
+- Error handling improvements
+
+## Cluster Setting Documentation
+
+While no API endpoints were added, this PR introduces a new cluster setting that should be documented:
+
+### New Cluster Setting
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `changefeed.reset_backoff_on_highwater_advance.enabled` | `boolean` | `false` | if true, resets changefeed retry backoff when the resolved timestamp advances between retries, preventing transient errors from causing excessive backoff delays |
+
+**Usage Notes:**
+
+- This setting is disabled by default on the 26.1 release branch to maintain backward compatibility
+- When enabled, helps prevent changefeeds from falling behind during rolling restarts or other transient error conditions
+- The retry backoff resets only when meaningful forward progress is detected (highwater mark advancement)
+- Related to changefeed retry behavior controlled by `changefeed.max_retry_backoff` and `changefeed.retry_backoff_reset`
+
+## Conclusion
+
+No API reference documentation is needed for this PR as it contains no new or changed API endpoints. The changes are focused on internal changefeed reliability improvements and cluster configuration options.
+
+<!-- END REF DOC DRAFT -->
