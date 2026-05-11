@@ -15,6 +15,10 @@ To verify that your connections and configuration work properly, run MOLT Replic
 
 {% include molt/optimize-replicator-performance.md %}
 
+### Docker performance
+
+MOLT Replicator is likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory or compute resources, or both, on your Docker container.
+
 ## Security
 
 Cockroach Labs **strongly** recommends the following:

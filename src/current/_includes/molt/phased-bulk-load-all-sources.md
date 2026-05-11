@@ -86,7 +86,7 @@ CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simpli
 
 {% include molt/migration-create-sql-user.md %}
 
-## Migrating each phase
+## Migrate each phase
 
 Steps 3-7 are run for each phase of the data migration. Within the first migration downtime window, you will run through these steps for Region A. You will repeat these steps for the other regions during each subsequent downtime window.
 

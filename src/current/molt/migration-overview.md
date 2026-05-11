@@ -21,17 +21,19 @@ This page provides an overview of the following:
 A migration to CockroachDB generally follows a variant of this sequence:
 
 1. **Assess and discover**: Inventory the source database, flag unsupported features, make a migration plan.
-1. **Prepare the environment**: Configure networking, users and permissions, bucket locations, replication settings, and more.
+1. **Prepare the environment**: Configure networking, users and permissions, bucket locations, and replication settings.
 1. **Convert the source schema**: Generate CockroachDB-compatible [DDL]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements). Apply the converted schema to the target database. Drop constraints and indexes to facilitate data load.
 1. **Load data into CockroachDB**: Bulk load the source data into the CockroachDB cluster.
 1. **Finalize target schema**: Recreate indexes or constraints on CockroachDB that you previously dropped to facilitate data load.
-1. **_(Optional)_ Replicate ongoing changes**: Keep CockroachDB in sync with the source. This may be necessary for migrations that minimize downtime.
-1. **Stop application traffic**: Limit user read/write traffic to the source database. _This begins application downtime._
+1. **Replicate ongoing changes (optional)**: Keep CockroachDB in sync with the source. This may be necessary for migrations that minimize downtime.
+1. **Stop application traffic**: Limit user read/write traffic to the source database. This begins application downtime.
 1. **Verify data consistency**: Confirm that the CockroachDB data is consistent with the source.
-1. **_(Optional)_ Enable failback**: Replicate data from the target back to the source, enabling a reversion to the source database in the event of migration failure.
-1. **Cut over application traffic**: Resume normal application use, with the CockroachDB cluster as the target database. _This ends application downtime._
+1. **Enable failback (optional)**: Replicate data from the target back to the source, enabling a reversion to the source database in the event of migration failure.
+1. **Cut over application traffic**: Resume normal application use, with the CockroachDB cluster as the target database. This ends application downtime.
 
-The MOLT (Migrate Off Legacy Technology) toolkit enables safe, minimal-downtime database migrations to CockroachDB. MOLT combines schema transformation, distributed data load, continuous replication, and row-level validation into a highly configurable workflow that adapts to diverse production environments.
+This sequence can vary depending on the needs on how your organization considers the [migration variables](#migration-variables). The [common migration approaches](#common-migration-approaches) describe some standard use cases, but even these may need to be modified to suit the needs of your migration.
+
+The following diagram shows how the MOLT (Migrate Off Legacy Technology) toolkit is used at various stages of the migration sequence.
 
 <div style="text-align: center;">
 <img src="{{ 'images/molt/molt_flow_generic.svg' | relative_url }}" alt="MOLT toolkit flow" style="max-width:100%" />
@@ -104,6 +106,7 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 - [Multiple consistency modes]({% link molt/molt-replicator.md %}#consistency-modes) for balancing throughput and transactional guarantees.
 - Failback replication from CockroachDB back to source databases.
 - [Performance tuning]({% link molt/molt-replicator-best-practices.md %}#optimize-performance) for high-throughput workloads.
+- [Userscripts]({% link molt/userscript-overview.md %}) for defining data transformations.
 
 ### Verify
 
@@ -117,37 +120,19 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 
 You must decide how you want your migration to handle each of the following variables. These decisions will depend on your specific business and technical considerations. The MOLT toolkit supports any set of decisions made for the [supported source databases](#molt-tools).
 
-### Migration granularity
-
-You may choose to migrate all of your data into a CockroachDB cluster at once. However, for larger data stores it's recommended that you migrate data in separate phases. This can help break the migration down into manageable slices, and it can help limit the effects of migration difficulties.
-
-### Continuous replication
-
-After data is migrated from the source into CockroachDB, you may choose to continue streaming changes to that source data from the source to the target. This is important for migrations that aim to minimize application downtime, as they may require the source database to continue receiving writes until application traffic is fully cut over to CockroachDB.
-
-### Data transformation strategy
-
-If there are discrepancies between the source and target schemas, the rules that determine necessary data transformations need to be defined. These transformations can be applied in the source database, in flight, or in the target database.
-
-### Validation strategy
-
-There are several different ways of verifying that the data in the source and the target match one another. You must decide what validation checks you want to perform, and when in the migration process you want to perform them.
-
-### Rollback plan
-
-Until the migration is complete, migration failures may make you decide to roll back application traffic entirely to the source database. You may therefore need a way of keeping the source database up to date with new writes to the target. This is especially important for risk-averse migrations that aim to minimize downtime.
-
----
+| Variable | Description |
+|---|---|
+| [**Migration granularity**]({% link molt/migration-considerations-granularity.md %}) <h3 id="migration-granularity" style="visibility:hidden;max-height:0;">Migration granularity</h3> | Do you want to migrate all of your data at once, or do you want to split your data up into phases and migrate one phase at a time? |
+| [**Continuous replication**]({% link molt/migration-considerations-replication.md %}) <h3 id="continuous-replication" style="visibility:hidden;max-height:0;">Continuous replication</h3> | After the initial data load (or after the initial load of each phase), do you want to stream further changes to that data from the source to the target? |
+| [**Data transformation strategy**]({% link molt/migration-considerations-transformation.md %}) <h3 id="data-transformation-strategy" style="visibility:hidden;max-height:0;">Data transformation strategy</h3> | If there are discrepancies between the source and target schema, how will you define those data transformations, and when will those transformations occur? |
+| [**Validation strategy**]({% link molt/migration-considerations-validation.md %}) <h3 id="validation-strategy" style="visibility:hidden;max-height:0;">Validation strategy</h3> | How and when will you verify that the data in CockroachDB matches the source database? |
+| [**Rollback plan**]({% link molt/migration-considerations-rollback.md %}) <h3 id="rollback-plan" style="visibility:hidden;max-height:0;">Rollback plan</h3> | What approach will you use to roll back the migration if issues arise during or after cutover? |
 
 [Learn more about the different migration variables]({% link molt/migration-considerations.md %}), how you should consider the different options for each variable, and how to use the MOLT toolkit for each variable.
 
 ## Common migration approaches
 
-<!-- {{site.data.alerts.callout_success}}
-Before you begin the migration, review [Migration Strategy]({% link molt/migration-strategy.md %}).
-{{site.data.alerts.end}} -->
-
-MOLT supports various migration flows using [MOLT Fetch]({% link molt/molt-fetch.md %}) for data loading and [MOLT Replicator]({% link molt/molt-replicator.md %}) for ongoing replication.
+MOLT supports various migration flows using [MOLT Fetch]({% link molt/molt-fetch.md %}) for data loading and [MOLT Replicator]({% link molt/molt-replicator.md %}) for ongoing replication. These common approaches are variants of the general [migration sequence](#migration-sequence).
 
 |                             Migration approach                             |                                         Description                                          |                                                 Best for                                                |
 |------------------------------------------------------------------------|------------------------------|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|

@@ -7,25 +7,35 @@ docs_area: migrate
 
 When planning a migration to CockroachDB, you need to make several high-level decisions that will shape your migration approach. This page provides an overview of key migration variables and the factors that influence them. Each variable has multiple options, and the combination you choose will largely define your migration strategy.
 
-For detailed migration sequencing and tool usage, see [Migration Overview]({% link molt/migration-overview.md %}). For detailed planning guidance, see [Migration Best Practices]({% link molt/migration-strategy.md %}).
+For detailed migration sequencing and tool usage, refer to [Migration Overview]({% link molt/migration-overview.md %}). For detailed planning guidance, refer to [Migration Best Practices]({% link molt/migration-strategy.md %}).
 
 ## Migration variables
 
-Learn more about each migration variable by clicking the links in the left-hand column.
-
-| Variable | Description |
-|---|---|
-| [**Migration granularity**]({% link molt/migration-considerations-granularity.md %}) <h3 id="migration-granularity" style="visibility:hidden;max-height:0;">Migration granularity</h3> | Do you want to migrate all of your data at once, or do you want to split your data up into phases and migrate one phase at a time? |
-| [**Continuous replication**]({% link molt/migration-considerations-replication.md %}) <h3 id="continuous-replication" style="visibility:hidden;max-height:0;">Continuous replication</h3> | After the initial data load (or after the initial load of each phase), do you want to stream further changes to that data from the source to the target? |
-| [**Data transformation strategy**]({% link molt/migration-considerations-transformation.md %}) <h3 id="data-transformation-strategy" style="visibility:hidden;max-height:0;">Data transformation strategy</h3> | If there are discrepancies between the source and target schema, how will you define those data transformations, and when will those transformations occur? |
-| [**Validation strategy**]({% link molt/migration-considerations-validation.md %}) <h3 id="validation-strategy" style="visibility:hidden;max-height:0;">Validation strategy</h3> | How and when will you verify that the data in CockroachDB matches the source database? |
-| [**Rollback plan**]({% link molt/migration-considerations-rollback.md %}) <h3 id="rollback-plan" style="visibility:hidden;max-height:0;">Rollback plan</h3> | What approach will you use to roll back the migration if issues arise during or after cutover? |
-
 The combination of these variables largely defines your migration approach. While you'll typically choose one primary option for each variable, some migrations may involve a hybrid approach depending on your specific requirements.
+
+### Migration granularity
+
+You may choose to migrate all of your data into a CockroachDB cluster at once. However, for larger data stores it's recommended that you migrate data in separate phases. This can help break the migration down into manageable slices, and it can help limit the effects of migration difficulties. Learn more about how to consider [migration granularity]({% link molt/migration-considerations-granularity.md %}).
+
+### Continuous replication
+
+After data is migrated from the source into CockroachDB, you may choose to continue streaming changes to that source data from the source to the target. This is important for migrations that aim to minimize application downtime, as they may require the source database to continue receiving writes until application traffic is fully cut over to CockroachDB. Learn more about how to consider [continuous replication]({% link molt/migration-considerations-replication.md %}).
+
+### Data transformation strategy
+
+If there are discrepancies between the source and target schemas, the rules that determine necessary data transformations need to be defined. These transformations can be applied in the source database, in flight, or in the target database. Learn more about how to consider a [data transformation strategy]({% link molt/migration-considerations-transformation.md %}).
+
+### Validation strategy
+
+There are several different ways of verifying that the data in the source and the target match one another. You must decide what validation checks you want to perform, and when in the migration process you want to perform them. Learn more about how to consider a [validation strategy]({% link molt/migration-considerations-validation.md %}).
+
+### Rollback plan
+
+Until the migration is complete, migration failures may make you decide to roll back application traffic entirely to the source database. You may therefore need a way of keeping the source database up to date with new writes to the target. This is especially important for risk-averse migrations that aim to minimize downtime. Learn more about how to consider a [rollback plan]({% link molt/migration-considerations-rollback.md %}).
 
 ## Factors to consider
 
-When deciding on the options for each migration variable, consider the following business and technical requirements:
+When deciding on the options for each migration variable, consider the following business and technical requirements. It's recommended that you document these decisions and the reasoning behind them as part of your [migration plan]({% link molt/migration-strategy.md %}#develop-a-migration-plan).
 
 ### Permissible downtime
 
@@ -57,9 +67,9 @@ How much risk is your organization willing to accept during the migration? This 
 
 - For risk-tolerant migrations, it may be acceptable to migrate all of your data at once. Less stringent validation strategies and manual reconciliation in the event of a migration failure may also be acceptable.
 
-___
+## Common migration approaches
 
-These factors are only a subset of what you will want to consider in designing your CockroachDB migration, along with your specific business requirements and technical constraints. It's recommended that you document these decisions and the reasoning behind them as part of your [migration plan]({% link molt/migration-strategy.md %}#develop-a-migration-plan).
+To better understand how these factors affect some common migration use cases, refer to [Common migration approaches]({% link molt/migration-overview.md %}#common-migration-approaches).
 
 ## See also
 

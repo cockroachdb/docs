@@ -51,6 +51,10 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 
 - Ensure that the machine running MOLT Fetch is equipped to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, observe the `molt_fetch_rows_exported` [metric]({% link molt/molt-fetch-monitoring.md %}#metrics) for decreases in the number of rows being processed. You can use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view metrics. For details on optimizing export performance through sharding, refer to [Table sharding]({% link molt/molt-fetch.md %}#shard-tables-for-concurrent-export).
 
+### Docker performance
+
+MOLT Fetch is likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory or compute resources, or both, on your Docker container.
+
 ## Import and continuation handling
 
 - When using [`IMPORT INTO`]({% link molt/molt-fetch.md %}#import-into-vs-copy-from) during the [data import phase]({% link molt/molt-fetch.md %}#data-import-phase) to load tables into CockroachDB, if the fetch task terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation]({% link molt/molt-fetch.md %}#continue-molt-fetch-after-interruption), or restart the task from the beginning.

@@ -85,7 +85,7 @@ ALTER DATABASE defaultdb CONFIGURE ZONE USING gc.ttlseconds = 300;
 
 For details, refer to [Protect Changefeed Data from Garbage Collection]({% link {{ site.current_cloud_version }}/protect-changefeed-data.md %}).
 
-## Migrating each phase
+## Migrate each phase
 
 Steps 3-12 are run for each phase of the data migration. When migrating the first phase, you will run through these steps for Region A. You will repeat these steps for the other regions during each subsequent migration phase.
 

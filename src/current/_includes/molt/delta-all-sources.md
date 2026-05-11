@@ -6,7 +6,7 @@ A [*Delta Migration*]({% link molt/migration-approach-delta.md %}) uses an initi
 
 - [Failback replication]({% link molt/migration-considerations-rollback.md %}) is supported, though this example will not use it. See [Phased Delta Migration with Failback Replication]({% link molt/migration-approach-phased-delta-failback.md %}) for an example of a migration that uses failback replication.
 
-This approach is best for production environments that need to minimize system downtime.
+This approach is best for production environments that need to [minimize system downtime]({% link molt/migration-considerations.md %}#permissible-downtime).
 
 This page describes an example scenario. While the commands provided can be copy-and-pasted, they may need to be altered or reconsidered to suit the needs of your specific environment.
 

@@ -7,7 +7,7 @@ docs_area: migrate
 
 MOLT Replicator continuously replicates changes from a source database to CockroachDB as part of a [database migration]({% link molt/migration-overview.md %}). It supports migrations from a source database to CockroachDB with minimal downtime, and enables backfill from CockroachDB to your source database for failback scenarios to preserve a rollback option during a migration window.
 
-MOLT Replicator consumes change data from PostgreSQL [logical replication](https://www.postgresql.org/docs/current/logical-replication.html) streams, MySQL [GTID-based replication](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html), Oracle [LogMiner](https://docs.oracle.com/en/database/oracle/oracle-database/21/sutil/oracle-logminer-utility.html), and [CockroachDB changefeeds]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) (for failback). Read more about [MOLT Replicator prerequisites]({% link molt/molt-replicator-installation.md %}#prerequisites).
+MOLT Replicator consumes change data from PostgreSQL [logical replication](https://www.postgresql.org/docs/current/logical-replication.html) streams, MySQL [GTID-based replication](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html), Oracle [LogMiner](https://docs.oracle.com/en/database/oracle/oracle-database/21/sutil/oracle-logminer-utility.html), and [CockroachDB changefeeds]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) (for failback).
 
 ## Terminology
 
@@ -15,6 +15,40 @@ MOLT Replicator consumes change data from PostgreSQL [logical replication](https
 - *Staging database*: A CockroachDB database used by Replicator to store replication metadata, checkpoints, and buffered mutations. Specified with [`--stagingSchema`]({% link molt/replicator-flags.md %}#staging-schema) and automatically created with [`--stagingCreateSchema`]({% link molt/replicator-flags.md %}#staging-create-schema). For details, refer to [Staging database](#staging-database).
 - *Forward replication*: Replicate changes from a source database (PostgreSQL, MySQL, or Oracle) to CockroachDB during a migration. For usage details, refer to [Forward replication (after initial load)](#forward-replication-after-initial-load).
 - *Failback*: Replicate changes from CockroachDB back to the source database. Used for migration rollback or to maintain data consistency on the source during migration. For usage details, refer to [Failback replication](#failback-replication).
+
+## Prerequisites
+
+### Supported databases
+
+MOLT Replicator supports the following source and target databases:
+
+- PostgreSQL 11-16
+- MySQL 5.7-8.4
+- Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)
+- CockroachDB (all currently [supported versions]({% link releases/release-support-policy.md %}#supported-versions))
+
+### Database configuration
+
+The source database must be configured for replication:
+
+|            Database           |                                                                                                                                                                                                                                                                                        Configuration Requirements                                                                                                                                                                                                                                                                                        |                                                                Examples                                                                 |
+|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| PostgreSQL source             | <ul><li>Enable logical replication by setting `wal_level = logical`.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | [Configure PostgreSQL for replication]({% link molt/delta-migration-postgres.md %}#configure-source-database-for-replication)            |
+| MySQL source                  | <ul><li>Enable [global transaction identifiers (GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) and configure binary logging. Set `binlog-row-metadata` or `binlog-row-image` to `full`.</li><li>Configure sufficient binlog retention for migration duration.</li></ul>                                                                                                                                                                                                                                                                                                  | [Configure MySQL for replication]({% link molt/delta-migration-mysql.md %}#configure-source-database-for-replication)   |
+| Oracle source                 | <ul><li>Install [Oracle Instant Client]({% link molt/delta-migration-oracle.md %}#oracle-instant-client).</li><li>[Enable `ARCHIVELOG` mode]({% link molt/delta-migration-oracle.md %}#enable-archivelog-and-force-logging), supplemental logging for primary keys, and `FORCE LOGGING`.</li><li>[Create sentinel table]({% link molt/delta-migration-oracle.md %}#create-source-sentinel-table) (`REPLICATOR_SENTINEL`) in source schema.</li><li>Grant and verify [LogMiner privileges]({% link molt/delta-migration-oracle.md %}#grant-logminer-privileges).</li></ul> | [Configure Oracle for replication]({% link molt/delta-migration-oracle.md %}#configure-source-database-for-replication) |
+| CockroachDB source (failback) | <ul><li>[Enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) (`kv.rangefeed.enabled = true`) (CockroachDB {{ site.data.products.core }} clusters only).</li></ul>                                                                                                                                                                                                                                                                                                                                                                      | [Configure CockroachDB for replication]({% link molt/phased-delta-failback-postgres.md %}#prepare-the-cockroachdb-cluster)                           |
+
+### User permissions
+
+The SQL user running MOLT Replicator requires specific privileges on both the source and target databases:
+
+|                    Database                    |                                                                                                                                                                                                                                                                Required Privileges                                                                                                                                                                                                                                                                 |                                                                                                                                                                                     Examples                                                                                                                                                                                     |
+|------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| PostgreSQL source                              | <ul><li>`SUPERUSER` role (recommended), or the following granular permissions:</li><li>`CREATE` and `SELECT` on database and tables to replicate.</li><li>Table ownership for adding tables to publications.</li><li>`LOGIN` and `REPLICATION` privileges to create replication slots and access replication data.</li></ul>                                                                                                                                                                                                                       | [Create PostgreSQL migration user]({% link molt/delta-migration-postgres.md %}#create-migration-user-on-source-database)                                                                                                                                                                                                                                                          |
+| MySQL source                                   | <ul><li>`SELECT` on tables to replicate.</li><li>`REPLICATION SLAVE` and `REPLICATION CLIENT` privileges for binlog access.</li><li>For [`--fetchMetadata`]({% link molt/replicator-flags.md %}#fetch-metadata), either `SELECT` on the source database or `PROCESS` globally.</li></ul>                                                                                                                                                                                                                                                           | [Create MySQL migration user]({% link molt/delta-migration-mysql.md %}#create-migration-user-on-source-database)                                                                                                                                                                                                                                                 |
+| Oracle source                                  | <ul><li>`SELECT`, `INSERT`, `UPDATE` on `REPLICATOR_SENTINEL` table.</li><li>`SELECT` on `V$` views (`V$LOG`, `V$LOGFILE`, `V$LOGMNR_CONTENTS`, `V$ARCHIVED_LOG`, `V$LOG_HISTORY`).</li><li>`SELECT` on `SYS.V$LOGMNR_*` views (`SYS.V$LOGMNR_DICTIONARY`, `SYS.V$LOGMNR_LOGS`, `SYS.V$LOGMNR_PARAMETERS`, `SYS.V$LOGMNR_SESSION`).</li><li>`LOGMINING` privilege.</li><li>`EXECUTE` on `DBMS_LOGMNR`.</li><li>For Oracle Multitenant, the user must be a common user (prefixed with `C##`) with privileges granted on both CDB and PDB.</li></ul> | [Create Oracle migration user]({% link molt/delta-migration-oracle.md %}#create-migration-user-on-source-database)<br><br>[Create sentinel table]({% link molt/delta-migration-oracle.md %}#create-source-sentinel-table)<br><br>[Grant LogMiner privileges]({% link molt/delta-migration-oracle.md %}#grant-logminer-privileges)  |
+| CockroachDB target (forward replication)       | <ul><li>`ALL` on target database.</li><li>`CREATE` on schema.</li><li>`SELECT`, `INSERT`, `UPDATE`, `DELETE` on target tables.</li><li>`CREATEDB` privilege for creating staging schema.</li></ul>                                                                                                                                                                                                                                                                                                                                                 | [Create CockroachDB user]({% link molt/delta-migration-postgres.md %}#create-the-sql-user)                                                                                                                                                                                                                                                                                        |
+| PostgreSQL, MySQL, or Oracle target (failback) | <ul><li>`SELECT`, `INSERT`, `UPDATE` on tables to fail back to.</li><li>For Oracle, `FLASHBACK` is also required.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                        | [Grant PostgreSQL user permissions]({% link molt/phased-delta-failback-postgres.md %}#grant-target-database-user-permissions)<br><br>[Grant MySQL user permissions]({% link molt/phased-delta-failback-mysql.md %}?filter=mysql#grant-target-database-user-permissions)<br><br>[Grant Oracle user permissions]({% link molt/phased-delta-failback-oracle.md %}?filter=oracle#grant-target-database-user-permissions) |
 
 ## How it works
 
@@ -243,6 +277,26 @@ Redirect both streams to ensure all logs are captured for troubleshooting:
 ~~~
 
 Enable debug logging with [`-v`]({% link molt/replicator-flags.md %}#verbose). For more granularity and system insights, enable trace logging with [`-vv`]({% link molt/replicator-flags.md %}#verbose). Pay close attention to warning- and error-level logs, as these indicate when Replicator is misbehaving.
+
+## Docker usage
+
+### Local connection strings
+
+When testing locally, specify the host as follows:
+
+- For macOS, use `host.docker.internal`. For example:
+
+    ~~~
+    --sourceConn 'postgres://postgres:postgres@host.docker.internal:5432/migration_db?sslmode=disable'
+    --targetConn "postgres://root@host.docker.internal:26257/defaultdb?sslmode=disable"
+    ~~~
+
+- For Linux and Windows, use `172.17.0.1`. For example:
+
+    ~~~
+    --sourceConn 'postgres://postgres:postgres@172.17.0.1:5432/migration_db?sslmode=disable'
+    --targetConn "postgres://root@172.17.0.1:26257/defaultdb?sslmode=disable"
+    ~~~
 
 ## Common uses
 

@@ -5,11 +5,40 @@ toc: true
 docs_area: migrate
 ---
 
-MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link molt/migration-overview.md %}).
+MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link molt/migration-overview.md %}). You can use MOLT Fetch to migrate data from a PostgreSQL, MySQL, or Oracle source database.
 
 MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage, Amazon S3, or Azure Blob Storage), a local file server, or local memory. Once the data is exported, MOLT Fetch loads the data into a target CockroachDB database.
 
-You can use MOLT Fetch to migrate data from a PostgreSQL, MySQL, or Oracle source database. Read more about [MOLT Fetch prerequisites]({% link molt/molt-fetch-installation.md %}#prerequisites).
+## Prerequisites
+
+### Supported databases
+
+The following source databases are supported:
+
+- PostgreSQL 11-16
+- MySQL 5.7-8.4
+- Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)
+
+### Database configuration
+
+Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`drop-on-target-and-recreate`]({% link molt/molt-fetch.md %}#handle-target-tables) option. If you are creating the target schema manually, review the behaviors in [Mismatch handling]({% link molt/molt-fetch.md %}#mismatch-handling).
+
+{{site.data.alerts.callout_info}}
+MOLT Fetch does not support migrating sequences. If your source database contains sequences, refer to the [guidance on indexing with sequential keys]({% link {{site.current_cloud_version}}/sql-faqs.md %}#how-do-i-generate-unique-slowly-increasing-sequential-numbers-in-cockroachdb). If a sequential key is necessary in your CockroachDB table, you must create it manually. After using MOLT Fetch to load the data onto the target, but before cutover, make sure to update each sequence's current value using [`setval()`]({% link {{site.current_cloud_version}}/functions-and-operators.md %}#sequence-functions) so that new inserts continue from the correct point.
+{{site.data.alerts.end}}
+
+If you plan to use cloud storage for the data migration, follow [Cloud storage security]({% link molt/molt-fetch-best-practices.md %}#cloud-storage-security) best practices.
+
+### User permissions
+
+The SQL user running MOLT Fetch requires specific privileges on both the source and target databases:
+
+|      Database      |                                                                                                                                                           Required Privileges                                                                                                                                                            |                                                           Examples                                                            |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| PostgreSQL source  | <ul><li>`CONNECT` on database.</li><li>`USAGE` on schema.</li><li>`SELECT` on tables to migrate.</li></ul>                                                                                                                                                                                                                               | [Create PostgreSQL migration user]({% link molt/classic-bulk-load-postgres.md %}#create-migration-user-on-source-database)            |
+| MySQL source       | <ul><li>`SELECT` on tables to migrate.</li></ul>                                                                                                                                                                                                                                                                                         | [Create MySQL migration user]({% link molt/classic-bulk-load-mysql.md %}?#create-migration-user-on-source-database)   |
+| Oracle source      | <ul><li>`CONNECT` and `CREATE SESSION`.</li><li>`SELECT` and `FLASHBACK` on tables to migrate.</li><li>`SELECT` on metadata views (`ALL_USERS`, `DBA_USERS`, `DBA_OBJECTS`, `DBA_SYNONYMS`, `DBA_TABLES`).</li></ul>                                                                                                                     | [Create Oracle migration user]({% link molt/classic-bulk-load-oracle.md %}#create-migration-user-on-source-database) |
+| CockroachDB target | <ul><li>`ALL` on target database.</li><li>`CREATE` on schema.</li><li>`SELECT`, `INSERT`, `UPDATE`, `DELETE` on target tables.</li><li>For `IMPORT INTO`: `SELECT`, `INSERT`, `DROP` on target tables. Optionally `EXTERNALIOIMPLICITACCESS` for implicit cloud storage authentication.</li><li>For `COPY FROM`: `admin` role.</li></ul> | [Create CockroachDB user]({% link molt/classic-bulk-load-postgres.md %}#create-the-sql-user)                                          |
 
 ## How it works
 
@@ -752,6 +781,81 @@ This `cdc_cursor` value is also included in the output of a fetch task from a Po
 Use the `cdc_cursor` value as the checkpoint for MySQL or Oracle replication with MOLT Replicator. Use the [`--pglogical-replication-slot-name`]({% link molt/molt-fetch-commands-and-flags.md %}#pglogical-replication-slot-name) value as the checkpoint for PostgreSQL replication with MOLT Replicator. Refer to [Replication checkpoints]({% link molt/molt-replicator.md %}#replication-checkpoints) in the MOLT Replicator documentation.
 
 You can also use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes from the source database to CockroachDB.
+
+## Docker usage
+
+### Authentication
+
+When using MOLT Fetch with [cloud storage](#bucket-path), it is necessary to specify volumes and environment variables, as described in the following sections for [Google Cloud Storage](#google-cloud-storage) and [Amazon S3](#amazon-s3). 
+
+No additional configuration is needed when running MOLT Fetch with a [local file server](#local-path) or in [direct copy mode](#direct-copy): 
+
+~~~ shell
+docker run -it cockroachdb/molt fetch ...
+~~~
+
+For more information on `docker run`, see the [Docker documentation](https://docs.docker.com/reference/cli/docker/container/run/).
+
+#### Google Cloud Storage
+
+If you are using [Google Cloud Storage](https://cloud.google.com/storage/docs/access-control) for [cloud storage](#bucket-path):
+
+Volume map the `application_default_credentials.json` file into the container, and set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to this file.
+
+~~~ shell
+docker run \
+  -v ~/.config/gcloud/application_default_credentials.json:/gcp/creds.json:ro \
+  -e GOOGLE_APPLICATION_CREDENTIALS=/gcp/creds.json \
+  -it \
+  cockroachdb/molt fetch ...
+~~~
+
+In case the previous authentication method fails, you can volume map the entire [Google Cloud configuration directory](https://cloud.google.com/sdk/docs/configurations) into the container. In addition to setting the `GOOGLE_APPLICATION_CREDENTIALS` environment variable, set `CLOUDSDK_CONFIG` to point to the configuration directory:
+
+~~~ shell
+docker run \
+  -v ~/.config/gcloud:/gcp/config:ro \
+  -e CLOUDSDK_CONFIG=/gcp/config \
+  -e GOOGLE_APPLICATION_CREDENTIALS=/gcp/config/application_default_credentials.json \
+  -it \
+  cockroachdb/molt fetch ...
+~~~
+
+For details on Google Cloud Storage authentication, see [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials).
+
+#### Amazon S3
+
+If you are using [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) for [cloud storage](#bucket-path):
+
+Volume map the host's `~/.aws` directory to the `/root/.aws` directory inside the container, and set the required `AWS_REGION`, `AWS_SECRET_ACCESS_KEY`, and `AWS_ACCESS_KEY_ID` environment variables:
+
+~~~ shell
+docker run \
+  -v ~/.aws:/root/.aws \
+  -e AWS_REGION=your-region \
+  -e AWS_SECRET_ACCESS_KEY=your-secret-access-key \
+  -e AWS_ACCESS_KEY_ID=your-access-key-id \
+  -it \
+  cockroachdb/molt fetch ...
+~~~
+
+### Local connection strings
+
+When testing locally, specify the host as follows:
+
+- For macOS, use `host.docker.internal`. For example:
+
+    ~~~
+    --source 'postgres://postgres:postgres@host.docker.internal:5432/migration_db?sslmode=disable'
+    --target "postgres://root@host.docker.internal:26257/defaultdb?sslmode=disable"
+    ~~~
+
+- For Linux and Windows, use `172.17.0.1`. For example:
+
+    ~~~
+    --source 'postgres://postgres:postgres@172.17.0.1:5432/migration_db?sslmode=disable'
+    --target "postgres://root@172.17.0.1:26257/defaultdb?sslmode=disable"
+    ~~~
 
 ## Common uses
 
