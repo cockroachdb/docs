@@ -171,7 +171,8 @@ class ReleaseNotesReviewer:
         yaml_lines = []
 
         for line in diff.split("\n"):
-            if "releases.yml" in line:
+            # Look for the actual diff header, not just any line containing the filename
+            if line.startswith("diff --git") and "releases.yml" in line:
                 yaml_section = True
                 continue
             if yaml_section:
@@ -221,7 +222,8 @@ class ReleaseNotesReviewer:
         md_filename = ""
 
         for line in diff.split("\n"):
-            if ".md" in line and "diff --git" in line:
+            # Look for the actual diff header for markdown files
+            if line.startswith("diff --git") and ".md" in line:
                 md_section = True
                 md_filename = line
                 continue
