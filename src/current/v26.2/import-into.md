@@ -1,11 +1,15 @@
 ---
 title: IMPORT INTO
-summary: Import CSV, Avro, or delimited data into an existing CockroachDB table.
+summary: Import CSV, Avro, Parquet, or delimited data into an existing CockroachDB table.
 toc: true
 docs_area: reference.sql
 ---
 
-The `IMPORT INTO` [statement]({% link {{ page.version.version }}/sql-statements.md %}) imports CSV, Avro, or delimited data into an existing table by appending new rows to the table.
+The `IMPORT INTO` [statement]({% link {{ page.version.version }}/sql-statements.md %}) imports CSV, Avro, Parquet, or delimited data into an existing table by appending new rows to the table.
+
+{{site.data.alerts.callout_info}}
+Parquet file support is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#feature-availability-phases). It is subject to change.
+{{site.data.alerts.end}}
 
 ## Considerations
 
@@ -13,6 +17,7 @@ The `IMPORT INTO` [statement]({% link {{ page.version.version }}/sql-statements.
 - `IMPORT INTO` works with existing tables. To import data into a new table, see [Import into a new table from a CSV file](#import-into-a-new-table-from-a-csv-file).
 - `IMPORT INTO` cannot be used during a [rolling upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
 - `IMPORT INTO` is a blocking statement. To run an `IMPORT INTO` job asynchronously, use the [`DETACHED`](#options-detached) option.
+- {% include_cached new-in.html version="v26.2" %} After a successful `IMPORT INTO`, CockroachDB can start a background [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) job to validate the imported row count. The [`bulkio.import.row_count_validation.mode` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-bulkio-import-row-count-validation-unsafe-mode) controls this behavior: `off`, `async`, or `sync`.
 - `IMPORT INTO` invalidates all [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}) on the target table. To validate the foreign key(s), use the [`ALTER TABLE ... VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint) statement.
 - `IMPORT INTO` is an insert-only statement; it cannot be used to [update]({% link {{ page.version.version }}/update.md %}) existing rows. Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) constraint on the table.
 - `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To add a subset of rows to a table, use [`INSERT`]({% link {{ page.version.version }}/insert.md %}#insert-from-a-select-statement).
@@ -32,7 +37,7 @@ Before using `IMPORT INTO`, you should have:
 
 - Sufficient capacity in the [CockroachDB store](#available-storage) for the imported data.
 
-- The CSV or Avro data you want to import, preferably hosted on cloud storage. The [import file location](#import-file-location) must be equally accessible to all nodes using the same import file location. This is necessary because the `IMPORT INTO` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.
+- The CSV, Avro, or Parquet data you want to import, preferably hosted on cloud storage. The [import file location](#import-file-location) must be equally accessible to all nodes using the same import file location. This is necessary because the `IMPORT INTO` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.
 
 ### Supported `DEFAULT` expressions
 
@@ -117,7 +122,7 @@ Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import into.
 `column_name` | The table columns you want to import.<br><br>**Note:** Currently, target columns are not enforced.
-`file_location` | The [URL](#import-file-location) of a CSV or Avro file containing the table data. This can be a comma-separated list of URLs. For an example, see [Import into an existing table from multiple CSV files](#import-into-an-existing-table-from-multiple-csv-files) below.
+`file_location` | The [URL](#import-file-location) of a CSV, Avro, or Parquet file containing the table data. This can be a comma-separated list of URLs. For an example, see [Import into an existing table from multiple CSV files](#import-into-an-existing-table-from-multiple-csv-files) below.
 `<option> [= <value>]` | Control your import's behavior with [import options](#import-options).
 
 #### Delimited data files
@@ -154,7 +159,7 @@ You can control the `IMPORT` process's behavior using any of the following key-v
 | `schema`                                  | `AVRO DATA`                                            | The schema of the Avro records included in the binary or JSON file. This is not needed for Avro OCF. <br> See `data_as_json_records` example above.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `schema_uri`                              | `AVRO DATA`                                            | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF. <br> See `data_as_binary_records` example above.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `skip`                                    | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**. <br><br> Example: To import CSV files with column headers: `IMPORT INTO ... CSV DATA ('file.csv') WITH skip = '1';`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `strict_validation`                       | `AVRO DATA`                                            | Rejects Avro records that do not have a one-to-one mapping between Avro fields to the target CockroachDB schema. By default, CockroachDB ignores unknown Avro fields and sets missing SQL fields to `NULL`. CockroachDB will also attempt to convert the Avro field to the CockroachDB [data type][datatypes]; otherwise, it will report an error. <br><br> Example: `IMPORT INTO ... AVRO DATA ('file.avro') WITH strict_validation;`                                                                                                                                                                                                                                                                                                                                      |
+| `strict_validation`                       | `AVRO DATA`, `PARQUET DATA`                                            | Rejects Avro or Parquet records that do not have a one-to-one mapping between their own fields to the target CockroachDB schema. By default, CockroachDB ignores unknown Avro or Parquet fields and sets missing SQL fields to `NULL`. CockroachDB will also attempt to convert the Avro or Parquet field to the CockroachDB [data type][datatypes]; otherwise, it will report an error. <br><br> Example: `IMPORT INTO ... AVRO DATA ('file.avro') WITH strict_validation;`                                                                                                                                                                                                                                                                                                                                      |
 
 For examples showing how to use these options, see the [Examples section]({% link {{ page.version.version }}/import-into.md %}#examples).
 
@@ -167,6 +172,10 @@ After CockroachDB successfully initiates an import into an existing table, it re
 After the import has been initiated, you can control it with [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %}), [`RESUME JOB`]({% link {{ page.version.version }}/resume-job.md %}), and [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}).
 
 If initiated correctly, the statement returns when the import is finished or if it encounters an error. In some cases, the import can continue after an error has been returned (the error message will tell you that the import has resumed in background).
+
+For non-`DETACHED` imports, when post-import row count validation runs, the statement result includes an `inspect_job_id` column for the background [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) job. Use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) to monitor that job, or run `SHOW INSPECT ERRORS FOR JOB {inspect_job_id} WITH DETAILS` to investigate validation failures.
+
+If [`bulkio.import.row_count_validation.mode`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-bulkio-import-row-count-validation-unsafe-mode) is set to `sync`, `IMPORT INTO` waits for the validation job to finish and the statement fails if `INSPECT` finds inconsistencies.
 
 {{site.data.alerts.callout_danger}}
 Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the beginning.
@@ -264,6 +273,22 @@ To specify the table schema in-line:
 ~~~
 
 For more information about importing data from Avro, including examples, see [Migrate from Avro]({% link {{ page.version.version }}/migrate-from-avro.md %}).
+
+### Import into an existing table from a Parquet file
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+You can import flat schemas with primitive types from Parquet files, but not nested Parquet types like `LIST`, `MAP`, and `STRUCT`. Column-level compression formats are supported, but additional file-level compression is not.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> IMPORT INTO customers
+    PARQUET DATA (
+      's3://{BUCKET NAME}/{customers.parquet}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+    );
+~~~
 
 ### Import into an existing table from a delimited data file
 

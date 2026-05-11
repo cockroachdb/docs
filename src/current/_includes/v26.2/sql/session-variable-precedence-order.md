@@ -8,7 +8,7 @@ When a [session]({% link {{ page.version.version }}/show-sessions.md %}) starts,
 
 If a session variable is not modified using any of the preceding methods, the built-in system default value is used. Note that the [`root` user]({% link {{ page.version.version }}/security-reference/authorization.md %}#root-user) is exempt from settings 3–5. The `root` user is only affected by values specified in the connection string.
 
-You can also set session variables for the duration of a single transaction by using [`SET LOCAL {var}={value}`]({% link {{ page.version.version }}/set-vars.md %}#set-a-variable-for-the-duration-of-a-single-transaction).
+You can set session variables for the duration of a single transaction by using [`SET LOCAL {var}={value}`]({% link {{ page.version.version }}/set-vars.md %}#set-a-variable-for-the-duration-of-a-single-transaction). You can also [override session variables]({% link {{ page.version.version }}/cost-based-optimizer.md %}#override-session-variables) for executions of a specific statement fingerprint by using the [`information_schema.crdb_set_session_variable_hint()`]({% link {{ page.version.version }}/functions-and-operators.md %}#system-repair-functions) function.
 
 {{site.data.alerts.callout_info}}
 Changes to defaults using the preceding methods only apply to **future** sessions. This is because session variable resolution happens at session start time. To change a default value in an existing open session, set the variable explicitly with [`SET`]({% link {{ page.version.version }}/set-vars.md %}).

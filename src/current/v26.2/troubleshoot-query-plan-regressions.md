@@ -78,7 +78,7 @@ For each suspect SQL statement, determine whether the high latency is caused by 
 5. Note which query plan was in use just before the latency increase, and record the values in the **Plan Gist**, **Average Execution Time**, and **Average Rows Read** columns.
 6. Compare the query plans.
     
-If the newer plan matches the older plan (that is, it has the same **Plan Gist**), there was no query plan regression.
+If the newer plan matches the older plan (that is, it has the same plan gist), there was no query plan regression.
     
 If the newer plan differs from the older plan, the query plan has changed:
     
@@ -92,7 +92,7 @@ If multiple query plans were used before and after the latency increase, the SQL
 
 With multiple valid query plans, you’re not just looking for a plan change, but for a shift in the _distribution of plans_ used for the statement.
 
-- Look at the query plans that were used in the time interval after the latency increase. Note the values in the **Execution Count** column for each plan. Repeat the process for the interval before the latency increase. This will let you know not only if the same query plans were being used during both intervals, but also if their distributions changed. If the distribution shifts toward a plan with higher average execution time, it may indicate a query plan regression.
+- On the **Explain Plans** tab, refer to the [**Plan Distribution Over Time**]({% link {{ page.version.version }}/ui-statements-page.md %}#plan-distribution-over-time) graph. Note the distribution of query plans both before and after the latency increase. If the distribution shifts toward a plan with higher average execution time, it may indicate a query plan regression.
 
 {{site.data.alerts.callout_success}}
 If you couldn’t identify a specific moment when latency increased, you won’t have a clear "before" and "after" to compare. In this case, it’s still helpful to have a general sense of when the increase occurred (using the methods from Step 1) even if the range spans several hours. You can then use the above methods (in Step 3) to compare query plans on a rolling basis by changing the custom time interval to consecutive hour-long intervals. This approach can help identify the specific interval when the latency spike occurred.
@@ -102,14 +102,14 @@ If you couldn’t identify a specific moment when latency increased, you won’t
 
 For any query plans whose increased execution time seems suspicious, investigate further to understand why the plan changed.
 
-1. In the **Explain Plans** tab, click the **Plan Gist** of the more recent plan to view its details.
+1. In the **Explain Plans** tab, click on the plan gist of the more recent plan to view its details.
 2. Click on **All Plans** above to return to the full list.
-3. Click on the Plan Gist of the previous plan to inspect it in more detail. Compare the two plans to understand what changed. They may use different indexes. They may also scan different parts of the table or use different join strategies.
+3. Click on the plan gist of the previous plan to inspect it in more detail. Compare the two plans to understand what changed. They may use different indexes. They may also scan different parts of the table or use different join strategies.
 
 #### Determine if the table indexes changed
 
 1. Check the **Used Indexes** column for both the older and newer query plans. If these differ, it's likely that the creation or deletion of an index resulted in a change to the statement's query plan.
-2. In the **Explain Plans** tab, click the **Plan Gist** of the more recent plan to view its details. Identify the table(s) used in the initial "scan" step of the plan.
+2. In the **Explain Plans** tab, click on the plan gist of the more recent plan to view its details. Identify the table(s) used in the initial "scan" step of the plan.
 3. In your SQL client, run `SHOW INDEXES FROM <table_name>;` for each of those tables.
 4. Make sure that the query plan is using a table index that makes sense, given the query and the table's full set of indexes.
 
@@ -117,7 +117,7 @@ The new index may be well-chosen, but the schema change could have triggered a s
 
 #### Determine if the table statistics changed
 
-1. In the **Explain Plans** tab, click the Plan Gist of the more recent plan to view its details. Identify the table used in the initial "scan" step of the plan.
+1. In the **Explain Plans** tab, click on the plan gist of the more recent plan to view its details. Identify the table used in the initial "scan" step of the plan.
 2. In your SQL client, run `SHOW STATISTICS FOR TABLE <table_name>;` using that table name.
 
     The results will include statistics that were collected for each column in that table. The value in the "created" column of these results tells you when the statistics were collected. Compare the statistics of each table column across multiple timestamps. A change in the values of `row_count`, `distinct_count`, `null_count`, or other statistics may have affected planning. If the timestamp of the new statistics creation is associated with the time that the query plan changed, there may be a causal relationship between the two.

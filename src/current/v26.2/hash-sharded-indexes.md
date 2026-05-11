@@ -43,6 +43,20 @@ We recommend doing thorough performance testing of your workload with different 
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
+### Shard columns
+
+By default, CockroachDB hashes all key columns in a hash-sharded index when it computes the shard column.
+
+If queries usually constrain only the first key column or columns of a multi-column index, set the [`shard_columns` storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#storage-parameter-shard-columns) to hash only that prefix of the index key columns. The value of `shard_columns` must match a prefix of the index key columns.
+
+This is useful when queries filter on the leading index columns but still need to scan or sort by later index columns within each shard. For example, the following statement hashes only `region`, while keeping `city` and `population` as ordered index columns:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX idx_region_city ON data_test (region, city, population)
+    USING HASH WITH (bucket_count = 4, shard_columns = (region));
+~~~
+
 ### Hash-sharded indexes on partitioned tables
 
 You can create hash-sharded indexes with implicit partitioning under the following scenarios:

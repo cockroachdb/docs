@@ -72,7 +72,7 @@ Property        | Description
 `execution time` | The time it took for the final statement plan to complete.
 `distribution` | Whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 `plan type` | The plan type used by the query: `generic, re-optimized`, `generic, reused`, or `custom`. For details, refer to [Query plan type]({% link {{ page.version.version }}/cost-based-optimizer.md %}#query-plan-type).
-`statement hints count` | The number of [injected hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#hint-injection) from `system.statement_hints` applied to the statement. This field is only displayed when hints are applied.
+`statement hints count` | The number of [statement hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#statement-hints) from `system.statement_hints` applied to the statement. This field is only displayed when hints are applied.
 `vectorized` | Whether the [vectorized execution engine]({% link {{ page.version.version }}/vectorized-execution.md %}) was used in this statement.
 `rows decoded from KV` | The number of rows read from the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 `cumulative time spent in KV` | The total amount of time spent in the storage layer.
@@ -89,6 +89,7 @@ Property        | Description
 `priority` | The [transaction priority level]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities) at which this statement executed.
 `quality of service` | The session's [quality of service]({% link {{ page.version.version }}/admission-control.md %}#set-quality-of-service-level-for-a-session) level at which the statement executed.
 `historical` | The timestamp and [follower read type]({% link {{ page.version.version }}/follower-reads.md %}#follower-read-types), if applicable, for [historical reads]({% link {{ page.version.version }}/as-of-system-time.md %}).
+`table stats mode` | <span class="version-tag">New in v26.2:</span> Whether the execution plan for the statement was determined using [canary or stable statistics]({% link {{ page.version.version }}/canary-statistics.md %}). This field is only displayed when canary statistics are enabled.
 
 ### Statement plan tree properties
 
@@ -114,6 +115,7 @@ Statement plan tree properties | Description
 `estimated row count` | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
 `table` | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
 `spans` | The interval of the key space read by the processor. `FULL SCAN` indicates that the table is scanned on all key ranges of the index (also known as a "full table scan" or "unlimited full scan"). `FULL SCAN (SOFT LIMIT)` indicates that a full table scan can be performed, but will halt early once enough rows have been scanned. `LIMITED SCAN` indicates that the table will be scanned on a subset of key ranges of the index. `[/1 - /1]` indicates that only the key with value `1` is read by the processor.
+`canary window` | <span class="version-tag">New in v26.2:</span> The amount of time new statistics for the table remain in [canary status]({% link {{ page.version.version }}/canary-statistics.md %}#the-canary-window) before being promoted to stable status. This field is only displayed when canary statistics are enabled.                             
 
 ## `PLAN` option
 

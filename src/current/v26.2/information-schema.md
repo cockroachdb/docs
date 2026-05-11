@@ -204,6 +204,42 @@ Column | Description
 `constraint_schema` | Name of the schema that contains the constraint.
 `constraint_name` | Name of the constraint.
 
+### crdb_cluster_active_session_history
+
+The `crdb_cluster_active_session_history` view tracks cluster-wide [Active Session History]({% link {{ page.version.version }}/active-session-history.md %}) samples.
+
+| Column | Description |
+|--------|-------------|
+| `sample_time` | When the sample was taken |
+| `node_id` | Node where the sample was captured |
+| `tenant_id` | Tenant that owns the work |
+| `workload_id` | Identifies the workload |
+| `workload_type` | Kind of workload |
+| `app_name` | Application name; only set for SQL statement workloads |
+| `work_event_type` | Resource category |
+| `work_event` | Specific activity label |
+| `goroutine_id` | Go runtime goroutine ID |
+
+For more information, refer to the [ASH table reference]({% link {{ page.version.version }}/active-session-history.md %}#ash-table-reference).
+
+### crdb_node_active_session_history
+
+The `crdb_node_active_session_history` view tracks [Active Session History]({% link {{ page.version.version }}/active-session-history.md %}) samples from the local node.
+
+| Column | Description |
+|--------|-------------|
+| `sample_time` | When the sample was taken |
+| `node_id` | Node where the sample was captured |
+| `tenant_id` | Tenant that owns the work |
+| `workload_id` | Identifies the workload |
+| `workload_type` | Kind of workload |
+| `app_name` | Application name; only set for SQL statement workloads |
+| `work_event_type` | Resource category |
+| `work_event` | Specific activity label |
+| `goroutine_id` | Go runtime goroutine ID |
+
+For more information, refer to the [ASH table reference]({% link {{ page.version.version }}/active-session-history.md %}#ash-table-reference).
+
 ### enabled_roles
 
 The `enabled_roles` view identifies enabled roles for the current user. This includes both direct and indirect roles.
