@@ -14,6 +14,10 @@ This page describes how resource usage, pricing, and cluster configurations work
 
 {% include cockroachcloud/request-units.md %}
 
+{{site.data.alerts.callout_info}}
+Basic Tier is ideal for smaller, bursty applications which require up to 30K RU/second, or approximately 60 vCPUs.
+{{site.data.alerts.end}}
+
 ## Pricing
 
 With CockroachDB {{ site.data.products.basic }}, you are charged only for the storage and activity of your cluster. Cluster activity is measured in [Request Units](#request-units); cluster storage is measured in GiB and is based on the total amount of storage your cluster used over a billing period. Request Unit consumption scales to zero when your cluster has no activity.
