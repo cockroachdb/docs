@@ -37,6 +37,7 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
 1. Make a note of your {{ site.data.products.cloud }} organization ID in the [Organization settings page](https://cockroachlabs.cloud/settings).
 1. Find your CockroachDB {{ site.data.products.advanced }} cluster's ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL make a note of the **last 12 digits** of the portion of the URL before `/overview/`. This is the cluster ID.
 1. Use the cluster ID to find the cluster's associated cross-account IAM role, which is managed by CockroachDB {{ site.data.products.cloud }}.
+
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request GET \

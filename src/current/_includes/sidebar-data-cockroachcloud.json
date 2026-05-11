@@ -190,9 +190,9 @@
           "title": "Monitor Your Cluster",
           "items": [
             {
-              "title": "Cluster Overview Page",
+              "title": "Overview Page",
               "urls": [
-                "/cockroachcloud/cluster-overview-page.html"
+                "/cockroachcloud/overview-page.html"
               ]
             },
             {
@@ -279,12 +279,6 @@
     {
       "title": "Tutorials",
       "items": [
-      	{
-      	  "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
-      	  "urls": [
-      	    "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
-      	  ]
-      	},
       	{
       	  "title": "Stream a Changefeed to Snowflake",
       	  "urls": [

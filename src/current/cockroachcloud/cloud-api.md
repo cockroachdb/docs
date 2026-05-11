@@ -422,9 +422,9 @@ If the request is successful, the API returns detailed information about the clu
 
 For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters) in the API reference.
 
-## Get information about a cluster's nodes
+## Get information about a CockroachDB Advanced cluster's nodes
 
-To retrieve information about a cluster's nodes, including the node status, make a `GET` request to the `/v1/clusters/{cluster_id}/nodes` endpoint.
+To retrieve information about an {{ site.data.products.advanced }} cluster's nodes, including the node status, make a `GET` request to the `/v1/clusters/{cluster_id}/nodes` endpoint.
 
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Admin or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).

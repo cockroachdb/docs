@@ -534,6 +534,25 @@ To update the materialized view's results, use a [`REFRESH`]({% link {{ page.ver
 (0 rows)
 ~~~
 
+You can also create or refresh materialized views using historical data with the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause. This is useful for reducing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) by leveraging [follower reads]({% link {{ page.version.version }}/follower-reads.md %}).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE MATERIALIZED VIEW overdrawn_accounts
+  AS SELECT id, balance
+  FROM bank
+  WHERE balance < 0
+  AS OF SYSTEM TIME follower_read_timestamp();
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> REFRESH MATERIALIZED VIEW overdrawn_accounts
+  AS OF SYSTEM TIME follower_read_timestamp();
+~~~
+
+For more information, see [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %}#create-a-materialized-view-with-historical-data-using-as-of-system-time) and [`REFRESH`]({% link {{ page.version.version }}/refresh.md %}#refresh-a-materialized-view-with-historical-data-using-as-of-system-time).
+
 To rename the materialized view, use [`ALTER MATERIALIZED VIEW`]({% link {{ page.version.version }}/alter-view.md %}):
 
 {% include_cached copy-clipboard.html %}

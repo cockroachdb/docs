@@ -102,7 +102,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |    |  `->` | Access a JSONB field, returning a JSONB value. | binary |
 |    |  `->>` | Access a JSONB field, returning a string. | binary |
 |    |  `@>` | Tests whether the left JSONB or array field contains the right JSONB or array field. | binary |
-|    |  `>@` | Tests whether the left JSONB or array field is contained by the right JSONB or array field. | binary |
+|    |  `<@` | Tests whether the left JSONB or array field is contained by the right JSONB or array field. | binary |
 |    |  `#>` | Access a JSONB field at the specified path, returning a JSONB value. | binary |
 |    |  `#>>` | Access a JSONB field at the specified path, returning a string. | binary |
 |    |  `?` | Does the key or element string exist within the JSONB value? | binary |

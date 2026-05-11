@@ -201,7 +201,6 @@ Now that you have a CockroachDB {{ site.data.products.standard }} cluster runnin
 - Build a simple CRUD application in [Go]({% link {{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.md %}), [Java]({% link {{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.md %}), [Node.js]({% link {{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb.md %}), or [Python]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.md %}).
 - Learn [CockroachDB SQL]({% link {{site.current_cloud_version}}/sql-statements.md %}).
 - [Create and manage SQL users]({% link cockroachcloud/managing-access.md %}).
-- Explore our [example apps]({% link {{site.current_cloud_version}}/example-apps.md %}) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
 - [Migrate your existing data]({% link molt/migration-overview.md %}).
 
 This page highlights just one way you can get started with CockroachDB. For information on other options that are available when creating a CockroachDB cluster, see the following:

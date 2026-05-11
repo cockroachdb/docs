@@ -23,7 +23,7 @@ The remaining sections address analyzing contention once identified:
 
 ## Monitor using Console
 
-The [CockroachDB Cloud Console]({% link cockroachcloud/cluster-overview-page.md %}) and [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) provide monitoring of contention using the following features:
+The [CockroachDB Cloud Console]({% link cockroachcloud/overview-page.md %}) and [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) provide monitoring of contention using the following features:
 
 - [SQL Statement Contention graph](#sql-statement-contention-graph)
 - [SQL Activity pages](#sql-activity-pages)

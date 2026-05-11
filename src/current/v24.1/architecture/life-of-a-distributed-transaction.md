@@ -112,7 +112,7 @@ This works by giving each write operation a latch on a row. Any reads or writes 
 
 ### Batch Evaluation
 
-The batch evaluator ensures that write operations are valid. Our architecture makes this fairly trivial. First, the evaluator can simply check the leaseholder's data to ensure the write is valid; because it has coordinated all writes to the range, it must have the most up-to-date versions of the range's data. Secondly, because of the latch manager, each write operation is guaranteed to uncontested access to the range (i.e., there is no contention with other write operations).
+The batch evaluator ensures that write operations are valid. Our architecture makes this fairly trivial. First, the evaluator can simply check the leaseholder's data to ensure the write is valid; because it has coordinated all writes to the range, it must have the most up-to-date versions of the range's data. Secondly, because of the latch manager, each write operation is guaranteed uncontested access to the range (i.e., there is no contention with other write operations).
 
 If the write operation is valid according to the evaluator, the leaseholder sends a provisional acknowledgment to the gateway node's `DistSender`; this lets the `DistSender` begin to send its subsequent `BatchRequests` for this range.
 

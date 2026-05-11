@@ -93,30 +93,12 @@ Click **Next: Finalize**.
       Make sure that you [delete your trial cluster]({% link cockroachcloud/cluster-management.md %}#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing]({% link cockroachcloud/billing-management.md %}) page.
       {{site.data.alerts.end}}
 
-<a id="step-7-name-the-cluster"></a>
-
 ## Step 6. Name the cluster
 
 The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
 
 Click **Create cluster**. Your cluster will be created in a few seconds.
 
-{% comment %}## Step 8. Select the CockroachDB version
-
-When you create a new CockroachDB {{ site.data.products.standard }} cluster, it defaults to using the [latest CockroachDB {{ site.data.products.cloud }} production release]({% link releases/cloud.md %}) unless you select a release explicitly. Releases are rolled out gradually to CockroachDB {{ site.data.products.cloud }}. At any given time, you may be able to choose among multiple releases. In the list:
-
-- **No label**: The latest patch of a Regular [Production release]({% link cockroachcloud/upgrade-policy.md %}) that is not the latest. A Regular release has full support for one year from the release date, at which a cluster must be [upgraded]({% link cockroachcloud/upgrade-policy.md %}) to maintain support.
-- **Latest**: The latest patch of the latest regular [Production release]({% link cockroachcloud/upgrade-policy.md %}). This is the default version for new clusters.
-- **Innovation Release**: The latest patch of an [Innovation release]({% link cockroachcloud/upgrade-policy.md %}). Innovation releases are optional releases that provide earlier access to new features, and are released between regular releases. An Innovation release has full support for six months from the release date, at which time a cluster must be [upgraded]({% link cockroachcloud/upgrade-policy.md %}) to the next Regular release to maintain support.
-- **Pre-Production Preview**: A [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades). Leading up to a new CockroachDB Regular [Production release]({% link cockroachcloud/upgrade-policy.md %}), a series of Beta and Release Candidate (RC) patches may be made available for CockroachDB {{ site.data.products.standard }} as Pre-Production Preview releases. Pre-Production Preview releases are not suitable for production environments. They are no longer available in CockroachDB {{ site.data.products.cloud }} for new clusters or upgrades after the new version is GA. When the GA release is available, a cluster running a Pre-Production Preview is automatically upgraded to the GA release and subsequent patches and is eligible for support.
-
-1. To choose a version for your cluster, select the cluster version from the **Cluster version** list.
-
-After the cluster is created, patch releases within its major version are required and are applied automatically. If you install or upgrade to a Pre-Production Preview release, subsequent Pre-Production Preview patch releases, the GA release, and subsequent patches within the major version are applied automatically. To learn more, refer to the [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
-
-## Step 9{% endcomment %}
-
-<a id="step-9-finish-creating-the-cluster"></a>
 ## Step 7. Finish creating the cluster
 
 Click **Create cluster**. Your cluster will be created in approximately 20-30 minutes.
@@ -127,5 +109,4 @@ To start using your CockroachDB {{ site.data.products.standard }} cluster, refer
 
 - [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 - [Authorize users]({% link cockroachcloud/managing-access.md %})
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})
 - For a multi-region cluster, it is important to choose the most appropriate [survival goal]({% link {{site.current_cloud_version}}/multiregion-survival-goals.md %}) for each database and the most appropriate [table locality]({% link {{site.current_cloud_version}}/table-localities.md %}) for each table. Otherwise, your cluster may experience unexpected latency and reduced resiliency. For more information, refer to [Multi-Region Capabilities Overview]({% link {{ site.current_cloud_version}}/multiregion-overview.md %}).

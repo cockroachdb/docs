@@ -1,0 +1,5 @@
+Set the `force_savepoint_restart` [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) to `true` to enable using a custom name for the [retry savepoint]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}#retry-savepoints).
+
+Once this variable is set, the [`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %}) statement will accept any name for the retry savepoint, not just `cockroach_restart`. In addition, it causes every savepoint name to be equivalent to `cockroach_restart`, therefore disallowing the use of [nested transactions]({% link {{ page.version.version }}/transactions.md %}#nested-transactions).
+
+This feature exists to support applications that want to use the [advanced client-side transaction retry protocol]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}), but cannot customize the name of savepoints to be `cockroach_restart`.  For example, this may be necessary because you are using an ORM that requires its own names for savepoints.

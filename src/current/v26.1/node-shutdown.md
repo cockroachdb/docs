@@ -305,6 +305,8 @@ Before decommissioning a node, make sure other nodes are available to take over 
 
 Note that when you decommission a node and immediately add another node, CockroachDB does **not** simply move all of the replicas from the decommissioned node to the newly added node. Instead, replicas are placed across all nodes in the cluster. This speeds up the decommissioning process by spreading the load. The new node will eventually "catch up" with the rest of the cluster.
 
+Even after rebalancing settles, replica counts may remain uneven across nodes. This can happen when the different replica counts are needed to preserve survivability through locality diversity, or to satisfy user-defined [replica placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints). For more information, refer to the [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#membership-changes-rebalance-repair) documentation.
+
 This can lead to disk utilization imbalance across nodes. **This is expected behavior**, since disk utilization per node is not one of the rebalancing criteria. For more information, see [Disk utilization is different across nodes in the cluster]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-utilization-is-different-across-nodes-in-the-cluster).
 
 #### 3-node cluster with 3-way replication
