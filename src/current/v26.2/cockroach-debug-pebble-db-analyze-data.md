@@ -57,7 +57,7 @@ The output CSV file is periodically rewritten while the command is running. Even
 
 ### Review results with Cockroach Labs
 
-The command groups sampled blocks into buckets and reports compression results for each bucket.
+The command groups sampled blocks into buckets (by block type, block size, data compressibility) and reports compression results for each bucket.
 
 - `CR` is the compression ratio. Higher values mean that compressed data uses less storage.
 - `Comp` is compression throughput. Lower throughput means higher CPU cost when Pebble writes or rewrites SSTs.
