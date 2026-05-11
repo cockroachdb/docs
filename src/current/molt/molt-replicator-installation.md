@@ -14,7 +14,7 @@ This page explains the prequisites for using [MOLT Replicator]({% link molt/molt
 MOLT Replicator supports the following source and target databases:
 
 - PostgreSQL 11-16
-- MySQL 5.7, 8.0 and later
+- MySQL 5.7-8.4
 - Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)
 - CockroachDB (all currently [supported versions]({% link releases/release-support-policy.md %}#supported-versions))
 

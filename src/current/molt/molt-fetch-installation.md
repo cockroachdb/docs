@@ -14,7 +14,7 @@ This page explains the prequisites for using [MOLT Fetch]({% link molt/molt-fetc
 The following source databases are supported:
 
 - PostgreSQL 11-16
-- MySQL 5.7, 8.0 and later
+- MySQL 5.7-8.4
 - Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)
 
 ### Database configuration

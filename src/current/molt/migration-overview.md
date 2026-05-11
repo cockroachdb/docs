@@ -59,19 +59,19 @@ MOLT [Fetch](#fetch), [Replicator](#replicator), and [Verify](#verify) are CLI-b
   <tr>
     <td class="comparison-chart__feature"><a href="#fetch"><b>Fetch</b></a></td>
     <td>Initial data load</td>
-    <td>PostgreSQL 11-16, MySQL 5.7-8.0+, Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)</td>
+    <td>PostgreSQL 11-16, MySQL 5.7-8.4, Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)</td>
     <td>GA</td>
   </tr>
   <tr>
     <td class="comparison-chart__feature"><a href="#replicator"><b>Replicator</b></a></td>
     <td>Continuous replication</td>
-    <td>PostgreSQL 11-16, MySQL 5.7+ and 8.0+, Oracle Database 19c+, CockroachDB</td>
+    <td>PostgreSQL 11-16, MySQL 5.7-8.4, Oracle Database 19c+, CockroachDB</td>
     <td>GA</td>
   </tr>
   <tr>
     <td class="comparison-chart__feature"><a href="#verify"><b>Verify</b></a></td>
     <td>Schema and data validation</td>
-    <td>PostgreSQL 12-16, MySQL 5.7-8.0+, Oracle Database 19c (Enterprise Edition) and 21c (Express Edition), CockroachDB</td>
+    <td>PostgreSQL 12-16, MySQL 5.7-8.4, Oracle Database 19c (Enterprise Edition) and 21c (Express Edition), CockroachDB</td>
     <td><a href="{% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}">Preview</a></td>
   </tr>
 </table>

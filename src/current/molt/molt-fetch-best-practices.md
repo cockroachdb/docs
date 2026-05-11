@@ -25,23 +25,31 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 
 - If a PostgreSQL database is set as a [source]({% link molt/molt-fetch.md %}#specify-source-and-target-databases), ensure that [`idle_in_transaction_session_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT) on PostgreSQL is either disabled or set to a value longer than the duration of the [data export phase]({% link molt/molt-fetch.md %}#data-export-phase). Otherwise, the connection will be prematurely terminated. To estimate the time needed to export the PostgreSQL tables, you can perform a dry run and sum the value of [`molt_fetch_table_export_duration_ms`]({% link molt/molt-fetch-monitoring.md %}#metrics) for all exported tables.
 
+## Memory requirements
+
+- MOLT Fetch buffers data in memory before flushing to files or the target database, regardless of which [data path]({% link molt/molt-fetch.md %}#define-intermediate-storage) you use. To prevent memory outages during [data export]({% link molt/molt-fetch.md %}#data-export-phase), estimate the amount of memory used to export tables:
+
+    ~~~
+    average size of each row * --row-batch-size * --export-concurrency * --table-concurrency
+    ~~~
+
+    If you are exporting multiple tables concurrently (i.e., [`--table-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) is set higher than `1`), estimate the memory requirement using the table with the largest average row size. For details on how concurrency and sharding interact, refer to [Table sharding]({% link molt/molt-fetch.md %}#shard-tables-for-concurrent-export).
+
+    Insufficient memory can cause degraded throughput, process crashes, or migration failures. To prevent memory issues:
+
+    - Allocate enough memory for MOLT Fetch, based on the preceding formula.
+    - Adjust [`--row-batch-size`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags), [`--export-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags), or [`--table-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) if memory is constrained.
+    - Monitor memory utilization during the migration.
+
 ## Optimize performance
 
 - {% include molt/molt-drop-constraints-indexes.md %}
 
-- For PostgreSQL sources using [`--use-stats-based-sharding`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags), run [`ANALYZE`]({% link {{ site.current_cloud_version }}/create-statistics.md %}) on source tables before migration to ensure optimal shard distribution. This is especially important for large tables where even distribution can significantly improve export performance.
-
-- To prevent memory outages during `READ COMMITTED` [data export]({% link molt/molt-fetch.md %}#data-export-phase) of tables with large rows, estimate the amount of memory used to export a table:
-
-	~~~
-	--row-batch-size * --export-concurrency * average size of the table rows
-	~~~
-
-	If you are exporting more than one table at a time (i.e., [`--table-concurrency`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags) is set higher than `1`), add the estimated memory usage for the tables with the largest row sizes. Ensure that you have sufficient memory to run `molt fetch`, and adjust [`--row-batch-size`]({% link molt/molt-fetch-commands-and-flags.md %}#row-batch-size) accordingly. For details on how concurrency and sharding interact, refer to [Table sharding]({% link molt/molt-fetch.md %}#shard-tables-for-concurrent-export).
+- For PostgreSQL sources using [`--use-stats-based-sharding`]({% link molt/molt-fetch-commands-and-flags.md %}#global-flags), run [`ANALYZE`](https://www.postgresql.org/docs/current/sql-analyze.html) on source tables before migration to ensure optimal shard distribution. This is especially important for large tables where even distribution can significantly improve export performance.
 
 - If a table in the source database is much larger than the other tables, [filter and export the largest table]({% link molt/molt-fetch.md %}#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
 
-- Ensure that the machine running MOLT Fetch is large enough to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, observe the `molt_fetch_rows_exported` [metric]({% link molt/molt-fetch-monitoring.md %}#metrics) for decreases in the number of rows being processed. You can use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view metrics. For details on optimizing export performance through sharding, refer to [Table sharding]({% link molt/molt-fetch.md %}#shard-tables-for-concurrent-export).
+- Ensure that the machine running MOLT Fetch is equipped to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, observe the `molt_fetch_rows_exported` [metric]({% link molt/molt-fetch-monitoring.md %}#metrics) for decreases in the number of rows being processed. You can use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view metrics. For details on optimizing export performance through sharding, refer to [Table sharding]({% link molt/molt-fetch.md %}#shard-tables-for-concurrent-export).
 
 ## Import and continuation handling
 

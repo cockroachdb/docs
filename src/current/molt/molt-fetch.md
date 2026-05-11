@@ -318,12 +318,6 @@ For example, if you are migrating to CockroachDB {{ site.data.products.cloud }},
 
 [`--direct-copy`]({% link molt/molt-fetch-commands-and-flags.md %}#direct-copy) specifies that MOLT Fetch should use `COPY FROM` to move the source data directly to CockroachDB without an intermediate store:
 
-- Because the data is held in memory, the machine must have sufficient RAM for the data currently in flight:
-
-	~~~
-	average size of each row * --row-batch-size * --export-concurrency * --table-concurrency
-	~~~
-
 - Direct copy does not support compression or [continuation](#continue-molt-fetch-after-interruption).
 - The [`--use-copy`](#import-into-vs-copy-from) flag is redundant with [`--direct-copy`]({% link molt/molt-fetch-commands-and-flags.md %}#direct-copy).
 
