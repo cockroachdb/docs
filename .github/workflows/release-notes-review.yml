@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths:
       - 'src/current/_data/releases.yml'
-      - 'src/current/_includes/releases/**'
+      - 'src/current/_includes/releases/**/v*.md'
 
 permissions:
   pull-requests: write
