@@ -10561,6 +10561,90 @@
   previous_release: v24.3.26
 
 
+- release_name: v24.1.29
+  major_version: v24.1
+  release_date: '2026-05-12'
+  release_type: Production
+  go_version: go1.26.2
+  sha: de8d079c03d6f67d574a303071b56f311cd56ba6
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.28
+
+
+- release_name: v24.1.28
+  major_version: v24.1
+  release_date: '2026-04-21'
+  release_type: Production
+  go_version: go1.26.2
+  sha: c5f4e8d8f8a8b8c8d8e8f8a8b8c8d8e8f8a8b8c8
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.27
+
+
+- release_name: v24.1.27
+  major_version: v24.1
+  release_date: '2026-03-24'
+  release_type: Production
+  go_version: go1.25.5
+  sha: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.26
+
+
 - release_name: v24.1.26
   major_version: v24.1
   release_date: '2026-02-19'
