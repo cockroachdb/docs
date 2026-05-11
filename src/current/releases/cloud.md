@@ -69,6 +69,66 @@ Get future release notes emailed to you:
    <td class="icon-center">{% include icon-yes.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
   </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">DB Console access over PrivateLink</p>
+    <p class="feature-description">DB Console access is now available over AWS PrivateLink and Azure Private Link for newly created Advanced clusters, enabling secure private access to the DB Console without exposing traffic to the public internet.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">GCP BYOC Public Preview</p>
+    <p class="feature-description">Bring Your Own Cloud (BYOC) is now available in Public Preview for Google Cloud Platform, joining AWS and Azure BYOC support.</p>
+   </td>
+   <td class="icon-center">Preview</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Cross-cluster restore for Standard tier</p>
+    <p class="feature-description">Standard tier clusters now support cross-cluster restore, allowing you to restore backups from one cluster to another for disaster recovery and testing scenarios.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Larger instance sizes for Advanced clusters</p>
+    <p class="feature-description">Advanced clusters now support instance sizes larger than 32 vCPUs per node, enabling higher-performance workloads and greater vertical scaling options.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Azure Qatar Central region</p>
+    <p class="feature-description">CockroachDB Cloud Advanced clusters can now be deployed in the Azure Qatar Central (qatarcentral) region.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Cluster Overview page redesign</p>
+    <p class="feature-description">The Cloud Console Cluster Overview page has been redesigned with an improved layout and user experience for monitoring cluster health and metrics.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
  </tbody>
 </table>
 
