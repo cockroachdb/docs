@@ -140,7 +140,7 @@ Example:
 
 ### Check for constraint violations with `SCRUB`
 
-Checks the consistency of [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) indexes, [`CHECK`]({% link {{ page.version.version }}/check.md %}) constraints, and more. Partially implemented; see [cockroachdb/cockroach#10425](https://github.com/cockroachdb/cockroach/issues/10425) for details.
+Checks the consistency of [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) indexes, [`CHECK`]({% link {{ page.version.version }}/check.md %}) constraints, and more. Partially implemented; see  for details.
 
 {{site.data.alerts.callout_info}}
 This example uses the `users` table from our open-source, fictional peer-to-peer vehicle-sharing application, [MovR]({% link {{ page.version.version }}/movr.md %}).
@@ -175,7 +175,7 @@ CockroachDB supports [altering the column types]({% link {{ page.version.version
 
 ### Temporary objects
 
-[Temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), [temporary views]({% link {{ page.version.version }}/views.md %}#temporary-views), and [temporary sequences]({% link {{ page.version.version }}/create-sequence.md %}#temporary-sequences) are in preview in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Dropping large numbers of temporary objects in rapid succession can also enqueue many [schema change GC jobs]({% link {{ page.version.version }}/show-jobs.md %}), which may further degrade cluster performance. This performance degradation could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+[Temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), [temporary views]({% link {{ page.version.version }}/views.md %}#temporary-views), and [temporary sequences]({% link {{ page.version.version }}/create-sequence.md %}#temporary-sequences) are in preview in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Dropping large numbers of temporary objects in rapid succession can also enqueue many [schema change GC jobs]({% link {{ page.version.version }}/show-jobs.md %}), which may further degrade cluster performance. This performance degradation could persist long after creating the temporary objects.
 
 To enable temporary objects, set the `experimental_enable_temp_tables` [session variable]({% link {{ page.version.version }}/show-vars.md %}) to `on`.
 

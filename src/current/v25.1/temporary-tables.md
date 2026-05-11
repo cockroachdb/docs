@@ -10,7 +10,7 @@ docs_area: develop
 To create a temp table, add `TEMP`/`TEMPORARY` to a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) or [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) statement. For full syntax details, see the [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}#synopsis) and [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}#synopsis) pages. For example usage, see [Examples](#examples).
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %} For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+{% include feature-phases/preview.md %} For details, see the tracking issue .
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

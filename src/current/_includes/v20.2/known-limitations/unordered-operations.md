@@ -4,4 +4,4 @@ Unordered aggregation operations do not support disk spilling, and are limited b
 Setting `--max-sql-memory` too high could result in performance problems due to increased memory consumption.
 {{site.data.alerts.end}}
 
-See the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/42485) for details.
+See the  for details.

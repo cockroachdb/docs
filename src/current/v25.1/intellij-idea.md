@@ -79,15 +79,7 @@ Requires setting **Introspect using JDBC metadata** ([details below](#set-cockro
 
 You can now use IntelliJ's [database tool window](https://www.jetbrains.com/help/idea/working-with-the-database-tool-window.html) to interact with your CockroachDB cluster.
 
-## Report issues with IntelliJ IDEA & CockroachDB
 
-If you encounter issues other than those outlined above, please [file an issue on the `cockroachdb/cockroach` GitHub repo](https://github.com/cockroachdb/cockroach/issues/new?template=bug_report.md), including the following details about the environment where you encountered the issue:
-
-- CockroachDB version ([`cockroach version`]({% link {{ page.version.version }}/cockroach-version.md %}))
-- IntelliJ IDEA version
-- Operating system
-- Steps to reproduce the behavior
-- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging]({% link {{ page.version.version }}/logging-use-cases.md %}#sql_exec).
 
 ## See also
 

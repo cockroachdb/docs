@@ -89,7 +89,7 @@ Each sample is attributed to a workload via the `workload_type` and `workload_id
 | `STATEMENT` | Hex-encoded [statement fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) ID |
 | `JOB` | Decimal [job ID]({% link {{ page.version.version }}/show-jobs.md %}) |
 | `SYSTEM` | One of the following system task names: <br>`LDR`, `RAFT`, `STORELIVENESS`, `RPC_HEARTBEAT`, `NODE_LIVENESS`, `SQL_LIVENESS`, `TIMESERIES`, `RAFT_LOG_TRUNCATION`, `TXN_HEARTBEAT`, `INTENT_RESOLUTION`, `LEASE_ACQUISITION`, `MERGE_QUEUE`, `CIRCUIT_BREAKER_PROBE`, `GC`, `RANGEFEED`, `REPLICATE_QUEUE`, `SPLIT_QUEUE`, `DESCRIPTOR_LEASE` |
-| `UNKNOWN` | Unidentified. If you're seeing many unattributed samples for your workload, you may want to [file an issue](https://github.com/cockroachdb/cockroach/issues/new?template=bug_report.md). |
+| `UNKNOWN` | Unidentified. If you're seeing many unattributed samples for your workload, you may want to contact support. |
 
 ### `work_event` columns
 

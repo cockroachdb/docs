@@ -12,7 +12,7 @@ Given a set of shapes (e.g., from a [selection query]({% link {{ page.version.ve
 - [`GEOMETRY`]({% link {{ page.version.version }}/architecture/glossary.md %}#geometry)
 
 {{site.data.alerts.callout_info}}
-The non-aggregate version of `ST_Union` is not yet implemented.  For more information, see [cockroach#49064](https://github.com/cockroachdb/cockroach/issues/49064).
+The non-aggregate version of `ST_Union` is not yet implemented. 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

@@ -10,5 +10,3 @@
 - `tsquery <-> tsquery` comparisons.
 - `!! tsquery` comparisons.
 - `tsquery @> tsquery` and `tsquery <@ tsquery` comparisons.
-
-[#41288](https://github.com/cockroachdb/cockroach/issues/41288)
