@@ -69,7 +69,7 @@ You can also configure a node's total budget for in-memory query processing with
 
 The vectorized engine does not support queries containing:
 
-- A join filtered with an [`ON` expression]({% link {{ page.version.version }}/joins.md %}#supported-join-conditions). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/38018).
+- A join filtered with an [`ON` expression]({% link {{ page.version.version }}/joins.md %}#supported-join-conditions). See tracking issue.
 
 ### Spatial features
 
