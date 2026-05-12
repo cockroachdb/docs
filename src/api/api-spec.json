@@ -636,13 +636,13 @@
           "$ref": "#/definitions/UUID"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "ActiveQuery_Phase": {
       "type": "integer",
       "format": "int32",
       "title": "Phase of execution: `0` for PREPARING, `1` for EXECUTING. For more information see the doc \"SHOW QUERIES\".",
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "Attributes": {
       "description": "Attributes specifies a list of arbitrary strings describing\nnode topology, store type, and machine capabilities.",
@@ -656,7 +656,7 @@
           "x-go-name": "Attrs"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "ClockTimestamp": {
       "description": "The statically typed version of a Timestamp with its\nSynthetic flag set to false.",
@@ -681,12 +681,12 @@
           "x-go-name": "Value"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+      "x-go-package": "cockroachdb/cockroach/pkg/config/zonepb"
     },
     "Constraint_Type": {
       "type": "integer",
       "format": "int32",
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+      "x-go-package": "cockroachdb/cockroach/pkg/config/zonepb"
     },
     "ConstraintsConjunction": {
       "description": "A set of constraints that need to be satisfied\ntogether by a replica (i.e., by the replica's store).",
@@ -707,7 +707,7 @@
           "x-go-name": "NumReplicas"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+      "x-go-package": "cockroachdb/cockroach/pkg/config/zonepb"
     },
     "DatabaseDetailsResponse_Grant": {
       "type": "object",
@@ -726,7 +726,7 @@
           "x-go-name": "User"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "DatabasesResponse": {
       "type": "object",
@@ -740,7 +740,7 @@
           "x-go-name": "Databases"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "EventsResponse": {
       "description": "A set of event log entries. This is always limited\nto the latest N entries (N is enforced in the associated endpoint).",
@@ -754,7 +754,7 @@
           "x-go-name": "Events"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "EventsResponse_Event": {
       "type": "object",
@@ -797,7 +797,7 @@
           "x-go-name": "UniqueID"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "GCPolicy": {
       "type": "object",
@@ -810,7 +810,7 @@
           "x-go-name": "TTLSeconds"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+      "x-go-package": "cockroachdb/cockroach/pkg/config/zonepb"
     },
     "Key": {
       "description": "Key is a custom type for a byte string in proto\nmessages which refer to Cockroach keys.",
@@ -819,7 +819,7 @@
         "type": "integer",
         "format": "uint8"
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "Lease": {
       "description": "Lease contains information about range leases including the\nexpiration and lease holder.",
@@ -853,13 +853,13 @@
           "$ref": "#/definitions/ClockTimestamp"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "LeaseAcquisitionType": {
       "description": "The type of lease acquisition event that\nresulted in the current lease.",
       "type": "integer",
       "format": "int32",
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "LeasePreference": {
       "description": "A preference about where range leases should be\nlocated.",
@@ -873,13 +873,13 @@
           "x-go-name": "Constraints"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+      "x-go-package": "cockroachdb/cockroach/pkg/config/zonepb"
     },
     "LeaseSequence": {
       "type": "integer",
       "format": "int64",
       "title": "A custom type for a lease sequence number.",
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "ListSessionsError": {
       "type": "object",
@@ -894,7 +894,7 @@
           "$ref": "#/definitions/NodeID"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "ListSessionsResponse": {
       "type": "object",
@@ -917,7 +917,7 @@
           "x-go-name": "Sessions"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "Locality": {
       "description": "An ordered set of key value Tiers that describe a node's\nlocation. The tier keys should be the same across all nodes.",
@@ -931,13 +931,13 @@
           "x-go-name": "Tiers"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "NodeID": {
       "description": "A custom type for a cockroach node ID. (not a raft node ID)\n0 is not a valid NodeID.",
       "type": "integer",
       "format": "int32",
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "PrettySpan": {
       "type": "object",
@@ -951,7 +951,7 @@
           "x-go-name": "StartKey"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "RangeProblems": {
       "type": "object",
@@ -992,7 +992,7 @@
           "x-go-name": "Underreplicated"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "RangeStatistics": {
       "description": "Describes statistics reported by a range. For internal use\nonly.",
@@ -1011,7 +1011,7 @@
           "x-go-name": "WritesPerSecond"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "ReplicaDescriptor": {
       "description": "Describes a replica location by node ID\n(corresponds to a host:port via lookup on gossip network) and store\nID (identifies the device).",
@@ -1030,20 +1030,20 @@
           "$ref": "#/definitions/ReplicaType"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "ReplicaID": {
       "type": "integer",
       "format": "int32",
       "title": "A custom type for a range replica ID.",
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "ReplicaType": {
       "description": "All VOTER* types indicate a replica that participates in all raft activities,\nincluding voting for leadership and committing entries. Typically, this\nrequires a majority of voters to reach a decision. In a joint config, two\nseparate majorities are required: one from the set of replicas that have\neither type VOTER or VOTER_OUTGOING or VOTER_DEMOTING_{LEARNER, NON_VOTER},\nas well as that of the set of types VOTER and VOTER_INCOMING . For example,\nwhen type VOTER_FULL is assigned to replicas 1 and 2, while 3 is\nVOTER_OUTGOING and 4 is VOTER_INCOMING, then the two sets over which quorums\nneed to be achieved are {1,2,3} and {1,2,4}. Thus, {1,2} is a quorum of both,\n{1,3} is a quorum of the first but not the second, {1,4} is a quorum of the\nsecond but not the first, and {3,4} is a quorum of neither.",
       "type": "integer",
       "format": "int32",
       "title": "Identifies which raft activities a replica participates in. In\nnormal operation, VOTER_FULL, NON_VOTER, and LEARNER are the only used\nstates. However, atomic replication changes require a transition through a\n\"joint config\"; in this joint config, the VOTER_DEMOTING_{LEARNER, NON_VOTER}\nand VOTER_INCOMING types are used as well to denote voters which are being\ndowngraded to learners and newly added by the change, respectively. When\nbeing removed, a demoting voter is turning into a learner, which we prefer\nover a direct removal, which was used prior to v20.1 and uses the\nVOTER_OUTGOING type instead (see VersionChangeReplicasDemotion for details on\nwhy we're not doing that any more).",
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "Session": {
       "type": "object",
@@ -1116,13 +1116,13 @@
           "x-go-name": "Username"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "StoreID": {
       "type": "integer",
       "format": "int32",
       "title": "StoreID is a custom type for a cockroach store ID.",
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "Subzone": {
       "type": "object",
@@ -1142,7 +1142,7 @@
           "x-go-name": "PartitionName"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+      "x-go-package": "cockroachdb/cockroach/pkg/config/zonepb"
     },
     "SubzoneSpan": {
       "type": "object",
@@ -1160,7 +1160,7 @@
           "x-go-name": "SubzoneIndex"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+      "x-go-package": "cockroachdb/cockroach/pkg/config/zonepb"
     },
     "TableDetailsResponse": {
       "description": "Grants, column names, and indexes for\na table.",
@@ -1216,7 +1216,7 @@
           "$ref": "#/definitions/ZoneConfigurationLevel"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "TableDetailsResponse_Column": {
       "type": "object",
@@ -1252,7 +1252,7 @@
           "x-go-name": "Type"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "TableDetailsResponse_Grant": {
       "type": "object",
@@ -1272,7 +1272,7 @@
           "x-go-name": "User"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "TableDetailsResponse_Index": {
       "type": "object",
@@ -1314,7 +1314,7 @@
           "x-go-name": "Unique"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },    
     "Tier": {
       "type": "object",
@@ -1331,7 +1331,7 @@
           "x-go-name": "Value"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "Timestamp": {
       "type": "object",
@@ -1355,7 +1355,7 @@
           "x-go-name": "WallTime"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/util/hlc"
+      "x-go-package": "cockroachdb/cockroach/pkg/util/hlc"
     },
     "TxnInfo": {
       "type": "object",
@@ -1429,7 +1429,7 @@
           "x-go-name": "TxnDescription"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "UUID": {
       "type": "array",
@@ -1438,7 +1438,7 @@
         "type": "integer",
         "format": "uint8"
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/util/uuid"
+      "x-go-package": "cockroachdb/cockroach/pkg/util/uuid"
     },
     "UnresolvedAddr": {
       "type": "object",
@@ -1455,7 +1455,7 @@
           "x-go-name": "NetworkField"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/util"
+      "x-go-package": "cockroachdb/cockroach/pkg/util"
     },
     "UsersResponse": {
       "type": "object",
@@ -1470,7 +1470,7 @@
           "x-go-name": "Users"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "UsersResponse_User": {
       "type": "object",
@@ -1481,7 +1481,7 @@
           "x-go-name": "Username"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "Version": {
       "type": "object",
@@ -1509,7 +1509,7 @@
           "x-go-name": "Patch"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/roachpb"
     },
     "ZoneConfig": {
       "description": "For internal use only.",
@@ -1517,7 +1517,7 @@
       "title": "ZoneConfig holds configuration that applies to one or more ranges.",
       "properties": {
         "constraints": {
-          "description": "Constrains which stores the replicas can be stored on. The\norder in which the constraints are stored is arbitrary and may change.\nhttps://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20160706_expressive_zone_config.md#constraint-system",
+          "description": "Constrains which stores the replicas can be stored on. The\norder in which the constraints are stored is arbitrary and may change.\nhttps://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/docs/RFCS/20160706_expressive_zone_config.md#constraint-system",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConstraintsConjunction"
@@ -1528,7 +1528,7 @@
           "$ref": "#/definitions/GCPolicy"
         },
         "global_reads": {
-          "description": "Whether transactions operating over the range(s)\nshould be configured to provide non-blocking behavior, meaning that reads\ncan be served consistently from all replicas and do not block on writes. In\nexchange, writes get pushed into the future and must wait on commit to\nensure linearizability. For more, see:\nhttps://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20200811_non_blocking_txns.md",
+          "description": "Whether transactions operating over the range(s)\nshould be configured to provide non-blocking behavior, meaning that reads\ncan be served consistently from all replicas and do not block on writes. In\nexchange, writes get pushed into the future and must wait on commit to\nensure linearizability. For more, see:\nhttps://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/docs/RFCS/20200811_non_blocking_txns.md",
           "type": "boolean",
           "x-go-name": "GlobalReads"
         },
@@ -1602,14 +1602,14 @@
           "x-go-name": "VoterConstraints"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+      "x-go-package": "cockroachdb/cockroach/pkg/config/zonepb"
     },
     "ZoneConfigurationLevel": {
       "description": "The object level at which the configuration is defined. This is needed\nbecause objects without a specifically indicated Zone Configuration will\ninherit the configuration of their \"parent\".",
       "type": "integer",
       "format": "int32",
       "title": "ZoneConfigurationLevel indicates, for objects with a Zone Configuration,\nthe object level at which the configuration is defined. This is needed\nbecause objects without a specifically indicated Zone Configuration will\ninherit the configuration of their 'parent'.\nValid levels are unknown (0), cluster (1), database (2), or table (3).",
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+      "x-go-package": "cockroachdb/cockroach/pkg/server/serverpb"
     },
     "databaseDetailsResponse": {
       "type": "object",
@@ -1622,7 +1622,7 @@
           "x-go-name": "DescriptorID"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "databaseGrantsResponse": {
       "type": "object",
@@ -1643,7 +1643,7 @@
           "x-go-name": "Next"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "databaseTablesResponse": {
       "type": "object",
@@ -1664,7 +1664,7 @@
           "x-go-name": "TableNames"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "databasesResponse": {
       "type": "object",
@@ -1684,7 +1684,7 @@
           "x-go-name": "Next"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "eventsResponse": {
       "type": "object",
@@ -1704,7 +1704,7 @@
           "x-go-name": "Next"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },    
     "hotRangesResponse": {
       "type": "object",
@@ -1733,7 +1733,7 @@
           "x-go-name": "Errors"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "listSessionsResp": {
       "type": "object",
@@ -1762,7 +1762,7 @@
         }
       },
       "x-go-name": "listSessionsResponse",
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "loginResponse": {
       "type": "object",
@@ -1773,7 +1773,7 @@
           "x-go-name": "Session"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "logoutResponse": {
       "type": "object",
@@ -1784,7 +1784,7 @@
           "x-go-name": "LoggedOut"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "nodeRangeResponse": {
       "type": "object",
@@ -1797,7 +1797,7 @@
           "$ref": "#/definitions/rangeInfo"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "nodeRangesResponse": {
       "type": "object",
@@ -1818,7 +1818,7 @@
           "x-go-name": "Ranges"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "nodeStatus": {
       "type": "object",
@@ -1895,7 +1895,7 @@
           "x-go-name": "UpdatedAt"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "nodesResponse": {
       "type": "object",
@@ -1916,7 +1916,7 @@
           "x-go-name": "Nodes"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "rangeDescriptorInfo": {
       "description": "Contains a subset of fields from the Cockroach-internal\nrange descriptor that are safe to be returned from APIs.",
@@ -1959,7 +1959,7 @@
           "x-go-name": "StoreID"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "rangeInfo": {
       "type": "object",
@@ -2013,7 +2013,7 @@
           "x-go-name": "Ticking"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "rangeResponse": {
       "type": "object",
@@ -2026,7 +2026,7 @@
           "x-go-name": "Responses"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "responseError": {
       "type": "object",
@@ -2039,7 +2039,7 @@
           "$ref": "#/definitions/NodeID"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     },
     "tableDetailsResponse": {
       "title": "Response for tableDetails.",
@@ -2064,7 +2064,7 @@
           "x-go-name": "Users"
         }
       },
-      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+      "x-go-package": "cockroachdb/cockroach/pkg/server"
     }
   },  
   "securityDefinitions": {
