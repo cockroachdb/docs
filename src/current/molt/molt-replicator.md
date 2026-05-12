@@ -551,9 +551,7 @@ Explicitly set a default `10s` [`webhook_client_timeout`]({% link {{ site.curren
 {{site.data.alerts.end}}
 </section>
 
-### Resuming after an interruption
-
-Whether you're using Replicator to perform [forward replication](#forward-replication-after-initial-load) or [failback replication](#failback-replication), an unexpected issue may cause replication to stop. Rerun the `replicator` command as shown below:
+### Resume after an interruption
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>
@@ -561,45 +559,73 @@ Whether you're using Replicator to perform [forward replication](#forward-replic
     <button class="filter-button" data-scope="oracle">Oracle</button>
 </div>
 
-When resuming replication after an interruption, MOLT Replicator automatically uses the stored checkpoint to resume from the correct position. 
-
-Rerun the same `replicator` command used during forward replication, specifying the same fully-qualified [`--stagingSchema`]({% link molt/replicator-flags.md %}#staging-schema) value as before. Omit [`--stagingCreateSchema`]({% link molt/replicator-flags.md %}#staging-create-schema) and any checkpoint flags. For example:
+Whether you're using Replicator to perform [forward replication](#forward-replication-after-initial-load) or [failback replication](#failback-replication), an unexpected issue may cause replication to stop.
 
 <section class="filter-content" markdown="1" data-scope="postgres">
+To resume replication, run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `pglogical` command using the same `--stagingSchema` value from your [initial replication command](#replicator-commands).
+
+Be sure to specify the same `--slotName` value that you used during your [initial replication command](#replicator-commands). The replication slot on the source PostgreSQL database automatically tracks the LSN (Log Sequence Number) checkpoint, so replication will resume from where it left off.
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 replicator pglogical \
 --sourceConn $SOURCE \
 --targetConn $TARGET \
+--targetSchema defaultdb.migration_schema \
 --slotName molt_slot \
---stagingSchema defaultdb._replicator
+--stagingSchema defaultdb._replicator \
+--metricsAddr :30005 \
+-v
 ~~~
-
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
+To resume replication, run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `mylogical` command using the same `--stagingSchema` value from your [initial replication command](#replicator-commands).
+
+Replicator will automatically use the saved GTID (Global Transaction Identifier) from the `memo` table in the staging schema (in this example, `defaultdb._replicator.memo`) and track advancing GTID checkpoints there. To have Replicator start from a different GTID instead of resuming from the checkpoint, clear the `memo` table with `DELETE FROM defaultdb._replicator.memo;` and run the `replicator` command with a new `--defaultGTIDSet` value.
+
+{{site.data.alerts.callout_success}}
+For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON migration_db.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
+{{site.data.alerts.end}}
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 replicator mylogical \
 --sourceConn $SOURCE \
 --targetConn $TARGET \
---stagingSchema defaultdb._replicator
+--targetSchema defaultdb.public \
+--stagingSchema defaultdb._replicator \
+--metricsAddr :30005 \
+--userscript table_filter.ts \
+-v
 ~~~
-
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
+To resume replication, run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `oraclelogminer` command using the same `--stagingSchema` value from your [initial replication command](#replicator-commands).
+
+Replicator will automatically find the correct restart SCN (System Change Number) from the `_oracle_checkpoint` table in the staging schema. The restart point is determined by the non-committed row with the smallest `startscn` column value.
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 replicator oraclelogminer \
 --sourceConn $SOURCE \
 --sourcePDBConn $SOURCE_PDB \
 --sourceSchema MIGRATION_USER \
+--targetSchema defaultdb.migration_schema \
 --targetConn $TARGET \
---stagingSchema defaultdb._replicator
+--stagingSchema defaultdb._replicator \
+--metricsAddr :30005 \
+--userscript table_filter.ts \
+-v
 ~~~
 
+{{site.data.alerts.callout_info}}
+When [filtering out tables in a schema with a userscript]({% link molt/userscript-cookbook.md %}#filter-multiple-tables), replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
+{{site.data.alerts.end}}
 </section>
+
+Replication resumes from the last checkpoint without performing a fresh load. Monitor the metrics endpoint at `http://localhost:30005/_/varz` to track replication progress.
 
 ## Known limitations
 

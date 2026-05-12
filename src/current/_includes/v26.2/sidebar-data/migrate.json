@@ -50,6 +50,12 @@
       ]
     },
     {
+      "title": "Migration Best Practices",
+      "urls": [
+        "/molt/migration-strategy.html"
+      ]
+    },
+    {
       "title": "MOLT Tools",
       "items": [
         {
@@ -181,12 +187,6 @@
             "/molt/molt-verify.html"
           ]
         }
-      ]
-    },
-    {
-      "title": "Migration Best Practices",
-      "urls": [
-        "/molt/migration-strategy.html"
       ]
     },
     {

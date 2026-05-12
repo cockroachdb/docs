@@ -50,9 +50,15 @@
       ]
     },
     {
+      "title": "Migration Best Practices",
+      "urls": [
+        "/molt/migration-strategy.html"
+      ]
+    },
+    {
       "title": "MOLT Tools",
       "items": [
-{
+        {
           "title": "Schema Conversion Tool",
           "urls": [
             "/cockroachcloud/migrations-page.html"

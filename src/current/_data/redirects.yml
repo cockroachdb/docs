@@ -1161,3 +1161,15 @@
 
 - destination: cockroachcloud/byoc-azure-deployment.md
   sources: ['cockroachcloud/byoc-deployment.md']
+
+- destination: molt/migration-approach-classic-bulk-load.md
+  sources: ['molt/migrate-bulk-load.md']
+
+- destination: molt/migration-approach-delta.md
+  sources: ['molt/migrate-load-replicate.md']
+
+- destination: molt/molt-replicator.md#resume-after-an-interruption
+  sources: ['molt/migrate-resume-replication.md']
+
+- destination: molt/molt-replicator.md#failback-replication
+  sources: ['molt/migrate-failback.md']

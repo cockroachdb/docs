@@ -11,7 +11,7 @@ For detailed migration sequencing and tool usage, refer to [Migration Overview](
 
 ## Migration variables
 
-The combination of these variables largely defines your migration approach. While you'll typically choose one primary option for each variable, some migrations may involve a hybrid approach depending on your specific requirements.
+The combination of these variables largely defines your migration approach, and it will be influenced by additional [factors to consider](#factors-to-consider). While you'll typically choose one primary option for each variable, some migrations may involve a hybrid approach depending on your specific requirements.
 
 ### Migration granularity
 
