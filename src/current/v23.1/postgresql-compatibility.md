@@ -34,11 +34,11 @@ When set to `true`, multiple portals can be open at the same time, with their ex
 This feature has the following limitations:
 
 - Only read-only [`SELECT` queries]({% link {{ page.version.version }}/selection-queries.md %}) without [subqueries]({% link {{ page.version.version }}/subqueries.md %}) are supported.
-- Postqueries (which are how CockroachDB executes [foreign key checks]({% link {{ page.version.version }}/foreign-key.md %}), for example) are not supported - [cockroachdb/cockroach#96398](https://github.com/cockroachdb/cockroach/issues/96398)
-- [Distributed SQL execution]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) is not supported for multiple active portals; instead queries execute on the [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) only - [cockroachdb/cockroach#100822](https://github.com/cockroachdb/cockroach/issues/100822)
-- Only the latest execution of a statement from a pausable portal is recorded by the [trace infrastructure]({% link {{ page.version.version }}/show-trace.md %}) - [cockroachdb/cockroach#99404](https://github.com/cockroachdb/cockroach/issues/99404)
+- Postqueries (which are how CockroachDB executes [foreign key checks]({% link {{ page.version.version }}/foreign-key.md %}), for example) are not supported - cockroachdb/cockroach#96398
+- [Distributed SQL execution]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) is not supported for multiple active portals; instead queries execute on the [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) only - cockroachdb/cockroach#100822
+- Only the latest execution of a statement from a pausable portal is recorded by the [trace infrastructure]({% link {{ page.version.version }}/show-trace.md %}) - cockroachdb/cockroach#99404
 
-In addition to the known issues, additional performance testing is needed. The current list of known issues can be viewed [on GitHub using the `A-pausable-portals` label](https://github.com/cockroachdb/cockroach/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc++label%3AA-pausable-portals+), and we welcome bug reports.
+In addition to the known issues, additional performance testing is needed. The current list of known issues can be viewed on GitHub using the `A-pausable-portals` label, and we welcome bug reports.
 
 ## Features that differ from PostgreSQL
 
@@ -181,7 +181,7 @@ An `x` value less than `1` would result in the following error:
 pq: check constraint violated
 ~~~
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35370)
+Tracking GitHub Issue
 
 ### Column name from an outer column inside a subquery
 
@@ -207,7 +207,7 @@ PostgreSQL:
  1
 ~~~
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46563)
+Tracking GitHub Issue
 
 ### SQL Compatibility
 

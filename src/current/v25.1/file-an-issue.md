@@ -28,7 +28,7 @@ To file an issue in GitHub, we need the following information:
 
 ### Template
 
-You can use this as a template for [filing an issue in GitHub](https://github.com/cockroachdb/cockroach/issues/new):
+You can use this as a template for filing an issue in GitHub:
 
 ~~~
 
