@@ -41,7 +41,7 @@ Experimental downloads are not qualified for production use and not eligible for
 <a href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.darwin-11.0-arm64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM<br />(Experimental)</button></a>
 
 <a {{ onclick_string }} href="https://binaries.cockroachdb.com/cockroach-{{ release.release_name }}.windows-6.2-amd64.zip"><button id="windows" class="filter-button" data-scope="windows" data-eventcategory="windows-binary-release-notes">Windows<br />(Experimental)</b></button></a>
-<a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.release_name }}"><button id="source" class="filter-button" data-scope="source" data-eventcategory="source-release-notes">Source</button></a
+<button id="source" class="filter-button" data-scope="source" data-eventcategory="source-release-notes">Source</button>
 </div></div>
 
   {% if release.has_sql_only == true %}
@@ -63,7 +63,7 @@ Experimental downloads are not qualified for production use and not eligible for
     {% endif %}
 
 <a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.release_name }}.windows-6.2-amd64.zip"><button id="windows" class="filter-button" data-scope="windows" data-eventcategory="windows-binary-release-notes">Windows<br />(Experimental)</button></a>
-<a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.release_name }}"><button id="source" class="filter-button" data-scope="source" data-eventcategory="source-release-notes">Source</button></a
+<button id="source" class="filter-button" data-scope="source" data-eventcategory="source-release-notes">Source</button>
 </div></div>
 
   {% endif %}
@@ -97,7 +97,7 @@ docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 
   {% if release.previous_release %}
 <h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-changelog">Changelog</h3>
-View a detailed changelog on GitHub: [{{ release.previous_release }}...{{ release.release_name }}](https://github.com/cockroachdb/cockroach/compare/{{ release.previous_release }}...{{ release.release_name }})
+View a detailed changelog on GitHub: {{ release.previous_release }}...{{ release.release_name }}
   {% endif %}
 
 {% endif %}

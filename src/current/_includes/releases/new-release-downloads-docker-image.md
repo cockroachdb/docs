@@ -96,11 +96,11 @@ docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 
 <h3>Source tag</h3>
 
-To view or download the source code for CockroachDB {{ release.release_name }} on Github, visit <a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.release_name }}">{{ release.release_name }} source tag</a>.
+To view or download the source code for CockroachDB {{ release.release_name }} on Github, visit {{ release.release_name }} source tag.
 
 {% endif %}
 
 {% if release.previous_release %}
 <h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-changelog">Changelog</h3>
-View a detailed changelog on GitHub: [{{ release.previous_release }}...{{ release.release_name }}](https://github.com/cockroachdb/cockroach/compare/{{ release.previous_release }}...{{ release.release_name }})
+View a detailed changelog on GitHub: {{ release.previous_release }}...{{ release.release_name }}
 {% endif %}
