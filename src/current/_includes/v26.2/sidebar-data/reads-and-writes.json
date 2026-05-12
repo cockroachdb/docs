@@ -114,13 +114,6 @@
       ]
     },
     {
-      "title": "SQL Playground",
-      "is_top_level": true,
-      "urls": [
-        "https://www.cockroachlabs.com/docs/tutorials/sql-playground"
-      ]
-    },
-    {
       "title": "Database Management Tools",
       "items": [
         {
