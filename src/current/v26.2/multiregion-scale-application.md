@@ -85,7 +85,7 @@ For most table localities, including the default locality `LOCALITY REGIONAL BY 
 
 However, there are some scenarios in which you might need to update the SQL operations in your application. For example:
 
-- If a table has a `REGIONAL BY ROW AS <custom_region_column>` table locality, and you want to explicitly insert regional values into a table, as shown in [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}#configure-regional-by-row-tables).
+- If a table has a `REGIONAL BY ROW AS <custom_region_column>` table locality, and you want to explicitly insert regional values into a table.
 - If a table has a `REGIONAL BY ROW` locality, and you want to update the `crdb_region` value of existing rows in the table based on some other column value, as shown in [Set the table locality to `REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#set-the-table-locality-to-regional-by-row).
 - If a table has a `REGIONAL BY ROW` locality, and you want to filter a [selection query]({% link {{ page.version.version }}/select-clause.md %}#filter-rows) based on the `crdb_region` value.
 
@@ -147,4 +147,3 @@ In the absence of an explicit, back-filling computed column for the hidden `crdb
 ## See also
 
 - [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %})
-- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})

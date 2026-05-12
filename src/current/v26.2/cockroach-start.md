@@ -449,7 +449,7 @@ $ cockroach init \
 
 ### Start a multi-region cluster
 
-In this example we will start a multi-node [local cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) with a multi-region setup that uses the same regions (passed to the [`--locality`](#locality) flag) as the [multi-region MovR demo application]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
+In this example we will start a multi-node [local cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) with a multi-region setup that uses the same regions (passed to the [`--locality`](#locality) flag) as the multi-region MovR demo application.
 
 1. Start a node in the `us-east1` region:
 
@@ -517,8 +517,6 @@ In this example we will start a multi-node [local cluster]({% link {{ page.versi
     ~~~
 
 For more information about running CockroachDB multi-region, see the [Multi-region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).
-
-For a more advanced example showing how to run a simulated workload on a multi-region CockroachDB cluster on your local machine, see [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
 
 {{site.data.alerts.callout_info}}
 For more information about the `--locality` flag, see [Locality](#locality).

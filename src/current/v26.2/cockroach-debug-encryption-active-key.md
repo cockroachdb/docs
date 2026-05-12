@@ -40,6 +40,5 @@ AES128_CTR:be235c29239aa84a48e5e1874d76aebf7fb3c1bdc438cec2eb98de82f06a57a0
 
 ## See also
 
-- [File an Issue]({% link {{ page.version.version }}/file-an-issue.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
