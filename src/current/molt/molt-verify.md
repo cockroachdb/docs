@@ -26,7 +26,7 @@ For a demo of MOLT Verify, watch the following video:
 The following source databases are supported:
 
 - PostgreSQL 12-16
-- MySQL 5.7, 8.0 and later
+- MySQL 5.7-8.4
 - Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)
 
 ## Installation
