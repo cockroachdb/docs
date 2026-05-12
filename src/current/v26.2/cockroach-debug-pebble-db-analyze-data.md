@@ -62,9 +62,9 @@ The command groups sampled blocks into buckets (by block type, block size, data 
 - `CR` is the compression ratio. Higher values mean that compressed data uses less storage.
 - `Comp` is compression throughput. Lower throughput means higher CPU cost when Pebble writes or rewrites SSTs.
 - `Decomp` is decompression throughput. Lower throughput means higher CPU cost when CockroachDB reads compressed data.
-- `Snappy`, `MinLZ1`, `Zstd1`, `Auto1/30`, `Auto1/15`, and `Zstd3` are compression experiments. These names are not a one-to-one list of valid values for [`storage.sstable.compression_algorithm`]({% link {{ page.version.version }}/cluster-settings.md %}); use them to compare the general speed and space tradeoffs of lower-effort, adaptive, and higher-effort compression.
+- `Snappy`, `MinLZ1`, `Zstd1`, `Auto1/30`, `Auto1/15`, and `Zstd3` are compression experiments. These names are not a one-to-one list of valid values for [`storage.sstable.compression_algorithm`]({% link {{ page.version.version }}/cluster-settings.md %}). Use them to compare the general speed and space tradeoffs of lower-effort, adaptive, and higher-effort compression.
 
-Most users do not need to tune SSTable compression settings. These results are intended to support review with Cockroach Labs rather than direct tuning decisions by end users. To understand whether compression tradeoffs are relevant for a representative store, consult [Cockroach Labs Support](https://support.cockroachlabs.com/) before changing SSTable compression settings in production. For more information about Pebble SSTable compression, see [SST compression]({% link {{ page.version.version }}/architecture/storage-layer.md %}#sst-compression).
+Most users do not need to tune SSTable compression settings. These results are intended to support review with Cockroach Labs rather than direct tuning decisions by end users. To understand whether compression tradeoffs are relevant for a representative store, consult [Cockroach Labs Support](https://support.cockroachlabs.com/) before changing SSTable compression settings in production. For more information about Pebble SSTable compression, refer to [SST compression]({% link {{ page.version.version }}/architecture/storage-layer.md %}#sst-compression).
 
 ## Examples
 
