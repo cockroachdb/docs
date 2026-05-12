@@ -71,7 +71,7 @@ Instead of using this approach, you can now [enable global access](https://cloud
 
 Our multi-region deployment approach relies on pod IP addresses being routable across three distinct Kubernetes clusters and regions. Both the hosted Google Kubernetes Engine (GKE) and Amazon Elastic Kubernetes Service (EKS) satisfy this requirement.
 
-If you want to run on another cloud or on-premises, use this [basic network test](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/multiregion#pod-to-pod-connectivity) to see if it will work.
+If you want to run on another cloud or on-premises, use this basic network test to see if it will work.
 
 <section class="filter-content" markdown="1" data-scope="gke">
 1. Complete the **Before You Begin** steps described in the [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) documentation.
@@ -322,21 +322,21 @@ This important rule enables node communication between Kubernetes clusters in di
 
 The Kubernetes cluster in each region needs to have a [Network Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html) pointed at its CoreDNS service, which you will configure in the next step.
 
-1. Upload our load balancer manifest [`dns-lb-eks.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml) to the Kubernetes clusters in all 3 regions:
+1. Upload our load balancer manifest [`dns-lb-eks.yaml`](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml) to the Kubernetes clusters in all 3 regions:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-1>
+    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/files/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-1>
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-2>
+    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/files/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-2>
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-3>
+    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/files/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-3>
     ~~~
 
     You should see the load balancer appear in the Load Balancers section of the EC2 console in each region. This load balancer will route traffic to CoreDNS in the region.
@@ -369,11 +369,11 @@ Each Kubernetes cluster has a [CoreDNS](https://coredns.io/) service that respon
 
 To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [modify the ConfigMap](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options) for the CoreDNS Corefile in each region.
 
-1. Download and open our ConfigMap template [`configmap.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/eks/configmap.yaml):
+1. Download and open our ConfigMap template [`configmap.yaml`](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/multiregion/eks/configmap.yaml):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/configmap.yaml
+    curl -O https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/files/cockroach/cloud/kubernetes/multiregion/eks/configmap.yaml
     ~~~
 
 1. After [obtaining the IP addresses of the Network Load Balancers](#set-up-load-balancing) in all 3 regions, you can use this information to define a **separate ConfigMap for each region**. Each unique ConfigMap lists the forwarding addresses for the pods in the 2 other regions.
@@ -467,7 +467,7 @@ If you plan to run your instances exclusively on private subnets, set the follow
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -OOOOOOOOO \
-    https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/{README.md,client-secure.yaml,cluster-init-secure.yaml,cockroachdb-statefulset-secure.yaml,dns-lb.yaml,example-app-secure.yaml,external-name-svc.yaml,setup.py,teardown.py}
+    https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/files/cockroach/cloud/kubernetes/multiregion/{README.md,client-secure.yaml,cluster-init-secure.yaml,cockroachdb-statefulset-secure.yaml,dns-lb.yaml,example-app-secure.yaml,external-name-svc.yaml,setup.py,teardown.py}
     ~~~
 
 1. Retrieve the `kubectl` "contexts" for your clusters:
@@ -685,11 +685,11 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
 
 ### Create StatefulSets
 
-1. Download and open our [multi-region StatefulSet configuration](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml). You'll save three versions of this file locally, one for each set of 3 CockroachDB nodes per region.
+1. Download and open our [multi-region StatefulSet configuration](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml). You'll save three versions of this file locally, one for each set of 3 CockroachDB nodes per region.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/files/cockroach/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml
     ~~~
 
     Look for **TODO** comments in the file. These highlight fields you need to define before deploying your StatefulSet.
@@ -814,7 +814,7 @@ The pod uses the `root` client certificate created earlier by the `setup.py` scr
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/client-secure.yaml --context <cluster-context> --namespace <cluster-namespace>
+    kubectl create -f https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/files/cockroach/cloud/kubernetes/multiregion/client-secure.yaml --context <cluster-context> --namespace <cluster-namespace>
     ~~~
 
     ~~~
