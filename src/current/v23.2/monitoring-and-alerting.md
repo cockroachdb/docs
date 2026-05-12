@@ -1075,7 +1075,7 @@ Start Prometheus and Alertmanager to begin watching for events to alert on. You 
 ### Events to alert on
 
 {{site.data.alerts.callout_info}}
-Currently, not all events listed have corresponding alert rule definitions available from the `api/v2/rules/` endpoint. Many events not yet available in this manner are defined in the <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>. For more details, see [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
+Currently, not all events listed have corresponding alert rule definitions available from the `api/v2/rules/` endpoint. Many events not yet available in this manner are defined in the <a href="https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>. For more details, see [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
 {{site.data.alerts.end}}
 
 #### Node is down
@@ -1084,7 +1084,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **How to detect:** If a node is down, its `_status/vars` endpoint will return a `Connection refused` error. Otherwise, the `liveness_livenodes` metric will be the total number of live nodes in the cluster.
 
-- **Rule definition:** Use the `InstanceDead` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
+- **Rule definition:** Use the `InstanceDead` alert from our <a href="https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
 #### Node is restarting too frequently
 
@@ -1092,7 +1092,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's `_status/vars` output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
 
-- **Rule definition:** Use the `InstanceFlapping` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
+- **Rule definition:** Use the `InstanceFlapping` alert from our <a href="https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
 #### Node is running low on disk space
 
@@ -1100,7 +1100,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's `_status/vars` output.
 
-- **Rule definition:** Use the `StoreDiskLow` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
+- **Rule definition:** Use the `StoreDiskLow` alert from our <a href="https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
 {% include {{page.version.version}}/storage/free-up-disk-space.md %}
 
@@ -1116,7 +1116,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **How to detect:** Calculate this using the `security_certificate_expiration_ca` metric in the node's `_status/vars` output.
 
-- **Rule definition:** Use the `CACertificateExpiresSoon` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
+- **Rule definition:** Use the `CACertificateExpiresSoon` alert from our <a href="https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
 #### Node certificate expires soon
 
@@ -1124,7 +1124,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **How to detect:** Calculate this using the `security_certificate_expiration_node` metric in the node's `_status/vars` output.
 
-- **Rule definition:** Use the `NodeCertificateExpiresSoon` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
+- **Rule definition:** Use the `NodeCertificateExpiresSoon` alert from our <a href="https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
 #### Changefeed is experiencing high latency
 

@@ -58,7 +58,7 @@ A system must have FIPS mode enabled in the kernel before it can run the FIPS-re
 
 If you do not want to use the FIPS-ready CockroachDB Docker image directly, you can create a custom Docker image based on [Red Hat's Universal Base Image 8 Docker image](https://catalog.redhat.com/software/containers/ubi8/ubi/):
 
-- You can model your Dockerfile on the one that Cockroach Labs uses to produce the [FIPS-ready Docker image](https://github.com/cockroachdb/cockroach/blob/master/build/deploy/Dockerfile) for CockroachDB.
+- You can model your Dockerfile on the one that Cockroach Labs uses to produce the FIPS-ready Docker image for CockroachDB.
 - Your Dockerfile must install OpenSSL before it starts the `cockroach` binary.
 - You must enable FIPS mode on the Docker host kernel before it can run containers with FIPS mode enabled. The FIPS-ready CockroachDB Docker image must run with FIPS mode enabled. To enable FIPS mode in the Docker host kernel, refer to [Enable FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/assembly_installing-a-rhel-8-system-with-fips-mode-enabled_security-hardening) in Red Hat's documentation. To verify that FIPS mode is enabled, refer to [Verify that the kernel enforces FIPS mode](#verify-that-the-kernel-enforces-fips-mode).
 
