@@ -30,7 +30,7 @@ Rows represent origin nodes, and columns represent destination nodes. Hover over
 
 The page automatically refreshes every 30 seconds to show the most recent information.
 
-On a [typical multi-region cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
+On a [typical multi-region cluster]({% link {{ page.version.version }}/multiregion-overview.md %}), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
 
 For instance, the cluster shown above has nodes in `us-west1`, `us-east1`, and `europe-west2`. Latencies are highest between nodes in `us-west1` and `europe-west2`, which span the greatest distance. This is especially clear when sorting by region or availability zone and collapsing nodes:
 
@@ -81,6 +81,4 @@ Network latency limits the performance of individual operations. You can use the
 ## See also
 
 - [Topology Patterns]({% link {{ page.version.version }}/topology-patterns.md %})
-- [CockroachDB Performance]({% link {{ page.version.version }}/performance.md %}#latency)
 - [Performance Tuning]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
-- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
