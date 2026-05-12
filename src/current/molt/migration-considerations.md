@@ -57,7 +57,7 @@ When do you need to complete the migration? How many team members can be allocat
 
 - Migrations with a short timeline, or which cannot accommodate high complexity, may want to migrate data all at once, without utilizing continuous replication, and requiring manual reconciliation in the event of migration failure.
 
-- Migrations with a long timeline, or which can accomodate complexity, may want to migrate data in phases. If the migration requires minimal downtime, these migrations may also want to utilize continuous replication. If the migration is low in risk-tolerance, these migrations may also want to enable failback.
+- Migrations with a long timeline, or which can accommodate complexity, may want to migrate data in phases. If the migration requires minimal downtime, these migrations may also want to utilize continuous replication. If the migration is low in risk-tolerance, these migrations may also want to enable failback.
 
 ### Risk tolerance
 

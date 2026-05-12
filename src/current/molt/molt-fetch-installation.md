@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This page explains the prequisites for using [MOLT Fetch]({% link molt/molt-fetch.md %}) and then describes how to install it.
+This page explains the prerequisites for using [MOLT Fetch]({% link molt/molt-fetch.md %}) and then describes how to install it.
 
 ## Supported databases
 

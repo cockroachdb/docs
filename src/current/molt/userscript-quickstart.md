@@ -31,7 +31,7 @@ import * as api from "replicator@v2";
 const TARGET_SCHEMA_NAME = "defaultdb.public";
 const TABLE_TO_SKIP = "audit_logs";
 
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, meta) => {
     if (meta.table === TABLE_TO_SKIP) {
       return null; // Skip this table

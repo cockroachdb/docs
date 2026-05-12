@@ -28,7 +28,7 @@ The application runs on a Kubernetes cluster.
 - Review the [MOLT Fetch]({% link molt/molt-fetch-best-practices.md %}) and [MOLT Replicator]({% link molt/molt-replicator.md %}) documentation.
 - [Develop a migration plan]({% link molt/migration-strategy.md %}#develop-a-migration-plan) and [prepare for the migration]({% link molt/migration-strategy.md %}#prepare-for-migration).
 - **Recommended:** Perform a dry run of this full set of instructions in a development environment that closely resembles your production environment. This can help you get a realistic sense of the time and complexity it requires.
-- Understand the prequisites and limitations of the MOLT tools:
+- Understand the prerequisites and limitations of the MOLT tools:
 
 <section class="filter-content" markdown="1" data-scope="oracle">
 {% include molt/oracle-migration-prerequisites.md %}
