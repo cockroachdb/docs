@@ -183,6 +183,5 @@ $ cockroach debug tsdump --format=raw --metrics-list-file=metrics.txt --certs-di
 
 ## See also
 
-- [File an Issue]({% link {{ page.version.version }}/file-an-issue.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})

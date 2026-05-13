@@ -237,4 +237,3 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 
 - [Define Table Partitions]({% link {{ page.version.version }}/partitioning.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})

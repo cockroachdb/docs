@@ -674,4 +674,3 @@ To customize the frequency of per-operation statistics, use the `--display-every
 
 - [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [Performance Benchmarking with TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %})

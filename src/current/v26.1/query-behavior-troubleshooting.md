@@ -366,7 +366,7 @@ A response of `bad connection` or `closed` normally indicates that the node to w
 
 Once you find the node, you can check its [logs]({% link {{ page.version.version }}/logging.md %}) (stored in `cockroach-data/logs` by [default]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration)).
 
-Because this kind of behavior is unexpected, you should [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
+Because this kind of behavior is unexpected, you should file an issue on Github.
 
 ### Log queries executed by a specific node
 

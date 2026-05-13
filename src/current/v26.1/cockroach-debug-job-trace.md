@@ -70,7 +70,6 @@ You will find the zip file in the directory you ran the command from:
 
 ## See also
 
-- [File an Issue]({% link {{ page.version.version }}/file-an-issue.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
 - [Support Resources]({% link {{ page.version.version }}/support-resources.md %})

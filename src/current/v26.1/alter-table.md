@@ -1293,7 +1293,7 @@ Using [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-This example assumes you have a simulated multi-region database running on your local machine following the steps described in [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}). It shows how a `UNIQUE` index is partitioned, but it's similar to how all indexes are partitioned on `REGIONAL BY ROW` tables.
+This example assumes you have a simulated multi-region database running on your local machine. It shows how a `UNIQUE` index is partitioned, but it's similar to how all indexes are partitioned on `REGIONAL BY ROW` tables.
 
 To show how the automatic partitioning of indexes on `REGIONAL BY ROW` tables works, we will:
 
@@ -1313,7 +1313,7 @@ ALTER TABLE users ADD COLUMN email STRING;
 ALTER TABLE users ADD CONSTRAINT user_email_unique UNIQUE (email);
 ~~~
 
-Next, issue the [`SHOW INDEXES`]({% link {{ page.version.version }}/show-index.md %}) statement. You will see that [the implicit region column](#set-the-table-locality-to-regional-by-row) that was added when the table [was converted to regional by row]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}#configure-regional-by-row-tables) is now indexed:
+Next, issue the [`SHOW INDEXES`]({% link {{ page.version.version }}/show-index.md %}) statement. You will see that [the implicit region column](#set-the-table-locality-to-regional-by-row) that was added when the table was converted to regional by row is now indexed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1664,7 +1664,7 @@ If the column has the [`NOT NULL` constraint]({% link {{ page.version.version }}
 
 #### Convert to a different data type
 
-The [TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %}) database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
+The TPC-C database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1704,7 +1704,7 @@ To change the data type from `DECIMAL` to `STRING`:
 
 #### Change a column type's precision
 
-The [TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %}) `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
+The TPC-C `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2860,7 +2860,7 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
 
 ##### Example
 
-1. Follow steps 1 and 2 from the [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}) tutorial. This will involve starting a [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster in a terminal window (call it _terminal 1_).
+1. Start a [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster in a terminal window (call it _terminal 1_).
 
 1. From the [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) running in terminal 1, set the setting that enables auto-rehoming. You must issue this setting before creating the `REGIONAL BY ROW` tables that you want auto-rehomed.
 
@@ -2869,7 +2869,7 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
     SET enable_auto_rehoming = on;
     ~~~
 
-1. In a second terminal window (call it _terminal 2_), [finish the tutorial starting from step 3]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}#step-3-load-and-run-movr) onward to finish loading the cluster with data and applying the multi-region SQL configuration.
+1. In a second terminal window (call it _terminal 2_), finish loading the cluster with data and applying the multi-region SQL configuration.
 
 1. Switch back to terminal 1, and check the gateway region of the node you are currently connected to:
 
