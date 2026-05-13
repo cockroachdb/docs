@@ -33,7 +33,7 @@ The following source databases are supported:
 
 {% include molt/molt-install.md %}
 
-# Setup
+## Setup
 
 Complete the following items before using MOLT Verify:
 
@@ -178,7 +178,7 @@ When verification completes, the output displays a summary showing the number of
 
 ### Verify transformed data
 
-If you applied [transformations with MOLT Fetch]({% link molt/molt-fetch.md %}#transformations), a [MOLT Replicator userscript]({% link molt/userscript-cookbook.md %}#rename-tables), or another tool, you can apply the same transformations with MOLT Verify to match source data with the transformed target data.
+If you applied [transformations with MOLT Fetch]({% link molt/molt-fetch.md %}#define-transformations), a [MOLT Replicator userscript]({% link molt/userscript-cookbook.md %}#rename-tables), or another tool, you can apply the same transformations with MOLT Verify to match source data with the transformed target data.
 
 #### Step 1. Create a transformation file
 
@@ -239,12 +239,7 @@ When verification completes, the output displays a summary:
 
 ## Known limitations
 
-- MOLT Verify compares 20,000 rows at a time by default, and row values can change between batches, potentially resulting in temporary inconsistencies in data. To configure the row batch size, use the `--row_batch_size` [flag](#flags).
-- MOLT Verify checks for collation mismatches on [primary key]({% link {{site.current_cloud_version}}/primary-key.md %}) columns. This may cause validation to fail when a [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) is used as a primary key and the source and target databases are using different [collations]({% link {{site.current_cloud_version}}/collate.md %}).
-- MOLT Verify might give an error in case of schema changes on either the source or target database.
-- [Geospatial types]({% link {{site.current_cloud_version}}/spatial-data-overview.md %}#spatial-objects) cannot yet be compared.
-- Only PostgreSQL and MySQL sources are supported for [verifying a subset of data](#verify-a-subset-of-data).
-- Only table and schema renames are supported when [verifying transformed data](#verify-transformed-data).
+{% include molt/molt-limitations-verify.md %}
 
 ## See also
 
