@@ -185,6 +185,8 @@ SELECT * FROM stock;
 
 - [Triggers]({% link {{ page.version.version }}/triggers.md %})
 - [`DROP TRIGGER`]({% link {{ page.version.version }}/drop-trigger.md %})
+- [`SHOW TRIGGERS`]({% link {{ page.version.version }}/show-triggers.md %})
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
 - [User-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %})
 - [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
 - [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %})
