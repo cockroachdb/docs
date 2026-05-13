@@ -72,7 +72,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Cross-cluster restore for {{ site.data.products.standard }} tier</p>
-    <p class="feature-description">{{ site.data.products.standard }} tier clusters now support cross-cluster restore, allowing you to restore backups from one cluster to another for disaster recovery and testing scenarios.</p>
+    <p class="feature-description">{{ site.data.products.standard }} tier clusters now support <a href="https://www.cockroachlabs.com/docs/cockroachcloud/take-and-restore-self-managed-backups">cross-cluster restore</a>, allowing you to restore backups from one cluster to another for disaster recovery and testing scenarios.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -102,7 +102,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Cluster Overview page redesign</p>
-    <p class="feature-description">The {{ site.data.products.cloud }} Console Cluster Overview page has been redesigned with an improved layout and user experience for monitoring cluster health and metrics.</p>
+    <p class="feature-description">The {{ site.data.products.cloud }} Console <a href="https://www.cockroachlabs.com/docs/cockroachcloud/overview-page">Cluster Overview page</a> has been redesigned with an improved layout and user experience for monitoring cluster health and metrics.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
