@@ -65,4 +65,6 @@ DROP TRIGGER log_update_timestamp ON users;
 
 - [Triggers]({% link {{ page.version.version }}/triggers.md %})
 - [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %})
+- [`SHOW TRIGGERS`]({% link {{ page.version.version }}/show-triggers.md %})
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
 - [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
