@@ -84,6 +84,6 @@ As of v23.2, logs can be configured to use a [timezone with formats `crdb-v1` or
 
 ## See also
 
-- [File an Issue]({% link {{ page.version.version }}/file-an-issue.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})

@@ -81,7 +81,7 @@ You can now use IntelliJ's [database tool window](https://www.jetbrains.com/help
 
 ## Report issues with IntelliJ IDEA & CockroachDB
 
-If you encounter issues other than those outlined above, please file an issue on the `cockroachdb/cockroach` GitHub repo, including the following details about the environment where you encountered the issue:
+If you encounter issues other than those outlined above, please [contact Support]({% link {{ page.version.version }}/support-resources.md %}) with the following details about the environment where you encountered the issue:
 
 - CockroachDB version ([`cockroach version`]({% link {{ page.version.version }}/cockroach-version.md %}))
 - IntelliJ IDEA version
