@@ -51,9 +51,11 @@ Subcommand | Description | Can combine with other subcommands?
 [`ALTER PRIMARY KEY`](#alter-primary-key) | Change the [primary key]({% link {{ page.version.version }}/primary-key.md %}) of a table. | Yes
 [`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for a table. | No
 [`DISABLE ROW LEVEL SECURITY`](#disable-row-level-security) |  Disable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) for a table. | Yes
+[`DISABLE TRIGGER`](#disable-trigger) | Disable a [trigger]({% link {{ page.version.version }}/triggers.md %}) for a table. | Yes
 [`DROP COLUMN`](#drop-column) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](#drop-constraint) | Remove constraints from columns. | Yes
 [`ENABLE ROW LEVEL SECURITY`](#enable-row-level-security) |  Enable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) for a table. | Yes
+[`ENABLE TRIGGER`](#enable-trigger) | Enable a [trigger]({% link {{ page.version.version }}/triggers.md %}) for a table. | Yes
 [`EXPERIMENTAL_AUDIT`](#experimental_audit) | Enable per-table audit logs, for security purposes. | Yes
 [`FORCE / NO FORCE ROW LEVEL SECURITY`](#force-row-level-security) | Force the table owner to be subject to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies defined on a table. | Yes
 [`OWNER TO`](#owner-to) |  Change the owner of the table. | No
@@ -500,6 +502,26 @@ The user must be a member of the [`admin`]({% link {{ page.version.version }}/se
 This statement disables [Row-level security]({% link {{ page.version.version }}/row-level-security.md %}) per table. Typically, this is controlled by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) that owns the table.
 
 For examples, refer to [Disable row-level security](#disable-row-level-security).
+
+### `ENABLE TRIGGER`
+
+This statement enables a [trigger]({% link {{ page.version.version }}/triggers.md %}) associated with a table. When a trigger is enabled for a table, it activates if its triggering event occurs on the table. Use `ENABLE TRIGGER ALL` or `ENABLE TRIGGER USER` to enable all triggers associated with a table.
+
+{{site.data.alerts.callout_info}}
+ALL and USER are both available for compatibility with PostgreSQL syntax, but in CockroachDB they behave identically since CockroachDB does not have system triggers. Both keywords enable all triggers associated with the table.
+{{site.data.alerts.end}}
+
+For examples, refer to [Enable a trigger](#enable-a-trigger).
+
+### `DISABLE TRIGGER`
+
+This statement disables a [trigger]({% link {{ page.version.version }}/triggers.md %}) associated with a table. When a trigger is disabled for a table, it does not activate even if its triggering event occurs on the table. Use `DISABLE TRIGGER ALL` or `DISABLE TRIGGER USER` to disable all triggers associated with a table.
+
+{{site.data.alerts.callout_info}}
+ALL and USER are both available for compatibility with PostgreSQL syntax, but in CockroachDB they behave identically since CockroachDB does not have system triggers. Both keywords disable all triggers associated with the table.
+{{site.data.alerts.end}}
+
+For examples, refer to [Disable a trigger](#disable-a-trigger).
 
 #### Required privileges
 
@@ -1293,7 +1315,7 @@ Using [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-This example assumes you have a simulated multi-region database running on your local machine following the steps described in [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}). It shows how a `UNIQUE` index is partitioned, but it's similar to how all indexes are partitioned on `REGIONAL BY ROW` tables.
+This example assumes you have a simulated multi-region database running on your local machine. It shows how a `UNIQUE` index is partitioned, but it's similar to how all indexes are partitioned on `REGIONAL BY ROW` tables.
 
 To show how the automatic partitioning of indexes on `REGIONAL BY ROW` tables works, we will:
 
@@ -1313,7 +1335,7 @@ ALTER TABLE users ADD COLUMN email STRING;
 ALTER TABLE users ADD CONSTRAINT user_email_unique UNIQUE (email);
 ~~~
 
-Next, issue the [`SHOW INDEXES`]({% link {{ page.version.version }}/show-index.md %}) statement. You will see that [the implicit region column](#set-the-table-locality-to-regional-by-row) that was added when the table [was converted to regional by row]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}#configure-regional-by-row-tables) is now indexed:
+Next, issue the [`SHOW INDEXES`]({% link {{ page.version.version }}/show-index.md %}) statement. You will see that [the implicit region column](#set-the-table-locality-to-regional-by-row) that was added when the table was converted to regional by row is now indexed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1678,7 +1700,7 @@ If the column has the [`NOT NULL` constraint]({% link {{ page.version.version }}
 
 #### Convert to a different data type
 
-The [TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %}) database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
+The TPC-C database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1718,7 +1740,7 @@ To change the data type from `DECIMAL` to `STRING`:
 
 #### Change a column type's precision
 
-The [TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %}) `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
+The TPC-C `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -2874,7 +2896,7 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
 
 ##### Example
 
-1. Follow steps 1 and 2 from the [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}) tutorial. This will involve starting a [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster in a terminal window (call it _terminal 1_).
+1. Start a [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster in a terminal window (call it _terminal 1_).
 
 1. From the [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) running in terminal 1, set the setting that enables auto-rehoming. You must issue this setting before creating the `REGIONAL BY ROW` tables that you want auto-rehomed.
 
@@ -2883,7 +2905,7 @@ ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.publ
     SET enable_auto_rehoming = on;
     ~~~
 
-1. In a second terminal window (call it _terminal 2_), [finish the tutorial starting from step 3]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}#step-3-load-and-run-movr) onward to finish loading the cluster with data and applying the multi-region SQL configuration.
+1. In a second terminal window (call it _terminal 2_), finish loading the cluster with data and applying the multi-region SQL configuration.
 
 1. Switch back to terminal 1, and check the gateway region of the node you are currently connected to:
 
@@ -3414,6 +3436,50 @@ ALTER TABLE orders NO FORCE ROW LEVEL SECURITY;
 {{site.data.alerts.callout_danger}}
 Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled.
 {{site.data.alerts.end}}
+
+### Enable a trigger
+
+To enable a [trigger]({% link {{ page.version.version }}/triggers.md %}) associated with a table, use the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE <table_name> ENABLE TRIGGER <trigger_name>;
+~~~
+
+This requires an existing trigger. For information on creating a trigger, refer to [Triggers]({% link {{ page.version.version }}/triggers.md %}).
+
+To enable all triggers associated with a table, use either of the following statements:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE <table_name> ENABLE TRIGGER ALL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE <table_name> ENABLE TRIGGER USER;
+~~~
+
+### Disable a trigger
+
+To disable a [trigger]({% link {{ page.version.version }}/triggers.md %}) associated with a table, use the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE <table_name> DISABLE TRIGGER <trigger_name>;
+~~~
+
+To disable all triggers associated with a table, use either of the following statements:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE <table_name> DISABLE TRIGGER ALL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE <table_name> DISABLE TRIGGER USER;
+~~~
 
 ## See also
 

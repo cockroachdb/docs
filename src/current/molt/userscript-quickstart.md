@@ -9,7 +9,7 @@ This quickstart guides you through creating, validating, and deploying your firs
 
 ## Before you begin
 
-- [Install MOLT Replicator **v1.3.0 or later**]({% link molt/molt-replicator.md %}#installation) for full compatibility with the userscript API.
+- [Install MOLT Replicator **v1.3.0 or later**]({% link molt/molt-replicator-installation.md %}) for full compatibility with the userscript API.
 - Install a TypeScript-compatible IDE (for example, [VS Code](https://code.visualstudio.com/)).
 
 ## Step 1: Set up your environment
@@ -31,7 +31,7 @@ import * as api from "replicator@v2";
 const TARGET_SCHEMA_NAME = "defaultdb.public";
 const TABLE_TO_SKIP = "audit_logs";
 
-api.configureTargetSchema(SCHEMA_NAME, {
+api.configureTargetSchema(TARGET_SCHEMA_NAME, {
   onRowUpsert: (row, meta) => {
     if (meta.table === TABLE_TO_SKIP) {
       return null; // Skip this table
