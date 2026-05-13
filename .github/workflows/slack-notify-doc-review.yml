@@ -1,0 +1,44 @@
+name: Notify Slack on Doc Review Request
+
+on:
+  pull_request:
+    types: [review_requested]
+
+jobs:
+  notify-slack:
+    # Only run if docs-prs team was requested as reviewer
+    if: github.event.requested_team.slug == 'docs-prs'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR details
+        id: pr_details
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          # Get additions and deletions from the PR
+          PR_DATA=$(gh api /repos/${{ github.repository }}/pulls/$PR_NUMBER)
+          ADDITIONS=$(echo "$PR_DATA" | jq -r '.additions')
+          DELETIONS=$(echo "$PR_DATA" | jq -r '.deletions')
+          TOTAL_LINES=$((ADDITIONS + DELETIONS))
+          echo "lines_changed=$TOTAL_LINES" >> $GITHUB_OUTPUT
+
+      - name: Send Slack notification
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          LINES_CHANGED: ${{ steps.pr_details.outputs.lines_changed }}
+        run: |
+          curl -X POST "https://hooks.slack.com/triggers/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" \
+            -H 'Content-Type: application/json' \
+            -d @- <<EOF
+          {
+            "pr_title": "$PR_TITLE",
+            "pr_url": "$PR_URL",
+            "pr_author": "$PR_AUTHOR",
+            "pr_number": "$PR_NUMBER",
+            "lines_changed": "$LINES_CHANGED"
+          }
+          EOF
