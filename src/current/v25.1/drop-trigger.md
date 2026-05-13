@@ -10,7 +10,7 @@ The `DROP TRIGGER` [statement]({% link {{ page.version.version }}/sql-statements
 
 ## Required privileges
 
-To drop a trigger, a user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the trigger.
+To drop a trigger, the user must be the owner of the table on which the trigger is defined.
 
 ## Synopsis
 
