@@ -28,6 +28,12 @@
                 "urls": [
                 "/${VERSION}/partitioning.html"
                 ]
+            },
+            {
+                "title": "Data Domiciling with CockroachDB Tutorial",
+                "urls": [
+                "/${VERSION}/data-domiciling.html"
+                ]
             }
             ]
         },
@@ -41,29 +47,6 @@
             "title": "Multi-Region Zone Config Extensions",
             "urls": [
             "/${VERSION}/zone-config-extensions.html"
-            ]
-        },
-        {
-            "title": "Multi-Region Tutorials",
-            "items": [
-                {
-                    "title": "Low Latency Reads and Writes",
-                    "urls": [
-                    "/${VERSION}/demo-low-latency-multi-region-deployment.html"
-                    ]
-                },
-                {
-                    "title": "Data Domiciling with CockroachDB",
-                    "urls": [
-                    "/${VERSION}/data-domiciling.html"
-                    ]
-                },
-                {
-                    "title": "Migrate to Multi-Region SQL with Replication Zones",
-                    "urls": [
-                    "/${VERSION}/migrate-to-multiregion-sql.html"
-                    ]
-                }
             ]
         }
     ]

@@ -37,7 +37,7 @@ ALTER TABLE t SET (sql_stats_canary_window = '1h');
 
 ## Queries with canary statistics
 
-When the [query optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) makes a plan for a query, it must determine whether to use canary statistics or stable statistics in its calculations. This determination is based on a probability configured in the [`sql.stats.canary_fraction` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-canary-fraction). Queries do not mix stastistics types, so if a query is selected to use canary statistics, it uses them for all tables. Setting `sql.stats.canary_fraction` to `0` disables canary statistics across all queries.
+When the [query optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) makes a plan for a query, it must determine whether to use canary statistics or stable statistics in its calculations. This determination is based on a probability configured in the [`sql.stats.canary_fraction` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). Queries do not mix stastistics types, so if a query is selected to use canary statistics, it uses them for all tables. Setting `sql.stats.canary_fraction` to `0` disables canary statistics across all queries.
 
 Example usage:
 
