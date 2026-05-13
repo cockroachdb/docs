@@ -10,7 +10,7 @@ The `CREATE TRIGGER` [statement]({% link {{ page.version.version }}/sql-statemen
 
 ## Required privileges
 
-To create a trigger, a user must have [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the trigger.
+To create a trigger, a user must have the `TRIGGER` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table and the `EXECUTE` privilege on the trigger function. By default, the `public` role has `EXECUTE` privilege on all functions, so this is granted automatically unless it has been revoked.
 
 ## Synopsis
 
