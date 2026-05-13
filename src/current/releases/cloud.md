@@ -23,9 +23,9 @@ Get future release notes emailed to you:
   <tr>
    <th class="center-align">Feature</th>
    <th class="center-align">Availability</th>
-   <th>Basic</th>
-   <th>Standard</th>
-   <th>Advanced</th>
+   <th>{{ site.data.products.basic }} </th>
+   <th>{{ site.data.products.standard }} </th>
+   <th>{{ site.data.products.advanced }} </th>
   </tr>
  </thead>
  <tbody>
@@ -42,7 +42,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Bring Your Own Cloud (BYOC)</p>
-    <p class="feature-description">You can deploy <a href="https://www.cockroachlabs.com/docs/cockroachcloud/byoc-overview">CockroachDB Cloud clusters within your own AWS, Azure, or GCP account</a>. This gives you access to your existing cloud savings and control over networking, security, and data residency while retaining the managed database operations of CockroachDB Cloud.</p>
+    <p class="feature-description">You can deploy <a href="https://www.cockroachlabs.com/docs/cockroachcloud/byoc-overview">CockroachDB {{ site.data.products.cloud }} clusters within your own AWS, Azure, or GCP account</a>. This gives you access to your existing cloud savings and control over networking, security, and data residency while retaining the managed database operations of CockroachDB {{ site.data.products.cloud }}.</p>
    </td>
    <td class="icon-center">Preview</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -52,7 +52,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Model Context Protocol (MCP) server</p>
-    <p class="feature-description">The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server">CockroachDB Cloud MCP server</a> allows your AI agents and LLM-powered applications to connect to CockroachDB using the Model Context Protocol (MCP).</p>
+    <p class="feature-description">The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server">CockroachDB {{ site.data.products.cloud }} MCP server</a> allows your AI agents and LLM-powered applications to connect to CockroachDB using the Model Context Protocol (MCP).</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
@@ -62,7 +62,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Fault tolerance demo</p>
-    <p class="feature-description">Run a built-in <a href="https://www.cockroachlabs.com/docs/{{ site.versions["stable"] }}/demo-cockroachdb-resilience#run-a-guided-demo-in-cockroachdb-cloud">fault tolerance demo</a> in the CockroachDB Cloud Console that allows you to monitor query execution during a simulated failure and recovery.</p>
+    <p class="feature-description">Run a built-in <a href="https://www.cockroachlabs.com/docs/{{ site.versions["stable"] }}/demo-cockroachdb-resilience#run-a-guided-demo-in-cockroachdb-cloud">fault tolerance demo</a> in the CockroachDB {{ site.data.products.cloud }} Console that allows you to monitor query execution during a simulated failure and recovery.</p>
    </td>
    <td class="icon-center">Preview</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
@@ -71,18 +71,8 @@ Get future release notes emailed to you:
   </tr>
   <tr>
    <td>
-    <p class="feature-summary">DB Console access over PrivateLink</p>
-    <p class="feature-description">DB Console access is now available over AWS PrivateLink and Azure Private Link for newly created Advanced clusters, enabling secure private access to the DB Console without exposing traffic to the public internet.</p>
-   </td>
-   <td class="icon-center">GA</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-  </tr>
-  <tr>
-   <td>
-    <p class="feature-summary">Cross-cluster restore for Standard tier</p>
-    <p class="feature-description">Standard tier clusters now support cross-cluster restore, allowing you to restore backups from one cluster to another for disaster recovery and testing scenarios.</p>
+    <p class="feature-summary">Cross-cluster restore for {{ site.data.products.standard }} tier</p>
+    <p class="feature-description">{{ site.data.products.standard }} tier clusters now support cross-cluster restore, allowing you to restore backups from one cluster to another for disaster recovery and testing scenarios.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -91,8 +81,8 @@ Get future release notes emailed to you:
   </tr>
   <tr>
    <td>
-    <p class="feature-summary">Larger instance sizes for Advanced clusters</p>
-    <p class="feature-description">Advanced clusters now support instance sizes larger than 32 vCPUs per node, enabling higher-performance workloads and greater vertical scaling options.</p>
+    <p class="feature-summary">Larger instance sizes for {{ site.data.products.advanced }} clusters</p>
+    <p class="feature-description">{{ site.data.products.advanced }} clusters now support instance sizes larger than 32 vCPUs per node, enabling higher-performance workloads and greater vertical scaling options.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -102,7 +92,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Azure Qatar Central region</p>
-    <p class="feature-description">CockroachDB Cloud Advanced clusters can now be deployed in the Azure Qatar Central (qatarcentral) region.</p>
+    <p class="feature-description">CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} clusters can now be deployed in the Azure Qatar Central (qatarcentral) region.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-no.html %}</td>
@@ -112,7 +102,7 @@ Get future release notes emailed to you:
   <tr>
    <td>
     <p class="feature-summary">Cluster Overview page redesign</p>
-    <p class="feature-description">The Cloud Console Cluster Overview page has been redesigned with an improved layout and user experience for monitoring cluster health and metrics.</p>
+    <p class="feature-description">The {{ site.data.products.cloud }} Console Cluster Overview page has been redesigned with an improved layout and user experience for monitoring cluster health and metrics.</p>
    </td>
    <td class="icon-center">GA</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
@@ -134,19 +124,19 @@ Console users with the <a href="https://www.cockroachlabs.com/docs/cockroachclou
 
 <h3>Aug 4, 2025</h3>
 
-CockroachDB v25.3 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.3 is an <a href="https://www.cockroachlabs.com/docs/releases/index#release-schedule">Innovation release</a>.
+CockroachDB v25.3 is now generally available (GA) for CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} clusters. CockroachDB v25.3 is an <a href="https://www.cockroachlabs.com/docs/releases/index#release-schedule">Innovation release</a>.
 
 For release notes, refer to <a href="https://www.cockroachlabs.com/docs/releases/v25.3">What's New in v25.3</a>.
 
-To get started with v25.3, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-an-advanced-cluster">Create a CockroachDB {{ site.data.products.advanced }} cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade a Cluster in CockroachDB Cloud</a>.
+To get started with v25.3, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-an-advanced-cluster">Create a CockroachDB {{ site.data.products.advanced }} cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade a Cluster in CockroachDB {{ site.data.products.cloud }}</a>.
 
 <h3>July 31, 2025</h3>
 
-<h4>Customer-Managed Encryption Keys (CMEK) for CockroachDB Advanced for Azure</h4>
+<h4>Customer-Managed Encryption Keys (CMEK) for CockroachDB {{ site.data.products.advanced }} for Azure</h4>
 
-This release introduces Customer-Managed Encryption Keys (CMEK) for CockroachDB Cloud Advanced clusters on Microsoft Azure. This feature provides enhanced data security and supports PCI DSS compliance.
+This release introduces Customer-Managed Encryption Keys (CMEK) for CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} clusters on Microsoft Azure. This feature provides enhanced data security and supports PCI DSS compliance.
 
-CMEK enables customers to control the encryption keys used to protect their data at rest within CockroachDB Cloud on Azure. Keys are managed via the customer's Azure Key Vault.
+CMEK enables customers to control the encryption keys used to protect their data at rest within CockroachDB {{ site.data.products.cloud }} on Azure. Keys are managed via the customer's Azure Key Vault.
 
 Key benefits:
 
@@ -157,17 +147,17 @@ Key benefits:
 <li><b>Data Revocation Capability</b>: Enables immediate data access revocation by disabling the encryption key in Azure Key Vault.</li>
 </ul>
 
-This functionality is critical for organizations handling sensitive data and seeking PCI DSS compliance on the Azure Advanced Tier of CockroachDB Cloud.
+This functionality is critical for organizations handling sensitive data and seeking PCI DSS compliance on the Azure {{ site.data.products.advanced }} Tier of CockroachDB {{ site.data.products.cloud }}.
 
-For more information, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cmek">Customer-Managed Encryption Keys (CMEK) Overview</a> and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managing-cmek">Manage CMEK for CockroachDB Advanced</a>.
+For more information, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cmek">Customer-Managed Encryption Keys (CMEK) Overview</a> and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managing-cmek">Manage CMEK for CockroachDB {{ site.data.products.advanced }} </a>.
 
 <h3>May 12, 2025</h3>
 
-CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a <a href="https://www.cockroachlabs.com/docs/releases/index#release-schedule">Regular release</a>.
+CockroachDB v25.2 is now generally available (GA) for CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a <a href="https://www.cockroachlabs.com/docs/releases/index#release-schedule">Regular release</a>.
 
 For release notes, refer to <a href="https://www.cockroachlabs.com/docs/releases/v25.2">What's New in v25.2</a>.
 
-To get started with v25.2, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-an-advanced-cluster">Create a CockroachDB {{ site.data.products.advanced }} cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade a Cluster in CockroachDB Cloud</a>.
+To get started with v25.2, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-an-advanced-cluster">Create a CockroachDB {{ site.data.products.advanced }} cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade a Cluster in CockroachDB {{ site.data.products.cloud }}</a>.
 
 <h3>April 30, 2025</h3>
 
@@ -179,7 +169,7 @@ You can now <a href="https://www.cockroachlabs.com/docs/cockroachcloud/change-pl
 
 <h3>February 18, 2025</h3>
 
-CockroachDB v25.1 is now generally available for select CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.1 is an <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy#innovation-releases">Innovation release</a>. Refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-an-advanced-cluster">Create a CockroachDB {{ site.data.products.advanced }} cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade to v25.1</a>.
+CockroachDB v25.1 is now generally available for select CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }} clusters. CockroachDB v25.1 is an <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy#innovation-releases">Innovation release</a>. Refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-an-advanced-cluster">Create a CockroachDB {{ site.data.products.advanced }} cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade to v25.1</a>.
 
 <h3>January 16, 2025</h3>
 
@@ -210,13 +200,13 @@ You can now use the CockroachDB {{ site.data.products.cloud }} Console to <a hre
 
 <h3>December 1, 2024</h3>
 
-As of December 1, 2024, <a href="https://www.cockroachlabs.com/pricing/new/">updated pricing</a> that was recently <a href="https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/">announced</a> for CockroachDB Cloud is now in effect for all customers except those with annual or multi-year contracts that began prior to December 1, 2024. For those customers, the updated pricing, including new usage-based costs, goes into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the <a href="https://cockroachlabs.cloud/billing">Billing</a> interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
+As of December 1, 2024, <a href="https://www.cockroachlabs.com/pricing/new/">updated pricing</a> that was recently <a href="https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/">announced</a> for CockroachDB {{ site.data.products.cloud }} is now in effect for all customers except those with annual or multi-year contracts that began prior to December 1, 2024. For those customers, the updated pricing, including new usage-based costs, goes into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the <a href="https://cockroachlabs.cloud/billing">Billing</a> interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
 
-For further detail, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/costs">Understand CockroachDB Cloud Costs</a>.
+For further detail, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/costs">Understand CockroachDB {{ site.data.products.cloud }} Costs</a>.
 
 <h3>November 18, 2024</h3>
 
-CockroachDB v24.3 is now generally available for select CockroachDB Cloud clusters. CockroachDB v24.3 is a <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy#regular-releases">Regular release</a>. Refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">Create a CockroachDB {{ site.data.products.standard }} cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade to v24.3</a>.
+CockroachDB v24.3 is now generally available for select CockroachDB {{ site.data.products.cloud }} clusters. CockroachDB v24.3 is a <a href="https://www.cockroachlabs.com/docs/releases/release-support-policy#regular-releases">Regular release</a>. Refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">Create a CockroachDB {{ site.data.products.standard }} cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade to v24.3</a>.
 
 <h3>November 8, 2024</h3>
 
@@ -224,11 +214,11 @@ You can now <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managing-
 
 <h3>November 1, 2024</h3>
 
-Cockroach Labs has announced <a href="https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/">updated pricing</a> for CockroachDB Cloud. This new pricing model goes into effect December 1, 2024 for new customers and existing pay-as-you-go customers, and upon renewal for annual or multi-year contract customers.
+Cockroach Labs has announced <a href="https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/">updated pricing</a> for CockroachDB {{ site.data.products.cloud }}. This new pricing model goes into effect December 1, 2024 for new customers and existing pay-as-you-go customers, and upon renewal for annual or multi-year contract customers.
 
 A Preview of metering for usage-based billing of data transfer, backups, and changefeeds remains in effect through November 30, 2024. During this Preview, line items with a charge of $0 will be shown on your monthly invoice for these items. Customers with existing annual or multi-year contracts may continue to preview these line items until charges begin upon contract renewal.
 
-For more information, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/costs">CockroachDB Cloud Costs</a> and the <a href="https://www.cockroachlabs.com/pricing/">CockroachDB Pricing</a> page.
+For more information, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/costs">CockroachDB {{ site.data.products.cloud }} Costs</a> and the <a href="https://www.cockroachlabs.com/pricing/">CockroachDB Pricing</a> page.
 
 <h3>October 29, 2024</h3>
 
@@ -250,10 +240,10 @@ The new official <a href="https://www.cockroachlabs.com/docs/cockroachcloud/conf
 
 <h3>October 1, 2024</h3>
 
-<a href="https://www.cockroachlabs.com/docs/cockroachcloud/costs">Metering</a> for usage-based billing of data transfer, managed backup storage, and changefeeds is now in <a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#features-in-preview">Preview</a> for all CockroachDB Cloud organizations.
+<a href="https://www.cockroachlabs.com/docs/cockroachcloud/costs">Metering</a> for usage-based billing of data transfer, managed backup storage, and changefeeds is now in <a href="https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#features-in-preview">Preview</a> for all CockroachDB {{ site.data.products.cloud }} organizations.
 
 <ul>
-<li>Usage metrics for data transfer, managed backup storage, and changefeeds are now visible for CockroachDB Standard and Advanced clusters in the CockroachDB Cloud Console. You can view your usage across these metrics on the <a href="https://cockroachlabs.cloud/billing/overview">Billing page</a> and on invoices.</li>
+<li>Usage metrics for data transfer, managed backup storage, and changefeeds are now visible for CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters in the CockroachDB {{ site.data.products.cloud }} Console. You can view your usage across these metrics on the <a href="https://cockroachlabs.cloud/billing/overview">Billing page</a> and on invoices.</li>
 <li>There will be no usage-based charges associated with these metrics during the Preview period, which is in effect through November 30, 2024\. During this time, line items with a charge of $0 will be shown for each metric on your monthly invoice.</li>
 <li>We will share pricing for these usage-based costs by November 1, 2024\.</li>
 <li>On December 1, 2024, once the Preview has ended, pricing for these metrics goes into effect immediately for new customers and for existing pay-as-you-go customers (e.g. paying monthly by credit card). Customers with annual or multi-year contracts will continue to preview these line items without incurring charges for them (i.e. expending credits) through the end of their current contract term.</li>
@@ -264,8 +254,8 @@ The new official <a href="https://www.cockroachlabs.com/docs/cockroachcloud/conf
 <a href="https://www.cockroachlabs.com/docs/cockroachcloud/index">CockroachDB {{ site.data.products.cloud }}</a> <a href="https://cockroachlabs.com/pricing/">plans</a> have been updated, and existing clusters have been transitioned to the new plans. There is no impact on the functionality or availability of existing clusters.
 
 <ul>
-<li>CockroachDB Serverless clusters have been renamed to <b>CockroachDB {{ site.data.products.basic }}</b>.</li>
-<li><b>CockroachDB {{ site.data.products.standard }}</b> is a new plan in <a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability#features-in-preview">Preview</a>. You can easily <a href="https://www.cockroachlabs.com/docs/cockroachcloud/provision-a-cluster-with-terraform#change-a-clusters-plan">switch</a> a {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">start a new Standard cluster</a>. New {{ site.data.products.cloud }} organizations can benefit from a <a href="https://www.cockroachlabs.com/docs/cockroachcloud/free-trial">free trial</a>.
+<li>CockroachDB {{ site.data.products.serverless }} clusters have been renamed to <b>CockroachDB {{ site.data.products.basic }}</b>.</li>
+<li><b>CockroachDB {{ site.data.products.standard }}</b> is a new plan in <a href="https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability#features-in-preview">Preview</a>. You can easily <a href="https://www.cockroachlabs.com/docs/cockroachcloud/provision-a-cluster-with-terraform#change-a-clusters-plan">switch</a> a {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">start a new {{ site.data.products.standard }} cluster</a>. New {{ site.data.products.cloud }} organizations can benefit from a <a href="https://www.cockroachlabs.com/docs/cockroachcloud/free-trial">free trial</a>.
 
     CockroachDB {{ site.data.products.standard }} offers the benefits of a scalable, shared architecture, along with many enterprise-ready features, including:
 
@@ -277,7 +267,7 @@ The new official <a href="https://www.cockroachlabs.com/docs/cockroachcloud/conf
     <li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics">Log export</a> to Amazon CloudWatch and GCP Cloud Logging.</li>
     </ul>
 </li>
-<li>CockroachDB Dedicated clusters have been renamed to <b>CockroachDB {{ site.data.products.advanced }}</b>. Former CockroachDB Dedicated Advanced clusters are now CockroachDB {{ site.data.products.advanced }} clusters with <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-an-advanced-cluster#step-6-configure-advanced-security-features">advanced security features</a> enabled.</li>
+<li>CockroachDB {{ site.data.products.dedicated }} clusters have been renamed to <b>CockroachDB {{ site.data.products.advanced }}</b>. Former CockroachDB {{ site.data.products.dedicated }} {{ site.data.products.advanced }} clusters are now CockroachDB {{ site.data.products.advanced }} clusters with <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-an-advanced-cluster#step-6-configure-advanced-security-features">advanced security features</a> enabled.</li>
 </ul>
 
 For more details, refer to the <a href="https://cockroachlabs.com/blog/roachfest-24-product-updates">CockroachDB Blog</a> and learn more about <a href="https://cockroachlabs.com/pricing/">CockroachDB {{ site.data.products.cloud }} Costs across plans</a>.
@@ -285,9 +275,9 @@ For more details, refer to the <a href="https://cockroachlabs.com/blog/roachfest
 In addition, this release includes the following features:
 
 <ul>
-<li>A collection of <a href="https://www.cockroachlabs.com/docs/cockroachcloud/metrics#cockroachdb-cloud-console-metrics-page">Metrics graphs</a> in the Cloud Console for all plans.</li>
+<li>A collection of <a href="https://www.cockroachlabs.com/docs/cockroachcloud/metrics#cockroachdb-cloud-console-metrics-page">Metrics graphs</a> in the {{ site.data.products.cloud }} Console for all plans.</li>
 <li>Configurable backup frequency and retention for <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managed-backups">Managed Backups</a> on CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} clusters, so you can meet your Disaster Recovery requirements.</li>
-<li>Updates to the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">CockroachDB Cloud API</a> and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/provision-a-cluster-with-terraform">Terraform Provider</a> to support the new plans and features.</li>
+<li>Updates to the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">CockroachDB {{ site.data.products.cloud }} API</a> and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/provision-a-cluster-with-terraform">Terraform Provider</a> to support the new plans and features.</li>
 </ul>
 
 <h3>August 12, 2024</h3>
@@ -324,7 +314,7 @@ In addition, this release includes the following features:
 <h4 id="2024-07-19-general-updates"> General updates </h4>
 
 <ul>
-<li>CockroachDB {{ site.data.products.cloud }} is now available as a pay-as-you-go offering on the AWS Marketplace. This allows AWS customers to pay for CockroachDB Cloud charges via their AWS accounts, with no up-front commitments. For more detail, refer to:
+<li>CockroachDB {{ site.data.products.cloud }} is now available as a pay-as-you-go offering on the AWS Marketplace. This allows AWS customers to pay for CockroachDB {{ site.data.products.cloud }} charges via their AWS accounts, with no up-front commitments. For more detail, refer to:
 <ul>
 <li><a href="https://aws.amazon.com/marketplace/pp/prodview-n3xpypxea63du">CockroachDB (pay-as-you-go)</a> on AWS Marketplace.</li>
 <li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/billing-management?filters=aws#subscribe-through-aws-marketplace">Subscribe through AWS Marketplace</a> in the CockroachDB {{ site.data.products.cloud }} documentation.</li>
@@ -353,7 +343,7 @@ In addition, this release includes the following features:
 <h4 id="2024-06-17-security-updates"> Security updates </h4>
 
 <ul>
-<li>The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-org-sso#cloud-organization-sso">IdP-initiated SAML flow</a> is now enabled by default. When you configure a <a href="https://www.cockroachlabs.com/docs/cockroachcloud/configure-cloud-org-sso#saml">Cloud Organization SSO SAML connection</a>, your users can optionally sign in to CockroachDB {{ site.data.products.cloud }} directly from your IdP, such as by using a tile in Okta.</li>
+<li>The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-org-sso#cloud-organization-sso">IdP-initiated SAML flow</a> is now enabled by default. When you configure a <a href="https://www.cockroachlabs.com/docs/cockroachcloud/configure-cloud-org-sso#saml">{{ site.data.products.cloud }} Organization SSO SAML connection</a>, your users can optionally sign in to CockroachDB {{ site.data.products.cloud }} directly from your IdP, such as by using a tile in Okta.</li>
 </ul>
 
 <h3>June 14, 2024</h3>
@@ -392,7 +382,7 @@ In addition, this release includes the following features:
 <h4 id="2024-05-20-general-updates"> General updates </h4>
 
 <ul>
-<li>CockroachDB v24.1 is now generally available for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on June 3, 2024{% comment %}Verify{% endcomment %}. For more information, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">Create a CockroachDB Dedicated Cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade to CockroachDB v24.1</a>.</li>
+<li>CockroachDB v24.1 is now generally available for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on June 3, 2024{% comment %}Verify{% endcomment %}. For more information, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">Create a CockroachDB {{ site.data.products.dedicated }} Cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade to CockroachDB v24.1</a>.</li>
 <li>CockroachDB {{ site.data.products.dedicated }} on AWS is now available in the <code>me-central-1</code>(United Arab Emirates) <a href="https://www.cockroachlabs.com/docs/cockroachcloud/regions#aws-regions"> region</a>.</li>
 <li>CockroachDB {{ site.data.products.dedicated }} on GCP is now available in new <a href="https://www.cockroachlabs.com/docs/cockroachcloud/regions#gcp-regions">regions</a>:
     <ul>
@@ -574,7 +564,7 @@ In addition, this release includes the following features:
 <h4 id="2024-01-17-general-updates"> General updates </h4>
 
 <ul>
-<li>The single-page CockroachDB Cloud <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-a-basic-cluster">Create cluster</a> and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/basic-cluster-management">Edit cluster</a> have been updated to use multi-step wizards.</li>
+<li>The single-page CockroachDB {{ site.data.products.cloud }} <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-a-basic-cluster">Create cluster</a> and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/basic-cluster-management">Edit cluster</a> have been updated to use multi-step wizards.</li>
 </ul>
 
 <h3>January 17, 2024</h3>
@@ -582,7 +572,7 @@ In addition, this release includes the following features:
 <h4 id="2024-01-17-general-updates"> General updates </h4>
 
 <ul>
-<li>CockroachDB v23.2 is now generally available for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on February 5, 2024. For more information, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">Create a CockroachDB Dedicated Cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade to CockroachDB v23.2</a>.</li>
+<li>CockroachDB v23.2 is now generally available for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on February 5, 2024. For more information, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">Create a CockroachDB {{ site.data.products.dedicated }} Cluster</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/upgrade-cockroach-version">Upgrade to CockroachDB v23.2</a>.</li>
 </ul>
 
 <h3>December 21, 2023</h3>
@@ -606,7 +596,7 @@ In addition, this release includes the following features:
 <h4 id="2023-12-14-security-updates"> Security updates </h4>
 
 <ul>
-<li>Organizations enrolled in <a href="https://cockroachlabs.com/docs/cockroachcloud/folders">CockroachDB {{ site.data.products.cloud }} Folders (Limited Access)</a> can now use the CockroachDB {{ site.data.products.cloud }} Console to create and manage access to folders and clusters, in addition to the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">CockroachDB {{ site.data.products.cloud }} API</a> and the <a href="https://registry.terraform.io/providers/cockroachdb/cockroach">Terraform provider</a> v1.1.0 or above. To learn more, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/folders">Organize CockroachDB Cloud Clusters Using Folders</a>.</li>
+<li>Organizations enrolled in <a href="https://cockroachlabs.com/docs/cockroachcloud/folders">CockroachDB {{ site.data.products.cloud }} Folders (Limited Access)</a> can now use the CockroachDB {{ site.data.products.cloud }} Console to create and manage access to folders and clusters, in addition to the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">CockroachDB {{ site.data.products.cloud }} API</a> and the <a href="https://registry.terraform.io/providers/cockroachdb/cockroach">Terraform provider</a> v1.1.0 or above. To learn more, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/folders">Organize CockroachDB {{ site.data.products.cloud }} Clusters Using Folders</a>.</li>
 </ul>
 
 <h3>November 29, 2023</h3>
@@ -623,7 +613,7 @@ In addition, this release includes the following features:
 <h4 id="2023-11-08"> General changes </h4>
 
 <ul>
-<li>For CockroachDB Dedicated clusters, the ability to add and remove regions through the CockroachDB Cloud Console has now been restored.</li>
+<li>For CockroachDB {{ site.data.products.dedicated }} clusters, the ability to add and remove regions through the CockroachDB {{ site.data.products.cloud }} Console has now been restored.</li>
 </ul>
 
 <h3>October 17, 2023</h3>
@@ -793,7 +783,7 @@ In addition, this release includes the following features:
 <h4 id="2023-07-21-security-changes"> Security updates </h4>
 
 <ul>
-<li><b>Health Insurance Portability and Accountability Act (HIPAA)</b>: When configured appropriately for <a href="https://www.cockroachlabs.com/docs/cockroachcloud/pci-dss">PCI DSS Compliance</a>, CockroachDB {{ site.data.products.dedicated }} advanced also meets the requirements of the Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_. HIPAA defines standards for the storage and handling of personally-identifiable information (PII) related to patient healthcare and health insurance, which is also known as protected-health information (PHI). To learn more, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/compliance">Regulatory Compliance in CockroachDB Dedicated</a>.</li>
+<li><b>Health Insurance Portability and Accountability Act (HIPAA)</b>: When configured appropriately for <a href="https://www.cockroachlabs.com/docs/cockroachcloud/pci-dss">PCI DSS Compliance</a>, CockroachDB {{ site.data.products.dedicated }} advanced also meets the requirements of the Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_. HIPAA defines standards for the storage and handling of personally-identifiable information (PII) related to patient healthcare and health insurance, which is also known as protected-health information (PHI). To learn more, refer to <a href="https://www.cockroachlabs.com/docs/cockroachcloud/compliance">Regulatory Compliance in CockroachDB {{ site.data.products.dedicated }} </a>.</li>
 </ul>
 
 <h3>July 10, 2023</h3>
@@ -841,14 +831,14 @@ In addition, this release includes the following features:
 <h4 id="2023-07-05-security-changes"> Security updates </h4>
 
 <ul>
-<li>The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-org-audit-logs">Organization Audit Logs API</a>, which provides logs of events that occur in a Cloud organization, is now <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability#feature-availability-phases">generally available</a>.</li>
+<li>The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-org-audit-logs">Organization Audit Logs API</a>, which provides logs of events that occur in a {{ site.data.products.cloud }} organization, is now <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability#feature-availability-phases">generally available</a>.</li>
 <li><code>ExternalId</code> support is now re-enabled in the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cmek">Customer-managed Encryption Key (CMEK)</a> capability on AWS.</li>
 </ul>
 
 <h4 id="2023-07-05-bug-fixes"> Bug fixes </h4>
 
 <ul>
-<li>The <code>status</code> returned by the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/export-logs#the-logexport-endpoint"><code>logexport</code> Cloud API endpoint</a> is now determined by the state of both the latest log export's job state and the readiness of the underlying logging resources. Before this change, a <code>GET</code> request to the <code>logexport</code> endpoint could report an outdated log export status that conflicted with the latest log export update job state or with the most recent state of the logging infrastructure.</li>
+<li>The <code>status</code> returned by the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/export-logs#the-logexport-endpoint"><code>logexport</code> {{ site.data.products.cloud }} API endpoint</a> is now determined by the state of both the latest log export's job state and the readiness of the underlying logging resources. Before this change, a <code>GET</code> request to the <code>logexport</code> endpoint could report an outdated log export status that conflicted with the latest log export update job state or with the most recent state of the logging infrastructure.</li>
 <li>Fixed a bug where concurrent <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managed-backups#restore-a-cluster">restores</a> could run on the same destination cluster and cause the destination cluster to become unusable.</li>
 <li>Fixed a bug where the IOPS price preview shown when <a href="https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster">creating</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cluster-management">editing a cluster</a> was inaccurate.</li>
 <li>The <b>Group</b> tab is now shown only to users who have this feature enabled. Previously, an error page was shown to users who navigated to the <b>Group</b> tab without enabling the feature.</li>
@@ -864,7 +854,7 @@ In addition, this release includes the following features:
 
 <h3>May 15, 2023</h3>
 
-In addition to many of the Feature Highlights in the <a href="https://www.cockroachlabs.com/docs/releases/v23.1#v23-1-0-feature-highlights">CockroachDB v23.1.0 Release Notes</a>, the following features are specifically available to Cloud clusters once they are upgraded:
+In addition to many of the Feature Highlights in the <a href="https://www.cockroachlabs.com/docs/releases/v23.1#v23-1-0-feature-highlights">CockroachDB v23.1.0 Release Notes</a>, the following features are specifically available to {{ site.data.products.cloud }} clusters once they are upgraded:
 
 <h4 id="2023-05-15-general-changes"> General changes </h4>
 
@@ -884,7 +874,7 @@ In addition to many of the Feature Highlights in the <a href="https://www.cockro
 <h4 id="2023-05-15-console-changes"> Console changes </h4>
 
 <ul>
-<li>CockroachDB {{ site.data.products.dedicated }} users can now <a href="https://www.cockroachlabs.com/docs/cockroachcloud/take-and-restore-self-managed-backups">restore clusters from the Cloud console</a>.</li>
+<li>CockroachDB {{ site.data.products.dedicated }} users can now <a href="https://www.cockroachlabs.com/docs/cockroachcloud/take-and-restore-self-managed-backups">restore clusters from the {{ site.data.products.cloud }} console</a>.</li>
 </ul>
 
 <h3>May 10, 2023</h3>
@@ -917,16 +907,16 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h4 id="2023-05-01-console-changes"> Console changes </h4>
 
 <ul>
-<li>CockroachDB {{ site.data.products.dedicated }} users can now <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managed-backups?filters=advanced#restore-data-in-advanced-clusters">use the Cloud Console for full-cluster restores</a>.</li>
-<li>The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managing-access"><b>Access Management</b> page</a> in the Cloud Console now shows only relevant content based on the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/authorization#organization-user-roles">user's role assignments</a>.</li>
+<li>CockroachDB {{ site.data.products.dedicated }} users can now <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managed-backups?filters=advanced#restore-data-in-advanced-clusters">use the {{ site.data.products.cloud }} Console for full-cluster restores</a>.</li>
+<li>The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managing-access"><b>Access Management</b> page</a> in the {{ site.data.products.cloud }} Console now shows only relevant content based on the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/authorization#organization-user-roles">user's role assignments</a>.</li>
 </ul>
 
-<h4 id="2023-05-01-api-changes">Cloud API changes </h4>
+<h4 id="2023-05-01-api-changes">{{ site.data.products.cloud }} API changes </h4>
 
 <ul>
-<li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">Cloud API</a> responses now contain a header called <code>Cc-Trace-Id</code> that can be provided to <a href="https://support.cockroachlabs.com">Support</a> to help with diagnostics or troubleshooting.</li>
+<li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">{{ site.data.products.cloud }} API</a> responses now contain a header called <code>Cc-Trace-Id</code> that can be provided to <a href="https://support.cockroachlabs.com">Support</a> to help with diagnostics or troubleshooting.</li>
 <li>The <code>CreateCluster</code> and <code>UpdateCluster</code> methods now support setting individual monthly limits for a cluster's Request Units and storage usage.</li>
-<li>If your organization is enrolled in the new fine-grained authorization model described under <b>Security Updates</b>, you can assign the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/authorization#organization-user-roles">new roles</a> to both users and service accounts using the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">Cloud API</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/provision-a-cluster-with-terraform">Terraform provider</a> in addition to the {{ site.data.products.Cloud }} Console.</li>
+<li>If your organization is enrolled in the new fine-grained authorization model described under <b>Security Updates</b>, you can assign the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/authorization#organization-user-roles">new roles</a> to both users and service accounts using the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">{{ site.data.products.cloud }} API</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/provision-a-cluster-with-terraform">Terraform provider</a> in addition to the {{ site.data.products.cloud }} Console.</li>
 </ul>
 
 <h4 id="2023-05-01-security-changes"> Security updates </h4>
@@ -934,7 +924,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <ul>
 <li>CockroachDB {{ site.data.products.cloud }} is transitioning to a new <a href="https://www.cockroachlabs.com/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-authorization-model">authorization model</a> that offers fine-grained access-control (FGAC), meaning that users can be given access to exactly the actions and resources required to perform their tasks. Changes include <a href="https://www.cockroachlabs.com/docs/cockroachcloud/authorization#organization-user-roles">cluster-level roles</a> and consistent access management across users and service accounts. This feature is in <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability">limited access</a>, and you can enroll your organization by contacting your account team. For more information, see <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managing-access">Managing Access (Authorization) in CockroachDB Cloud</a>.</li>
 
-<li>You can now use client certificates to authenticate to CockroachDB {{ site.data.products.dedicated }} clusters. First, a <a href="https://www.cockroachlabs.com/docs/cockroachcloud/authorization#organization-user-roles">Cluster Admin</a> needs to upload a CA certificate for the cluster using the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">Cloud API</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/provision-a-cluster-with-terraform">Terraform provider</a>. After that, individual users can be assigned client certificates signed by the uploaded CA certificate, which they can then use to connect to the cluster. This feature is in <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability">limited access</a>, and you can enroll your organization by contacting your account team.</li>
+<li>You can now use client certificates to authenticate to CockroachDB {{ site.data.products.dedicated }} clusters. First, a <a href="https://www.cockroachlabs.com/docs/cockroachcloud/authorization#organization-user-roles">Cluster Admin</a> needs to upload a CA certificate for the cluster using the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">{{ site.data.products.cloud }} API</a> or <a href="https://www.cockroachlabs.com/docs/cockroachcloud/provision-a-cluster-with-terraform">Terraform provider</a>. After that, individual users can be assigned client certificates signed by the uploaded CA certificate, which they can then use to connect to the cluster. This feature is in <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability">limited access</a>, and you can enroll your organization by contacting your account team.</li>
 </ul>
 
 <h4 id="2023-05-01-bug-fixes"> Bug fixes </h4>
@@ -971,14 +961,14 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h4 id="2023-04-10-api-changes"> Cloud API changes </h4>
 
 <ul>
-<li>You can now upgrade, roll back, or manually finalize a pending upgrade to your cluster using the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">Cloud API</a>.</li>
-<li>The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">Cloud API endpoints</a> that were in preview for configuring metric export have been replaced with specific endpoints for each supported third-party tool integration. For example, <code>EnableMetricExport</code> is now replaced by <code>EnableDatadogMetricExport</code> and <code>EnableCloudWatchMetricExport</code>.</li>
+<li>You can now upgrade, roll back, or manually finalize a pending upgrade to your cluster using the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">{{ site.data.products.cloud }} API</a>.</li>
+<li>The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">{{ site.data.products.cloud }} API endpoints</a> that were in preview for configuring metric export have been replaced with specific endpoints for each supported third-party tool integration. For example, <code>EnableMetricExport</code> is now replaced by <code>EnableDatadogMetricExport</code> and <code>EnableCloudWatchMetricExport</code>.</li>
 </ul>
 
 <h4 id="2023-04-10-security-changes"> Security updates </h4>
 
 <ul>
-<li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/authorization#organization-admin">Organization Admins</a> of organizations that have <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-org-sso">enabled Cloud Organization SSO</a> can now reset the passwords of other users in their organization who authenticate using passwords rather than an SSO authentication method.</li>
+<li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/authorization#organization-admin">Organization Admins</a> of organizations that have <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-org-sso">enabled {{ site.data.products.cloud }} Organization SSO</a> can now reset the passwords of other users in their organization who authenticate using passwords rather than an SSO authentication method.</li>
 </ul>
 
 <h4 id="2023-04-10-bug-fixes"> Bug fixes </h4>
@@ -1041,14 +1031,14 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <ul>
 <li>Support for <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cmek">Customer-Managed Encryption Keys (CMEK)</a> has been added to the <a href="https://registry.terraform.io/providers/cockroachdb/cockroach/latest">CockroachDB {{ site.data.products.cloud }} Terraform Provider</a>. Contact your Cockroach Labs account team to enroll in the CMEK preview.</li>
 <li>When <a href="https://www.cockroachlabs.com/docs/cockroachcloud/provision-a-cluster-with-terraform">using Terraform to provision CockroachDB {{ site.data.products.cloud }} clusters</a>, you can now manage <a href="https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/data-sources/connection_string">database connections</a> and <a href="https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/data-sources/cluster_cert">SSL certificates</a> directly in your Terraform workflow.</li>
-<li>The Cloud API now provides <a href="https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/clusters/-cluster_id-/connection-string">formatted connection string information</a>.</li>
+<li>The {{ site.data.products.cloud }} API now provides <a href="https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/clusters/-cluster_id-/connection-string">formatted connection string information</a>.</li>
 </ul>
 
 <h4 id="2023-02-06-security-changes"> Security updates </h4>
 
 <ul>
-<li>CockroachDB {{ site.data.products.dedicated }} is now <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview">compliant with the Payment Card Industry Data Security Standard (PCI DSS)</a>. To learn more about achieving PCI DSS compliance with CockroachDB {{ site.data.products.dedicated }}, contact your Cockroach Labs account team.</li>
-<li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-org-sso#cloud-organization-sso">Cloud Organization Single Sign-On (SSO)</a> is now available to all CockroachDB {{ site.data.products.cloud }} users.</li>
+<li>CockroachDB {{ site.data.products.dedicated }} is now <a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview">compliant with the Payment Card Industry Data Security {{ site.data.products.standard }} (PCI DSS)</a>. To learn more about achieving PCI DSS compliance with CockroachDB {{ site.data.products.dedicated }}, contact your Cockroach Labs account team.</li>
+<li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-org-sso#cloud-organization-sso">{{ site.data.products.cloud }} Organization Single Sign-On (SSO)</a> is now available to all CockroachDB {{ site.data.products.cloud }} users.</li>
 <li>For CockroachDB {{ site.data.products.cloud }} organizations enrolled in the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cmek">Customer-managed Encryption Key (CMEK)</a> preview, note that the following conditions must now be met before enabling CMEK for a CockroachDB {{ site.data.products.dedicated }} cluster:
     <ul>
     <li>The cluster must be running CockroachDB <a href="https://www.cockroachlabs.com/docs/releases/v22.2">v22.2.0</a> or later.</li>
@@ -1154,7 +1144,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h4 id="2022-11-07-api-changes"> Cloud API changes </h4>
 
 <ul>
-<li>The <a href="https://www.cockroachlabs.com/docs/api/cloud/v1">Cloud API</a> documentation now indicates which endpoints are in preview.</li>
+<li>The <a href="https://www.cockroachlabs.com/docs/api/cloud/v1">{{ site.data.products.cloud }} API</a> documentation now indicates which endpoints are in preview.</li>
 </ul>
 
 <h4 id="2022-11-07-bug-fixes"> Bug fixes </h4>
@@ -1203,7 +1193,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h4 id="2022-09-08-api-changes"> Cloud API changes </h4>
 
 <ul>
-<li>Added the ability to create, edit, and delete a database through the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">Cloud API</a>.</li>
+<li>Added the ability to create, edit, and delete a database through the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">{{ site.data.products.cloud }} API</a>.</li>
 </ul>
 
 <h4 id="2022-09-08-bug-fixes"> Bug fixes </h4>
@@ -1268,7 +1258,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <ul>
 <li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics-advanced">Datadog integration</a> is now available on the <b>Monitoring</b> page for all CockroachDB {{ site.data.products.dedicated }} users.</li>
-<li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-org-sso">Cloud Organization Single Sign-On (SSO)</a> for CockroachDB {{ site.data.products.cloud }} is now available with Google and Microsoft in addition to GitHub.</li>
+<li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-org-sso">{{ site.data.products.cloud }} Organization Single Sign-On (SSO)</a> for CockroachDB {{ site.data.products.cloud }} is now available with Google and Microsoft in addition to GitHub.</li>
 </ul>
 
 <h4 id="2022-06-06-console-changes">Console changes</h3>
@@ -1288,8 +1278,8 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h4 id="2022-05-05-console-changes">Console changes</h3>
 
 <ul>
-<li>All organizations can now create <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#manage-service-accounts">service accounts</a> and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#api-access">API keys</a>, and have access to the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">Cloud API</a>.</li>
-<li>The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/ccloud-get-started"><code>ccloud</code> command line tool</a> for creating, managing, and connecting to CockroachDB Cloud clusters is now in public beta.</li>
+<li>All organizations can now create <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#manage-service-accounts">service accounts</a> and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/managing-access#api-access">API keys</a>, and have access to the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api">{{ site.data.products.cloud }} API</a>.</li>
+<li>The <a href="https://www.cockroachlabs.com/docs/cockroachcloud/ccloud-get-started"><code>ccloud</code> command line tool</a> for creating, managing, and connecting to CockroachDB {{ site.data.products.cloud }} clusters is now in public beta.</li>
 </ul>
 
 <h3>May 2, 2022</h3>
@@ -1306,7 +1296,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h4 id="2022-05-02-bug-fixes">Bug fixes</h3>
 
 <ul>
-<li>Fixed broken links to the <b>Statement Details</b> page from the <b>Advanced Debug</b> and <b>Sessions</b> pages.</li>
+<li>Fixed broken links to the <b>Statement Details</b> page from the <b>{{ site.data.products.advanced }} Debug</b> and <b>Sessions</b> pages.</li>
 <li>Fixed a bug where regenerating a SQL user password would fail with a duplicate user warning.</li>
 <li>Deleted clusters will no longer be visible after they've been deleted. Previously, a full page refresh was needed to update the <b>Clusters</b> page.</li>
 <li>Fixed a bug that caused charges on the <b>Cluster overview</b> page to show an error state for users with the Developer role. Cluster charges are now hidden for Developers and only available to users with the Admin role.</li>
@@ -1428,7 +1418,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <ul>
 <li>New CockroachDB {{ site.data.products.dedicated }} clusters will now run <a href="https://www.cockroachlabs.com/docs/releases/v21.2#v21-2-3">v21.2.3</a>.</li>
 <li>CockroachDB {{ site.data.products.serverless }} clusters will now run CockroachDB <a href="https://www.cockroachlabs.com/docs/releases/v21.2#v21-2-0-beta-4">v21.2.0-beta.4</a>.</li>
-<li>The CockroachDB documentation navigation is now organized by user task instead of by product for CockroachDB {{ site.data.products.serverless }}, CockroachDB {{ site.data.products.dedicated }}, and CockroachDB {{ site.data.products.core }} v21.2. Topics specific to Serverless and Dedicated clusters are within the new top-level user task categories. CockroachDB {{ site.data.products.cloud }} release notes are under Reference.</li>
+<li>The CockroachDB documentation navigation is now organized by user task instead of by product for CockroachDB {{ site.data.products.serverless }}, CockroachDB {{ site.data.products.dedicated }}, and CockroachDB {{ site.data.products.core }} v21.2. Topics specific to {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters are within the new top-level user task categories. CockroachDB {{ site.data.products.cloud }} release notes are under Reference.</li>
 </ul>
 
 <h4 id="2022-01-10-console-changes">Console changes</h3>
@@ -1579,8 +1569,8 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h4 id="2021-07-07-console-changes">Console changes</h3>
 
 <ul>
-<li>All CockroachDB {{ site.data.products.cloud }} Dedicated users now have access to the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/statements-page"><b>Statements</b></a> and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/sessions-page"><b>Sessions</b></a> pages in the Console.</li>
-<li>All CockroachDB {{ site.data.products.cloud }} Dedicated users now have access to the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/alerts-page"><b>Alerts</b></a> page in the Console, which allows you to toggle alerts, send test alerts, and manage alert recipients for your Organization.</li>
+<li>All CockroachDB {{ site.data.products.cloud }} {{ site.data.products.dedicated }} users now have access to the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/statements-page"><b>Statements</b></a> and <a href="https://www.cockroachlabs.com/docs/cockroachcloud/sessions-page"><b>Sessions</b></a> pages in the Console.</li>
+<li>All CockroachDB {{ site.data.products.cloud }} {{ site.data.products.dedicated }} users now have access to the <a href="https://www.cockroachlabs.com/docs/cockroachcloud/alerts-page"><b>Alerts</b></a> page in the Console, which allows you to toggle alerts, send test alerts, and manage alert recipients for your Organization.</li>
 <li>Previously, users were getting stuck during the verification step of creating an <a href="https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#aws-privatelink">AWS PrivateLink</a> endpoint. Now, users can enter the verification step of the <b>Add Endpoint Connection</b> dialog with an incomplete connection endpoint ID preset.</li>
 <li>Added a <b>Cloud</b> column to the <b>Clusters</b> page so users can see which cloud provider any cluster is using without having to click through to the <b>Cluster Overview</b> page.</li>
 <li>The maximum number of nodes in a cluster created through the Console was raised to 50 nodes per region and 150 nodes per cluster.</li>
