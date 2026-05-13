@@ -1,11 +1,30 @@
 ---
-title: Replicator Flags
+title: MOLT Replicator Commands and Flags
 summary: Flag reference for MOLT Replicator
 toc: false
 docs_area: migrate
 ---
 
-This page lists all available flags for the [MOLT Replicator commands]({% link molt/molt-replicator.md %}#commands): `start`, `pglogical`, `mylogical`, `oraclelogminer`, and `make-jwt`.
+This page lists the [MOLT Replicator]({% link molt/molt-replicator.md %}) commands and the flags that you can use to configure a MOLT Replicator command execution.
+
+## Commands
+
+MOLT Replicator provides the following commands:
+
+|     Command      |                                                                                                                   Description                                                                                                                    |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `pglogical`      | Replicate from PostgreSQL source to CockroachDB target using logical replication.                                                                                                                                                                |
+| `mylogical`      | Replicate from MySQL source to CockroachDB target using GTID-based replication.                                                                                                                                                                  |
+| `oraclelogminer` | Replicate from Oracle source to CockroachDB target using Oracle LogMiner.                                                                                                                                                                        |
+| `start`          | Replicate from CockroachDB source to PostgreSQL, MySQL, or Oracle target ([failback mode]({% link molt/molt-replicator.md %}#failback-replication)). Requires a CockroachDB changefeed with rangefeeds enabled.                                                             |
+| `make-jwt`       | Generate JWT tokens for authorizing changefeed connections in failback scenarios. Supports signing tokens with RSA or EC keys, or generating claims for external JWT providers. For details, refer to [JWT authentication]({% link molt/molt-replicator-best-practices.md %}#jwt-authentication). |
+| `version`        | Display version information and Go module dependencies with checksums. For details, refer to [Supply chain security]({% link molt/molt-replicator-best-practices.md %}#supply-chain-security).                                                                                                    |
+
+For command-specific flags and examples, refer to MOLT Replicator's [How it works]({% link molt/molt-replicator.md %}#how-it-works) and [Common uses]({% link molt/molt-replicator.md %}#common-uses) documentation.
+
+## Flags
+
+This page lists all available flags for the [MOLT Replicator commands](#commands): `start`, `pglogical`, `mylogical`, `oraclelogminer`, and `make-jwt`.
 
 |                                             Flag                                            |                       Commands                      |    Type    |                                                                                                                                                 Description                                                                                                                                                  |
 |---------------------------------------------------------------------------------------------|-----------------------------------------------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -58,7 +77,7 @@ This page lists all available flags for the [MOLT Replicator commands]({% link m
 | <a id="schema-refresh"></a> `--schemaRefresh`                                               | `start`, `pglogical`, `mylogical`, `oraclelogminer` | `DURATION` | How often a watcher will refresh its schema. If this value is zero or negative, refresh behavior will be disabled.<br><br>**Default:** `1m0s`                                                                                                                                                                |
 | <a id="scn"></a> `--scn`                                                                    | `oraclelogminer`                                    | `INT`      | **Required** the first time `replicator` is run. The snapshot System Change Number (SCN) from the initial data load, which provides a replication marker for streaming changes.                                                                                                                              |
 | <a id="scn-window-size"></a> `--scnWindowSize`                                              | `oraclelogminer`                                    | `INT`      | The maximum size of SCN bounds per pull iteration from LogMiner. This helps prevent timeout errors when processing large SCN ranges. Set to `0` or a negative value to disable the cap.<br><br>**Default:** `3250`                                                                                           |
-| <a id="slot-name"></a> `--slotName`                                                         | `pglogical`                                         | `STRING`   | **Required.** PostgreSQL replication slot name. Must match the slot name specified with `--pglogical-replication-slot-name` in the [MOLT Fetch command]({% link molt/molt-fetch.md %}#load-before-replication).<br><br>**Default:** `"replicator"`                                                           |
+| <a id="slot-name"></a> `--slotName`                                                         | `pglogical`                                         | `STRING`   | **Required.** PostgreSQL replication slot name. Must match the slot name specified with `--pglogical-replication-slot-name` in the [MOLT Fetch command]({% link molt/molt-fetch.md %}#initial-bulk-load-before-replication).<br><br>**Default:** `"replicator"`                                                           |
 | <a id="source-conn"></a> `--sourceConn`                                                     | `pglogical`, `mylogical`, `oraclelogminer`          | `STRING`   | The source database's connection string. When replicating from Oracle, this is the connection string of the Oracle container database (CDB).                                                                                                                                                                 |
 | <a id="source-pdb-conn"></a> `--sourcePDBConn`                                              | `oraclelogminer`                                    | `STRING`   | Connection string for the Oracle pluggable database (PDB). Only required when using an [Oracle multitenant configuration](https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/CDBs-and-PDBs.html). [`--sourceConn`](#source-conn) **must** be included.                                      |
 | <a id="source-schema"></a> `--sourceSchema`                                                 | `oraclelogminer`                                    | `STRING`   | **Required.** Source schema name on Oracle where tables will be replicated from.                                                                                                                                                                                                                             |

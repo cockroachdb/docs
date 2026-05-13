@@ -4,10 +4,6 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 Be sure that you have configured your network to allow traffic from the application to the load balancer. In this case, you will run the sample workload on one of your machines. The traffic source should therefore be the **internal (private)** IP address of that machine.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_success}}
-For comprehensive guidance on benchmarking CockroachDB with TPC-C, see [Performance Benchmarking]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-local.md %}).
-{{site.data.alerts.end}}
-
 1. SSH to the machine where you want the run the sample TPC-C workload.
 
     This should be a machine that is not running a CockroachDB node.

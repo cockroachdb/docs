@@ -9,7 +9,7 @@ key: sso.html
 Single sign-on (SSO) for DB Console allows a CockroachDB user to access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) in a secure cluster via an OpenID Connect (OIDC) client and an external identity provider. When SSO is configured and enabled, the [DB Console login page]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) will display an OAuth login button in addition to the password access option.
 
 {{site.data.alerts.callout_info}}
-This page covers SSO authentication to the DB Console. For SSO authentication to the SQL interface using JSON Web Tokens (JWT), refer to [Cluster Single Sign-on (SSO) using JWT]({% link {{ page.version.version }}/sso-sql.md %}).
+This page covers OIDC-based SSO authentication to the DB Console. For SSO authentication to the SQL interface using JSON Web Tokens (JWT), refer to [Cluster Single Sign-on (SSO) using JWT]({% link {{ page.version.version }}/sso-sql.md %}). For LDAP-based authentication (which also supports DB Console login), refer to [LDAP Authentication]({% link {{ page.version.version }}/ldap-authentication.md %}).
 {{site.data.alerts.end}}
 
 CockroachDB's OIDC implementation for DB Console uses the [authorization code grant type](https://tools.ietf.org/html/rfc6749#section-4.1) to authenticate a user.
@@ -63,7 +63,7 @@ Cluster Setting | Description
 `server.oidc_authentication.principal_regex` | Regex used to map the external identity key to a SQL user. If the identity key contains a list of identities instead of a single identity, each identity is evaluated serially until a match is found. The first match that is found is used, and the remaining identities are not evaluated. For example: `^([^@]+)@[^@]+$` matches any email address (defined as a string containing one `@` sign) and extracts a username from the string to the left of `@`, whereas `^(.+)$` maps the claim directly to a principal. The regex must contain exactly one capture group (set of parentheses); a regex with no capture groups or multiple capture groups will never find a match.
 `server.oidc_authentication.autologin` | A Boolean that enables or disables automatic login with SSO when the DB Console is loaded. If set to `false` (the default), the user will have to click **Log in with your OIDC provider** (unless overriden with `server.oidc_authentication.button_text`) before they're authenticated.
 `server.oidc_authentication.button_text` | Specifies the text to show on the button that launches authentication with the OIDC provider. This is set to `Log in with your OIDC provider` by default but can be customized to reference your specific provider by name.
-`security.provisioning.oidc.enabled` | Enables automatic user creation on first OIDC login. Defaults to `false`. Refer to [Step 3: Configure user creation](#step-3-configure-user-creation).
+`security.provisioning.oidc.enabled` | Enables automatic user creation on first OIDC login. When enabled, also updates the `estimated_last_login_time` column in the `SHOW USERS` output for DB Console logins, allowing administrators to track when OIDC users last accessed the cluster. Defaults to `false`. Refer to [Step 3: Configure user creation](#step-3-configure-user-creation).
 `server.oidc_authentication.authorization.enabled` | Enables automatic role synchronization based on OIDC group claims. See [Configure OIDC Authorization for DB Console]({% link {{ page.version.version }}/oidc-authorization.md %}). Defaults to `false`.
 
 #### Update your cluster settings
@@ -143,7 +143,7 @@ When enabled:
 
 - Users are created automatically upon successful OIDC authentication.
 - All auto-provisioned users receive a `PROVISIONSRC` role option set to `oidc:{provider_url}`.
-- The `estimated_last_login_time` is tracked for auditing purposes.
+- The `estimated_last_login_time` column in the `SHOW USERS` output is updated for DB Console logins, enabling tracking of user activity for auditing and identifying dormant accounts.
 - Auto-provisioned users cannot change their own passwords (managed via OIDC only).
 
 {{site.data.alerts.callout_info}}

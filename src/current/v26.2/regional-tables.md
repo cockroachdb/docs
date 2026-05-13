@@ -110,7 +110,7 @@ By default, all tables in a multi-region database are [regional tables](#regiona
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
 {{site.data.alerts.callout_success}}
-A good way to check that your [table locality settings]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) are having the expected effect is by monitoring how the performance metrics of a workload change as the settings are applied to a running cluster.  For a tutorial showing how table localities can improve performance metrics across a multi-region cluster, see [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
+A good way to check that your [table locality settings]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) are having the expected effect is by monitoring how the performance metrics of a workload change as the settings are applied to a running cluster.
 {{site.data.alerts.end}}
 
 ## Characteristics
@@ -131,10 +131,6 @@ For more information about how to choose a database survival goal, see [When to 
 
 - If rows in the table **cannot** be tied to specific geographies, reads must be up-to-date for business reasons or because the table is referenced by [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}), and the table is rarely modified, consider the [`GLOBAL` Table Locality Pattern]({% link {{ page.version.version }}/global-tables.md %}).
 - If your application can tolerate historical reads in some cases, consider the [Follower Reads pattern]({% link {{ page.version.version }}/topology-follower-reads.md %}).
-
-## Tutorial
-
-For a step-by-step demonstration showing how CockroachDB's multi-region capabilities (including [`REGIONAL BY ROW` tables](#regional-by-row-tables)) give you low-latency reads in a distributed cluster, see the tutorial on [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
 
 ## Demo video
 
