@@ -128,6 +128,13 @@ Use the `ccloud cluster list` command to show information about the clusters in 
 ccloud cluster list
 ~~~
 
+Use the `--plan-type` flag to filter the list by plan type. Valid values are `BASIC`, `STANDARD`, and `ADVANCED`.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster list --plan-type ADVANCED
+~~~
+
 ~~~
 ∙∙∙ Retrieving clusters...
 NAME      ID                                    PLAN TYPE        CREATED AT                            STATE                   CLOUD               VERSION
