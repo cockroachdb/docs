@@ -13,5 +13,3 @@
     ~~~ sql
     ALTER VIRTUAL CLUSTER {reader_vc} START SERVICE SHARED;
     ~~~
-
-    [#169078](https://github.com/cockroachdb/cockroach/issues/169078)
