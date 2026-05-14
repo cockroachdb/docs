@@ -85,6 +85,20 @@ linkcheck: cockroachdb-build
 vale:
 	vale $(subst $(\n), $( ), $(shell git status --porcelain | cut -c 4- | egrep "\.md"))
 
+.PHONY: sql-test
+sql-test:
+	cockroach start-single-node --insecure --background --store=type=mem,size=1GiB --listen-addr=localhost:26257
+	sleep 5
+	cockroach workload init movr 'postgresql://root@localhost:26257?sslmode=disable' || true
+	python3 ../../.github/scripts/sql_test_runner.py --version v25.4; \
+	EXIT_CODE=$$?; \
+	cockroach quit --insecure --host=localhost:26257 || true; \
+	exit $$EXIT_CODE
+
+.PHONY: sql-test-dry-run
+sql-test-dry-run:
+	python3 ../../.github/scripts/sql_test_runner.py --dry-run --verbose --version v25.4
+
 .PHONY: vendor
 vendor:
 	gem install bundler

@@ -1,0 +1,136 @@
+name: SQL Test Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'src/current/v25.4/**/*.md'
+  schedule:
+    # Run nightly at 6am UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  sql-test:
+    name: Test SQL code blocks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install CockroachDB
+        run: |
+          curl https://binaries.cockroachdb.com/cockroach-v25.1.2.linux-amd64.tgz | tar -xz
+          sudo cp cockroach-v25.1.2.linux-amd64/cockroach /usr/local/bin/
+
+      - name: Start CockroachDB
+        run: |
+          cockroach start-single-node --insecure --background --store=type=mem,size=1GiB --listen-addr=localhost:26257
+          sleep 5
+          cockroach sql --insecure -e "SELECT 1;"
+
+      - name: Get changed files
+        if: github.event_name == 'pull_request'
+        id: changed-files
+        uses: tj-actions/changed-files@cc08e170f4447237bcaf8acaacfa615b9cb86612  # v35
+        with:
+          files: |
+            src/current/v25.4/**/*.md
+          separator: ' '
+
+      - name: Run SQL tests (PR - changed files only)
+        if: github.event_name == 'pull_request' && steps.changed-files.outputs.any_changed == 'true'
+        id: sql-test-pr
+        run: |
+          echo "Testing changed files..."
+          python .github/scripts/sql_test_runner.py ${{ steps.changed-files.outputs.all_changed_files }}
+        continue-on-error: true
+
+      - name: Run SQL tests (scheduled/manual - all v25.4 files)
+        if: github.event_name != 'pull_request'
+        id: sql-test-full
+        run: |
+          echo "Testing all v25.4 files..."
+          python .github/scripts/sql_test_runner.py --version v25.4
+        continue-on-error: true
+
+      - name: Post PR comment with failures
+        if: github.event_name == 'pull_request' && steps.changed-files.outputs.any_changed == 'true' && steps.sql-test-pr.outcome == 'failure'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+
+            let comment = '';
+            try {
+              comment = fs.readFileSync('sql-test-comment.md', 'utf8');
+            } catch (error) {
+              comment = '**SQL Test Check Failed**\n\nSQL test failures were detected, but the detailed report could not be generated.';
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('SQL Test Check')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+
+      - name: Post success comment if previously failed
+        if: github.event_name == 'pull_request' && steps.changed-files.outputs.any_changed == 'true' && steps.sql-test-pr.outcome == 'success'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('SQL Test Check Failed')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: '**SQL Test Check Passed**\n\nAll SQL test issues have been resolved.'
+              });
+            }
+
+      - name: Stop CockroachDB
+        if: always()
+        run: |
+          cockroach quit --insecure --host=localhost:26257 || true
