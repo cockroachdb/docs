@@ -80,3 +80,24 @@ The Cluster API version is defined in the request path. For example: `<cluster>/
 Future versions of CockroachDB may provide multiple API versions and will continue to provide access to this v2.0 API until it is deprecated.
 
 All endpoint paths and payloads will remain available within a major API version number (`v2.x`). Patch versions could add new endpoints but will not remove existing endpoints. For more information, see [API Support Policy]({% link {{ page.version.version }}/api-support-policy.md %}).
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+I notice there's a mismatch between your request and the PR content. You've asked me to generate reference documentation for "new or changed API endpoints," but PR #167902 actually introduces **certificate lifecycle metrics**, not API endpoints.
+
+The PR adds two new families of metrics:
+1. `security.certificate.last_rotation.*` - Unix timestamp gauges for certificate rotations
+2. `security.certificate.expiry_days.*` - Functional gauges for days until certificate expiry
+
+The "Extracted Endpoints" section confirms this: "(No API definitions detected in diff)"
+
+Would you like me to:
+
+1. **Generate metrics documentation** for these new certificate lifecycle metrics (which would be more appropriate for this PR), or
+2. **Wait for a different PR** that actually introduces API endpoints?
+
+If you want metrics documentation, I can generate reference material following CockroachDB's metrics documentation format, including descriptions, usage guidance, and examples for monitoring certificate health.
+
+Please clarify which type of documentation you'd like me to generate for this PR.
+
+<!-- END REF DOC DRAFT -->
