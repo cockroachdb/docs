@@ -405,3 +405,81 @@ CREATE CHANGEFEED FOR TABLE table_name
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
 - [Changefeed Dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %})
 - [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %})
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## `csv_header` option
+
+The `csv_header` option adds column headers to CSV-formatted changefeed output when using webhook or cloud storage sinks.
+
+### Syntax
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR table_name INTO 'sink_uri' WITH format = 'csv', csv_header;
+~~~
+
+### Description
+
+When `csv_header` is enabled, the changefeed includes a row of column names at the beginning of CSV output. The header row contains the column names in the same order as the data rows.
+
+**Behavior by sink type:**
+- **Webhook sinks**: The column header appears as the first line in each HTTP POST request body. When batching is enabled, the header appears only once at the start of each batch.
+- **Cloud storage sinks**: The column header is written once at the beginning of each CSV file created by the changefeed.
+
+### Requirements
+
+- Only supported with `format = 'csv'`
+- Compatible with webhook and cloud storage sinks only
+- Not supported for sinkless changefeeds
+
+### Examples
+
+**Basic usage with cloud storage:**
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR users 
+INTO 'gs://bucket/changefeed' 
+WITH format = 'csv', csv_header, initial_scan_only;
+~~~
+
+**Webhook sink with batching:**
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR orders 
+INTO 'webhook-https://example.com/webhook'
+WITH format = 'csv', 
+     csv_header,
+     webhook_sink_config = '{"Flush":{"Messages":100}}';
+~~~
+
+**Using with column projection:**
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED WITH format = 'csv', csv_header, initial_scan_only 
+AS SELECT id, name FROM employees;
+~~~
+
+### Backward compatibility note
+
+{{site.data.alerts.callout_info}}
+Starting with this release, CSV rows in webhook sinks are separated by newlines. Previously, all rows in a batch were concatenated on a single line.
+{{site.data.alerts.end}}
+
+### Limitations
+
+- Cannot be used with sinkless changefeeds
+- Only compatible with `format = 'csv'`
+- Not supported with Kafka sinks
+- Requires webhook or cloud storage sink
+
+### See also
+
+- [Changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %})
+- [Stream data out of CockroachDB using changefeeds]({% link {{ page.version.version }}/stream-data-out-of-cockroachdb-using-changefeeds.md %})
+- [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+
+<!-- END REF DOC DRAFT -->
