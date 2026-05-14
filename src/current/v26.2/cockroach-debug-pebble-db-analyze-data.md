@@ -55,6 +55,19 @@ This data can help Cockroach Labs evaluate compression defaults and can help you
 
 The output CSV file is periodically rewritten while the command is running. Even if the command is interrupted, you can still use the most recently written output.
 
+### Review results with Cockroach Labs
+
+The command groups sampled blocks into buckets (by block type, block size, data compressibility) and reports compression results for each bucket.
+
+- `CR` is the compression ratio. Higher values mean that compressed data uses less storage.
+- `Comp` is compression throughput. Lower throughput means higher CPU cost when Pebble writes or rewrites SSTs.
+- `Decomp` is decompression throughput. Lower throughput means higher CPU cost when CockroachDB reads compressed data.
+- `Snappy`, `MinLZ1`, `Zstd1`, `Auto1/30`, `Auto1/15`, and `Zstd3` are compression experiments. These names are not a one-to-one list of valid values for [`storage.sstable.compression_algorithm`]({% link {{ page.version.version }}/cluster-settings.md %}). Use them to compare the general speed and space tradeoffs of lower-effort, adaptive, and higher-effort compression.
+
+These results are intended for review with Cockroach Labs, rather than to direct your own tuning decisions. Before changing SSTable compression settings in production, contact [Cockroach Labs Support](https://support.cockroachlabs.com/) to understand whether compression tradeoffs are relevant for a representative store. Most users do not need to tune SSTable compression settings.
+
+For more information about Pebble SSTable compression, refer to [SST compression]({% link {{ page.version.version }}/architecture/storage-layer.md %}#sst-compression).
+
 ## Examples
 
 ### View help output
@@ -155,4 +168,5 @@ Sampled 4 files, 2.4MB (100.00%)
 ## See also
 
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Storage Layer: SST compression]({% link {{ page.version.version }}/architecture/storage-layer.md %}#sst-compression)
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
