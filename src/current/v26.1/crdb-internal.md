@@ -1387,3 +1387,158 @@ FROM crdb_internal.transaction_statistics WHERE app_name = 'movr' LIMIT 20;
 - [SQL Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %})
 - [System Catalogs]({% link {{ page.version.version }}/system-catalogs.md %})
 - [Transaction Diagnostics (`crdb_internal.request_transaction_bundle`)]({% link {{ page.version.version }}/transaction-diagnostics.md %})
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## crdb_internal.cluster_statement_statistics
+
+**Description**: Exposes statement statistics collected from all nodes in the cluster, aggregated from in-memory statistics. This table provides real-time visibility into SQL statement performance and execution patterns across the entire cluster.
+
+**Columns**:
+
+| Column | Type | Description |
+| --- | --- | --- |
+| `aggregated_ts` | TIMESTAMPTZ | timestamp when the statistics were aggregated |
+| `fingerprint_id` | BYTES | unique identifier for the statement fingerprint |
+| `transaction_fingerprint_id` | BYTES | unique identifier for the transaction fingerprint containing this statement |
+| `plan_hash` | BYTES | hash of the execution plan used for this statement |
+| `app_name` | STRING | name of the application that executed the statement |
+| `metadata` | JSONB | additional metadata about the statement execution |
+| `statistics` | JSONB | detailed execution statistics including timing and resource usage |
+| `sampled_plan` | JSONB | sampled execution plan for the statement |
+| `aggregation_interval` | INTERVAL | time interval over which statistics were aggregated |
+| `index_recommendations` | STRING[] | array of recommended indexes to improve statement performance |
+| `query` | STRING | full text of the SQL statement |
+| `query_summary` | STRING | summarized version of the SQL statement with literals redacted |
+| `database` | STRING | name of the database where the statement was executed |
+
+**Example**:
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT query, query_summary, database, app_name, statistics->'statistics'->'cnt' AS execution_count
+FROM crdb_internal.cluster_statement_statistics
+WHERE app_name = 'myapp'
+ORDER BY (statistics->'statistics'->'cnt')::INT DESC
+LIMIT 10;
+~~~
+
+## crdb_internal.statement_statistics
+
+**Description**: Provides a unified view of statement statistics by merging in-memory cluster statistics with persisted historical data from `system.statement_statistics`. This view offers comprehensive statement performance data across both current and historical time periods.
+
+**Columns**:
+
+| Column | Type | Description |
+| --- | --- | --- |
+| `aggregated_ts` | TIMESTAMPTZ | timestamp when the statistics were aggregated |
+| `fingerprint_id` | BYTES | unique identifier for the statement fingerprint |
+| `transaction_fingerprint_id` | BYTES | unique identifier for the transaction fingerprint containing this statement |
+| `plan_hash` | BYTES | hash of the execution plan used for this statement |
+| `app_name` | STRING | name of the application that executed the statement |
+| `metadata` | JSONB | additional metadata about the statement execution |
+| `statistics` | JSONB | merged execution statistics including timing and resource usage |
+| `sampled_plan` | JSONB | sampled execution plan for the statement |
+| `aggregation_interval` | INTERVAL | time interval over which statistics were aggregated |
+| `index_recommendations` | STRING[] | array of recommended indexes to improve statement performance |
+| `query` | STRING | full text of the SQL statement |
+| `query_summary` | STRING | summarized version of the SQL statement with literals redacted |
+| `database` | STRING | name of the database where the statement was executed |
+
+**Example**:
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT query_summary, database, COUNT(*) AS plan_variations
+FROM crdb_internal.statement_statistics
+WHERE database = 'mydb'
+GROUP BY query_summary, database
+HAVING COUNT(*) > 1
+ORDER BY plan_variations DESC;
+~~~
+
+## crdb_internal.statement_statistics_persisted
+
+**Description**: Exposes persisted statement statistics from `system.statement_statistics` with enhanced query information. This view joins with `system.statements` to provide statement text and database information, falling back to metadata when the statements table entry is not available.
+
+**Columns**:
+
+| Column | Type | Description |
+| --- | --- | --- |
+| `aggregated_ts` | TIMESTAMPTZ | timestamp when the statistics were aggregated |
+| `fingerprint_id` | BYTES | unique identifier for the statement fingerprint |
+| `transaction_fingerprint_id` | BYTES | unique identifier for the transaction fingerprint containing this statement |
+| `plan_hash` | BYTES | hash of the execution plan used for this statement |
+| `app_name` | STRING | name of the application that executed the statement |
+| `node_id` | INT | identifier of the node where the statement was executed |
+| `agg_interval` | INTERVAL | time interval over which statistics were aggregated |
+| `metadata` | JSONB | additional metadata about the statement execution |
+| `statistics` | JSONB | detailed execution statistics including timing and resource usage |
+| `plan` | JSONB | execution plan for the statement |
+| `index_recommendations` | STRING[] | array of recommended indexes to improve statement performance |
+| `indexes_usage` | JSONB | information about index usage during statement execution |
+| `execution_count` | INT | number of times the statement was executed |
+| `service_latency` | FLOAT | average service latency in seconds |
+| `cpu_sql_nanos` | FLOAT | CPU time spent on SQL processing in nanoseconds |
+| `contention_time` | FLOAT | time spent waiting due to contention in seconds |
+| `total_estimated_execution_time` | FLOAT | estimated total execution time in seconds |
+| `p99_latency` | FLOAT | 99th percentile latency in seconds |
+| `query` | STRING | full text of the SQL statement from `system.statements` or metadata fallback |
+| `query_summary` | STRING | summarized version of the SQL statement from `system.statements` or metadata fallback |
+| `database` | STRING | name of the database from `system.statements` or metadata fallback |
+
+**Example**:
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT query, database, execution_count, service_latency, p99_latency
+FROM crdb_internal.statement_statistics_persisted
+WHERE database = 'production'
+  AND p99_latency > 1.0
+ORDER BY execution_count DESC;
+~~~
+
+## crdb_internal.statement_activity
+
+**Description**: Provides statement activity metrics from `system.statement_activity` enhanced with query text and database information. This view joins with `system.statements` to surface statement details, falling back to metadata extraction when statements table entries are not yet available.
+
+**Columns**:
+
+| Column | Type | Description |
+| --- | --- | --- |
+| `aggregated_ts` | TIMESTAMPTZ | timestamp when the activity was aggregated |
+| `fingerprint_id` | BYTES | unique identifier for the statement fingerprint |
+| `transaction_fingerprint_id` | BYTES | unique identifier for the transaction fingerprint containing this statement |
+| `plan_hash` | BYTES | hash of the execution plan used for this statement |
+| `app_name` | STRING | name of the application that executed the statement |
+| `agg_interval` | INTERVAL | time interval over which activity was aggregated |
+| `metadata` | JSONB | additional metadata about the statement execution |
+| `statistics` | JSONB | detailed execution statistics including timing and resource usage |
+| `plan` | JSONB | execution plan for the statement |
+| `index_recommendations` | STRING[] | array of recommended indexes to improve statement performance |
+| `execution_count` | INT | number of times the statement was executed |
+| `execution_total_seconds` | FLOAT | total execution time across all invocations in seconds |
+| `execution_total_cluster_seconds` | FLOAT | total cluster-wide execution time in seconds |
+| `contention_time_avg_seconds` | FLOAT | average contention time per execution in seconds |
+| `cpu_sql_avg_nanos` | FLOAT | average CPU time spent on SQL processing per execution in nanoseconds |
+| `service_latency_avg_seconds` | FLOAT | average service latency per execution in seconds |
+| `service_latency_p99_seconds` | FLOAT | 99th percentile service latency in seconds |
+| `query` | STRING | full text of the SQL statement from `system.statements` or metadata fallback |
+| `query_summary` | STRING | summarized version of the SQL statement from `system.statements` or metadata fallback |
+| `database` | STRING | name of the database from `system.statements` or metadata fallback |
+
+**Example**:
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT query_summary, database, execution_count, 
+       execution_total_seconds, service_latency_p99_seconds
+FROM crdb_internal.statement_activity
+WHERE execution_count > 1000
+  AND service_latency_p99_seconds > 0.5
+ORDER BY execution_total_seconds DESC
+LIMIT 20;
+~~~
+
+**See also**:
+
+- [System catalogs]({% link {{ page.version.version }}/system-catalogs.md %}) - overview of system tables including `system.statements`
+- [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) - UI for statement analysis and diagnostics
+
+<!-- END REF DOC DRAFT -->
