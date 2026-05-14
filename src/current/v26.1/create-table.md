@@ -1022,3 +1022,59 @@ To set `exclude_data_from_backup` on an existing table, see the [Exclude a table
 - [Table-Level Replication Zones]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-table)
 - [Define Table Partitions]({% link {{ page.version.version }}/partitioning.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## Generated columns syntax update
+
+The syntax for creating generated columns has been updated to make the `STORED` or `VIRTUAL` keyword optional. When neither keyword is specified, the column defaults to `VIRTUAL`, matching PostgreSQL behavior.
+
+### Updated syntax
+
+```sql
+column_name data_type GENERATED ALWAYS AS (expression) [STORED | VIRTUAL]
+column_name data_type AS (expression) [STORED | VIRTUAL]
+```
+
+Generated columns can now be created without explicitly specifying `STORED` or `VIRTUAL`. When the keyword is omitted, the column is created as `VIRTUAL` by default. This change maintains backward compatibility—all existing syntax continues to work unchanged.
+
+### Examples
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Creates a VIRTUAL generated column (new default behavior)
+CREATE TABLE orders (
+  id INT PRIMARY KEY,
+  price DECIMAL,
+  tax_rate DECIMAL,
+  total_price DECIMAL GENERATED ALWAYS AS (price * (1 + tax_rate))
+);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Creates a VIRTUAL generated column using shorthand syntax
+CREATE TABLE products (
+  id INT PRIMARY KEY,
+  name STRING,
+  category STRING,
+  display_name STRING AS (category || ': ' || name)
+);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Explicitly specify STORED (behavior unchanged)
+CREATE TABLE inventory (
+  id INT PRIMARY KEY,
+  quantity INT,
+  price DECIMAL,
+  total_value DECIMAL AS (quantity * price) STORED
+);
+~~~
+
+{{site.data.alerts.callout_info}}
+This change provides PostgreSQL compatibility for generated column syntax. All existing CockroachDB syntax continues to work without modification.
+{{site.data.alerts.end}}
+
+<!-- END REF DOC DRAFT -->
