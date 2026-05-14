@@ -283,7 +283,7 @@ curl --request PATCH \ --url  https://cockroachlabs.cloud/api/v1/clusters/{clust
 ## Delete a cluster
 
 {{site.data.alerts.callout_danger}}
-Sending a `destory` command permanently deletes the cluster and all the data within the cluster. Deleted clusters can not be restored.
+Sending a `destroy` command permanently deletes the cluster and all the data within the cluster. Deleted clusters can not be restored.
 {{site.data.alerts.end}}
 
 If you want to delete a cluster managed by Terraform, run the following command:
