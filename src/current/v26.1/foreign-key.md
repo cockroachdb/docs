@@ -938,3 +938,59 @@ Inserting values into the table using the `MATCH FULL` algorithm (described [abo
 - [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %})
 - [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})
 - [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/)
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## Subset-unique foreign key constraints
+
+Starting in CockroachDB v26.3, foreign keys can be created when the referenced table has a unique constraint on a subset of the referenced columns, provided the `sql.subset_unique_fks.enabled` cluster setting is `true` (the default).
+
+This enhancement allows greater flexibility in database design while maintaining referential integrity. The feature is safe because uniqueness on a set of columns mathematically implies uniqueness on any superset of those columns.
+
+### Comparison with standard behavior
+
+**Traditional behavior** (SQL standard):
+- Foreign key references `(col1, col2)`
+- Referenced table must have `UNIQUE(col1, col2)` or `PRIMARY KEY(col1, col2)`
+
+**New subset behavior** (CockroachDB extension):
+- Foreign key references `(col1, col2)`
+- Referenced table can have `UNIQUE(col1)` - the constraint covers a subset
+- CockroachDB automatically validates this is sufficient for referential integrity
+
+### Example
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Create parent table with unique constraint on single column
+CREATE TABLE departments (
+  dept_id INT PRIMARY KEY,
+  dept_name STRING UNIQUE,
+  region STRING
+);
+
+-- Create child table referencing multiple columns including the unique one
+CREATE TABLE employees (
+  emp_id INT PRIMARY KEY,
+  name STRING,
+  dept_name STRING,
+  region STRING,
+  -- This works because dept_name is unique, making (dept_name, region) effectively unique
+  FOREIGN KEY (dept_name, region) REFERENCES departments (dept_name, region)
+);
+~~~
+
+### Configuration
+
+To disable this CockroachDB extension and enforce strict SQL standard matching:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING sql.subset_unique_fks.enabled = false;
+~~~
+
+{{site.data.alerts.callout_info}}
+When `sql.subset_unique_fks.enabled` is `false`, foreign key creation follows the strict SQL standard, requiring exact column matching between the foreign key references and unique constraints.
+{{site.data.alerts.end}}
+
+<!-- END REF DOC DRAFT -->
