@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [closed]
 
+permissions:
+  contents: read
+
 jobs:
   mark-epic-done:
     # Only run if PR was merged and title contains "Release notes for"
