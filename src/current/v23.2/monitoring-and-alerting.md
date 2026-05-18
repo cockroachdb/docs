@@ -207,6 +207,25 @@ The critical nodes status endpoint is used to:
 
 If you find under-replicated ranges or constraint violations, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 
+#### Request the endpoint
+
+To return the JSON response, send a `POST` request to `/_status/critical_nodes`.
+
+For an insecure or local testing cluster, use HTTP:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl -X POST http://<host>:<http-port>/_status/critical_nodes
+~~~
+
+For a secure cluster, authenticate to the HTTPS endpoint with [`cockroach auth-session login`]({% link {{ page.version.version }}/cockroach-auth-session.md %}#log-in-to-the-http-interface), then pass the authentication cookie to `curl`.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach auth-session login <user> --certs-dir=certs --only-cookie > $HOME/.cockroachdb_api_key
+curl -X POST --cookie $HOME/.cockroachdb_api_key --cacert certs/ca.crt https://<host>:<http-port>/_status/critical_nodes
+~~~
+
 #### Fields
 
 The JSON object returned by the critical nodes status endpoint contains the following top-level fields.
