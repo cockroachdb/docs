@@ -7,7 +7,7 @@ docs_area: releases
 ---
 {% assign DEBUG = false %}
 
-{% assign today = "today" | date: "%Y-%m-%d" %} {% comment %} Fetch today's date. {% endcomment %}
+{% assign today = site.time | date: "%Y-%m-%d" %} {% comment %} Fetch today's date. {% endcomment %}
 
 {% assign versions = site.data.versions | where_exp: "versions", "versions.release_date <= today" | sort: "release_date" | reverse %} {% comment %} Get all versions (e.g., v21.2) sorted in reverse chronological order. {% endcomment %}
 
