@@ -51,7 +51,7 @@ An operator [initiates the decommissioning process](#decommission-the-node) on t
 
 The node's [`is_decommissioning`]({% link {{ page.version.version }}/cockroach-node.md %}#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes. If the rebalancing stalls during decommissioning, replicas that have yet to move are printed to the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) and written to the [`OPS` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). [By default]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration), the `OPS` channel logs output to a `cockroach.log` file.
 
-The node's [`/health?ready=1` endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) returns an HTTP `503 Service Unavailable` response code so that load balancers and connection managers stop directing new SQL client connections to the node while replicas are rebalanced.
+The node's [`/health?ready=1` endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) returns an HTTP `503 Service Unavailable` response code with a JSON error response so that load balancers and connection managers stop directing new SQL client connections to the node while replicas are rebalanced.
 
 {{site.data.alerts.callout_info}}
 After this stage, the node is automatically drained. However, to avoid possible disruptions in query performance, you can manually drain the node before decommissioning. For more information, see [Perform node shutdown](#perform-node-shutdown).

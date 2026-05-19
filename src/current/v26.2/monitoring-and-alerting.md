@@ -126,10 +126,14 @@ The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `50
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl http://localhost:8080/health?ready=1
+$ curl -i http://localhost:8080/health?ready=1
 ~~~
 
+The `-i` flag includes the HTTP response status in the `curl` output. Without `-i`, `curl` prints only the response body by default.
+
 ~~~
+HTTP/1.1 503 Service Unavailable
+
 {
   "error": "node is not healthy",
   "code": 14,
