@@ -40,6 +40,7 @@ from pathlib import Path
 GENERATED_DIAGRAMS_REPO = "cockroachdb/generated-diagrams"
 GITHUB_API_BASE = "https://api.github.com"
 VERSIONS_CSV = Path("src/current/_data/versions.csv")
+DOCS_ROOT = Path("src/current")
 
 # ---------------------------------------------------------------------------
 # HTTP
@@ -69,6 +70,17 @@ def _api_get(path: str) -> dict | None:
 # Core logic
 # ---------------------------------------------------------------------------
 
+def has_docs_folder(version: str) -> bool:
+    """Return True if a docs folder exists for this version.
+
+    Handles both naming conventions: v20_1 (underscore) and v23.1 (dot).
+    """
+    ver = version.lstrip("v")
+    dot_form = DOCS_ROOT / f"v{ver}"
+    underscore_form = DOCS_ROOT / f"v{ver.replace('.', '_')}"
+    return dot_form.is_dir() or underscore_form.is_dir()
+
+
 _cache: dict[str, bool] = {}
 
 
@@ -88,13 +100,16 @@ def load_versions_csv() -> list[dict]:
         return list(csv.DictReader(f))
 
 
-def run_checks(rows: list[dict], _exists_fn=None) -> list[dict]:
+def run_checks(rows: list[dict], _exists_fn=None, _has_docs_fn=None) -> list[dict]:
     """Check each versions.csv row for branch existence and staleness.
 
     _exists_fn is injectable for unit tests; defaults to branch_exists.
+    _has_docs_fn is injectable for unit tests; defaults to has_docs_folder.
     """
     if _exists_fn is None:
         _exists_fn = branch_exists
+    if _has_docs_fn is None:
+        _has_docs_fn = has_docs_folder
 
     failures = []
     checked: set[str] = set()
@@ -103,6 +118,11 @@ def run_checks(rows: list[dict], _exists_fn=None) -> list[dict]:
         version = row.get("major_version", "").strip()
         branch  = row.get("crdb_branch_name", "").strip()
         if not branch or branch == "N/A":
+            continue
+
+        # Skip versions that have been archived from the site.
+        if not _has_docs_fn(version):
+            print(f"  {version:8s} → {branch} ... SKIP (archived)")
             continue
 
         # (a) Does the listed branch exist?
@@ -179,9 +199,11 @@ def format_comment(failures: list[dict]) -> str:
 def _run_self_tests() -> None:
     """Unit tests for run_checks logic using injected exists functions."""
 
-    def _quiet(rows, exists_fn):
+    _no_call = lambda b: (_ for _ in ()).throw(AssertionError("unexpected call"))
+
+    def _quiet(rows, exists_fn, has_docs_fn=lambda v: True):
         with contextlib.redirect_stdout(io.StringIO()):
-            return run_checks(rows, _exists_fn=exists_fn)
+            return run_checks(rows, _exists_fn=exists_fn, _has_docs_fn=has_docs_fn)
 
     # branch_missing: listed branch does not exist
     rows = [{"major_version": "v26.1", "crdb_branch_name": "release-26.1"}]
@@ -204,13 +226,24 @@ def _run_self_tests() -> None:
 
     # N/A entries are skipped entirely
     rows = [{"major_version": "v24.1", "crdb_branch_name": "N/A"}]
-    failures = _quiet(rows, lambda b: (_ for _ in ()).throw(AssertionError("unexpected call")))
+    failures = _quiet(rows, _no_call)
     assert failures == [], failures
 
     # empty branch field is skipped
     rows = [{"major_version": "v25.1", "crdb_branch_name": ""}]
-    failures = _quiet(rows, lambda b: (_ for _ in ()).throw(AssertionError("unexpected call")))
+    failures = _quiet(rows, _no_call)
     assert failures == [], failures
+
+    # archived versions (no docs folder) are skipped
+    rows = [{"major_version": "v1.0", "crdb_branch_name": "release-1.0"}]
+    failures = _quiet(rows, _no_call, has_docs_fn=lambda v: False)
+    assert failures == [], failures
+
+    # non-archived version with missing branch still fails
+    rows = [{"major_version": "v26.1", "crdb_branch_name": "release-26.1"}]
+    failures = _quiet(rows, lambda b: False, has_docs_fn=lambda v: True)
+    assert len(failures) == 1, failures
+    assert failures[0]["type"] == "branch_missing", failures
 
     print("All self-tests passed.")
     sys.exit(0)
