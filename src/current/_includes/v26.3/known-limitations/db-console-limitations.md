@@ -1,0 +1,1 @@
+- Accessing the DB Console for a secure cluster requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
