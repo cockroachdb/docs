@@ -286,5 +286,6 @@ cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host=2
 
 ## See also
 
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
