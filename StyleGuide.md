@@ -13,6 +13,9 @@ Included in this guide:
   - [CockroachDB products](#cockroachdb-products)
   - [CockroachDB versions](#cockroachdb-versions)
   - [Third-party products](#third-party-products)
+  - ["Directory" vs "folder"](#directory-vs-folder)
+  - ["Legacy" vs "deprecated"](#legacy-vs-deprecated)
+  - ["In" vs "on" a cluster](#in-vs-on-a-cluster)
   - [AI](#ai)
 - [Inclusivity](#inclusivity)
   - [Avoid ableist language](#avoid-ableist-language)
@@ -53,7 +56,7 @@ CockroachDB docs should be helpful, humble, positive, friendly, and free from hy
 
 ### Perspective and voice
 
-For instructions, use the imperative present tense, aka "[imperative mood](https://www.grammar-monster.com/glossary/imperative_mood.htm)." The second-person subject ("you") is implied and can be omitted.
+For tasks, use the imperative present tense, aka "[imperative mood](https://www.grammar-monster.com/glossary/imperative_mood.htm)." The second-person subject ("you") is implied and can be omitted.
 
 **Examples:**
 
@@ -93,13 +96,38 @@ Use active instead of passive voice.
 - **Avoid:** Additional options can be specified.  
   **Prefer:** You can specify additional options.
 
-Use concise, direct language. Cut unnecessary words unless a conversational tone is intentional (for example, in tutorials). If a feature or concept is difficult to describe clearly or concisely, consider using an [example](#examples) or [image](#images) to complement the text.
+Use concise, direct language. Cut unnecessary words unless a conversational tone is intentional (for example, in tutorials). If a feature or concept is difficult to describe clearly or concisely, consider using an example or [image](#images) to complement the text.
 
 - **Avoid:** Be mindful of the possibility that you might encounter a different result, depending on the specifics of your configuration, so you might want to do some testing first to see what happens.  
   **Prefer:** Run tests to verify that you get the expected result for your configuration.
 
 - **Avoid:** `table_name`: This parameter is used to specify the name of the table you want to modify.  
   **Prefer:** `table_name`: The name of the table to modify.
+
+Avoid these common filler phrases and inflated verbs:
+
+- **Avoid:** "in order to"
+  **Prefer:** "to"
+- **Avoid:** "due to the fact that"
+  **Prefer:** "because"
+- **Avoid:** "at this point in time"
+  **Prefer:** "now"
+- **Avoid:** "make use of"
+  **Prefer:** "use"
+- **Avoid:** "is able to"
+  **Prefer:** "can"
+- **Avoid:** "in the event that"
+  **Prefer:** "if"
+- **Avoid:** "prior to"
+  **Prefer:** "before"
+- **Avoid:** "with regard to"
+  **Prefer:** "about"
+- **Avoid:** "leverage"
+  **Prefer:** "use"
+- **Avoid:** "utilize"
+  **Prefer:** "use"
+- **Avoid:** "perform"
+  **Prefer:** a more specific verb, such as "run", "complete", or "execute"
 
 Provide guidance rather than leave decisions to the user. For example, phrases like "change what you need" or "modify the relevant settings" may raise questions like "What would I need to change?" and "Which settings are relevant?". When user discretion is required, be as explicit as possible to reduce ambiguity and cognitive load.
 
@@ -140,6 +168,28 @@ Do not use language that could be read as presumptuous or condescending.
 - **Avoid:** Monitoring the cluster is simple.  
   **Prefer:** Monitor the cluster with the following tools:
 
+### Tense
+
+Use present tense to describe CockroachDB's behavior, the state of the system, and the results of user actions.
+
+- **Avoid:** When you run the command, CockroachDB will create a new table and will return a confirmation.
+  **Prefer:** When you run the command, CockroachDB creates a new table and returns a confirmation.
+- **Avoid:** The leaseholder will handle all reads and writes for the range.
+  **Prefer:** The leaseholder handles all reads and writes for the range.
+
+Use past tense only to refer to something that has already happened within a sequence.
+
+**Example:** Now that you have created the database, add the schema.
+
+Use future tense only when referring to something that occurs later in a sequence of steps.
+
+**Example:** Later in this task, you will create a standby cluster. First, create and start the primary cluster:
+
+Avoid mixing present and future tense within a single description of system behavior.
+
+- **Avoid:** CockroachDB assigns a leaseholder to each range, which will handle all reads and writes.
+  **Prefer:** CockroachDB assigns a leaseholder to each range, which handles all reads and writes.
+
 ### Speculation and feature support
 
 Avoid forward-looking language when writing about supported syntax and behavior. Do not suggest that a feature may or may not be added in a future release. Avoid words like "yet" and "currently", and do not reference the internal product roadmap.
@@ -153,10 +203,35 @@ For readability, avoid Latinisms.
 
 - **Avoid:** Select a deployment option, e.g., {{ site.data.products.standard }} or {{ site.data.products.advanced }}.  
   **Prefer:** Select a deployment option such as {{ site.data.products.standard }} or {{ site.data.products.advanced }}.
+- **Avoid:** Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes).
+  **Prefer:** Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (that is, if your cluster loses a majority of its nodes).
+- **Avoid:** databases, functions, tables, clusters, schemas, rows, users, jobs, etc.
+  **Prefer:** databases, functions, tables, clusters, schemas, rows, users, jobs, and so on.
+- **Avoid:** These can also be queried via `SHOW`.
+  **Prefer:** These can also be queried using `SHOW`.
+
+### Modal verbs
+
+Maintain consistency when using modal verbs to signal the degree of obligation or certainty.
+
+- Use _must_ to denote a required action with no alternative. Use for prerequisites, security requirements, and hard constraints.
+- Use _should_ to denote a recommended action with viable alternatives. Use for best practices and suggestions.
+- Use _can_ when describing an action that is possible, but is not directly recommended or not recommended. Use to describe capabilities or options that are available to the user.
+- Use _may_ when referencing permissions, or when describing user behavior that is non-deterministic or likely to vary.
+- Use _avoid_ to denote actions that we specifically recommend against. Use for practices that are technically possible, but likely to cause difficulty for the user. If possible, include a brief explanation of why the user should avoid the action.
+- Use _do not_ only to denote actions that are impossible or will certainly harm the user's system. If there could conceivably be a valid reason for a user to do the action, use "avoid" instead.
+
+Do not use "should" as a softer form of "must." If the user has no real alternative, use "must."
+- **Avoid**: You should enable admission control before running a high-throughput workload.
+  **Prefer**: You must enable admission control before running a high-throughput workload.
+
+Do not use "may" when "can" is more accurate. Use "may" only when the behavior or permission genuinely varies.
+- **Avoid**: Users may query this table to view active sessions.
+  **Prefer**: Users can query this table to view active sessions.
 
 ## Word usage guidelines
 
-This section logs decisions about dictionary words to use and avoid. Add specific guidelines we decide as a team to this section. Refer also to [Technical terminology](#technical-terminology) for technical terms that may not be in a dictionary.
+This section logs decisions about dictionary words to use and avoid. Add specific guidelines we decide as a team to this section.
 
 ### CockroachDB products
 
@@ -237,6 +312,14 @@ This is a request from Cockroach Labs' legal team. The idea is to remind the rea
 
 Use inclusive language that reflects a diverse readership. Avoid terms that inherently exclude, stereotype, or cause confusion.
 
+### Avoid minimizing language
+
+Minimizing language implies that a task is easy or obvious, which may not be true for all users.
+
+Minimizing language includes words like "simple/simply", "just", "easy/easily", "actually", "obviously", "clearly", "of course", "straightforward", "trivial", and more.
+
+Also avoid the phrases "Note that..." or "Keep in mind that...". If something is worth noting, state it directly.
+
 ### Avoid ableist language
 
 An informal tone can allow for problematic ableist language due to figures of speech and colloquial language. Ableist language includes words like "crazy", "insane", "blind", "dummy", "cripple", and more.
@@ -283,7 +366,7 @@ Avoid terms that imply violence or harm.
 - Replace "performance _hit_" with **reduced performance**.
 - Replace "want to _hit_ up" with **want to visit**.
 
-Terminology around "kill" vs. "stop" vs. "terminate" is nuanced, as described [in this GitHub comment](https://github.com/cockroachdb/docs/issues/7767#issuecomment-662028864). Use your best judgement.
+Terminology around "kill" vs. "stop" vs. "terminate" is nuanced. In general, use "terminate" unless referring to a specific command that uses a different term in its syntax.
 
 ### Write accessible documentation
 
@@ -299,7 +382,7 @@ Avoid using socially-charged terms for features and technical concepts.
 **Examples:**
 
 - Replace _blacklist / whitelist_ with **denylist / allowlist**.
-- Replace _master / slave_ with **main/principal/primary/manager** and **secondary/subordinate/worker**.
+- Replace _master_ with **main/principal/primary/manager** and _slave_ with **secondary/subordinate/worker**.
 - Replace _native_ with **core, built-in, top-level, integrated, "built for"** or omit.
 - Replace _old_ with **existing, previous, first, original**.
 
@@ -320,7 +403,9 @@ For links to CockroachDB docs, match the capitalization of the linked content:
 
 ### Punctuation rules
 
-- Use the [Oxford (aka serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
+- Use the Oxford (aka serial) comma.
+    - **Avoid:** The connection string is pre-populated with your username, password, cluster name and other details.
+    - **Prefer:** The connection string is pre-populated with your username, password, cluster name, and other details.
 - Use straight `'` rather than curved `‘` quotes.
 - Limit semicolon usage. Instead, use two simple sentences.
     - **Avoid:** CockroachDB is a distributed database; it scales horizontally across multiple nodes.  
@@ -337,12 +422,6 @@ For links to CockroachDB docs, match the capitalization of the linked content:
     - **Example:** Cockroach Labs' products
 - Place commas and periods inside quotation marks (for example, `CockroachDB's availability model is described as "Multi-Active Availability."`). Place other punctuation outside quotation marks (for example, `What is "Multi-Active Availability"?`). When any type of punctuation is part of a quote, place it inside the quotation marks (for example, `To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"`).
 - Avoid using slashes "/" and ampersands "&" in place of "or" and "and" respectively, unless space is very limited (such as in a table). Similarly, avoid using "and/or" unless space is very limited. Instead, decide whether "and" or "or" can stand alone, or make use of "both" when the inclusivity must be explicit (for example, `x or y or both`).
-
-## Vale
-
-The CockroachDB documentation uses [Vale](https://vale.sh/) to identify common spelling mistakes or other patterns that may contradict the guidelines in this style guide. Check for items flagged by Vale in the **Files Changed** and **Checks** tabs of the pull request, grouped by file.
-
-Try to address as many of the suggestions as possible. If Vale flags a word that is spelled and used correctly, add the word to `netlify/vale/vocab.txt` in the PR where the word is introduced. For other failed tests, you can work with your reviewer to correct the error in your PR or to improve the Vale test.
 
 ## File conventions
 
@@ -385,8 +464,9 @@ For templates that provide a starting point for writing concept topics, refer to
 A _task_ topic provides step-by-step instructions to complete a specific goal. Tasks are discrete and action-based. Tasks have the following properties:
 
 - Answers the question "how do I do \<an action\>?" by describing precisely what to do and the order in which to do it.
+- The first sentence of a task describes the outcome or goal of the task and directs the reader to the steps that follow.
 - Corresponds to a specific user journey as defined by Product.
-- The title or heading should state an actionable goal for the user, ideally of the form **\<Imperative verb\> [\<article\>|\<conjunction\>] \<noun\> or \<proper noun\>**.
+- The title or heading states an actionable goal for the user, ideally of the form **\<Imperative verb\> [\<article\>|\<conjunction\>] \<noun\> or \<proper noun\>**.
 
   **Example:** Create an Index
 
@@ -414,6 +494,8 @@ For templates that provide a starting point for writing task topics, refer to th
 ### Reference
 
 _Reference_ topics provide information about a specific CockroachDB function, feature, or interface. Reference topics are detail-oriented, and should include all of the information available on a specific topic, without providing prescriptive guidance. Prescriptive guidance is reserved for [Guide](#guide) topics.
+
+The first paragraph of a reference topic describes the focus of the information to follow, and briefly clarifies how the information is useful.
 
 Reference topics typically document programming constructs, interface parameters, or facts about a product, but do not provide explanations of [concepts](#concept) or [tasks](#task).
 
@@ -477,6 +559,24 @@ When you use multiple code blocks to demonstrate a task, interleave the code blo
     ~~~
 ```
 
+Always introduce a code block with a lead-in sentence that ends with a colon. Do not drop a code block into a page without context, even if the preceding heading seems self-explanatory. Make the lead-in sentence as specific as possible. Avoid generic openers like "Run the following command:" when a more descriptive alternative is available.
+
+- **Avoid:** Run the following command:
+  **Prefer:** To start a CockroachDB node, run:
+  **Prefer:** To view the list of active sessions, run the following SQL query:
+
+When showing the output of a command, introduce it with one of the following consistent phrases:
+- "The output looks like:" for representative example output.
+- "The command returns:" for exact return values.
+- "The output includes:" when the example shows a relevant excerpt, not the full output.
+
+When a task involves several steps, each with its own code block, give every code block its own lead-in sentence. Do not group multiple steps under a single introduction.
+
+- **Avoid:** Run the following commands to initialize the cluster and add a user: {two code blocks}
+  **Prefer:**
+    - Initialize the cluster: {code block}
+    - Add a user: {code block}
+
 #### Placeholders
 
 Code samples often include placeholder values, to be replaced by values specific to a user's environment. To denote that a value in a code sample is a placeholder value that should be replaced, use curly brackets (`{}`).
@@ -514,8 +614,9 @@ CockroachDB docs use three classes of "callouts," which are highlighted blocks o
 
 **Best practices:**
 
-- Avoid placing callouts next to each other.
-- Do not overuse callouts. Most documentation belongs in the body of a page rather than in a callout.
+- Avoid using consecutive callouts.
+- Avoid using more than one callout per major section.
+- Most documentation belongs in the body of a page rather than in a callout. Only use a callout if including the information in the body would severely disrupt the flow of the writing, or if the information is crucial enough to require special attention.
 
 For code block syntax and formatting, refer to the [Markdown Guide](MarkdownGuide.md#callouts).
 
