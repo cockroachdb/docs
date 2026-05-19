@@ -679,6 +679,18 @@ When linking to third-party documentation, consider the purpose and maintenance 
 
 For link syntax, refer to the [Markdown Guide](MarkdownGuide.md#links).
 
+### UI elements
+
+Use consistent verbs when describing interactions with UI elements. Do not mix synonyms for the same type of interaction.
+
+- For activating a button, use _click_. **Example:** Click **Submit**.
+- For choosing from a menu, list, or dropdown, use _select_. **Example:** Select **Advanced** from the deployment type menu.
+- For pressing a physical button or key, use _press_. **Example:** Press **Enter**.
+- For typing into a field, use _enter_. **Example:** In the **Cluster name** field, enter a name for your cluster.
+- For enabling or disabling a toggle, use _turn on/off_. **Example:** Turn on **Admission control**.
+- For checking or unchecking a checkbox, use _select/deselect_. **Example:** Select the **Enable backups** checkbox.
+- For navigating to a page in the UI, use _go to_. **Example:** Go to the **Clusters** page.
+
 ## Page sections
 
 For page headings, refer to the [Markdown Guide](MarkdownGuide.md#page-headings).
