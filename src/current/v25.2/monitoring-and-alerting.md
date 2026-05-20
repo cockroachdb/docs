@@ -67,6 +67,25 @@ If the cluster is unavailable, a database's `crdb_internal` system catalog canno
 
 For details, see [`crdb_internal`]({% link {{ page.version.version }}/crdb-internal.md %}).
 
+### Authenticate to API endpoints
+
+To call the HTTP API endpoints on this page using `curl`:
+
+For an insecure or local testing cluster, use HTTP:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl http://<host>:<http-port>/<endpoint>
+~~~
+
+For a secure cluster, authenticate to the HTTPS endpoint with [`cockroach auth-session login`]({% link {{ page.version.version }}/cockroach-auth-session.md %}#log-in-to-the-http-interface), then pass the authentication cookie to `curl`.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach auth-session login <user> --certs-dir=certs --only-cookie > $HOME/.cockroachdb_api_key
+curl --cookie $HOME/.cockroachdb_api_key --cacert certs/ca.crt https://<host>:<http-port>/<endpoint>
+~~~
+
 ### Health endpoints
 
 CockroachDB provides two HTTP endpoints for checking the health of individual nodes.
@@ -204,22 +223,7 @@ If you find under-replicated ranges or constraint violations, you will need to [
 
 #### Request the endpoint
 
-To return the JSON response, send a `POST` request to `/_status/critical_nodes`.
-
-For an insecure or local testing cluster, use HTTP:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl -X POST http://<host>:<http-port>/_status/critical_nodes
-~~~
-
-For a secure cluster, authenticate to the HTTPS endpoint with [`cockroach auth-session login`]({% link {{ page.version.version }}/cockroach-auth-session.md %}#log-in-to-the-http-interface), then pass the authentication cookie to `curl`.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach auth-session login <user> --certs-dir=certs --only-cookie > $HOME/.cockroachdb_api_key
-curl -X POST --cookie $HOME/.cockroachdb_api_key --cacert certs/ca.crt https://<host>:<http-port>/_status/critical_nodes
-~~~
+To return the JSON response, send a `POST` request to `/_status/critical_nodes`. For authentication details, refer to [Authenticate to API endpoints](#authenticate-to-api-endpoints).
 
 #### Fields
 
