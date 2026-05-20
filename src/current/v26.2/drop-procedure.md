@@ -10,7 +10,7 @@ The `DROP PROCEDURE` [statement]({% link {{ page.version.version }}/sql-statemen
 
 ## Required privileges
 
-To drop a procedure, a user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the procedure.
+To drop a procedure, the user must be the owner of the procedure.
 
 ## Synopsis
 
