@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 from typing import List, Optional
 
-from .models import BlockType, SqlBlock, PageResult
+from .models import BlockType, ResponseMode, SqlBlock, PageResult
 
 
 # Tables that indicate MovR dataset usage
@@ -26,6 +26,14 @@ SKIP_COMMENT_RE = re.compile(
     r'<!--\s*sql-test:skip(?:\s+reason="([^"]*)")?\s*-->'
 )
 
+# Response generation annotation patterns
+RESPONSE_GENERATE_RE = re.compile(
+    r'<!--\s*sql-response:generate\s*-->'
+)
+RESPONSE_SKIP_RE = re.compile(
+    r'<!--\s*sql-response:skip(?:\s+reason="([^"]*)")?\s*-->'
+)
+
 
 def _has_page_level_skip(content: str) -> bool:
     """Check if frontmatter contains sql_test: skip."""
@@ -34,6 +42,15 @@ def _has_page_level_skip(content: str) -> bool:
         return False
     frontmatter = frontmatter_match.group(1)
     return bool(re.search(r'^\s*sql_test:\s*skip\s*$', frontmatter, re.MULTILINE))
+
+
+def _has_page_level_response_generate(content: str) -> bool:
+    """Check if frontmatter contains sql_response: generate."""
+    frontmatter_match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+    if not frontmatter_match:
+        return False
+    frontmatter = frontmatter_match.group(1)
+    return bool(re.search(r'^\s*sql_response:\s*generate\s*$', frontmatter, re.MULTILINE))
 
 
 def _clean_sql_lines(raw: str) -> List[str]:
@@ -136,8 +153,9 @@ def extract_blocks(file_path: str, content: Optional[str] = None) -> PageResult:
 
     page_result = PageResult(file_path=file_path)
 
-    # Check for page-level skip
+    # Check for page-level flags
     page_skip = _has_page_level_skip(content)
+    page_response_generate = _has_page_level_response_generate(content)
 
     lines = content.split('\n')
     i = 0
@@ -165,6 +183,24 @@ def extract_blocks(file_path: str, content: Optional[str] = None) -> PageResult:
                 raw = '\n'.join(lines[sql_start:sql_end])
                 statements = _clean_sql_lines(raw)
 
+                # Check for response annotations on the same comment line
+                # or look back for a preceding response annotation
+                response_mode = _determine_response_mode(
+                    lines, i, page_response_generate, is_skip_annotated=True
+                )
+
+                # Look ahead for output block range
+                output_block_range = None
+                k = sql_end + 1
+                while k < len(lines) and lines[k].strip() == '':
+                    k += 1
+                if k < len(lines) and lines[k].strip() == '~~~':
+                    out_open = k
+                    out_close = out_open + 1
+                    while out_close < len(lines) and lines[out_close].strip() != '~~~':
+                        out_close += 1
+                    output_block_range = (out_open, out_close)
+
                 block = SqlBlock(
                     file_path=file_path,
                     line_number=j + 1,  # 1-indexed
@@ -173,11 +209,32 @@ def extract_blocks(file_path: str, content: Optional[str] = None) -> PageResult:
                     block_type=BlockType.SKIPPED,
                     skip_reason=skip_reason,
                     block_index=block_index,
+                    response_mode=response_mode,
+                    output_block_range=output_block_range,
                 )
                 page_result.blocks.append(block)
                 block_index += 1
                 i = sql_end + 1
                 continue
+
+            i += 1
+            continue
+
+        # Check for response generate/skip annotation (not tied to sql-test:skip)
+        response_generate_match = RESPONSE_GENERATE_RE.search(line)
+        response_skip_match = RESPONSE_SKIP_RE.search(line)
+
+        if response_generate_match or response_skip_match:
+            # Look for the next SQL block immediately following
+            j = i + 1
+            while j < len(lines) and lines[j].strip() == '':
+                j += 1
+
+            if j < len(lines) and lines[j].strip() == '~~~ sql':
+                # The SQL block will be processed when we reach it.
+                # Store the annotation info to be picked up below.
+                # We don't advance i; we let the normal ~~~ sql handler pick it up.
+                pass
 
             i += 1
             continue
@@ -197,8 +254,9 @@ def extract_blocks(file_path: str, content: Optional[str] = None) -> PageResult:
 
             # Look ahead for expected output block (~~~ without a language tag)
             expected_output = None
+            output_block_range = None
             j = sql_end + 1
-            # Skip blank lines and non-code-block lines between SQL and output
+            # Skip blank lines between SQL and output
             while j < len(lines) and lines[j].strip() == '':
                 j += 1
 
@@ -209,6 +267,7 @@ def extract_blocks(file_path: str, content: Optional[str] = None) -> PageResult:
                 while out_end < len(lines) and lines[out_end].strip() != '~~~':
                     out_end += 1
                 expected_output = '\n'.join(lines[out_start:out_end])
+                output_block_range = (j, out_end)  # 0-indexed, inclusive of ~~~ delimiters
 
             # Determine skip reason
             skip_reason = None
@@ -216,6 +275,11 @@ def extract_blocks(file_path: str, content: Optional[str] = None) -> PageResult:
                 skip_reason = "Page-level sql_test: skip in frontmatter"
 
             block_type = _classify_block(raw, statements, expected_output, skip_reason)
+
+            # Determine response mode by looking back for annotations
+            response_mode = _determine_response_mode(
+                lines, i, page_response_generate
+            )
 
             block = SqlBlock(
                 file_path=file_path,
@@ -226,6 +290,8 @@ def extract_blocks(file_path: str, content: Optional[str] = None) -> PageResult:
                 expected_output=expected_output,
                 skip_reason=skip_reason,
                 block_index=block_index,
+                response_mode=response_mode,
+                output_block_range=output_block_range,
             )
             page_result.blocks.append(block)
             block_index += 1
@@ -237,6 +303,60 @@ def extract_blocks(file_path: str, content: Optional[str] = None) -> PageResult:
         i += 1
 
     return page_result
+
+
+def _determine_response_mode(
+    lines: List[str],
+    sql_block_line_idx: int,
+    page_response_generate: bool,
+    is_skip_annotated: bool = False,
+) -> ResponseMode:
+    """Determine the response mode for a SQL block.
+
+    Looks backward from the SQL block's opening ~~~ sql line (or from
+    the sql-test:skip comment line) for a sql-response annotation.
+    Block-level annotations override page-level settings.
+
+    Args:
+        lines: All lines from the file.
+        sql_block_line_idx: 0-indexed line of the ~~~ sql opener or skip comment.
+        page_response_generate: Whether the page has sql_response: generate in frontmatter.
+        is_skip_annotated: Whether this block has a sql-test:skip annotation.
+
+    Returns:
+        The ResponseMode for this block.
+    """
+    # Look backward through preceding blank lines and comments
+    j = sql_block_line_idx - 1
+    while j >= 0 and lines[j].strip() == '':
+        j -= 1
+
+    if j >= 0:
+        # Check if the line immediately before (skipping blanks) is a response annotation
+        if RESPONSE_SKIP_RE.search(lines[j]):
+            return ResponseMode.SKIP
+        if RESPONSE_GENERATE_RE.search(lines[j]):
+            return ResponseMode.GENERATE
+        # Also check the case where sql-test:skip is on j, and response annotation is above that
+        if is_skip_annotated:
+            # sql_block_line_idx points to the skip comment, look further back
+            pass
+        else:
+            # Check one more line back (annotations may be above a sql-test:skip comment)
+            k = j - 1
+            while k >= 0 and lines[k].strip() == '':
+                k -= 1
+            if k >= 0:
+                if RESPONSE_SKIP_RE.search(lines[k]):
+                    return ResponseMode.SKIP
+                if RESPONSE_GENERATE_RE.search(lines[k]):
+                    return ResponseMode.GENERATE
+
+    # Fall back to page-level setting
+    if page_response_generate:
+        return ResponseMode.GENERATE
+
+    return ResponseMode.MANUAL
 
 
 def extract_from_files(file_paths: List[str]) -> List[PageResult]:

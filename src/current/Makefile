@@ -99,6 +99,24 @@ sql-test:
 sql-test-dry-run:
 	python3 ../../.github/scripts/sql_test_runner.py --dry-run --verbose --version v25.4
 
+.PHONY: sql-response-generate
+sql-response-generate:
+	cockroach start-single-node --insecure --background --store=type=mem,size=1GiB --listen-addr=localhost:26257
+	sleep 5
+	python3 ../../.github/scripts/sql_response_runner.py --version v26.2 --update --verbose; \
+	EXIT_CODE=$$?; \
+	cockroach quit --insecure --host=localhost:26257 || true; \
+	exit $$EXIT_CODE
+
+.PHONY: sql-response-diff
+sql-response-diff:
+	cockroach start-single-node --insecure --background --store=type=mem,size=1GiB --listen-addr=localhost:26257
+	sleep 5
+	python3 ../../.github/scripts/sql_response_runner.py --version v26.2 --diff --verbose; \
+	EXIT_CODE=$$?; \
+	cockroach quit --insecure --host=localhost:26257 || true; \
+	exit $$EXIT_CODE
+
 .PHONY: vendor
 vendor:
 	gem install bundler

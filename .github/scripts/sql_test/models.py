@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 
 class BlockType(Enum):
@@ -11,6 +11,13 @@ class BlockType(Enum):
     EXPECTED_ERROR = "expected_error"
     FRAGMENT = "fragment"
     SKIPPED = "skipped"
+
+
+class ResponseMode(Enum):
+    """Whether a block's output should be auto-generated."""
+    MANUAL = "manual"
+    GENERATE = "generate"
+    SKIP = "skip"
 
 
 @dataclass
@@ -24,6 +31,8 @@ class SqlBlock:
     expected_output: Optional[str] = None
     skip_reason: Optional[str] = None
     block_index: int = 0
+    response_mode: ResponseMode = ResponseMode.MANUAL
+    output_block_range: Optional[Tuple[int, int]] = None  # (start_line, end_line) 0-indexed, inclusive of ~~~ delimiters
 
 
 @dataclass
