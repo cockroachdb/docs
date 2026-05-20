@@ -1,0 +1,1 @@
+You will encounter an error if you run multiple [backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) to the same storage URI. Backup collections can contain multiple full and incremental backups, but each collection's URI must be unique. If you are using backup schedules, each schedule must have a unique URI.
