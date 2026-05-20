@@ -61,7 +61,7 @@ To use this pattern, set the [table locality]({% link {{ page.version.version }}
     ~~~
 
 {{site.data.alerts.callout_success}}
-A good way to check that your [table locality settings]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) are having the expected effect is by monitoring how the performance metrics of a workload change as the settings are applied to a running cluster.  For a tutorial showing how table localities can improve performance metrics across a multi-region cluster, see [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
+A good way to check that your [table locality settings]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) are having the expected effect is by monitoring how the performance metrics of a workload change as the settings are applied to a running cluster.
 {{site.data.alerts.end}}
 
 ## Characteristics
@@ -95,10 +95,6 @@ The value of `kv.closed_timestamp.lead_for_global_reads_override` will impact wr
 ## Alternatives
 
 - If rows in the table, and all latency-sensitive queries, can be tied to specific geographies, consider the [`REGIONAL` Table Locality Pattern]({% link {{ page.version.version }}/regional-tables.md %}) pattern.
-
-## Tutorial
-
-For a step-by-step demonstration showing how CockroachDB's multi-region capabilities (including `GLOBAL` and `REGIONAL` tables) give you low-latency reads in a distributed cluster, see the tutorial on [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
 
 ## See also
 

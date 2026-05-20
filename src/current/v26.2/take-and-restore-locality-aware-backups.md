@@ -45,6 +45,8 @@ When you run the `BACKUP` statement for a locality-aware backup, check the follo
 - {% include {{ page.version.version }}/backups/cap-parameter-ext-connection.md %}
 - {% include {{ page.version.version }}/backups/locality-aware-access.md %}
 
+Locality-aware backups attempt to match data to buckets in corresponding regions as specified. However, edge cases exist in which a locality-aware backup may be forced to write to the default bucket instead, such as when the cluster has unhealthy nodes. Use the [`STRICT`]({% link {{ page.version.version }}/backup.md %}#options) option when creating a locality-aware backup to force the backup to fail in these cases to avoid violating [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) requirements.
+
 You can restore the backup by running:
 
 {% include_cached copy-clipboard.html %}
@@ -155,18 +157,6 @@ There is different syntax for taking an incremental backup depending on where yo
 	~~~
 
 	To view the available subdirectories, use [`SHOW BACKUPS`]({% link {{ page.version.version }}/restore.md %}#view-the-backup-subdirectories).
-
-- To append your incremental backup to the full backup using the [`incremental_location`]({% link {{ page.version.version }}/backup.md %}#options) option to send your incremental backups to a different location, you must include the same number of locality-aware URIs for the full backup destination and the `incremental_location` option:
-
-	{% include_cached copy-clipboard.html %}
-	~~~ sql
-	BACKUP INTO LATEST IN
-		('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west') WITH incremental_location = ('s3://us-east-bucket-2?COCKROACH_LOCALITY=default', 's3://us-west-bucket-2?COCKROACH_LOCALITY=region%3Dus-west');
-	~~~
-
-	For more detail on using the `incremental_location` option, see [Incremental backups with explicitly specified destinations]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups-with-explicitly-specified-destinations).
-
-	{% include common/sql/incremental-location-warning.md %}
 
 ## Restore from an incremental locality-aware backup
 

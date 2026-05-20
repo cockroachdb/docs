@@ -173,7 +173,7 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
     Url | `http://<hostname of machine running prometheus>:9090`
     Access | Direct
 
-1. Download the starter [Grafana dashboards](https://github.com/cockroachdb/cockroach/tree/master/monitoring/grafana-dashboards/by-cluster) for CockroachDB:
+1. Generate a standardized Grafana dashboard using [`cockroach gen dashboard --tool=grafana`]({% link {{ page.version.version }}/cockroach-gen.md %}#generate-a-dashboard). Alternatively, download one or more of the starter [Grafana dashboards](https://github.com/cockroachdb/cockroach/tree/master/monitoring/grafana-dashboards/by-cluster) for CockroachDB to focus on specific metrics:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -199,7 +199,7 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
     # replicas dashboard: replica information and operations.
     ~~~
 
-1. [Add the dashboards to Grafana](http://docs.grafana.org/reference/export_import/#importing-a-dashboard).
+1. [Add the dashboard or dashboards to Grafana](http://docs.grafana.org/reference/export_import/#importing-a-dashboard).
 
 ## See also
 

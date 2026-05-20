@@ -81,6 +81,7 @@ The following information is also contained in the `.zip` file, and cannot be fi
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
 - CPU profiles
 - A script (`hot-ranges.sh`) that summarizes the hottest ranges (ranges receiving a high number of reads or writes)
+- [Active Session History]({% link {{ page.version.version }}/active-session-history.md %}) data
 
 ## Subcommands
 
@@ -285,6 +286,6 @@ cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host=2
 
 ## See also
 
-- [File an Issue]({% link {{ page.version.version }}/file-an-issue.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})

@@ -79,7 +79,6 @@ docs_area:
         <li><a href="recommended-production-settings.html">Production Checklist</a></li>
         <li><a href="{% link cockroachcloud/create-your-cluster.md %}">CockroachDB Cloud Deployment</a></li>
         <li><a href="kubernetes-overview.html">Kubernetes Overview</a></li>
-        <li><a href="performance.html">Performance Profiles</a></li>
         <li><a href="upgrade-cockroach-version.html">Cluster Maintenance</a></li>
       </ul>
     </div>

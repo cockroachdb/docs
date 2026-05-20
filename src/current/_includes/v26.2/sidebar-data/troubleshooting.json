@@ -33,6 +33,12 @@
         ]
       },
       {
+        "title": "Active Session History",
+        "urls": [
+          "/${VERSION}/active-session-history.html"
+        ]
+      },
+      {
         "title": "Transaction Retry Error Reference",
         "urls": [
           "/${VERSION}/transaction-retry-error-reference.html"
@@ -75,36 +81,9 @@
         ]
       },
       {
-        "title": "Benchmarking",
-        "items": [
-          {
-            "title": "Overview",
-            "urls": [
-              "/${VERSION}/performance.html"
-            ]
-          },
-          {
-            "title": "Benchmarking with TPC-C",
-            "urls": [
-              "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
-            ]
-          }
-        ]
-      },
-      {
         "title": "Support Resources",
         "urls": [
           "/${VERSION}/support-resources.html"
-        ]
-      },
-      {
-        "title": "File an Issue",
-        "urls": [
-          "/${VERSION}/file-an-issue.html"
         ]
       },
       {

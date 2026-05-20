@@ -18,6 +18,7 @@ Privilege | Levels | Description
 `EXTERNALIOIMPLICITACCESS` | System | Grants the ability to interact with external resources that require implicit access.
 `INSERT` | Table, Sequence | Grants the ability to insert objects at the table or sequence level.
 <a id="inspect"></a> `INSPECT` | System | Grants the ability to run the [`INSPECT`]({% link {{ page.version.version }}/inspect.md %}) statement and view results with [`SHOW INSPECT ERRORS`]({% link {{ page.version.version }}/show-inspect-errors.md %}).
+<a id="maintain"></a> <span class="version-tag">New in v26.2:</span> `MAINTAIN` | Table, View | Grants the ability to perform maintenance operations on table-like objects without requiring ownership. Users with `MAINTAIN` on a materialized view can run [`REFRESH MATERIALIZED VIEW`]({% link {{ page.version.version }}/refresh.md %}), and users with `MAINTAIN` on a table can run [`CREATE STATISTICS`]({% link {{ page.version.version }}/create-statistics.md %}) and its alias `ANALYZE`.
 <a id="modifyclustersetting"></a>`MODIFYCLUSTERSETTING` | System | Grants the ability to modify [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}).
 `MODIFYSQLCLUSTERSETTING` | System | Grants the ability to modify SQL [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) (cluster settings prefixed with `sql.`).
 `NOSQLLOGIN` | System | Prevents roles from connecting to the SQL interface of a cluster.
@@ -27,6 +28,7 @@ Privilege | Levels | Description
 <a id="replicationsource"></a>`REPLICATIONSOURCE` | Table | Grants the ability to run logical data replication from a table on the source cluster. For more details, refer to the [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}) tutorial.
 `RESTORE` | System, Database | Grants the ability to restore [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) at the system or database level. Refer to `RESTORE` [Required privileges]({% link {{ page.version.version }}/restore.md %}#required-privileges) for more details.
 `SELECT` | Table, Sequence | Grants the ability to run [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) at the table or sequence level.
+`TRIGGER` | Table | Grants the ability to create [triggers]({% link {{ page.version.version }}/triggers.md %}) on a table.
 `UPDATE` | Table, Sequence | Grants the ability to run [update statements]({% link {{ page.version.version }}/update.md %}) at the table or sequence level.
 `USAGE` | Schema, Sequence, Type | Grants the ability to use [schemas]({% link {{ page.version.version }}/schema-design-overview.md %}), [sequences]({% link {{ page.version.version }}/create-sequence.md %}), or [user-defined types]({% link {{ page.version.version }}/create-type.md %}).
 <a id="viewactivity"></a>`VIEWACTIVITY` | System | Grants the ability to view other user's activity statistics of a cluster.

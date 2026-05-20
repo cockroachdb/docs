@@ -489,8 +489,6 @@ This command starts a 9-node demo cluster with the `movr` database preloaded and
 The `--global` flag is an experimental feature of `cockroach demo`. The interface and output are subject to change.
 {{site.data.alerts.end}}
 
-For a tutorial that uses a demo cluster to demonstrate CockroachDB's multi-region capabilities, see [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
-
 ### Add, shut down, and restart nodes in a multi-node demo cluster
 
 In a multi-node demo cluster, you can use `\demo` [shell commands](#commands) to add, shut down, restart, decommission, and recommission individual nodes.

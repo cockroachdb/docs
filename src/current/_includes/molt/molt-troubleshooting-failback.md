@@ -20,7 +20,7 @@ This error occurs when the [CockroachDB changefeed]({% link {{ site.current_clou
 transient error: 400 Bad Request: unknown schema:
 ~~~
 
-The webhook URL path is specified in the `INTO` clause when you [create the changefeed]({% link molt/migrate-failback.md %}#create-the-cockroachdb-changefeed). For example: `webhook-https://replicator-host:30004/database/schema`.
+The webhook URL path is specified in the `INTO` clause when you create the changefeed. For example: `webhook-https://replicator-host:30004/database/schema`.
 
 **Resolution:** Verify the webhook path format matches your target database type:
 
