@@ -2,12 +2,12 @@ name: Notify Slack on Doc Review Request
 
 on:
   pull_request:
-    types: [review_requested]
+    types: [opened, review_requested]
 
 jobs:
   notify-slack:
-    # Only run if docs-prs team was requested as reviewer
-    if: github.event.requested_team.slug == 'docs-prs'
+    # Only run if docs-prs team was requested as reviewer (or for testing, on opened)
+    if: github.event.requested_team.slug == 'docs-prs' || github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
       - name: Send Slack notification
