@@ -592,7 +592,7 @@ The contents of `shared-file.md` will now appear on all of the pages where you a
 
 #### Different content depending on page name
 
-There may be cases where the content of the include file will need to vary slightly depending on what pages that content is being shared into. For example, while working on [cockroachdb/docs#12216](https://github.com/cockroachdb/docs/pull/12216),  I needed a way to:
+There may be cases where the content of the include file will need to vary slightly depending on what pages that content is being shared into. For example, while working on [cockroachdb/docs#12216](https://github.com/cockroachlabs/docs/pull/12216),  I needed a way to:
 
 - Have text be a link on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations) page.
 - Have that same text _not_ be a link on the [Cost-Based Optimizer](https://www.cockroachlabs.com/docs/stable/cost-based-optimizer) page (since it would be a self-referring link).
@@ -639,7 +639,7 @@ For more information about the `remote_include` tag, see the README in the [jeky
 
 ### Filter tabs
 
-Use filter tabs to create navigation between related pages. The [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/main/src/current/_includes/filter-tabs.md) include generates tabs that link to different pages.
+Use filter tabs to create navigation between related pages. The [`filter-tabs.md`](https://github.com/cockroachlabs/docs/blob/main/src/current/_includes/filter-tabs.md) include generates tabs that link to different pages.
 
 **Note:** Filter tabs link to different URLs/pages, not tabs within a single page.
 

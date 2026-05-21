@@ -83,7 +83,7 @@ type prReviewParse struct {
 }
 
 const (
-	docsOrganization = "cockroachdb"
+	docsOrganization = "cockroachlabs"
 	docsRepo         = "docs"
 	docsPrsTeam      = "docs-prs"
 )
