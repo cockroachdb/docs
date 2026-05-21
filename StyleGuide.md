@@ -84,6 +84,23 @@ Do not use "we" to refer to "CockroachDB" or "Cockroach Labs".
 - **Avoid:** We recommend ...  
   **Prefer:** Cockroach Labs recommends ...
 
+### Anthropomorphization
+
+CockroachDB can be the grammatical subject of an active-voice sentence describing its behavior. However, when using CockroachDB as the subject, do not use verbs that imply human cognition or emotion.
+
+Avoid verbs that suggest awareness or intent: "knows", "wants", "decides", "thinks", "believes", "understands", "sees", "prefers", "chooses", "expects". 
+
+Instead, describe the actual mechanical or computational action: "assigns", "returns", "determines", "creates", "stores", "checks", "validates", "rejects", "routes", "distributes", "replicates", "calculates", "records", "tracks".
+
+- **Avoid**: CockroachDB knows which node owns the range.
+  **Prefer**: CockroachDB tracks which node holds the lease for each range.
+
+- **Avoid**: CockroachDB decides where to place replicas based on locality constraints.
+  **Prefer**: CockroachDB distributes replicas according to your locality constraints.
+
+- **Avoid**: CockroachDB understands that the cluster is under high load.
+  **Prefer**: CockroachDB detects high load and adjusts admission control accordingly.
+
 ### Prescriptive writing
 
 Write in a prescriptive style that clearly guides the user. The user should feel confident and supported, without having to infer meaning or make too many decisions on their own.
@@ -108,24 +125,34 @@ Avoid these common filler phrases and inflated verbs:
 
 - **Avoid:** "in order to"
   **Prefer:** "to"
+
 - **Avoid:** "due to the fact that"
   **Prefer:** "because"
+
 - **Avoid:** "at this point in time"
   **Prefer:** "now"
+
 - **Avoid:** "make use of"
   **Prefer:** "use"
+
 - **Avoid:** "is able to"
   **Prefer:** "can"
+
 - **Avoid:** "in the event that"
   **Prefer:** "if"
+
 - **Avoid:** "prior to"
   **Prefer:** "before"
+
 - **Avoid:** "with regard to"
   **Prefer:** "about"
+
 - **Avoid:** "leverage"
   **Prefer:** "use"
+
 - **Avoid:** "utilize"
   **Prefer:** "use"
+
 - **Avoid:** "perform"
   **Prefer:** a more specific verb, such as "run", "complete", or "execute"
 
@@ -174,6 +201,7 @@ Use present tense to describe CockroachDB's behavior, the state of the system, a
 
 - **Avoid:** When you run the command, CockroachDB will create a new table and will return a confirmation.
   **Prefer:** When you run the command, CockroachDB creates a new table and returns a confirmation.
+
 - **Avoid:** The leaseholder will handle all reads and writes for the range.
   **Prefer:** The leaseholder handles all reads and writes for the range.
 
@@ -203,10 +231,13 @@ For readability, avoid Latinisms.
 
 - **Avoid:** Select a deployment option, e.g., {{ site.data.products.standard }} or {{ site.data.products.advanced }}.  
   **Prefer:** Select a deployment option such as {{ site.data.products.standard }} or {{ site.data.products.advanced }}.
+
 - **Avoid:** Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes).
   **Prefer:** Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (that is, if your cluster loses a majority of its nodes).
+
 - **Avoid:** databases, functions, tables, clusters, schemas, rows, users, jobs, etc.
   **Prefer:** databases, functions, tables, clusters, schemas, rows, users, jobs, and so on.
+
 - **Avoid:** These can also be queried via `SHOW`.
   **Prefer:** These can also be queried using `SHOW`.
 
@@ -228,6 +259,43 @@ Do not use "should" as a softer form of "must." If the user has no real alternat
 Do not use "may" when "can" is more accurate. Use "may" only when the behavior or permission genuinely varies.
 - **Avoid**: Users may query this table to view active sessions.
   **Prefer**: Users can query this table to view active sessions.
+
+### Transition and connective language
+
+Transitions help readers follow the relationship between ideas, but overused or redundant transitions add length without adding clarity. Avoid these commonly overused transitions:
+
+- "Note that...": State the information directly. Consider whether emphasizing the information is important enough to use a [note callout](#callouts).
+- "As mentioned above" / "As noted earlier" / "As previously described": Either briefly restate the information or link to the relevant section. Do not ask the reader to remember something from earlier in the page.
+- "Furthermore," "Moreover," "Additionally" at the start of a sentence: These transitions are usually redundant. If ideas are related, their connection should be clear from context.
+- "However" / "But" at the start of a sentence: Use sparingly. When contrast is implied by the surrounding content, omit the transition.
+
+Use parallel structure withing lists and sequences. When items in a list or steps in a sequence share the same grammatical form, they are easier to scan. Begin each item with the same part of speech, ideally a verb.
+
+- **Avoid:**
+  - Create a cluster.
+  - The database should then be configured.
+  - Running the migration script completes the setup.
+  **Prefer:**
+  - Create a cluster.
+  - Configure the database.
+  - Run the migration script.
+
+### Conditional and variable behavior
+
+When giving conditional instructions, lead with the condition, not the result. This tells the user whether a step applies to them before they read what to do.
+
+- **Avoid:** Run `cockroach start` after verifying that the node is healthy.
+  **Prefer:** After verifying that the node is healthy, run `cockroach start`.
+
+When dealing with variable behavior, be specific. Do not use vague qualifiers like "depending on your setup," "this may vary," or "results may differ" without explaining exactly what behavior varies.
+
+- **Avoid:** The default value may vary depending on your configuration.
+  **Prefer:** The default value is X for CockroachDB Basic clusters and Y for CockroachDB Advanced clusters.
+
+Do not use "depending on your use case" as a standalone qualifier. If a choice depends on the use case, describe the use cases and their corresponding recommendations.
+
+- **Avoid:** You may want to adjust this setting depending on your use case.
+  **Prefer:** Increase this value if your workload involves frequent long-running transactions. Keep the default if your workload is primarily short reads and writes.
 
 ## Word usage guidelines
 
@@ -422,6 +490,30 @@ For links to CockroachDB docs, match the capitalization of the linked content:
     - **Example:** Cockroach Labs' products
 - Place commas and periods inside quotation marks (for example, `CockroachDB's availability model is described as "Multi-Active Availability."`). Place other punctuation outside quotation marks (for example, `What is "Multi-Active Availability"?`). When any type of punctuation is part of a quote, place it inside the quotation marks (for example, `To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"`).
 - Avoid using slashes "/" and ampersands "&" in place of "or" and "and" respectively, unless space is very limited (such as in a table). Similarly, avoid using "and/or" unless space is very limited. Instead, decide whether "and" or "or" can stand alone, or make use of "both" when the inclusivity must be explicit (for example, `x or y or both`).
+
+### Numbers and measurements
+
+The following rules apply only to your own writing. When representing example commands, outputs, or UI elements, always use the exact wording that the user sees in practice.
+
+In prose, spell out whole numbers one through nine. Use numerals for 10 and above.
+
+- **Example:** There are three replicas by default.
+- **Example:** A cluster with 10 or more nodes benefits from zone-level fault tolerance.
+
+In technical contexts, always use numerals regardless of size. This includes:
+
+- Measurements with units: "5 minutes," "128 MiB," "3 seconds"
+- SQL values and parameters: LIMIT 5, max_offset = 500ms
+- Percentages: "5%" (not "five percent")
+- Version numbers: v25.1
+
+For units, use the following conventions:
+
+- Use "GiB" and "MiB" (not "GB" and "MB") for binary storage values, consistent with the DB Console and CockroachDB output.
+- In prose, write time durations with the unit spelled out: "5 minutes," "30 seconds." Do not abbreviate time units in prose ("5 min," "30s").
+- Place a numeral directly before the unit with a space between them: "3 nodes," "128 MiB," "5 minutes."
+
+Express numerical ranges with "to" between values: "3 to 5 nodes." This is consistent with the version range convention (`v22.1.0` to `v22.1.4`). Do not use dashes for ranges.
 
 ## File conventions
 
