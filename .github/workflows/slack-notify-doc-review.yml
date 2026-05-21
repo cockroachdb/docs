@@ -1,7 +1,7 @@
 name: Notify Slack on Doc Review Request
 
 on:
-  pull_request_target:
+  pull_request:
     types: [review_requested]
 
 jobs:
