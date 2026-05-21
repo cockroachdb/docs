@@ -37,7 +37,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-GENERATED_DIAGRAMS_REPO = "cockroachdb/generated-diagrams"
+GENERATED_DIAGRAMS_REPO = os.environ.get("GENERATED_DIAGRAMS_REPO", "cockroachdb/generated-diagrams")
 GITHUB_API_BASE = "https://api.github.com"
 VERSIONS_CSV = Path("src/current/_data/versions.csv")
 
