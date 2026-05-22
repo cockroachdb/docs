@@ -109,7 +109,7 @@ These are indicators that lock contention occurred in the past:
     {{site.data.alerts.end}}
 
 - The **SQL Statement Contention** graph ([CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-sql.md %}#sql-statement-contention) and [DB Console]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention)) is showing spikes over time.
-  <img src="{{ 'images/v24.2/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in DB Console" style="border:1px solid #eee;max-width:100%" />
+  <img src="/docs/images/{{ page.version.version }}/ui-statement-contention.png" alt="SQL Statement Contention graph in DB Console" style="border:1px solid #eee;max-width:100%" />
 
 If a long-running transaction is waiting due to [lock contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention):
 
@@ -146,7 +146,7 @@ When running under `SERIALIZABLE` isolation, implement [client-side retry handli
   If you see many waiting transactions, a single long-running transaction may be blocking transactions that are, in turn, blocking others. In this case, sort the table by **Time Spent Waiting** to find the transaction that has been waiting for the longest amount of time. Unblocking this transaction may unblock the other transactions.
   {{site.data.alerts.end}}
   Click the transaction's execution ID and view the following transaction execution details:
-  <img src="{{ 'images/v24.2/waiting-transaction.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
+  <img src="/docs/images/{{ page.version.version }}/waiting-transaction.png" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
   - **Last Retry Reason** shows the last [transaction retry error](#transaction-retry-error) received for the transaction, if applicable.
   - The details of the **blocking** transaction, directly below the **Contention Insights** section. Click the blocking transaction to view its details.
 
@@ -154,7 +154,7 @@ When running under `SERIALIZABLE` isolation, implement [client-side retry handli
 
 1. [Identify the **blocking** transaction](#identify-conflicting-transactions) and view its transaction execution details.
 1. Click its **Session ID** to open the **Session Details** page.
-  <img src="{{ 'images/v24.2/ui-sessions-details-page.png' | relative_url }}" alt="Sessions Details Page" style="border:1px solid #eee;max-width:100%" />
+  <img src="/docs/images/{{ page.version.version }}/ui-sessions-details-page.png" alt="Sessions Details Page" style="border:1px solid #eee;max-width:100%" />
 1. Click **Cancel Statement** to cancel the **Most Recent Statement** and thus the transaction, or click **Cancel Session** to cancel the session issuing the transaction.
 
 ##### Identify transactions and objects that experienced lock contention
@@ -288,7 +288,7 @@ If the [Overview dashboard]({% link {{ page.version.version }}/ui-overview-dashb
 
 In the [Databases]({% link {{ page.version.version }}/ui-databases-page.md %}#tables-view) page in the DB Console, the Tables view shows the percentage of live data for each table. For example:
 
-<img src="{{ 'images/v24.2/ui_databases_live_data.png' | relative_url }}" alt="Table live data" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_databases_live_data.png" alt="Table live data" style="border:1px solid #eee;max-width:100%" />
 
 In this example, at `37.3%` the `vehicles` table would be considered to have a low percentage of live data. In the worst cases, the percentage can be `0%`.
 
