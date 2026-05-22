@@ -6,10 +6,8 @@ The following deprecations are announced in v26.1.
     - `INSPECT` supports a `DETACHED` option to run the operation without waiting for it
     - For more information, see the [`INSPECT`]({% link v26.1/inspect.md %}) documentation
 
-    [#155485][#155485]
+    #155485
 
-- **`enable_inspect_command` session variable**: The `enable_inspect_command` session variable has been deprecated and is now effectively always set to `true`. Since `INSPECT` is now a GA feature, this session variable is no longer needed. If you have this variable set in your application configurations, you can safely remove it. [#159750][#159750]
+- **`enable_inspect_command` session variable**: The `enable_inspect_command` session variable has been deprecated and is now effectively always set to `true`. Since `INSPECT` is now a GA feature, this session variable is no longer needed. If you have this variable set in your application configurations, you can safely remove it. #159750
 
 <!-- Link references -->
-[#155485]: https://github.com/cockroachdb/cockroach/pull/155485
-[#159750]: https://github.com/cockroachdb/cockroach/pull/159750
