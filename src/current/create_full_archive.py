@@ -3,14 +3,22 @@
 Full Website Archive Creator for CockroachDB Documentation
 
 Creates a complete offline archive from _site/docs that can be opened locally
-in a browser. Matches the structure and patterns of complete_test_archive_latest.zip.
+in a browser. Produces a complete_test_archive/ directory matching the
+structure required for IBM Escrow delivery.
 
 Usage:
-    python3 create_full_archive.py
+    # Add a new version and set it as stable:
+    python3 create_full_archive.py --add-version v26.2 --stable v26.2 --zip
+
+    # Use all defaults (versions and stable from script constants):
+    python3 create_full_archive.py --zip
+
+    # Custom output directory:
+    python3 create_full_archive.py --add-version v26.2 --stable v26.2 --output-dir my_archive --zip
 
 Output:
-    - Creates 'complete_archive/' directory with the full offline site
-    - Optionally creates 'complete_archive.zip' for distribution
+    - Creates 'complete_test_archive/' directory with the full offline site
+    - With --zip, creates 'cockroachdb-docs.zip' excluding macOS artifacts
 """
 import re
 import shutil
@@ -29,7 +37,7 @@ from urllib3.util.retry import Retry
 # Configuration
 SCRIPT_DIR = Path(__file__).parent
 SITE_DIR = SCRIPT_DIR / "_site" / "docs"
-OUTPUT_DIR = SCRIPT_DIR / "complete_archive"
+OUTPUT_DIR = SCRIPT_DIR / "complete_test_archive"
 
 # All versions to include in the archive
 ALL_VERSIONS = [
@@ -60,10 +68,11 @@ FONTS_CSS_URL = (
 
 
 class FullArchiveCreator:
-    def __init__(self, site_dir=None, output_dir=None, stable_version=None):
+    def __init__(self, site_dir=None, output_dir=None, stable_version=None, versions=None):
         self.site_dir = Path(site_dir) if site_dir else SITE_DIR
         self.output_dir = Path(output_dir) if output_dir else OUTPUT_DIR
         self.stable_version = stable_version or STABLE_VERSION
+        self.versions = list(versions) if versions else list(ALL_VERSIONS)
         self.processed_files = 0
         self.error_count = 0
 
@@ -142,7 +151,7 @@ class FullArchiveCreator:
         """Copy all version directories with their content"""
         self.log("Copying version directories...")
         copied_count = 0
-        for version in ALL_VERSIONS:
+        for version in self.versions:
             src = self.site_dir / version
             if src.exists():
                 dst = self.output_dir / version
@@ -229,7 +238,7 @@ class FullArchiveCreator:
         )
 
         # Add .html extension to version page paths that lack an extension
-        for version in ALL_VERSIONS:
+        for version in self.versions:
             if url.startswith(f'{version}/'):
                 page = url[len(f'{version}/'):]
                 last_seg = page.split('/')[-1]
@@ -681,24 +690,39 @@ This is an archived version of the CockroachDB documentation.
         self.log("Cleaned macOS artifacts", "SUCCESS")
 
     def create_zip_archive(self):
-        """Create a zip archive of the output directory"""
-        self.log("Creating zip archive...")
+        """Create cockroachdb-docs.zip excluding macOS artifacts"""
+        self.log("Creating zip archive (excluding macOS artifacts)...")
+        import subprocess
 
-        zip_path = self.output_dir.with_suffix('.zip')
+        zip_path = self.output_dir.parent / "cockroachdb-docs.zip"
         if zip_path.exists():
             zip_path.unlink()
 
-        # Use shutil to create the zip
-        shutil.make_archive(
-            str(self.output_dir),
-            'zip',
-            self.output_dir.parent,
-            self.output_dir.name
+        result = subprocess.run(
+            [
+                "zip", "-r", "-q", str(zip_path), self.output_dir.name,
+                "-x", "**/__MACOSX/*", "-x", "**/.DS_Store", "-x", "**/._*",
+            ],
+            cwd=str(self.output_dir.parent),
+            capture_output=True, text=True,
         )
+        if result.returncode != 0:
+            self.log(f"zip failed: {result.stderr}", "ERROR")
+            return
 
-        # Get zip size
         zip_size = zip_path.stat().st_size / (1024 * 1024)
         self.log(f"Created {zip_path.name} ({zip_size:.1f} MB)", "SUCCESS")
+
+        # Verify no macOS artifacts leaked in
+        check = subprocess.run(
+            ["unzip", "-l", str(zip_path)],
+            capture_output=True, text=True,
+        )
+        macos_count = check.stdout.count("__MACOSX")
+        if macos_count > 0:
+            self.log(f"WARNING: {macos_count} __MACOSX entries found in zip!", "WARNING")
+        else:
+            self.log("Verified: 0 __MACOSX entries in zip", "SUCCESS")
 
     def build(self, create_zip=False):
         """Main build process"""
@@ -709,7 +733,7 @@ This is an archived version of the CockroachDB documentation.
         self.log(f"Source: {self.site_dir}")
         self.log(f"Output: {self.output_dir}")
         self.log(f"Stable version: {self.stable_version}")
-        self.log(f"Versions: {', '.join(ALL_VERSIONS)}")
+        self.log(f"Versions: {', '.join(self.versions)}")
 
         if not self.site_dir.exists():
             self.log(f"Source directory not found: {self.site_dir}", "ERROR")
@@ -744,17 +768,42 @@ This is an archived version of the CockroachDB documentation.
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Create full website archive from _site")
-    parser.add_argument("--site-dir", help="Path to _site/docs directory")
-    parser.add_argument("--output-dir", help="Output directory for archive")
-    parser.add_argument("--stable-version", default=STABLE_VERSION, help="Stable version (default: v25.3)")
-    parser.add_argument("--zip", action="store_true", help="Create zip archive")
+    parser = argparse.ArgumentParser(
+        description="Create full offline archive of CockroachDB docs for IBM Escrow delivery.",
+        epilog="Example: python3 create_full_archive.py --add-version v26.2 --stable v26.2 --zip",
+    )
+    parser.add_argument("--site-dir", help="Path to _site/docs directory (default: src/current/_site/docs)")
+    parser.add_argument("--output-dir", help="Output directory name (default: complete_test_archive)")
+    parser.add_argument(
+        "--add-version", action="append", default=[], metavar="VERSION",
+        help="Add a version to the archive (e.g. --add-version v26.2). Can be repeated.",
+    )
+    parser.add_argument(
+        "--stable", dest="stable_version", default=None,
+        help="Set the stable version (default: highest version in the list)",
+    )
+    parser.add_argument("--zip", action="store_true", help="Create cockroachdb-docs.zip for delivery")
     args = parser.parse_args()
+
+    # Build the version list: start from defaults, add any new versions
+    versions = list(ALL_VERSIONS)
+    for v in args.add_version:
+        if not v.startswith("v"):
+            v = f"v{v}"
+        if v not in versions:
+            versions.append(v)
+    versions.sort(key=lambda x: [int(n) for n in x.lstrip("v").split(".")])
+
+    # Determine stable version
+    stable = args.stable_version or versions[-1]
+    if not stable.startswith("v"):
+        stable = f"v{stable}"
 
     creator = FullArchiveCreator(
         site_dir=args.site_dir,
         output_dir=args.output_dir,
-        stable_version=args.stable_version
+        stable_version=stable,
+        versions=versions,
     )
 
     success = creator.build(create_zip=args.zip)
