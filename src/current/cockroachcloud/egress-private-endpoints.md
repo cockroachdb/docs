@@ -17,12 +17,7 @@ CockroachDB {{ site.data.products.cloud }} supports egress private endpoints wit
 - [Amazon Virtual Private Cloud (AWS VPC)](https://aws.amazon.com/vpc/)
 - [Amazon Managed Streaming for Apache Kafka (MSK)](https://aws.amazon.com/msk/) (MSK Provisioned only. MSK Serverless is not supported.)
 - [Google Cloud VPC Private Service Connect (GCP PSC)](https://cloud.google.com/vpc/docs/private-service-connect)
-- [Azure Private Link Service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview)<!-- TODO: Confirm exact wording and whether to list specific services or keep generic.
-  Context: AWS lists MSK specifically (line 18: "Amazon Managed Streaming for Apache Kafka (MSK)") with caveats, while GCP is generic (line 19: "Google Cloud VPC Private Service Connect").
-  Options:
-  1. Keep generic: "Azure Private Link Service"
-  2. List specific tested services: "Self-hosted Kafka on Azure VMs via Private Link Service" or "Azure Event Hubs via Private Link Service"
-  Note: Design doc mentions testing against self-hosted Kafka on Azure VMs, Confluent Cloud on Azure, and Azure Event Hubs (marked "not in first phase"). -->
+- [Azure Private Link Service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview)
 - [Confluent Cloud on GCP, AWS, or Azure](https://www.confluent.io/confluent-cloud/)
 
 {{site.data.alerts.callout_info}}
@@ -97,49 +92,25 @@ The following prerequisites apply to the Google Cloud VPC service:
 
 The following prerequisites apply to Azure Private Link Service:
 
-<!-- TODO: Does CockroachDB Cloud's Azure subscription need to be pre-authorized on the customer's Private Link Service (PLS)?
+- An [Azure Private Link Service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) backed by a Standard SKU Internal Load Balancer must be created in your Azure subscription. Basic SKU does not support Private Link.
 
-  AWS equivalent (lines 37-46): Requires adding CC AWS account as principal BEFORE creating endpoint:
-    "The CockroachDB Cloud AWS account must be added as a principal on the endpoint service."
-    Shows API call to get account_id, then instructs to add "arn:aws:iam::<CC_ACCOUNT_ID>:root" principal.
+- The CockroachDB {{ site.data.products.cloud }} Azure subscription does not need to be pre-authorized on your Private Link Service. After CockroachDB {{ site.data.products.cloud }} creates the private endpoint, the connection appears in Pending state on your PLS and must be approved manually. To skip the manual approval step, you can add CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list during PLS creation.
 
-  GCP equivalent (lines 78-87): Requires granting CC GCP project explicit approval BEFORE creating endpoint:
-    "The CockroachDB Cloud account's GCP project must be granted explicit approval as a consumer."
-    Shows API call to get account_id, links to Google Cloud PSC documentation for approval steps.
+    You can use the following API call to retrieve your CockroachDB {{ site.data.products.cloud }} Azure subscription ID:
 
-  Question: Does Azure work the same way (pre-authorization required), or is post-creation manual approval sufficient?
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --request GET \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+      --header "Authorization: Bearer {secret_key}" | jq .account_id
+    ~~~
 
-  If PRE-AUTHORIZATION is required:
-    - What is the CC Azure subscription ID? (or is it per-cluster via account_id API?)
-    - How should customers add it to the auto-approval list? (Portal path, CLI command, or link to Azure docs)
-    - Should we include the same API call to retrieve account_id as AWS/GCP? (lines 43-46, 84-87)
-
-  If POST-CREATION APPROVAL is sufficient:
-    - The current text (lines 103-106) covers this - just confirm no changes needed. -->
-
-- An [Azure Private Link Service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) backed by a Standard Internal Load Balancer must be created in your Azure subscription.
-
-- After CockroachDB {{ site.data.products.cloud }} creates the private endpoint, the connection must be manually approved on your Private Link Service. Approve the connection via:
+- Approve the connection via:
   - Azure Portal: **Private Link Center** → **Private Link Services** → select your service → **Private endpoint connections** → **Approve**
   - Azure CLI: `az network private-endpoint-connection approve`
   - See the [Azure Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint) for detailed steps.
 
-<!-- TODO: Are there additional Azure-specific prerequisites beyond creating the PLS and approving the connection?
-
-  Context for comparison:
-  - AWS VPC (lines 35-46): 1 bullet - add CC account as principal
-  - AWS MSK (lines 48-72): 5 bullets - instance type restrictions, ACL settings, Multi-VPC requirement, cluster policy with specific IAM permissions
-  - GCP PSC (lines 74-89): 2 bullets - grant CC project approval (line 78) + "Enable consumer global access on the service load balancer or forwarding rule" (line 89)
-
-  Question: Does Azure need similar additional bullets? For example:
-  - Must Standard ILB (not Basic) be used? (or is this implied by "backed by Standard ILB" in line 101?)
-  - Any NAT configuration required on the Private Link Service?
-  - Any visibility settings needed (public vs private)?
-  - Any load balancer configuration requirements?
-  - Any Azure-specific networking or security settings?
-
-  If yes: Add them as bullet points similar to GCP's second bullet.
-  If no: No changes needed - current prerequisites are complete. -->
+- The Private Link Service must be in the same Azure region as the CockroachDB {{ site.data.products.cloud }} cluster region where the endpoint is created. Cross-region connections are not supported in Azure.
 
 ### Confluent Cloud
 
@@ -157,42 +128,14 @@ A user with the [Cluster Admin]({% link cockroachcloud/authorization.md %}#clust
     - **AWS VPC**: The AWS private service name.
     - **MSK**: The MSK-provisioned cluster's Amazon Resource Name (ARN).
     - **GCP PSC**: The GCP service attachment.
-    - **Azure Private Link Service**: The Azure Private Link Service resource ID<!-- TODO: Which format should customers use for target_service_identifier?
-
-      Context for comparison:
-      - AWS VPC (line 127): Uses service name format like "com.amazonaws.vpce.us-east-1.vpce-svc-example" (see example line 157)
-      - MSK (line 128): Uses ARN format like "arn:aws:kafka:us-east-2:example:cluster/msk-example/..." (see example line 195)
-      - GCP PSC (line 129): Uses full URI format like "projects/cc-example/regions/us-east1/serviceAttachments/s-example-..." (see example line 211)
-
-      Azure options from design doc:
-      1. Full resource ID: /subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Network/privateLinkServices/{pls-name}
-      2. Alias format: {guid}.{region}.azure.privatelinkservice
-
-      Questions:
-      - Which format should be documented? (resource ID, alias, or both as options?)
-      - What should the descriptive text say? Current: "The Azure Private Link Service resource ID"
-      - How should customers find this value? Should we add guidance like:
-        * Portal path (e.g., "Resource Groups → {rg} → {pls-name} → Properties → Resource ID")?
-        * CLI command (e.g., "az network private-link-service show --name {pls-name} --resource-group {rg} --query id")?
-        * Link to Azure documentation? -->.
+    - **Azure Private Link Service**: Either the Azure Private Link Service resource ID (recommended) or the PLS alias.
+        - Resource ID format: `/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Network/privateLinkServices/{pls-name}`
+        - Alias format: `{prefix}.{guid}.{region}.azure.privatelinkservice`
+        - To find these values:
+            - Portal: Navigate to your Private Link Service → **Settings** → **Properties** for the resource ID, or **Overview** → **Alias** for the alias.
+            - CLI: `az network private-link-service show --name {pls-name} --resource-group {rg} --query '{id:id, alias:alias}'`
 - `target_service_type`: Description of the service type, dependent on the service and authentication method:
-    - **AWS VPC**, **GCP PSC**, or **Azure Private Link Service**: Set to `PRIVATE_SERVICE`.<!-- TODO: Is `PRIVATE_SERVICE` always correct for Azure, or are there Azure-specific service type values?
-
-      Context: AWS has different service types based on the target and authentication method:
-      - AWS VPC (line 135): `PRIVATE_SERVICE`
-      - MSK with SASL/SCRAM (line 136): `MSK_SASL_SCRAM`
-      - MSK with IAM (line 137): `MSK_SASL_IAM`
-      - MSK with mutual TLS (line 138): `MSK_TLS`
-
-      GCP PSC (line 135): Always `PRIVATE_SERVICE`
-
-      Question: Does Azure follow GCP's pattern (always `PRIVATE_SERVICE`), or does it need service-specific types like AWS MSK?
-      - For self-hosted Kafka on Azure VMs: `PRIVATE_SERVICE`?
-      - For Azure Event Hubs (if supported): `PRIVATE_SERVICE` or something specific like `AZURE_EVENT_HUBS`?
-      - For other Azure services: Any special types?
-
-      If always `PRIVATE_SERVICE`: Current text is correct.
-      If Azure-specific types exist: Add them as additional bullet points like MSK variants. -->
+    - **AWS VPC**, **GCP PSC**, or **Azure Private Link Service**: Set to `PRIVATE_SERVICE`.
     - **MSK** with SASL/SCRAM authentication: Set to `MSK_SASL_SCRAM`.
     - **MSK** with IAM access control: Set to `MSK_SASL_IAM`.
     - **MSK** with mutual TLS authentication: Set to `MSK_TLS`.
@@ -274,34 +217,6 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 ~~~
 
 #### Azure private service endpoint
-
-<!-- TODO: Replace placeholder values with realistic examples that match Azure conventions.
-
-  Current placeholders in lines 231-233:
-  - region: "eastus"
-  - target_service_identifier: "/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Network/privateLinkServices/{pls-name}"
-  - target_service_type: "PRIVATE_SERVICE"
-
-  Context for comparison:
-  - AWS region format (line 156): "us-east-1" (lowercase with hyphens)
-  - AWS region format (line 194): "us-east-2"
-  - GCP region format (line 210): "us-east1" (lowercase with no hyphens between region and number)
-
-  Questions for region:
-  - Is "eastus" the correct Azure region format? (vs "East US" or "east-us")
-  - Is it case-sensitive?
-  - What's a good example region to use in docs? (eastus, westus2, etc.)
-
-  Questions for target_service_identifier:
-  - Should example use full resource ID format or alias format? (this should match the answer to TODO on line 130)
-  - What realistic placeholder values should we use?
-    * For resource ID: What should {subscription-id}, {resource-group}, {pls-name} examples look like?
-    * For alias: What's a realistic {guid}.{region}.azure.privatelinkservice example?
-
-  Questions for target_service_type:
-  - Is "PRIVATE_SERVICE" correct? (should match answer to TODO on line 135)
-
-  Provide realistic example values that customers can easily adapt to their own setup. -->
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
