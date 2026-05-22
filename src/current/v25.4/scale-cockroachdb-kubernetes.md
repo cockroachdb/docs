@@ -218,13 +218,13 @@ To enable the {{ site.data.products.public-operator }} to automatically remove p
 This workflow is unsupported and should be enabled at your own risk.
 {{site.data.alerts.end}}
 
-{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 
 1. Download the {{ site.data.products.public-operator }} manifest:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
+    $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.18.3/install/operator.yaml
     ~~~
 
 1. Uncomment the following lines in the {{ site.data.products.public-operator }} manifest:
