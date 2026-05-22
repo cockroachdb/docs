@@ -47,8 +47,8 @@ You must configure the [cluster settings]({% link {{ page.version.version }}/clu
 | `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
 |`server.oidc_authentication.generate_cluster_sso_token.use_token`| Selects which part of the received OIDC credentials to display.
 |`server.identity_map.configuration`| Takes an [Identity Map configuration](#identity-map-configuration).
-| `server.sql_host` | This display value informs users the host for their SQL connections. Default: `localhost`.
-| `server.sql_port` | This display value informs users the port for their SQL connections. Default: `26257`.
+| `server.oidc_authentication.generate_cluster_sso_token.sql_host` | This display value informs users the host for their SQL connections. Default: `localhost`.
+| `server.oidc_authentication.generate_cluster_sso_token.sql_port` | This display value informs users the port for their SQL connections. Default: `26257`.
 
 ### Update your cluster settings
 
