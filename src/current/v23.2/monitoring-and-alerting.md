@@ -77,7 +77,7 @@ For an insecure or local testing cluster, use HTTP:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl http://<host>:<http-port>/<endpoint>
+curl http://{host}:{http-port}/{endpoint}
 ~~~
 
 For a secure cluster, authenticate to the HTTPS endpoint with [`cockroach auth-session login`]({% link {{ page.version.version }}/cockroach-auth-session.md %}#log-in-to-the-http-interface), then pass the authentication cookie to `curl`.
@@ -85,7 +85,7 @@ For a secure cluster, authenticate to the HTTPS endpoint with [`cockroach auth-s
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach auth-session login <user> --certs-dir=certs --only-cookie > $HOME/.cockroachdb_api_key
-curl --cookie $HOME/.cockroachdb_api_key --cacert certs/ca.crt https://<host>:<http-port>/<endpoint>
+curl --cookie $HOME/.cockroachdb_api_key --cacert certs/ca.crt https://{host}:{http-port}/{endpoint}
 ~~~
 
 ### Health endpoints
