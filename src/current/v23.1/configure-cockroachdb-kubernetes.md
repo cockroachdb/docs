@@ -7,7 +7,7 @@ secure: true
 docs_area: deploy
 ---
 
-{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 
 This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage. 
 
@@ -283,5 +283,5 @@ spec:
     Changing the SQL Ingress `host` on a running deployment will cause a rolling restart of the cluster, due to new node certificates being generated for the SQL host.
     {{site.data.alerts.end}}
 
-The [custom resource definition](https://github.com/cockroachdb/cockroach-operator/blob/v{{ latest_operator_version }}/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml) details the fields supported by the Operator.
+The [custom resource definition](https://github.com/cockroachdb/cockroach-operator/blob/v2.18.3/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml) details the fields supported by the Operator.
 </section>
