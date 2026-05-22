@@ -1,6 +1,4 @@
 # multi-dimensional-metrics.yml is a manually curated file of metrics that are included in the Multi-Dimensional Metrics page.
-# The metrics are in the order of appearance in the comment:
-# cockroach#124343
 # The tenant.consumption.* metrics are not included because they only apply to serverless.
 # 
 # The corresponding metrics-list.csv file was generated using the cockroach binary with the following command:
