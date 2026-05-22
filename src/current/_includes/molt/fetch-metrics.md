@@ -1,5 +1,3 @@
-### Fetch metrics
-
 By default, MOLT Fetch exports [Prometheus](https://prometheus.io/) metrics at `http://127.0.0.1:3030/metrics`. You can override the address with `--metrics-listen-addr '{host}:{port}'`, where the endpoint will be `http://{host}:{port}/metrics`.
 
 Cockroach Labs recommends monitoring the following metrics during data load:
@@ -14,9 +12,9 @@ Cockroach Labs recommends monitoring the following metrics during data load:
 | `molt_fetch_table_export_duration_ms` | Duration (in milliseconds) of a table's export. For example:<br>`molt_fetch_table_export_duration_ms{table="public.users"}` |
 | `molt_fetch_table_import_duration_ms` | Duration (in milliseconds) of a table's import. For example:<br>`molt_fetch_table_import_duration_ms{table="public.users"}` |
 
-To visualize the preceding metrics, use the Grafana dashboard [bundled with your binary (`grafana_dashboard.json`)]({% link molt/molt-fetch.md %}#installation). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json).
+To visualize the preceding metrics, use the Grafana dashboard [bundled with your binary (`grafana_dashboard.json`)]({% link molt/molt-fetch-installation.md %}). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json).
 
-{% if page.name != "migrate-bulk-load.md" %}
+{% if page.name contains "delta" %}
 {{site.data.alerts.callout_success}}
 For details on Replicator metrics, refer to [Replicator Metrics]({% link molt/replicator-metrics.md %}).
 {{site.data.alerts.end}}
