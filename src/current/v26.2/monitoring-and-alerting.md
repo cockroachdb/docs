@@ -120,14 +120,20 @@ The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `50
     If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.initial_wait` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) (previously named `server.shutdown.drain_wait`) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
     {{site.data.alerts.end}}
 
+- The node is [decommissioning or decommissioned]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#decommissioning). This causes load balancers and connection managers to reroute traffic to other nodes while replicas are rebalanced away from the node.
+
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl http://localhost:8080/health?ready=1
+$ curl -i http://localhost:8080/health?ready=1
 ~~~
 
+The `-i` flag includes the HTTP response status in the `curl` output. Without `-i`, `curl` prints only the response body by default.
+
 ~~~
+HTTP/1.1 503 Service Unavailable
+
 {
   "error": "node is not healthy",
   "code": 14,
