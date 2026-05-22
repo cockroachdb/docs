@@ -88,9 +88,9 @@ You can force queries [to use a specific partial index]({% link {{ page.version.
 
 ## Known limitations
 
-- CockroachDB does not currently support [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statements on tables with partial indexes. See tracking issue.
-- CockroachDB does not currently support multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`, and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification. See tracking issue.
-- CockroachDB prevents a column from being dropped using [`ALTER TABLE ... DROP COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#drop-column) if it is referenced by a partial index predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}). See tracking issue.
+- CockroachDB does not currently support [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statements on tables with partial indexes.
+- CockroachDB does not currently support multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`, and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification.
+- CockroachDB prevents a column from being dropped using [`ALTER TABLE ... DROP COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#drop-column) if it is referenced by a partial index predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}).
 
 ## Examples
 

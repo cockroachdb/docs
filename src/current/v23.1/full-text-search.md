@@ -460,8 +460,6 @@ Some PostgreSQL syntax and features are unsupported. These include, but are not 
 - `!! tsquery` comparisons.
 - `tsquery @> tsquery` and `tsquery <@ tsquery` comparisons.
 
-For full details, see the tracking issue.
-
 ## See also
 
 - PostgreSQL documentation on [Full Text Search](https://www.postgresql.org/docs/current/textsearch.html)

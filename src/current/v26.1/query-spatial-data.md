@@ -24,7 +24,7 @@ Just as CockroachDB strives for [PostgreSQL compatibility]({% link {{ page.versi
 
 CockroachDB does not implement the full list of PostGIS built-in functions and operators. Also, [spatial indexing works differently]({% link {{ page.version.version }}/spatial-indexes.md %}) (see the [Performance](#performance) section below). For a list of the spatial functions CockroachDB supports, see [Geospatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions).
 
-If your application needs support for functions that are not yet implemented, check the meta-issue for built-in function support on GitHub, which describes how to find an issue for the built-in function(s) you need.
+If your application needs support for functions that are not yet implemented, please [contact Support](https://support.cockroachlabs.com).
 
 For a list of other known limitations, refer to [Known Limitations]({% link {{ page.version.version }}/spatial-data-overview.md %}#known-limitations).
 
