@@ -3,5 +3,5 @@
 - The following are not permitted in CDC queries:
     - [Volatile functions]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility).
     - Sub-select queries.
-    - [Aggregate]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) and [window functions]({% link {{ page.version.version }}/window-functions.md %}) (i.e., functions operating over many rows). Tracking GitHub issue
-- `delete` changefeed events will only contain the [primary key]({% link {{ page.version.version }}/primary-key.md %}). All other columns will emit as `NULL`. See [Capture delete messages]({% link {{ page.version.version }}/cdc-queries.md %}#capture-delete-messages) for detail on running a CDC query that emits the deleted values. Tracking GitHub issue
+    - [Aggregate]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) and [window functions]({% link {{ page.version.version }}/window-functions.md %}) (i.e., functions operating over many rows).
+- `delete` changefeed events will only contain the [primary key]({% link {{ page.version.version }}/primary-key.md %}). All other columns will emit as `NULL`. See [Capture delete messages]({% link {{ page.version.version }}/cdc-queries.md %}#capture-delete-messages) for detail on running a CDC query that emits the deleted values.

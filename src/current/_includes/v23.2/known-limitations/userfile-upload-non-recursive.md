@@ -1,1 +1,1 @@
-- `cockroach userfile upload` does not not currently allow for recursive uploads from a directory. This feature will be present with the `--recursive` flag in future versions. Tracking GitHub Issue
+- `cockroach userfile upload` does not not currently allow for recursive uploads from a directory. This feature will be present with the `--recursive` flag in future versions.
