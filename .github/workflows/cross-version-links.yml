@@ -7,6 +7,9 @@ on:
       - 'src/current/**/*.md'
       - 'src/current/_includes/**/*.md'
 
+permissions:
+  contents: read
+
 jobs:
   check-cross-version-links:
     name: Check for cross-version links

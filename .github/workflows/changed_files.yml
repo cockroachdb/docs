@@ -3,6 +3,9 @@ name: List files changed as GitHub comment
 on:
   pull_request
 
+permissions:
+  contents: read
+
 jobs:
   list-files-changed:
     if: github.event.pull_request.head.repo.full_name == github.repository
