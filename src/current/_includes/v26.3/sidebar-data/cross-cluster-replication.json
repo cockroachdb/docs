@@ -1,0 +1,111 @@
+{
+    "title": "Cross-Cluster Replication",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Logical Data Replication",
+        "items": [
+            {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/logical-data-replication-overview.html"
+                ]
+            },
+            {
+                "title": "Set Up Logical Data Replication",
+                "urls": [
+                  "/${VERSION}/set-up-logical-data-replication.html"
+                ]
+            },
+            {
+                "title": "Manage Logical Data Replication",
+                "urls": [
+                    "/${VERSION}/manage-logical-data-replication.html"
+                ]
+            },
+            {
+                "title": "Monitor Logical Data Replication",
+                "urls": [
+                    "/${VERSION}/logical-data-replication-monitoring.html"
+                ]
+            }
+        ]
+      },
+      {
+        "title": "Physical Cluster Replication",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/physical-cluster-replication-overview.html"
+            ]
+          },
+          {
+            "title": "Set Up Physical Cluster Replication",
+            "urls": [
+              "/${VERSION}/set-up-physical-cluster-replication.html"
+            ]
+          },
+          {
+            "title": "Upgrade a Cluster Running PCR",
+            "urls": [
+              "/${VERSION}/upgrade-with-pcr.html"
+            ]
+          },
+          {
+            "title": "Fail Over from a Primary to a Standby Cluster",
+            "urls": [
+              "/${VERSION}/failover-replication.html"
+            ]
+          },
+          {
+            "title": "Monitor a Replication Stream",
+            "urls": [
+              "/${VERSION}/physical-cluster-replication-monitoring.html"
+            ]
+          },
+          {
+            "title": "Read From Standby",
+            "urls": [
+              "/${VERSION}/read-from-standby.html"
+            ]
+          },
+          {
+            "title": "Technical Overview",
+            "urls": [
+              "/${VERSION}/physical-cluster-replication-technical-overview.html"
+            ]
+          },
+          {
+            "title": "Cluster Virtualization",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/cluster-virtualization-overview.html"
+                ]
+              },
+              {
+                "title": "Work with Virtual Clusters",
+                "urls": [
+                  "/${VERSION}/work-with-virtual-clusters.html"
+                ]
+              },
+              {
+                "title": "Setting Scopes",
+                "urls": [
+                  "/${VERSION}/cluster-virtualization-setting-scopes.html"
+                ]
+              },
+              {
+                "title": "Metric Scopes",
+                "urls": [
+                  "/${VERSION}/cluster-virtualization-metric-scopes.html"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+}
