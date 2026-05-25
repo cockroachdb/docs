@@ -16,6 +16,7 @@ jobs:
         id: format
         env:
           GH_TOKEN: ${{ github.token }}
+          NETLIFY_SITE_NAME: ${{ vars.NETLIFY_SITE_NAME || 'cockroachlabs-docs' }}
         run: |
           declare -a output
           pr_num=${{ github.event.pull_request.number }}
