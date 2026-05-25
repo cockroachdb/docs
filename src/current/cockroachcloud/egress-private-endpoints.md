@@ -92,9 +92,9 @@ The following prerequisites apply to the Google Cloud VPC service:
 
 The following prerequisites apply to Azure Private Link Service:
 
-- An [Azure Private Link Service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) backed by a Standard SKU Internal Load Balancer must be created in your Azure subscription. Basic SKU does not support Private Link.
+- An [Azure Private Link Service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) backed by a [Standard SKU Internal Load Balancer](https://learn.microsoft.com/en-us/azure/load-balancer/skus) must be created in your Azure subscription. Basic SKU load balancers do not support the Private Link Service.
 
-- The CockroachDB {{ site.data.products.cloud }} Azure subscription does not need to be pre-authorized on your Private Link Service. After CockroachDB {{ site.data.products.cloud }} creates the private endpoint, the connection appears in Pending state on your PLS and must be approved manually. To skip the manual approval step, you can add CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list during PLS creation.
+- The CockroachDB {{ site.data.products.cloud }} Azure subscription does not need to be pre-authorized on your Private Link Service. By default, after CockroachDB {{ site.data.products.cloud }} creates the private endpoint, the connection appears in Pending state on your PLS and must be approved manually. To prevent the need for manual approval, you can add CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list during PLS creation.
 
     You can use the following API call to retrieve your CockroachDB {{ site.data.products.cloud }} Azure subscription ID:
 
@@ -106,7 +106,7 @@ The following prerequisites apply to Azure Private Link Service:
     ~~~
 
 - Approve the connection via:
-  - Azure Portal: **Private Link Center** → **Private Link Services** → select your service → **Private endpoint connections** → **Approve**
+  - Azure Portal: **Private Link Center** > **Private Link Services** > select your service > **Private endpoint connections** > **Approve**
   - Azure CLI: `az network private-endpoint-connection approve`
   - See the [Azure Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint) for detailed steps.
 
@@ -132,7 +132,7 @@ A user with the [Cluster Admin]({% link cockroachcloud/authorization.md %}#clust
         - Resource ID format: `/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Network/privateLinkServices/{pls-name}`
         - Alias format: `{prefix}.{guid}.{region}.azure.privatelinkservice`
         - To find these values:
-            - Portal: Navigate to your Private Link Service → **Settings** → **Properties** for the resource ID, or **Overview** → **Alias** for the alias.
+            - Portal: Navigate to your Private Link Service > **Settings** > **Properties** for the resource ID, or **Overview** > **Alias** for the alias.
             - CLI: `az network private-link-service show --name {pls-name} --resource-group {rg} --query '{id:id, alias:alias}'`
 - `target_service_type`: Description of the service type, dependent on the service and authentication method:
     - **AWS VPC**, **GCP PSC**, or **Azure Private Link Service**: Set to `PRIVATE_SERVICE`.
