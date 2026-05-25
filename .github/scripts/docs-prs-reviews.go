@@ -82,10 +82,10 @@ type prReviewParse struct {
 	UpdatedAt time.Time
 }
 
-const (
-	docsOrganization = "cockroachlabs"
-	docsRepo         = "docs"
-	docsPrsTeam      = "docs-prs"
+var (
+	docsOrganization = maybeEnv("DOCS_ORG", "cockroachlabs")
+	docsRepo         = maybeEnv("DOCS_REPO_NAME", "docs")
+	docsPrsTeam      = maybeEnv("DOCS_PRS_TEAM", "docs-prs")
 )
 
 func main() {

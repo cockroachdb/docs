@@ -592,7 +592,7 @@ The contents of `shared-file.md` will now appear on all of the pages where you a
 
 #### Different content depending on page name
 
-There may be cases where the content of the include file will need to vary slightly depending on what pages that content is being shared into. For example, while working on [cockroachdb/docs#12216](https://github.com/cockroachlabs/docs/pull/12216),  I needed a way to:
+There may be cases where the content of the include file will need to vary slightly depending on what pages that content is being shared into. For example, while working on [cockroachlabs/docs#12216](https://github.com/cockroachlabs/docs/pull/12216),  I needed a way to:
 
 - Have text be a link on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations) page.
 - Have that same text _not_ be a link on the [Cost-Based Optimizer](https://www.cockroachlabs.com/docs/stable/cost-based-optimizer) page (since it would be a self-referring link).
@@ -615,7 +615,7 @@ Locality-optimized search
 
 #### Remote includes
 
-Sometimes, you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for code samples, which are maintained in various repos.
+Sometimes, you need to include files that are maintained in other places than the `cockroachlabs/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for code samples, which are maintained in various repos.
 
 For code samples, you usually want to show only part of a larger file to highlight a specific technique, or due to length considerations.
 
