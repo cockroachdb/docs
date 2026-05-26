@@ -37,26 +37,28 @@
           </div>
           <script>
             document.addEventListener('DOMContentLoaded', function() {
-              document.getElementById('sidebar-rate-page-btn').addEventListener('click', function(e) {
+              var rateBtn = document.getElementById('sidebar-rate-page-btn');
+              if (!rateBtn) return;
+
+              rateBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                var sidebar = document.getElementById('sidebarMenu');
-                if (sidebar && sidebar.classList.contains('show')) {
-                  $(sidebar).collapse('hide');
-                }
-                setTimeout(function() {
+
+                var $sidebar = $('#sidebarMenu');
+
+                function openFeedback() {
                   var ov = document.getElementById('feedback-overlay');
                   if (ov) {
                     ov.style.display = 'block';
-                    ov.style.position = 'fixed';
-                    ov.style.bottom = '0';
-                    ov.style.left = '0';
-                    ov.style.right = '0';
-                    ov.style.width = '100%';
-                    ov.style.maxWidth = '100%';
-                    ov.style.zIndex = '10000';
                   }
-                }, 400);
+                }
+
+                if ($sidebar.hasClass('show')) {
+                  $sidebar.one('hidden.bs.collapse', openFeedback);
+                  $sidebar.collapse('hide');
+                } else {
+                  openFeedback();
+                }
               });
             });
           </script>
