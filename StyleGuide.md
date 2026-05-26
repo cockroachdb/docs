@@ -262,7 +262,9 @@ Do not use "may" when "can" is more accurate. Use "may" only when the behavior o
 
 ### Transition and connective language
 
-Transitions help readers follow the relationship between ideas, but overused or redundant transitions add length without adding clarity. Avoid these commonly overused transitions:
+Transitions help readers follow the relationship between ideas, but overused or redundant transitions add length without adding clarity.
+
+Avoid these commonly overused transitions:
 
 - "Note that...": State the information directly. Consider whether emphasizing the information is important enough to use a [note callout](#callouts).
 - "As mentioned above" / "As noted earlier" / "As previously described": Either briefly restate the information or link to the relevant section. Do not ask the reader to remember something from earlier in the page.
