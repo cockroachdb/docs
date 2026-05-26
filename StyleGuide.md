@@ -277,7 +277,8 @@ Use parallel structure withing lists and sequences. When items in a list or step
   - Create a cluster.
   - The database should then be configured.
   - Running the migration script completes the setup.
-  **Prefer:**
+
+**Prefer:**
   - Create a cluster.
   - Configure the database.
   - Run the migration script.
