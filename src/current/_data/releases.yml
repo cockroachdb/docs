@@ -11576,7 +11576,7 @@
 
 - release_name: v24.3.33
   major_version: v24.3
-  release_date: '2026-05-26'
+  release_date: '2026-05-25'
   release_type: Production
   go_version: go1.26.2
   sha: 4553626be4d29aff5517b42da4113363d64bc030
