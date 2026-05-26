@@ -8,6 +8,9 @@
 {% assign lts = false %}
 {% assign install_links = '' %}
 
+{% comment %}Get the production release for this major version to check cloud_only{% endcomment %}
+{% assign release = site.data.releases | where_exp: "release", "release.major_version == page.major_version and release.release_type == 'Production'" | first %}
+
 {% comment %}Early in development, a new major-version directory may not
              yet exist. Adapt some links in this situation.{% endcomment %}
 
@@ -92,24 +95,24 @@ CockroachDB {{ page.major_version }} is in active development, and the following
   {% if skippable == true %}
 CockroachDB {{ page.major_version }} is an optional [Innovation release]({% link releases/index.md %}#major-versions). This version can be skipped for CockroachDB {{ site.data.products.advanced }} and {{ site.data.products.core }} clusters. It is unavailable for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} clusters.
   {% else %}
-CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-types){% endif %} is a required [Regular release]({% link releases/index.md %}#major-versions).
+CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-types){% endif %} is a required [Regular release]({% link releases/index.md %}#major-versions). This page contains a complete list of features and changes in {{ page.major_version }}. 
   {% endif %}
-
-Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details.{% if no_highlights == false and released == true %} To learn what's new in this release, refer to its [Feature Highlights](#feature-highlights).{% endif %}
-
-On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB {{ page.major_version }}{% if lts == true %}&nbsp;[(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %}
 
 {% comment %}Only show these bullet points if the version has been released{% endcomment %}
 {% if released == true %}
 {% comment %}v1.0 has no #v1-0-0 anchor, and before GA other releases also do not.{% endcomment %}
-- For key feature enhancements in {{ page.major_version }} and other upgrade considerations, refer to the notes for {% if include.major_version.release_date != 'N/A' and page.major_version != 'v1.0' and page.major_version != 'v19.2' %}[{{ page.major_version }}.0](#{{ page.major_version | replace: '.', '-' }}-0){% else %}{{ page.major_version }} on this page{% endif %}.
+- For a summary of the most significant changes in {{ page.major_version }}, refer to [Feature highlights](#feature-highlights).
+- Before [upgrading to CockroachDB {{ page.major_version }}]({% link {{ page.major_version }}/upgrade-cockroach-version.md %}), review the [backward-incompatible changes](#{{ page.major_version | replace: ".", "-" }}-0-backward-incompatible-changes), including [key cluster setting changes](#{{ page.major_version | replace: ".", "-" }}-0-cluster-settings) and [deprecations](#{{ page.major_version | replace: ".", "-" }}-0-deprecations); as well as newly identified [known limtiations](#{{ page.major_version | replace: ".", "-" }}-0-known-limitations).
 {% endif %}
 {% endif %}{% comment %}End GA-only content{% endcomment %}
-- For details about release types, naming, and licensing, refer to the [Releases]({% link releases/index.md %}) page.
-- Be sure to also review the [Release Support Policy]({% link releases/release-support-policy.md %}).
+- For details about the support window for this release type, review the [Release Support Policy]({% link releases/release-support-policy.md %}).
+- For details about all supported releases, the release schedule, and licenses, refer to [CockroachDB Releases Overview]({% link releases/index.md %}).
+{% if release.cloud_only != true %}
 - {{ install_sentence | strip_newlines }}
+{% endif %}
 
 {% comment %}The strip_newlines is needed here because otherwise Jekyll inserts <p> tags around the install and upgrade links{% endcomment %}
+
 Get future release notes emailed to you:
 
 {% include_cached marketo.html formId=1083 %}

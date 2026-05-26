@@ -14,7 +14,7 @@ Click the links in the tables below to see simple but complete example applicati
 If you are looking to do a specific task such as connect to the database, insert data, or run multi-statement transactions, see [this list of tasks](#tasks).
 
 {{site.data.alerts.callout_info}}
-Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM with **partial** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM with **partial** support. If you encounter problems, please [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
 
 Note that tools with [**community-level** support]({% link {{ page.version.version }}/community-tooling.md %}) have been tested or developed by the CockroachDB community, but are not officially supported by Cockroach Labs. If you encounter problems with using these tools, please contact the maintainer of the tool with details.
 {{site.data.alerts.end}}
