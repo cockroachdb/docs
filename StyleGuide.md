@@ -506,7 +506,7 @@ In prose, spell out whole numbers one through nine. Use numerals for 10 and abov
 In technical contexts, always use numerals regardless of size. This includes:
 
 - Measurements with units: "5 minutes," "128 MiB," "3 seconds"
-- SQL values and parameters: LIMIT 5, max_offset = 500ms
+- SQL values and parameters: `LIMIT 5`, `max_offset = 500ms`
 - Percentages: "5%" (not "five percent")
 - Version numbers: v25.1
 
