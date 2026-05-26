@@ -296,45 +296,21 @@ For a deep-dive demo on UDFs, watch the following video:
 User-defined functions are not currently supported in:
 
 - Expressions (column, index, constraint) in tables.
-
-    Tracking GitHub issue
-
 - Views.
-
-    Tracking GitHub issue
-
 - Other user-defined functions.
-
-    Tracking GitHub issue
-
 ### Limitations on UDF creation
 
 The following cannot be used in UDF definitions:
 
 - `OUT` and `INOUT` argument modes.
-
-    Tracking GitHub issue
-
 - `RECORD` input arguments.
-
-    Tracking GitHub issue
-
 ### Limitations on expressions allowed within UDFs
 
 The following are not currently allowed within the body of a UDF:
 
 - CTEs (common table expressions).
-
-    Tracking GitHub issue
-
 - References to other user-defined functions.
-
-    Tracking GitHub issue
-
 - [DDL statements]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) (e.g., `CREATE TABLE`, `CREATE INDEX`).
-
-    Tracking GitHub issue
-
 ## See also
 
 - [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})

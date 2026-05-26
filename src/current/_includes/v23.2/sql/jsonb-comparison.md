@@ -8,6 +8,4 @@ You cannot use comparison operators (such as `<` or `>`) on [`JSONB`]({% link {{
   ~~~
   ERROR: unsupported comparison operator: <jsonb> < <jsonb>
   SQLSTATE: 22023
-  ~~~
-
-  Tracking GitHub issue
+  ~~~.

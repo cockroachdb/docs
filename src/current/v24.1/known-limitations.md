@@ -440,7 +440,7 @@ As a workaround, [execute the file from the command line]({% link {{ page.versio
 
 #### Spatial features disabled for ARM Macs
 
-[Spatial features]({% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#install-binary) or use the [Docker image]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#use-docker) distribution. [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
+[Spatial features]({% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#install-binary) or use the [Docker image]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#use-docker) distribution.
 
 #### Logging system limitations
 

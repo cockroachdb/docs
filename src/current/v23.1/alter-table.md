@@ -264,8 +264,7 @@ For examples, see [Drop columns](#drop-columns).
 
 #### Known limitations
 
-- CockroachDB prevents a column from being dropped if it is referenced by a [partial index]({% link {{ page.version.version }}/partial-indexes.md %}) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}). See tracking issue.
-
+- CockroachDB prevents a column from being dropped if it is referenced by a [partial index]({% link {{ page.version.version }}/partial-indexes.md %}) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}).
 #### Required privileges
 
 The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
@@ -1168,7 +1167,7 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
     NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
     ~~~
 
-1. View the table structure: 
+1. View the table structure:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -1614,7 +1613,6 @@ To change the data type from `DECIMAL` to `STRING`:
       c_credit_lim | STRING
     (1 row)
     ~~~
-
 
 #### Change a column type's precision
 
