@@ -49,7 +49,7 @@ ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds" = 600;
 ~~~
 
 {{site.data.alerts.callout_danger}}
-These settings **are not** recommended for [performance benchmarking of CockroachDB]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-local.md %}) since they will lead to inaccurate results.
+These settings **are not** recommended for performance benchmarking of CockroachDB since they will lead to inaccurate results.
 {{site.data.alerts.end}}
 
 ## Scope tests to a database when possible

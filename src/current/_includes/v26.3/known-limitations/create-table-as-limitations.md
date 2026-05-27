@@ -1,0 +1,1 @@
+The [primary key]({% link {{ page.version.version }}/primary-key.md %}) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key]({% link {{ page.version.version }}/create-table-as.md %}#specify-a-primary-key).

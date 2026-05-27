@@ -67,6 +67,25 @@ If the cluster is unavailable, a database's `crdb_internal` system catalog canno
 
 For details, see [`crdb_internal`]({% link {{ page.version.version }}/crdb-internal.md %}).
 
+### Authenticate to API endpoints
+
+To call the HTTP API endpoints on this page using `curl`:
+
+For an insecure or local testing cluster, use HTTP:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl http://{host}:{http-port}/{endpoint}
+~~~
+
+For a secure cluster, authenticate to the HTTPS endpoint with [`cockroach auth-session login`]({% link {{ page.version.version }}/cockroach-auth-session.md %}#log-in-to-the-http-interface), then pass the authentication cookie to `curl`.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach auth-session login <user> --certs-dir=certs --only-cookie > $HOME/.cockroachdb_api_key
+curl --cookie $HOME/.cockroachdb_api_key --cacert certs/ca.crt https://{host}:{http-port}/{endpoint}
+~~~
+
 ### Health endpoints
 
 CockroachDB provides two HTTP endpoints for checking the health of individual nodes.
@@ -108,14 +127,20 @@ The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `50
     If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.initial_wait` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) (previously named `server.shutdown.drain_wait`) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
     {{site.data.alerts.end}}
 
+- The node is [decommissioning or decommissioned]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#decommissioning). This causes load balancers and connection managers to reroute traffic to other nodes while replicas are rebalanced away from the node.
+
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl http://localhost:8080/health?ready=1
+$ curl -i http://localhost:8080/health?ready=1
 ~~~
 
+The `-i` flag includes the HTTP response status in the `curl` output. Without `-i`, `curl` prints only the response body by default.
+
 ~~~
+HTTP/1.1 503 Service Unavailable
+
 {
   "error": "node is not healthy",
   "code": 14,
@@ -143,7 +168,7 @@ The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecat
 
 Several endpoints return raw status meta information in JSON at `http://<host>:<http-port>/#/debug`. You can investigate and use these endpoints, but note that they are subject to change.
 
-<img src="/docs/images/{{ page.version.version }}/raw-status-endpoints.png" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/raw-status-endpoints.png' | relative_url }}" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
 
 ### Node status command
 
@@ -195,6 +220,10 @@ The critical nodes status endpoint is used to:
 - Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) or [troubleshooting zone configurations]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}) generally.
 
 If you find under-replicated ranges or constraint violations, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
+
+#### Request the endpoint
+
+To return the JSON response, send a `POST` request to `/_status/critical_nodes`. For authentication details, refer to [Authenticate to API endpoints](#authenticate-to-api-endpoints).
 
 #### Fields
 
