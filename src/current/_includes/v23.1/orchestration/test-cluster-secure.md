@@ -1,13 +1,13 @@
 <section class="filter-content" markdown="1" data-scope="operator">
 
-{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 
 1. To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create \
-    -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/client-secure-operator.yaml
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.18.3/examples/client-secure-operator.yaml
     ~~~
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):

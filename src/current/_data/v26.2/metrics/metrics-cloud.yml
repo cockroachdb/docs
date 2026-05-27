@@ -1,13 +1,11 @@
 # metrics.yml is a manually curated file of metrics that are included in the Canned Metrics for Serverless deployment.
 # The metrics are in the order of appearance in the configuration file:
-# https://github.com/cockroachlabs/managed-service/pull/16129/files
-# console/assets/js/pages/clusterDetail/metrics/graphConfigs.tsx
+# https://github.com/cockroachlabs/managed-service/blob/master/console/ui/cc-console/assets/js/pages/clusterDetail/metrics/graphConfigs.tsx
 # The data for the metrics was also sourced from
-# https://github.com/cockroachdb/docs/blob/main/src/current/_includes/v23.2/essential-metrics.md
-# 
-# The corresponding metrics-list.csv file was generated using the v23.2.0 binary with the following command:
-# cockroach gen metric-list --format=csv > metrics-list.csv
-# Once generated, the metrics-list.csv was manually modified to change the case of the headers to lowercase to work with liquid comparison code.
+# https://github.com/cockroachdb/docs/blob/main/src/current/_includes/v26.2/metric-names.md
+#
+# The corresponding metrics.yaml file was generated using the v26.2 binary with the following command:
+# cockroach gen metric-list > metrics.yaml
 
 - metric_id: sql.new_conns
   deploy_selfhosted: true
@@ -80,7 +78,7 @@
   metric_ui_tab: [ Overview, SQL ]
   metric_ui_graph: "Service Latency: SQL Statements"
 
-- metric_id: tenant.consumption.request_units
+- metric_id: tenant.sql_usage.request_units
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true
@@ -106,7 +104,7 @@
   metric_ui_graph: Storage
   how_to_use: 'The amount of data being stored in the cluster. In the Storage Used graph, this is the logical number of live bytes and does not account for compression or replication.'
 
-- metric_id: tenant.consumption.sql_pods_cpu_seconds
+- metric_id: tenant.sql_usage.sql_pods_cpu_seconds
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true
@@ -124,7 +122,7 @@
     
     Correlate this metric with Request Units (RUs) and determine if your workload is CPU-intensive. To learn more about how RUs are calculated, refer to Resource Usage.
 
-- metric_id: tenant.consumption.pgwire_egress_bytes
+- metric_id: tenant.sql_usage.pgwire_egress_bytes
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true
@@ -142,7 +140,7 @@
     
     Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
 
-- metric_id: tenant.consumption.external_io_egress_bytes
+- metric_id: tenant.sql_usage.external_io_egress_bytes
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true
@@ -160,7 +158,7 @@
     
     Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
 
-- metric_id: tenant.consumption.read_requests
+- metric_id: tenant.sql_usage.read_requests
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true
@@ -178,7 +176,7 @@
     
     Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
 
-- metric_id: tenant.consumption.read_batches
+- metric_id: tenant.sql_usage.read_batches
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true
@@ -196,7 +194,7 @@
     
     Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
 
-- metric_id: tenant.consumption.read_bytes
+- metric_id: tenant.sql_usage.read_bytes
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true
@@ -214,7 +212,7 @@
     
     Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
 
-- metric_id: tenant.consumption.write_requests
+- metric_id: tenant.sql_usage.write_requests
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true
@@ -232,7 +230,7 @@
     
     Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
  
-- metric_id: tenant.consumption.write_batches
+- metric_id: tenant.sql_usage.write_batches
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true
@@ -250,7 +248,7 @@
     
     Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
 
-- metric_id: tenant.consumption.write_bytes
+- metric_id: tenant.sql_usage.write_bytes
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true
@@ -268,7 +266,7 @@
     
     Correlate this metric with Request Units (RUs). To learn more about how RUs are calculated, refer to Resource Usage.
 
-- metric_id: tenant.consumption.cross_region_network_ru
+- metric_id: tenant.sql_usage.cross_region_network_ru
   deploy_selfhosted: false
   deploy_dedicated: false
   deploy_standard: true

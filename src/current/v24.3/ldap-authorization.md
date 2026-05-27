@@ -64,8 +64,11 @@ The `ldapgrouplistfilter` configuration varies by LDAP server type:
 -- For Azure Active Directory:
 "ldapgrouplistfilter=(objectCategory=CN=Group,CN=Schema,CN=Configuration,DC=example,DC=com)"
 
--- For OpenLDAP:
+-- For OpenLDAP (using groupOfNames):
 "ldapgrouplistfilter=(objectClass=groupOfNames)"
+
+-- For OpenLDAP (using groupOfUniqueNames):
+"ldapgrouplistfilter=(objectClass=groupOfUniqueNames)"
 ~~~
 
 For enhanced security, restrict the groups that can be mapped to CockroachDB roles:
@@ -98,7 +101,7 @@ GRANT ALL ON DATABASE app TO crdb_developers;
 ### Step 3: Confirm configuration
 
 1. On the LDAP server, set up test users with memberships in groups that should be synced to CockroachDB users.
-1. When logged in as an admin to CockroachDB, create the matching test users:
+1. When logged in as an admin to CockroachDB, create the matching test users (note the omission of a password; this will be validated against the user's LDAP password):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

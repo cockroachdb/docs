@@ -54,7 +54,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 2. Install [CoreOS's Prometheus Operator](https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-0.43/bundle.yaml):
 
     {{site.data.alerts.callout_info}}
-    If you run into an error when installing the Prometheus Operator, first try updating the [release version](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md) specified in the below command and reapplying the manifest. If this doesn't work, please [file an issue](file-an-issue.html).
+    If you run into an error when installing the Prometheus Operator, first try updating the [release version](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md) specified in the below command and reapplying the manifest. If this doesn't work, please [contact Support](support-resources.html).
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}

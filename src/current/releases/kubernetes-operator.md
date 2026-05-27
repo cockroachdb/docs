@@ -5,13 +5,11 @@ toc: true
 docs_area: releases
 ---
 
-{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
-
 The [Public Kubernetes operator](https://www.cockroachlabs.com/docs/stable/kubernetes-overview) allows you to configure, deploy, and manage CockroachDB {{ site.data.products.core }} clusters on Kubernetes. The {{ site.data.products.public-operator }} is released on a separate schedule and is versioned independently from CockroachDB. To learn more about different approaches to deploy CockroachDB using Kubernetes, refer to [Kubernetes Overview](https://www.cockroachlabs.com/docs/stable/kubernetes-overview).
 
 {% include /{{ site.versions.stable }}/cockroachdb-operator-recommendation.md %}
 
-This page announces releases of the {{ site.data.products.public-operator }} and provides links to more information on GitHub. **Version {{ latest_operator_version }} is the latest release**.
+This page announces releases of the {{ site.data.products.public-operator }} and provides links to more information on GitHub. **Version 2.18.3 is the latest release**.
 
 In addition to monitoring this page, you can subscribe to be notified about releases to the public. Visit the [{{ site.data.products.public-operator }} source code repository](https://github.com/cockroachdb/cockroach-operator) and click **Watch**.
 

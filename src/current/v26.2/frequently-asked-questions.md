@@ -68,7 +68,7 @@ CockroachDB replicates your data for availability and guarantees consistency bet
 - Different servers on different racks within a datacenter to tolerate rack power/network failures
 - Different servers in different datacenters to tolerate large scale network or power outages
 
-In a CockroachDB cluster spread across multiple geographic regions, the round-trip latency between regions will have a direct effect on your database's performance. In such cases, it is important to think about the latency requirements of each table and then use the appropriate [data topologies]({% link {{ page.version.version }}/topology-patterns.md %}) to locate data for optimal performance and resiliency. For a step-by-step demonstration, see [Low Latency Multi-Region Deployment]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
+In a CockroachDB cluster spread across multiple geographic regions, the round-trip latency between regions will have a direct effect on your database's performance. In such cases, it is important to think about the latency requirements of each table and then use the appropriate [data topologies]({% link {{ page.version.version }}/topology-patterns.md %}) to locate data for optimal performance and resiliency.
 
 **Automated Repair**
 

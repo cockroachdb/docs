@@ -2,6 +2,5 @@
 - [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})
 - [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
 - [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
-- [Performance Benchmarking]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-small.md %})
 - [Performance Tuning]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
 - [Local Deployment]({% link {{ page.version.version }}/start-a-local-cluster.md %})
