@@ -20,7 +20,7 @@ Whereas `SERIALIZABLE` isolation guarantees data correctness by placing transact
 If your workload is already running well under `SERIALIZABLE` isolation, Cockroach Labs does not recommend changing to `READ COMMITTED` isolation unless there is a specific need.
 
 {{site.data.alerts.callout_info}}
-`READ COMMITTED` on CockroachDB provides stronger isolation than `READ COMMITTED` on PostgreSQL. On CockroachDB, `READ COMMITTED` prevents anomalies within single statements. For complete details on how `READ COMMITTED` is implemented on CockroachDB, see the [Read Committed RFC](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/docs/RFCS/20230122_read_committed_isolation.md).
+`READ COMMITTED` on CockroachDB provides stronger isolation than `READ COMMITTED` on PostgreSQL. On CockroachDB, `READ COMMITTED` prevents anomalies within single statements.
 {{site.data.alerts.end}}
 
 ## Enable `READ COMMITTED` isolation
@@ -918,5 +918,4 @@ SELECT * FROM schedules
 - [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %})
 - [Serializable Transactions]({% link {{ page.version.version }}/demo-serializable.md %})
 - [What Write Skew Looks Like](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/)
-- [Read Committed RFC](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/docs/RFCS/20230122_read_committed_isolation.md)
 - [Migration Overview]({% link molt/migration-overview.md %})

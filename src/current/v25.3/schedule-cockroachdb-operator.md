@@ -88,7 +88,7 @@ Specify pod affinities and node anti-affinities in `cockroachdb.crdbCluster.podT
 
 The {{ site.data.products.cockroachdb-operator }} hard-codes the pod template to only allow one pod per Kubernetes node. If you need to override this value, you can [override the pod template]({% link {{ page.version.version }}/override-templates-cockroachdb-operator.md %}#override-the-default-pod).
 
-The following configuration attempts to schedule CockroachDB pods in the same zones as the pods that run our example [load generator](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/example-app.yaml) app. It disallows CockroachDB pods from being co-located on the same worker node.
+The following configuration attempts to schedule CockroachDB pods in the same zones as the pods that run our example [load generator]({% link files/cockroach/cloud/kubernetes/example-app.yaml %}) app. It disallows CockroachDB pods from being co-located on the same worker node.
 
 ~~~ yaml
 cockroachdb:

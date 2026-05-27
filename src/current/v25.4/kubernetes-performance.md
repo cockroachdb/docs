@@ -24,9 +24,9 @@ Before you focus on optimizing a Kubernetes-orchestrated CockroachDB cluster:
 
 A number of independent factors affect performance when running CockroachDB on Kubernetes. Most are easiest to change before you create your CockroachDB cluster. If you need to modify a CockroachDB cluster that is already running on Kubernetes, extra care and testing is strongly recommended.
 
-The following sections show how to modify excerpts from our provided Kubernetes configuration YAML files. You can find the most up-to-date versions of these files on GitHub: [one for running CockroachDB in secure mode](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/cockroachdb-statefulset-secure.yaml) and one for [running CockroachDB in insecure mode](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/cockroachdb-statefulset.yaml).
+The following sections show how to modify excerpts from our provided Kubernetes configuration YAML files. You can find the most up-to-date versions of these files on GitHub: [one for running CockroachDB in secure mode]({% link files/cockroach/cloud/kubernetes/cockroachdb-statefulset-secure.yaml %}) and one for [running CockroachDB in insecure mode]({% link files/cockroach/cloud/kubernetes/cockroachdb-statefulset.yaml %}).
 
-You can also use a [performance-optimized configuration file for secure mode](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml) or [insecure mode](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml). Be sure to modify the file wherever there is a `TODO` comment.
+You can also use a [performance-optimized configuration file for secure mode]({% link files/cockroach/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml %}) or [insecure mode]({% link files/cockroach/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml %}). Be sure to modify the file wherever there is a `TODO` comment.
 
 ### Version of CockroachDB
 
@@ -336,7 +336,7 @@ If for some reason setting appropriate resource requests still isn't getting you
 
 #### Client applications on the same machines as CockroachDB
 
-Running client applications such as benchmarking applications on the same machines as CockroachDB can be even worse than just having Kubernetes system pods on the same machines. They are very likely to end up competing for resources, because when the applications get more loaded than usual, so will the CockroachDB processes. The best way to avoid this is to [set resource requests and limits](#resource-requests-and-limits), but if you are unwilling or unable to do that for some reason, you can also set [anti-affinity scheduling policies](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) on your client applications. Anti-affinity policies are placed in the pod spec, so if you wanted to change our provided example load generator app, you'd change [these lines](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/example-app.yaml):
+Running client applications such as benchmarking applications on the same machines as CockroachDB can be even worse than just having Kubernetes system pods on the same machines. They are very likely to end up competing for resources, because when the applications get more loaded than usual, so will the CockroachDB processes. The best way to avoid this is to [set resource requests and limits](#resource-requests-and-limits), but if you are unwilling or unable to do that for some reason, you can also set [anti-affinity scheduling policies](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) on your client applications. Anti-affinity policies are placed in the pod spec, so if you wanted to change our provided example load generator app, you'd change [these lines]({% link files/cockroach/cloud/kubernetes/example-app.yaml %}):
 
 ~~~ yaml
     spec:
