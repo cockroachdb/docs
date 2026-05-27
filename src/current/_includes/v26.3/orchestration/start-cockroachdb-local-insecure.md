@@ -1,8 +1,8 @@
-1. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it:
+1. From your local workstation, use our [`cockroachdb-statefulset.yaml`]({% link files/cockroach/cloud/kubernetes/cockroachdb-statefulset.yaml %}) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+    $ kubectl create -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/cockroachdb-statefulset.yaml %}
     ~~~
 
     ~~~
@@ -41,12 +41,12 @@
     pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
     ~~~
 
-1. Use our [`cluster-init.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
+1. Use our [`cluster-init.yaml`](https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/cluster-init.yaml %}) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create \
-    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml
+    -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/cluster-init.yaml %}
     ~~~
 
     ~~~

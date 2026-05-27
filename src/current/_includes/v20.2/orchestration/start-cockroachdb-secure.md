@@ -1,10 +1,10 @@
 #### Set up configuration file
 
-1. Download and modify our [StatefulSet configuration](https://github.com/cockroachdb/docs/blob/main/src/current/files/cockroach/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml):
+1. Download and modify our [StatefulSet configuration]({% link files/cockroach/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/files/cockroach/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml
+    $ curl -O https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml %}
     ~~~
 
 1. Allocate CPU and memory resources to CockroachDB on each pod. These settings should be appropriate for your workload. For more context on provisioning CPU and memory, see the [Production Checklist](recommended-production-settings.html#hardware).
