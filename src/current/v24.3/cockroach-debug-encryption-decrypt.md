@@ -57,7 +57,7 @@ The `cockroach debug encryption-decrypt` command will output the decrypted store
 
 ## See also
 
-- [File an Issue]({% link {{ page.version.version }}/file-an-issue.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
 - [Support Resources]({% link {{ page.version.version }}/support-resources.md %})

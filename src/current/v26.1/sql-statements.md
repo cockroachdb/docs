@@ -54,7 +54,7 @@ Statement | Usage
 [`REFRESH`]({% link {{ page.version.version }}/refresh.md %}) | Refresh the stored query results of a [materialized view]({% link {{ page.version.version }}/views.md %}#materialized-views).
 [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %}) | View details about columns in a table.
 [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %}) | List constraints on a table.
-[`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}) | View the `CREATE` statement for a database, function, sequence, table, or view.
+[`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}) | View the `CREATE` statement for a database, function, sequence, table, [trigger]({% link {{ page.version.version }}/triggers.md %}), or view.
 [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %}) | List databases in the cluster.
 [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %}) | List the values for updated [session variables]({% link {{ page.version.version }}/set-vars.md %}) that are applied to a given [user or role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles).
 [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}) | List user-defined, [enumerated data types]({% link {{ page.version.version }}/enum.md %}) in a database.
@@ -67,6 +67,7 @@ Statement | Usage
 [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %}) | List the schemas in a database.
 [`SHOW SEQUENCES`]({% link {{ page.version.version }}/show-sequences.md %}) | List the sequences in a database.
 [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) | List tables or views in a database or virtual schema.
+[`SHOW TRIGGERS`]({% link {{ page.version.version }}/show-triggers.md %}) | List the [triggers]({% link {{ page.version.version }}/triggers.md %}) defined on a table.
 [`SHOW TYPES`]({% link {{ page.version.version }}/show-types.md %}) | List user-defined [data types]({% link {{ page.version.version }}/data-types.md %}) in a database.
 [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) | Show range information for all data in a table or index.
 [`SHOW RANGE FOR ROW`]({% link {{ page.version.version }}/show-range-for-row.md %}) | Show range information for a single row in a table or index.

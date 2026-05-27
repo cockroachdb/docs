@@ -833,6 +833,12 @@
               ]
             },
             {
+              "title": "<code>SHOW TRIGGERS</code>",
+              "urls": [
+                "/${VERSION}/show-triggers.html"
+              ]
+            },
+            {
               "title": "<code>SHOW TYPES</code>",
               "urls": [
                 "/${VERSION}/show-types.html"
