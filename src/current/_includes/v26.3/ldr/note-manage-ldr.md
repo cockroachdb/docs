@@ -1,0 +1,1 @@
+For details on managing schema changes, conflicts, and jobs when LDR is running, refer to the [Manage Logical Data Replication]({% link {{ page.version.version }}/manage-logical-data-replication.md %}) page.

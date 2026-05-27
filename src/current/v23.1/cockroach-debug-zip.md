@@ -195,6 +195,6 @@ server/server.go:1423 ⋮ password of user ‹×› was set to ‹×›
 
 ## See also
 
-- [File an Issue]({% link {{ page.version.version }}/file-an-issue.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})

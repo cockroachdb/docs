@@ -12,7 +12,7 @@ The `DROP FUNCTION` [statement]({% link {{ page.version.version }}/sql-statement
 
 ## Required privileges
 
-To drop a function, a user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the function.
+To drop a function, the user must be the owner of the function.
 
 ## Synopsis
 
