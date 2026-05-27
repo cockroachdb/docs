@@ -1,36 +1,18 @@
-Changes to [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) should be reviewed prior to upgrading. New default cluster setting values will be used unless you have manually set a value for a setting. This can be confirmed by running the SQL statement `SELECT * FROM system.settings` to view the non-default settings.
+Review the following changes **before** upgrading. New default values will be used unless you have manually set a cluster setting value. To view the non-default settings on your cluster, run the SQL statement `SELECT * FROM system.settings`.
 
-<h5>New cluster settings</h5>
+<div class="release-cluster-settings-table" markdown="1">
 
-- Bullet
+| Setting | Description | Previous default | New default | Backported to versions |
+|---|---|---|---|---|
+| `backup.index.read.enabled` | The `backup.index.read.enabled` cluster setting is now enabled by default. This allows backup and restore operations to refer to the index when reading from a backup collection, reducing memory load and improving performance. | `false` | `true` | None |
+| `bulkio.import.elastic_control.enabled` | The `bulkio.import.elastic_control.enabled` cluster setting is now enabled by default, allowing import operations to integrate with elastic CPU control and automatically throttle based on available resources. | `false` | `true` | None |
+| `bulkio.index_backfill.elastic_control.enabled` | The `bulkio.index_backfill.elastic_control.enabled` cluster setting is now enabled by default, allowing index backfill operations to integrate with elastic CPU control and automatically throttle based on available resources. | `false` | `true` | None |
+| `bulkio.ingest.sst_batcher_elastic_control.enabled` | The `bulkio.ingest.sst_batcher_elastic_control.enabled` cluster setting is now enabled by default, allowing SST batcher operations to integrate with elastic CPU control and automatically throttle based on available resources. | `false` | `true` | None |
+| `changefeed.max_retry_backoff` | Lowered the default value of the `changefeed.max_retry_backoff` cluster setting from `10m` to `30s` to <a href="{% link cockroachcloud/metrics-changefeeds.md %}#retryable-errors">reduce changefeed lag during rolling restarts</a>. | `10m` | `30s` | v25.4, v26.1 |
+| `kv.range_split.load_sample_reset_duration` | The `kv.range_split.load_sample_reset_duration` cluster setting now defaults to `30m`. This should improve load-based splitting in rare edge cases. | `0` | `30m` | v26.1 |
+| `sql.catalog.allow_leased_descriptors.enabled` | Changed the default value of the `sql.catalog.allow_leased_descriptors.enabled` cluster setting to `true`. This setting allows introspection tables like `information_schema` and `pg_catalog` to use cached descriptors when building the table results, which improves the performance of introspection queries when there are many tables in the cluster. | `false` | `true` | v26.1 |
+| `sql.guardrails.max_row_size_err` | Lowered the default value of the `sql.guardrails.max_row_size_log` cluster setting from `64 MiB` to `16 MiB`, and the default value of `sql.guardrails.max_row_size_err` from `512 MiB` to `80 MiB`. These settings control the maximum size of a row (or column family) that SQL can write before logging a warning or returning an error, respectively. The previous defaults were high enough that large rows would hit other limits first (such as the Raft command size limit or the backup SST size limit), producing confusing errors. The new defaults align with existing system limits to provide clearer diagnostics. If your workload legitimately writes rows larger than these new defaults, you can restore the previous behavior by increasing these settings. | `512 MiB` | `80 MiB` | None |
+| `sql.guardrails.max_row_size_log` | Lowered the default value of the `sql.guardrails.max_row_size_log` cluster setting from `64 MiB` to `16 MiB`, and the default value of `sql.guardrails.max_row_size_err` from `512 MiB` to `80 MiB`. These settings control the maximum size of a row (or column family) that SQL can write before logging a warning or returning an error, respectively. The previous defaults were high enough that large rows would hit other limits first (such as the Raft command size limit or the backup SST size limit), producing confusing errors. The new defaults align with existing system limits to provide clearer diagnostics. If your workload legitimately writes rows larger than these new defaults, you can restore the previous behavior by increasing these settings. | `64 MiB` | `16 MiB` | None |
+| `sql.stats.automatic_full_concurrency_limit` | Increased the default value of `sql.stats.automatic_full_concurrency_limit` (which controls the maximum number of concurrent full statistics collections) from `1` to number of vCPUs divided by 2 (e.g., 4 vCPU nodes will have the value of `2`). | `1` | number of vCPUs / 2 | None |
 
-    Example:
-
-    ~~~ sql
-    CREATE CHANGEFEED FOR x into 'null://' WITH
-    range_distribution_strategy='balanced_simple';
-    ~~~
-
-<h5 id="v26-1-0-settings-changed-default">Settings with changed defaults</h5>
-
-- Bullet
-  - Events related to changefeed operations are now routed to the CHANGEFEED channel, while sampled queries and transactions, along with certain SQL performance events, are logged to SQL_EXEC. To continue using the previous logging channels, set `log.channel_compatibility_mode.enabled` to `true`.
-
-- Bullet
-  - Changed the default value of the `sql.catalog.allow_leased_descriptors.enabled` cluster setting to `true`. This setting allows introspection tables like `information_schema` and `pg_catalog` to use cached descriptors when building the table results, which improves the performance of introspection queries when there are many tables in the cluster. [#][#]
-
-<!-- Link references -->
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
+</div>

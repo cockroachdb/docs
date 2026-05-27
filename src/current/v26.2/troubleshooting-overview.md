@@ -26,7 +26,6 @@ If you experience an issue when using CockroachDB, try these steps to resolve th
 
 - If you cannot resolve the issue yourself, the following tools can help you move forward:
   - [Support Resources]({% link {{ page.version.version }}/support-resources.md %}) identify ways you can get help with troubleshooting.
-  - [File an Issue]({% link {{ page.version.version }}/file-an-issue.md %}) provides details on how to file an issue that you're unable to resolve.
  
 - In a support escalation, you may be directed to use the following features by the [Cockroach Labs support team]({% link {{ page.version.version }}/support-resources.md %}):
 
