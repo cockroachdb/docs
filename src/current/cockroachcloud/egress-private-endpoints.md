@@ -258,7 +258,7 @@ To approve the connection using the Azure portal:
 
 To approve the connection using the Azure CLI:
 
- - Refer to the [Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-cli#approve-a-private-endpoint-connection-1) for the required flags for the command `az network private-endpoint-connection approve`.
+ - Refer to the [Azure Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-cli#approve-a-private-endpoint-connection-1) for the required flags for the command `az network private-endpoint-connection approve`.
 
 ### Configure custom DNS
 
