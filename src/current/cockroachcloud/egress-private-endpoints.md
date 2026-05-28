@@ -92,7 +92,7 @@ The following prerequisites apply to the Google Cloud VPC service:
 
 The following prerequisites apply to Azure Private Link Service:
 
-- An [Azure Private Link Service (PLS)](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) backed by a [Standard SKU Internal Load Balancer](https://learn.microsoft.com/en-us/azure/load-balancer/skus) must exist in your Azure subscription. Basic SKU load balancers do not support the Private Link Service.
+- An [Azure Private Link Service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) backed by a [Standard SKU Internal Load Balancer](https://learn.microsoft.com/en-us/azure/load-balancer/skus) must be created in your Azure subscription. Basic SKU load balancers do not support the Private Link Service.
 
 - The CockroachDB {{ site.data.products.cloud }} Azure subscription does not need to be pre-authorized on your Private Link Service. By default, after CockroachDB {{ site.data.products.cloud }} creates the private endpoint, the connection appears in Pending state on your PLS and must be approved manually. To prevent the need for manual approval, you can add CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list during PLS creation.
 
@@ -104,6 +104,11 @@ The following prerequisites apply to Azure Private Link Service:
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
       --header "Authorization: Bearer {secret_key}" | jq .account_id
     ~~~
+
+- Approve the connection via:
+  - Azure Portal: **Private Link Center** > **Private Link Services** > select your service > **Private endpoint connections** > **Approve**
+  - Azure CLI: `az network private-endpoint-connection approve`
+  - See the [Azure Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint) for detailed steps.
 
 - The Private Link Service must be in the same Azure region as the CockroachDB {{ site.data.products.cloud }} cluster region where the endpoint is created. Cross-region connections are not supported in Azure.
 
@@ -241,7 +246,7 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 ~~~
 
 {{site.data.alerts.callout_info}}
-Depending on the cloud service, there may be an additional step necessary to manually accept the connection on the remote side. For Azure Private Link Service endpoints, if you did not add the CockroachDB {{ site.data.products.cloud }} subscription ID to your PLS auto-approval list, you must manually approve the connection after endpoint creation. You can approve via the Azure Portal (**Private Link Center** > **Private Link Services** > select your service > **Private endpoint connections** > **Approve**) or using the Azure CLI (`az network private-endpoint-connection approve --resource-group {resource-group} --resource-name {pls-name} --name {connection-name} --type Microsoft.Network/privateLinkServices`). See the [Azure Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint) for detailed steps.
+Depending on the cloud service, there may be an additional step necessary to manually accept the connection on the remote side.
 {{site.data.alerts.end}}
 
 ### Configure custom DNS
