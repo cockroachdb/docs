@@ -388,15 +388,15 @@ Verify that Replicator is processing changes successfully. To do so, check the M
 You should see periodic primary keepalive messages:
 
 ~~~
-DEBUG  [Aug 25 14:38:10] primary keepalive received                    ReplyRequested=false ServerTime="2025-08-25 14:38:09.556773 -0500 CDT" ServerWALEnd=0/49913A58
-DEBUG  [Aug 25 14:38:15] primary keepalive received                    ReplyRequested=false ServerTime="2025-08-25 14:38:14.556836 -0500 CDT" ServerWALEnd=0/49913E60
+DEBUG  [2025-08-25T14:38:10-05:00] primary keepalive received                    ReplyRequested=false ServerTime="2025-08-25 14:38:09.556773 -0500 CDT" ServerWALEnd=0/49913A58
+DEBUG  [2025-08-25T14:38:15-05:00] primary keepalive received                    ReplyRequested=false ServerTime="2025-08-25 14:38:14.556836 -0500 CDT" ServerWALEnd=0/49913E60
 ~~~
 
 When rows are successfully replicated, you should see debug output like the following:
 
 ~~~
-DEBUG  [Aug 25 14:40:02] upserted rows                                 conflicts=0 duration=7.855333ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
-DEBUG  [Aug 25 14:40:02] progressed to LSN: 0/49915DD0
+DEBUG  [2025-08-25T14:40:02-05:00] upserted rows                                 conflicts=0 duration=7.855333ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
+DEBUG  [2025-08-25T14:40:02-05:00] progressed to LSN: 0/49915DD0
 ~~~
 </section>
 
@@ -406,14 +406,14 @@ You should see binlog syncer connection and row processing:
 ~~~
 [2025/08/25 15:29:09] [info] binlogsyncer.go:463 begin to sync binlog from GTID set 77263736-7899-11f0-81a5-0242ac120002:1-38
 [2025/08/25 15:29:09] [info] binlogsyncer.go:409 Connected to mysql 8.0.43 server
-INFO   [Aug 25 15:29:09] connected to MySQL version 8.0.43
+INFO   [2025-08-25T15:29:09-05:00] connected to MySQL version 8.0.43
 ~~~
 
 When rows are successfully replicated, you should see debug output like the following:
 
 ~~~
-DEBUG  [Aug 25 15:29:38] upserted rows                                 conflicts=0 duration=1.801ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
-DEBUG  [Aug 25 15:29:38] progressed to consistent point: 77263736-7899-11f0-81a5-0242ac120002:1-39
+DEBUG  [2025-08-25T15:29:38-05:00] upserted rows                                 conflicts=0 duration=1.801ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
+DEBUG  [2025-08-25T15:29:38-05:00] progressed to consistent point: 77263736-7899-11f0-81a5-0242ac120002:1-39
 ~~~
 </section>
 
@@ -421,15 +421,15 @@ DEBUG  [Aug 25 15:29:38] progressed to consistent point: 77263736-7899-11f0-81a5
 When transactions are read from the Oracle source, you should see registered transaction IDs (XIDs):
 
 ~~~
-DEBUG  [Jul  3 15:55:12] registered xid 0f001f0040060000
-DEBUG  [Jul  3 15:55:12] registered xid 0b001f00bb090000
+DEBUG  [2025-07-03T15:55:12-05:00] registered xid 0f001f0040060000
+DEBUG  [2025-07-03T15:55:12-05:00] registered xid 0b001f00bb090000
 ~~~
 
 When rows are successfully replicated, you should see debug output like the following:
 
 ~~~
-DEBUG  [Jul  3 15:55:12] upserted rows                                 conflicts=0 duration=2.620009ms proposed=13 target="\"molt_movies\".\"USERS\".\"CUSTOMER_CONTACT\"" upserted=13
-DEBUG  [Jul  3 15:55:12] upserted rows                                 conflicts=0 duration=2.212807ms proposed=16 target="\"molt_movies\".\"USERS\".\"CUSTOMER_DEVICE\"" upserted=16
+DEBUG  [2025-07-03T15:55:12-05:00] upserted rows                                 conflicts=0 duration=2.620009ms proposed=13 target="\"molt_movies\".\"USERS\".\"CUSTOMER_CONTACT\"" upserted=13
+DEBUG  [2025-07-03T15:55:12-05:00] upserted rows                                 conflicts=0 duration=2.212807ms proposed=16 target="\"molt_movies\".\"USERS\".\"CUSTOMER_DEVICE\"" upserted=16
 ~~~
 </section>
 
@@ -732,8 +732,8 @@ On the target cluster, create a CockroachDB changefeed to send changes to MOLT R
 1. Verify that Replicator is reporting incoming HTTP requests from the changefeed. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see periodic HTTP request successes:
 
     ~~~
-    DEBUG  [Aug 25 11:52:47]  httpRequest="&{0x14000b068c0 45 200 3 9.770958ms   false false}"
-    DEBUG  [Aug 25 11:52:48]  httpRequest="&{0x14000d1a000 45 200 3 13.438125ms   false false}"
+    DEBUG  [2025-08-25T11:52:47-05:00]  httpRequest="&{0x14000b068c0 45 200 3 9.770958ms   false false}"
+    DEBUG  [2025-08-25T11:52:48-05:00]  httpRequest="&{0x14000d1a000 45 200 3 13.438125ms   false false}"
     ~~~
 
     These debug messages confirm successful changefeed connections to MOLT Replicator. You can disable verbose logging after verifying the connection.
