@@ -241,7 +241,7 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 ~~~
 
 {{site.data.alerts.callout_info}}
-Depending on the cloud service, there may be an additional step necessary to manually accept the connection on the remote side. For Azure Private Link Service endpoints, if you did not add the CockroachDB {{ site.data.products.cloud }} subscription ID to your PLS auto-approval list, you must manually approve the connection after endpoint creation. You can approve via the Azure Portal (**Private Link Center** > **Private Link Services** > select your service > **Private endpoint connections** > **Approve**) or using the Azure CLI. See the [Azure Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint) for detailed steps.
+Depending on the cloud service, there may be an additional step necessary to manually accept the connection on the remote side. For Azure Private Link Service endpoints, if you did not add the CockroachDB {{ site.data.products.cloud }} subscription ID to your PLS auto-approval list, you must manually approve the connection after endpoint creation. You can approve via the Azure Portal (**Private Link Center** > **Private Link Services** > select your service > **Private endpoint connections** > **Approve**) or using the Azure CLI (`az network private-endpoint-connection approve --resource-group {resource-group} --resource-name {pls-name} --name {connection-name} --type Microsoft.Network/privateLinkServices`). See the [Azure Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint) for detailed steps.
 {{site.data.alerts.end}}
 
 ### Configure custom DNS
