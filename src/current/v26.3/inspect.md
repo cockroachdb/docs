@@ -22,11 +22,11 @@ To run `INSPECT` and view its results, the user must have:
 ## Synopsis
 
 <div>
-  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/inspect_table.html %}
+  {% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/inspect_table.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 <div>
-  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/inspect_database.html %}
+  {% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/inspect_database.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
