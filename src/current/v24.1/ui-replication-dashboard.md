@@ -31,7 +31,7 @@ The **Replication** dashboard displays the following time series graphs:
 
 ## Ranges
 
-<img src="{{ 'images/v24.1/ui_ranges.png' | relative_url }}" alt="DB Console Ranges" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_ranges.png" alt="DB Console Ranges" style="border:1px solid #eee;max-width:100%" />
 
 The **Ranges** graph shows you various details about the status of ranges.
 
@@ -52,7 +52,7 @@ Under-replicated | The number of under-replicated ranges. Non-voting replicas ar
 
 ## Logical Bytes per Store
 
-<img src="{{ 'images/v24.1/ui_logical_bytes_per_store.png' | relative_url }}" alt="DB Console Logical Bytes per Store" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_logical_bytes_per_store.png" alt="DB Console Logical Bytes per Store" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|--------
@@ -64,7 +64,7 @@ Metric | Description
 
 ## Replicas Per Store
 
-<img src="{{ 'images/v24.1/ui_replicas_per_store.png' | relative_url }}" alt="DB Console Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replicas_per_store.png" alt="DB Console Replicas per Store" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of range replicas on the store.
 
@@ -74,7 +74,7 @@ You can [Replication Controls]({% link {{ page.version.version }}/configure-repl
 
 ## Replica Quiescence
 
-<img src="{{ 'images/v24.1/ui_replica_quiescence.png' | relative_url }}" alt="DB Console Replica Quiescence" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replica_quiescence.png" alt="DB Console Replica Quiescence" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of replicas on the node.
 
@@ -89,7 +89,7 @@ Quiescent | The number of replicas that haven't been accessed for a while.
 
 ## Snapshots
 
-<img src="{{ 'images/v24.1/ui_replica_snapshots.png' | relative_url }}" alt="DB Console Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replica_snapshots.png" alt="DB Console Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
 
 Usually the nodes in a [Raft group]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) stay synchronized by following along with the log message by message.  However, if a node is far enough behind the log (e.g., if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there.  Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionally the Raft protocol itself will request the snapshot.
 
@@ -103,7 +103,7 @@ Reserved | The number of slots reserved per second for incoming snapshots that w
 
 ## Snapshot Data Received
 
-<img src="{{ 'images/v24.1/ui_replica_snapshots_data.png' | relative_url }}" alt="DB Console Replica Snapshot Data Received" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replica_snapshots_data.png" alt="DB Console Replica Snapshot Data Received" style="border:1px solid #eee;max-width:100%" />
 
 The **Snapshot Data Received** graph shows the rate per second of data received in bytes by each node via [Raft snapshot transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots). Data is split into recovery and rebalancing snapshot data received: recovery includes all upreplication due to decommissioning or node failure, and rebalancing includes all other snapshot data received.
 
@@ -116,7 +116,7 @@ Metric | Description
 
 ## Receiver Snapshots Queued
 
-<img src="{{ 'images/v24.1/ui_replica_snapshots_queued.png' | relative_url }}" alt="DB Console Replica Receiver Snapshots Queued" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replica_snapshots_queued.png" alt="DB Console Replica Receiver Snapshots Queued" style="border:1px solid #eee;max-width:100%" />
 
 The **Receiver Snapshots Queued** graph shows the number of [Raft snapshot transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) queued to be applied on a receiving node, which can only accept one snapshot at a time per store.
 
@@ -128,7 +128,7 @@ Metric | Description
 
 ## Circuit Breaker Tripped Replicas
 
-<img src="{{ 'images/v24.1/ui_replica_circuitbreaker_replicas.png' | relative_url }}" alt="DB Console Circuit Breaker Tripped Replicas" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replica_circuitbreaker_replicas.png" alt="DB Console Circuit Breaker Tripped Replicas" style="border:1px solid #eee;max-width:100%" />
 
 When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker]({% link {{ page.version.version }}/architecture/replication-layer.md %}#per-replica-circuit-breaker-overview) instead of hanging indefinitely.
 
@@ -144,7 +144,7 @@ Metric | Description
 
 ## Circuit Breaker Tripped Events
 
-<img src="{{ 'images/v24.1/ui_replica_circuitbreaker_events.png' | relative_url }}" alt="DB Console Circuit Breaker Tripped Events" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replica_circuitbreaker_events.png" alt="DB Console Circuit Breaker Tripped Events" style="border:1px solid #eee;max-width:100%" />
 
 When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker]({% link {{ page.version.version }}/architecture/replication-layer.md %}#per-replica-circuit-breaker-overview) instead of hanging indefinitely. While a range's per-replica circuit breaker remains tripped, each incoming request to that range triggers a `ReplicaUnavailableError` event until the range becomes available again.
 
@@ -158,7 +158,7 @@ Metric | Description
 
 ## Paused Follower
 
-<img src="{{ 'images/v24.1/ui_replica_paused_follower.png' | relative_url }}" alt="DB Console Paused Follower" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replica_paused_follower.png" alt="DB Console Paused Follower" style="border:1px solid #eee;max-width:100%" />
 
 The **Paused Follower** graphs displays the number of nonessential replicas in the cluster that have replication paused. A value of `0` represents that a node is replicating as normal, while a value of `1` represents that replication has been paused for the listed node.
 
@@ -174,7 +174,7 @@ Metric | Description
 
 ## Replicate Queue Actions: Successes
 
-<img src="{{ 'images/v24.1/ui_replica_queue_actions_successes.png' | relative_url }}" alt="DB Console Replicate Queue Actions: Successes" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replica_queue_actions_successes.png" alt="DB Console Replicate Queue Actions: Successes" style="border:1px solid #eee;max-width:100%" />
 
 The **Replicate Queue Actions: Successes** graph shows the rate of various successful replication queue actions per second.
 
@@ -195,7 +195,7 @@ Decommissioning Replicas Removed / Sec | The number of successful decommissionin
 
 ## Replicate Queue Actions: Failures
 
-<img src="{{ 'images/v24.1/ui_replica_queue_actions_failure.png' | relative_url }}" alt="DB Console Replicate Queue Actions: Failures" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replica_queue_actions_failure.png" alt="DB Console Replicate Queue Actions: Failures" style="border:1px solid #eee;max-width:100%" />
 
 The **Replicate Queue Actions: Failures** graph shows the rate of various failed replication queue actions per second.
 
@@ -216,7 +216,7 @@ Decommissioning Replicas Removed Errors / Sec | The number of failed decommissio
 
 ## Decommissioning Errors
 
-<img src="{{ 'images/v24.1/ui_replica_decom_errors.png' | relative_url }}" alt="DB Console Replica Decommissioning Errors" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_replica_decom_errors.png" alt="DB Console Replica Decommissioning Errors" style="border:1px solid #eee;max-width:100%" />
 
 The **Decommissioning Errors** graph shows the rate per second of decommissioning replica replacement failures experienced by the replication queue, by node.
 

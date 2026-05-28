@@ -83,11 +83,11 @@ Open the Kibana web interface and click **Dashboard**.
 
 Search for the CockroachDB dashboard:
 
-<img src="{{ 'images/v24.1/kibana-crdb-dashboard-selection.png' | relative_url }}" alt="CockroachDB dashboard selection for Metricbeat" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/kibana-crdb-dashboard-selection.png" alt="CockroachDB dashboard selection for Metricbeat" style="border:1px solid #eee;max-width:100%" />
 
 Click the dashboard title to open the dashboard, which presents metrics on replicas and query performance:
 
-<img src="{{ 'images/v24.1/kibana-crdb-dashboard.png' | relative_url }}" alt="CockroachDB Overview dashboard for Metricbeat" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/kibana-crdb-dashboard.png" alt="CockroachDB Overview dashboard for Metricbeat" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 4. Run a sample workload
 
@@ -109,7 +109,7 @@ cockroach workload run movr --duration=5m 'postgresql://root@localhost:26257?ssl
 
 Click **Refresh**. The query metrics will appear on the dashboard:
 
-<img src="{{ 'images/v24.1/kibana-crdb-dashboard-sql.png' | relative_url }}" alt="CockroachDB Overview dashboard for Metricbeat with SQL metrics" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/kibana-crdb-dashboard-sql.png" alt="CockroachDB Overview dashboard for Metricbeat with SQL metrics" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

@@ -19,7 +19,7 @@ The **Storage** dashboard displays the following time series graphs:
 
 You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster]({% link {{ page.version.version }}/cockroach-start.md %})).
 
-<img src="{{ 'images/v24.1/ui_capacity.png' | relative_url }}" alt="DB Console Capacity graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_capacity.png" alt="DB Console Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|--------
@@ -50,7 +50,7 @@ The disk usage of the Cockroach binary, operating system, and other system files
 
 The **Live Bytes** graph displays the amount of data that can be read by applications and CockroachDB.
 
-<img src="{{ 'images/v24.1/ui_live_bytes.png' | relative_url }}" alt="DB Console Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_live_bytes.png" alt="DB Console Replicas per Store" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|--------
@@ -63,7 +63,7 @@ Metric | Description
 
 ## File Descriptors
 
-<img src="{{ 'images/v24.1/ui_file_descriptors.png' | relative_url }}" alt="DB Console File Descriptors" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_file_descriptors.png" alt="DB Console File Descriptors" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of open file descriptors for that node, compared with the file descriptor limit.
 
