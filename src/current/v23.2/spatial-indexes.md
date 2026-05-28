@@ -56,15 +56,15 @@ Whichever approach to indexing is used, when an object is indexed, a "covering" 
 
 Under the hood, CockroachDB uses the [S2 geometry library](https://s2geometry.io/) to divide the space being indexed into a [quadtree](https://wikipedia.org/wiki/Quadtree) data structure with a set number of levels and a data-independent shape. Each node in the quadtree (really, [S2 cell](https://s2geometry.io/devguide/s2cell_hierarchy.html)) represents some part of the indexed space and is divided once horizontally and once vertically to produce 4 child cells in the next level. The following image shows visually how a location (marked in red) is represented using levels of a quadtree:
 
-<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.2/geospatial/quadtree.png' | relative_url }}" alt="Quadtree">
+<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="/docs/images/{{ page.version.version }}/geospatial/quadtree.png" alt="Quadtree">
 
 Visually, you can think of the S2 library as enclosing a sphere in a cube. We map from points on each face of the cube to points on the face of the sphere. As you can see in the following 2-dimensional picture, there is a projection that occurs in this mapping: the lines entering from the left mark points on the cube face, and are "refracted" by the material of the cube face before touching the surface of the sphere. This projection reduces the distortion that would occur if the points on the cube face were projected straight onto the sphere.
 
-<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.2/geospatial/s2-cubed-sphere-2d.png' | relative_url }}" alt="S2 Cubed Sphere - 2D">
+<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="/docs/images/{{ page.version.version }}/geospatial/s2-cubed-sphere-2d.png" alt="S2 Cubed Sphere - 2D">
 
 Next, let's look at a 3-dimensional image that shows the cube and sphere more clearly. Each cube face is mapped to the quadtree data structure mentioned, and each node in the quadtree is numbered using a [Hilbert space-filling curve](https://wikipedia.org/wiki/Hilbert_curve) which preserves locality of reference. In the following image, you can imagine the points of the Hilbert curve on the rear face of the cube being projected onto the sphere in the center. The use of a space-filling curve means that two shapes that are near each other on the sphere are very likely to be near each other on the line that makes up the Hilbert curve. This is good for performance.
 
-<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.2/geospatial/s2-cubed-sphere-3d.png' | relative_url }}" alt="S2 Cubed Sphere - 3D">
+<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="/docs/images/{{ page.version.version }}/geospatial/s2-cubed-sphere-3d.png" alt="S2 Cubed Sphere - 3D">
 
 When you index a spatial object, a covering is computed using some number of the cells in the quadtree. The number of covering cells can vary per indexed object by passing special arguments to `CREATE INDEX` that tell CockroachDB how many levels of S2 cells to use. The leaf nodes of the S2 quadtree are at level 30, and for `GEOGRAPHY` measure 1cm across the Earth's surface. By default, `GEOGRAPHY` indexes use up to level 30, and get this level of precision. We also use S2 cell coverings in a slightly different way for `GEOMETRY` indexes. The precision you get there is the bounding length of the `GEOMETRY` index divided by 4^30. For more information, see [Tuning spatial indexes](#tuning-spatial-indexes).
 
@@ -99,11 +99,11 @@ We will generate coverings for the following geometry object, which describes a 
 
 The animated following image shows the S2 coverings that are generated as we increase the `s2_max_cells` parameter from the 1 to 30 (minimum to maximum):
 
-<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.2/geospatial/s2-coverings.gif' | relative_url }}" alt="Animated GIF of S2 Coverings - Levels 1 to 30">
+<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="/docs/images/{{ page.version.version }}/geospatial/s2-coverings.gif" alt="Animated GIF of S2 Coverings - Levels 1 to 30">
 
 Here are the same images presented in a grid. You can see that as we turn up the `s2_max_cells` parameter, more work is done by CockroachDB to discover a tighter and tighter covering (that is, a covering using more and smaller cells). The covering for this particular shape reaches a reasonable level of accuracy when `s2_max_cells` reaches 10, and stops improving much past 12.
 
-<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.2/geospatial/s2-coverings-tiled.png' | relative_url }}" alt="Static image of S2 Coverings - Levels 1 to 30">
+<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="/docs/images/{{ page.version.version }}/geospatial/s2-coverings-tiled.png" alt="Static image of S2 Coverings - Levels 1 to 30">
 
 ### Index tuning parameters
 
@@ -149,7 +149,7 @@ SELECT ST_AsGeoJSON(st_collect(geom)) FROM tmp_viz;
 
 When you paste the JSON output into [geojson.io](http://geojson.io), it generates the following picture, which shows both the `LINESTRING` and its S2 covering based on the options you passed to `st_s2covering`.
 
-<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.2/geospatial/s2-linestring-example-covering.png' | relative_url }}" alt="S2 LINESTRING example covering">
+<img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="/docs/images/{{ page.version.version }}/geospatial/s2-linestring-example-covering.png" alt="S2 LINESTRING example covering">
 
 ### Create a spatial index
 
