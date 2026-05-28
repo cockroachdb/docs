@@ -39,7 +39,7 @@ The `Cargo.toml` file is the configuration file for the example, and sets the de
 
 {% include_cached copy-clipboard.html %}
 ~~~ toml
-{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/Cargo.toml %}
+{% include example-apps/cockroachdb/example-app-rust-postgres/use-uuids/Cargo.toml %}
 ~~~
 
 The `main` function is the entry point for the application, with the code for connecting to the cluster, creating the `accounts` table, creating accounts in that table, and transferring money between two accounts.
@@ -52,14 +52,14 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
 {% include_cached copy-clipboard.html %}
 ~~~ rust
-{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/src/main.rs || BEGIN execute_txn || END execute_txn %}
+{% include example-apps/cockroachdb/example-app-rust-postgres/use-uuids/src/main__execute-txn.rs %}
 ~~~
 
 The `transfer_funds` function calls `execute_txn` to perform the actual transfer of funds from one account to the other.
 
 {% include_cached copy-clipboard.html %}
 ~~~ rust
-{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/src/main.rs || BEGIN transfer_funds || END transfer_funds %}
+{% include example-apps/cockroachdb/example-app-rust-postgres/use-uuids/src/main__transfer-funds.rs %}
 ~~~
 
 ## Step 3. Run the code

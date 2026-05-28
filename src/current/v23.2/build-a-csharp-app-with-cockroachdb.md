@@ -69,7 +69,7 @@ Replace the contents of the `Program.cs` file that was automatically generated i
 
 {% include_cached copy-clipboard.html %}
 ~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/basic.cs %}
+{% include example-apps/cockroachlabs/hello-world-csharp/main/basic.cs %}
 ~~~
 
 #### Run the basic example
@@ -99,7 +99,7 @@ Open `cockroachdb-test-app/Program.cs` again and replace the contents with the c
 
 {% include_cached copy-clipboard.html %}
 ~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/transaction.cs %}
+{% include example-apps/cockroachlabs/hello-world-csharp/main/transaction.cs %}
 ~~~
 
 </section>
@@ -108,7 +108,7 @@ Open `cockroachdb-test-app/Program.cs` again and replace the contents with the c
 
 {% include_cached copy-clipboard.html %}
 ~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/transaction.cs %}
+{% include example-apps/cockroachlabs/hello-world-csharp/cockroachcloud/transaction.cs %}
 ~~~
 
 </section>
