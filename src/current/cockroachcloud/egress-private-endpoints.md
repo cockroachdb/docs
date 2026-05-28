@@ -92,7 +92,7 @@ The following prerequisites apply to the Google Cloud VPC service:
 
 The following prerequisites apply to Azure Private Link Service:
 
-- An [Azure Private Link Service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) backed by a [Standard SKU Internal Load Balancer](https://learn.microsoft.com/en-us/azure/load-balancer/skus) must be created in your Azure subscription. Basic SKU load balancers do not support the Private Link Service.
+- An [Azure Private Link Service (PLS)](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) backed by a [Standard SKU Internal Load Balancer](https://learn.microsoft.com/en-us/azure/load-balancer/skus) must exist in your Azure subscription. Basic SKU load balancers do not support the Private Link Service.
 
 - The CockroachDB {{ site.data.products.cloud }} Azure subscription does not need to be pre-authorized on your Private Link Service. By default, after CockroachDB {{ site.data.products.cloud }} creates the private endpoint, the connection appears in Pending state on your PLS and must be approved manually. To prevent the need for manual approval, you can add CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list during PLS creation.
 
