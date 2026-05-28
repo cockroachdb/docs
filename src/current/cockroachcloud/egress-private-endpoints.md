@@ -96,16 +96,18 @@ The following prerequisites apply to Azure Private Link Service (PLS):
 
 - The Private Link Service must be in the same Azure region as the CockroachDB {{ site.data.products.cloud }} cluster region where the endpoint is created. Cross-region connections are not supported in Azure.
 
-- The CockroachDB {{ site.data.products.cloud }} Azure subscription does not need to be pre-authorized on your Private Link Service. By default, after CockroachDB {{ site.data.products.cloud }} creates the private endpoint, the connection appears in the Pending state on your PLS and must be approved manually. To prevent the need for manual approval, you can add CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list during PLS creation.
+- The CockroachDB {{ site.data.products.cloud }} Azure subscription does not need to be pre-authorized on your Private Link Service. By default, after CockroachDB {{ site.data.products.cloud }} creates the private endpoint, the connection appears in the Pending state on your PLS and must be [approved manually](#connection-approval).
 
-    You can use the following API call to retrieve your CockroachDB {{ site.data.products.cloud }} Azure subscription ID:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --request GET \
-      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
-      --header "Authorization: Bearer {secret_key}" | jq .account_id
-    ~~~
+  - To prevent the need for manual approval, you can add CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list during PLS creation.
+  
+      You can use the following API call to retrieve your CockroachDB {{ site.data.products.cloud }} Azure subscription ID:
+  
+      {% include_cached copy-clipboard.html %}
+      ~~~ shell
+      curl --request GET \
+        --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+        --header "Authorization: Bearer {secret_key}" | jq .account_id
+      ~~~
 
 ### Confluent Cloud
 
@@ -246,7 +248,7 @@ Depending on the cloud service, there may be an additional step necessary to man
 
 #### Approve the endpoint connection in Azure
 
-This step is required if you have not added CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list. To configure auto-approval, refer to Prerequisites > [Azure Private Link Service](#azure-private-link-service) on this page. 
+This step only applies if you did not add CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list. To configure auto-approval, refer the [Azure Private Link Service prerequisites](#azure-private-link-service) on this page. 
 
 To approve the connection using the Azure portal:
 
@@ -256,7 +258,7 @@ To approve the connection using the Azure portal:
 
 To approve the connection using the Azure CLI:
 
-- Refer to the [Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-cli#approve-a-private-endpoint-connection-1) for the flags required on the command `az network private-endpoint-connection approve`.
+ - Refer to the [Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-cli#approve-a-private-endpoint-connection-1) for the required flags for the command `az network private-endpoint-connection approve`.
 
 ### Configure custom DNS
 
