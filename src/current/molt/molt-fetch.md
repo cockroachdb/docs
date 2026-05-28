@@ -767,13 +767,13 @@ A change data capture (CDC) cursor is written to the MOLT Fetch output as `cdc_c
 For MySQL:
 
 ~~~ json
-{"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"skipped_unmigratable_tables":0,"cdc_cursor":"b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
+{"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"skipped_unmigratable_tables":[],"cdc_cursor":"b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
 ~~~
 
 For Oracle:
 
 ~~~ json
-{"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":3,"tables":["migration_schema.employees"],"skipped_unmigratable_tables":0,"cdc_cursor":"backfillFromSCN=26685444,scn=26685786","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
+{"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":3,"tables":["migration_schema.employees"],"skipped_unmigratable_tables":[],"cdc_cursor":"backfillFromSCN=26685444,scn=26685786","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
 ~~~
 
 This `cdc_cursor` value is also included in the output of a fetch task from a PostgreSQL source. However, in the case of a PostgreSQL source, you can instead enable replication with the [`--pglogical-replication-slot-name`]({% link molt/molt-fetch-commands-and-flags.md %}#pglogical-replication-slot-name) and [`--pglogical-publication-and-slot-drop-and-recreate`]({% link molt/molt-fetch-commands-and-flags.md %}#pglogical-publication-and-slot-drop-and-recreate) flags, which must be defined.
@@ -1031,7 +1031,7 @@ molt fetch \
 The output will include a `cdc_cursor` value at the end of the fetch task:
 
 ~~~ json
-{"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"skipped_unmigratable_tables":0,"cdc_cursor":"b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
+{"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"skipped_unmigratable_tables":[],"cdc_cursor":"b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="mysql oracle">
