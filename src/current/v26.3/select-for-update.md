@@ -13,7 +13,7 @@ docs_area: reference.sql
 The following diagram shows the supported syntax for the optional `FOR` locking clause of a `SELECT` statement.
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/for_locking.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/for_locking.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 {{site.data.alerts.callout_success}}

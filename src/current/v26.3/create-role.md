@@ -31,7 +31,7 @@ Unless a role is a member of the `admin` role, additional [privileges](#paramete
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_role.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_role.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

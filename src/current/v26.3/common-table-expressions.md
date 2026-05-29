@@ -14,7 +14,7 @@ For many workloads, CTEs are an effective alternative to [temporary tables]({% l
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/with_clause.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/with_clause.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

@@ -24,13 +24,13 @@ For changefeeds, users with the [`CHANGEFEED`]({% link {{ page.version.version }
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/resume_job.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/resume_job.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Resume all jobs by type
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/resume_all_jobs.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/resume_all_jobs.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

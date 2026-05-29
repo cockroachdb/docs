@@ -13,7 +13,7 @@ No [privileges]({% link {{ page.version.version }}/security-reference/authorizat
 
 ## Synopsis
 
-<div>{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/reset_session.html{% endcapture %}{% include {{ diagram_include }} %}</div>
+<div>{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/reset_session.html{% endcapture %}{% include {{ diagram_include }} %}</div>
 
 ## Parameters
 

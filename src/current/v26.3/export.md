@@ -26,7 +26,7 @@ For detail on handling partially complete exports at the destination, refer to [
 
 ## Synopsis
 
-<div>{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/export.html{% endcapture %}{% include {{ diagram_include }} %}</div>
+<div>{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/export.html{% endcapture %}{% include {{ diagram_include }} %}</div>
 
 {{site.data.alerts.callout_info}}
 The `EXPORT` statement cannot be used within a [transaction]({% link {{ page.version.version }}/transactions.md %}).

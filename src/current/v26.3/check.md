@@ -36,7 +36,7 @@ You can also add `CHECK` constraints to a table using [`ADD CONSTRAINT`]({% link
 ### Column level
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/check_column_level.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/check_column_level.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
  Parameter | Description
@@ -65,7 +65,7 @@ The following example specifies the column-level `CHECK` constraint that a `quan
 ### Table level
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/check_table_level.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/check_table_level.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
  Parameter | Description

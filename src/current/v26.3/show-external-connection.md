@@ -21,7 +21,7 @@ Without the `admin` role, users can view the external connections that they own.
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_external_connections.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/show_external_connections.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters

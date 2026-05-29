@@ -39,31 +39,31 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_table_as.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_table_as.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_table_as.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_table_as.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **create_as_col_qual_list ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_as_col_qual_list.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_as_col_qual_list.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **create_as_constraint_def ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_as_constraint_def.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_as_constraint_def.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **opt_with_storage_parameter_list ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/opt_with_storage_parameter_list.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/opt_with_storage_parameter_list.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 </div>

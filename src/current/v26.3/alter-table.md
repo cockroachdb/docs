@@ -18,14 +18,14 @@ Refer to the respective [subcommands](#subcommands).
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_table.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/alter_table.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 <br>
 
 where `alter_table_cmd` is:
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_table_cmds.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/alter_table_cmds.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

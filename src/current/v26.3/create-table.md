@@ -26,67 +26,67 @@ To create a table, the user must have one of the following:
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_table.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_table.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_table.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_table.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **opt_persistence_temp_table ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/opt_persistence_temp_table.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/opt_persistence_temp_table.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **column_def ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/column_table_def.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/column_table_def.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **col_qualification ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/col_qualification.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/col_qualification.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **index_def ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/index_def.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/index_def.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **family_def ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/family_def.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/family_def.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **table_constraint ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/table_constraint.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/table_constraint.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **like_table_option_list::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/like_table_option_list.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/like_table_option_list.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **opt_with_storage_parameter_list ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/opt_with_storage_parameter_list.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/opt_with_storage_parameter_list.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **opt_locality ::=**
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/opt_locality.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/opt_locality.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 </div>

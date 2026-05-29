@@ -18,7 +18,7 @@ with other constructs to form more complex [selection queries]({% link {{ page.v
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/simple_select_clause.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/simple_select_clause.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 

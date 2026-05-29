@@ -24,8 +24,9 @@ REMOTE_URL_PATTERN = re.compile(
     r"https://raw\.githubusercontent\.com/cockroachdb/generated-diagrams/"
 )
 LOCAL_INCLUDE_PATTERN = re.compile(
-    r"cockroach-generated/{{\s*page\.release_info\.crdb_branch_name\s*}}"
-    r"/sql-diagrams/([A-Za-z0-9_.-]+\.html)"
+    r"cockroach-generated/"
+    r"(?:(?P<dynamic>{{\s*page\.release_info\.crdb_branch_name\s*}})|(?P<branch>release-\d+\.\d+))"
+    r"/sql-diagrams/(?P<diagram>[A-Za-z0-9_.-]+\.html)"
 )
 
 
@@ -70,9 +71,10 @@ def main() -> int:
             if REMOTE_PATTERN.search(line) or REMOTE_URL_PATTERN.search(line):
                 remote_refs.append((page, lineno, line.strip()))
 
-        for diagram in LOCAL_INCLUDE_PATTERN.findall(text):
+        for match in LOCAL_INCLUDE_PATTERN.finditer(text):
             include_sites += 1
-            expected_files.add(VENDORED_ROOT / branch / "sql-diagrams" / diagram)
+            include_branch = match.group("branch") or branch
+            expected_files.add(VENDORED_ROOT / include_branch / "sql-diagrams" / match.group("diagram"))
 
     existing_files = set(VENDORED_ROOT.glob("*/sql-diagrams/*.html"))
     missing_files = sorted(expected_files - existing_files)

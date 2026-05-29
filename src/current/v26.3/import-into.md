@@ -109,7 +109,7 @@ No special privilege is required for:
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/import_into.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/import_into.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 {{site.data.alerts.callout_info}}

@@ -14,7 +14,7 @@ You can use `REVOKE` to directly revoke privileges from a role or user, or you c
 ## Syntax
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/revoke.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/revoke.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters

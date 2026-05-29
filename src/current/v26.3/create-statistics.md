@@ -16,7 +16,7 @@ By default, CockroachDB [automatically generates statistics]({% link {{ page.ver
 ## Syntax
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_stats.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_stats.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -39,7 +39,7 @@ For [PostgreSQL compatibility]({% link {{ page.version.version }}/postgresql-com
 ### Alias syntax
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/analyze.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/analyze.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Alias parameters

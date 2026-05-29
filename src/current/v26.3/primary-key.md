@@ -18,7 +18,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 ### Column level
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/primary_key_column_level.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/primary_key_column_level.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
  Parameter | Description
@@ -46,7 +46,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 ### Table level
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/primary_key_table_level.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/primary_key_table_level.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
  Parameter | Description

@@ -18,7 +18,7 @@ To run `SHOW INSPECT ERRORS`, the user must have:
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_inspect_errors.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/show_inspect_errors.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

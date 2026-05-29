@@ -22,7 +22,7 @@ Users with the [`admin` role]({% link {{ page.version.version }}/security-refere
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_create_external_connections.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/show_create_external_connections.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters

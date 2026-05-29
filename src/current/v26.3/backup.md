@@ -73,7 +73,7 @@ See the [Required privileges](#required-privileges) section for the updated priv
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/backup.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/backup.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

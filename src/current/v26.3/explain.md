@@ -29,7 +29,7 @@ For more information about indexing and table scans, see [Find the Indexes and K
 
 ## Synopsis
 
-<div>{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/explain.html{% endcapture %}{% include {{ diagram_include }} %}</div>
+<div>{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/explain.html{% endcapture %}{% include {{ diagram_include }} %}</div>
 
 ## Required privileges
 

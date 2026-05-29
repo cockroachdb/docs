@@ -18,7 +18,7 @@ You can use *replication zones* to control the number and location of replicas f
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_zone_partition.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/alter_zone_partition.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Required privileges

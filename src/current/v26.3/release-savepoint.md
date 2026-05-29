@@ -10,7 +10,7 @@ The `RELEASE SAVEPOINT` statement commits the [nested transaction]({% link {{ pa
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/release_savepoint.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/release_savepoint.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Required privileges

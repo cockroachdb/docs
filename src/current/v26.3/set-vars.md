@@ -28,7 +28,7 @@ The `SET` statement can set a session variable for the duration of the current s
 ### SET SESSION
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/set_session.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/set_session.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -38,7 +38,7 @@ By default, session variables are set for the duration of the current session. A
 ### SET LOCAL
 
 <div>
-  {% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/set_local.html{% endcapture %}{% include {{ diagram_include }} %}
+  {% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/set_local.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 {{site.data.alerts.callout_info}}

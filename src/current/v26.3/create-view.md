@@ -20,7 +20,7 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_view.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_view.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

@@ -21,7 +21,7 @@ You can also add the `DEFAULT` value constraint to an existing table through [`A
 {{site.data.alerts.end}}
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/default_value_column_level.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/default_value_column_level.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
  Parameter | Description

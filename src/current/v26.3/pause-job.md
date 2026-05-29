@@ -30,13 +30,13 @@ For changefeeds, users with the [`CHANGEFEED`]({% link {{ page.version.version }
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/pause_job.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/pause_job.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Pause all jobs by type
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/pause_all_jobs.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/pause_all_jobs.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

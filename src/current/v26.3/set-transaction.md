@@ -14,7 +14,7 @@ The `SET TRANSACTION` [statement]({% link {{ page.version.version }}/sql-stateme
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/set_transaction.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/set_transaction.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Required privileges

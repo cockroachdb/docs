@@ -15,7 +15,7 @@ To drop a trigger, the user must be the owner of the table on which the trigger 
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/drop_trigger.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/drop_trigger.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

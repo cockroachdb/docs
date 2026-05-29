@@ -43,7 +43,7 @@ GRANT USAGE ON EXTERNAL CONNECTION backup_bucket TO user;
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_external_connection.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_external_connection.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters

@@ -21,7 +21,7 @@ For an example, see [Grant default privileges to a specific role](#grant-default
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_default_privileges.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/alter_default_privileges.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters

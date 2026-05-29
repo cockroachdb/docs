@@ -32,7 +32,7 @@ You can define `UNIQUE` constraints at the [table level](#table-level) and at th
 ### Table level
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/unique_table_level.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/unique_table_level.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 Parameter | Description
@@ -58,7 +58,7 @@ Parameter | Description
 ### Column level
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/unique_column_level.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/unique_column_level.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 Parameter | Description

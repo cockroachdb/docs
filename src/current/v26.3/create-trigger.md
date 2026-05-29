@@ -15,7 +15,7 @@ To create a trigger, a user must have the `TRIGGER` [privilege]({% link {{ page.
 ## Synopsis
 
 <div>
-{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_trigger.html{% endcapture %}{% include {{ diagram_include }} %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_trigger.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
