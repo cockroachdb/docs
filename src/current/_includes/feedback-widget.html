@@ -546,6 +546,27 @@
   margin-top: 4px;
   line-height: 1.4;
 }
+
+  /* Hide floating feedback button on mobile/tablet — accessible via sidebar instead */
+  @media (max-width: 991.98px) {
+    #sticky-rating-btn {
+      display: none;
+    }
+
+    /* When feedback overlay is opened via sidebar button on mobile, make it full-width */
+    #feedback-overlay {
+      bottom: 0;
+      right: 0;
+      left: 0;
+      width: 100%;
+      max-width: 100%;
+      z-index: 1070;
+    }
+
+    #feedback-window {
+      border-radius: 12px 12px 0 0;
+    }
+  }
 </style>
 
 <!-- Script -->

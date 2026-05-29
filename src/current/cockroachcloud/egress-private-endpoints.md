@@ -17,7 +17,8 @@ CockroachDB {{ site.data.products.cloud }} supports egress private endpoints wit
 - [Amazon Virtual Private Cloud (AWS VPC)](https://aws.amazon.com/vpc/)
 - [Amazon Managed Streaming for Apache Kafka (MSK)](https://aws.amazon.com/msk/) (MSK Provisioned only. MSK Serverless is not supported.)
 - [Google Cloud VPC Private Service Connect (GCP PSC)](https://cloud.google.com/vpc/docs/private-service-connect)
-- [Confluent Cloud on GCP or AWS](https://www.confluent.io/confluent-cloud/)
+- [Azure Private Link Service (PLS)](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview)
+- [Confluent Cloud on GCP, AWS, or Azure](https://www.confluent.io/confluent-cloud/)
 
 {{site.data.alerts.callout_info}}
 Billing for egress private endpoint usage is based on bytes processed over the endpoint, which includes the cloud provider's per-GB data processing fees and any applicable data transfer charges. There is no additional markup from Cockroach Labs. These charges appear as separate line items on your invoice under **Private endpoint - bytes processed**.
@@ -87,9 +88,30 @@ The following prerequisites apply to the Google Cloud VPC service:
 
 - Enable [consumer global access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#compatibility) on the service load balancer or forwarding rule.
 
+### Azure Private Link Service
+
+The following prerequisites apply to Azure Private Link Service (PLS):
+
+- An [Azure Private Link Service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) backed by a [Standard SKU Internal Load Balancer](https://learn.microsoft.com/en-us/azure/load-balancer/skus) must exist in your Azure subscription. Basic SKU load balancers do not support the Private Link Service.
+
+- The Private Link Service must be in the same Azure region as the CockroachDB {{ site.data.products.cloud }} cluster region where the endpoint is created. Cross-region connections are not supported in Azure.
+
+- The CockroachDB {{ site.data.products.cloud }} Azure subscription does not need to be pre-authorized on your Private Link Service. By default, after CockroachDB {{ site.data.products.cloud }} creates the private endpoint, the connection appears in the Pending state on your PLS and must be [approved manually](#connection-approval).
+
+  - To prevent the need for manual approval, you can add CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list during PLS creation.
+  
+      You can use the following API call to retrieve your CockroachDB {{ site.data.products.cloud }} Azure subscription ID:
+  
+      {% include_cached copy-clipboard.html %}
+      ~~~ shell
+      curl --request GET \
+        --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+        --header "Authorization: Bearer {secret_key}" | jq .account_id
+      ~~~
+
 ### Confluent Cloud
 
-You can configure egress private endpoints to connect to an AWS or GCP private service configured in a Confluent account. Endpoint creation follows the same process and syntax as for AWS or GCP.
+You can configure egress private endpoints to connect to an AWS, GCP, or Azure private service configured in a Confluent account. Endpoint creation follows the same process and syntax as for AWS, GCP, or Azure.
 
 Confluent Cloud requires a custom DNS configuration due to the TLS certificates provisioned for their Kafka clusters. Collect the required domain names from Confluent. After the endpoint is created, [configure custom DNS records](#configure-custom-dns) for the cluster.
 
@@ -103,8 +125,14 @@ A user with the [Cluster Admin]({% link cockroachcloud/authorization.md %}#clust
     - **AWS VPC**: The AWS private service name.
     - **MSK**: The MSK-provisioned cluster's Amazon Resource Name (ARN).
     - **GCP PSC**: The GCP service attachment.
+    - **Azure Private Link Service**: Either the Azure Private Link Service resource ID (recommended) or the PLS alias.
+        - Resource ID format: `/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Network/privateLinkServices/{pls-name}`
+        - Alias format: `{prefix}.{guid}.{region}.azure.privatelinkservice`
+        - To find these values:
+            - Portal: Navigate to your Private Link Service > **Settings** > **Properties** for the resource ID, or **Overview** > **Alias** for the alias.
+            - CLI: `az network private-link-service show --name {pls-name} --resource-group {rg} --query '{id:id, alias:alias}'`
 - `target_service_type`: Description of the service type, dependent on the service and authentication method:
-    - **AWS VPC** or **GCP PSC**: Set to `PRIVATE_SERVICE`.
+    - **AWS VPC**, **GCP PSC**, or **Azure Private Link Service**: Set to `PRIVATE_SERVICE`.
     - **MSK** with SASL/SCRAM authentication: Set to `MSK_SASL_SCRAM`.
     - **MSK** with IAM access control: Set to `MSK_SASL_IAM`.
     - **MSK** with mutual TLS authentication: Set to `MSK_TLS`.
@@ -185,6 +213,22 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 }'
 ~~~
 
+#### Azure private service endpoint
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
+-X POST \
+-H "Authorization: Bearer {secret_key}" \
+-H 'Content-Type: application/json' \
+-d '{
+  "cluster_id": "{cluster_id}",
+  "region": "eastus",
+  "target_service_identifier": "/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Network/privateLinkServices/{pls-name}",
+  "target_service_type": "PRIVATE_SERVICE"
+}'
+~~~
+
 #### Example response
 
 ~~~ json
@@ -198,9 +242,23 @@ curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-
 }
 ~~~
 
-{{site.data.alerts.callout_info}}
+### Connection approval
+
 Depending on the cloud service, there may be an additional step necessary to manually accept the connection on the remote side.
-{{site.data.alerts.end}}
+
+#### Approve the endpoint connection in Azure
+
+This step only applies if you did not add CockroachDB {{ site.data.products.cloud }}'s Azure subscription ID to your PLS auto-approval list. To configure auto-approval, refer the [Azure Private Link Service prerequisites](#azure-private-link-service) on this page. 
+
+To approve the connection using the Azure portal:
+
+1. Search for **Private Link**, select **Private link services**, and select your service.
+2. Under **Settings**, select **Private endpoint connections**.
+3. Select the pending connection and click **Approve**.
+
+To approve the connection using the Azure CLI:
+
+ - Refer to the [Azure Private Link documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-cli#approve-a-private-endpoint-connection-1) for the required flags for the command `az network private-endpoint-connection approve`.
 
 ### Configure custom DNS
 
