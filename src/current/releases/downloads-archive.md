@@ -144,7 +144,6 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
     <button id="mac" class="filter-button" data-scope="mac">Mac</button>
     <button id="windows" class="filter-button" data-scope="windows">Windows</button>
     <button id="docker" class="filter-button" data-scope="docker">Docker</button>
-    <button id="source" class="filter-button" data-scope="source">Source</button>
 </div>
 
             {% for s in sections %} {% comment %} For each major version, iterate through the sections. {% endcomment %}
@@ -515,62 +514,8 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
             </table>
         </section>
         
-        <section class="filter-content" markdown="1" data-scope="source">
-            <p>The source code for CockroachDB is hosted in the <a href="https://github.com/cockroachdb/cockroach/releases/" class="binary-link">cockroachdb/cockroach</a> repository on Github.</p>
-            <table class="release-table">
-            <thead>
-                <tr>
-                    <td>Version</td>
-                    
-                    <td>Date</td>
-                    <td>Source</td>
-                </tr>
-            </thead>
-            <tbody>
-                {% for r in unsupported_releases %}
-                    {% assign current_patch_string = '' %}
-                    {% assign current_patch = nil %}
-                    {% assign in_lts = false %}
-                    {% if has_lts_releases == true and s == "Production" %}
-                        {% capture current_patch_string %}{{ r.release_name | split: '.' | shift | shift }}{% endcapture %}
-                        {% assign current_patch = current_patch_string | times: 1 %}
-                        {% assign comparison = current_patch | minus: lts_patch %}
-                        {% unless comparison < 0 %}
-                            {% assign in_lts = true %}
-                        {% endunless %}
-                    {% endif %}
-        
-                <tr>
-                    <td>
-                        <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts %}{{ lts_link }}{% endif %}
-                    </td>
-                   
-                    <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-                    {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
-                    <td><span class="badge badge-gray">Withdrawn</span></td>
-                      {% continue %}
-                    {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
-                    <td><span>{{ r.cloud_only_message_short }}</span></td>
-                        {% continue %}
-                    {% elsif version_past_binary_removal_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
-                    <td><span>{{ is_not_downloadable_message }}</span></td>
-                        {% continue %}
-                    {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
-                    <td>
-                        {% if r.source == true %}
-                        <a class="external" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ r.release_name }}" class="binary-link">View on Github</a>
-                        {% else %}
-                        N/A
-                        {% endif %}
-                    </td>
-                    {% endif %}
-                </tr>
-                {% endfor %} {% comment %}for release in releases{% endcomment %}
-            </tbody>
-            </table>
-        </section>
-        
-        
+
+
                 {% endif %} {% comment %}if unsupported_releases.size > 0{% endcomment %}
             {% endfor %} {% comment %}for s in sections {% endcomment %}
         {% endif %} {% comment %}if is_unsupported or has_unsupported_releases{% endcomment %}

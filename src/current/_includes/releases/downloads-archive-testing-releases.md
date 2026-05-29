@@ -33,7 +33,6 @@ Testing releases are not qualified for production use and not eligible for suppo
     <button id="mac" class="filter-button" data-scope="mac">Mac</button>
     <button id="windows" class="filter-button" data-scope="windows">Windows</button>
     <button id="docker" class="filter-button" data-scope="docker">Docker</button>
-    <button id="source" class="filter-button" data-scope="source">Source</button>
 </div>
 
 {% comment %}Determine if any testing releases have ARM support{% endcomment %}
@@ -200,36 +199,6 @@ Docker images for CockroachDB are published on [Docker Hub](https://hub.docker.c
             N/A
             {% else %}
             <code>{{ r.docker.docker_image }}:{{ r.release_name }}</code>
-            {% endif %}
-        </td>
-    </tr>
-{% endfor %}
-</tbody>
-</table>
-</section>
-
-<section class="filter-content" markdown="1" data-scope="source">
-<p>The source code for CockroachDB is hosted in the <a href="https://github.com/cockroachdb/cockroach/releases/" class="binary-link">cockroachdb/cockroach</a> repository on Github.</p>
-<table class="release-table">
-<thead>
-    <tr>
-        <td>Version</td>
-        <td>Date</td>
-        <td>Source</td>
-    </tr>
-</thead>
-<tbody>
-{% for r in testing_releases %}
-    <tr>
-        <td>
-            {{ r.release_name }}
-        </td>
-        <td>{{ r.release_date }}</td>
-        <td>
-            {% if r.source == true %}
-            <a class="external" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ r.release_name }}" class="binary-link">View on Github</a>
-            {% else %}
-            N/A
             {% endif %}
         </td>
     </tr>
