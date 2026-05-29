@@ -88,13 +88,13 @@
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
 	~~~ json
-	{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["migration_schema.employees","migration_schema.payments","migration_schema.payments"],"cdc_cursor":"0/3F41E40","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
+	{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["migration_schema.employees","migration_schema.payments","migration_schema.payments"],"skipped_unmigratable_tables":[],"cdc_cursor":"0/3F41E40","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 	~~~
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="mysql">
 	~~~ json
-	{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["public.employees","public.payments","public.payments"],"cdc_cursor":"4c658ae6-e8ad-11ef-8449-0242ac140006:1-29","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
+	{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["public.employees","public.payments","public.payments"],"skipped_unmigratable_tables":[],"cdc_cursor":"4c658ae6-e8ad-11ef-8449-0242ac140006:1-29","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 	~~~
 
 	{% if page.name contains "delta" %}
@@ -109,7 +109,7 @@
 
 	<section class="filter-content" markdown="1" data-scope="oracle">
 	~~~ json
-	{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["migration_schema.employees","migration_schema.payments","migration_schema.payments"],"cdc_cursor":"backfillFromSCN=26685444,scn=26685786","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
+	{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["migration_schema.employees","migration_schema.payments","migration_schema.payments"],"skipped_unmigratable_tables":[],"cdc_cursor":"backfillFromSCN=26685444,scn=26685786","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 	~~~
 
 	{% if page.name contains "delta" %}
