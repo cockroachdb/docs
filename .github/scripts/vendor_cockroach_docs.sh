@@ -20,7 +20,6 @@ GENERATED_DIR="$REPO_ROOT/src/current/_includes/cockroach-generated"
 TOOLING_DIR="$REPO_ROOT/src/current/_includes"
 
 COCKROACH_RAW="https://raw.githubusercontent.com/cockroachdb/cockroach"
-OPERATOR_RAW="https://raw.githubusercontent.com/cockroachdb/cockroach-operator"
 
 # Generated doc files to fetch per branch (source path under docs/generated/).
 GENERATED_FILES=(
@@ -208,17 +207,14 @@ PYEOF
 # ---------------------------------------------------------------------------
 # 3. Update cockroach-operator version
 # ---------------------------------------------------------------------------
+# NOTE: The operator version was previously fetched from
+# cockroachdb/cockroach-operator/master/version.txt and written to
+# latest_operator_version.md.  That file has been removed; the operator
+# version is now maintained manually.  Kept as a no-op placeholder so that
+# callers do not break.
 
 update_operator_version() {
-  log "Fetching cockroach-operator version"
-  local version
-  version="$(curl -sfL "$OPERATOR_RAW/master/version.txt" | tr -d '[:space:]')" \
-    || { warn "Failed to fetch operator version"; return 1; }
-
-  log "  operator version = $version"
-  local dest="$TOOLING_DIR/latest_operator_version.md"
-  echo -n "$version" > "$dest"
-  log "  Updated latest_operator_version.md"
+  log "Skipping operator version (maintained manually)"
 }
 
 # ---------------------------------------------------------------------------

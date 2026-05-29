@@ -130,5 +130,5 @@ CockroachDB docgen session variables table to emit per-variable anchors.
 **Read-only** indicates whether the variable can be changed in a session with [`SET`]({% link {{ page.version.version }}/set-vars.md %}). **Cluster Setting** identifies the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) that supplies the default value for the cluster, when applicable.
 
 <table>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/session_vars.md ||<table>||</table> %}
+{% capture cockroach_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql/session_vars_table.html{% endcapture %}{% include {{ cockroach_include }} %}
 </table>
