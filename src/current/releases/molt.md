@@ -23,6 +23,21 @@ Cockroach Labs recommends using the latest available version of each tool. Refer
     <button class="filter-button" data-scope="replicator"><code>replicator</code></button>
 </div>
 
+### May 28, 2026
+
+<section class="filter-content" markdown="1" data-scope="molt">
+`molt` 1.4.1 is [available](#installation):
+
+- MOLT Fetch now logs structured telemetry events. Opt out with the `--opt-out-telemetry` flag.
+- MOLT Fetch no longer counts tables that cannot be migrated (no primary key or source/target collation mismatch) toward the `fetch complete` summary's `num_tables` and `tables` fields. Such tables are now reported separately in a new `skipped_unmigratable_tables` field.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="replicator">
+`replicator` 1.3.4 is [available](#installation):
+
+- Updated the Replicator log format to include the year in all log timestamps.
+</section>
+
 ### April 30, 2026
 
 <section class="filter-content" markdown="1" data-scope="molt">
