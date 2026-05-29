@@ -48,7 +48,7 @@ Here is the [`CREATE DATABASE`]({% link {{ page.version.version }}/create-databa
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START database ||-- END database %}
+> {% include example-apps/cockroachlabs/movr-flask/v2-doc-includes/dbinit__database.sql %}
 ~~~
 
 In this example, `movr` has the following [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions), which correspond to regions in Google Cloud:
@@ -77,14 +77,14 @@ Here is the `CREATE TABLE` statement for the `users` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START users ||-- END users %}
+> {% include example-apps/cockroachlabs/movr-flask/v2-doc-includes/dbinit__users.sql %}
 ~~~
 
 ## The `vehicles` table
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START vehicles ||-- END vehicles %}
+> {% include example-apps/cockroachlabs/movr-flask/v2-doc-includes/dbinit__vehicles.sql %}
 ~~~
 
 The `vehicles` table has a [foreign key constraint]({% link {{ page.version.version }}/foreign-key.md %}) on the `users` table, for the `city` and `owner_id` columns. This guarantees that a vehicle is registered to a particular user (i.e., an "owner") in the city where that user is registered.
@@ -93,7 +93,7 @@ The `vehicles` table has a [foreign key constraint]({% link {{ page.version.vers
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START rides ||-- END rides %}
+> {% include example-apps/cockroachlabs/movr-flask/v2-doc-includes/dbinit__rides.sql %}
 ~~~
 
 Like the `vehicles` table, the `rides` table has foreign key constraints. These constraints are on the `users` and the `vehicles` tables.

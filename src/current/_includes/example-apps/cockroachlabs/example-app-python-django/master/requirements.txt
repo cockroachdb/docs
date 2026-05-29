@@ -1,0 +1,3 @@
+psycopg2-binary
+django==5.0.1
+django-cockroachdb==5.0
