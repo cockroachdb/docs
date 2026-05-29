@@ -27,9 +27,6 @@ NB. This was waiting on a fix to DOC-12125 when this doc was being
 written. Now there is additional followup work (tracked in DOC-13653)
 to update the parameters and potentially the diagram.
 
-<div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_policy.html %}
-</div>
 
 -->
 

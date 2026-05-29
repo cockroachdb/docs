@@ -42,5 +42,5 @@ TODO: clean up the SQL diagrams not to link to these missing nonterminals.
 <a id="query"></a>
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/stmt_block.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/stmt_block.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>

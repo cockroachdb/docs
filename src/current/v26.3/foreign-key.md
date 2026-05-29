@@ -130,7 +130,7 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 ### Column level
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/foreign_key_column_level.html %}</div>
+<div>{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/foreign_key_column_level.html{% endcapture %}{% include {{ diagram_include }} %}</div>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -160,7 +160,7 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 ### Table level
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/foreign_key_table_level.html %}</div>
+<div>{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/foreign_key_table_level.html{% endcapture %}{% include {{ diagram_include }} %}</div>
 
 | Parameter | Description |
 |-----------|-------------|

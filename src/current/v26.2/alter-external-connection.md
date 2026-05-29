@@ -32,7 +32,7 @@ GRANT UPDATE ON EXTERNAL CONNECTION backup_bucket TO user;
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_external_connection.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_external_connection.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters
