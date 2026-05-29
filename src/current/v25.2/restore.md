@@ -279,7 +279,7 @@ CockroachDB does **not** support incremental-only restores.
 
 - {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
 
-The ordering of regions and how region matching is determined is a known limitation. See the [Known Limitations](#known-limitations) section for the tracking issues on limitations around `RESTORE` and multi-region support.
+The ordering of regions and how region matching is determined is a known limitation.
 
 For more on multi-region databases, see the [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).
 

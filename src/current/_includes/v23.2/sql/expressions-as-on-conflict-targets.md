@@ -36,5 +36,3 @@ INSERT INTO t VALUES (1, 2) ON CONFLICT ((a + b)) DO UPDATE SET a = 10
                                     ^
 HINT: try \h INSERT
 ~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/67893)

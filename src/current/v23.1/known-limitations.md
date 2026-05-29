@@ -14,31 +14,19 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 - [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) does not collect inverted statistics on columns that are indexed with both forward and inverted indexes; only forward statistics are collected for those columns.
 
-    Tracking GitHub issue
-
 - [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) does not support the `AS OF SYSTEM TIME` syntax. Use [`CREATE STATISTICS ... AS OF SYSTEM TIME`]({% link {{ page.version.version }}/create-statistics.md %}#create-statistics-as-of-a-given-time) instead.
-
-    Tracking GitHub issue
 
 ### Limitations for index recommendations
 
 - [Index]({% link {{ page.version.version }}/indexes.md %}) recommendations are not aware of [hash sharding]({% link {{ page.version.version }}/hash-sharded-indexes.md %}).
 
-    Tracking GitHub issue
-
 - CockroachDB does not support [index]({% link {{ page.version.version }}/indexes.md %}) recommendations on [`REGIONAL BY ROW` tables]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables).
-
-    Tracking GitHub issue
 
 ### Limitations for `SELECT FOR UPDATE`
 
 - [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
 
-    Tracking GitHub issue
-
 - [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
-
-    Tracking GitHub issue
 
 ### Limitations for composite types
 
@@ -50,31 +38,21 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 [Common table expressions]({% link {{ page.version.version }}/common-table-expressions.md %}) (CTE), recursive or non-recursive, are not supported in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
 
-Tracking GitHub issue
-
 ### Low estimated Request Units are rounded to zero
 
 The [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
-
-Tracking GitHub issue
 
 ### `AS OF SYSTEM TIME` does not support placeholders
 
 CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string.
 
-Tracking GitHub issue
-
 ### `null_ordered_last` does not produce correct results with tuples
 
 By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.
 
-Tracking GitHub issue
-
 ### Inverted join for `tsvector` and `tsquery` types is not supported
 
 CockroachDB cannot index-accelerate queries with `@@` predicates when both sides of the operator are variables.
-
-Tracking GitHub issue
 
 ### No guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if `node decommission` is interrupted
 
@@ -84,8 +62,6 @@ There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` i
 - The `cockroach node decommission --wait=none` command was run
 
 This is because the state flip is effected by the CLI program at the end. Only the CLI (or its underlying API call) is able to finalize the "decommissioned" state. If the command is interrupted, or `--wait=none` is used, the state will only flip to "decommissioned" when the CLI program is run again after decommissioning has done all its work.
-
-Tracking GitHub issue
 
 ### Execution locality in changefeeds
 
@@ -101,15 +77,9 @@ Tracking GitHub issue
 
 - Expressions (column, index, constraint) in tables.
 
-    Tracking GitHub issue
-
 - Views.
 
-    Tracking GitHub issue
-
 - Other user-defined functions.
-
-    Tracking GitHub issue
 
 #### Limitations on expressions allowed within UDFs
 
@@ -117,15 +87,9 @@ The following are not currently allowed within the body of a [UDF]({% link {{ pa
 
 - Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`.
 
-    Tracking GitHub issue
-
 - Common table expressions (CTEs).
 
-    Tracking GitHub issue
-
 - References to other user-defined functions.
-
-    Tracking GitHub issue
 
 ### Table-level restore will not restore user-defined functions
 
@@ -134,8 +98,6 @@ The following are not currently allowed within the body of a [UDF]({% link {{ pa
 ### Incorrect query plans for partitions with `NULL` values
 
 In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so it is not likely to occur in production environments.
-
-Tracking GitHub issue
 
 ### Limitations for `DROP OWNED BY`
 
@@ -148,8 +110,6 @@ Tracking GitHub issue
 ### Spatial features disabled for ARM Macs
 
 [Spatial features]({% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#install-binary) or use the [Docker image]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#use-docker) distribution. This is expected to be resolved in an upcoming 22.2 patch release.
-
-GitHub tracking issue
 
 ### Limited SQL cursor support
 
@@ -165,13 +125,9 @@ The following PostgreSQL syntax and features are currently unsupported for [trig
 
 {% include {{ page.version.version }}/sql/trigram-unsupported-syntax.md %}
 
-Tracking GitHub Issue
-
 ### A multi-region table cannot be restored into a non-multi-region table
 
 You cannot [restore]({% link {{ page.version.version }}/restore.md %}) a multi-region table into a non-multi-region table.
-
-Tracking GitHub Issue
 
 ### Statements containing multiple modification subqueries of the same table are disallowed
 
@@ -182,25 +138,17 @@ Statements containing multiple modification subqueries mutating the same row cou
 
 Note that if multiple mutations inside the same statement affect different tables with [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) relations and `ON CASCADE` clauses between them, the results will be different from what is expected in PostgreSQL.
 
-Tracking GitHub Issue
-
 ### `transaction_rows_read_err` and `transaction_rows_written_err` do not halt query execution
 
 The `transaction_rows_read_err` and `transaction_rows_written_err` [session settings]({% link {{ page.version.version }}/set-vars.md %}) limit the number of rows read or written by a single [transaction]({% link {{ page.version.version }}/transactions.md %}#limit-the-number-of-rows-written-or-read-in-a-transaction). These session settings will fail the transaction with an error, but not until the current query finishes executing and the results have been returned to the client.
-
-Tracking GitHub Issue
 
 ### `sql.guardrails.max_row_size_err` misses indexed virtual computed columns
 
 The `sql.guardrails.max_row_size_err` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows.
 
-Tracking GitHub Issue
-
 ### CockroachDB does not allow inverted indexes with `STORING`
 
 CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{ page.version.version }}/create-index.md %}#store-columns).
-
-Tracking GitHub Issue
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
@@ -351,15 +299,11 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 (54 rows)
 ```
 
-Tracking GitHub Issue
-
 ### Using `RESTORE` with multi-region table localities
 
 - {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 
 - {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
-
-Tracking GitHub Issue
 
 ### `SET` does not `ROLLBACK` in a transaction
 
@@ -395,8 +339,8 @@ Tracking GitHub Issue
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
 {% include {{ page.version.version }}/known-limitations/forecasted-stats-limitations.md %}
-- When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics. Tracking GitHub issue
-- CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}). Tracking GitHub issue
+- When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics.
+- CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}).
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
@@ -408,57 +352,35 @@ For a list of known differences in syntax and behavior between CockroachDB and P
 
 CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON CONFLICT DO UPDATE`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause), and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification.
 
-Tracking GitHub Issue
-
 ### Spatial support limitations
 
 CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}), with the following limitations:
 
 - Not all [PostGIS spatial functions](https://postgis.net/docs/reference.html) are supported.
 
-    Tracking GitHub Issue
-
 - The `AddGeometryColumn` [spatial function]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions) only allows constant arguments.
-
-    Tracking GitHub Issue
 
 - The `AddGeometryColumn` spatial function only allows the `true` value for its `use_typmod` parameter.
 
-    Tracking GitHub Issue
-
 - CockroachDB does not support the `@` operator. Instead of using `@` in spatial expressions, we recommend using the inverse, with `~`. For example, instead of `a @ b`, use `b ~ a`.
-
-    Tracking GitHub Issue
 
 - CockroachDB does not yet support [`INSERT`]({% link {{ page.version.version }}/insert.md %})s into the [`spatial_ref_sys` table]({% link {{ page.version.version }}/architecture/glossary.md %}#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f).
 
-    Tracking GitHub Issue
-
 - CockroachDB does not yet support Triangle or [`TIN`](https://wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
-
-    Tracking GitHub Issue
 
 - CockroachDB does not yet support Curve, MultiCurve, or CircularString spatial shapes.
 
-    Tracking GitHub Issue
-
 - CockroachDB does not yet support [k-nearest neighbors](https://wikipedia.org/wiki/K-nearest_neighbors_algorithm).
-
-    Tracking GitHub Issue
 
 - CockroachDB does not support using [schema name prefixes]({% link {{ page.version.version }}/sql-name-resolution.md %}#how-name-resolution-works) to refer to [data types]({% link {{ page.version.version }}/data-types.md %}) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`).
 
     Note that, in [`IMPORT PGDUMP`]({% link molt/migrate-to-cockroachdb.md %}) output, [`GEOMETRY` and `GEOGRAPHY`]({% link {{ page.version.version }}/export-spatial-data.md %}) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
-
-    Tracking GitHub Issue
 
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) of a table or database.
 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
-
-Tracking GitHub Issue
 
 ### `SHOW BACKUP` does not support symlinks for nodelocal
 
@@ -474,29 +396,19 @@ The use of tables with very large primary or secondary index keys (>32KB) can re
 
 To work around this issue, we recommend limiting the size of primary and secondary keys to 4KB, which you must account for manually. Note that most columns are 8B (exceptions being `STRING` and `JSON`), which still allows for very complex key structures.
 
-Tracking GitHub Issue
-
 ### Using `LIKE...ESCAPE` in `WHERE` and `HAVING` constraints
 
 CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g., `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used.
 
-Tracking GitHub Issue
-
-Tracking GitHub Issue
-
 ### Current sequence value not checked when updating min/max value
 
 Altering the minimum or maximum value of a series does not check the current value of a series. This means that it is possible to silently set the maximum to a value less than, or a minimum value greater than, the current value.
-
-Tracking GitHub Issue
 
 ### Using `default_int_size` session variable in batch of statements
 
 When setting the `default_int_size` [session variable]({% link {{ page.version.version }}/set-vars.md %}) in a batch of statements such as `SET default_int_size='int4'; SELECT 1::IN`, the `default_int_size` variable will not take affect until the next statement. This happens because statement parsing takes place asynchronously from statement execution.
 
 As a workaround, set `default_int_size` via your database driver, or ensure that `SET default_int_size` is in its own statement.
-
-Tracking GitHub Issue
 
 ### `COPY` syntax not supported by CockroachDB
 
@@ -509,8 +421,6 @@ Tracking GitHub Issue
 ### Placeholders in `PARTITION BY`
 
 {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
-
-Tracking GitHub Issue
 
 ### Dropping a single partition
 
@@ -544,8 +454,6 @@ It is currently not possible to [add a column]({% link {{ page.version.version }
 ERROR: nextval(): unimplemented: cannot evaluate scalar expressions containing sequence operations in this context
 SQLSTATE: 0A000
 ~~~
-
-Tracking GitHub Issue
 
 ### Available capacity metric in the DB Console
 
@@ -621,8 +529,6 @@ Many string operations are not properly overloaded for [collated strings]({% lin
 pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ~~~
 
-Tracking GitHub Issue
-
 ### Max size of a single column family
 
 When creating or updating a row, if the combined size of all values in a single [column family]({% link {{ page.version.version }}/column-families.md %}) exceeds the [max range size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes) for the table, the operation may fail, or cluster performance may suffer.
@@ -653,10 +559,8 @@ Transactions with [priority `HIGH`]({% link {{ page.version.version }}/transacti
 ERROR: unimplemented: cannot use ROLLBACK TO SAVEPOINT in a HIGH PRIORITY transaction containing DDL
 SQLSTATE: 0A000
 HINT: You have attempted to use a feature that is not yet implemented.
-See: cockroach#46414
+See: https://github.com/cockroachdb/cockroach/issues/46414
 ~~~
-
-Tracking GitHub Issue
 
 ### CockroachDB does not test for all connection failure scenarios
 
@@ -668,19 +572,13 @@ However, if there is no host at the target IP address, or if a firewall rule blo
 - Configure any active network firewalls to allow node-to-node traffic.
 - Verify that orchestration tools (e.g., Kubernetes) are configured to use the correct network connection information.
 
-Tracking GitHub Issue
-
 ### Some column-dropping schema changes do not roll back properly
 
 Some [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) that [drop columns]({% link {{ page.version.version }}/alter-table.md %}#drop-column) cannot be [rolled back]({% link {{ page.version.version }}/rollback-transaction.md %}) properly.
 
 In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change.
 
-Tracking GitHub Issue
-
 In other cases, the rollback will fail in such a way that will never be cleaned up properly, leaving the table descriptor in a state where no other schema changes can be run successfully.
-
-Tracking GitHub Issue
 
 To reduce the chance that a column drop will roll back incorrectly:
 

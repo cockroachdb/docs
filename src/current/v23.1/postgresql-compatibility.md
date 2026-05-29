@@ -27,7 +27,7 @@ The following PostgreSQL features are partially supported in CockroachDB {{ page
 
 ### Multiple active portals
 
-CockroachDB {{ page.version.version }} supports pgwire's multiple active portals as a [preview feature]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).  The feature is off by default, and can be enabled by setting the [session variable `multiple_active_portals_enabled`]({% link {{ page.version.version }}/set-vars.md %}#multiple-active-portals-enabled) to `true`. 
+CockroachDB {{ page.version.version }} supports pgwire's multiple active portals as a [preview feature]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).  The feature is off by default, and can be enabled by setting the [session variable `multiple_active_portals_enabled`]({% link {{ page.version.version }}/set-vars.md %}#multiple-active-portals-enabled) to `true`.
 
 When set to `true`, multiple portals can be open at the same time, with their execution interleaved with each other. In other words, these portals can be paused.
 

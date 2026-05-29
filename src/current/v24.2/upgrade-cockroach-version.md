@@ -336,13 +336,3 @@ In the event of catastrophic failure or corruption, it may be necessary to [rest
 - [View Version Details]({% link {{ page.version.version }}/cockroach-version.md %})
 - [Release notes for our latest version]({% link releases/{{page.version.version}}.md %})
 
-[#102961]: https://github.com/cockroachdb/cockroach/pull/102961
-[#104265]: https://github.com/cockroachdb/cockroach/pull/104265
-[#107474]: https://github.com/cockroachdb/cockroach/pull/107474
-[#106177]: https://github.com/cockroachdb/cockroach/pull/106177
-[#98308]: https://github.com/cockroachdb/cockroach/pull/98308
-[#105477]: https://github.com/cockroachdb/cockroach/pull/105477
-[#107903]: https://github.com/cockroachdb/cockroach/pull/107903
-[#108190]: https://github.com/cockroachdb/cockroach/pull/108190
-[#110649]: https://github.com/cockroachdb/cockroach/pull/110649
-[#114203]: https://github.com/cockroachdb/cockroach/pull/114203

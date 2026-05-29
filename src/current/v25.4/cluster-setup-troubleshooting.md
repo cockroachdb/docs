@@ -104,7 +104,7 @@ If you are trying to run all nodes on the same machine, you might get the follow
 #### Store directory already exists
 
 ~~~
-ERROR: could not cleanup temporary directories from record file: could not lock temporary directory /Users/amruta/go/src/github.com/cockroachdb/cockroach/cockroach-data/cockroach-temp301343769, may still be in use: IO error: While lock file: /Users/amruta/go/src/github.com/cockroachdb/cockroach/cockroach-data/cockroach-temp301343769/TEMP_DIR.LOCK: Resource temporarily unavailable
+ERROR: could not cleanup temporary directories from record file: could not lock temporary directory /cockroach-data/cockroach-temp301343769, may still be in use: IO error: While lock file: /cockroach-data/cockroach-temp301343769/TEMP_DIR.LOCK: Resource temporarily unavailable
 ~~~
 
 **Explanation:** When starting a new node on the same machine, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server and then tried to start another cluster using the same directory.
@@ -225,7 +225,7 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 #### TCP connection lingering
 
-If there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a [TCP handshake can linger](https://github.com/cockroachdb/cockroach/issues/53410) while the client network stack waits for a TCP packet in response to network requests.
+If there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a TCP handshake can linger while the client network stack waits for a TCP packet in response to network requests.
 
 **Explanation:** CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a `Connection refused` error. However, the scenario described above can cause connections to hang instead of failing immediately.
 

@@ -59,7 +59,7 @@ CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/d
 
 #### `CAST` expressions containing a subquery with an `ENUM` target are not supported
 
-Casting subqueries to ENUMs in views and UDFs is not supported. #108184
+Casting subqueries to ENUMs in views and UDFs is not supported. [#108184](https://github.com/cockroachdb/cockroach/issues/108184)
 
 #### Statements containing multiple modification subqueries of the same table are disallowed
 
@@ -68,13 +68,13 @@ Statements containing multiple modification subqueries mutating the same row cou
 - Set the `sql.multiple_modifications_of_table.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
 - Use the `enable_multiple_modifications_of_table` [session variable]({% link {{ page.version.version }}/set-vars.md %}).
 
-If multiple mutations inside the same statement affect different tables with [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) relations and `ON CASCADE` clauses between them, the results will be different from what is expected in PostgreSQL. #70731
+If multiple mutations inside the same statement affect different tables with [`FOREIGN KEY`]({% link {{ page.version.version }}/foreign-key.md %}) relations and `ON CASCADE` clauses between them, the results will be different from what is expected in PostgreSQL. [#70731](https://github.com/cockroachdb/cockroach/issues/70731)
 
 #### Using `default_int_size` session variable in batch of statements
 
 When setting the `default_int_size` [session variable]({% link {{ page.version.version }}/set-vars.md %}) in a batch of statements such as `SET default_int_size='int4'; SELECT 1::IN`, the `default_int_size` variable will not take effect until the next statement. Statement parsing is asynchronous with  statement execution.
 
-As a workaround, set `default_int_size` via your database driver, or ensure that `SET default_int_size` is in its own statement. #32846
+As a workaround, set `default_int_size` via your database driver, or ensure that `SET default_int_size` is in its own statement. [#32846](https://github.com/cockroachdb/cockroach/issues/32846)
 
 #### Overload resolution for collated strings
 
@@ -101,15 +101,15 @@ Many string operations are not properly overloaded for [collated strings]({% lin
 pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 ~~~
 
-#10679
+[#10679](https://github.com/cockroachdb/cockroach/issues/10679)
 
 #### Current sequence value not checked when updating min/max value
 
-Altering the minimum or maximum value of a series does not check the current value of a series. This means that it is possible to silently set the maximum to a value less than, or a minimum value greater than, the current value. #23719
+Altering the minimum or maximum value of a series does not check the current value of a series. This means that it is possible to silently set the maximum to a value less than, or a minimum value greater than, the current value. [#23719](https://github.com/cockroachdb/cockroach/issues/23719)
 
 #### `null_ordered_last` does not produce correct results with tuples
 
-By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL` values after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it does not work when the ordering column is a tuple. #93558
+By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL` values after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it does not work when the ordering column is a tuple. [#93558](https://github.com/cockroachdb/cockroach/issues/93558)
 
 ### Functions and procedures
 
@@ -159,10 +159,10 @@ Transactions with [priority `HIGH`]({% link {{ page.version.version }}/transacti
 ERROR: unimplemented: cannot use ROLLBACK TO SAVEPOINT in a HIGH PRIORITY transaction containing DDL
 SQLSTATE: 0A000
 HINT: You have attempted to use a feature that is not yet implemented.
-See: cockroach#46414
+See: https://github.com/cockroachdb/cockroach/issues/46414
 ~~~
 
-#46414
+[#46414](https://github.com/cockroachdb/cockroach/issues/46414)
 
 #### `CANCEL JOB` limitations
 
@@ -213,7 +213,7 @@ HINT: You have attempted to use a feature that is not yet implemented.
 See: https://go.crdb.dev/issue-v/42508/v24.2
 ~~~
 
-#42508
+[#42508](https://github.com/cockroachdb/cockroach/issues/42508)
 
 #### Dropping a column referenced by a partial index
 
@@ -240,9 +240,9 @@ When executing an [`ALTER TABLE ADD COLUMN`]({% link {{ page.version.version }}/
 
 Some [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) that [drop columns]({% link {{ page.version.version }}/alter-table.md %}#drop-column) cannot be [rolled back]({% link {{ page.version.version }}/rollback-transaction.md %}) properly.
 
-In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change. #46541
+In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change. [#46541](https://github.com/cockroachdb/cockroach/issues/46541)
 
-In other cases, the rollback will fail in such a way that will never be cleaned up properly, leaving the table descriptor in a state where no other schema changes can be run successfully. #47712
+In other cases, the rollback will fail in such a way that will never be cleaned up properly, leaving the table descriptor in a state where no other schema changes can be run successfully. [#47712](https://github.com/cockroachdb/cockroach/issues/47712)
 
 To reduce the chance that a column drop will roll back incorrectly:
 
@@ -278,7 +278,7 @@ As a workaround, you can either [manually split a table's columns into multiple 
 
 #### Placeholders in `PARTITION BY`
 
-{% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %} #19464
+{% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %} [#19464](https://github.com/cockroachdb/cockroach/issues/19464)
 
 #### Unsupported trigram syntax
 
@@ -294,7 +294,7 @@ The following PostgreSQL syntax and features are currently unsupported for [full
 
 #### CockroachDB does not allow inverted indexes with `STORING`
 
-CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{ page.version.version }}/create-index.md %}#store-columns). #88278
+CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{ page.version.version }}/create-index.md %}#store-columns). [#88278](https://github.com/cockroachdb/cockroach/issues/88278)
 
 #### Multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`
 
@@ -314,19 +314,19 @@ CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{
 
 CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}), with the following limitations:
 
-- Not all [PostGIS spatial functions](https://postgis.net/docs/reference.html) are supported. #49203
+- Not all [PostGIS spatial functions](https://postgis.net/docs/reference.html) are supported. [#49203](https://github.com/cockroachdb/cockroach/issues/49203)
 
-- The `AddGeometryColumn` [spatial function]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions) only allows constant arguments. #49402
+- The `AddGeometryColumn` [spatial function]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions) only allows constant arguments. [#49402](https://github.com/cockroachdb/cockroach/issues/49402)
 
-- The `AddGeometryColumn` spatial function only allows the `true` value for its `use_typmod` parameter. #49448
+- The `AddGeometryColumn` spatial function only allows the `true` value for its `use_typmod` parameter. [#49448](https://github.com/cockroachdb/cockroach/issues/49448)
 
-- CockroachDB does not support the `@` operator. Instead of using `@` in spatial expressions, we recommend using the inverse, with `~`. For example, instead of `a @ b`, use `b ~ a`. #56124
+- CockroachDB does not support the `@` operator. Instead of using `@` in spatial expressions, we recommend using the inverse, with `~`. For example, instead of `a @ b`, use `b ~ a`. [#56124](https://github.com/cockroachdb/cockroach/issues/56124)
 
-- CockroachDB does not yet support [`INSERT`]({% link {{ page.version.version }}/insert.md %})s into the [`spatial_ref_sys` table]({% link {{ page.version.version }}/architecture/glossary.md %}#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f). #55903
+- CockroachDB does not yet support [`INSERT`]({% link {{ page.version.version }}/insert.md %})s into the [`spatial_ref_sys` table]({% link {{ page.version.version }}/architecture/glossary.md %}#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f). [#55903](https://github.com/cockroachdb/cockroach/issues/55903)
 
-- CockroachDB does not yet support [k-nearest neighbors](https://wikipedia.org/wiki/K-nearest_neighbors_algorithm). #55227
+- CockroachDB does not yet support [k-nearest neighbors](https://wikipedia.org/wiki/K-nearest_neighbors_algorithm). [#55227](https://github.com/cockroachdb/cockroach/issues/55227)
 
-- CockroachDB does not support using [schema name prefixes]({% link {{ page.version.version }}/sql-name-resolution.md %}#how-name-resolution-works) to refer to [data types]({% link {{ page.version.version }}/data-types.md %}) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`). #56492
+- CockroachDB does not support using [schema name prefixes]({% link {{ page.version.version }}/sql-name-resolution.md %}#how-name-resolution-works) to refer to [data types]({% link {{ page.version.version }}/data-types.md %}) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`). [#56492](https://github.com/cockroachdb/cockroach/issues/56492)
 
 - {% include {{ page.version.version }}/known-limitations/srid-4326-limitations.md %}
 
@@ -340,9 +340,9 @@ Refer to [`OID` best practices]({% link {{ page.version.version }}/oid.md %}#bes
     - {% include {{page.version.version}}/cdc/avro-udt-composite.md %}
     - {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
 
-- Updating subfields of composite types using dot syntax results in a syntax error. #102984
+- Updating subfields of composite types using dot syntax results in a syntax error. [#102984](https://github.com/cockroachdb/cockroach/issues/102984)
 
-- Tuple elements cannot be accessed without enclosing the [composite variable]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) name in parentheses. For example, `(OLD).column` and `(NEW).column` when used in [triggers]({% link {{ page.version.version }}/triggers.md %}). #114687
+- Tuple elements cannot be accessed without enclosing the [composite variable]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) name in parentheses. For example, `(OLD).column` and `(NEW).column` when used in [triggers]({% link {{ page.version.version }}/triggers.md %}). [#114687](https://github.com/cockroachdb/cockroach/issues/114687)
 
 #### `ALTER TYPE` limitations
 
@@ -386,7 +386,7 @@ However, if there is no host at the target IP address, or if a firewall rule blo
 - Configure any active network firewalls to allow node-to-node traffic.
 - Verify that orchestration tools (e.g., Kubernetes) are configured to use the correct network connection information.
 
-#53410
+[#53410](https://github.com/cockroachdb/cockroach/issues/53410)
 
 #### No guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if `node decommission` is interrupted
 
@@ -395,7 +395,7 @@ There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` i
 - The `cockroach node decommission --wait-all` command was run and then interrupted
 - The `cockroach node decommission --wait=none` command was run
 
-This is because the state flip is effected by the CLI program at the end. Only the CLI (or its underlying API call) is able to finalize the "decommissioned" state. If the command is interrupted, or `--wait=none` is used, the state will only flip to "decommissioned" when the CLI program is run again after decommissioning has done all its work. #94430
+This is because the state flip is effected by the CLI program at the end. Only the CLI (or its underlying API call) is able to finalize the "decommissioned" state. If the command is interrupted, or `--wait=none` is used, the state will only flip to "decommissioned" when the CLI program is run again after decommissioning has done all its work. [#94430](https://github.com/cockroachdb/cockroach/issues/94430)
 
 #### Simultaneous client connections and running queries on a single node
 
@@ -431,7 +431,7 @@ As a workaround, [execute the file from the command line]({% link {{ page.versio
 
 #### Spatial features disabled for ARM Macs
 
-[Spatial features]({% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#install-binary) or use the [Docker image]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#use-docker) distribution. GitHub tracking issue
+[Spatial features]({% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#install-binary) or use the [Docker image]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}#use-docker) distribution.
 
 #### Logging system limitations
 
@@ -476,7 +476,7 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 
 The [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) of a table or database.
 
-As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups. #44396
+As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups. [#44396](https://github.com/cockroachdb/cockroach/issues/44396)
 
 #### `SHOW BACKUP` does not support symlinks for nodelocal
 
@@ -517,8 +517,8 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 
 The SQL optimizer has limitations under certain isolation levels:
 
-- The new implementation of `SELECT FOR UPDATE` is not yet the default setting under `SERIALIZABLE` isolation. It can be used under `SERIALIZABLE` isolation by setting the `optimizer_use_lock_op_for_serializable` [session setting]({% link {{ page.version.version }}/session-variables.md %}) to `true`. #114737
-- `SELECT FOR UPDATE` does not lock completely-`NULL` column families in multi-column-family tables. #116836
+- The new implementation of `SELECT FOR UPDATE` is not yet the default setting under `SERIALIZABLE` isolation. It can be used under `SERIALIZABLE` isolation by setting the `optimizer_use_lock_op_for_serializable` [session setting]({% link {{ page.version.version }}/session-variables.md %}) to `true`. [#114737](https://github.com/cockroachdb/cockroach/issues/114737)
+- `SELECT FOR UPDATE` does not lock completely-`NULL` column families in multi-column-family tables. [#116836](https://github.com/cockroachdb/cockroach/issues/116836)
 
 #### Statistics limitations
 
@@ -527,7 +527,7 @@ The SQL optimizer has limitations under certain isolation levels:
 
 #### Incorrect query plans for partitions with `NULL` values
 
-In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so it is not likely to occur in production environments. #82774
+In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so it is not likely to occur in production environments. [#82774](https://github.com/cockroachdb/cockroach/issues/82774)
 
 #### Vectorized engine limitations
 
@@ -535,15 +535,15 @@ In cases where the partition definition includes a comparison with `NULL` and a 
 
 #### `transaction_rows_read_err` and `transaction_rows_written_err` do not halt query execution
 
-The `transaction_rows_read_err` and `transaction_rows_written_err` [session settings]({% link {{ page.version.version }}/set-vars.md %}) limit the number of rows read or written by a single [transaction]({% link {{ page.version.version }}/transactions.md %}#limit-the-number-of-rows-written-or-read-in-a-transaction). These session settings will fail the transaction with an error, but not until the current query finishes executing and the results have been returned to the client. #70473
+The `transaction_rows_read_err` and `transaction_rows_written_err` [session settings]({% link {{ page.version.version }}/set-vars.md %}) limit the number of rows read or written by a single [transaction]({% link {{ page.version.version }}/transactions.md %}#limit-the-number-of-rows-written-or-read-in-a-transaction). These session settings will fail the transaction with an error, but not until the current query finishes executing and the results have been returned to the client. [#70473](https://github.com/cockroachdb/cockroach/issues/70473)
 
 #### `sql.guardrails.max_row_size_err` misses indexed virtual computed columns
 
-The `sql.guardrails.max_row_size_err` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows. #69540
+The `sql.guardrails.max_row_size_err` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows. [#69540](https://github.com/cockroachdb/cockroach/issues/69540)
 
 #### Using `LIKE...ESCAPE` in `WHERE` and `HAVING` constraints
 
-CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g., `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used. #30192
+CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g., `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used. [#30192](https://github.com/cockroachdb/cockroach/issues/30192)
 
 #### Import with a high amount of disk contention
 
@@ -698,7 +698,7 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 (54 rows)
 ```
 
-#59649
+[#59649](https://github.com/cockroachdb/cockroach/issues/59649)
 
 #### Locality optimized search limitations
 
@@ -711,4 +711,4 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 #### Inverted join for `tsvector` and `tsquery` types is not supported
 
-CockroachDB cannot index-accelerate queries with `@@` predicates when both sides of the operator are variables. #102731
+CockroachDB cannot index-accelerate queries with `@@` predicates when both sides of the operator are variables. [#102731](https://github.com/cockroachdb/cockroach/issues/102731)
