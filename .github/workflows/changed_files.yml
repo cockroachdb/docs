@@ -29,7 +29,7 @@ jobs:
 
           function generateMainFiles() {
             html_file=`echo "${1%.md}.html" | sed -E 's/src\/[^\/]*\///g'`
-            file="<li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$1</a></li>"
+            file="<li><a href=\"https://deploy-preview-$pr_num--cockroachlabs-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$1</a></li>"
             output+="$file"
           }
 
@@ -86,7 +86,7 @@ jobs:
               read -ra path <<< "$file"
               IFS=$OLDIFS
               major_version=${path[-2]}
-              file="<li>${file}:<ul><li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/releases/${major_version}.html\" target=\"_blank\" rel=\"noopener\">releases/${major_version}.md</a></li></ul></li>"
+              file="<li>${file}:<ul><li><a href=\"https://deploy-preview-$pr_num--cockroachlabs-docs.netlify.app/docs/releases/${major_version}.html\" target=\"_blank\" rel=\"noopener\">releases/${major_version}.md</a></li></ul></li>"
               output+="$file"
             elif [[ $file == src/*/_includes/v* || $file == src/*/_includes/cockroachcloud* || $file == src/*/images/* ]] && [[ $file != src/**/*.json ]] && [[ $file != *.gitignore* ]]
             then

@@ -6,7 +6,7 @@
 // As of the Change Date specified in that file, in accordance with
 // the Business Source License, use of this software will be governed
 // by the Apache License, Version 2.0, included in the file
-// https://raw.githubusercontent.com/cockroachdb/cockroach/master/licenses/APL.txt
+// https://raw.githubusercontent.com/cockroachlabs/cockroach-private/master/licenses/APL.txt
 
 package main
 
@@ -83,7 +83,7 @@ type prReviewParse struct {
 }
 
 const (
-	docsOrganization = "cockroachdb"
+	docsOrganization = "cockroachlabs"
 	docsRepo         = "docs"
 	docsPrsTeam      = "docs-prs"
 )
