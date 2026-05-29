@@ -296,45 +296,21 @@ For a deep-dive demo on UDFs, watch the following video:
 User-defined functions are not currently supported in:
 
 - Expressions (column, index, constraint) in tables.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
-
 - Views.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
-
 - Other user-defined functions.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
-
 ### Limitations on UDF creation
 
 The following cannot be used in UDF definitions:
 
 - `OUT` and `INOUT` argument modes.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100405)
-
 - `RECORD` input arguments.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/105713)
-
 ### Limitations on expressions allowed within UDFs
 
 The following are not currently allowed within the body of a UDF:
 
 - CTEs (common table expressions).
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
-
 - References to other user-defined functions.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
-
 - [DDL statements]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) (e.g., `CREATE TABLE`, `CREATE INDEX`).
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/110080)
-
 ## See also
 
 - [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})

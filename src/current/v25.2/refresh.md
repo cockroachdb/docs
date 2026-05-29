@@ -18,7 +18,7 @@ The user must be the [owner]({% link {{ page.version.version }}/alter-view.md %}
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/refresh_materialized_views.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/refresh_materialized_views.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

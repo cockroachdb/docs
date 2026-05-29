@@ -10,7 +10,7 @@ The `SHOW REGIONS` [statement]({% link {{ page.version.version }}/sql-statements
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_regions.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_regions.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Required privileges

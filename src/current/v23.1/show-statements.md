@@ -33,7 +33,7 @@ All users can see their own currently active queries. Users with the [`VIEWACTIV
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_statements.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_statements.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 - To list the active queries across all nodes of the cluster, use `SHOW STATEMENTS` or `SHOW CLUSTER STATEMENTS`.

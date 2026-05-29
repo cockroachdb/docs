@@ -18,14 +18,14 @@ Refer to the respective [subcommands](#subcommands).
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_table.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_table.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 <br>
 
 where `alter_table_cmd` is:
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_table_cmds.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_table_cmds.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -264,8 +264,7 @@ For examples, see [Drop columns](#drop-columns).
 
 #### Known limitations
 
-- CockroachDB prevents a column from being dropped if it is referenced by a [partial index]({% link {{ page.version.version }}/partial-indexes.md %}) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
-
+- CockroachDB prevents a column from being dropped if it is referenced by a [partial index]({% link {{ page.version.version }}/partial-indexes.md %}) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}).
 #### Required privileges
 
 The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
@@ -1168,7 +1167,7 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
     NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
     ~~~
 
-1. View the table structure: 
+1. View the table structure:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -1614,7 +1613,6 @@ To change the data type from `DECIMAL` to `STRING`:
       c_credit_lim | STRING
     (1 row)
     ~~~
-
 
 #### Change a column type's precision
 

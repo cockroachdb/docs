@@ -39,14 +39,14 @@ The `dbinit.sql` file initializes the database schema that the application uses:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/main/dbinit.sql %}
+{% include example-apps/cockroachlabs/example-app-node-postgres/main/dbinit.sql %}
 ~~~
 
 The `app.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations:
 
 {% include_cached copy-clipboard.html %}
 ~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/main/app.js %}
+{% include example-apps/cockroachlabs/example-app-node-postgres/main/app.js %}
 ~~~
 
 All of the database operations are wrapped in a helper function named `retryTxn`. This function attempts to commit statements in the context of an explicit transaction. If a [retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) is thrown, the wrapper will retry committing the transaction, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).

@@ -12,7 +12,7 @@ The `ALTER SCHEMA` [statement]({% link {{ page.version.version }}/sql-statements
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_schema.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_schema.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters

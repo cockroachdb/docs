@@ -95,7 +95,7 @@ No special privilege is required for:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/restore.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/restore.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -216,7 +216,7 @@ When restoring an individual table that references a user-defined type (e.g., [`
 - If there is an existing type in the cluster with the same name that is compatible with the type in the backup, CockroachDB will map the type in the backup to the type in the cluster.
 - If there is an existing type in the cluster with the same name but it is _not_ compatible with the type in the backup, the restore will not succeed and you will be asked to resolve the naming conflict. You can do this by either [dropping]({% link {{ page.version.version }}/drop-type.md %}) or [renaming]({% link {{ page.version.version }}/alter-type.md %}) the existing user-defined type.
 
-In general, two types are compatible if they are the same kind (e.g., an enum is only compatible with other enums). Additionally, enums are only compatible if they have the same ordered set of elements that have also been [created in the same way](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20200331_enums.md#physical-layout). For example:
+In general, two types are compatible if they are the same kind (e.g., an enum is only compatible with other enums). Additionally, enums are only compatible if they have the same ordered set of elements that have also been created in the same way. For example:
 
 - `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('yes', 'no')` are compatible.
 - `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('no', 'yes')` are not compatible.

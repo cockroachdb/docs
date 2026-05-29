@@ -11,7 +11,7 @@ The `DROP INDEX` [statement]({% link {{ page.version.version }}/sql-statements.m
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_index.html %}</div>
+<div>{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/drop_index.html{% endcapture %}{% include {{ diagram_include }} %}</div>
 
 ## Required privileges
 
