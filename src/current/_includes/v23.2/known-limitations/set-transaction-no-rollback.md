@@ -13,5 +13,3 @@ timezone
 ------------
 3
 ~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69396)

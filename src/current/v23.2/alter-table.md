@@ -265,8 +265,7 @@ For examples, see [Drop columns](#drop-columns).
 
 #### Known limitations
 
-- CockroachDB prevents a column from being dropped if it is referenced by a [partial index]({% link {{ page.version.version }}/partial-indexes.md %}) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
-
+- CockroachDB prevents a column from being dropped if it is referenced by a [partial index]({% link {{ page.version.version }}/partial-indexes.md %}) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}).
 #### Required privileges
 
 The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
@@ -1641,7 +1640,6 @@ To change the data type from `DECIMAL` to `STRING`:
       c_credit_lim | STRING
     (1 row)
     ~~~
-
 
 #### Change a column type's precision
 
