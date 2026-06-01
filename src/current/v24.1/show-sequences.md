@@ -14,7 +14,7 @@ No [privileges]({% link {{ page.version.version }}/security-reference/authorizat
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_sequences.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_sequences.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

@@ -15,7 +15,7 @@ To drop a procedure, the user must be the owner of the procedure.
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_proc.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/drop_proc.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

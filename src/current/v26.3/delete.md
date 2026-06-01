@@ -20,7 +20,7 @@ The user must have the `DELETE` and `SELECT` [privileges]({% link {{ page.versio
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/delete.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/delete.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

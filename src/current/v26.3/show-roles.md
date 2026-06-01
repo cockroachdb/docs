@@ -14,7 +14,7 @@ The `SHOW ROLES` [statement]({% link {{ page.version.version }}/sql-statements.m
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_roles.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/show_roles.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Required privileges

@@ -36,7 +36,7 @@ You must have at least one of the following to run `SHOW JOBS`:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_jobs.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/show_jobs.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

@@ -14,7 +14,7 @@ When running under the default [`SERIALIZABLE`]({% link {{ page.version.version 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/legacy_begin.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/legacy_begin.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Required privileges

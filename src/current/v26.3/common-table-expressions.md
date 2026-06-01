@@ -14,7 +14,7 @@ For many workloads, CTEs are an effective alternative to [temporary tables]({% l
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/with_clause.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/with_clause.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -446,7 +446,7 @@ SELECT COUNT(*) FROM temp;
 Because this pattern incurs the overhead of a new scan for each iteration, it is slower per row than a full scan. It is therefore faster than a full scan in cases (such as this one) where many rows are skipped, but is slower if they are not.
 
 {{site.data.alerts.callout_info}}
-Some recursive CTEs are not not yet optimized. For details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/89954).
+Some recursive CTEs are not not yet optimized.
 {{site.data.alerts.end}}
 
 ## Correlated common table expressions
