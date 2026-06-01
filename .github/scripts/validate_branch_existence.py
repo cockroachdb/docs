@@ -3,7 +3,8 @@
 validate_branch_existence.py  (EDUENG-614)
 
 For every row in src/current/_data/versions.csv, verifies that the listed
-crdb_branch_name exists as a branch in cockroachdb/generated-diagrams.
+crdb_branch_name exists as a branch in the generated-diagrams repo
+(configurable via GENERATED_DIAGRAMS_REPO env var, default: cockroachdb/generated-diagrams).
 
 Also flags entries where versions.csv still points to an older branch even
 though the "natural" release-X.Y branch for that version now exists
@@ -37,7 +38,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-GENERATED_DIAGRAMS_REPO = "cockroachdb/generated-diagrams"
+GENERATED_DIAGRAMS_REPO = os.environ.get("GENERATED_DIAGRAMS_REPO", "cockroachdb/generated-diagrams")
 GITHUB_API_BASE = "https://api.github.com"
 VERSIONS_CSV = Path("src/current/_data/versions.csv")
 DOCS_ROOT = Path("src/current")
@@ -139,7 +140,7 @@ def run_checks(rows: list[dict], _exists_fn=None, _has_docs_fn=None) -> list[dic
                     "branch": branch,
                     "message": (
                         f"{version}: crdb_branch_name={branch!r} does not exist "
-                        f"in cockroachdb/generated-diagrams."
+                        f"in {GENERATED_DIAGRAMS_REPO}."
                     ),
                 })
                 continue
@@ -157,7 +158,7 @@ def run_checks(rows: list[dict], _exists_fn=None, _has_docs_fn=None) -> list[dic
                     "expected": expected,
                     "message": (
                         f"{version}: crdb_branch_name={branch!r} but {expected!r} "
-                        f"now exists in cockroachdb/generated-diagrams. "
+                        f"now exists in {GENERATED_DIAGRAMS_REPO}. "
                         f"Update versions.csv to use {expected!r}."
                     ),
                 })
@@ -174,7 +175,7 @@ def format_comment(failures: list[dict]) -> str:
         return (
             "## Branch Existence Check: Passed\n\n"
             "All `crdb_branch_name` entries in `versions.csv` exist in "
-            "`cockroachdb/generated-diagrams`."
+            f"`{GENERATED_DIAGRAMS_REPO}`."
         )
 
     lines = [
@@ -258,7 +259,7 @@ def main() -> None:
         _run_self_tests()
 
     rows = load_versions_csv()
-    print(f"Checking {len(rows)} versions.csv entries against cockroachdb/generated-diagrams...\n")
+    print(f"Checking {len(rows)} versions.csv entries against {GENERATED_DIAGRAMS_REPO}...\n")
     failures = run_checks(rows)
 
     comment = format_comment(failures)
