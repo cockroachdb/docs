@@ -7,9 +7,9 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
-    if: github.event.requested_team.slug == 'docs-prs'
     steps:
       - name: Send Slack notification
+        if: github.event.requested_team.slug == 'docs-prs'
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_DOC_REVIEW_WEBHOOK_URL }}
           PR_TITLE: ${{ github.event.pull_request.title }}
