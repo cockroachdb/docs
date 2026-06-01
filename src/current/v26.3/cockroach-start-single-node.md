@@ -58,7 +58,7 @@ The `--store` flag supports the following fields. Note that commas are used to s
 In-memory storage is not suitable for production deployments at this time.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/reference/flags-table.md flags=single_node_cmd.flags.store %}
+{% include {{ page.version.version }}/reference/fields-table.md fields=single_node_cmd.flags.store %}
 
 ### Logging
 
@@ -98,11 +98,7 @@ nodeID:              1
 These details are also written to the `INFO` log in the `/logs` directory. You can retrieve them with a command like `grep 'node starting' node1/logs/cockroach.log -A 11`.
 {{site.data.alerts.end}}
 
-Field | Description
-------|------------
-{% for field in single_node_cmd.standard_output.fields -%}
-`{{ field.field }}` | {{ field.description }}
-{% endfor %}
+{% include {{ page.version.version }}/reference/fields-table.md fields=single_node_cmd.standard_output.fields %}
 
 ## Examples
 

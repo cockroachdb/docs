@@ -313,7 +313,7 @@ CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transp
 
 By default, CockroachDB negotiates TLS 1.3 for client connections when supported by the client. If the client does not support TLS 1.3, the connection will fall back to TLS 1.2.
 
-To restrict your cluster to only allow connections using specific cipher suites, use the [`--tls-cipher-suites`]({% link {{ page.version.version }}/cockroach-start.md %}#tls-cipher-suites) startup flag with the `cockroach start` command. This setting applies to all incoming SQL, RPC, and HTTP connections.
+To restrict your cluster to only allow connections using specific cipher suites, use the [`--tls-cipher-suites`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-tls-cipher-suites) startup flag with the `cockroach start` command. This setting applies to all incoming SQL, RPC, and HTTP connections.
 
 
 The following cipher suites are enabled by default:

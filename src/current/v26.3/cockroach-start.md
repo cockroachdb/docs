@@ -166,7 +166,7 @@ For example, let's say that latency is 10ms from nodes in datacenter A to nodes 
 
 #### Storage engine
 
-The `--storage-engine` flag is used to choose the storage engine used by the node. Note that this setting applies to all [stores](#store) on the node, including the [temp store](#temp-dir).
+The `--storage-engine` flag is used to choose the storage engine used by the node. Note that this setting applies to all [stores](#store) on the node, including the [temp store](#flags-temp-dir).
 
  As of v21.1 and later, CockroachDB always uses the [Pebble storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag.
 
@@ -190,7 +190,7 @@ In-memory storage is not suitable for production deployments at this time.
 {% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/reference/flags-table.md flags=start_cmd.flags.store %}
+{% include {{ page.version.version }}/reference/fields-table.md fields=start_cmd.flags.store %}
 
 #### Write Ahead Log (WAL) failover
 
@@ -204,7 +204,7 @@ For more detailed instructions showing how to use, test, and monitor WAL failove
 
 To enable WAL failover, you must take one of the following actions:
 
-- Pass [`--wal-failover=among-stores`](#flag-wal-failover) to `cockroach start`, or
+- Pass [`--wal-failover=among-stores`](#flags-wal-failover) to `cockroach start`, or
 - Set the environment variable `COCKROACH_WAL_FAILOVER=among-stores` before starting the node.
 
 [Writing log files to local disk]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files) using the default configuration can lead to cluster instability in the event of a [disk stall]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls). It's not enough to failover your WAL writes to another disk: you must also write your log files in such a way that the forward progress of your cluster is not stalled due to disk unavailability.
@@ -225,7 +225,7 @@ As an alternative to logging to local disks, you can configure [remote log sinks
 
 To disable WAL failover, you must [restart the node]({% link {{ page.version.version }}/node-shutdown.md %}#stop-and-restart-a-node) and either:
 
-- Pass the [`--wal-failover=disabled`](#flag-wal-failover) flag to `cockroach start`, or
+- Pass the [`--wal-failover=disabled`](#flags-wal-failover) flag to `cockroach start`, or
 - Set the environment variable `COCKROACH_WAL_FAILOVER=disabled` before restarting the node.
 
 ##### Monitor WAL failover
@@ -266,11 +266,7 @@ nodeID:              1
 These details are also written to the `INFO` log in the `/logs` directory. You can retrieve them with a command like `grep 'node starting' node1/logs/cockroach.log -A 11`.
 {{site.data.alerts.end}}
 
-Field | Description
-------|------------
-{% for field in start_cmd.standard_output.fields -%}
-`{{ field.field }}` | {{ field.description }}
-{% endfor %}
+{% include {{ page.version.version }}/reference/fields-table.md fields=start_cmd.standard_output.fields %}
 
 ## Examples
 
