@@ -1,0 +1,12 @@
+name: Test Minimal Workflow
+
+on:
+  pull_request:
+    types: [review_requested]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo test
+        run: echo "review_requested event fired"
