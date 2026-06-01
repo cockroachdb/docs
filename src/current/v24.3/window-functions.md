@@ -29,7 +29,7 @@ Window frames are defined in [`OVER` clauses]({% link {{ page.version.version }}
 <div class="filter-content" markdown="1" data-scope="basic">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/window_definition.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/window_definition.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters
@@ -47,13 +47,13 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/window_definition.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/window_definition.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **opt_frame_clause ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/opt_frame_clause.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/opt_frame_clause.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters

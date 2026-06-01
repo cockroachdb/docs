@@ -27,7 +27,7 @@ GRANT DROP ON EXTERNAL CONNECTION backup_bucket TO user;
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_external_connection.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/drop_external_connection.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters

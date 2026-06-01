@@ -14,7 +14,7 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/reset_csetting.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/reset_csetting.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

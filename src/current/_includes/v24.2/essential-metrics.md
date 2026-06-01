@@ -194,4 +194,3 @@ If [Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) is co
 - [Custom Chart Debug Page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %})
 - [Cluster API]({% link {{ page.version.version }}/cluster-api.md %})
 - [Essential Alerts]({% link {{ page.version.version }}/essential-alerts-{{ include.deployment}}.md %})
-- [CockroachDB Source Code - DB Console metrics to graphs mappings (in *.tsx files)](https://github.com/cockroachdb/cockroach/tree/master/pkg/ui/workspaces/db-console/src/views/cluster/containers/nodeGraphs/dashboards)

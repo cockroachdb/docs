@@ -40,28 +40,28 @@ The `requirements.txt` file includes the required libraries to connect to Cockro
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/requirements.txt %}
+{% include example-apps/cockroachlabs/example-app-python-sqlalchemy/master/requirements.txt %}
 ~~~
 
 The `dbinit.sql` file initializes the database schema that the application uses:
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/dbinit.sql %}
+{% include example-apps/cockroachlabs/example-app-python-sqlalchemy/master/dbinit.sql %}
 ~~~
 
 The `models.py` uses SQLAlchemy to map the `Accounts` table to a Python object:
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/models.py %}
+{% include example-apps/cockroachlabs/example-app-python-sqlalchemy/master/models.py %}
 ~~~
 
 The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/main.py %}
+{% include example-apps/cockroachlabs/example-app-python-sqlalchemy/master/main.py %}
 ~~~
 
 `main.py` also executes the `main` method of the program.

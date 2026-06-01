@@ -1517,7 +1517,7 @@
       "title": "ZoneConfig holds configuration that applies to one or more ranges.",
       "properties": {
         "constraints": {
-          "description": "Constrains which stores the replicas can be stored on. The\norder in which the constraints are stored is arbitrary and may change.\nhttps://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20160706_expressive_zone_config.md#constraint-system",
+          "description": "Constrains which stores the replicas can be stored on. The\norder in which the constraints are stored is arbitrary and may change.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConstraintsConjunction"
@@ -1528,7 +1528,7 @@
           "$ref": "#/definitions/GCPolicy"
         },
         "global_reads": {
-          "description": "Whether transactions operating over the range(s)\nshould be configured to provide non-blocking behavior, meaning that reads\ncan be served consistently from all replicas and do not block on writes. In\nexchange, writes get pushed into the future and must wait on commit to\nensure linearizability. For more, see:\nhttps://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20200811_non_blocking_txns.md",
+          "description": "Whether transactions operating over the range(s)\nshould be configured to provide non-blocking behavior, meaning that reads\ncan be served consistently from all replicas and do not block on writes. In\nexchange, writes get pushed into the future and must wait on commit to\nensure linearizability.",
           "type": "boolean",
           "x-go-name": "GlobalReads"
         },

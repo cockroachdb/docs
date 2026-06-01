@@ -28,7 +28,7 @@ The `NOT NULL` [constraint]({% link {{ page.version.version }}/constraints.md %}
 You can only apply the `NOT NULL` constraint to individual columns.
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/not_null_column_level.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/not_null_column_level.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
  Parameter | Description

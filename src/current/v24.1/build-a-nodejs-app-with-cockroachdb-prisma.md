@@ -89,7 +89,7 @@ The `index.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DEL
 
 {% include_cached copy-clipboard.html %}
 ~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-prisma/main/index.js %}
+{% include example-apps/cockroachlabs/example-app-node-prisma/main/index.js %}
 ~~~
 
 {{site.data.alerts.callout_info}}

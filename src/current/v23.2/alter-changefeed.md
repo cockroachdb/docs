@@ -5,8 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-
-
 The `ALTER CHANGEFEED` statement modifies an existing [changefeed]({% link {{ page.version.version }}/change-data-capture-overview.md %}). You can use `ALTER CHANGEFEED` to do the following:
 
 - Add new target tables to a changefeed.
@@ -31,7 +29,7 @@ For more details on the required privileges for changefeeds generally, refer to 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_changefeed.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_changefeed.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -238,8 +236,8 @@ For further discussion on using the `FAMILY` keyword and `split_column_families`
 
 ## Known limitations
 
-- It is necessary to [`PAUSE`]({% link {{ page.version.version }}/pause-job.md %}) the changefeed before performing any `ALTER CHANGEFEED` statement. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/77171)
-- `ALTER CHANGEFEED` will accept duplicate targets without sending an error. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/78285)
+- It is necessary to [`PAUSE`]({% link {{ page.version.version }}/pause-job.md %}) the changefeed before performing any `ALTER CHANGEFEED` statement.
+- `ALTER CHANGEFEED` will accept duplicate targets without sending an error.
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 - CockroachDB does not keep track of the [`initial_scan`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option applied to tables when it is set to `yes` or `only`. For example:
 
