@@ -150,11 +150,11 @@ After completing these steps, nodes will not yet be live. They will complete the
     $ chown cockroach /var/lib/cockroach
     ~~~
 
-8. Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
+8. Download the [sample configuration template](https://raw.githubusercontent.com/cockroachlabs/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service
+    $ wget -qO- https://raw.githubusercontent.com/cockroachlabs/docs/master/_includes/{{ page.version.version }}/prod-deployment/insecurecockroachdb.service
     ~~~
 
     Alternatively, you can create the file yourself and copy the script into it:
