@@ -2,32 +2,24 @@ name: Notify Slack on Doc Review Request
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize, review_requested]
+    types: [review_requested]
 
 jobs:
   notify-slack:
     runs-on: ubuntu-latest
     steps:
-      - name: Debug event payload
+      - name: Check if docs-prs team requested
+        id: check
         run: |
-          echo "Event: ${{ github.event_name }}"
-          echo "Action: ${{ github.event.action }}"
-          echo "Requested team: ${{ github.event.requested_team.slug }}"
-          echo "All requested teams:"
-          echo '${{ toJSON(github.event.pull_request.requested_teams) }}' | jq -r '.[].slug'
-
-      - name: Check if docs-prs is requested
-        id: check_team
-        run: |
-          TEAMS='${{ toJSON(github.event.pull_request.requested_teams) }}'
-          if echo "$TEAMS" | jq -e '.[] | select(.slug == "docs-prs")' > /dev/null; then
-            echo "send_notification=true" >> $GITHUB_OUTPUT
+          TEAM_SLUG="${{ github.event.requested_team.slug }}"
+          if [ "$TEAM_SLUG" = "docs-prs" ]; then
+            echo "send=true" >> $GITHUB_OUTPUT
           else
-            echo "send_notification=false" >> $GITHUB_OUTPUT
+            echo "send=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Send Slack notification
-        if: steps.check_team.outputs.send_notification == 'true' || github.event.requested_team.slug == 'docs-prs'
+        if: steps.check.outputs.send == 'true'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_DOC_REVIEW_WEBHOOK_URL }}
           PR_TITLE: ${{ github.event.pull_request.title }}
