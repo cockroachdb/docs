@@ -15,7 +15,6 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 - Make sure you have already started a CockroachDB cluster, either [locally]({% link {{ page.version.version }}/start-a-local-cluster.md %}) or in a [production environment]({% link {{ page.version.version }}/manual-deployment.md %}).
 
-- Note that all files used in this tutorial can be found in the [`monitoring`](https://github.com/cockroachdb/cockroach/tree/master/monitoring) directory of the CockroachDB repository.
 
 ## Step 1. Install Prometheus
 
@@ -39,11 +38,11 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 ## Step 2. Configure Prometheus
 
-1. Download the starter [Prometheus configuration file](https://github.com/cockroachdb/cockroach/blob/master/monitoring/prometheus.yml) for CockroachDB:
+1. Download the starter [Prometheus configuration file]({% link files/cockroach/monitoring/prometheus.yml %}) for CockroachDB:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o prometheus.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/prometheus.yml
+    curl -o prometheus.yml https://www.cockroachlabs.com/{% link files/cockroach/monitoring/prometheus.yml %}
     ~~~
 
     When you examine the configuration file, you'll see that it is set up to scrape the time series metrics of a single, insecure local node every 10 seconds:
@@ -60,7 +59,7 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
     Production cluster | Change the `targets` field to include `'<hostname>:<http-port>'` for each node in the cluster. Also, be sure your network configuration allows TCP communication on the specified ports.
     Secure cluster | Uncomment `scheme: 'https'` and comment out `scheme: 'http'`.
 
-1. Create a `rules` directory and download the [aggregation rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/aggregation.rules.yml) and [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml) for CockroachDB into it:
+1. Create a `rules` directory and download the [aggregation rules]({% link files/cockroach/monitoring/rules/aggregation.rules.yml %}) and [alerting rules]({% link files/cockroach/monitoring/rules/alerts.rules.yml %}) for CockroachDB into it:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -74,12 +73,12 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o rules/aggregation.rules.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/aggregation.rules.yml
+    curl -o rules/aggregation.rules.yml https://www.cockroachlabs.com/{% link files/cockroach/monitoring/rules/aggregation.rules.yml %}
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o rules/alerts.rules.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/alerts.rules.yml
+    curl -o rules/alerts.rules.yml https://www.cockroachlabs.com/{% link files/cockroach/monitoring/rules/alerts.rules.yml %}
     ~~~
 
 ## Step 3. Start Prometheus
@@ -108,7 +107,7 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 ## Step 4. Send notifications with Alertmanager
 
-Active monitoring helps you spot problems early, but it is also essential to send notifications when there are events that require investigation or intervention. In step 2, you already downloaded CockroachDB's starter [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml). Now, download, configure, and start [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/).
+Active monitoring helps you spot problems early, but it is also essential to send notifications when there are events that require investigation or intervention. In step 2, you already downloaded CockroachDB's starter [alerting rules]({% link files/cockroach/monitoring/rules/alerts.rules.yml %}). Now, download, configure, and start [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/).
 
 1. Download the [latest Alertmanager tarball](https://prometheus.io/download/#alertmanager) for your OS.
 
@@ -173,29 +172,29 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
     Url | `http://<hostname of machine running prometheus>:9090`
     Access | Direct
 
-1. Generate a standardized Grafana dashboard using [`cockroach gen dashboard --tool=grafana`]({% link {{ page.version.version }}/cockroach-gen.md %}#generate-a-dashboard). Alternatively, download one or more of the starter [Grafana dashboards](https://github.com/cockroachdb/cockroach/tree/master/monitoring/grafana-dashboards/by-cluster) for CockroachDB to focus on specific metrics:
+1. Generate a standardized Grafana dashboard using [`cockroach gen dashboard --tool=grafana`]({% link {{ page.version.version }}/cockroach-gen.md %}#generate-a-dashboard). Alternatively, download one or more of the starter Grafana dashboards for CockroachDB to focus on specific metrics:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o runtime.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/runtime.json
+    curl -o runtime.json https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/runtime.json %}
     # runtime dashboard: node status, including uptime, memory, and cpu.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o storage.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/storage.json
+    curl -o storage.json https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/storage.json %}
     # storage dashboard: storage availability.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o sql.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/sql.json
+    curl -o sql.json https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/sql.json %}
     # sql dashboard: sql queries/transactions.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o replication.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/replication.json
+    curl -o replication.json https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/replication.json %}
     # replicas dashboard: replica information and operations.
     ~~~
 

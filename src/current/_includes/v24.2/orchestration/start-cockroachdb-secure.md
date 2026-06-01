@@ -1,10 +1,10 @@
 ### Configure the cluster
 
-1. Download and modify our [StatefulSet configuration](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml):
+1. Download and modify our [StatefulSet configuration]({% link files/cockroach/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml
+    $ curl -O https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml %}
     ~~~
 
 1. Update `secretName` with the name of the corresponding node secret.

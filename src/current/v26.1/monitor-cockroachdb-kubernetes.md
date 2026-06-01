@@ -132,7 +132,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/prometheus.yaml
+    $ curl -O https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/prometheus/prometheus.yaml %}
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -181,14 +181,14 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
 ## Configure Alertmanager
 
-Active monitoring helps you spot problems early, but it is also essential to send notifications when there are events that require investigation or intervention. This section shows you how to use [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) and CockroachDB's starter [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alert-rules.yaml) to do this.
+Active monitoring helps you spot problems early, but it is also essential to send notifications when there are events that require investigation or intervention. This section shows you how to use [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) and CockroachDB's starter [alerting rules]({% link files/cockroach/cloud/kubernetes/prometheus/alert-rules.yaml %}) to do this.
 
-1. Download our <a href="https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager-config.yaml" download><code>alertmanager-config.yaml</code></a> configuration file:
+1. Download our <a href="{% link files/cockroach/cloud/kubernetes/prometheus/alertmanager-config.yaml %}" download><code>alertmanager-config.yaml</code></a> configuration file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -O \
-    https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager-config.yaml
+    https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/prometheus/alertmanager-config.yaml %}
     ~~~
 
 1. Edit the `alertmanager-config.yaml` file to [specify the desired receivers for notifications](https://prometheus.io/docs/alerting/configuration/#receiver). Initially, the file contains a placeholder web hook.
@@ -218,12 +218,12 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     The name of the secret, `alertmanager-cockroachdb`, must match the name used in the `alertmanager.yaml` file. If they differ, the Alertmanager instance will start without configuration, and nothing will happen.
     {{site.data.alerts.end}}
 
-1. Use our [`alertmanager.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alertmanager.yaml) file to create the various objects necessary to run an Alertmanager instance, including a ClusterIP service so that Prometheus can forward alerts:
+1. Use our [`alertmanager.yaml`]({% link files/cockroach/cloud/kubernetes/prometheus/alertmanager.yaml %}) file to create the various objects necessary to run an Alertmanager instance, including a ClusterIP service so that Prometheus can forward alerts:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
-    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager.yaml
+    -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/prometheus/alertmanager.yaml %}
     ~~~
 
     ~~~
@@ -248,12 +248,12 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
     <img src="{{ 'images/v26.1/kubernetes-prometheus-alertmanagers.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
-1. Add CockroachDB's starter [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alert-rules.yaml):
+1. Add CockroachDB's starter [alerting rules]({% link files/cockroach/cloud/kubernetes/prometheus/alert-rules.yaml %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
-    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alert-rules.yaml
+    -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/prometheus/alert-rules.yaml %}
     ~~~
 
     ~~~
