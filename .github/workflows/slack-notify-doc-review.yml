@@ -16,8 +16,18 @@ jobs:
           echo "All requested teams:"
           echo '${{ toJSON(github.event.pull_request.requested_teams) }}' | jq -r '.[].slug'
 
+      - name: Check if docs-prs is requested
+        id: check_team
+        run: |
+          TEAMS='${{ toJSON(github.event.pull_request.requested_teams) }}'
+          if echo "$TEAMS" | jq -e '.[] | select(.slug == "docs-prs")' > /dev/null; then
+            echo "send_notification=true" >> $GITHUB_OUTPUT
+          else
+            echo "send_notification=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Send Slack notification
-        if: contains(fromJSON(toJSON(github.event.pull_request.requested_teams.*.slug)), 'docs-prs')
+        if: steps.check_team.outputs.send_notification == 'true' || github.event.requested_team.slug == 'docs-prs'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_DOC_REVIEW_WEBHOOK_URL }}
           PR_TITLE: ${{ github.event.pull_request.title }}
