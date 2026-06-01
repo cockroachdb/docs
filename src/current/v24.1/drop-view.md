@@ -15,7 +15,7 @@ The user must have the `DROP` [privilege]({% link {{ page.version.version }}/sec
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_view.html %}</div>
+<div>{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/drop_view.html{% endcapture %}{% include {{ diagram_include }} %}</div>
 
 ## Parameters
 

@@ -4,7 +4,7 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml %}
+    $ curl -O https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml %}
     ~~~
 
 1. Update `secretName` with the name of the corresponding node secret.

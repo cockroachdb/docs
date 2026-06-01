@@ -16,7 +16,7 @@ To use `ON CONFLICT DO UPDATE`, the user must additionally have the `UPDATE` pri
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/insert.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/insert.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -34,7 +34,7 @@ Parameter | Description
 ### `ON CONFLICT` clause
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/on_conflict.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/on_conflict.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 Normally, when inserted values conflict with a `UNIQUE` constraint on one or more columns, CockroachDB returns an error. To update the affected rows instead, use an `ON CONFLICT` clause containing the column(s) with the unique constraint and the `DO UPDATE SET` expression set to the column(s) to be updated (any `SET` expression supported by the [`UPDATE`]({% link {{ page.version.version }}/update.md %}) statement is also supported here, including those with `WHERE` clauses). To prevent the affected rows from updating while allowing new rows to be inserted, set `ON CONFLICT` to `DO NOTHING`. See the [Update values `ON CONFLICT`](#update-values-on-conflict) and [Do not update values `ON CONFLICT`](#do-not-update-values-on-conflict) examples.

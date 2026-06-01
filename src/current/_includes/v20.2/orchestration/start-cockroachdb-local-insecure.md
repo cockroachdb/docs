@@ -2,7 +2,7 @@
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl create -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/cockroachdb-statefulset.yaml %}
+    $ kubectl create -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/cockroachdb-statefulset.yaml %}
     ~~~
 
     ~~~
@@ -46,7 +46,7 @@
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl create \
-    -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/cluster-init.yaml %}
+    -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/cluster-init.yaml %}
     ~~~
 
     ~~~

@@ -30,7 +30,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create \
-    -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/bring-your-own-certs/client.yaml %}
+    -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/bring-your-own-certs/client.yaml %}
     ~~~
     
     ~~~
@@ -79,7 +79,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ curl -OOOOOOOOO \
-        https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/client-secure.yaml %}
+        https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/client-secure.yaml %}
         ~~~
 
     1. In the file, change `serviceAccountName: cockroachdb` to `serviceAccountName: my-release-cockroachdb`.

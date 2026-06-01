@@ -4,7 +4,7 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/cockroachdb-statefulset.yaml %}
+    $ curl -O https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/cockroachdb-statefulset.yaml %}
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -31,7 +31,7 @@
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
-        $ curl -O https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml %}
+        $ curl -O https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml %}
         ~~~
 
     1. Modify the file wherever there is a `TODO` comment.
@@ -77,7 +77,7 @@
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create \
-    -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/cluster-init.yaml %}
+    -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/cluster-init.yaml %}
     ~~~
 
     ~~~

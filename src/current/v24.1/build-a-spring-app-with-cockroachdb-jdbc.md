@@ -606,7 +606,7 @@ Here are the contents of [`JdbcApplication.java`](https://github.com/cockroachla
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/JdbcApplication.java %}
+{% include example-apps/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/JdbcApplication.java %}
 ~~~
 
 The annotations listed at the top of the `JdbcApplication` class definition declare some important configuration properties for the entire application:
@@ -631,14 +631,14 @@ Liquibase uses [changelog files](https://docs.liquibase.com/concepts/basic/chang
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/resources/db/changelog-master.xml %}
+{% include example-apps/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/resources/db/changelog-master.xml %}
 ~~~
 
 The first changeset uses [the `sqlFile` tag](https://docs.liquibase.com/change-types/community/sql-file.html), which tells Liquibase that an external `.sql` file contains some SQL statements to execute. The file specified by the changeset, `resources/db/create.sql`, creates the `account` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/resources/db/create.sql %}
+{% include example-apps/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/resources/db/create.sql %}
 ~~~
 
 The second changeset in the changelog uses the [Liquibase XML syntax](https://docs.liquibase.com/concepts/basic/xml-format.html) to specify a series of sequential `INSERT` statements that initialize the `account` table with some values.
@@ -696,7 +696,7 @@ Here are the contents of [`Account.java`](https://github.com/cockroachlabs/roach
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/Account.java %}
+{% include example-apps/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/Account.java %}
 ~~~
 
 ### Hypermedia representation
@@ -707,7 +707,7 @@ The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-dat
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/AccountModel.java %}
+{% include example-apps/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/AccountModel.java %}
 ~~~
 
 We do not go into much detail about hypermedia representation in this tutorial. For more information, see the [Spring HATEOAS Reference Documentation](https://docs.spring.io/spring-hateoas/docs/current/reference/html/).
@@ -720,7 +720,7 @@ To abstract the database layer, Spring applications use the [`Repository` interf
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/AccountRepository.java %}
+{% include example-apps/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/AccountRepository.java %}
 ~~~
 
 `AccountRepository` extends a subinterface of `Repository` that is provided by Spring for generic [CRUD operations](https://wikipedia.org/wiki/Create,_read,_update_and_delete) called `CrudRepository`. To support [pagination queries]({% link {{ page.version.version }}/pagination.md %}), repositories in other Spring Data modules, like those in Spring Data JPA, usually extend a subinterface of `CrudRepository`, called `PagingAndSortingRepository`, that includes pagination and sorting methods. At the time this sample application was created, Spring Data JDBC did not support pagination. As a result, `AccountRepository` extends a custom repository, called `PagedAccountRepository`, to provide basic [`LIMIT`/`OFFSET` pagination]({% link {{ page.version.version }}/pagination.md %}) on queries against the `accounts` table. The `AccountRepository` methods use the [`@Query`](https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/#jdbc.query-methods.at-query) annotation strategy to define queries manually, as strings.
@@ -737,7 +737,7 @@ There are several endpoints exposed by the application's web layer, some of whic
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/AccountController.java %}
+{% include example-apps/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/AccountController.java %}
 ~~~
 
  Annotated with [`@RestController`](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/bind/annotation/RestController.html), `AccountController` defines the primary [web controller](https://wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) component of the application. The `AccountController` methods define the endpoints, routes, and business logic of REST services for account querying and money transferring. Its attributes include an instantiation of [`AccountRepository`](#spring-repositories), called `accountRepository`, that establishes an interface to the `accounts` table through the data access layer.
@@ -773,7 +773,7 @@ The `TransactionHintsAspect` class, declared as an aspect with the [`@Aspect` an
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/TransactionHintsAspect.java %}
+{% include example-apps/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/TransactionHintsAspect.java %}
 ~~~
 
 The `anyTransactionBoundaryOperation` method is declared as a pointcut with the [`@Pointcut` annotation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#aop-pointcuts). In Spring, pointcut declarations must include an expression to determine where [join points](https://wikipedia.org/wiki/Join_point) occur in the application control flow. To help define these expressions, Spring supports a set of [designators](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#aop-pointcuts-designators). The application uses two of them here: `execution`, which matches method execution joint points (i.e., defines a joint point when a specific method is executed, in this case, *any* method in the `io.roach.` namespace), and `@annotation`, which limits the matches to methods with a specific annotation, in this case `@Transactional`.
@@ -790,7 +790,7 @@ In this application, transaction retry logic is written into the methods of the 
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/RetryableTransactionAspect.java %}
+{% include example-apps/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/RetryableTransactionAspect.java %}
 ~~~
 
 The `anyTransactionBoundaryOperation` pointcut definition is identical to the one declared in `TransactionHintsAspect`. The `execution` designator matches all methods in the `io.roach.` namespace, and the `@annotation` designator limits the matches to methods with the `@Transactional` annotation.

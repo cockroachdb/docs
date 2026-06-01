@@ -23,7 +23,7 @@ All users can see their own currently active sessions. Users with the [`VIEWACTI
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_sessions.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/show_sessions.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 - To list the active sessions across all nodes of the cluster, use `SHOW SESSIONS` or `SHOW CLUSTER SESSIONS`.

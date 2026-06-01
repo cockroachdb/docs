@@ -99,7 +99,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
-    -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/prometheus/prometheus.yaml %}
+    -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/prometheus/prometheus.yaml %}
     ~~~
 
     ~~~
@@ -144,7 +144,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     {% include copy-clipboard.html %}
     ~~~ shell
     $ curl -OOOOOOOOO \
-    https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/prometheus/alertmanager-config.yaml %}
+    https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/prometheus/alertmanager-config.yaml %}
     ~~~
 
 2. Edit the `alertmanager-config.yaml` file to [specify the desired receivers for notifications](https://prometheus.io/docs/alerting/configuration/#receiver). Initially, the file contains a placeholder web hook.
@@ -179,7 +179,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
-    -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/prometheus/alertmanager.yaml %}
+    -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/prometheus/alertmanager.yaml %}
     ~~~
 
     ~~~
@@ -209,7 +209,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
-    -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/prometheus/alert-rules.yaml %}
+    -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/prometheus/alert-rules.yaml %}
     ~~~
 
     ~~~

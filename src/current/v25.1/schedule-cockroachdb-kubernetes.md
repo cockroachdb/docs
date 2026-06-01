@@ -108,7 +108,7 @@ For more context on how these rules work, see the [Kubernetes documentation](htt
 
 Specify pod affinities and anti-affinities in `affinity.podAffinity` and `affinity.podAntiAffinity` in the Operator's custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster). If you specify multiple `matchExpressions` labels, the node must match all of them. If you specify multiple `values` for a label, the node can match any of the values.
 
-The following configuration attempts to schedule CockroachDB pods in the same zones as the pods that run our example [load generator](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/example-app.yaml) app. It disallows CockroachDB pods from being co-located on the same worker node.
+The following configuration attempts to schedule CockroachDB pods in the same zones as the pods that run our example [load generator]({% link files/cockroach/cloud/kubernetes/example-app.yaml %}) app. It disallows CockroachDB pods from being co-located on the same worker node.
 
 {% include_cached copy-clipboard.html %}
 ~~~ yaml

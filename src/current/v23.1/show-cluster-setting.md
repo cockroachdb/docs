@@ -53,7 +53,7 @@ To use the `SHOW CLUSTER SETTING` statement, a user must have one of the followi
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_cluster_setting.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_cluster_setting.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

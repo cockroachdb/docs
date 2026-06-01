@@ -42,7 +42,7 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o prometheus.yml https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/prometheus.yml %}
+    curl -o prometheus.yml https://www.cockroachlabs.com/{% link files/cockroach/monitoring/prometheus.yml %}
     ~~~
 
     When you examine the configuration file, you'll see that it is set up to scrape the time series metrics of a single, insecure local node every 10 seconds:
@@ -73,12 +73,12 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o rules/aggregation.rules.yml https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/rules/aggregation.rules.yml %}
+    curl -o rules/aggregation.rules.yml https://www.cockroachlabs.com/{% link files/cockroach/monitoring/rules/aggregation.rules.yml %}
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o rules/alerts.rules.yml https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/rules/alerts.rules.yml %}
+    curl -o rules/alerts.rules.yml https://www.cockroachlabs.com/{% link files/cockroach/monitoring/rules/alerts.rules.yml %}
     ~~~
 
 ## Step 3. Start Prometheus
@@ -176,25 +176,25 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o runtime.json https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/runtime.json %}
+    curl -o runtime.json https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/runtime.json %}
     # runtime dashboard: node status, including uptime, memory, and cpu.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o storage.json https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/storage.json %}
+    curl -o storage.json https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/storage.json %}
     # storage dashboard: storage availability.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o sql.json https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/sql.json %}
+    curl -o sql.json https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/sql.json %}
     # sql dashboard: sql queries/transactions.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o replication.json https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/replication.json %}
+    curl -o replication.json https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/replication.json %}
     # replicas dashboard: replica information and operations.
     ~~~
 

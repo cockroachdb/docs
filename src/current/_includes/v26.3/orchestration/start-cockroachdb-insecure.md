@@ -4,7 +4,7 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/cockroachdb-statefulset.yaml %}
+    $ curl -O https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/cockroachdb-statefulset.yaml %}
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -31,7 +31,7 @@
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
-        $ curl -O https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml %}
+        $ curl -O https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml %}
         ~~~
 
     1. Modify the file wherever there is a `TODO` comment.
@@ -72,12 +72,12 @@
     pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
     ~~~
 
-1. Use our [`cluster-init.yaml`](https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/cluster-init.yaml %}) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
+1. Use our [`cluster-init.yaml`](https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/cluster-init.yaml %}) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create \
-    -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/cluster-init.yaml %}
+    -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/cluster-init.yaml %}
     ~~~
 
     ~~~

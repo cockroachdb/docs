@@ -42,7 +42,7 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/prometheus.yml %} \
+    $ wget https://www.cockroachlabs.com/{% link files/cockroach/monitoring/prometheus.yml %} \
     -O prometheus.yml
     ~~~
 
@@ -74,12 +74,12 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget -P rules https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/rules/aggregation.rules.yml %}
+    $ wget -P rules https://www.cockroachlabs.com/{% link files/cockroach/monitoring/rules/aggregation.rules.yml %}
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget -P rules https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/rules/alerts.rules.yml %}
+    $ wget -P rules https://www.cockroachlabs.com/{% link files/cockroach/monitoring/rules/alerts.rules.yml %}
     ~~~
 
 ## Step 3. Start Prometheus
@@ -177,25 +177,25 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/runtime.json %}
+    $ wget https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/runtime.json %}
     # runtime dashboard: node status, including uptime, memory, and cpu.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/storage.json %}
+    $ wget https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/storage.json %}
     # storage dashboard: storage availability.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/sql.json %}
+    $ wget https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/sql.json %}
     # sql dashboard: sql queries/transactions.
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://www.cockroachlabs.com/docs/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/replication.json %}
+    $ wget https://www.cockroachlabs.com/{% link files/cockroach/monitoring/grafana-dashboards/by-cluster/replication.json %}
     # replicas dashboard: replica information and operations.
     ~~~
 

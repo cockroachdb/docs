@@ -66,7 +66,7 @@ No special privilege is required for:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/import_dump.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/import_dump.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

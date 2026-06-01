@@ -325,17 +325,17 @@ The Kubernetes cluster in each region needs to have a [Network Load Balancer](ht
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl apply -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml %} --context <cluster-context-1>
+    kubectl apply -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml %} --context <cluster-context-1>
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl apply -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml %} --context <cluster-context-2>
+    kubectl apply -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml %} --context <cluster-context-2>
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl apply -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml %} --context <cluster-context-3>
+    kubectl apply -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml %} --context <cluster-context-3>
     ~~~
 
     You should see the load balancer appear in the Load Balancers section of the EC2 console in each region. This load balancer will route traffic to CoreDNS in the region.
@@ -372,7 +372,7 @@ To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -O https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/eks/configmap.yaml %}
+    curl -O https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/eks/configmap.yaml %}
     ~~~
 
 1. After [obtaining the IP addresses of the Network Load Balancers](#set-up-load-balancing) in all 3 regions, you can use this information to define a **separate ConfigMap for each region**. Each unique ConfigMap lists the forwarding addresses for the pods in the 2 other regions.
@@ -466,7 +466,7 @@ If you plan to run your instances exclusively on private subnets, set the follow
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -OOOOOOOOO \
-    https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/README.md %} https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/client-secure.yaml %} https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/cluster-init-secure.yaml %} https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/cockroachdb-statefulset-secure.yaml %} https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/dns-lb.yaml %} https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/example-app-secure.yaml %} https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/external-name-svc.yaml %} https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/setup.py %} https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/teardown.py %}
+    https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/README.md %} https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/client-secure.yaml %} https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/cluster-init-secure.yaml %} https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/cockroachdb-statefulset-secure.yaml %} https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/dns-lb.yaml %} https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/example-app-secure.yaml %} https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/external-name-svc.yaml %} https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/setup.py %} https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/teardown.py %}
     ~~~
 
 1. Retrieve the `kubectl` "contexts" for your clusters:
@@ -688,7 +688,7 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml %}
+    $ curl -O https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml %}
     ~~~
 
     Look for **TODO** comments in the file. These highlight fields you need to define before deploying your StatefulSet.
@@ -813,7 +813,7 @@ The pod uses the `root` client certificate created earlier by the `setup.py` scr
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl create -f https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/multiregion/client-secure.yaml %} --context <cluster-context> --namespace <cluster-namespace>
+    kubectl create -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/multiregion/client-secure.yaml %} --context <cluster-context> --namespace <cluster-namespace>
     ~~~
 
     ~~~

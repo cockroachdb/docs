@@ -4,7 +4,7 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://www.cockroachlabs.com/docs/{% link files/cockroach/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml %}
+    $ curl -O https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml %}
     ~~~
 
 1. Allocate CPU and memory resources to CockroachDB on each pod. These settings should be appropriate for your workload. For more context on provisioning CPU and memory, see the [Production Checklist](recommended-production-settings.html#hardware).
