@@ -26,7 +26,7 @@ These cluster settings have a broad impact on CockroachDB internals and affect a
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/settings/settings.html %}
+{% capture cockroach_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/settings/settings.html{% endcapture %}{% include {{ cockroach_include }} %}
 
 <a name="setting-goschedstats-always-use-short-sample-period-enabled"></a>
 

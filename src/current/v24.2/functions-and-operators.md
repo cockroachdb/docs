@@ -51,7 +51,7 @@ In addition to the built-in functions described in the following sections, Cockr
 
 ## Built-in functions
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/functions.md %}
+{% capture cockroach_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql/functions.md{% endcapture %}{% include {{ cockroach_include }} %}
 
 ## Aggregate functions
 
@@ -61,11 +61,11 @@ For examples showing how to use aggregate functions, see [the `SELECT` clause do
 Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}#aggregate-functions). To specify the order in which input rows are processed, you can add an [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) clause within the function argument list. For examples, see the [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}#order-aggregate-function-input-rows-by-column) documentation.
 {{site.data.alerts.end}}
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/aggregates.md %}
+{% capture cockroach_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql/aggregates.md{% endcapture %}{% include {{ cockroach_include }} %}
 
 ## Window functions
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/window_functions.md %}
+{% capture cockroach_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql/window_functions.md{% endcapture %}{% include {{ cockroach_include }} %}
 
 ## Operators
 
@@ -137,7 +137,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 ### Supported operations
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/operators.md %}
+{% capture cockroach_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql/operators.md{% endcapture %}{% include {{ cockroach_include }} %}
 
 {% comment %}
 ## `CAST()`
