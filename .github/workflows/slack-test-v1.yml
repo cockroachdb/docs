@@ -8,10 +8,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Step 3 - Multi-line script
+      - name: Step 4 - Full Slack notification
         run: |
           TEAM="${{ github.event.requested_team.slug }}"
-          echo "Team is $TEAM"
           if [ "$TEAM" = "docs-prs" ]; then
-            echo "docs-prs was requested!"
+            jq -n \
+              --arg title "${{ github.event.pull_request.title }}" \
+              --arg url "${{ github.event.pull_request.html_url }}" \
+              --arg author "${{ github.event.pull_request.user.login }}" \
+              --arg number "${{ github.event.pull_request.number }}" \
+              --arg lines "${{ github.event.pull_request.additions + github.event.pull_request.deletions }}" \
+              '{pr_title: $title, pr_url: $url, pr_author: $author, pr_number: $number, lines_changed: $lines}' \
+            | curl -X POST "${{ secrets.SLACK_DOC_REVIEW_WEBHOOK_URL }}" \
+              -H 'Content-Type: application/json' \
+              --fail-with-body \
+              -d @-
           fi
