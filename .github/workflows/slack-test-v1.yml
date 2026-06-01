@@ -8,5 +8,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Step 2 - With GitHub expression
-        run: echo "Team is ${{ github.event.requested_team.slug }}"
+      - name: Step 3 - Multi-line script
+        run: |
+          TEAM="${{ github.event.requested_team.slug }}"
+          echo "Team is $TEAM"
+          if [ "$TEAM" = "docs-prs" ]; then
+            echo "docs-prs was requested!"
+          fi
