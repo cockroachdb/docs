@@ -12,7 +12,7 @@ You can use CTEs in combination with [`SELECT` clauses]({% link {{ page.version.
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/with_clause.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/with_clause.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

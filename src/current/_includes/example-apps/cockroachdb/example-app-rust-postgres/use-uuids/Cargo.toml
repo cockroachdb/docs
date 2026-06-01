@@ -1,0 +1,18 @@
+[package]
+name = "bank"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+openssl = "0.10.41"
+postgres-openssl = "0.5.0"
+chrono = "0.4.22"
+
+[dependencies.postgres]
+version = "0.19.3"
+features = [
+    "with-uuid-1"
+]
+
+[dependencies.uuid]
+version = "1.1.2"

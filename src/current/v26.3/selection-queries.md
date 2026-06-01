@@ -18,7 +18,7 @@ Selection queries can occur:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/select.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/select.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -53,7 +53,7 @@ Form | Usage
 ### Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/select_clause.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/select_clause.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### `VALUES` clause
@@ -61,7 +61,7 @@ Form | Usage
 #### Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/values_clause.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/values_clause.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 A `VALUES` clause defines tabular data defined by the expressions
@@ -92,7 +92,7 @@ you can modify these names with [`AS`]({% link {{ page.version.version }}/table-
 #### Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/table_clause.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/table_clause.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 A `TABLE` clause reads tabular data from a specified table. The
@@ -142,7 +142,7 @@ set operations or as main component in a selection query.
 ### Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/set_operation.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/set_operation.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Set operators

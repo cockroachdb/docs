@@ -21,7 +21,7 @@ To inspect a statement plan without executing the statement, use [`EXPLAIN`]({% 
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/explain_analyze.html %}</div>
+<div>{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/explain_analyze.html{% endcapture %}{% include {{ diagram_include }} %}</div>
 
 ## Parameters
 

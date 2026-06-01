@@ -39,7 +39,7 @@ The `main.go` file defines an `Account` struct that maps to a new `accounts` tab
 
 {% include_cached copy-clipboard.html %}
 ~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-gorm/master/main.go %}
+{% include example-apps/cockroachlabs/example-app-go-gorm/master/main.go %}
 ~~~
 
 {{site.data.alerts.callout_info}}

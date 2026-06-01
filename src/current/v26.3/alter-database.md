@@ -18,7 +18,7 @@ Refer to the respective [subcommands](#subcommands).
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_database.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/alter_database.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
