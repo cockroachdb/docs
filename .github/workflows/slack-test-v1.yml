@@ -1,0 +1,12 @@
+name: Slack Test V1 Simple
+
+on:
+  pull_request:
+    types: [review_requested]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Just echo
+        run: echo "Testing step 1"
