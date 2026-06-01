@@ -1,4 +1,4 @@
-name: Notify Slack on Doc Review Request
+name: Doc Review Slack Notifier
 
 on:
   pull_request:
@@ -8,10 +8,10 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Check team and send notification
+      - name: Send notification if docs-prs requested
         run: |
-          TEAM_SLUG="${{ github.event.requested_team.slug }}"
-          if [ "$TEAM_SLUG" = "docs-prs" ]; then
+          TEAM="${{ github.event.requested_team.slug }}"
+          if [ "$TEAM" = "docs-prs" ]; then
             jq -n \
               --arg title "${{ github.event.pull_request.title }}" \
               --arg url "${{ github.event.pull_request.html_url }}" \
