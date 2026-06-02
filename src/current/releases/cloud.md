@@ -14,6 +14,126 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## May 2026 highlights
+
+<div id="feature-highlights">
+
+<table>
+ <thead>
+  <tr>
+   <th class="center-align">Feature</th>
+   <th class="center-align">Availability</th>
+   <th>{{ site.data.products.basic }} </th>
+   <th>{{ site.data.products.standard }} </th>
+   <th>{{ site.data.products.advanced }} </th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    <p class="feature-summary">Navigation Redesign for Cloud Console</p>
+    <p class="feature-description">Cloud Console features a redesigned navigation interface with improved sidebar navigation, cluster detail headers, and enhanced user experience across all console pages.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">SSH Gateway for Cluster Access</p>
+    <p class="feature-description">Added SSH gateway functionality allowing secure shell access to clusters with OAuth integration and session management capabilities.</p>
+   </td>
+   <td class="icon-center">Preview</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Enhanced Billing Consumption Forecasting</p>
+    <p class="feature-description">Improved billing forecast UI with cluster filtering capabilities and compressed chart visualization for better spending prediction and analysis.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Multi-Factor Authentication (MFA) Support</p>
+    <p class="feature-description">Added comprehensive MFA support including enrollment status viewing, verification APIs, and organization-level MFA enforcement capabilities.</p>
+   </td>
+   <td class="icon-center">Preview</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Azure Private Endpoint Egress Pricing</p>
+    <p class="feature-description">Added support for Azure Private Endpoint egress pricing with tiered rates matching Azure Private Link pricing structure.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">OAuth Apps Management for MCP</p>
+    <p class="feature-description">Introduced OAuth applications page for managing Machine Control Protocol redirect URIs and application configurations.</p>
+   </td>
+   <td class="icon-center">Preview</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Enhanced Cluster Settings Panel</p>
+    <p class="feature-description">Improved cluster settings panel with additional fields including cluster name, ID, and version information, plus better width handling for clusters with many labels.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">AI Support Workspace Enhancements</p>
+    <p class="feature-description">Enhanced AI support capabilities with multi-thread chat support, auto-generated thread names, and improved session persistence for better customer support experiences.</p>
+   </td>
+   <td class="icon-center">Preview</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Improved Error Handling for BYOC Restore Operations</p>
+    <p class="feature-description">Enhanced error messages for BYOC restore failures to provide clearer context and actionable guidance when operations are not supported across different projects.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-no.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">Enhanced License Management with Edition Support</p>
+    <p class="feature-description">Added comprehensive edition and add-on support to license management including Standard, Enterprise Edition, and Mission Critical tiers with multiplier rates.</p>
+   </td>
+   <td class="icon-center">GA</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+ </tbody>
+</table>
+
+</div>
+
 ## April 2026 highlights
 
 <div id="feature-highlights">
