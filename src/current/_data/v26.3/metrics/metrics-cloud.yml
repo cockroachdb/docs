@@ -2,7 +2,7 @@
 # The metrics are in the order of appearance in the configuration file:
 # https://github.com/cockroachlabs/managed-service/blob/master/console/ui/cc-console/assets/js/pages/clusterDetail/metrics/graphConfigs.tsx
 # The data for the metrics was also sourced from
-# https://github.com/cockroachdb/docs/blob/main/src/current/_includes/v26.2/metric-names.md
+# https://github.com/cockroachlabs/docs/blob/main/src/current/_includes/v26.2/metric-names.md
 #
 # The corresponding metrics.yaml file was generated using the v26.2 binary with the following command:
 # cockroach gen metric-list > metrics.yaml
