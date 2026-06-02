@@ -662,7 +662,7 @@ Always introduce a code block with a lead-in sentence that ends with a colon. Do
 
 When showing the output of a command, introduce it with one of the following consistent phrases:
 - "The output looks like the following:" for representative example output.
-- "The command returns:" for exact return values.
+- "The command returns the following:" for exact return values.
 - "The output includes the following:" when the example shows a relevant excerpt, not the full output.
 
 When a task involves several steps, each with its own code block, give every code block its own lead-in sentence. Do not group multiple steps under a single introduction.
