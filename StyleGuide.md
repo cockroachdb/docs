@@ -265,7 +265,9 @@ Use "may" only when describing results that genuinely vary. In user instructions
 
 ### Transition and connective language
 
-Transitions help readers follow the relationship between ideas, but overused or redundant transitions add length without adding clarity. Avoid these commonly overused transitions:
+Transitions help readers follow the relationship between ideas, but overused or redundant transitions add length without adding clarity.
+
+Avoid these commonly overused transitions:
 
 - "Note that...": State the information directly. Consider whether emphasizing the information is important enough to use a [note callout](#callouts).
 - "As mentioned above" / "As noted earlier" / "As previously described": Either briefly restate the information or link to the relevant section. Do not ask the reader to remember something from earlier in the page.
@@ -278,7 +280,8 @@ Use parallel structure within lists and sequences. When items in a list or steps
   - Create a cluster.
   - The database should then be configured.
   - Running the migration script completes the setup.
-  **Prefer:**
+
+**Prefer:**
   - Create a cluster.
   - Configure the database.
   - Run the migration script.
@@ -504,7 +507,7 @@ In prose, spell out whole numbers one through nine. Use numerals for 10 and abov
 In technical contexts, always use numerals regardless of size. This includes:
 
 - Measurements with units: "5 minutes", `128 MiB`, "3 seconds"
-- SQL values and parameters: LIMIT 5, max_offset = 500ms
+- SQL values and parameters: `LIMIT 5`, `max_offset = 500ms`
 - Percentages: "5%" (not "five percent")
 - Version numbers: v25.1
 
@@ -667,12 +670,12 @@ Always introduce a code block with a lead-in sentence that ends with a colon. Do
 
 - **Avoid:** Run the following command:
   **Prefer:** To start a CockroachDB node, run:
-  **Prefer:** To view the list of active sessions, run the following SQL query:
+  **Prefer:** To view the list of active sessions, run the following SQL statement:
 
 When showing the output of a command, introduce it with one of the following consistent phrases:
-- "The output looks like:" for representative example output.
-- "The command returns:" for exact return values.
-- "The output includes:" when the example shows a relevant excerpt, not the full output.
+- "The output looks like the following:" for representative example output.
+- "The command returns the following:" for exact return values.
+- "The output includes the following:" when the example shows a relevant excerpt, not the full output.
 
 When a task involves several steps, each with its own code block, give every code block its own lead-in sentence. Do not group multiple steps under a single introduction.
 
