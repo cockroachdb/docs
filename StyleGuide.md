@@ -431,14 +431,21 @@ Avoid terms that imply violence or harm.
 
 **Examples:**
 
-- Replace "_kill_" with **terminate**.
 - Replace "_hit_ Enter" with **press Enter**.
 - Replace "_hit_ your resource limits" with **reach your resource limits**
 - Replace "_hit_ an error" with **experience an error**.
 - Replace "performance _hit_" with **reduced performance**.
 - Replace "want to _hit_ up" with **want to visit**.
 
-Terminology around "kill" vs. "stop" vs. "terminate" is nuanced. In general, use "terminate" unless referring to a specific command that uses a different term in its syntax.
+Terminology around "kill" vs. "stop" vs. "terminate" is nuanced. In general:
+
+  - Use "terminate" to describe the actual action of ending a process.
+    **Example:** "It is safe to terminate the `cockroach` process only after a node has completed the drain process."
+  - Avoid using "stop" to describe the mechanics of ending a process unless referencing a specific UI term. Instead, use "stop" to describe the user intent of ending a process.
+    **Example:**  "Drain a node to temporarily stop it when you plan to restart it later."
+    **Example:** "When a node is temporarily stopped, the following stages occur in sequence:"
+  - Only use "kill" when referencing a specific UI term. Never use "kill" in prose.
+    **Example:** "a SIGKILL signal is sent to perform a 'hard' shutdown that bypasses CockroachDB's node shutdown logic and forcibly terminates the process."
 
 ### Write accessible documentation
 
