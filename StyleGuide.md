@@ -658,7 +658,7 @@ Always introduce a code block with a lead-in sentence that ends with a colon. Do
 
 - **Avoid:** Run the following command:
   **Prefer:** To start a CockroachDB node, run:
-  **Prefer:** To view the list of active sessions, run the following SQL query:
+  **Prefer:** To view the list of active sessions, run the following SQL statement:
 
 When showing the output of a command, introduce it with one of the following consistent phrases:
 - "The output looks like:" for representative example output.
