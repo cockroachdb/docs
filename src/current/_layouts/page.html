@@ -20,15 +20,6 @@ layout: default
   {% endunless %}
 <div class="{{ post_header_class }}">
 <h1 class="post-title-main w-100">{{ page.title }}</h1>
-  {% unless page.contribute == false %}
-    {% assign toc_classes = 'd-block ' %}
-    {% unless page.toc == false %}
-      {% assign toc_classes = toc_classes | append: 'd-lg-none' %}
-    {% endunless %}
-    <div class="{{toc_classes}}">
-      {% include contribute-options.html %}
-    </div>
-  {% endunless %}
 </div>
 {% endif %}
 
