@@ -23,7 +23,7 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_sequence.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_sequence.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -58,7 +58,7 @@ CockroachDB supports the following [SQL sequence functions]({% link {{ page.vers
 CockroachDB supports session-scoped temporary sequences. Unlike persistent sequences, temporary sequences can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary sequences on both persistent tables and [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}).
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %} For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

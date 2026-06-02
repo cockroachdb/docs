@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!-- Note: Context names match Spring profile names -->
+
+    <changeSet id="1" author="root" context="crdb">
+        <validCheckSum>ANY</validCheckSum>
+        <sqlFile path="db/create.sql"/>
+    </changeSet>
+
+    <changeSet id="2" author="root" context="crdb">
+        <insert tableName="account">
+            <column name="id">1</column>
+            <column name="name">Alice</column>
+            <column name="balance" valueNumeric="500.00"/>
+            <column name="type">asset</column>
+        </insert>
+        <insert tableName="account">
+            <column name="id">2</column>
+            <column name="name">Bob</column>
+            <column name="balance" valueNumeric="500.00"/>
+            <column name="type">expense</column>
+        </insert>
+        <insert tableName="account">
+            <column name="id">3</column>
+            <column name="name">Bobby Tables</column>
+            <column name="balance" valueNumeric="500.00"/>
+            <column name="type">asset</column>
+        </insert>
+        <insert tableName="account">
+            <column name="id">4</column>
+            <column name="name">Doris</column>
+            <column name="balance" valueNumeric="500.00"/>
+            <column name="type">expense</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

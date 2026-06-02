@@ -565,7 +565,7 @@ A _concept_ topic explains how a particular feature works, or how a specific sys
 
 - Provide as much relevant information as you can, and then link to other pages as necessary. If there is a related [reference](#reference) topic, link to it from within the conceptual topic.
 
-For templates that provide a starting point for writing concept topics, refer to the [concept templates](https://github.com/cockroachdb/docs/tree/main/templates/concept).
+For templates that provide a starting point for writing concept topics, refer to the [concept templates](https://github.com/cockroachlabs/docs/tree/main/templates/concept).
 
 #### Examples
 
@@ -597,7 +597,7 @@ A _task_ topic provides step-by-step instructions to complete a specific goal. T
 
 Tasks should **not** include concept or reference information; instead, a task should link to [Concept](#concept) and [Reference](#reference) topics as needed.
 
-For templates that provide a starting point for writing task topics, refer to the [task templates](https://github.com/cockroachdb/docs/tree/main/templates/task).
+For templates that provide a starting point for writing task topics, refer to the [task templates](https://github.com/cockroachlabs/docs/tree/main/templates/task).
 
 #### Examples
 
@@ -618,7 +618,7 @@ Reference topics help users understand the precise meaning and effect of Cockroa
 - The content should be comprehensive and accurate. This principle might apply to other page types, but it is especially important for reference, as it is the ultimate source of truth for a particular feature or interface.
 - The content should be succinct. Details are often presented in table format. Prose is better suited for [Concept](#concept) topics.
 
-For templates that provide a starting point for writing reference topics, refer to the [reference templates](https://github.com/cockroachdb/docs/tree/main/templates/reference).
+For templates that provide a starting point for writing reference topics, refer to the [reference templates](https://github.com/cockroachlabs/docs/tree/main/templates/reference).
 
 #### Examples
 
@@ -632,7 +632,7 @@ _Guides_ offer the reader a perspective on how to decide between a number of dif
 
 To accomplish this goal, guides often link to several different [Concept](#concept) topics and compare and contrast them. They can also link to multiple [Task](#task) topics.
 
-For templates that provide a starting point for writing guide topics, refer to the [guide templates](https://github.com/cockroachdb/docs/tree/main/templates/guide).
+For templates that provide a starting point for writing guide topics, refer to the [guide templates](https://github.com/cockroachlabs/docs/tree/main/templates/guide).
 
 #### Examples
 
@@ -779,7 +779,7 @@ For include file syntax, refer to the [Markdown Guide](MarkdownGuide.md#include-
 
 Reference issues and pull requests by their corresponding number, prepended with `#`.
 
-**Example:** `[#1](https://github.com/cockroachdb/docs/pull/1)`
+**Example:** `[#1](https://github.com/cockroachlabs/docs/pull/1)`
 
 #### External links
 

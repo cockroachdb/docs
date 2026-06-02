@@ -23,5 +23,3 @@
           ERROR: cannot refresh view in an explicit transaction
           SQLSTATE: 25000
           ~~~
-
-    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/66008)

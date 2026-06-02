@@ -28,13 +28,13 @@ For changefeeds, users with the [`CHANGEFEED`]({% link {{ page.version.version }
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/cancel_job.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/cancel_job.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Cancel all jobs by type
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/cancel_all_jobs.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/cancel_all_jobs.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

@@ -96,11 +96,11 @@ For each additional node you want to add to the cluster, complete the following 
     chown -R cockroach /var/lib/cockroach
     ~~~
 
-1.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service):
+1.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachlabs/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -o securecockroachdb.service https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service
+    curl -o securecockroachdb.service https://raw.githubusercontent.com/cockroachlabs/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service
     ~~~
 
     Alternatively, you can create the file yourself and copy the script into it:

@@ -67,7 +67,7 @@ The `requirements.txt` file at the top level of the `example-app-python-django` 
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/requirements.txt %}
+{% include example-apps/cockroachlabs/example-app-python-django/master/requirements.txt %}
 ~~~
 
 This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency management.
@@ -135,7 +135,7 @@ Start by building some [models](https://docs.djangoproject.com/en/3.1/topics/db/
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/models.py %}
+{% include example-apps/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/models.py %}
 ~~~
 
 In this file, we define some simple classes that map to the tables in the cluster.
@@ -146,7 +146,7 @@ Next, build out some [class-based views](https://docs.djangoproject.com/en/3.1/t
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/views.py %}
+{% include example-apps/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/views.py %}
 ~~~
 
 This file defines the application's views as classes. Each view class corresponds to one of the table classes defined in `models.py`. The methods of these classes define read and write transactions on the tables in the database.
@@ -159,7 +159,7 @@ Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.1/topics/ht
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/urls.py %}
+{% include example-apps/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/urls.py %}
 ~~~
 
 ## Step 5. Initialize the database

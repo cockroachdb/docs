@@ -439,17 +439,17 @@ replicator start \
 If successful, Replicator will start, and the console output will indicate that the snapshotter has started as well:
 
 ~~~
-INFO   [Feb  2 10:20:32] Replicator starting
+INFO   [2026-02-02T10:20:32-05:00] Replicator starting
 ...
-INFO   [Feb  2 10:20:32] metrics snapshotter started, writing to replicator-data/metrics-snapshots every 15s, retaining 168h0m0s
+INFO   [2026-02-02T10:20:32-05:00] metrics snapshotter started, writing to replicator-data/metrics-snapshots every 15s, retaining 168h0m0s
 ~~~
 
 Upon interruption of Replicator, the snapshotter will be stopped:
 
-~~~                    
-INFO   [Feb  2 10:26:45] Interrupted                                  
-INFO   [Feb  2 10:26:45] metrics snapshotter stopped
-INFO   [Feb  2 10:26:45] Server shutdown complete
+~~~
+INFO   [2026-02-02T10:26:45-05:00] Interrupted
+INFO   [2026-02-02T10:26:45-05:00] metrics snapshotter stopped
+INFO   [2026-02-02T10:26:45-05:00] Server shutdown complete
 ~~~
 
 #### Step 2. Find the snapshot files in the data directory

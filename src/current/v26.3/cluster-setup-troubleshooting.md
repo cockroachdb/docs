@@ -225,7 +225,7 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 #### TCP connection lingering
 
-If there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a [TCP handshake can linger](https://github.com/cockroachdb/cockroach/issues/53410) while the client network stack waits for a TCP packet in response to network requests.
+If there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a TCP handshake can linger while the client network stack waits for a TCP packet in response to network requests.
 
 **Explanation:** CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a `Connection refused` error. However, the scenario described above can cause connections to hang instead of failing immediately.
 

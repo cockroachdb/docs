@@ -12,7 +12,7 @@ Given a set of shapes (e.g., from a [selection query]({% link {{ page.version.ve
 - [`GEOMETRY`]({% link {{ page.version.version }}/architecture/glossary.md %}#geometry)
 
 {{site.data.alerts.callout_info}}
-The non-aggregate version of `ST_Union` is not yet implemented.  For more information, see [cockroach#49064](https://github.com/cockroachdb/cockroach/issues/49064).
+The non-aggregate version of `ST_Union` is not yet implemented.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -236,7 +236,7 @@ In this example, we will generate a single geometry from many individual points 
 
 1. Paste the JSON emitted in the previous step into [geojson.io](http://geojson.io) and you should see an image like the following, which shows the location of [most of the independent bookstores in New York State](https://www.bookweb.org/member_directory/search/ABAmember/results/0/0/ny/0):
 
-    <img src="{{ 'images/v24.2/geospatial/st_union.png' | relative_url }}" alt="ST_Union example" style="border:1px solid #eee;max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/geospatial/st_union.png" alt="ST_Union example" style="border:1px solid #eee;max-width:100%" />
 
 1. Finally, drop the temporary table if you no longer need it:
 

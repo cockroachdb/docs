@@ -247,7 +247,7 @@ class CrossVersionLinkLinter:
             "",
             "**Action Required**: Please update all cross-version links to use version variables or ensure links stay within the same version.",
             "",
-            "For more information about proper link formatting, see the [CockroachDB Docs Style Guide](https://github.com/cockroachdb/docs/blob/main/StyleGuide.md#links)."
+            "For more information about proper link formatting, see the [CockroachDB Docs Style Guide](https://github.com/cockroachlabs/docs/blob/main/StyleGuide.md#links)."
         ])
 
         return "\n".join(lines)
