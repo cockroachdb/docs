@@ -131,6 +131,7 @@ Avoid these common filler phrases and inflated verbs:
 
 - **Avoid:** "at this point in time"
   **Prefer:** "now"
+  This example does NOT apply when referencing the syntax `AS OF SYSTEM TIME`, or when discussing "as of system time" in prose.
 
 - **Avoid:** "make use of"
   **Prefer:** "use"
@@ -239,24 +240,26 @@ For readability, avoid Latinisms.
   **Prefer:** databases, functions, tables, clusters, schemas, rows, users, jobs, and so on.
 
 - **Avoid:** These can also be queried via `SHOW`.
-  **Prefer:** These can also be queried using `SHOW`.
+  **Prefer:** These can also be queried with `SHOW`.
 
 ### Modal verbs
 
 Maintain consistency when using modal verbs to signal the degree of obligation or certainty.
 
 - Use _must_ to denote a required action with no alternative. Use for prerequisites, security requirements, and hard constraints.
-- Use _should_ to denote a recommended action with viable alternatives. Use for best practices and suggestions.
-- Use _can_ when describing an action that is possible, but is not directly recommended or not recommended. Use to describe capabilities or options that are available to the user.
-- Use _may_ when referencing permissions, or when describing user behavior that is non-deterministic or likely to vary.
+- Avoid using _should_. Instead, use _Cockroach Labs recommends_ to denote a recommended action with viable alternatives. This includes best practices and suggestions.
+- Use _can_ when describing an action that is possible, but is not directly recommended or not recommended. Use to describe capabilities, permissions, or options that are available to the user.
+- Use _may_ when describing behavior that is non-deterministic or likely to vary.
 - Use _avoid_ to denote actions that we specifically recommend against. Use for practices that are technically possible, but likely to cause difficulty for the user. If possible, include a brief explanation of why the user should avoid the action.
-- Use _do not_ only to denote actions that are impossible or will certainly harm the user's system. If there could conceivably be a valid reason for a user to do the action, use "avoid" instead.
+- Use _do not_ only to denote actions that will certainly harm the user's system. If there could conceivably be a valid reason for a user to do the action, use "avoid" instead.
+- Use _cannot_ only to describe actions that are impossible.
 
 Do not use "should" as a softer form of "must." If the user has no real alternative, use "must."
 - **Avoid**: You should enable admission control before running a high-throughput workload.
   **Prefer**: You must enable admission control before running a high-throughput workload.
 
-Do not use "may" when "can" is more accurate. Use "may" only when the behavior or permission genuinely varies.
+Use "may" only when describing results that genuinely vary. In user instructions, always use "can" instead of "may".
+- **Example**: Changing this number may impact cluster throughput.
 - **Avoid**: Users may query this table to view active sessions.
   **Prefer**: Users can query this table to view active sessions.
 
@@ -269,7 +272,7 @@ Transitions help readers follow the relationship between ideas, but overused or 
 - "Furthermore," "Moreover," "Additionally" at the start of a sentence: These transitions are usually redundant. If ideas are related, their connection should be clear from context.
 - "However" / "But" at the start of a sentence: Use sparingly. When contrast is implied by the surrounding content, omit the transition.
 
-Use parallel structure withing lists and sequences. When items in a list or steps in a sequence share the same grammatical form, they are easier to scan. Begin each item with the same part of speech, ideally a verb.
+Use parallel structure within lists and sequences. When items in a list or steps in a sequence share the same grammatical form, they are easier to scan. Begin each item with the same part of speech, ideally a verb.
 
 - **Avoid:**
   - Create a cluster.
@@ -386,8 +389,6 @@ Minimizing language implies that a task is easy or obvious, which may not be tru
 
 Minimizing language includes words like "simple/simply", "just", "easy/easily", "actually", "obviously", "clearly", "of course", "straightforward", "trivial", and more.
 
-Also avoid the phrases "Note that..." or "Keep in mind that...". If something is worth noting, state it directly.
-
 ### Avoid ableist language
 
 An informal tone can allow for problematic ableist language due to figures of speech and colloquial language. Ableist language includes words like "crazy", "insane", "blind", "dummy", "cripple", and more.
@@ -495,25 +496,36 @@ For links to CockroachDB docs, match the capitalization of the linked content:
 
 The following rules apply only to your own writing. When representing example commands, outputs, or UI elements, always use the exact wording that the user sees in practice.
 
-In prose, spell out whole numbers one through nine. Use numerals for 10 and above.
+In prose, spell out whole numbers one through nine. Use numerals for 10 and above. If referencing inexact numbers such as "dozens", "hundreds", or "thousands", spell out those words.
 
 - **Example:** There are three replicas by default.
 - **Example:** A cluster with 10 or more nodes benefits from zone-level fault tolerance.
 
 In technical contexts, always use numerals regardless of size. This includes:
 
-- Measurements with units: "5 minutes," "128 MiB," "3 seconds"
+- Measurements with units: "5 minutes", `128 MiB`, "3 seconds"
 - SQL values and parameters: LIMIT 5, max_offset = 500ms
 - Percentages: "5%" (not "five percent")
 - Version numbers: v25.1
 
+Format technical values as used in programmatic syntax using code formatting (backticks).
+
 For units, use the following conventions:
 
 - Use "GiB" and "MiB" (not "GB" and "MB") for binary storage values, consistent with the DB Console and CockroachDB output.
-- In prose, write time durations with the unit spelled out: "5 minutes," "30 seconds." Do not abbreviate time units in prose ("5 min," "30s").
+- In prose, write time durations with the unit spelled out. 
+  - **Avoid:**  "5 min"
+    **Prefer:** "5 minutes"
+  - **Avoid:**  "30s"
+    **Prefer:** "30 seconds"
 - Place a numeral directly before the unit with a space between them: "3 nodes," "128 MiB," "5 minutes."
 
-Express numerical ranges with "to" between values: "3 to 5 nodes." This is consistent with the version range convention (`v22.1.0` to `v22.1.4`). Do not use dashes for ranges.
+Express numerical ranges with "to" between values. Do not use dashes for ranges.
+
+- **Avoid:** "3-5 nodes"
+  **Prefer:** "3 to 5 nodes"
+- **Avoid:** "v22.1.0-v22.1.4"
+  **Prefer:** "v22.1.0 to v22.1.4"
 
 ## File conventions
 
@@ -707,7 +719,7 @@ CockroachDB docs use three classes of "callouts," which are highlighted blocks o
 **Best practices:**
 
 - Avoid using consecutive callouts.
-- Avoid using more than one callout per major section.
+- Avoid using more than one callout per major section. (Major sections are defined by H2s. Text areas under different H2s are in different major sections.)
 - Most documentation belongs in the body of a page rather than in a callout. Only use a callout if including the information in the body would severely disrupt the flow of the writing, or if the information is crucial enough to require special attention.
 
 For code block syntax and formatting, refer to the [Markdown Guide](MarkdownGuide.md#callouts).
@@ -780,7 +792,7 @@ Use consistent verbs when describing interactions with UI elements. Do not mix s
 - For pressing a physical button or key, use _press_. **Example:** Press **Enter**.
 - For typing into a field, use _enter_. **Example:** In the **Cluster name** field, enter a name for your cluster.
 - For enabling or disabling a toggle, use _turn on/off_. **Example:** Turn on **Admission control**.
-- For checking or unchecking a checkbox, use _select/deselect_. **Example:** Select the **Enable backups** checkbox.
+- For checking or unchecking a checkbox, use _check/uncheck_. **Example:** Check the **Enable backups** checkbox.
 - For navigating to a page in the UI, use _go to_. **Example:** Go to the **Clusters** page.
 
 ## Page sections
