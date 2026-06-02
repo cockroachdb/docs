@@ -10,7 +10,7 @@ The `SHOW ENUMS` statement lists the [enumerated data types]({% link {{ page.ver
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_enums.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_enums.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

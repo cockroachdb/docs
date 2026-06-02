@@ -1,0 +1,13 @@
+name: Docs Slack Notify
+
+on:
+  pull_request:
+    types: [review_requested]
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify docs-prs
+        if: github.event.requested_team.slug == 'docs-prs'
+        run: curl -X POST ${{ secrets.SLACK_DOC_REVIEW_WEBHOOK_URL }} -H 'Content-Type:application/json' -d '{"pr_title":"${{ github.event.pull_request.title }}","pr_url":"${{ github.event.pull_request.html_url }}","pr_author":"${{ github.event.pull_request.user.login }}","pr_number":"${{ github.event.pull_request.number }}","lines_changed":"${{ github.event.pull_request.additions }}"}'

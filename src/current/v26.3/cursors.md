@@ -26,15 +26,15 @@ Cursors are declared and used with the following keywords:
 - [`CLOSE`]({% link {{ page.version.version }}/sql-grammar.md %}#close_cursor_stmt)
 
 <div>
-  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/declare_cursor.html %}
+  {% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/declare_cursor.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 <div>
-  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/fetch_cursor.html %}
+  {% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/fetch_cursor.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 <div>
-  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/close_cursor.html %}
+  {% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/close_cursor.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Examples

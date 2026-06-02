@@ -16,7 +16,7 @@ For more detail on using changefeeds to create an export of your table data, see
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_schedule_for_changefeed.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_schedule_for_changefeed.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters

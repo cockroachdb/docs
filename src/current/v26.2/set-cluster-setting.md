@@ -25,7 +25,7 @@ To use the `SET CLUSTER SETTING` statement, a user must have one of the followin
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/set_cluster_setting.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/set_cluster_setting.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 {{site.data.alerts.callout_info}}The <code>SET CLUSTER SETTING</code> statement is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="{% link {{ page.version.version }}/set-vars.md %}"><code>SET {session variable}</code></a> statements.{{site.data.alerts.end}}

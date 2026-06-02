@@ -35,7 +35,7 @@ The `main.go` file contains the code for `CREATE TABLE`, `INSERT`, `SELECT`, `UP
 
 {% include_cached copy-clipboard.html %}
 ~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/main/main.go %}
+{% include example-apps/cockroachlabs/example-app-go-pgx/main/main.go %}
 ~~~
 
 {{site.data.alerts.callout_info}}

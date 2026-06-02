@@ -13,7 +13,7 @@ You can use the `CHECK EXTERNAL CONNECTION` to test the connection to [**cloud s
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/check_external_connection.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/check_external_connection.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

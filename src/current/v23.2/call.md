@@ -15,7 +15,7 @@ To call a procedure, a user must have [`EXECUTE` privilege]({% link {{ page.vers
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/call.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/call.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

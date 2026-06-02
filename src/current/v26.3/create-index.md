@@ -29,13 +29,13 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
 ### Standard index
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_index.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_index.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### GIN index
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_inverted_index.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/create_inverted_index.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

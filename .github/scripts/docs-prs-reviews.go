@@ -82,8 +82,8 @@ type prReviewParse struct {
 	UpdatedAt time.Time
 }
 
-const (
-	docsOrganization = "cockroachdb"
+var (
+	docsOrganization = maybeEnv("DOCS_ORG", "cockroachlabs")
 	docsRepo         = "docs"
 	docsPrsTeam      = "docs-prs"
 )

@@ -12,13 +12,13 @@ The `WITH (storage parameter)` [statement]({% link {{ page.version.version }}/sq
 **create_index_with_storage_param ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_index_with_storage_param.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_index_with_storage_param.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 **create_table_with_storage_param ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_table_with_storage_param.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_table_with_storage_param.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 

@@ -21,7 +21,7 @@ The following users can resume a schedule:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/resume_schedule.html %}
+{% capture diagram_include %}cockroach-generated/release-26.3/sql-diagrams/resume_schedule.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

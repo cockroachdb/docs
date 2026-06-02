@@ -50,7 +50,7 @@ The contents of `Sample.java`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
+{% include example-apps/cockroachlabs/example-app-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
