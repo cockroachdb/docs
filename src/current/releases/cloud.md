@@ -14,6 +14,20 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## May 2026 Highlights
+
+**OAuth Apps Page for MCP Redirect URI Management** — Added OAuth apps page in the management console for managing redirect URIs in Multi-Cloud Platform configurations. (GA, All tiers).
+
+**Cluster Filter for Billing Forecast Tab** — Users can now filter clusters in the billing forecast tab to better analyze costs and usage projections. (GA, All tiers).
+
+**Enhanced Navigation V2 Layout** — Improved cluster navigation with persistent ClusterDetailHeader displaying page titles, Connect button, action menu, and page-specific actions. (GA, All tiers).
+
+**Azure Private Endpoint Egress Pricing** — Added pricing support for Azure private endpoint egress traffic in billing calculations. (GA, Dedicated).
+
+**Jobs v2 Schema Support** — Added support for Jobs v2 schema changes to improve job management and monitoring capabilities. (GA, All tiers).
+
+**Improved Cluster Settings Panel** — Fixed settings panel width issues when clusters have many labels for better display and usability. (GA, All tiers).
+
 ## April 2026 highlights
 
 <div id="feature-highlights">
