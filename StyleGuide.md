@@ -661,7 +661,7 @@ Always introduce a code block with a lead-in sentence that ends with a colon. Do
   **Prefer:** To view the list of active sessions, run the following SQL statement:
 
 When showing the output of a command, introduce it with one of the following consistent phrases:
-- "The output looks like:" for representative example output.
+- "The output looks like the following:" for representative example output.
 - "The command returns:" for exact return values.
 - "The output includes:" when the example shows a relevant excerpt, not the full output.
 
