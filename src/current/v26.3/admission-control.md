@@ -166,6 +166,5 @@ The [DB Console Overload dashboard]({% link {{ page.version.version }}/ui-overlo
 ## See also
 
 - The [Overload Dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}) in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}).
-- 
 - The blog post [Here's how CockroachDB keeps your database from collapsing under load](https://www.cockroachlabs.com/blog/admission-control-in-cockroachdb/).
 - The blog post [Rubbing Control Theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/).

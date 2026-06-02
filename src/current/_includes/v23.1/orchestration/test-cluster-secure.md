@@ -44,7 +44,7 @@
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create \
-    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
+    -f https://www.cockroachlabs.com/{% link files/cockroach/cloud/kubernetes/bring-your-own-certs/client.yaml %}
     ~~~
 
     ~~~
