@@ -3,7 +3,7 @@
 # https://github.com/cockroachlabs/managed-service/pull/16129/files
 # console/assets/js/pages/clusterDetail/metrics/graphConfigs.tsx
 # The data for the metrics was also sourced from
-# https://github.com/cockroachdb/docs/blob/main/src/current/_includes/v23.2/essential-metrics.md
+# https://github.com/cockroachlabs/docs/blob/main/src/current/_includes/v23.2/essential-metrics.md
 # 
 # The corresponding metrics-list.csv file was generated using the v23.2.0 binary with the following command:
 # cockroach gen metric-list --format=csv > metrics-list.csv

@@ -183,7 +183,7 @@ If the configuration doesn't seem to take effect:
 
 For issues or feedback about the CockroachDB Docs MCP Server:
 
-- Report documentation issues on [GitHub](https://github.com/cockroachdb/docs/issues)
+- Report documentation issues on [GitHub](https://github.com/cockroachlabs/docs/issues)
 - Join the [CockroachDB Community Slack](https://www.cockroachlabs.com/join-community/) for help
 
 ## See Also

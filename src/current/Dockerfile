@@ -11,7 +11,7 @@ FROM ruby:3.4-slim
 # Version labels
 LABEL org.opencontainers.image.title="CockroachDB Docs Builder"
 LABEL org.opencontainers.image.description="Hermetic build environment for CockroachDB documentation"
-LABEL org.opencontainers.image.source="https://github.com/cockroachdb/docs"
+LABEL org.opencontainers.image.source="https://github.com/cockroachlabs/docs"
 LABEL ruby.version="3.4.0"
 LABEL bundler.version="2.7.2"
 LABEL jekyll.version="4.3.4"
