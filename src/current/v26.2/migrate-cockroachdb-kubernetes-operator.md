@@ -730,6 +730,10 @@ kubectl delete clusterrole ${NAMESPACE}-${CRDBCLUSTER} --ignore-not-found
 kubectl delete clusterrolebinding ${NAMESPACE}-${CRDBCLUSTER} --ignore-not-found
 ```
 
+{{site.data.alerts.callout_info}}
+**Split-chart deployments**: In multi-tenant environments where tenant namespaces cannot create cluster-scoped RBAC, platform teams can pre-create node-reader ClusterRole and ClusterRoleBinding through the operator chart's `nodeReader` values. Tenants can then set `cockroachdb.crdbCluster.rbac.nodeReader.create=false` in their CockroachDB chart values to use the platform-provided RBAC instead of creating their own. When transitioning from migration-created node-reader RBAC to platform-managed RBAC, upgrade the operator chart first with matching `nodeReader.subjects`, then upgrade the CockroachDB chart with `nodeReader.create=false`. Refer to the [CockroachDB Helm chart README](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb-parent/charts/cockroachdb/README.md#split-chart-node-reader-rbac) and [operator chart README](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb-parent/charts/operator/README.md#split-chart-node-reader-rbac) for details.
+{{site.data.alerts.end}}
+
 ### Run Helm install
 
 There is no existing Helm release for the migrated cluster, so use `--install` to create one.
