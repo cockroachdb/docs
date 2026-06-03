@@ -10,12 +10,12 @@ The `DROP TRIGGER` [statement]({% link {{ page.version.version }}/sql-statements
 
 ## Required privileges
 
-To drop a trigger, a user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the trigger.
+To drop a trigger, the user must be the owner of the table on which the trigger is defined.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_trigger.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/drop_trigger.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -65,4 +65,6 @@ DROP TRIGGER log_update_timestamp ON users;
 
 - [Triggers]({% link {{ page.version.version }}/triggers.md %})
 - [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %})
+- [`SHOW TRIGGERS`]({% link {{ page.version.version }}/show-triggers.md %})
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
 - [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})

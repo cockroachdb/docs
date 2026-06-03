@@ -15,7 +15,7 @@ While a table or view is being [dropped]({% link {{ page.version.version }}/drop
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_tables.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_tables.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Required privileges

@@ -11,7 +11,7 @@ The `SHOW DATABASES` [statement]({% link {{ page.version.version }}/sql-statemen
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_databases.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_databases.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Required privileges

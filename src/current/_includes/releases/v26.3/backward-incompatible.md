@@ -1,0 +1,1 @@
+This section summarizes changes that can cause applications, scripts, or manual workflows to fail or behave differently than in previous releases. This includes [key cluster setting changes](#v26-2-0-cluster-settings) and [deprecations](#v26-2-0-deprecations).

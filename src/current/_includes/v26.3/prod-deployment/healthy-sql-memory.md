@@ -1,0 +1,1 @@
+**Expected values for a healthy cluster**: This value should not exceed the [`--max-sql-memory`]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size) size. A healthy threshold is 75% of allocated `--max-sql-memory`.

@@ -1,20 +1,20 @@
 ---
 title: SHOW CREATE
-summary: The SHOW CREATE statement shows the CREATE statement for an existing database, function, table, view, or sequence.
+summary: The SHOW CREATE statement shows the CREATE statement for an existing database, function, table, trigger, view, or sequence.
 toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW CREATE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) shows the `CREATE` statement for an existing [database]({% link {{ page.version.version }}/create-database.md %}), [function]({% link {{ page.version.version }}/create-function.md %}), [table]({% link {{ page.version.version }}/create-table.md %}), [view]({% link {{ page.version.version }}/create-view.md %}), or [sequence]({% link {{ page.version.version }}/create-sequence.md %}).
+The `SHOW CREATE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) shows the `CREATE` statement for an existing [database]({% link {{ page.version.version }}/create-database.md %}), [function]({% link {{ page.version.version }}/create-function.md %}), [table]({% link {{ page.version.version }}/create-table.md %}), [trigger]({% link {{ page.version.version }}/create-trigger.md %}), [view]({% link {{ page.version.version }}/create-view.md %}), or [sequence]({% link {{ page.version.version }}/create-sequence.md %}).
 
 ## Required privileges
 
-The user must have any [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target database, function, table, view, or sequence.
+The user must have any [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target database, function, table, view, or sequence. To run `SHOW CREATE TRIGGER`, the user must have any privilege on the table on which the trigger is defined.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_create.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_create.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -22,6 +22,7 @@ The user must have any [privilege]({% link {{ page.version.version }}/security-r
 Parameter | Description
 ----------|------------
 `object_name` | The name of the database, function, table, view, or sequence for which to show the `CREATE` statement.
+`TRIGGER trigger_name ON table_name` | Show the `CREATE TRIGGER` statement for a [trigger]({% link {{ page.version.version }}/create-trigger.md %}) on the specified table.
 `ALL TABLES` | Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements]({% link {{ page.version.version }}/alter-table.md %}) that add, modify, and validate an object's [constraints]({% link {{ page.version.version }}/constraints.md %}). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
 `ALL SCHEMAS` | Show the `CREATE` statements for all [schemas]({% link {{ page.version.version }}/create-schema.md %}) in the current database.
 `ALL TYPES` | Show the `CREATE` statements for all [types]({% link {{ page.version.version }}/create-type.md %}) in the current database.
@@ -33,7 +34,8 @@ Field | Description
 `table_name` | The name of the table, view, or sequence.
 `database_name` | The name of the database.
 `function_name` | The name of the function.
-`create_statement` | The `CREATE` statement for the database, function, table, view, or sequence.
+`trigger_name` | The name of the trigger (when running `SHOW CREATE TRIGGER`).
+`create_statement` | The `CREATE` statement for the database, function, table, trigger, view, or sequence.
 
 ## Example
 
@@ -343,6 +345,48 @@ The following statement defines a function to return the number of rows in the `
 (1 row)
 ~~~
 
+### Show the `CREATE TRIGGER` statement for a trigger
+
+To return the `CREATE TRIGGER` statement for a [trigger]({% link {{ page.version.version }}/create-trigger.md %}), use `SHOW CREATE TRIGGER` and specify the trigger name and the table on which the trigger is defined.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE users (id INT PRIMARY KEY, name STRING);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE FUNCTION update_timestamp()
+  RETURNS TRIGGER AS $$
+  BEGIN
+    RAISE NOTICE 'Current timestamp: %', now();
+    RETURN NEW;
+  END;
+  $$ LANGUAGE PLpgSQL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE TRIGGER log_update_timestamp
+  AFTER UPDATE ON users
+  FOR EACH ROW
+  EXECUTE FUNCTION update_timestamp();
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TRIGGER log_update_timestamp ON users;
+~~~
+
+~~~
+      trigger_name     |                                                               create_statement
+-----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------
+  log_update_timestamp | CREATE TRIGGER log_update_timestamp AFTER UPDATE ON defaultdb.public.users FOR EACH ROW EXECUTE FUNCTION defaultdb.public.update_timestamp()
+(1 row)
+~~~
+
+To list the triggers on a table, use [`SHOW TRIGGERS`]({% link {{ page.version.version }}/show-triggers.md %}).
+
 ### Show the statements needed to recreate all tables, views, and sequences in the current database
 
 To return the `CREATE` statements for all of the tables, views, and sequences in the current database, use `SHOW CREATE ALL TABLES`.
@@ -510,7 +554,9 @@ The `SHOW CREATE DATABASE` output includes the database regions.
 
 - [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
 - [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %})
 - [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
 - [`CREATE TABLE`]({% link {{ page.version.version }}/create-sequence.md %})
+- [`SHOW TRIGGERS`]({% link {{ page.version.version }}/show-triggers.md %})
 - [Information Schema]({% link {{ page.version.version }}/information-schema.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

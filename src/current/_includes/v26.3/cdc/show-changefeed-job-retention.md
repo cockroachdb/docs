@@ -1,0 +1,1 @@
+`SHOW CHANGEFEED JOBS` will return all changefeed jobs from the last 12 hours. For more information on the retention of job details, refer to the {% if page.name == "show-jobs.md" %} [Response](#response) {% else %} [Response]({% link {{ page.version.version }}/show-jobs.md %}#response) {% endif %} section.

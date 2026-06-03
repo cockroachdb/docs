@@ -21,7 +21,7 @@ You can use the keywords `ROLE` and `USER` interchangeably. [`ALTER USER`]({% li
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_role.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_role.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

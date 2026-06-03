@@ -16,7 +16,7 @@ No [privileges]({% link {{ page.version.version }}/security-reference/authorizat
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_locality.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_locality.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Example
@@ -79,7 +79,6 @@ For a more extensive example, see [Create a table with node locality information
 
 ## See also
 
-- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality)
 - [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
 - [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})

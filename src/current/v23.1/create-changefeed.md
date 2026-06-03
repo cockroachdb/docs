@@ -24,7 +24,7 @@ The [examples](#examples) on this page provide the foundational syntax of the `C
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_changefeed.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_changefeed.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ### Parameters

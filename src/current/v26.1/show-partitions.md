@@ -16,7 +16,7 @@ Use the `SHOW PARTITIONS` [statement]({% link {{ page.version.version }}/sql-sta
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_partitions.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/show_partitions.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Required privileges
@@ -237,4 +237,3 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 
 - [Define Table Partitions]({% link {{ page.version.version }}/partitioning.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})

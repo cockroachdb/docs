@@ -10,12 +10,12 @@ The `DROP PROCEDURE` [statement]({% link {{ page.version.version }}/sql-statemen
 
 ## Required privileges
 
-To drop a procedure, a user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the procedure.
+To drop a procedure, the user must be the owner of the procedure.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_proc.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/drop_proc.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

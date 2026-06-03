@@ -70,7 +70,7 @@ See the [Required privileges](#required-privileges) section for the updated priv
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/backup.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/backup.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters

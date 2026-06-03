@@ -101,8 +101,6 @@
 
 
 # resources_support:
-#   - name: GitHub
-#     url: https://github.com/cockroachdb/cockroach
 #   - name: Slack
 #     url: https://www.cockroachlabs.com/join-community/
 #   - name: Support Portal

@@ -88,7 +88,7 @@ In addition, the code shows a pattern for automatically handling [transaction re
 
 To run it:
 
-1. Download and unzip [jooq-basic-sample.zip](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/jooq-basic-sample/jooq-basic-sample.zip).
+1. Download and unzip [jooq-basic-sample.zip](https://github.com/cockroachlabs/docs/raw/master/_includes/{{ page.version.version }}/app/jooq-basic-sample/jooq-basic-sample.zip).
 1. Open `jooq-basic-sample/src/main/java/com/cockroachlabs/Sample.java`, and edit the connection string passed to `DriverManager.getConnection()` in the `Sample` class's `main()` method so that the certificate paths are fully and correctly specified.
 1. Compile and run the code using Maven:
 
@@ -107,7 +107,7 @@ To run it:
     $ mvn exec:java -Dexec.mainClass=com.cockroachlabs.Sample
     ~~~
 
-Here are the contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/jooq-basic-sample/Sample.java), the Java file containing the main `Sample` class:
+Here are the contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachlabs/docs/master/_includes/{{page.version.version}}/app/jooq-basic-sample/Sample.java), the Java file containing the main `Sample` class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
@@ -186,7 +186,7 @@ In addition, the code shows a pattern for automatically handling [transaction re
 
 To run it:
 
-1. Download and unzip [jooq-basic-sample.zip](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/insecure/jooq-basic-sample/jooq-basic-sample.zip).
+1. Download and unzip [jooq-basic-sample.zip](https://github.com/cockroachlabs/docs/raw/master/_includes/{{ page.version.version }}/app/insecure/jooq-basic-sample/jooq-basic-sample.zip).
 1. Compile and run the code using Maven:
 
     {% include_cached copy-clipboard.html %}
@@ -204,7 +204,7 @@ To run it:
     $ mvn exec:java -Dexec.mainClass=com.cockroachlabs.Sample
     ~~~
 
-Here are the contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/jooq-basic-sample/Sample.java), the Java file containing the main `Sample` class:
+Here are the contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachlabs/docs/master/_includes/{{page.version.version}}/app/insecure/jooq-basic-sample/Sample.java), the Java file containing the main `Sample` class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ java

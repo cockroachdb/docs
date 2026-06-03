@@ -1,11 +1,11 @@
 ### Install the Operator
 
-{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 {% capture apply_default_operator_manifest_command %}
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
+    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.18.3/install/operator.yaml
     ~~~
     ~~~
     clusterrole.rbac.authorization.k8s.io/cockroach-database-role created
@@ -23,7 +23,7 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
+    curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.18.3/install/operator.yaml
     ~~~
 {% endcapture %}
 {% capture apply_local_operator_manifest_command %}
@@ -38,7 +38,7 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/crds.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.18.3/install/crds.yaml
     ~~~
 
     ~~~
@@ -76,7 +76,7 @@ After a cluster managed by the Kubernetes operator is initialized, its Kubernete
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/example.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.18.3/examples/example.yaml
     ~~~
 
     By default, this custom resource specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Configure the Cluster](configure-cockroachdb-kubernetes.html).

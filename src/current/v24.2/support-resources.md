@@ -13,6 +13,5 @@ If you're having an issue with CockroachDB, you can reach out for support from C
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
 - [CockroachDB Community Slack](https://cockroachdb.slack.com)
 - [CockroachDB in StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
-- [File an issue in GitHub]({% link {{ page.version.version }}/file-an-issue.md %})
 
 We also rely on contributions from users like you. If you know how to help users who might be struggling with a problem, we hope you will!

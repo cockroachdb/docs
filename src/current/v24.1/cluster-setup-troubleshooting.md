@@ -91,7 +91,7 @@ You should see a list of the built-in databases:
 If you’re not seeing the output above, check for the following:
 
 - `connection refused` error, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here]({% link {{ page.version.version }}/common-errors.md %}#connection-refused).
-- The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the `cockroach` process (i.e., it crashed), [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}), including the [logs from your node]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory) and any errors you received.
+- The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the `cockroach` process (i.e., it crashed), [contact Support]({% link {{ page.version.version }}/support-resources.md %}), including the [logs from your node]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory) and any errors you received.
 
 ## Cannot run a multi-node CockroachDB cluster on the same machine
 
@@ -104,7 +104,7 @@ If you are trying to run all nodes on the same machine, you might get the follow
 #### Store directory already exists
 
 ~~~
-ERROR: could not cleanup temporary directories from record file: could not lock temporary directory /Users/amruta/go/src/github.com/cockroachdb/cockroach/cockroach-data/cockroach-temp301343769, may still be in use: IO error: While lock file: /Users/amruta/go/src/github.com/cockroachdb/cockroach/cockroach-data/cockroach-temp301343769/TEMP_DIR.LOCK: Resource temporarily unavailable
+ERROR: could not cleanup temporary directories from record file: could not lock temporary directory /cockroach-data/cockroach-temp301343769, may still be in use: IO error: While lock file: /cockroach-data/cockroach-temp301343769/TEMP_DIR.LOCK: Resource temporarily unavailable
 ~~~
 
 **Explanation:** When starting a new node on the same machine, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server and then tried to start another cluster using the same directory.
@@ -528,7 +528,7 @@ CockroachDB memory usage has the following components:
 
     {% include {{ page.version.version }}/prod-deployment/healthy-crdb-memory.md %}
 
-    If you observe values not within the expected range for a healthy cluster, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
+    If you observe values not within the expected range for a healthy cluster, [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
 
 #### Out-of-memory (OOM) crash
 
@@ -584,7 +584,7 @@ To identify under-replicated/unavailable ranges:
 
 1.  On the [**Cluster Overview** page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
 
-1. Check for a network partition: On the [**Network** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}), if there are nodes in the network matrix with [no connections]({% link {{ page.version.version }}/ui-network-latency-page.md %}#no-connections), this may indicate a network partition. If there is no partition and still no upreplication after 5 minutes, then [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
+1. Check for a network partition: On the [**Network** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}), if there are nodes in the network matrix with [no connections]({% link {{ page.version.version }}/ui-network-latency-page.md %}#no-connections), this may indicate a network partition. If there is no partition and still no upreplication after 5 minutes, then [contact Support]({% link {{ page.version.version }}/support-resources.md %}).
 
 **Add nodes to the cluster:**
 
@@ -596,7 +596,7 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 1.  On the [**Advanced Debug** page]({% link {{ page.version.version }}/ui-debug-pages.md %}), click **Problem Ranges**.
 1.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
 1.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
-1. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}). Please be sure to include the full Range Report and error message when you submit the issue.
+1. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [contact Support]({% link {{ page.version.version }}/support-resources.md %}). Please be sure to include the full Range Report and error message when you submit the issue.
 
 #### Check for under-replicated or unavailable data
 

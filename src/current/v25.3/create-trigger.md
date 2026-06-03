@@ -10,12 +10,12 @@ The `CREATE TRIGGER` [statement]({% link {{ page.version.version }}/sql-statemen
 
 ## Required privileges
 
-To create a trigger, a user must have [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the trigger.
+To create a trigger, a user must have the `TRIGGER` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table and the `EXECUTE` privilege on the trigger function. By default, the `public` role has `EXECUTE` privilege on all functions, so this is granted automatically unless it has been revoked.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_trigger.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/create_trigger.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -185,6 +185,8 @@ SELECT * FROM stock;
 
 - [Triggers]({% link {{ page.version.version }}/triggers.md %})
 - [`DROP TRIGGER`]({% link {{ page.version.version }}/drop-trigger.md %})
+- [`SHOW TRIGGERS`]({% link {{ page.version.version }}/show-triggers.md %})
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
 - [User-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %})
 - [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
 - [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %})

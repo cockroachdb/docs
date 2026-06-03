@@ -18,7 +18,7 @@ Refer to the respective [subcommands](#subcommands).
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_index.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_index.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -243,7 +243,7 @@ ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING 
 {{site.data.alerts.callout_info}}
 When you discard a zone configuration, the objects it was applied to will then inherit a configuration from an object "the next level up"; e.g., if the object whose configuration is being discarded is a table, it will use its parent database's configuration.
 
-You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or partitions if the [multi-region abstractions]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %}#replication-zone-patterns-and-multi-region-sql-abstractions) created the zone configuration.
+You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or partitions if the [multi-region] ({% link {{ page.version.version }}/multiregion-overview.md %}) created the zone configuration.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}

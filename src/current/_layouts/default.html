@@ -27,6 +27,41 @@
   {%- assign sidebar_class = "nav--search " -%}
 {%- endif -%}
 {% include_cached sidebar.html sidebar_class=sidebar_class %}
+          <!-- Mobile-only action buttons: Ask AI & Rate This Page -->
+          <div class="sidebar-mobile-actions d-lg-none border-top mt-2 pt-2 px-3 pb-3">
+            <button type="button" class="btn btn-sm btn-outline-secondary w-100" id="sidebar-rate-page-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 16 16" class="mr-1" style="vertical-align: -2px;">
+                <path fill="currentColor" d="M7.538 1.11a.5.5 0 0 1 .924 0l1.537 3.696a.5.5 0 0 0 .421.306l3.99.32a.5.5 0 0 1 .285.878l-3.04 2.604a.5.5 0 0 0-.16.496l.928 3.893a.5.5 0 0 1-.747.542L8.261 11.76a.5.5 0 0 0-.522 0l-3.415 2.086a.5.5 0 0 1-.747-.542l.928-3.893a.5.5 0 0 0-.16-.496L1.304 6.31a.5.5 0 0 1 .285-.878l3.99-.32A.5.5 0 0 0 6 4.806L7.538 1.11Z"></path>
+              </svg> Rate This Page
+            </button>
+          </div>
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              var rateBtn = document.getElementById('sidebar-rate-page-btn');
+              if (!rateBtn) return;
+
+              rateBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var $sidebar = $('#sidebarMenu');
+
+                function openFeedback() {
+                  var ov = document.getElementById('feedback-overlay');
+                  if (ov) {
+                    ov.style.display = 'block';
+                  }
+                }
+
+                if ($sidebar.hasClass('show')) {
+                  $sidebar.one('hidden.bs.collapse', openFeedback);
+                  $sidebar.collapse('hide');
+                } else {
+                  openFeedback();
+                }
+              });
+            });
+          </script>
         </nav>
 {% if page.toc == true %}
   {% if page.homepage != true %}
@@ -43,7 +78,6 @@
         <div class="toc-col col-md-2">
           <div class="toc-col-contents">  <!-- lets all elements scroll -->
             <div class="d-none d-lg-block pb-4">
-              {% include contribute-options.html %}
             </div>
             <div class="toc-right-title">On this page</div>
             <div id="toc-right">

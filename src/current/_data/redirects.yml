@@ -31,7 +31,7 @@
 # in the list of versions that matches a major version in
 # versions.csv, Jekyll will automatically add a redirect
 # for the dev and stable aliases for that page. versions.csv:
-# https://github.com/cockroachdb/docs/blob/main/src/current/_data/versions.csv
+# https://github.com/cockroachlabs/docs/blob/main/src/current/_data/versions.csv
 #
 # Each redirect added in redirects.yml generates a redirect
 # for the page without the .md extension and a redirect for
@@ -1161,3 +1161,26 @@
 
 - destination: cockroachcloud/byoc-azure-deployment.md
   sources: ['cockroachcloud/byoc-deployment.md']
+
+- destination: molt/migration-approach-classic-bulk-load.md
+  sources: ['molt/migrate-bulk-load.md']
+
+- destination: molt/migration-approach-delta.md
+  sources: ['molt/migrate-load-replicate.md']
+
+- destination: molt/molt-replicator.md#resume-after-an-interruption
+  sources: ['molt/migrate-resume-replication.md']
+
+- destination: molt/molt-replicator.md#failback-replication
+  sources: ['molt/migrate-failback.md']
+- destination: multiregion-overview.md
+  sources: ['demo-low-latency-multi-region-deployment.md', 'migrate-to-multiregion-sql.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: performance-best-practices-overview.md
+  sources: ['performance.md', 'performance-benchmarking-with-tpcc-local.md', 'performance-benchmarking-with-tpcc-small.md', 'performance-benchmarking-with-tpcc-medium.md', 'performance-benchmarking-with-tpcc-large.md', 'performance-benchmarking-with-tpcc-local-multiregion.md']
+  versions: ['v26.1', 'v26.2']
+
+- destination: support-resources.md
+  sources: ['file-an-issue.md']
+  versions: ['v26.1', 'v26.2']

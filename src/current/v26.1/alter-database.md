@@ -18,7 +18,7 @@ Refer to the respective [subcommands](#subcommands).
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_database.html %}
+{% capture diagram_include %}cockroach-generated/{{ page.release_info.crdb_branch_name }}/sql-diagrams/alter_database.html{% endcapture %}{% include {{ diagram_include }} %}
 </div>
 
 ## Parameters
@@ -729,7 +729,7 @@ ALTER DATABASE movr CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 
 {{site.data.alerts.callout_info}}
 When you discard a zone configuration, the objects it was applied to will then inherit a configuration from an object "the next level up"; e.g., if the object whose configuration is being discarded is a table, it will use its parent database's configuration.
 
-You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or partitions if the [multi-region abstractions]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %}#replication-zone-patterns-and-multi-region-sql-abstractions) created the zone configuration.
+You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or partitions if the [multi-region] ({% link {{ page.version.version }}/multiregion-overview.md %}) created the zone configuration.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -1202,7 +1202,7 @@ To follow along with the examples below:
     cockroach demo --global --nodes 9
     ~~~
 
-1. Set the demo cluster's [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) and [table localities]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) as described in [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}) (specifically, starting at [Step 5. Execute multi-region SQL statements]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}#step-5-execute-multi-region-sql-statements)).
+1. Set the demo cluster's [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) and [table localities]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality).
 
 1. Enable the replica placement syntax with either the [session variable]({% link {{ page.version.version }}/set-vars.md %}) or the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) as shown below.
 
