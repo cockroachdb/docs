@@ -50,7 +50,7 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 
 Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) when transaction errors are thrown. As a result, this function forces a transaction retry.
 
-To run the code, copy the sample above, or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/upperdb-basic-sample/main.go" download>download it directly</a>.
+To run the code, copy the sample above, or <a href="https://raw.githubusercontent.com/cockroachlabs/docs/master/_includes/{{ page.version.version }}/app/upperdb-basic-sample/main.go" download>download it directly</a>.
 
 {{site.data.alerts.callout_success}}
 To clone a version of the code below that connects to insecure clusters, run the following command:
@@ -87,7 +87,7 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 
 Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) when transaction errors are thrown. As a result, this function forces a transaction retry.
 
-Copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/upperdb-basic-sample/main.go" download>download it directly</a>.
+Copy the code or <a href="https://raw.githubusercontent.com/cockroachlabs/docs/master/_includes/{{ page.version.version }}/app/insecure/upperdb-basic-sample/main.go" download>download it directly</a>.
 
 {{site.data.alerts.callout_success}}
 To clone a version of the code below that connects to insecure clusters, run the following command:

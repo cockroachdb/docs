@@ -120,7 +120,7 @@ Now that you have a database, a SQL user, and a table, let's run code to insert 
 </div>
 
 <section class="filter-content" markdown="1" data-scope="go">
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/json/json-sample.go" download><code>json-sample.go</code></a> file, or create the file yourself and copy the code into it:
+Download the <a href="https://raw.githubusercontent.com/cockroachlabs/docs/master/_includes/{{ page.version.version }}/json/json-sample.go" download><code>json-sample.go</code></a> file, or create the file yourself and copy the code into it:
 
 {% include_cached copy-clipboard.html %}
 ~~~ go
@@ -142,7 +142,7 @@ The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="python">
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/json/json-sample.py" download><code>json-sample.py</code></a> file, or create the file yourself and copy the code into it:
+Download the <a href="https://raw.githubusercontent.com/cockroachlabs/docs/master/_includes/{{ page.version.version }}/json/json-sample.py" download><code>json-sample.py</code></a> file, or create the file yourself and copy the code into it:
 
 {% include_cached copy-clipboard.html %}
 ~~~ python

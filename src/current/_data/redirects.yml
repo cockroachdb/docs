@@ -31,7 +31,7 @@
 # in the list of versions that matches a major version in
 # versions.csv, Jekyll will automatically add a redirect
 # for the dev and stable aliases for that page. versions.csv:
-# https://github.com/cockroachdb/docs/blob/main/src/current/_data/versions.csv
+# https://github.com/cockroachlabs/docs/blob/main/src/current/_data/versions.csv
 #
 # Each redirect added in redirects.yml generates a redirect
 # for the page without the .md extension and a redirect for
