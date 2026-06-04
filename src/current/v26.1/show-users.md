@@ -59,3 +59,89 @@ Alternatively, within the built-in SQL shell, you can use the `\du` [shell comma
 
 - [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %})
 - [Manage Users]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users)
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## Required privileges
+
+The user must have the [`VIEWACTIVITY`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) privilege or be a member of the `admin` role.
+
+## Synopsis
+
+{% include_cached copy-clipboard.html %}
+~~~
+SHOW USERS [WITH <options>] [LIMIT <n>]
+~~~
+
+Where `<options>` can include:
+
+- `SOURCE = <string>`
+- `LAST LOGIN BEFORE <expr>`
+
+Multiple options can be comma-separated.
+
+## Parameters
+
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| `SOURCE` | Filters users by their provisioning source (`PROVISIONSRC` role option value). Must match the exact provisioning source string. | No |
+| `LAST LOGIN BEFORE` | Filters users whose estimated last login time is before the specified timestamp. Users who have never logged in (`NULL` estimated_last_login_time) are excluded from results. | No |
+| `LIMIT` | Restricts the number of returned rows to the specified count. | No |
+
+## Examples
+
+### Show all users
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW USERS;
+~~~
+
+### Filter by provisioning source
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW USERS WITH SOURCE = 'ldap:ldap.example.com';
+~~~
+
+### Filter by last login time
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW USERS WITH LAST LOGIN BEFORE '2024-01-01';
+~~~
+
+### Combine multiple filters
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW USERS WITH SOURCE = 'ldap:ldap.example.com', LAST LOGIN BEFORE '2024-06-01';
+~~~
+
+### Use LIMIT with filters
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW USERS WITH SOURCE = 'ldap:ldap.example.com' LIMIT 100;
+~~~
+
+### Use LIMIT without filters
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW USERS LIMIT 10;
+~~~
+
+{{site.data.alerts.callout_info}}
+The `estimated_last_login_time` column is computed on a best-effort basis and is not guaranteed to capture every login event. Users who have never logged in will have `NULL` for this value and are excluded when using the `LAST LOGIN BEFORE` filter.
+{{site.data.alerts.end}}
+
+## See also
+
+- [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %})
+- [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %})
+- [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %})
+- [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %})
+- [Manage users]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users)
+
+<!-- END REF DOC DRAFT -->
