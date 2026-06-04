@@ -1,0 +1,23 @@
+name: Sync Fork
+
+# Pushes cockroachdb/docs's main to the fork's main on every
+# commit to main. The reusable workflow no-ops when invoked anywhere other
+# than the configured upstream_repo.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read  # Reusable workflow uses GITHUB_TOKEN to fetch this repo's main
+
+jobs:
+  sync:
+    uses: cockroachdb/actions/.github/workflows/sync-fork.yml@v0
+    with:
+      upstream_repo: cockroachdb/docs
+      fork_repo: crl-gh-actions-pr-bot/docs
+      allow_fork_force_sync: false
+    secrets:
+      fork_push_token: ${{ secrets.FORK_PUSH_TOKEN }}
