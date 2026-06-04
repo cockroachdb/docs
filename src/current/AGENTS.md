@@ -38,10 +38,12 @@ For includes that we can assume only apply to specific versions, though in some 
 
 Note: The Liquid variable `{{page.version.version}}` resolves to the major version in the path of the page where it is used (e.g. `v25.4`). References to version-specific includes often use this, allowing the same page content that's used across versions to show different versions of an include, based on the current version being rendered. For example, `{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}`.
   
-The includes are all located in subdirectories of the `_include` directory, i.e.,
+The includes are all located in subdirectories of the `_includes` directory (relative to `src/current`), i.e.,
 
-- `_include/common` for widely shared things
-- `_include/cockroachcloud` for Cloud
-- `_include/v25.4` for v25.4-specific content
+- `_includes/common` for widely shared things
+- `_includes/cockroachcloud` for Cloud
+- `_includes/v25.4` for v25.4-specific content
+
+When reviewing documentation pages, make sure to read and follow all included files to get the complete picture of what users see
 
 <!-- eof -->
