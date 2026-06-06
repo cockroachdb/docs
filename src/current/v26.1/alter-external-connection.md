@@ -80,3 +80,59 @@ ALTER EXTERNAL CONNECTION backup_bucket AS 's3://bucket name?AWS_ACCESS_KEY_ID={
 - [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %})
 - [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %})
 - [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %})
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+```yaml
+---
+title: ALTER EXTERNAL CONNECTION
+summary: Use ALTER EXTERNAL CONNECTION to modify an existing external connection's endpoint.
+toc: true
+docs_area: reference.sql
+---
+```
+
+Use the `ALTER EXTERNAL CONNECTION` statement to modify the endpoint of an existing external connection.
+
+## Required privileges
+
+[NEEDS REVIEW: Required privileges not specified in the diff]
+
+## Synopsis
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER EXTERNAL CONNECTION [IF EXISTS] <name> AS <endpoint>
+~~~
+
+## Parameters
+
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| `name` | The name of the external connection to modify | Yes |
+| `endpoint` | The new endpoint URL or connection string for the external resource | Yes |
+| `IF EXISTS` | Modify the external connection only if it exists; do not return an error if it does not exist | No |
+
+## Examples
+
+### Modify an external connection endpoint
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER EXTERNAL CONNECTION backup_storage AS 's3://new-bucket/backup?AWS_ACCESS_KEY_ID=new_key&AWS_SECRET_ACCESS_KEY=new_secret';
+~~~
+
+### Modify with IF EXISTS clause
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER EXTERNAL CONNECTION IF EXISTS backup_storage AS 's3://new-bucket/backup?AWS_ACCESS_KEY_ID=new_key&AWS_SECRET_ACCESS_KEY=new_secret';
+~~~
+
+## See also
+
+- [CREATE EXTERNAL CONNECTION]({% link {{ page.version.version }}/create-external-connection.md %})
+- [DROP EXTERNAL CONNECTION]({% link {{ page.version.version }}/drop-external-connection.md %})
+- [SHOW EXTERNAL CONNECTIONS]({% link {{ page.version.version }}/show-external-connections.md %})
+
+<!-- END REF DOC DRAFT -->
