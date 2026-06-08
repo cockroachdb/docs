@@ -11,8 +11,9 @@ The `ALTER SEQUENCE` [statement]({% link {{ page.version.version }}/sql-statemen
 
 ## Required privileges
 
-- To alter a sequence, the user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the parent database.
-- To change the schema of a sequence with `ALTER SEQUENCE ... SET SCHEMA`, or to change the database of a sequence with `ALTER SEQUENCE ... RENAME TO`, the user must also have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the sequence.
+- To alter a sequence, the user must be the owner of the sequence.
+- To change the schema of a sequence with `ALTER SEQUENCE ... SET SCHEMA`, the user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the sequence and the `CREATE` privilege on the new schema.
+- To rename a sequence with `ALTER SEQUENCE ... RENAME TO`, the user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the sequence and the `CREATE` privilege on the sequence's database.
 
 ## Syntax
 
