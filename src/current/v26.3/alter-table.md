@@ -446,7 +446,7 @@ For examples, see [Rename tables](#rename-tables).
 
 #### Required privileges
 
-The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table and the `CREATE` on the parent database.
+{% include_cached new-in.html version="v26.3" %} The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table and the `CREATE` privilege on the table's schema.
 
 #### Parameters
 

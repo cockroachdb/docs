@@ -11,9 +11,9 @@ The `ALTER VIEW` [statement]({% link {{ page.version.version }}/sql-statements.m
 
 ## Required privileges
 
-- To alter a view, the user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the parent database.
 - To set or reset `security_invoker`, the user must own the view.
-- To change the schema of a view with `ALTER VIEW ... SET SCHEMA`, or to change the name of a view with `ALTER VIEW ... RENAME TO`, the user must also have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the view.
+- To change the schema of a view with `ALTER VIEW ... SET SCHEMA`, the user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the view and the `CREATE` privilege on the new schema.
+- {% include_cached new-in.html version="v26.3" %} To rename a view with `ALTER VIEW ... RENAME TO`, the user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the view and the `CREATE` privilege on the view's schema.
 
 ## Syntax
 
