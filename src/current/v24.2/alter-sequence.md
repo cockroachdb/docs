@@ -27,7 +27,7 @@ The `ALTER SEQUENCE` [statement]({% link {{ page.version.version }}/sql-statemen
 -----------|------------
 `IF EXISTS` | Modify the sequence only if it exists; if it does not exist, do not return an error.
 `sequence_name` | The name of the sequence.
-`RENAME TO sequence_name` | Rename the sequence to `sequence_name`, which must be unique to its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). Name changes do not propagate to the  table(s) using the sequence.<br><br>Note that `RENAME TO` can be used to move a sequence from one database to another, but it cannot be used to move a sequence from one schema to another. To change a sequence's schema, use `ALTER SEQUENCE ...SET SCHEMA` instead.
+`RENAME TO sequence_name` | Rename the sequence to `sequence_name`, which must be unique to its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). Name changes do not propagate to the  table(s) using the sequence.<br><br>`RENAME TO` only changes the name of the sequence; it cannot move the sequence to a different database or schema. To change a sequence's schema, use `ALTER SEQUENCE ... SET SCHEMA` instead.
 `CYCLE`/`NO CYCLE` | The sequence will wrap around when the sequence value reaches the maximum or minimum value. `CYCLE` is not implemented. If `NO CYCLE` is set, the sequence will not wrap.
 `OWNED BY column_name` | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br><br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
 `CACHE` |  The number of sequence values to cache in memory for reuse in the session. A cache size of `1` means that there is no cache, and cache sizes of less than `1` are not valid.<br><br>**Default:** `1` (sequences are not cached by default)
@@ -104,55 +104,6 @@ In this example, we will change the name of sequence.
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
-~~~
-
-~~~
-  sequence_schema | sequence_name
-------------------+----------------
-  public          | even_sequence
-(1 row)
-~~~
-
-### Change the database of a sequence
-
-In this example, we will move the sequence we renamed in the first example (`even_sequence`) from `defaultdb` (i.e., the default database) to a different database.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW SEQUENCES FROM defaultdb;
-~~~
-
-~~~
-  sequence_schema | sequence_name
-------------------+----------------
-  public          | even_sequence
-(1 row)
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE mydb;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> ALTER SEQUENCE even_sequence RENAME TO mydb.even_sequence;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW SEQUENCES FROM defaultdb;
-~~~
-
-~~~
-  sequence_schema | sequence_name
-------------------+----------------
-(0 rows)
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW SEQUENCES FROM mydb;
 ~~~
 
 ~~~

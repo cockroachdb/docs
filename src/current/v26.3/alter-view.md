@@ -80,7 +80,7 @@ WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
 (1 row)
 ~~~
 
-Note that `RENAME TO` can be used to move a view from one database to another, but it cannot be used to move a view from one schema to another. To change a view's schema, [use the `SET SCHEMA` clause](#change-the-schema-of-a-view). In a future release, `RENAME TO` will be limited to changing the name of a view, and will not have the ability to change a view's database.
+Note that `RENAME TO` only changes the name of the view; it cannot move the view to a different database or schema. To change a view's schema, [use the `SET SCHEMA` clause](#change-the-schema-of-a-view).
 
 ### Change the schema of a view
 

@@ -446,7 +446,7 @@ For examples, see [Rename tables](#rename-tables).
 
 #### Required privileges
 
-The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
+The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table and the `CREATE` on the parent database.
 
 #### Parameters
 
